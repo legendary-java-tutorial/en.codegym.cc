@@ -1,0 +1,99 @@
+<p>Hi!</p> 
+
+<img data-max-width="800" data-id="4905a490-ce2d-4552-9e16-a1ea3c12b332" src="https://cdn.codegym.cc/images/article/4905a490-ce2d-4552-9e16-a1ea3c12b332/800.jpeg" alt="">
+
+<p>I think you won't be too surprised if I tell you that your computer has a limited amount of memory :) Even a hard drive — generally many times larger than RAM storage — can be packed to capacity with your favorite games, TV shows, and more. To prevent this from happening, you need to monitor the current state of memory and delete unnecessary files from your computer. What does Java programming have to do with all this? Everything! After all, when the Java machine creates any object, it allocates memory for that object. </p>
+
+<p>In a real large program, tens and hundreds of thousands of objects are created, and each of them has its own piece of memory allocated for it. But how long do you think all these objects exist? Do they "live" the entire time our program is running? Of course not. Even with all the advantages of Java objects, they are not immortal :) Objects have their own lifecycle. Today we'll take a little break from writing code and look at this process :) Moreover, it is very important for your understanding of how a program works and how resources are managed. So, when does the life of an object begin? Like a person — from its birth, that is, creation.</p>
+
+<pre class="lang-java line-numbers"><code>
+Cat cat = new Cat(); // Here the lifecycle of our Cat object begins!
+</code></pre>
+<p>First, the Java Virtual Machine allocates the required amount of memory to create the object. Then it creates a reference to that memory. In our case, that reference is called <code>cat</code>, so we can keep track of it. Then all its variables are initialized, the constructor is called, and — ta-da! — our newly-minted object is living its own life :) </p>
+
+<p>The lifespan of objects varies, so we can't provide exact numbers here. In any case, it lives for some time inside the program and performs its functions. To be precise, an object is "alive" as long as there are references to it. As soon as there are no references left, the object "dies". Example:</p>
+
+<pre class="lang-java line-numbers"><code>
+public class Car {
+  
+   String model;
+
+   public Car(String model) {
+       this.model = model;
+   }
+
+   public static void main(String[] args) {
+       Car lamborghini  = new Car("Lamborghini Diablo");
+       lamborghini = null;
+
+   }
+
+}
+</code></pre>
+<p>The Lamborghini Diablo car object stops being alive on the second line of the <code>main()</code> method. There was only one reference to it, and then that reference was set equal to <code>null</code>. Since there are no remaining references to the Lamborghini Diablo, the allocated memory becomes "garbage". A reference does not have to be set to null for this to happen:</p>
+
+<pre class="lang-java line-numbers"><code>
+public class Car {
+
+   String model;
+
+   public Car(String model) {
+       this.model = model;
+   }
+
+   public static void main(String[] args) {
+       Car lamborghini  = new Car("Lamborghini Diablo");
+
+       Car lamborghiniGallardo = new Car("Lamborghini Gallardo");
+       lamborghini = lamborghiniGallardo;
+   }
+
+}
+</code></pre>
+<p>Here we created a second object and then assigned this new object to the <code>lamborghini</code> reference. Now the <code>Lamborghini Gallardo</code> object has two references, but the <code>Lamborghini Diablo</code> object has none. That means that the <code>Diablo</code> object is now garbage. This is when Java's built-in mechanism called the garbage collector (GC) comes into play. </p>
+
+<p>The garbage collector is an internal Java mechanism responsible for freeing up memory, i.e. removing unnecessary objects from memory. There's a good reason why we chose a picture of a robot vacuum cleaner here. After all, the garbage collector works in much the same way: in the background, it "travels" about your program, collecting garbage with practically no effort on your part. Its job is to remove objects that are no longer used in the program.</p>
+
+<p>Doing this frees up memory in the computer for other objects. Do you recall that at the beginning of the lesson we said that in ordinary life you have to monitor the state of your computer and delete unnecessary files? Well, in the case of Java objects, the garbage collector does this for you. The garbage collector runs repeatedly as your program runs: you don't have to explicitly call it or give it commands, although this is technically possible. Later we'll talk about it more and analyze its work in greater detail. </p>
+
+<p>When the garbage collector reaches an object, just before destroying the object, it calls a special method — <code>finalize()</code> — on the object. This method can release other resources used by the object. The <code>finalize()</code> method is part of the <code>Object</code> class. That means that in addition to the <code>equals()</code>, <code>hashCode()</code> and <code>toString()</code> methods that you met previously, every object has this method. It differs from other methods in that it is — how should I put this — very capricious. </p>
+
+<p>In particular, it is not always called before the destruction of an object. Programming is a precise endeavor. The programmer tells the computer to do something, and the computer does it. I suppose you are already used to this behavior, so at first it may be difficult for you to accept this following idea: "Before the destruction of objects, the <code>finalize()</code> method of the <code>Object</code> class is called. Or maybe it's not called. It all depends on your luck!" </p>
+
+<p>Yet, it's true. The Java machine itself determines whether or not to call the <code>finalize()</code> method on a case-by-case basis. For example, let's try running the following code as an experiment:</p>
+
+<pre class="lang-java line-numbers"><code>
+public class Cat {
+
+   private String name;
+
+   public Cat(String name) {
+       this.name = name;
+   }
+
+   public Cat() {
+   }
+
+   public static void main(String[] args) throws Throwable {
+       for (int i = 0 ; i &lt; 1000000; i++) {
+           Cat cat = new Cat();
+           cat = null; // This is when the first object becomes available to the garbage collector
+       }
+   }
+
+   @Override
+   protected void finalize() throws Throwable {
+       System.out.println("Cat object destroyed!");
+   }
+}
+</code></pre>
+<p>We create a <code>Cat</code> object and then in the next line of code we set its only reference equal to null. And we do that a million times. We explicitly overrode the <code>finalize()</code> method so that it prints a string to the console a million times (once for each time it destroys a <code>Cat</code> object). But no! To be precise, it ran only 37,346 times on my computer! That is, just once in 27 times did the Java machine installed on my machine decide to call the <code>finalize()</code> method. </p>
+
+<p>In other cases, garbage collection happened without it. Try to run this code for yourself: most likely, you will get a different result. As you can see, <code>finalize()</code> can hardly be called a reliable partner :) So, a little advice for the future: don't rely on the <code>finalize()</code> method to free critical resources. Maybe the JVM will call it, or maybe not. Who knows?</p>
+
+<p>If while your object is alive it holds some resources that are super important for performance, for example, an open database connection, it is better to create a special method in your class to release them and then call it explicitly when the object is no longer needed. That way you will know for sure that your program's performance will not suffer. From the outset, we said that working with memory and removing garbage is very important, and this is true. Improperly handling resources and misunderstanding how unnecessary objects are cleaned up can lead to memory leaks. This is one of the most well-known programming mistakes. </p>
+
+<p>If programmers write their code incorrectly, new memory may be allocated for newly created objects each time, while old, unnecessary objects may not be available for removal by the garbage collector. Since we made an analogy with a robot vacuum cleaner, imagine what would happen if, before starting the robot, you scatter socks around the house, break a glass vase, and leave a Lego building blocks all over the floor. The robot will try to do its job, of course, but at some point it will get stuck. </p>
+
+<p>To allow the robot vacuum cleaner to function properly, you need to keep the floor in good condition and remove anything that the robot cannot handle. The same principle applies to Java's garbage collector. If there are many objects left in a program that cannot be cleaned up (like a sock or Lego building block for our robot vacuum cleaner), at some point you will run out of memory. And it may not just be your program that will freeze — every other program running on the computer may be affected. They, too, may not have enough memory.</p>
+<p>You don't need to memorize this. You just need to understand the principle behind how it works.</p>

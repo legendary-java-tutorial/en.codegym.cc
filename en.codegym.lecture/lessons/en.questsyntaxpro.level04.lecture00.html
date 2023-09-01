@@ -1,0 +1,400 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="2bcc6669-ca39-4a45-9e14-0dc31a3a1c3e" data-max-width="1024" src="https://cdn.javarush.ru/images/article/2bcc6669-ca39-4a45-9e14-0dc31a3a1c3e/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="eda8a571-0d1c-4a0d-ab84-322496fe00e8" data-max-width="1024" src="https://cdn.javarush.ru/images/article/eda8a571-0d1c-4a0d-ab84-322496fe00e8/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="1950d10e-c5c7-430e-9bc9-0196eb51d5ee" data-max-width="512" src="https://cdn.javarush.ru/images/article/1950d10e-c5c7-430e-9bc9-0196eb51d5ee/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="9867198e-91e9-4702-a2d9-7474ea17da13" data-max-width="512" src="https://cdn.javarush.ru/images/article/9867198e-91e9-4702-a2d9-7474ea17da13/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="ff6b0d77-6112-4783-b809-c0b2fddd181f" data-max-width="512" src="https://cdn.javarush.ru/images/article/ff6b0d77-6112-4783-b809-c0b2fddd181f/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="6d6dde69-5c2d-4c9d-afd7-e3098bad61d8" data-max-width="512" src="https://cdn.javarush.ru/images/article/6d6dde69-5c2d-4c9d-afd7-e3098bad61d8/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Loops in our life</h2>
+<p>Very often our lives require us to perform the same actions many times. For example, suppose I need to scan a document consisting of lots of pages. That we repeat the same procedure over and over again:</p>
+<ul>
+    <li>Put the first page on the scanner</li>
+    <li>Press the scan button</li>
+    <li>Put the next page on the scanner</li>
+</ul>
+<p>This is difficult to do manually. It would be nice if this process could be somehow be automated.</p>
+<p>Or consider another example: let's say I want to mark all unread emails in my inbox as spam. Once upon a time I would have to select each email one at a time and mark it as spam.</p>
+<p>But programmers are lazy, so they automated this process long ago: now you simply select any list of letters and click "mark as spam", and then your email client runs through the list and moves each email to the spam folder.</p>
+<p>What can we say here? It's super convenient when a computer or program can execute hundreds or thousands of monotonous operations with one click. And now you will learn how to do this too.</p>
+<hr>
+<h2>2. <code>while</code> loop</h2>
+<p>The if-else statement significantly expanded our programming capabilities, making it possible to write programs that perform different actions in different situations. But there is one more thing that will make our programs an order of magnitude more powerful — <strong>loops</strong>.</p>
+<p>Java has 4 kinds of loops: <strong><code>while</code></strong>, <strong><code>for</code></strong>, <strong><code>for-each</code></strong> and <strong><code>do-while</code></strong>. We will now dig into the very first of these.</p>
+<p>A <strong><code>while</code></strong> loop is very simple. It consists of only two parts: a <span class="term text-red">condition</span> and a <span class="term">loop body</span>. The loop body is executed over and over again as long as the condition is <code>true</code>. In general, a <code>while</code> loop looks like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>while (<span class="code text-red">condition</span>)
+   <span class="code  text-green">statement</span>;</code></pre>
+    <div class="lesson-example-caption">Notation for a <code>while</code> loop with a single statement</div>
+</div>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>while (<span class="code text-red">condition</span>)
+{
+&nbsp;  <span class="code text-user">block of statements</span>
+}</code></pre>
+    <div class="lesson-example-caption">Notation for a <code>while</code> loop with a block of statements</div>
+</div>
+<p>It's very simple. The <span class="term text-green">statement</span> or <span class="term text-user">block of statements</span> is executed over and over again as long as the <span class="term text-red">loop condition</span> equals <code>true</code>.</p>
+<p>This is how it works: first, the <span class="term text-red">condition</span> is checked. If it is true, then the <span class="term">loop body</span> is executed (the <span class="term text-green">statement</span> or <span class="term text-user">block of statements</span>). Then the <span class="term text-red">condition</span> is checked again and the <span class="term">loop body</span> is executed again. And so on until the <span class="term text-red">condition</span> becomes false.</p>
+<p>If the condition is <strong>always</strong> <strong>true</strong>, then the program will never stop running. It will be permanently stuck in the loop.</p>
+<p>If the condition is <strong>false</strong> <strong>the very first time it is checked</strong>, then the body of the loop will not be executed even once.</p>
+<hr>
+<h2>3. Examples of loops</h2>
+<p>Here are some practical examples of loops in action.</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="55%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int <span class="text-red">n</span> = 5;
+while (<span class="text-red">n</span> &gt; 0)
+{
+&nbsp; &nbsp;System.out.println(<span class="text-red">n</span>);
+&nbsp;  <span class="text-red">n</span>--;
+}</code></pre>
+        </td>
+        <td>5 lines will be displayed on the screen:<br>
+            <pre><code>5
+4
+3
+2
+1
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th width="55%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int&nbsp; <span class="text-red">n </span>= 0;
+while (<span class="text-red">n</span> &lt; 10)
+{
+&nbsp; &nbsp;System.out.println(<span class="text-red">n</span>);
+&nbsp;  <span class="text-red">n</span>++;
+}</code></pre>
+        </td>
+        <td>10 lines will be displayed on the screen:<br>
+            <pre><code>0
+1
+...
+8
+9
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th width="55%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Scanner <span class="text-orange">console</span> = new Scanner(<span class="text-viola">System.in)</span>;
+<span>while(<span class="text-orange">console</span>.<span class="text-red">hasNextInt</span>())
+</span>{
+&nbsp; &nbsp;int <span class="text-green">x</span> = <span class="text-orange">console</span>.nextInt();
+}&nbsp;</code></pre>
+        </td>
+        <td>The program reads numbers from the keyboard as long as numbers are entered.</td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th width="55%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>while (true)
+   <span class="text-orange">System.out.println</span>("C");</code></pre>
+        </td>
+        <td>The program will <span class="text-red">endlessly</span> print the letter <code><span class="text-green">C</span></code> on the screen.</td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th width="55%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Scanner <span class="text-orange">console</span> = new Scanner(<span class="text-viola">System.in</span>);
+boolean <span class="text-red">isExit</span> = false;
+while (!<span class="text-red">isExit</span>)
+{
+&nbsp; &nbsp;String <span class="text-user">s</span> = <span class="text-orange">console</span>.<span class="text-red">nextLine</span>();
+&nbsp;  <span class="text-red">isExit</span> = <span class="text-user">s</span>.equals("exit");
+}</code></pre>
+        </td>
+        <td>The program will read lines from the keyboard
+            <p>until <code><span class="text-green">exit</span></code> is entered.</td>
+    </tr>
+    </tbody>
+</table>
+<p>In the previous example, the <code>equals()</code> method is used to compare strings. If the strings are equal, the function will return <code>true</code>. If the strings are not equal, then it will return <code>false</code>.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0401"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0402"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0403"></div>
+<hr>
+<h2>4. Loop within a loop</h2>
+<p>As you learned about conditional statements, you saw that you can use them to implement complex logic by combining multiple conditional statements. In other words, by using an <code>if</code> statement inside an <code>if</code> statement.</p>
+<p>You can do the same thing with loops. To write a loop within a loop, you need to write the second loop inside the body of the first loop. It will look something like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>while (<span class="text-orange">condition for outer loop</span>)
+{
+&nbsp; &nbsp;while (<span class="text-red">condition for inner loop</span>)
+&nbsp; &nbsp;{
+&nbsp; &nbsp;  <span class="text-user">block of statements</span>
+&nbsp; &nbsp;}
+}</code></pre>
+    <div class="lesson-example-caption"><code>while</code> loop (with a <span class="term">block of statements</span>) inside another <code>while</code> loop</div>
+</div>
+<p>Let's look at three tasks.</p>
+<p><strong>Task 1</strong>. Let's say we want to write a program that displays the word <code><span class="text-green">Mom</span></code> on the screen 4 times. A loop is exactly what we need. And our code will look something like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int&nbsp; <span class="text-red">n</span> = 0;
+while (<span class="text-red">n</span> &lt; 4)
+{
+&nbsp; &nbsp;System.out.println("Mom");
+&nbsp;  <span class="text-red">n</span>++;
+}</code></pre>
+        </td>
+        <td>
+            4 lines will be displayed on the screen:<br>
+            <pre><code>Mom
+Mom
+Mom
+Mom
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Task 2</strong>. We want to write a program that displays 5 letter <code><span class="text-green">A</span></code>s on a single line. To do this, we need a loop once again. This is what the code will look like:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="text-red">n</span> = 0;
+while (<span class="text-red">n</span> &lt; 5)
+{
+&nbsp; &nbsp;System.out.<strong><span class="text-viola">print</span></strong>("A");
+&nbsp;  <span class="text-red">n</span>++;
+}</code></pre>
+        </td>
+        <td>Instead of <code>println()</code>, we will use <code>print()</code>. Otherwise, each letter <code><span class="text-green">A</span></code>&nbsp;would end up on a separate line.<br><br>
+            The screen output will be:<br>
+            <pre><code>AAAAA</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Task 3</strong>. We want to display a rectangle comprised of letter <code>A</code>s. The rectangle should consist of 4 rows by 5 columns. To accomplish this, we now need a nested loop. We'll simply take our first example (the one where we output 4 lines) and replace the code for outputting one line with the code from the second example.</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java" style="margin-left: -7px;"><code style="padding-left: 7px;">int <span class="code text-red">n</span> = 0;
+
+<div class="code-fragment code-fragment--viola">while (<span class="code text-red">n</span> &lt; 4)
+{
+
+   int <span class="code text-user">m</span> = 0;
+
+   <div class="code-fragment code-fragment--green">while (<span class="code text-user">m</span> &lt; 5)
+{
+   System.out.print("А");
+   <span class="code text-user">m</span>++;
+}</div>
+
+   <span class="code text-neon">System.out.println();</span>
+
+   <span class="code text-red">n</span>++;
+
+}</div>
+&nbsp;</code></pre>
+        </td>
+        <td>The <span class="term text-viola">outer loop</span> is purple. It uses the <code class="text-red">n</code> variable&nbsp;to count the number of iterations of the loop.<br><br>
+            The <span class="term text-green">inner loop</span> is green. It uses the <code class="text-user">m</code> variable to count the number of loop iterations.<br><br>
+            We have to explicitly <span class="term text-neon">move the cursor</span> to the next line after the inner loop is complete. Otherwise, all the letters that the program prints will end up on one line.<br><br>
+            The screen output will be:<br>
+            <pre><code>ААААА
+ААААА
+ААААА
+ААААА</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The outer and inner loops must use different variables to count the number of loop iterations. We also had to add the <code>System.out.println()</code> command after the inner loop, since that loop displays letter <code><span class="text-green">А</span></code>s on the same line. Once the letters on a line are displayed, someone has to move the cursor to a new line.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0404"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0405"></div>
+<hr>
+<h2>5. Comparing loops Java vs Pascal</h2>
+<p>Many of you studied Pascal in high school. To make it easier for you to understand the material here, take a look at this comparison of <code>while</code> loops written in Pascal and Java. If you don't know Pascal, then just skip this part.</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Pascal</th>
+        <th>Java</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-pascal"><code><span class="text-red">i</span> := 3;
+While <span class="text-red">i</span> &gt;= 0 Do
+   Begin
+      <span class="text-neon">WriteLn</span>(<span class="text-red">i</span>);
+   &nbsp;  <span class="text-red">i</span> := <span class="text-red">i</span> - 1;
+   End;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>int <span class="text-red">i</span> = 3;
+while (<span class="text-red">i</span> &gt;= 0)
+{
+&nbsp;  <span class="text-neon">System.out.println</span>(<span class="text-red">i</span>);
+&nbsp;  <span class="text-red">i</span>--;
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-pascal"><code><span class="text-red">i</span> := 0;
+While <span class="text-red">i</span> &lt; 3 Do
+&nbsp; &nbsp;Begin
+      <span class="text-neon">WriteLn</span>(<span class="text-red">i</span>);
+&nbsp;     <span class="text-red">i</span> := <span class="text-red">i</span> + 1;
+   End;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>int <span class="text-red">i</span> = 0;
+while (<span class="text-red">i</span> &lt; 3)
+{
+&nbsp;  <span class="text-neon">System.out.println</span>(<span class="text-red">i</span>);
+&nbsp;  <span class="text-red">i</span>++;
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-pascal"><code><span class="text-red">IsExit</span> := False;
+While Not <span class="text-red">isExit</span> Do
+&nbsp; &nbsp;Begin
+      <span class="text-neon">ReadLn</span>(<span class="text-orange">s</span>);
+   &nbsp;  <span class="text-red">isExit</span> :=&nbsp; (<span class="text-orange">s</span> = <span class="text-green">'exit'</span>);
+   End;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>boolean <span class="text-red">isExit</span> = false;
+while (!<span class="text-red">isExit</span>)
+{
+&nbsp; &nbsp;String <span class="text-orange">s</span> = <span class="text-neon">console.nextLine</span>();
+&nbsp;  <span class="text-red">isExit</span> = <span class="text-orange">s</span>.equals(<span class="text-green">"exit"</span>);
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-pascal"><code>While True Do
+   <span class="text-neon">WriteLn</span>(<span class="text-green">'C'</span>);</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>while (true)
+&nbsp;  <span class="text-neon">System.out.println</span>(<span class="text-green">"C"</span>);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-pascal"><code>While True Do
+&nbsp; &nbsp;Begin
+&nbsp; &nbsp;  <span class="text-neon">ReadLn</span>(<span class="text-orange">s</span>);
+&nbsp; &nbsp; &nbsp;If <span class="text-orange">s</span> = <span class="text-green">'exit'</span> Then
+&nbsp; &nbsp;    Break;
+   End;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>while (true)
+{
+&nbsp; &nbsp;String <span class="text-orange">s</span> = <span class="text-neon">console.nextLine</span>();
+&nbsp; &nbsp;if (<span class="text-orange">s</span>.equals(<span class="text-green">"exit"</span>))
+&nbsp; &nbsp; &nbsp;break;
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0419"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="348ea37d-2d4a-4dfc-bfc2-60319c274d53" data-max-width="1024" src="https://cdn.javarush.ru/images/article/348ea37d-2d4a-4dfc-bfc2-60319c274d53/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="514601db-2c54-49e8-a373-9b4bc219553f" data-max-width="512" src="https://cdn.javarush.ru/images/article/514601db-2c54-49e8-a373-9b4bc219553f/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="ea2d243e-1dff-4644-9e1d-3be0d4524f93" data-max-width="512" src="https://cdn.javarush.ru/images/article/ea2d243e-1dff-4644-9e1d-3be0d4524f93/original.png" alt="">
+        </div>
+    </div>
+</div>

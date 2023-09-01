@@ -1,0 +1,425 @@
+<h2>1. All classes inherit <code>Object</code></h2>
+<p>All classes in Java implicitly inherit the <code>Object</code> class.</p>
+<p>We'll analyze what inheritance is and how it works in Java in the Java Core quest. For now, we'll consider one simple fact that follows from this:</p>
+<p>An object of any class can be assigned to an <code>Object</code> variable. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Object <span class="code text-red">o</span> = new Scanner(System.in);</code></pre>
+        </td>
+        <td>The <code class=" text-red">o</code> variable stores a reference to a <code>Scanner</code> object</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Object <span class="code text-red">o</span> = new String();</code></pre>
+        </td>
+        <td>The <code class="text-red">o</code> variable stores a reference to a <code>String</code> object</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Object <span class="code text-red">o</span> = new Integer(15);</code></pre>
+        </td>
+        <td>The <code class="text-red">o</code> variable stores a reference to an <code>Integer</code> object</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Object <span class="code text-red">o</span> = "Hello";</code></pre>
+        </td>
+        <td>The <code class="text-red">o</code> variable stores a reference to a <code>String</code> object</td>
+    </tr>
+    </tbody>
+</table>
+<p>This is where the good news ends. <strong>The compiler doesn't keep track</strong> of the original type of object saved in an <code>Object</code> variable, so <span class="text-red">you won't be able to</span> <strong>call methods on the saved object</strong> other than the methods of the <code>Object</code> class.</p>
+<p>If you need to call the methods associated with the object's original type, then you need to first save a reference to it in a variable of the correct type, and then call the methods on that variable:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Object <span class="code text-red">o</span> = new <span class="text-viola">Scanner</span>(System.in);
+int x = <span class="code text-red">o</span>.<span class="text-green">nextInt</span>();</code></pre>
+        </td>
+        <td><span class="text-red">The program will not compile. The <code><span class="text-red">Object</span></code> class has no <code><span class="text-red">nextInt()</span></code> method.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Object <span class="code text-red">o</span> = new <span class="text-viola">Scanner</span>(System.in);
+
+<span class="text-viola">Scanner</span> <span class="code text-user">console</span> = (<span class="text-viola">Scanner</span>) <span class="code text-red">o</span>;
+
+int x = <span class="code text-user">console</span>.<span class="text-green">nextInt</span>();</code></pre>
+        </td>
+        <td>This will work.<br><br>
+            Here we save a reference to a <code><span class="text-viola">Scanner</span></code> object in a <code><span class="text-viola">Scanner</span></code> variable using a <span class="term">typecast operator</span>.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-red">You can't just go and assign an <code><span class="text-red">Object</span></code> variable to a Scanner variable, even if the <code><span class="text-red">Object</span></code> variable stores a reference a <code><span class="text-red">Scanner</span></code> object.</span> But you can do this if you use the <span class="term">typecast operator</span>, which you already know about. This is its general appearance:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Type</span> <span class="code text-user">name1</span> = (<span class="text-viola">Type</span>) <span class="code text-green">name2</span>;</code></pre>
+</div>
+<p>Where <code class="text-user">name1</code> is the name of a <code><span class="text-viola">Type</span></code> variable, and <code class="text-green">name2</code> is the name of an <code>Object</code> variable that stores a reference to a <code><span class="text-viola">Type</span></code> object.</p>
+<p><strong>Typecasting</strong></p>
+<p>If variable's type and the object's type do not match, then a <code><span class="text-red">ClassCastException</span></code> will be thrown. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Object <span class="code text-user">o</span> = new Integer(5);
+<span class="text-viola">String</span> <span class="code text-green">s</span> = (<span class="text-viola">String</span>) <span class="code text-user">o</span>;</code></pre>
+        </td>
+        <td><span class="text-red">An error will occur at runtime:<br>
+a <code>ClassCastException</code> will be thrown here</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>There's a way to avoid this error in Java: we do this by checking <span class="code"><span class="text-green">the type of the object stored in a variable</span></span>:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="code text-user">name</span> instanceof <span class="code"><span class="text-viola">Type</span></span></code></pre>
+</div>
+<p>The <code>instanceof</code> operator checks whether the <code><span class="text-green">name</span></code> variable is a <code><span class="text-viola">Type</span></code> object.</p>
+<p>As an example, let's find a string in an array of diverse objects:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Object[] <span class="code text-user">objects</span> = {10, "Hello", 3.14};
+
+for (int i = 0; i &lt; <span class="code text-user">objects</span>.length; i++)
+{
+   if (<span class="code text-user">objects</span>[i] <strong>instanceof</strong> <span class="text-viola">String</span>)
+   {
+      <span class="text-viola">String</span> s = (<span class="text-viola">String</span>) <span class="code text-user">objects</span>[i];
+      System.out.println(s);
+   }
+}</code></pre>
+        </td>
+        <td>Autoboxing will convert these values into an <code>Integer</code>, <code>String</code>, and <code>Double</code>, respectively.<br><br>
+            Loop over the array of objects<br><br>
+            If the object is a <code>String</code><br><br>
+            Save it to a <code>String</code> variable<br>
+            Display the variable on the screen.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1220"></div>
+<hr>
+<h2>2. Why generics appeared — collections</h2>
+<p>Let's return to collections.</p>
+<p>As soon as Java developers created the <code>ArrayList</code> class, they wanted to make it universal, so it could store any type of object. So they used an array of <code>Object</code>s to store the elements.</p>
+<p>The strength of this approach is that you can add an object of any type to the collection.</p>
+<p>Of course, there are several weaknesses.</p>
+<p><strong>Disadvantage 1.</strong></p>
+<p>It was always necessary to write a type conversion operator when retrieving elements from a collection:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList <span class="code text-user">numbers</span> = new ArrayList();
+
+
+for (int i = 0; i &lt; 10; i++)
+   <span class="code text-user">numbers</span>.add(i * 10);
+
+
+int <span class="code text-green">sum</span> = 0;
+for (int i = 0; i &lt; 10; i++)
+{
+   <span class="code text-green">sum</span> = <span class="code text-green">sum</span> + (<span class="text-viola">Integer</span>) <span class="code text-user">numbers</span>.get(i);
+}</code></pre>
+        </td>
+        <td>Create a collection to store references to <code>Object</code> objects<br><br>
+            Fill the collection with numbers <code>10</code>, <code>20</code>, ... <code>100</code>;<br><br><br><br>
+            Sum the elements of the collection<br><br><br>
+            <span class="text-green">Typecasting is necessary</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Disadvantage 2.</strong></p>
+<p>There was no guarantee that a collection contains a specific type of element</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList <span class="text-user">numbers</span> = new ArrayList();
+
+
+for (int i = 0; i &lt; 10; i++)
+   <span class="code text-user">numbers</span>.add(i * 2.5);
+
+
+int <span class="code text-green">sum</span> = 0;
+for (int i = 0; i &lt; 10; i++)
+{
+   <span class="code text-green">sum</span> = <span class="code text-green">sum</span> + (Integer) <span class="code text-user">numbers</span>.get(i);
+}</code></pre>
+        </td>
+        <td>Create a collection to store references to <code>Object</code> objects<br><br>
+            We fill the collection with numbers represented as <code>Double</code> objects:<br>
+            <code>0.0</code>, <code>2.5</code>, <code>5.0</code>, ...<br><br><br>
+            Sum the elements of the collection<br><br><br>
+            <span class="text-red">There will be an error: a <code><span class="text-red">Double</span></code> cannot be cast to an <code><span class="text-red">Integer</span></code></span></td>
+    </tr>
+    </tbody>
+</table>
+<p>Data can be put into the collection anywhere:</p>
+<ul>
+    <li>in another method</li>
+    <li>in another program</li>
+    <li>from a file</li>
+    <li>over the network</li>
+</ul>
+<p><strong>Disadvantage 3.</strong></p>
+<p>The data in the collection can be changed accidentally.</p>
+<p>You can pass a collection filled with your data to some method. That method, written by a different programmer, adds its data to your collection.</p>
+<p>The name of the collection doesn't clearly indicate which types of data can be stored in it. And even if you give your variable a clear name, a reference to it can be passed to a dozen methods, and those methods definitely won't know anything about the original name of the variable.</p>
+<hr>
+<h2>3. Generics</h2>
+<p><img data-max-width="1024" data-id="f63fefd9-0277-46b3-a685-f6e34a9af548" src="https://cdn.codegym.cc/images/article/f63fefd9-0277-46b3-a685-f6e34a9af548/1024.jpeg" alt="Generics in Java"></p>
+<p>In Java, all these problems are eliminated by this cool thing called generics.</p>
+<p>In Java, generics means the ability to add type parameters to types. The result is a complex composite type. The general view of such a composite type is this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">ClassName</span>&lt;<span class="text-viola">TypeParameter</span>&gt;</code></pre>
+</div>
+<p>This is a generic class. And it can be used wherever you normally use classes.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt; <span class="code text-user">list</span>;</code></pre>
+        </td>
+        <td>Creating variables</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="code text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt; ();</code></pre>
+        </td>
+        <td>Creating objects</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt;[] <span class="code text-user">array</span>;</code></pre>
+        </td>
+        <td>Creating arrays</td>
+    </tr>
+    </tbody>
+</table>
+<p>Only <code>Integer</code> variables can be stored in such a collection:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt; <span class="code text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt;();
+<span class="code text-user">list</span>.add(new <span class="text-viola">Integer</span>(1));
+<span class="code text-user">list</span>.add(2);
+<span class="code text-user">list</span>.add("Hello");</code></pre>
+        </td>
+        <td><code>ArrayList</code> collection with <code>Integer</code> elements<br>
+            This is allowed<br>
+            And this will also work
+            <div class="term">Autoboxing</div>
+            <br>
+            But this is not allowed: <span class="text-red">compilation error</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>You will learn how to create your own classes with type parameters in the Java Collections quest. For now, we'll look at how to use them and how they work.</p>
+<hr>
+<h2>4. How generics work</h2>
+<p>Actually, generics are terribly primitive.</p>
+<p>The compiler simply replaces generic types with ordinary types. But when methods of a generic type are used, the compiler adds a typecast operator to cast parameters to the type parameters:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What the compiler does</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt; <span class="code text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt;();</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">ArrayList</span> <span class="code text-green">list</span> = new <span class="text-neon">ArrayList</span>();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="code text-green">list</span>.add(1);</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="code text-green">list</span>.add( (<span class="text-viola">Integer</span>) 1 );</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int x = <span class="code text-green">list</span>.get(<span class="text-orange">0</span>);</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code>int x = (<span class="text-viola">Integer</span>) <span class="code text-green">list</span>.get(<span class="text-orange">0</span>);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="code text-green">list</span>.set(<span class="text-orange">0</span>, 10);</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="code text-green">list</span>.set(<span class="text-orange">0</span>, (<span class="text-viola">Integer</span>) 10);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Suppose we have a method that sums the numbers in a collection of integers:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What the compiler does</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public int sum(<span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt; <span class="code text-green">numbers</span>)
+{
+   int <span class="code text-user">result</span> = 0;
+
+   for (int i = 0; i &lt; <span class="code text-green">numbers</span>.size(); i++)
+      <span class="code text-user">result</span> = <span class="code text-user">result</span> + <span class="code text-green">numbers</span>.get(i);
+
+   return <span class="code text-user">result</span>;
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>public int sum(<span class="text-neon">ArrayList</span> <span class="code text-green">numbers</span>)
+{
+   int <span class="code text-user">result</span> = 0;
+
+   for (int i = 0; i &lt; <span class="code text-green">numbers</span>.size(); i++)
+      <span class="code text-user">result</span> = <span class="code text-user">result</span> + (<span class="text-viola">Integer</span>) <span class="code text-green">numbers</span>.get(i);
+
+   return <span class="code text-user">result</span>;
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>In other words, generics are a kind of syntactic sugar, just like autoboxing, but a little more. With autoboxing, the compiler adds methods for converting an <code>int</code> to an <code>Integer</code> and vice versa, and for generics it adds typecast operators.</p>
+<p>After the compiler compiles your generic classes with type parameters, they are simply converted to ordinary classes and typecast operators. Information about the type arguments passed to variables of generic types is lost. This effect is also called <span class="term">type erasure</span>.</p>
+<p>Sometimes programmers writing generic classes (classes with type parameters) really need the information about the types passed as arguments. In the Java Collections quest, you'll learn how to deal with this and what it entails.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1221"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1222"></div>
+<hr>
+<h2>5. A few facts about generics</h2>
+<p>Here are some more interesting facts about generics.</p>
+<p><strong>Classes can have several type parameters.</strong> It looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">ClassName</span>&lt;<span class="text-viola">TypeParameter1</span>, <span class="text-viola">TypeParameter2</span>, <span class="text-viola">TypeParameter3</span>&gt;</code></pre>
+</div>
+<p>Actually, this isn't really surprising. Anywhere the compiler can add an operator to cast to one type, it can add multiple typecast operators.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-viola">HashMap</span>&lt;<span class="text-user">Integer</span>, <span class="text-orange">String</span>&gt; map = new <span class="text-viola">HashMap</span>&lt;<span class="text-user">Integer</span>, <span class="text-orange">String</span>&gt;();
+<span class="text-orange">map</span>.put(7, <span class="text-green">"Hello"</span>);
+<span class="text-orange">map</span>.put(-15, <span class="text-green">"Hello"</span>);</code></pre>
+        </td>
+        <td>The <code>put</code> method's first parameter is an <code><span class="text-user">Integer</span></code>, and the second is a <code><span class="text-orange">String</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p>Generic types can also be <strong>used as parameters</strong>. It looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">ClassName</span>&lt;<span class="text-viola">TypeParameter&lt;</span><span class="text-user">TypeParameterParameter</span><span class="text-viola">&gt;</span>&gt;</code></pre>
+</div>
+<p>Suppose we want to create a list that will store lists of strings. In this case, we will get something like this:</p>
+<pre class="language-java"><code>// List of greetings
+<span class="text-viola">ArrayList&lt;String&gt;</span> <span class="code text-green">listHello</span> = new <span class="text-viola">ArrayList&lt;String&gt;</span>();
+<span class="code text-green">listHello</span>.add ("Hello");
+<span class="code text-green">listHello</span>.add ("Hi");
+
+// List of goodbyes
+<span class="text-viola">ArrayList&lt;String&gt;</span> <span class="code text-user">listBye</span> = new <span class="text-viola">ArrayList&lt;String&gt;</span>();
+<span class="code text-user">listBye</span>.add("Bye");
+<span class="code text-user">listBye</span>.add ("Goodbye");
+
+// List of lists
+ArrayList&lt;<span class="text-viola">ArrayList&lt;String&gt;</span>&gt; <span class="code text-orange">lists</span> = new ArrayList&lt;<span class="text-viola">ArrayList&lt;String&gt;</span>&gt;();
+<span class="code text-orange">lists</span>.add(<span class="code text-green">listHello</span>);
+<span class="code text-orange">lists</span>.add(<span class="code text-user">listBye</span>);</code></pre>
+<p>Generic types (types with type parameters) can also be used as array types. It looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-viola">ClassName&lt;TypeParameter></span>[] <span class="code text-red">array</span> = new <span class="text-viola">ClassName&lt;TypeParameter&gt;</span>[<span class="text-user">size</span>];</code></pre>
+</div>
+<p>There's nothing magical happening here: the angle brackets just indicate the type name:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Non-generic counterpart</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">ArrayList&lt;String&gt;</span>[] <span class="code text-red">list</span> = new <span class="text-viola">ArrayList&lt;String&gt;</span>[10];</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">StringArrayList</span>[] <span class="code text-red">list</span> = new <span class="text-viola">StringArrayList</span>[10];</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">ArrayList&lt;Integer&gt;</span>[] <span class="code text-red">list</span> = new <span class="text-viola">ArrayList&lt;Integer&gt;</span>[10];</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">IntegerArrayList</span>[] <span class="code text-red">list</span> = new <span class="text-viola">IntegerArrayList</span>[10];</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">ArrayList&lt;Scanner&gt;</span>[] <span class="code text-red">list</span> = new <span class="text-viola">ArrayList&lt;Scanner&gt;</span>[10];</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">ScannerArrayList</span>[] <span class="code text-red">list</span> = new <span class="text-viola">ScannerArrayList</span>[10];</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>

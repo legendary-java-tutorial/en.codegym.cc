@@ -1,0 +1,149 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Today, Rishi and I are going to tell you all about generics."</p>
+<p><span class="text-user">"Wait, I think I already know almost everything."</span></p>
+<p>"Almost everything, but not everything."</p>
+<p><span class="text-user">"Really? OK, I'm ready to listen."</span></p>
+<p>"Then let's begin."</p>
+<p>"In Java, generics are classes that have type parameters."</p>
+<p>"As for why generics were invented, see the comments in the code:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">ArrayList stringList</span> = new <span class="text-green">ArrayList</span>();
+<span class="text-green">stringList</span>.add("abc"); // Add a string to the list
+<span class="text-green">stringList</span>.add("abc"); // Add a string to the list
+<span class="text-green">stringList</span>.add( 1 ); // Add a number to the list
+
+<strong>for</strong>(Object o: <span class="text-green">stringList</span>)
+{
+ String s = (String) o; <span class="text-red">// There will be an exception here when we get to the integer</span>
+}</code></pre>
+<p>How to solve the problem using Generics:</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">ArrayList</span><span class="text-red">&lt;</span><span class="text-user">String</span><span class="text-red">&gt;</span> stringList = new <span class="text-green">ArrayList</span><span class="text-red">&lt;</span><span class="text-user">String</span><span class="text-red">&gt;</span>();
+<span class="text-green">stringList</span>.add("abc"); // Add a string to the list
+<span class="text-green">stringList</span>.add("abc"); // Add a string to the list
+<span class="text-green">stringList</span>.add( 1 ); <span class="text-red"><strong>// There will be a compilation error here</strong></span>
+
+<strong>for</strong>(Object o: <span class="text-green">stringList</span>)
+{
+ <span class="text-user">String</span> s = (<span class="text-user">String</span>) o;
+}</code></pre>
+<p>"This code simply won't compile, and the error caused by adding the wrong data type will be noticed during compilation."</p>
+<p><span class="text-user">"Yes, I already know this."</span></p>
+<p>"Okay, good. Repetition is the mother of learning."</p>
+<p>"But Java's creators were a little lazy when they created generics. Instead of making full-fledged types with parameters, they slipped in a slick optimization. In reality, they didn't add any information about type parameters to generics. Instead, all the magic occurs during compilation."</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Code with generics</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">List<span class="text-red">&lt;<span class="text-user">String</span>&gt;</span> strings</span> = new <span class="text-green">ArrayList</span><span class="text-red">&lt;<span class="text-user">String</span>&gt;</span>();
+<span class="text-green">strings</span>.add("abc");
+<span class="text-green">strings</span>.add("abc");
+<span class="text-green">strings</span>.add( 1); <span class="text-red">// Compilation error</span>
+
+for(String s: <span class="text-green">strings</span>)
+{
+ System.out.println(s);
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">What really happens</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">List <strong>strings</strong></span> = new <span class="text-green">ArrayList</span>();
+
+<span class="text-green">strings</span>.add((String)"abc");
+<span class="text-green">strings</span>.add((String)"abc");
+<span class="text-green">strings</span>.add((String) 1); <span class="text-red">// Compilation error</span>
+
+for(String s: <span class="text-green">strings</span>)
+{
+ System.out.println(s);
+}</code></pre>
+    </div>
+</div>
+<p><span class="text-user">"That is slick."</span></p>
+<p>"Yes, but this approach has a side effect. <span class="text-red">No information about type parameters is stored inside a generic class.</span> This approach later became known as <strong>type erasure</strong>."</p>
+<p>"In other words, if you have your own class with type parameters, you cannot use information about them inside the class."</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Code with generics</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>class Zoo&lt;<span class="text-green">T</span>&gt;
+{
+ <span class="text-green">ArrayList&lt;T&gt; pets</span> = new<span class="text-green"> ArrayList&lt;T&gt;</span>();
+
+ <strong>public</strong> <span class="text-green">T</span> createAnimal()
+ {
+  <span class="text-green">T</span> animal = new <span class="text-green">T</span>();
+  <span class="text-green">pets</span>.add(animal)
+  <strong>return</strong> animal;
+ }
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">What really happens</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>class Zoo
+{
+ <span class="text-green">ArrayList <strong>pets</strong></span> = new <span class="text-green">ArrayList</span>();
+
+ public Object createAnimal()
+ {
+  <span class="text-green">Object</span> animal = <span class="text-red">new ???();</span>
+<strong><span class="text-green">  pets</span></strong>.add(animal)
+  <strong>return</strong> animal;
+ }
+}</code></pre>
+    </div>
+</div>
+<p>"During compilation, all parameter types are replaced with Object. And inside the class there is no information about the type passed to it."</p>
+<p><span class="text-user">"Yes, I agree, that's not the best."</span></p>
+<p>"It's not that scary. I'll tell you later how to get around this problem."</p>
+<p>But there's more. Java lets you specify a parent type for type parameters. The extends keyword is used for this. For example:</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Code with generics</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>class Zoo&lt;<span class="text-red">T extends Cat</span>&gt;
+{
+<span class="text-red"> T</span> cat;
+
+<span class="text-red"> T</span> getCat()
+ {
+  return cat;
+ }
+
+ <strong>void</strong> setCat (<span class="text-red">T</span> cat)
+ {
+  this.cat = cat;
+ }
+
+ <span class="text-user">String getCatName()
+ {
+  return this.cat.getName();
+ }</span>
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">What really happens</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>class Zoo
+{
+ <span class="text-red">Cat</span> cat;
+
+ <span class="text-red">Cat</span> getCat()
+ {
+  return cat;
+ }
+
+ <strong>void</strong> setCat(<span class="text-red">Cat</span> cat)
+ {
+  this.cat = cat;
+ }
+
+ <span class="text-user">String getCatName()
+ {
+  return this.cat.getName();
+ }</span>
+}</code></pre>
+    </div>
+</div>
+<p>"Note two facts:"</p>
+<p><span class="text-viola">"First, you can't pass just any type as a parameter — you can only pass a Cat or a class that inherits Cat."</span></p>
+<p><span class="text-green">"Second, inside the Zoo class, variables of type T can now call the Cat class's methods.</span> The column on the right explains why (because Cat will be substituted everywhere there is a T)"</p>
+<p><span class="text-user">"Yes. If we say that Cat or a subclass of Cat is passed as the type argument, then we are certain that type T will always have the Cat class's methods."</span></p>
+<p><span class="text-user">"Well, that's clever."</span></p>

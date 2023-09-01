@@ -1,0 +1,200 @@
+HTTP headers
+<p>----------------------------------------</p>
+Header types
+User agent
+content-type
+content length
+Accept Encoding
+<p>----------------------------------------</p>
+<h2>6.1 Types of headings</h2>
+<p><strong>http request headers</strong> are actually service information for the http client and http server. But it is
+    very important, and if you do not understand them at all, it will often go sideways to you. So at least read about
+    them.</p>
+<p>All http headers can be divided into 4 main groups:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th>#</th>
+            <th>Header type</th>
+            <th>Description</th>
+            <th>Note</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td><strong>General Headers</strong></td>
+            <td>General headings</td>
+            <td>Used in requests and responses</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><strong>Request headers</strong></td>
+            <td>Request headers</td>
+            <td>Used only in requests</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><strong>response headers</strong></td>
+            <td>Response headers</td>
+            <td>Only used in responses</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><strong>Entity Headers</strong></td>
+            <td>Entity headers</td>
+            <td>Accompany each message entity</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<h2>6.2 User agent</h2>
+<p>The most important and popular header is <strong>User-Agent</strong> . This is a special string that describes which
+    client is making the request to the server. This is the customer's name.</p>
+<p>Often the server will tailor its response slightly to the requester. For example, if it is clear from the request
+    that the request came from a mobile phone browser, then it can be given a mobile version of the HTML page.</p>
+<p>It is not uncommon for spambots, download managers, and some browsers to send fake <strong>User-Agent
+    strings</strong> to pretend to be legitimate customers. This situation is known as user agent spoofing or user agent
+    spoofing.</p>
+<p>For example, my User-Agent looks like this now:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token class-name"></span><span class="text-red"><span class="token class-name">Mozilla</span><span
+            class="token operator">/</span><span class="token number">5.0</span></span><span
+            class="token number"></span> <span class="token punctuation"></span><span class="text-user"><span
+            class="token punctuation">(</span><span class="token class-name">Windows</span> NT <span
+            class="token number">6.1</span><span class="token punctuation">;</span> <span
+            class="token class-name">Win64</span><span class="token punctuation">;</span> x64<span
+            class="token punctuation">;</span> rv<span class="token operator">:</span><span
+            class="token number">99.0</span><span class="token punctuation">)</span></span><span
+            class="token punctuation"></span> <span class="token class-name">Gecko</span><span
+            class="token operator">/</span><span class="token number">20100101</span> <span
+            class="token class-name"></span><span class="text-green"><span class="token class-name">Firefox</span><span
+            class="token operator">/</span><span class="token number">99.0</span></span><span
+            class="token number"></span></code></pre>
+</div>
+<p>It contains information about the browser, operating system, and web engine of the browser.</p>
+<h2>6.3 Content Type</h2>
+<p>The second most popular header is <strong>Content-Type</strong> . It is used to determine the MIME type of the
+    resource that the server is serving.</p>
+<p>Even at the dawn of the Internet, the types of media content transmitted were standardized for convenience. They are
+    called <strong>Internet Media Types</strong> or <strong>MimeTypes</strong> for short . They fall into 9 categories:
+</p>
+<ul>
+    <li><strong>application</strong></li>
+    <li><strong>audio</strong></li>
+    <li><strong>example</strong></li>
+    <li><strong>image</strong></li>
+    <li><strong>message</strong></li>
+    <li><strong>model</strong></li>
+    <li><strong>multipart</strong></li>
+    <li><strong>text</strong></li>
+    <li><strong>video</strong></li>
+</ul>
+<p>Examples:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><strong>audio</strong></td>
+            <td>audio/mp4</td>
+            <td>Audio file in mp4 format</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>audio/aac</td>
+            <td>AAC audio file</td>
+        </tr>
+        <tr>
+            <td><strong>image</strong></td>
+            <td>image/gif</td>
+            <td>gif picture</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>image/jpeg</td>
+            <td>jpeg picture</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>image/png</td>
+            <td>picture png</td>
+        </tr>
+        <tr>
+            <td><strong>text</strong></td>
+            <td>text/css</td>
+            <td>CSS file</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>text/html</td>
+            <td>HTML file</td>
+        </tr>
+        <tr>
+            <td><strong>video</strong></td>
+            <td>video/mpeg</td>
+            <td>Video file in mpeg format</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>video/webm</td>
+            <td>Video file in webm format</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>video/3gpp</td>
+            <td>Video file in 3gpp format</td>
+        </tr>
+        <tr>
+            <td><strong>application</strong></td>
+            <td>application/x-www-form-urlencoded</td>
+            <td>Encoded data</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>application/zip</td>
+            <td>Zip archive</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>application/javascript</td>
+            <td>JavaScript</td>
+        </tr>
+        <tr>
+            <td><strong></strong></td>
+            <td>application/xml</td>
+            <td>XML</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>Usually the server knows what data it gives. But if you are generating a server response with your own code, then you
+    need to specify the response type (Content-Type) of your server.</p>
+<h2>6.4 Content Length</h2>
+<p>This header specifies <strong>the length of the server 's response</strong> . If in a simple way, then the size of
+    the given file. You do not need to manually set this option. Although it can be useful to look at what the server
+    gave, if for some reason the answer did not come all.</p>
+<h2>6.5 Accept Encoding</h2>
+<p>With this header, the client can indicate to the server that it supports various <strong>content compression
+    algorithms</strong> . Thus, the server can first archive the content, for example, with a zip archive, then send it
+    to the client, and the client can correctly restore the original content.</p>
+<p>The advantage of archiving is that the smaller the file, the faster the transfer. Cons of archiving - additional load
+    on the client and on the server. Archiving makes sense when transferring large files and often doesn't make sense
+    when transferring small ones.</p>
+<p>An example of such a header:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token class-name">Accept</span><span class="token operator">-</span><span class="token class-name">Encoding</span><span
+            class="token operator">:</span> <span class="text-green">deflate</span><span
+            class="token punctuation">,</span> <span class="text-user">gzip</span><span
+            class="token punctuation">;</span><span class="text-red">q</span><span class="token operator">=</span><span
+            class="token number">1.0</span><span class="token punctuation">,</span> <span
+            class="token operator">*</span><span class="token punctuation">;</span><span class="text-red">q</span><span
+            class="token operator">=</span><span class="token number">0.5</span></code></pre>
+</div>
+<p>Where <code class="text-green">deflate</code>and <code class="text-user">gzip</code>are the supported data
+    compression algorithms, and <code class="text-red">q</code>denotes the degree of compression.</p>

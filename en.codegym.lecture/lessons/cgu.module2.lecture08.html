@@ -1,0 +1,182 @@
+<p>Each new version of Java differs from the previous ones. As an example of such a change from material we've covered, the language did not have <code>enums</code> before Java 5.</p>
+
+<p>Just so, Java 8 is noticeably different from Java 7. We won't ignore important innovations, of course.</p>
+
+<p>Since we are talking about interfaces in this lesson, let's consider one update to the language: <strong>default methods in interfaces</strong>.</p>
+
+<p>You already know that <strong>an interface does not implement behavior</strong>. Its purpose is to <strong>describe what behavior must exist in all objects that implement the interface</strong>.</p>
+
+<p>But developers frequently encountered situations where the implementation of a method was the same in all classes.</p>
+
+<p>Let's look at our old car example:</p>
+
+<pre class='lang-java line-numbers'><code>
+public interface Car {
+
+   public void gas();
+  
+   public void brake();
+}
+public class Sedan implements Car {
+
+   @Override
+   public void gas() {
+       System.out.println("Gas!");
+   }
+
+   @Override
+   public void brake() {
+       System.out.println("Brake!");
+   }
+}
+
+
+public class Truck implements Car {
+
+   @Override
+   public void go() {
+       System.out.println("Gas!");
+   }
+
+   @Override
+   public void brake() {
+       System.out.println("Brake!");
+   }
+}
+
+
+public class F1Car implements Car {
+   @Override
+   public void go() {
+       System.out.println("Gas!");
+   }
+
+   @Override
+   public void brake() {
+       System.out.println("Brake!");
+   }
+}
+</code></pre>
+
+<p>What do you think the main problem with this code is?</p>
+
+<p>You probably noticed that we wrote a bunch of duplicate code! This is a common problem in programming and it should be avoided.</p>
+
+<p>It's another matter that there were no particular solutions before the release of Java 8. When that version came out, it became possible to <strong>define default methods</strong> and implement them right inside an interface!</p>
+
+<p>Here's how to do it:</p>
+
+<pre class='lang-java line-numbers'><code>
+public interface Car {
+
+   public default void gas() {
+       System.out.println("Gas!");
+   }
+
+   public default void brake() {
+       System.out.println("Brake!");
+   }
+}
+
+public class Sedan implements Car {
+
+}
+
+public class Truck implements Car {
+
+}
+
+public class F1Car implements Car {
+
+}
+</code></pre>
+
+<p>Now the <code>gas()</code> and <code>brake()</code> methods, which were the same for all cars, have been moved into the interface, eliminating the need for duplicate code. And the methods are available in each of the classes!</p>
+
+<pre class='lang-java line-numbers'><code>
+public class Main {
+
+   public static void main(String[] args) {
+
+       F1Car f1Car = new F1Car();
+       Sedan sedan = new Sedan();
+       Truck truck = new Truck();
+       truck.gas();
+       sedan.gas();
+       f1Car.brake();
+   }
+}
+</code></pre>
+
+<p>What if there are 100 classes with a <code>gas()</code> method, but only 99 of them should have the same behavior? Does that spoil everything? Will a default method not work in this case? Of course not :)</p>
+
+<p>Default interface methods can be overridden.</p>
+
+<pre class='lang-java line-numbers'><code>
+public class UnusualCar implements Car {
+   @Override
+   public void go() {
+       System.out.println("This car accelerates differently!");
+   }
+
+   @Override
+   public void brake() {
+       System.out.println("This car slows down differently!");
+   }
+}
+</code></pre>
+<p>
+
+All the other 99 types of cars will employ the default method, while the <code>UnusualCar</code> class is an exception. Without spoiling the big picture, it will calmly define its own behavior.</p>
+
+<p>Multiple inheritance in interfaces.</p>
+
+<p>As you already know, there is no multiple inheritance in Java. There are many reasons for this. We will consider them in detail in a separate lesson.</p>
+
+<p>In other languages, such as C++, the situation is reversed. No multiple inheritance presents a serious challenge, since the same object can have several different characteristics and behaviors.</p>
+
+<p>For example, we are children to our parents, students to our teachers, and patients to our doctors. In real life, we fill various roles and, accordingly, behave differently: obviously we interact with teachers differently than with close friends.</p>
+
+<p>Let's try to translate this situation into code. Let's imagine that we have two classes: Pond and Aviary. A pond needs swimming birds, while an aviary needs flying ones.</p>
+
+<p>To represent this, we created two base classes: <code>FlyingBird</code> and <code>Waterfowl</code>.</p>
+
+<pre class='lang-java line-numbers'><code>
+public class Waterfowl {
+}
+
+public class FlyingBird {
+}
+</code></pre>
+
+<p>Accordingly, we will send birds that inherit <code>FlyingBird</code> to the aviary, while those who derive from <code>Waterfowl</code> will go to the pond.</p>
+
+<p>Everything seems straightforward.</p>
+
+<p>But what should we do if we need to define a duck somewhere?</p>
+
+<p>Ducks both swim and fly. But we don't have multiple inheritance.</p>
+
+<p>Fortunately, Java supports multiple implementations of interfaces. If a class cannot inherit multiple parents, implementing multiple interfaces is easy!</p>
+
+<p>Our duck can be a flying bird as well as a swimming bird :) To achieve the desired result, all we need to do is make <code>FlyingBird</code> and <code>Waterfowl</code> interfaces rather than classes.</p>
+
+<pre class='lang-java line-numbers'><code>
+public class Duck implements FlyingBird, Waterfowl {
+
+   // Methods of both interfaces combine easily into one class
+  
+   @Override
+   public void fly() {
+       System.out.println("Flying!");
+   }
+
+   @Override
+   public void swim() {
+
+       System.out.println("Swimming!");
+   }
+}
+</code></pre>
+
+<p>This means that our program retains the ability to flexibly manage classes. When we combine that with default methods, our ability to determine the behavior of objects becomes almost limitless! :)</p>

@@ -1,0 +1,49 @@
+ow the basics of SQL. This is good. But today you will feel even better. Today you will start learning how to work with a database from a Java application.</p>
+<p>There are a lot of different DBMS, so the creators of Java decided to standardize how a Java application works with databases. And they called this standard - <strong><span class="text-red">JDBC</span> : Java DataBase Connectivity</strong> .</p><img data-max-width="512" data-id="04001c5f-340f-421f-9e18-cca890d35d6f" alt="" src="https://cdn.javarush.com/images/article/04001c5f-340f-421f-9e18-cca890d35d6f/512.jpeg" style="width: 512px;">
+<p>JDBC has 3 main interfaces:</p>
+<ul>
+ <li><strong>Connection</strong> - responsible for connecting to the database</li>
+ <li><strong>Statement</strong> - responsible for querying the database</li>
+ <li><strong>ResultSet</strong> - responsible for the result of the query to the database</li>
+</ul>
+<p>In fact, that's all. And we won't even learn all methods of all interfaces. Only working examples, which we will gradually complicate.</p>
+<p>JDBC is somewhat similar to working with servlets. The creators of JDBC have written several interfaces and proudly call it the Java DataBase API. And the implementation of these interfaces was assigned to ... the creators of the DBMS. How it is implemented there - no one cares. Works fine.</p>
+<p>There are four versions of JDBC and we will be looking at the latest one. And not because she is the coolest, but because she is the simplest.</p>
+<h2>JDBC Driver Manager</h2>
+<p>The Java application and the database communicate with each other through a library called the JDBC Driver. This is a set of classes that implement the JDBC API for a particular DBMS.</p>
+<p>The correct JDBC driver is selected using a class called <strong>DriverManager</strong> . Their interaction can be represented as follows:</p><img data-max-width="800" data-id="25dcf3c0-0d46-4dde-af85-3c1f0233a3d6" alt="" src="https://cdn.javarush.com/images/article/25dcf3c0-0d46-4dde-af85-3c1f0233a3d6/800.jpeg" style="width: 800px;">
+<p>The thing is, you can use In-Memory-DB, No-SQL-DB, or even a database built into an Android app. As a Java developer, these nuances do not concern you at all. <span class="text-green">The Driver Manager will select the correct JDBC driver for you</span> and everything will work like clockwork.</p>
+<p>By the way, how does he do it?</p>
+<h2>Connecting to MySQL server</h2>
+<p>Remember what you needed to connect to a local SQL server through MySQL Workbench? If I forgot, then I remind you, you needed three things:</p>
+<ul>
+ <li>host</li>
+ <li>login</li>
+ <li>password</li>
+</ul>
+<p>Everything is clear with the login and password, and host, if you remember, is the name of the computer on which the server is located. If it is located on your local computer, then you need to specify localhost as the host name. What if it's not local?</p>
+<p>Then you need to use ... URL. URL stands for <strong>Universal Resource Locator</strong> . It can be used to specify the location of anything on the network: a site, a printer, a SQL server. In fact, the URL is also used to access the local SQL server. It looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">mysql</span><span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="text-green">localhost</span><span class="token operator">:</span><span class="token number"><span class="text-neon">3306</span></span><span class="token operator">/</span><span class="text-viola">db_scheme</span></code></pre>
+</div>
+<ul>
+ <li><span class="text-red"><strong>mysql</strong></span> is a server protocol</li>
+ <li><span class="text-green"><strong>localhost</strong></span> - hostname on the network</li>
+ <li><span class="text-neon"><strong>3306</strong></span> - port on which requests are made</li>
+ <li><span class="text-viola"><strong>db_scheme</strong></span> - schema name (database name)</li>
+</ul>
+<p><strong>Note. </strong>The database name can be omitted. But if the server stores many database schemas, then usually different users and different access rights are created for them. And if the user under which you log in to the SQL server does not have access to all databases, then you definitely need to specify the name of the specific database to which you have access.</p>
+<p>At the end of this url there can be various parameters, encoding types, timezone, which are considered parameters for the new database connection being established.</p>
+<p>Also, the protocol can be composite. If all communication with the database server is over an encrypted channel using the SSH protocol, then the URL can be specified like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">ssh<span class="token operator">:</span><span class="text-red">mysql</span><span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="text-green">localhost</span><span class="token operator">:</span><span class="token number"><span class="text-neon">3306</span></span><span class="token operator">/</span><span class="text-viola">db_scheme</span></span></code></pre>
+</div>
+<p>A protocol is not necessarily an external program. For example, if you are working with a server using the JNDI protocol, you can specify it like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">jndi</span><span class="token operator">:</span><span class="text-red">mysql</span><span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="text-green">localhost</span><span class="token operator">:</span><span class="token number"><span class="text-neon">3306</span></span><span class="token operator">/</span><span class="text-viola">db_scheme</span></code></pre>
+</div>
+<p>And if you want to work using the JDBC API protocol, then you need to write like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">jdbc</span><span class="token operator">:</span><span class="text-red">mysql</span><span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="text-green">localhost</span><span class="token operator">:</span><span class="token number"><span class="text-neon">3306</span></span><span class="token operator">/</span><span class="text-viola">db_scheme</span></code></pre>
+</div>
+<p>When you try to create a database connection, the JDBC Driver Manager parses your SQL-db-URL and determines the JDBC driver name from the protocol name. Here is such a little trick.</p>

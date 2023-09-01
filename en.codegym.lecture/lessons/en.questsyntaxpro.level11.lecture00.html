@@ -1,0 +1,86 @@
+<p>We already talked about the fact that classes are complex data types. Now let's talk a little about the other side of classes — how classes are handled by the Java machine. Remember that in Java everything is an object, even a class. <strong>A class is an object.</strong> Does that surprise you? Then let's keep going.</p>
+<p><strong>Loading a class into memory</strong></p>
+<p>Actually, when a class is loaded into memory, three special "objects" are created:</p>
+<img data-max-width="1024" data-id="bc61277b-1e04-4fad-80ad-4e57cd30e5d5" src="https://cdn.codegym.cc/images/article/bc61277b-1e04-4fad-80ad-4e57cd30e5d5/1024.jpeg" alt="Loading a class into memory">
+<p>Brief description of the illustration:</p>
+<p><strong>Yellow rectangle:</strong></p>
+<p>The code file is stored on disk as a file with the ".class" extension. It contains information about the class, its fields and methods, as well as the source code of methods compiled into bytecode.</p>
+<p><strong>Orange rectangle:</strong></p>
+<p>When the Java machine loads a class into memory, it compiles the bytecode into machine code specific to the computer's processor and operating system. Only the Java machine has access to this machine code. As Java programmers, we do not have access to it.</p>
+<p><strong>Green rectangle:</strong></p>
+<p>The Java machine creates an object that contains all the static variables and methods of the class. You access to this "object" using the class name.</p>
+<p>For example, when you write <code>java.lang.<span class="text-neon">Math</span>.<span class="text-green">PI</span></code>, you are referring to the static <code>PI</code> variable located in the <code>java.lang.Math</code> class. This <code>java.lang.Math</code> object is our green rectangle. And that's where the static <code>PI</code> variable is stored.</p>
+<p><strong>Blue rectangle:</strong></p>
+<p>When the Java machine loads the code of a class into memory, it creates a special <code>java.lang.Class</code> object, which stores information about the loaded class: its name, method names, field names and types, etc.</p>
+<p>The name "Class" can be a little confusing. It would make more sense to call it ClassInfo, since this class just stores some information about the loaded class.</p>
+<p>You can get the Class object for any type using a command like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code><span class="text-neon">Class</span> <span class="code text-user">name</span> = <span class="text-viola">ClassName</span>.<span class="text-red">class</span>;</code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class=""><code><span class="text-neon">Class</span> <span class="code text-user">a</span> = <span class="text-viola">String</span>.<span class="text-red">class</span>;</code></pre>
+        </td>
+        <td>Get a <code><span class="text-neon">Class</span></code> object with information about the <code><span class="text-viola">String</span></code> class</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-neon">Class</span> <span class="code text-user">b</span> = <span class="text-viola">Object.</span><span class="text-red">class</span>;</code></pre>
+        </td>
+        <td>Get a <code><span class="text-neon">Class</span></code> object with information about the <code><span class="text-viola">Object</span></code> class</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-neon">Class</span> <span class="code text-user">c</span> = <span class="text-viola">Integer</span>.<span class="text-red">class</span>;</code></pre>
+        </td>
+        <td>Get a <code><span class="text-neon">Class</span></code> object with information about the <code><span class="text-viola">Integer</span></code> class</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-neon">Class</span> <span class="code text-user">d</span> = <span class="text-viola">int</span>.<span class="text-red">class</span>;</code></pre>
+        </td>
+        <td>Get a <code><span class="text-neon">Class</span></code> object with information about the <code><span class="text-viola">int</span></code> type</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-neon">Class</span> <span class="code text-user">e</span> = <span class="text-viola">void</span>.<span class="text-red">class</span>;</code></pre>
+        </td>
+        <td>Get a <code><span class="text-neon">Class</span></code> object with information about the <code><span class="text-viola">void</span></code> type</td>
+    </tr>
+    </tbody>
+</table>
+<p>You can also get a reference to a class description object from any object, since each object has the <code>getClass()</code> method, which it inherits from the <code>Object</code> class.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Class</span> a = "Hello".<span class="text-red">getClass</span>();</code></pre>
+        </td>
+        <td>Same object as <code>String.class</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Class</span> b = new Integer().<span class="text-red">getClass</span>();</code></pre>
+        </td>
+        <td>Same object as <code>Integer.class</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Class</span> c = Boolean.TRUE.<span class="text-red">getClass</span>();</code></pre>
+        </td>
+        <td>Same object as <code>Boolean.class</code></td>
+    </tr>
+    </tbody>
+</table>

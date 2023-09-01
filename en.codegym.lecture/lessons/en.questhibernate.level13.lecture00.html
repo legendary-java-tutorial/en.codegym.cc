@@ -1,0 +1,136 @@
+seen how to map simple types. Now it's time to move on to more interesting questions - how to map collections of objects.</p>
+<p>And we can have objects in 5 groups:</p>
+<ul>
+ <li><strong>Array</strong> - an array of objects</li>
+ <li><strong>List</strong> - list of objects</li>
+ <li><strong>Set</strong> - set of objects</li>
+ <li><strong>Map</strong> - a dictionary of objects</li>
+ <li><strong>Collection</strong> - a collection of objects</li>
+</ul>
+<p>And an example of a class with a collection field:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   @magical<span class="token operator">-</span>annotation
+   <span class="token keyword">public</span> <span class="token class-name">List</span><string> messages<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</string></code></pre>
+<p>So what is this magical annotation that will allow us to store not one field, but many values?</p>
+<p>This annotation is called <span class="text-yellow"><span class="text-bold">@ElementCollection</span></span> . Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>  <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@ElementCollection</span>
+   <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> messages<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>It is written very simply, but it works non-trivially.</p>
+<h2>Auxiliary table</h2>
+<p>All fields of the Entity class that contain many elements and are marked with the <span class="text-yellow"><span class="text-bold">@ElementCollection</span></span> annotation are contained in the database in a special auxiliary table. Which, in fact, is logical.</p>
+<p>This table can contain data in two forms:</p>
+<ul>
+ <li><strong>Ordered</strong> (List, Map) contain three columns: 
+  <ul>
+   <li><strong>Key Column</strong> (Foreign Key) – reference to the ID of the parent object.</li>
+   <li><strong>Index Column</strong> - position/index in the collection.</li>
+   <li><strong>Element Column</strong> - value.</li>
+  </ul></li>
+ <li><strong>Unordered</strong> (Set) contains two columns: 
+  <ul>
+   <li><strong>Key Column</strong> (Foreign Key) – reference to the ID of the parent object.</li>
+   <li><strong>Element Column</strong> - value.</li>
+  </ul></li>
+</ul>
+<p>You can also set the name of this table explicitly using an annotation:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token annotation punctuation"></span><span class="text-red"><span class="token annotation punctuation">@CollectionTable</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"table_name"</span><span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@ElementCollection</span>
+   <span class="token annotation punctuation">@CollectionTable</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_message"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> messages<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>Important! </strong>If the <span class="text-yellow"><span class="text-bold">@CollectionTable</span></span> annotation is not specified, then Hibernate will build the table name itself based on the class name and the field name: the <span class="code"><span class="text-green">User</span></span> class and the field<mark>messages</mark>name the table "User_messages".</p>
+<h2>Collection Collection</h2>
+<p>But let's not leave the creation of the auxiliary table to Hibernate and create it ourselves. First we need to create a table with two columns:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java">CREATE TABLE user_message <span class="token punctuation">{</span>
+    user_id INT<span class="token punctuation">,</span>
+    message <span class="token function">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>Note that this table does not have its own id-column. This is the main feature of auxiliary tables. You will get acquainted with other types of auxiliary tables a little later.</p>
+<p>Now we need to map this table to our field<mark>messages</mark>in the <span class="code"><span class="text-green">User</span></span> class . This will look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@ElementCollection</span>
+   <span class="token annotation punctuation">@CollectionTable</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_message"</span><span class="token punctuation">,</span> joinColumns <span class="token operator">=</span> <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"user_id"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"message"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> messages<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Here it is worth paying attention to two things.</p>
+<p>First, the message column, specified with the <span class="text-yellow"><span class="text-bold">@Column(name = "message")</span></span> annotation , is in the user_message auxiliary table, not the user table.</p>
+<p>Secondly, in the <span class="text-yellow"><span class="text-bold">@JoinColumn(name = "user_id")</span></span> annotation , we specified the name of the user_id column, which refers to the id of the user table. This is so that Hibernate knows how to combine them correctly.</p>
+<h2>Collection</h2>
+<p>If you want to store the ordered elements of a list or array in an auxiliary table, then you need a table with three columns:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">CREATE TABLE user_message <span class="token punctuation">{</span>
+    user_id INT<span class="token punctuation">,</span>
+    index INT<span class="token punctuation">,</span>
+    message <span class="token function">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>If you don't like the column name "index", or you can't change it, you can specify a different name during mapping. To do this, you need to use the <span class="text-yellow"><span class="text-bold">@Index</span></span> annotation .</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@ElementCollection</span>
+   <span class="token annotation punctuation">@CollectionTable</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_message"</span><span class="token punctuation">,</span>
+       	indexes <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token annotation punctuation">@Index</span><span class="token punctuation">(</span>columnList <span class="token operator">=</span> <span class="token string">"list_index"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+       	joinColumns <span class="token operator">=</span> <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"user_id"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"message"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> messages<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Map Collection</h2>
+<p>And finally, you want to store not just a collection, but a HashMap, and you need two columns in an auxiliary table for it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">CREATE TABLE user_message <span class="token punctuation">{</span>
+    user_id INT<span class="token punctuation">,</span>
+    key <span class="token function">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    message <span class="token function">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>In order to specify a key for a Map, you need the <span class="text-yellow"><span class="text-bold">@MapKeyColumn</span></span> annotation .</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@ElementCollection</span>
+   <span class="token annotation punctuation">@CollectionTable</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_message"</span><span class="token punctuation">,</span> joinColumns <span class="token operator">=</span> <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"user_id"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@MapKeyColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"key"</span><span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"message"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> messages<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>You can find more information <a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#collections-array" target="_blank" rel="nofollow">in the official documentation</a> .</p>

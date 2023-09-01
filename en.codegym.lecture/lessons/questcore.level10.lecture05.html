@@ -1,0 +1,17 @@
+<p>"Hello, Amigo! I'd like to tell you one more little detail about serialization."</p>
+<p>Suppose our class contains a reference to some <strong>InputStream</strong>. Then it can't be serialized, right?</p>
+<p><span class="text-user">"Right. You yourself said that streams can't be serialized. And you can't serialize an object that has non-serializable data."</span></p>
+<p>"Right. Just so. But what if the class stores data that doesn't play a significant role in its state and yet prevents the class from being considered a serializable class? Never mind that a class might store unnecessary stuff. It could toss this data at any time and maybe it even does—all the time."</p>
+<p>For these cases, Java's creators came up with the <span class="text-red"><strong>transient</strong></span> keyword. If we <span class="text-red">write this keyword before a member variable, then it will be ignored during serialization.</span> Its state won't be saved or reconstructed. As if it didn't exist. This is just the thing for the situations we just considered.</p>
+<p>Remember caching and the <span class="text-red"><strong>volatile</strong></span> modifier? <strong>There are no rules without exceptions</strong>.</p>
+<p>Here's one such example of this happiness:</p>
+<p>A «cat» example with a variable that is invisible to serialization:</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat <span class="text-user"><strong>implements Serializable</strong></span>
+{
+ public String name;
+ public int age;
+ public int weight;
+
+ <span class="text-red">transient</span> public InputStream <strong>in</strong> = System.in; 
+}</code></pre>

@@ -1,0 +1,375 @@
+e and time</h2>
+<p>Date and time are one of the most common types of data stored in databases. That is why the list of functions for working with them is very large. Here are the most popular ones:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th>Function</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>CURDATE()</td>
+    <td>Returns the current date</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>CURTIME()</td>
+    <td>Returns the current time</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>NOW(), LOCALTIME()</td>
+    <td>Returns the current date and current time</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>YEAR()</td>
+    <td>Returns year from date</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>MONTH()</td>
+    <td>Returns the month from a date</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>DAY(), DAYOFMONTH()</td>
+    <td>Returns the day from a date</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>HOUR()</td>
+    <td>Returns only hours from time</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>MINUTE()</td>
+    <td>Announces minutes from time</td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td>SECOND()</td>
+    <td>Returns seconds from time</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td>DAYNAME()</td>
+    <td>Returns the name of the day of the week: Monday, ...</td>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td>MONTHNAME()</td>
+    <td>Returns the name of the month: January, ...</td>
+   </tr>
+   <tr>
+    <td>12</td>
+    <td>WEEK()</td>
+    <td>Returns the week from a date</td>
+   </tr>
+   <tr>
+    <td>13</td>
+    <td>WEEKDAY()</td>
+    <td>Returns the number of the day of the week: Monday - 0, Tuesday - 1</td>
+   </tr>
+   <tr>
+    <td>14</td>
+    <td>WEEKOFYEAR()</td>
+    <td>Returns the week number of the year</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>15</td>
+    <td>DAYOFWEEK()</td>
+    <td>Returns the number of the day of the week: Sunday - 1, Monday - 2</td>
+   </tr>
+   <tr>
+    <td>16</td>
+    <td>DAYOFYEAR()</td>
+    <td>Returns the day of the year: 1-366</td>
+   </tr>
+   <tr>
+    <td>17</td>
+    <td>DATE()</td>
+    <td>Returns only the date from a "datetime" object</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>18</td>
+    <td>ADDDATE()</td>
+    <td>Adds days to a date</td>
+   </tr>
+   <tr>
+    <td>19</td>
+    <td>SUBDATE()</td>
+    <td>Subtracts days from a date</td>
+   </tr>
+   <tr>
+    <td>20</td>
+    <td>ADDTIME()</td>
+    <td>Adds time to time</td>
+   </tr>
+   <tr>
+    <td>21</td>
+    <td>SUBTIME()</td>
+    <td>Subtracts time from time</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>I deliberately grouped the functions into small groups to make it easier to understand how to work with them. Below we will consider one function from each group.</p>
+<p>You can find a complete list of functions for working with date and time at the link: <a href="https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html" target="_blank" rel="nofollow">https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html</a></p>
+<h2>3.2 Calling functions</h2>
+<p>By the way, since we're learning so many functions, I think it's helpful to mention that the operator <code>SELECT</code>doesn't have to be used with <code>FROM</code>. It can return the value of any expression. The general view of which is given by the template:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">SELECT</span> <span class="text-green">expression</span></code></pre>
+</div>
+<p>And if you want to call some function, then you need to write code like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">SELECT</span> <span class="text-green">function</span><span class="token punctuation">(</span><span class="text-user">options</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>Below I will give some examples of the operation of the operator <code>SELECT</code>without recourse to tables:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th>Request</th>
+    <th>Result</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>SELECT 1+1</td>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>SELECT 13 MOD 5</td>
+    <td>3</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>SELECT RAND()</td>
+    <td>0.20771444235715497</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>SELECT CURDATE()</td>
+    <td>2022-06-04</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>SELECT CURTIME()</td>
+    <td>00:06:02</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>SELECT NOW()</td>
+    <td>2022-06-04 00:06:43</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>And, as you can see, in the table above, in order to get the current date and time, you just need to use one of the functions:</p>
+<ul>
+ <li><code>CURDATE()</code>– current date;</li>
+ <li><code>CURTIME()</code>– current time;</li>
+ <li><code>NOW()</code>– current date and time.</li>
+</ul>
+<p>3.3 Grouping data by year and month</p>
+<p>Let's recall our task table with tasks for employees. Let's try to group tasks from this table by years. To do this, we use the function <code>YEAR()</code>, which returns the year from the date passed to it.</p>
+<p>The first version of our query will look like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span>
+    <span class="text-green">id</span><span class="token punctuation">,</span>
+    <span class="text-green">employee_id </span><span class="token punctuation">,</span>
+    <span class="text-green">name</span><span class="token punctuation">,</span>
+    <span class="token function"><span class="text-red">YEAR</span></span><span class="token punctuation">(</span><span class="text-green">deadline</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-brown">AS</span></span> <span class="text-viola">year</span><span class="token punctuation">,</span>
+    <span class="text-green">deadline</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">task</span></code></pre>
+</div>
+<p>The result of this query will be:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>employee_id</th>
+    <th>name</th>
+    <th>year</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022</td>
+    <td>2022-07-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022</td>
+    <td>2022-08-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022</td>
+    <td>2022-09-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>(NULL)</td>
+    <td>Clean up the office</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>We can see that all rows have the same year, so let's use two fields - year and month. The second version of our query will look like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span>
+    <span class="text-green">id</span><span class="token punctuation">,</span>
+    <span class="text-green">employee_id </span><span class="token punctuation">,</span>
+    <span class="text-green">name</span><span class="token punctuation">,</span>
+    <span class="token function"><span class="text-red">YEAR</span></span><span class="token punctuation">(</span><span class="text-green">deadline</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-brown">AS</span></span> <span class="text-viola">year</span><span class="token punctuation">,</span>
+    <span class="token function"><span class="text-red">MONTH</span></span><span class="token punctuation">(</span><span class="text-green">deadline</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-brown">AS</span></span> <span class="text-viola">month</span><span class="token punctuation">,</span>
+    <span class="text-green">deadline</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">task</span></code></pre>
+</div>
+<p>The result of this query will be:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>employee_id</th>
+    <th>name</th>
+    <th>year</th>
+    <th>month</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022</td>
+    <td>6</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022</td>
+    <td>6</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022</td>
+    <td>7</td>
+    <td>2022-07-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022</td>
+    <td>8</td>
+    <td>2022-08-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022</td>
+    <td>9</td>
+    <td>2022-09-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>(NULL)</td>
+    <td>Clean up the office</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>I won’t tell you how to group tasks by year and month - you already studied this: use the operator <code>GROUP BY</code>.</p>

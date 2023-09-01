@@ -1,0 +1,522 @@
+<p>Your task is to program a model of an parameterized island consisting of an array of locations (for example, a 100x20 matrix). The locations will be populated with plants and animals. Animals can:</p>
+
+    <ul>
+        <li>eat plants and/or other animals (if their location has suitable food),</li>
+        <li>move (to neighboring locations),</li>
+        <li>breed (if two of a kind exist in a location),</li>
+        <li>die of hunger or be eaten.</li>
+    </ul>
+
+    <h2>OOP</h2>
+
+    <p>When creating your host of animals, you should use OOP as much as possible: all species will derive from one abstract Animal class, which will contain the behavior that is common to all animals. If specific animals have specific features in regards to their feeding, reproduction, movement, etc., then they need to override the methods of the Animal class.</p>
+
+    <h3>Here's what you need to do:</h2>
+
+    <p>1. Create a class hierarchy: </p>
+
+    <ul>
+        <li><p><span class="code"><span class="text-green"><span class="text-bold">Carnivores</span></span></span>: <span class="code"><span class="text-green">Wolf</span></span>, <span class="code"><span class="text-green">Boa</span></span>, <span class="code"><span class="text-green">Fox</span></span>, <span class="code"><span class="text-green">Bear</span></span>, <span class="code"><span class="text-green">Eagle</span></span></p></li>
+        <li><p><span class="code"><span class="text-green"><span class="text-bold">Herbivores</span></span></span>: <span class="code"><span class="text-green">Horse</span></span>, <span class="code"><span class="text-green">Deer</span></span>, <span class="code"><span class="text-green">Rabbit</span></span>, <span class="code"><span class="text-green">Mouse</span></span>, <span class="code"><span class="text-green">Goat</span></span>, <span class="code"><span class="text-green">Sheep</span></span>, <span class="code"><span class="text-green">Boar</span></span>, <span class="code"><span class="text-green">Buffalo</span></span>, <span class="code"><span class="text-green">Duck</span></span>, <span class="code"><span class="text-green">Caterpillar</span></span></p></li>
+        <li><p><span class="code"><span class="text-green"><span class="text-bold">Plants</span></span></span></p></li>
+    </ul>
+
+    <img data-max-width="512" data-id="62e0b26b-4ea0-4858-83e7-a3c1d7c019ef" src="https://cdn.javarush.ru/images/article/62e0b26b-4ea0-4858-83e7-a3c1d7c019ef/original.png" alt="">
+
+    <p>The table below shows how likely an animal is to eat "food" if it is in the same location as that "food". Let's look at the situation where "a wolf eats a rabbit". The number in the table is 60. This means that if a wolf and rabbit are in the same location, there is a 60% chance that the wolf will eat the rabbit. You need to use a multithreaded <span class="code text-orange">random number generator</span>.</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th></th>
+                <th>Wolf</th>
+                <th>Boa</th>
+                <th>Fox</th>
+                <th>Bear</th>
+                <th>Eagle</th>
+                <th>Horse</th>
+                <th>Deer</th>
+                <th>Rabbit</th>
+                <th>Mouse</th>
+                <th>Goat</th>
+                <th>Sheep</th>
+                <th>Boar</th>
+                <th>Buffalo</th>
+                <th>Duck</th>
+                <th>Caterpillar</th>
+                <th>Plants</th>
+            </tr>
+            <tr>
+                <th>Wolf</th>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>10</td>
+                <td>15</td>
+                <td>60</td>
+                <td>80</td>
+                <td>60</td>
+                <td>70</td>
+                <td>15</td>
+                <td>10</td>
+                <td>40</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <th>Boa</th>
+                <td>0</td>
+                <td>-</td>
+                <td>15</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>20</td>
+                <td>40</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <th>Fox</th>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>70</td>
+                <td>90</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>60</td>
+                <td>40</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <th>Bear</th>
+                <td>0</td>
+                <td>80</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>40</td>
+                <td>80</td>
+                <td>80</td>
+                <td>90</td>
+                <td>70</td>
+                <td>70</td>
+                <td>50</td>
+                <td>20</td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <th>Eagle</th>
+                <td>0</td>
+                <td>0</td>
+                <td>10</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>90</td>
+                <td>90</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>80</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <th>Horse</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Deer</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Rabbit</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Mouse</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>90</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Goat</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Sheep</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Boar</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>50</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>90</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Buffalo</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>0</td>
+                <td>0</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Duck</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>90</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Caterpillar</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>-</td>
+                <td>100</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Animal characteristics:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th></th>
+                <th>Weight per animal, kg</th>
+                <th>Maximum number of animals of this species per location</th>
+                <th>Maximum speed (number of location) per turn</th>
+                <th>Number of kilograms of food required to fully feed the animal</th>
+            </tr>
+            <tr>
+                <th>Wolf</th>
+                <td>50</td>
+                <td>30</td>
+                <td>3</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <th>Boa</th>
+                <td>15</td>
+                <td>30</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <th>Fox</th>
+                <td>8</td>
+                <td>30</td>
+                <td>2</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <th>Bear</th>
+                <td>500</td>
+                <td>5</td>
+                <td>2</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <th>Eagle</th>
+                <td>6</td>
+                <td>20</td>
+                <td>3</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <th>Horse</th>
+                <td>400</td>
+                <td>20</td>
+                <td>4</td>
+                <td>60</td>
+            </tr>
+            <tr>
+                <th>Deer</th>
+                <td>300</td>
+                <td>20</td>
+                <td>4</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <th>Rabbit</th>
+                <td>2</td>
+                <td>150</td>
+                <td>2</td>
+                <td>0.45</td>
+            </tr>
+            <tr>
+                <th>Mouse</th>
+                <td>0.05</td>
+                <td>500</td>
+                <td>1</td>
+                <td>0.01</td>
+            </tr>
+            <tr>
+                <th>Goat</th>
+                <td>60</td>
+                <td>140</td>
+                <td>3</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <th>Sheep</th>
+                <td>70</td>
+                <td>140</td>
+                <td>3</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <th>Boar</th>
+                <td>400</td>
+                <td>50</td>
+                <td>2</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <th>Buffalo</th>
+                <td>700</td>
+                <td>10</td>
+                <td>3</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <th>Duck</th>
+                <td>1</td>
+                <td>200</td>
+                <td>4</td>
+                <td>0.15</td>
+            </tr>
+            <tr>
+                <th>Caterpillar</th>
+                <td>0.01</td>
+                <td>1000</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <th>Plants</th>
+                <td>1</td>
+                <td>200</td>
+                <td>N/A</td>
+                <td>N/A</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>2. An animal must have methods for <span class="code text-orange">eating</span>, <span class="code text-orange">breeding</span>, and <span class="code text-orange">choosing a direction for movement</span>.</p>
+
+    <p>3. You can implement the <span class="code text-orange">eat</span> method in the herbivore and carnivore classes. But be careful, the herbivore <span class="code"><span class="text-green">duck</span></span> eats <span class="code"><span class="text-green">caterpillars</span></span>.</p>
+
+    <p>4. In specific classes representing particular species, you can modify all the methods to suit the characteristics of the animal.</p>
+
+    <p>5. You need to create at least 10 herbivore species and 5 carnivore species (described in Item 1).</p>
+
+    <h2>Multithreading</h2>
+
+    <p>Of course, it is possible to write the entire program on one thread using only loops. But we need practice working with multithreading, so you must use threads and thread pools. One <span class="text-green">scheduled</span> pool to run recurring tasks for plant growth and animal actions, and a task to display system statistics. Alternatively, you can display the statistics in a task with the plants or animals. Inside the animal action task, you can use another thread pool — an ordinary one. You decide which tasks to assign to this pool. </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <p><span class="text-bold">Mandatory parts of the task:</span></p>
+
+                    <ul>
+                        <li>Animal hierarchy (OOP)</li>
+                        <li>Animal behavior</li>
+                        <li>Multithreading</li>
+                        <li>Statistics on the state of the island at each iteration (displayed on the console)</li>
+                    </ul>
+
+                    <p><span class="text-bold">Optional parts of the task:</span></p>
+
+                    <ul>
+                        <li>Display the parameters in one place so that it is easy to manage the simulation</li>
+                        <li>Graphics instead of console statistics. You can use either pseudographics in the console, or JavaFX, Swing...</li>
+                        <li>Add other factors that could affect the simulation:
+
+                            <ul>
+                                <li>more kinds of animals</li>
+                                <li>different types of plants</li>
+                                <li>custom behavior for a group of animals (for example, wolves hunt and move as a pack rather than separately)</li>
+                                <li>ground terrain, including a river that impedes the movement of certain animals</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>About settings (if you decide to add them)</h4>
+
+    <p>To make it convenient to change the various settings when starting the program (the island size, the maximum allowable number of plants / animals at one location, the probability that a particular type of animal will move, the number of offspring in different species, etc.), you need to put all these settings somewhere, for example, in a separate class. It should be possible to change the following settings:</p>
+
+    <ul>
+        <li>island size</li>
+        <li>duration of a clock cycle in the simulation</li>
+        <li>the number of animals of each species at the start of the simulation</li>
+        <li>condition for stopping the simulation (e.g. all the animals have died)</li>
+        <li>number of offspring for each type of animal</li>
+    </ul>
+
+    <h4>Unicode (if you decide to do pseudographics)</h4>
+
+    <p>You can use Unicode characters to depict the animals: 🐃, 🐻, 🐎, 🦌, 🐗, 🐑, 🐐, 🐺, 🐍, 🦊, 🦅, 🐇, 🦆, 🐁, 🐛.</p>

@@ -1,0 +1,41 @@
+on the frontend, where it was necessary to implement an rpg admin panel for the server API? If anyone remembers, a map was used as storage on the server. Naturally, in real life, such storages are not used, but databases are used. The goal of this project will be to write an alternative repository layer implementation using Hibernate.</p>
+<h3>For this you need:</h3>
+<ol>
+ <li><a href="https://github.com/CodeGymCC/project-hibernate-1" target="_blank" rel="nofollow">Fork from a repository</a></li>
+ <li>Download your version of the project to your computer.</li>
+ <li>Add dependencies to pom.xml:</li>
+ <ul>
+  <li>mysql:mysql-connector-java:8.0.30</li>
+  <li>org.hibernate: hibernate-core-jakarta: 5.6.11.Final</li>
+ </ul>
+ <li>Make a maven build (mvn clean install). For a change, we use Java version 1.8.</li>
+ <li>Add launch configuration via Idea. The implementation of this item can be found in the lecture <a href="https://codegym.cc/quests/lectures/cgu.module3.lecture02" target="_blank">https://codegym.cc/quests/lectures/cgu.module3.lecture02</a> (item 4). The only difference is a different name for the artifact. If you did everything right and launched the application, you will see something like this:<img data-max-width="800" data-id="9eda0904-cc48-446b-9497-de55b337e8ca" alt="" src="https://cdn.javarush.com/images/article/9eda0904-cc48-446b-9497-de55b337e8ca/800.jpeg" style="width: 800px;"></li>
+ <li>Run the rpg schema creation script in Workbench: 
+  <pre><code>CREATE SCHEMA `rpg` ;
+</code></pre></li>
+ <li><span class="text-red">Optional</span> . If you want to see what behavior is expected, you can change <code>com.game.service.PlayerService</code>the annotation value from <strong>“db”</strong> to <strong>“memory”</strong> in the class in the constructor parameter . In this case, Spring will use the . After the test, don't forget to change the annotation value back to <strong>"db"</strong> .<code>@Qualifier</code><strong></strong><strong></strong><code>IPlayerRepository</code><code>PlayerRepositoryMemory</code><code>@Qualifier</code><strong></strong></li>
+ <li>Arrange all the necessary annotations in the entity class <code>com.game.entity.Player</code>. The table should be named "player", schema "rpg". For enams, use <code>@Enumerated(EnumType.ORDINAL)</code>in addition to the annotation <code>@Column</code>. Let me remind you that the length of the name field should be up to 12 characters, the title field - up to 30 characters. Absolutely all fields must not be null.</li>
+ <li><code>PlayerRepositoryDB</code>Add <strong>a private final</strong> field in the class <code>SessionFactory sessionFactory</code>, initialize this field in the class constructor. Use properties as in normal tasks (we will work with the MySQL database version 8). From interesting - add 
+  <pre><code>properties.put(Environment.HBM2DDL_AUTO, "update");
+</code></pre>This will allow you not to create a table manually (or through the execution of a sql script).</li>
+ <li>Implement all class methods. For a change, let's do this:</li>
+ <ul>
+  <li>Implement the method <code>getAll</code>via<code>NativeQuery</code></li>
+  <li>Implement the method <code>getAllCount</code>via<code>NamedQuery</code></li>
+  <li>In the method <code>beforeStop</code>, call the y <code>sessionFactory</code>method <code>close</code>. By having an annotation on the method <code>@PreDestroy</code>, Spring will call this method before stopping the application, and this will allow you to validly release all system resources.</li>
+  <li>The implementation of other methods is up to you. But do not forget about transactions and commits for methods that somehow change the contents of the database.</li>
+ </ul>
+ <li>Launch the application. If you did everything right, you will get a working application. But there is no data there, so run the <strong>init.sql</strong> script (from resources) through the Workbench so that they appear. After that, press F5 in the browser and check that you have implemented all the methods correctly.</li>
+ <li>It would be interesting to see exactly what queries Hibernate executes, so let's add query logging. To do this, add <strong>the p6spy:p6spy:3.9.1</strong> dependency to pom.xml . In the resources folder, create a file <strong>spy.properties</strong> , in which specify: 
+  <pre><code>driverlist=com.mysql.cj.jdbc.Driver
+dateformat=yyyy-MM-dd hh:mm:ss a
+appender=com.p6spy.engine.spy.appender.StdoutLogger
+logMessageFormat=com.p6spy.engine.spy.appender.MultiLineFormat
+</code></pre> And in the constructor of the PlayerRepositoryDB class, change two options: 
+  <pre><code>properties.put(Environment.DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
+properties.put(Environment.URL, "jdbc:p6spy:mysql://localhost:3306/rpg");
+</code></pre> Now in the server output for each request you will see 2 lines. The first is what statement is prepared, the second is the query with the inserted parameters. <img data-max-width="800" data-id="8f743666-c999-425e-afc1-92c9fe28783f" alt="" src="https://cdn.javarush.com/images/article/8f743666-c999-425e-afc1-92c9fe28783f/800.jpeg" style="width: 800px;"></li>
+</ol>
+<p>That's all, the project is ready, congratulations!</p>
+<p>In fact, working with Hibernate from Spring uses a different approach, which we will cover in the fifth module.</p>
+<hr><a href="https://youtu.be/G7D03pCZXOw" target="_blank" rel="nofollow">Project analysis.</a>

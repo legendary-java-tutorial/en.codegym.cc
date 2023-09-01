@@ -1,0 +1,273 @@
+<h2>1. Exceptions</h2>
+<p><img data-max-width="1024" data-id="a1f5d907-9404-4c95-8014-d489dcb8c44d" src="https://cdn.codegym.cc/images/article/a1f5d907-9404-4c95-8014-d489dcb8c44d/1024.jpeg" alt="">></p>
+<p>At long last, programmers thought to standardize and automate error handling. This happened when <span class="term">exceptions</span> were invented. Now the exception mechanism handles 80% of exceptional situations.</p>
+<p>If some scholar came up with exceptions, it was likely the subject of his or her doctoral dissertation. If a programmer came up with it, then he may have received a friendly pat on the back from a coworker: "Seems okay, bro."</p>
+<p>When an error occurs in a Java program, such as division by <code>0</code>, some wonderful things happen:</p>
+<p><span class="text-bold">Step one</span></p>
+<p><span class="text-green">A special exception object is created, which contains information about the error that occurred.</span></p>
+<p>Everything in Java is an object, and exceptions are no exceptions 🙂 Exception objects have their own classes, and the only thing that distinguishes them from ordinary classes is that they inherit the <code>Throwable</code> class.</p>
+<p><span class="text-bold">Step two</span></p>
+<p><span class="text-red">The exception object is "thrown". Perhaps the wording here could be better. "Throwing an exception" is more like triggering a fire alarm or sounding a "DEFCON 1" alert.</span></p>
+<p>When an exception is thrown to the Java machine, the normal operation of the program stops and "emergency protocols" begin.</p>
+<p><span class="text-bold">Step three</span></p>
+<p><span class="text-viola">The method in which the exception was thrown exits immediately. <span class="text-orange">The exception is passed to the calling method, which also exits immediately.</span></span> And so on down the chain until the <code>main</code> method exits. When the <code>main</code> method terminates, so does the program.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java line-numbers"><code>class Solution
+{
+   public static void <span class="text-red">main</span>(String[] args)
+   {
+      System.out.println(<span class="text-green">"Your attention, please! Preparing for the end of the world"</span>);
+      <span class="text-red">endTheWorld</span>();
+      System.out.println(<span class="text-green">"The world ended successfully"</span>);
+   }
+
+   public static void <span class="text-red">endTheWorld</span>()
+   {
+      System.out.println(<span class="text-green">"We're doing something important"</span>);
+      <span class="text-red">doSomeWork</span>(0);
+      System.out.println(<span class="text-green">"Everything is working well"</span>);
+   }
+
+   public static void <span class="text-red">doSomeWork</span>(int n)
+   {
+      System.out.println(<span class="text-green">"Nothing terrible will happen: "</span> + n);
+      System.out.println(2 / n);
+      System.out.println(<span class="text-green">"Nothing terrible happened: "</span> + n);
+   }
+}</code></pre>
+        </td>
+        <td><pre><code>Your attention, please! Preparing for the end of the world
+We're doing something important
+Nothing terrible will happen: 0</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-red">An exception occurs on line 20: division by 0.</span> The Java machine immediately creates an <span class="term">exception</span> — an <code>ArithmeticException</code> object and "throws" it to the method.</p>
+<p>The <code><span class="text-red">divide()</span></code> method ends immediately, so we never see the string: Nothing terrible happened: 0. The program returns to the <code><span class="text-red">endTheWorld()</span></code> method, and the situation repeats itself: there is an unhandled exception in the system, which means that the <code><span class="text-red">endTheWorld()</span></code> method also terminates abnormally. Then the <code><span class="text-red">main</span></code> method terminates, and the program stops.</p>
+<p>What is the purpose of these exceptions? <span class="text-orange">Well, you can write your own code to catch particular types of exceptions</span> and write your own logic to handle exceptional situations.</p>
+<hr>
+<h2>2. Catching exceptions: <code>try-catch</code></h2>
+<p>Java has an exception catching mechanism that lets you halt this abnormal termination of methods. It looks like this:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present language-java"><code>try
+{
+   <span class="text-green">// Code where an exception might occur</span>
+}
+catch(<span class="text-viola">ExceptionType</span> <span class="text-red">name</span>)
+{
+   <span class="text-user">// Exception handling code</span>
+}</code></pre>
+</div>
+<p>This construct is called a <code>try-catch</code> block.</p>
+<p><span class="text-green">Code where exceptions may occur</span> is wrapped in curly braces, preceded by the word <code>try</code>.</p>
+<p>After the curly braces, we have the <code>catch</code> keyword and, <span class="text-red">inside parentheses, the declaration of an exception variable</span>. This is followed by <span class="text-user">curly braces that wrap the code to be executed if an exception of the specified type occurs</span>.</p>
+<p>If no exceptions are thrown during execution of the "<span class="text-green">primary code</span>", then the code inside the catch block will not be executed. If an exception occurs, then it will be (if the type of the thrown exception is the same as the type of the variable in the parentheses).</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Solution
+{
+   public static void <span class="text-red">main</span>(String[] args)
+   {
+      System.out.println(<span class="text-green">"Hadron Collider launched"</span>);
+
+      try
+      {
+         <span class="text-red">launchHadronCollider</span>(1);
+         <span class="text-red">launchHadronCollider</span>(0);
+      }
+      catch(<span class="text-orange">Exception <span class="code">e</span></span>)
+      {
+         System.out.println(<span class="text-green">"Error! Caught an exception"</span>);
+         System.out.println(<span class="text-green">"The planet was sucked into a black hole!")</span>;
+      }
+
+      System.out.println(<span class="text-green">"The Hadron Collider stopped"</span>);
+   }
+
+   public static void <span class="text-red">launchHadronCollider</span>(int n)
+   {
+      System.out.println(<span class="text-green">"Everything is working well: "</span> + n);
+      System.out.println(2/n);
+      System.out.println(<span class="text-green">"There are no problems: "</span> + n);
+   }
+}</code></pre>
+        </td>
+        <td><pre><code>Hadron Collider launched
+Everything is working fine: 1
+2
+There are no problems: 1
+Everything is working fine: 0
+Error! Caught an exception
+The planet has been sucked into a black hole!
+The Hadron Collider is stopped</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1402"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1403"></div>
+<hr>
+<h2>3. Multiple <code>catch</code> blocks</h2>
+<p><img data-max-width="1024" data-id="3c8ddc39-2948-4115-bf52-d65db30c148b" src="https://cdn.codegym.cc/images/article/3c8ddc39-2948-4115-bf52-d65db30c148b/1024.jpeg" alt="Multiple catch blocks"></p>
+<p>In theory, all sorts of exceptions can be thrown in a block of code. Some you will want to handle one way, others another way, and still others you will decide not to handle at all.</p>
+<p>Java developers decided to help you out and let you write not one but many <code>catch</code> blocks after the <code>try</code> block.</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>try
+{
+   <span class="text-green">// Code where an exception might occur</span>
+}
+catch (<span class="text-viola">ExceptionType1</span> <span class="text-red">name1</span>)
+{
+   <span class="text-user">// Code for handling ExceptionType1</span>
+}
+catch (<span class="text-viola">ExceptionType2</span> <span class="text-red">name2</span>)
+{
+   <span class="text-user">// Code for handling ExceptionType2</span>
+}
+   catch (<span class="text-viola">ExceptionType3</span> <span class="text-red">name3</span>)
+{
+   <span class="text-user">// Code for handling ExceptionType3</span>
+}</code></pre>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Solution
+{
+   public static void <span class="text-red">main</span>(String[] args)
+   {
+      System.out.println("Start of main method");
+      try
+      {
+         <span class="text-red">calculate</span>(0);
+      }
+      catch (ArithmeticException <span class="code">e</span>)
+      {
+         System.out.println("Division by 0");
+      }
+      catch(<span class="text-orange">Exception <span class="code">e</span></span>)
+      {
+         System.out.println("Caught some kind of exception");
+      }
+
+      System.out.println("End of main method");
+   }
+
+   public static void <span class="text-orange">calculate</span>(int n)
+   {
+      System.out.println("Start of calculate method: " + n);
+      System.out.println(2/n);
+      System.out.println("End of calculate method: " + n);
+   }
+}</code></pre>
+        </td>
+        <td><pre><code>Start of main method
+Start of calculate method: 0
+Division by 0
+End of main method</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1404"></div>
+<hr>
+<h2>4. Order of <code>catch</code> blocks</h2>
+<p>Exceptions that occur in a <code>try</code> block can only be caught by a single <code>catch</code> block. <span class="text-red">You cannot have an exception handling situation</span> where the code from multiple <code>catch</code> blocks gets executed.</p>
+<p><strong>But the order of the blocks matters.</strong></p>
+<p>You can have a situation where an exception could be caught by multiple blocks. If that is the case, then the exception will be caught by whichever <strong>catch</strong> block comes first (closest to the <code>try</code> block).</p>
+<p><strong>How can you have a situation where multiple catch blocks can catch the same exception?</strong></p>
+<p><span class="text-green">All exceptions belong to a single inheritance hierarchy — see the diagram.</span></p>
+<p><img data-max-width="1024" data-id="3f010493-839c-4dea-a960-4313d4a2aa85" src="https://cdn.codegym.cc/images/article/3f010493-839c-4dea-a960-4313d4a2aa85/1024.jpeg" alt="Exception hierarchy"></p>
+<p>An <code><span class="text-viola">ArithmeticException</span></code> object can be assigned to a variable whose type is <code><span class="text-viola">ArithmeticException</span></code> or <strong>any of its ancestor classes:</strong> <code><span class="text-red">RuntimeException</span></code>, <code><span class="text-red">Exception</span></code> and <code><span class="text-red">Throwable</span></code> — see the diagram.</p>
+<p><span class="text-user">We'll talk more about inheritance and ancestor classes in Level 21.</span></p>
+<p>This code will compile just fine:</p>
+<table>
+    <tr>
+        <th>Benefits of inheritance:</th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code><span class="text-red">ArithmeticException</span> <span class="text-green">ae</span>    = new <span class="text-viola">ArithmeticException</span>();
+<span class="text-red">RuntimeException</span> <span class="text-green">runtime</span>  = new <span class="text-viola">ArithmeticException</span>();
+<span class="text-red">Exception</span> <span class="text-green">exception</span>       = new <span class="text-viola">ArithmeticException</span>();
+<span class="text-red">Throwable</span> <span class="text-green">trwbl</span>           = new <span class="text-viola">ArithmeticException</span>();</code></pre>
+        </td>
+    </tr>
+</table>
+<p>So you can catch an <code>ArithmeticException</code> with any of the 4 <code>catch</code> blocks above.</p>
+<p>Example 1:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Solution
+<span>{
+</span>   public static void <span class="text-red">main</span>(String[] args)
+   {
+      System.out.println("Start of main method");
+      <strong>try</strong>
+      {
+         <span class="text-red">calculate</span>(0);
+      }
+      <strong>catch</strong>(<span class="text-orange">ArithmeticException <span class="code">e</span></span>)
+      {
+         System.out.println("Division by 0");
+      }
+      <strong>catch</strong>(<span class="text-orange">Exception <span class="code">e</span></span>)
+      {
+         System.out.println("Caught some kind of exception");
+      }
+
+      System.out.println("End of main method");
+   }
+
+   public static void <span class="text-red">calculate</span>(int n)
+   {
+      System.out.println("Start of calculate method: " + n);
+      System.out.println(2/n);
+      System.out.println("End of calculate method: " + n);
+   }
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>Start of main method
+Start of calculate method: 0
+Division by 0
+End of main method</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>In this example, the <code>ArithmeticException</code> can be caught by both the <code>catch (Exception e)</code> and <code>catch (ArithmeticException e)</code> blocks. It will be caught by the block closest to the <code>try</code> block — the first <code>catch</code> block.</p>
+<p>To avoid surprises, it is best to place <code>catch</code> blocks that can catch nearly every exception <span class="text-viola">near the end of the list of <code><span class="text-viola">catch</span></code> blocks.</span></p>
+<p>The <code><span class="text-red">Throwable</span></code> type is generally capable of <span class="text-red">catching every possible exception in Java</span>. If you put it in the first <code>catch</code> block, then the code won't compile, since the compiler knows that there are unreachable blocks of code.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1405"></div>

@@ -1,0 +1,290 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="249b3429-55ba-4b75-bbbe-1e7f291ad29d" data-max-width="1024" src="https://cdn.javarush.ru/images/article/249b3429-55ba-4b75-bbbe-1e7f291ad29d/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="b3941dd8-e7ee-4336-9445-df016920f8d6" data-max-width="1024" src="https://cdn.javarush.ru/images/article/b3941dd8-e7ee-4336-9445-df016920f8d6/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="d8d1fb7a-4cd5-43b1-8517-2141bf6bc253" data-max-width="512" src="https://cdn.javarush.ru/images/article/d8d1fb7a-4cd5-43b1-8517-2141bf6bc253/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="427d966e-6d2a-4b2a-a969-b3204503128d" data-max-width="512" src="https://cdn.javarush.ru/images/article/427d966e-6d2a-4b2a-a969-b3204503128d/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="d2701c77-a5d9-459d-b2d5-9ea70816b3c3" data-max-width="512" src="https://cdn.javarush.ru/images/article/d2701c77-a5d9-459d-b2d5-9ea70816b3c3/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="ff2cddca-b5be-4ea4-be6f-cecfbe6c3aca" data-max-width="512" src="https://cdn.javarush.ru/images/article/ff2cddca-b5be-4ea4-be6f-cecfbe6c3aca/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. <code>Arrays.fill()</code></h2>
+<p>When working with arrays, Java programmers very often need to fill the array with the same value. You can, of course, write a loop and simply assign some value to each cell of the array in the loop:</p>
+<pre class="language-java"><code>int[] <span class="text-green">x</span> = new int[100];
+for (int i = 0; i &lt; <span class="text-green">x</span>.length; i++)
+<span class="text-green">x</span>[i] = <span class="text-neon">999</span>;</code></pre>
+<p>Or you can simply call the <code>Arrays.fill()</code> method, which does exactly the same thing: it fills the passed array with the passed value. Here's how it looks:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">Arrays</span>.<span class="text-viola">fill</span>(<span class="text-green">name</span>, <span class="text-neon">value</span>)</code></pre>
+</div>
+<p>And the code in the example above can be made a little bit more compact and clearer:</p>
+<pre class="language-java"><code>int[] <span class="text-green">x</span> = new int[100];
+<span class="text-red">Arrays</span>.<span class="text-viola">fill</span>(<span class="text-green">x</span>, <span class="text-neon">999</span>);</code></pre>
+<p>You can also use the <code>Arrays.fill()</code> method to fill not the entire array, but a part of it, with some value:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">Arrays</span>.<span class="text-viola">fill</span>(<span class="text-green">name</span>, <span class="text-orange">first</span>, <span class="text-orange">last</span>, <span class="text-neon">value</span>)</code></pre>
+</div>
+<p>Where first and last are the indices of the first and last cells to be filled.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__content">
+            <div class="text-center">
+                In accordance with Java's good old tradition, remember that the last element is not included in the range.
+            </div>
+        </div>
+    </div>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-green">x</span> = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+<span class="text-red">Arrays</span>.<span class="text-viola">fill</span>(<span class="text-green">x</span>, <span class="text-orange">3</span>, <span class="text-orange">7</span>, <span class="text-neon">999</span>);
+
+
+String <span class="text-viola">str</span> = Arrays.toString(<span class="text-green">x</span>);</code></pre>
+        </td>
+        <td><br><br>We're filling the cells <code>x[3]</code>, <code>x[4]</code>, <code>x[5]</code>, and <code>x[6]</code> with the value <code>999</code>. Cells of an array are numbered starting from zero!<br><br>
+            The <code><span class="text-viola">str</span></code> variable contains the value:<br>
+            <pre><code><span class="text-muted">"</span>[1, 2, 3, 999, 999, 999, 999, 8, 9, 10]<span class="text-muted">"</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>Arrays.fill()</code> method only works with one-dimensional arrays. If you pass a two-dimensional array to the method, it will be treated as one-dimensional, with all the ensuing consequences.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0516"></div>
+<hr>
+<h2>2. <code>Arrays.copyOf()</code></h2>
+<p>As you already know, you cannot resize an array after it has been created.</p>
+<p>But what if you really want to?</p>
+<p>Well, if you really want to, then you can!</p>
+<ul>
+    <li>Create a new array of the desired length</li>
+    <li>Copy all the elements from the first array into it.</li>
+</ul>
+<p>By the way, this is exactly what the <code>Arrays.copyOf()</code> method does. This is what calling it looks like:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>Type[] <span class="text-orange">name2</span> = <span class="text-red">Arrays</span>.<span class="text-viola">copyOf</span>(<span class="text-green">name</span>, <span class="text-neon">length</span>);</code></pre>
+</div>
+<p>This method <strong>does not change the existing array</strong>, but instead <strong>creates a new array</strong> and copies the elements of the old array into it.</p>
+<p>If the elements don't fit (the <span class="text-neon">length</span> is less than the length of the <span class="text-green">existing array</span>), then the extra values are ignored.</p>
+<p>If the length of the new array is greater than the length of the old one, the cells are filled with zeros.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-orange">x</span> = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+int[] <span class="text-orange">x2</span> = <span class="text-red">Arrays</span>.<span class="text-viola">copyOf</span>(<span class="text-orange">x</span>, <span class="text-neon">5</span>);
+String <span class="text-green">str2</span> = <span class="text-red">Arrays</span>.toString(<span class="text-orange">x2</span>);
+
+int[] <span class="text-orange">x3</span> = <span class="text-red">Arrays</span>.<span class="text-viola">copyOf</span>(<span class="text-orange">x</span>, <span class="text-neon">15</span>);
+String <span class="text-green">str3</span> = <span class="text-red">Arrays</span>.toString(<span class="text-orange">x3</span>);</code></pre>
+        </td>
+        <td><br><br>The <code><span class="text-green">str2</span></code> variable contains the value:<br>
+            <pre><code><span class="text-muted">"</span>[1, 2, 3, 4, 5]<span class="text-muted">"</span></code></pre>
+            <br>
+            The <code><span class="text-green">str3</span></code> variable contains the value:<br>
+            <pre><code class="text-nowrap"><span class="text-muted">"</span>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0, 0]<span class="text-muted">"</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>3. <code>Arrays.copyOfRange()</code></h2>
+<p>And what if you want to get an array of length 5 from an array of length 10, but you need it to contain the last 5 elements rather than the first 5?</p>
+<p>In this case, another method of the <code>Arrays</code> class will come in handy — the <code>Arrays.copyOfRange()</code>. Here's what it looks like when we call it:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm"><code>Type[] <span class="text-orange">name2</span> = Arrays.<span class="text-viola">copyOfRange</span>(<span class="text-green">name</span>, <span class="text-neon">first</span>, <span class="text-neon">last</span>);</code></pre>
+</div>
+<p>This method also creates a new array, but fills it with elements from an arbitrary place in the original array. Where first and last are the indices of the first and last elements that should be put into the new array.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__content">
+            <div class="text-center">
+                In accordance with Java's good old tradition, remember that the last element is not included in the range.
+            </div>
+        </div>
+    </div>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-orange">x</span> = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+
+int[] <span class="text-orange">x2</span> = <span class="text-red">Arrays</span>.<span class="text-viola">copyOfRange</span>(<span class="text-orange">x</span>, <span class="text-neon">5</span>, <span class="text-neon">10</span>);
+String <span class="text-green">str2</span> = <span class="text-red">Arrays</span>.toString(<span class="text-orange">x2</span>);
+
+int[] <span class="text-orange">x3</span> = <span class="text-red">Arrays</span>.<span class="text-viola">copyOfRange</span>(<span class="text-orange">x</span>, <span class="text-neon">5</span>, <span class="text-neon">15</span>);
+String <span class="text-green">str3</span> = <span class="text-red">Arrays</span>.toString(<span class="text-orange">x3</span>);</code></pre>
+        </td>
+        <td><br><br>The <code><span class="text-green">str2</span></code> variable contains the value:<br>
+            <pre><code><span class="text-muted">"</span>[16, 17, 18, 19, 20]<span class="text-muted">"</span></code></pre>
+            <br>
+            The <code><span class="text-green">str3</span></code> variable contains the value:<br>
+            <pre><code><span class="text-muted">"</span>[16, 17, 18, 19, 20, 0, 0, 0, 0, 0]<span class="text-muted">"</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0517"></div>
+<hr>
+<h2>4. <code>Arrays.sort()</code></h2>
+<p>Ah, the most delicious treat: <strong>sorting</strong>. Arrays are sorted quite often in programming. The three most common actions when working with arrays are:</p>
+<ul>
+    <li>Sorting an array</li>
+    <li>Finding the minimum (or maximum) element of an array</li>
+    <li>Determining the index of an element in an array (finding an element in an array)</li>
+</ul>
+<p>This is precisely why Java's creators included the <code>sort()</code> method in the <code>Arrays</code> class. This is what calling it looks like:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">Arrays</span>.<span class="text-viola">sort</span>(<span class="text-neon">name</span>);</code></pre>
+</div>
+<p>This method sorts the passed array in ascending order.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-neon">x</span> = {11, -2, 3, 0, 999, -20, 8, -20, 99, -20};
+
+<span class="text-red">Arrays</span>.<span class="text-viola">sort</span>(<span class="text-neon">x</span>);
+
+String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.toString(<span class="text-neon">x</span>);</code></pre>
+        </td>
+        <td><br><br><br>The <code><span class="text-green">str</span></code> variable contains the value:<br>
+            <pre><code><span class="text-muted">"</span>[-20, -20, -20, -2, 0, 3, 8, 11, 99, 999]<span class="text-muted">"</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Excellent, right? You called one method, and now you have a sorted array. Beautiful.</p>
+<p>By the way, you can use this method to sort not only the entire array, but just part of it. This is what calling it looks like:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-red">Arrays</span>.<span class="text-viola">sort</span>(<span class="text-neon">name</span>, <span class="text-orange">first</span>, <span class="text-orange">last</span>);</code></pre>
+</div>
+<p>Where <span class="text-orange">first</span> and <span class="text-orange">last</span> are the indices of the first and last cells that the sort should touch.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__content">
+            <div class="text-center">
+                In accordance with Java's good old tradition, remember that the last element is not included in the range.
+            </div>
+        </div>
+    </div>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-neon">x</span> = {11, -2, 3, 0, <span class="text-brown">999</span>, <span class="text-brown">-20</span>, <span class="text-brown">8</span>, <span class="text-brown">-20</span>, 99, -20};
+
+<span class="text-red">Arrays</span>.<span class="text-viola">sort</span>(<span class="text-neon">x</span>, <span class="text-orange">4</span>, <span class="text-orange">8</span>);
+String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.toString(<span class="text-neon">x</span>);</code></pre>
+        </td>
+        <td><br><br>The <code><span class="text-green">str</span></code> variable contains the value:<br>
+            <pre><code><span class="text-muted">"</span>[11, -2, 3, 0, <span class="text-brown">-20</span>, <span class="text-brown">-20</span>, <span class="text-brown">8</span>, <span class="text-brown">999</span>, 99, -20]<span class="text-muted">"</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>To sort arrays, Java uses the fastest sorting algorithm — <span class="term">QuickSort</span>. Its computational complexity depends on the size of the array and is calculated using the formula N log(N).</p>
+<p>Sorting an array of 1000 elements will involve about 3,000 comparisons of array elements. Sorting an array of one million elements will involve about 6 million comparisons.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0518"></div>
+<hr>
+<h2>5. <code>Arrays.binarySearch()</code></h2>
+<p>Well, and the last of the most interesting methods of the <code>Arrays</code> class is able to search for a given value in an array. This is no ordinary search — it is the beloved <span class="term">binary search</span>. It boils down to this:</p>
+<ul>
+    <li>First, the array is sorted.</li>
+    <li>Then the middle element of the array is compared with the one we are looking for.</li>
+    <li>If the element is greater than the middle element, then the search continues in the right half of the array.</li>
+    <li>If the element we are looking for is less than the middle element, then the search continues in the left half of the array.</li>
+</ul>
+<p>Because the array is sorted, it is possible to eliminate half of it in a single comparison. Then in the next step, we toss out another half, and so on.</p>
+<p>This approach makes binary search very fast. In an array of one million (!) elements, it can find the index of the desired element in just 20 comparisons. The approach's shortcoming is that the array must first be sorted, and sorting also takes time.</p>
+<p>This is what calling it looks like:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>int <span class="text-green">index</span> = <span class="text-red">Arrays</span>.<span class="text-viola">binarySearch</span>(<span class="text-orange">name</span>, <span class="text-neon">value</span>);</code></pre>
+</div>
+<p>Where <code><span class="text-orange">name</span></code> is the name of the array, which must be passed already sorted (for example, using the <code>Arrays.sort()</code> method). And <code><span class="text-neon">value</span></code> is the element we are searching for in the array. The result returned by the method is the <span class="term">index&nbsp;of the desired array element</span>.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-orange">x</span> = {11, -2, 3, 0, 999, -20, 8, -20, 99, -20};
+<span class="text-red">Arrays</span>.<span class="text-viola">sort</span>(<span class="text-orange">x</span>);
+
+int <span class="text-green">index1</span> = <span class="text-red">Arrays</span>.<span class="text-viola">binarySearch</span>(<span class="text-orange">x</span>, <span class="text-neon">0</span>);
+int <span class="text-green">index2</span> = <span class="text-red">Arrays</span>.<span class="text-viola">binarySearch</span>(<span class="text-orange">x</span>, <span class="text-neon">-20</span>);
+int <span class="text-green">index3</span> = <span class="text-red">Arrays</span>.<span class="text-viola">binarySearch</span>(<span class="text-orange">x</span>, <span class="text-neon">99</span>);
+int <span class="text-green">index4</span> = <span class="text-red">Arrays</span>.<span class="text-viola">binarySearch</span>(<span class="text-orange">x</span>, <span class="text-neon">5</span>);</code></pre>
+        </td>
+        <td><code><span class="text-orange">x</span></code> is:<br>
+            <pre><code>{-20, -20, -20, -2, 0, 3, 8, 11, 99, 999}</code></pre>
+            <br>
+            <code>4</code><br>
+            <code>1</code> (indices <code>0</code> and <code>2</code> are also acceptable)<br>
+            <code>8</code><br>
+            <code>-7</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>If the array contains <strong>multiple</strong> instances of the element being searched for, then the algorithm will simply return the index of one of them (there is no guarantee that it will be, say, the very first, or vice versa — the very last of these duplicate elements)."</p>
+<p>If the element <strong>is not found in the array, then the index will be negative.</strong></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0519"></div>
+<hr>
+<h2>6. Link to Oracle documentation on the <code>Arrays</code> class</h2>
+<p>If you are super interested, you can read everything about the <code>Arrays</code> class and all its methods in the official documentation a href="https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/Arrays.html">on the Oracle website</a>.</p>
+<p>For example, you can read about the <code>Arrays.mismatch()</code> and <code>Arrays.compare()</code> methods. Maybe you will find them useful somehow.</p>
+<p>And don't be confused by the number of methods. Each method has 5-10 variants, which differ only in their parameter types.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0529.big05"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="90eb1cf0-0152-4ec9-9625-88d647c369ce" data-max-width="1024" src="https://cdn.javarush.ru/images/article/90eb1cf0-0152-4ec9-9625-88d647c369ce/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="472f5fbf-dabb-4587-888d-536d2492fb2e" data-max-width="512" src="https://cdn.javarush.ru/images/article/472f5fbf-dabb-4587-888d-536d2492fb2e/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="fffa958d-d037-4307-aa83-05b199721ca2" data-max-width="512" src="https://cdn.javarush.ru/images/article/fffa958d-d037-4307-aa83-05b199721ca2/original.png" alt="">
+        </div>
+    </div>
+</div>

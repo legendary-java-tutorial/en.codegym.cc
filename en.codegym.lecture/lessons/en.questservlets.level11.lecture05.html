@@ -1,0 +1,60 @@
+cation, when uploaded to the web server, is packaged into a single .war file. WAR now stands for Web Application Resources, although it used to be Web ARchive. In fact, this is a zip archive that contains a packaged web application.</p>
+<p>Here is what the typical content of a war file looks like:</p>
+<pre><code><span class="text-neon">/index.html
+/guestbook.jsp
+/images/logo.png
+/js/jquery.js</span>
+<span class="text-green">/WEB-INF/</span><span class="text-red">web.xml</span>
+<span class="text-green">/WEB-INF/classes/com/codegym/Util.class
+/WEB-INF/classes/com/codegym/MainServlet.class
+/WEB-INF/classes/application.properties
+/WEB-INF/lib/util.jar</span>
+/META-INF/MANIFEST.MF
+</code></pre>
+<p>Inside the war file are <span class="text-bold">static web resources</span> such as .html, .css, .js files, and so on. Also there can be pictures, videos and in general any files. They can be in the root or in subfolders, it doesn't matter. Tomcat will simply serve them up if they are requested.</p>
+<p>Let's say your web application is loaded on the web server under the name apple, then when <a href="http://localhost/apple/images/logo.png" target="_blank">http://localhost/apple/images/logo.png</a> is requested , Tomcat will return the file <span class="text-neon">/images/logo.png</span> .</p>
+<p>Separately, it is worth noting <span class="text-bold">the WEB-INF folder</span> . It is designed to store Java code in it. <span class="text-red">Tomcat will <span class="text-bold">not</span> give out its contents.</span></p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>/WEB-INF/classes/</td>
+    <td>directory for compiled non-JAR Java classes, including servlet classes and resource files needed by the loader before running the application</td>
+   </tr>
+   <tr>
+    <td>/WEB-INF/lib/</td>
+    <td>place to store jar libraries</td>
+   </tr>
+   <tr>
+    <td>/WEB-INF/web.xml</td>
+    <td>deployment descriptor</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>war file structure and maven project</h2>
+<p>Now let's move on to the directory hierarchy of the Maven project. You can see the full catalog layout in the official manual. Here we will get acquainted with it in a somewhat abbreviated version, excluding test resources. So, the standard Maven directory hierarchy looks like this:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>src/main/java</td>
+    <td>source codes of application classes and libraries in accordance with the generally accepted package hierarchy</td>
+   </tr>
+   <tr>
+    <td>src/main/resources</td>
+    <td>application resource files: database settings, localization files, etc.</td>
+   </tr>
+   <tr>
+    <td>src/main/webapp</td>
+    <td>web application resources (JSP files, text files, scripts, etc.)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>As you can see, it differs significantly from the structure of the WAR file that you know. But what actually happens when compiling a web application is simply moving and concatenating files into the structure defined in the Java EE specification.</p>
+<p><span class="text-bold">The src/main/webapp</span> directory defines the context root of the web application (when deployed to a server, the context root is the same as the name of the WAR file) and already contains the WEB-INF directory within it. That is, the contents of <span class="text-bold">src/main/webapp</span> are completely transferred to the web application.</p>
+<p>All your Java classes are compiled into class files and, keeping their package structure, are moved to the <span class="text-bold">/WEB-INF/classes/</span> directory . The JARs of the included libraries, which are defined in the Maven pom.xml dependencies as we defined above, are moved to the <span class="text-bold">/WEB-INF/lib/</span> directory .</p>
+<p>Application resources <span class="text-bold">src/main/resources</span> are moved to the application's classpath, specifically to the same <span class="text-bold">/WEB-INF/classes/</span> directory .</p>
+<p>To make it completely clear, look at this diagram, which will help you understand how and what goes where when building a project:</p>
+<img data-max-width="512" data-id="f7c7260a-01fa-468e-95c3-c4d1ac6cefc1" src="https://cdn.codegym.cc/images/article/f7c7260a-01fa-468e-95c3-c4d1ac6cefc1/512.jpeg" alt="">

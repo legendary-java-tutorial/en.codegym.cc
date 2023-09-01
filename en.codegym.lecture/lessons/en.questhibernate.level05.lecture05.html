@@ -1,0 +1,47 @@
+is empty, so it's time to create our first table. There are three ways to do this:</p>
+<ul>
+ <li>Create Table button in the top toolbar</li>
+ <li>local menu</li>
+ <li>SQL script</li>
+</ul>
+<p>Let's use the local menu this time. Just right-click on the Tables field and get this picture:</p><img data-max-width="512" data-id="9465c2ad-9c83-4b43-be38-4cbc2f4ebea4" alt="" src="https://cdn.javarush.com/images/article/9465c2ad-9c83-4b43-be38-4cbc2f4ebea4/512.jpeg" style="width: 512px;">
+<p>Next, you will see a panel for creating a table - it is scarier than it seems:</p><img data-max-width="1024" data-id="60e371d5-184d-42e3-aee6-700759a71b3c" alt="" src="https://cdn.javarush.com/images/article/60e371d5-184d-42e3-aee6-700759a71b3c/1024.jpeg" style="width: 1024px;">
+<p>You only need 2 places here:</p>
+<ol>
+ <li>Specify the name of the table in the field above.</li>
+ <li>Specify the name and type of columns in the field in the center.</li>
+</ol>
+<h2>Designing: Choosing the Right Column Names and Types</h2>
+<p>Let's create a table that will store users. In Java we would write something like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> userId<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token keyword">int</span> level<span class="token punctuation">;</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>How do we create such a table in SQL?</p>
+<p>First, let's define the naming convention. Java uses camelCase, but since SQL is mostly case-insensitive, the underscore is usually used here. So <strong>userId</strong> becomes <strong>user_id</strong> and <strong>createdDate</strong> becomes <strong>created_date</strong> .</p>
+<p>Next, you need to decide on the types. Let's create <strong>a table named user</strong> , which will contain 4 columns:</p>
+<ul>
+ <li><strong>id</strong> of type INT</li>
+ <li><strong>name</strong> of type VARCHAR(100)</li>
+ <li><strong>level</strong> of type INT</li>
+ <li><strong>created_date</strong> of type DATE</li>
+</ul>
+<p>Instead of user_id, we wrote id, since this is how it is accepted in SQL, we would write user_id if somewhere in another table we referred to the id column of the user table.</p>
+<p>We also set a 100 character limit for the name field. We do not want someone to save a couple of million characters there and break something for us. Reliability is everything.</p>
+<h2>Specifying field names</h2>
+<p>Now let's add the desired columns - there are only 4 of them:</p><img data-max-width="1024" data-id="8fb098ac-4b82-44cf-9bb3-4567c2bcb11d" alt="" src="https://cdn.javarush.com/images/article/8fb098ac-4b82-44cf-9bb3-4567c2bcb11d/1024.jpeg" style="width: 1024px;">
+<p>Pay attention to the two columns on the top left:</p>
+<ul>
+ <li>Column Name are the names of the columns.</li>
+ <li>DataType are column types.</li>
+</ul>
+<p>Everything is as we planned.</p>
+<p>And in the lower half of the picture we see a detailed decoding of <strong>the current row of the table</strong> , which describes the column of the user table. I hope everything is clear.</p>
+<p><strong>Important! </strong>If you think that the values ​​of some column should definitely not be NULL, then you need to mark it as Not Null (in the lower right corner). In this case, the MySQL server will make sure that this is always the case.</p>
+<p>We also have id marked as Primary Key, which, as you remember, means that these are unique Id records.</p>
+<h2>SQL query to create a table</h2>
+<p>Click Apply and we get such a wonderful SQL query:</p><img data-max-width="800" data-id="cc2daba3-764e-4d50-8c5f-3d5b42d6aac2" alt="" src="https://cdn.javarush.com/images/article/cc2daba3-764e-4d50-8c5f-3d5b42d6aac2/800.jpeg" style="width: 800px;">
+<p>Kind of like declaring a class in Java, right?</p>
+<p>Click Apply and see our first created table:</p><img data-max-width="1080" data-id="674ef569-e5bf-4b1f-a3fb-182a7c5bcd06" alt="" src="https://cdn.javarush.com/images/article/674ef569-e5bf-4b1f-a3fb-182a7c5bcd06/1080.jpeg" style="width: 1080px;">

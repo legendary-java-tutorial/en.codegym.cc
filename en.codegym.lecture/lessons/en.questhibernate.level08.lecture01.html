@@ -1,0 +1,60 @@
+dy seen the simplest <span class="text-neon"><span class="text-bold"><em>Statement</em></span></span> interface . And although it is quite suitable for work, it is not so well suited for complex queries. In some sources, the opinion is expressed that it is not necessary to use <span class="text-neon"><span class="text-bold"><em>Statement</em></span></span> at all - more complex and more functionally rich interfaces are suitable instead.</p>
+<ul>
+ <li><span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span></li>
+ <li><span class="text-neon"><span class="text-bold"><em>CallableStatement</em></span></span></li>
+</ul>
+<p>A quite reasonable question arises - why are these interfaces needed? Let's figure it out.</p>
+<p>First, we'll take a look at the <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> interface and other JDBC features. <span class="text-neon"><span class="text-bold"><em>We will turn to the CallableStatement</em></span></span> interface later - its use, firstly, is not so common, and secondly, after everything considered about it, the conversation can already be made quite short.</p><img data-max-width="512" data-id="e8812bce-d724-4019-a6c0-3901cfca155c" alt="" src="https://cdn.javarush.com/images/article/e8812bce-d724-4019-a6c0-3901cfca155c/512.jpeg" style="width: 512px;">
+<p>Also, <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> is a great help from the popular approach to database hacking called SQL Injection.</p>
+<p>But more on that a little later.</p>
+<h2>PreparedStatement</h2>
+<p>If you try to translate the name <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> , you can get something like “prepared statement”. The most important word here is “prepared”. What is "preparedness"?</p>
+<p>Before we consider this issue, I propose to see a rather important point from the point of view of convenience, which occurs very often. So, in some application, we need to insert contact data into the CONTACT table. To do this, we need to prepare a query like this:</p>
+<pre><code><strong>INSERT INTO JC_CONTACT (FIRST_NAME, LAST_NAME, PHONE, EMAIL) VALUES (‘Harry’,'Potter','+79112345678','harry@example.com);</strong>
+</code></pre>
+<p>At first glance, it seems that everything is not so difficult and scary. We need to write a code that will collect the string we need from the parameters: first name, last name, address and phone number. You just need to remember that all string data must be surrounded by a single quote character.</p>
+<p>If we do this in a separate function, then we get something like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">buildInsert</span><span class="token punctuation">(</span><span class="token class-name">String</span> firstName<span class="token punctuation">,</span><span class="token punctuation">,</span> <span class="token class-name">String</span> lastName<span class="token punctuation">,</span> <span class="token class-name">String</span> phone<span class="token punctuation">,</span> <span class="token class-name">String</span> email<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">String</span> sql <span class="token operator">=</span> "INSERT <span class="token class-name">INTO</span> JC_CONTACT <span class="token punctuation">(</span>FIRST_NAME<span class="token punctuation">,</span> LAST_NAME<span class="token punctuation">,</span> PHONE<span class="token punctuation">,</span> EMAIL<span class="token punctuation">)</span> “<span class="token operator">+</span>
+             	”VALUES <span class="token punctuation">(</span><span class="token string">'" + firstName + "'</span><span class="token punctuation">,</span><span class="token string">'" + lastName + "'</span><span class="token punctuation">,</span><span class="token string">'" + phone + "'</span><span class="token punctuation">,</span>'<span class="token string">" + email + "</span><span class="token punctuation">)</span>"<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> sql<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We pass the first name, last name, phone number, and address into the parameter function in the form, and from them we compose a SQL query string. Quotes spoil the picture a little, but so far it's not scary.</p>
+<p>Ok, what about the numbers? They do not need to be surrounded by quotes. Opanki, in one case you need quotes, in the other you don’t. The situation is getting more complicated.</p>
+<p>Now let's add one more problem - what if there is an ordinary quote (and not even one) inside the string? You must first look for such quotes and process them. Mdaaa. Somehow we begin to feel uncomfortable.</p>
+<p>If we now add date processing, then the task becomes completely boring - you have to do a huge amount of work. Dates are generally unpleasant - different SQL servers accept different formats for dates.</p>
+<p>So what do we see? If we need to use parameters inside the query, then manually building the query becomes very unpleasant. And not just unpleasant - I would even say boring. There are a huge number of cases to consider, and this is a terribly boring job. Basically, it is for such cases that the <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> interface was proposed .</p>
+<p>This request allows you to do two things:</p>
+<ul>
+ <li>Prepare a request in advance indicating the places where the parameters will be substituted</li>
+ <li>Set parameters of a certain type and then execute a query with parameters already set</li>
+</ul>
+<h2>PreparedStatement example</h2>
+<p>The structure for <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> for our option of setting parameters will look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// Example variables</span>
+<span class="token class-name">String</span> firstName <span class="token operator">=</span> <span class="token string">"Harry"</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> lastName <span class="token operator">=</span> <span class="token string">"Potter"</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> phone <span class="token operator">=</span> <span class="token string">"+12871112233"</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> email <span class="token operator">=</span> <span class="token string">"harry@example.com"</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Request with indication of places for parameters in the form of "?"</span>
+<span class="token class-name">String</span> sql <span class="token operator">=</span> <span class="token string">"INSERT INTO JC_CONTACT (FIRST_NAME, LAST_NAME, PHONE, EMAIL) VALUES (?, ?, ?, ?)"</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Create a request. The con variable is an object of type Connection</span>
+<span class="token class-name">PreparedStatement</span> stmt <span class="token operator">=</span> con<span class="token punctuation">.</span><span class="token function">prepareStatement</span><span class="token punctuation">(</span>sql<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Set parameters</span>
+stmt<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> firstName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+stmt<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> lastName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+stmt<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> phone<span class="token punctuation">)</span><span class="token punctuation">;</span>
+stmt<span class="token punctuation">.</span><span class="token function">setString</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> email<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Execute the request</span>
+stmt<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>As you can see, everything is quite simple.</p>
+<p>Firstly, when writing an SQL query, the places where the parameters will need to be substituted are written with question marks - “?”.</p>
+<p>Second, the request is created by calling <span class="code text-orange">con.prepareStatement()</span> .</p>
+<p>Thirdly, the setting of parameters goes through the indication of the number and value. Please note that the number of parameters starts from 1, not from 0, as we are used to when working with arrays and collections.</p>
+<p><span class="text-neon"><span class="text-bold"><em>The PreparedStatement</em></span></span> interface contains methods for setting strings — <span class="code text-orange">setString()</span> , for setting numbers — <span class="code text-orange">setInt()</span> , <span class="code text-orange">setLong()</span> , <span class="code text-orange">setDouble()</span> , for setting dates — <span class="code text-orange">setDate()</span> . And more complex types - this can be seen in the documentation.</p>
+<p>Fourth, the call to <span class="code text-orange">stmt.executeUpdate()</span> is already executed without specifying the query string.</p>
+<p>I strongly recommend making friends with <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> - this is a very effective tool.</p>

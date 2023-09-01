@@ -1,0 +1,252 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="3380dab9-64c2-4e54-a76a-aa6cd4dea470" data-max-width="1024" src="https://cdn.javarush.ru/images/article/3380dab9-64c2-4e54-a76a-aa6cd4dea470/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="e8f27e48-7442-45ef-8d53-fa7306386116" data-max-width="1024" src="https://cdn.javarush.ru/images/article/e8f27e48-7442-45ef-8d53-fa7306386116/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="35e544e3-49ee-44e3-8e02-1d9270c79565" data-max-width="512" src="https://cdn.javarush.ru/images/article/35e544e3-49ee-44e3-8e02-1d9270c79565/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="4bfd9868-87b7-4833-9421-581022a2cf85" data-max-width="512" src="https://cdn.javarush.ru/images/article/4bfd9868-87b7-4833-9421-581022a2cf85/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="5b8b81a3-236c-4c41-8838-096e9ad66d1b" data-max-width="512" src="https://cdn.javarush.ru/images/article/5b8b81a3-236c-4c41-8838-096e9ad66d1b/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="b1d63668-b0e4-4b1f-95b1-d7fea93edeef" data-max-width="512" src="https://cdn.javarush.ru/images/article/b1d63668-b0e4-4b1f-95b1-d7fea93edeef/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. The <code>if-else</code> statement</h2>
+<p>Programs wouldn't be very useful if they always did the same thing, regardless of how external circumstances change. A program needs to be able to adapt to different situations and take certain actions in some situations, and to act differently in others.</p>
+<p>In Java, this is done with a <span class="term">conditional statement</span>, which uses a special keyword that lets you execute different blocks of commands depending on the truth value of a condition.</p>
+<p>A conditional statement consists of three parts: <span class="term text-red">condition</span>, <span class="term text-green">statement 1</span> and <span class="term text-user">statement 2</span>. If the <span class="term text-red">condition</span> is true, then <span class="term text-green">statement 1</span> is executed. Otherwise <span class="term text-user">statement 2</span> is executed. Both commands are never executed. Here's the general appearance of this kind of statement:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="code">if</span> (<span class="code text-red">condition</span>)
+   <span class="code text-green">statement 1</span>;
+<span class="code">else</span>
+   <span class="code text-user">statement 2</span>;</code></pre>
+    <div class="lesson-example-caption">The <code>if-else</code> conditional statement</div>
+</div>
+<p> It is quite understandable when written in plain English like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="code">If</span> <span class="code text-red">condition</span> is true, then
+   execute <span class="code text-green">statement 1</span>;
+<span class="code">otherwise</span>
+   execute <span class="code text-user">statement 2</span>;</code></pre>
+    <div class="lesson-example-caption">The <code>if-else</code> statement in plain language</div>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int age = 17;
+if (<span class="code text-red">age &lt; 18</span>)
+   <span class="code text-green">System.out.println("You are still a child")</span>;
+else
+   <span class="code text-user">System.out.println("You are now an adult")</span>;</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>You are still a child</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int temperature = 5;
+if (<span class="code text-red">temperature &lt; 0</span>)
+   <span class="code text-green">System.out.println("It's freezing outside")</span>;
+else
+   <span class="code text-user">System.out.println("It's warm")</span>;</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>It's warm</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int age = 18;
+if (<span class="code text-red">age == 18</span>)
+   <span class="code text-green">System.out.println("You've been drafted for military service")</span>;
+else
+   <span class="code text-user">System.out.println("Report for duty anyway")</span>;</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>You've been drafted for military service</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0301"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0302"></div>
+<hr>
+<h2>2. Block of statements</h2>
+<p>If the condition is satisfied (or not) and you want your program to execute several commands, you can combine them into a <span class="term text-green">block</span>.</p>
+<p>To combine commands into a block, you "wrap" them in <span class="term text-viola">curly braces</span>. Here's how it looks in general:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="code text-viola">{</span>
+   <span class="code text-green">statement 1</span>;
+   <span class="code text-green">statement 2</span>;
+   <span class="code text-green">statement 3</span>;
+<span class="code text-viola">}</span></code></pre>
+
+</div>
+<p>You can have as many statements as you want in a block. Or even none.</p>
+<p>Examples of an <span class="term">if-else</span> statement combined with a block of statements:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="60%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int age = 17;
+if (<span class="code text-red">age &lt; 18</span>)
+{
+   <span class="code text-green">System.out.println("You are still a child")</span>;
+   <span class="code text-green">System.out.println("Don't talk back to adults")</span>;
+}
+else
+{
+   <span class="code text-user">System.out.println("You are now an adult")</span>;
+   <span class="code text-user">System.out.println("And thus ends your youth")</span>;
+}</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>You are still a child
+Don't talk back to adults</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int temperature = 5;
+if (<span class="code text-red">temperature &lt; 0</span>)
+{
+   <span class="code text-green">System.out.println("It's freezing outside")</span>;
+   <span class="code text-green">System.out.println("Put on a hat")</span>;
+}
+else
+   <span class="code text-user">System.out.println("It's warm")</span>;</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>It's warm</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int age = 21;
+if (<span class="code text-red">age == 18</span>)
+   <span class="code text-green">System.out.println("You've been drafted for military service")</span>;
+else
+{
+}</code></pre>
+        </td>
+        <td>The empty block will be executed.<br>
+            The code will run fine, but <span class="term">nothing</span> will be displayed.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>3. Abbreviated form of the <code>if</code> statement</h2>
+<p>Sometimes it you need to <span class="term"><span class="text-green">execute</span> one or statements <span class="text-viola">if</span> <span class="text-red">the condition is true</span></span> but <span class="term">nothing should be done</span> if it is false.</p>
+<p>For example, we can specify this command: <code><span class="text-viola">If</span> <span class="text-red">Bus No. 62 has arrived</span>, then <span class="text-green">get aboard</span></code>, but don't react if the bus isn't here. In Java, this scenario lets us use an abbreviated form: an <code class="text-viola">if</code> statement without an <code>else</code> block.</p>
+<p>In other words, if statements(s) needs to be executed only if <strong>the condition is true</strong> and there are no commands to be executed when the condition is false, then you should use the <code class="text-viola">if</code> statement, which is concise and omits the <code>else</code> block. It looks like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="code text-viola">if</span> (<span class="code text-red">condition</span>)
+   <span class="code text-green">statement 1</span>;</code></pre>
+    <div class="lesson-example-caption">The <code>if</code> conditional statement</div>
+</div>
+<p>Below are three examples of equivalent code:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="60%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int age = 18;
+<span class="code text-viola">if</span> (<span class="code text-red">age == 18</span>)
+{
+   <span class="code text-green">System.out.println("You've been drafted for military service")</span>;
+}
+else
+{
+}</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>You've been drafted for military service</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The program has an <code>else</code> block, but it is empty (there are no statements between the curly braces). You can simply remove it. Nothing will change in the program.</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="60%">Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int age = 18;
+<span class="code text-viola">if</span> (<span class="code text-red">age == 18</span>)
+{
+   <span class="code text-green">System.out.println("You've been drafted for military service")</span>;
+}</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>You've been drafted for military service</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int age = 18;
+<span class="code text-viola">if</span> (<span class="code text-red">age == 18</span>)
+   <span class="code text-green">System.out.println("You've been drafted for military service")</span>;</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>You've been drafted for military service</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0315"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="ca48d210-2815-4362-92a3-d2268366cc1d" data-max-width="1024" src="https://cdn.javarush.ru/images/article/ca48d210-2815-4362-92a3-d2268366cc1d/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="20b237e1-d0a7-426c-96ae-38e91e1a5aec" data-max-width="512" src="https://cdn.javarush.ru/images/article/20b237e1-d0a7-426c-96ae-38e91e1a5aec/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="9839e118-545f-431b-986b-3242fdd92a33" data-max-width="512" src="https://cdn.javarush.ru/images/article/9839e118-545f-431b-986b-3242fdd92a33/original.png" alt="">
+        </div>
+    </div>
+</div>

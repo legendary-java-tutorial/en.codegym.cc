@@ -1,0 +1,162 @@
+<p>When developing a multi-threaded application, we must usually deal with organizing the work of threads. The larger our application and the more threads we need for multithreaded tasks, the more <mark class="green">Runnable</mark> objects we create. </p>
+
+    <p>It should be noted here that creating a thread in Java is a rather expensive operation. If we create a new instance of the thread each time to perform an operation, we will get big problems with performance and, as a result, with the health of the application. </p>
+
+    <p>A <span class="text-green"><span class="text-bold"><em>thread pool</em></span></span> and <span class="code"><span class="text-green">ThreadPoolExecutor</span></span> come to our aid here.</p>
+
+    <p>A <span class="text-green"><span class="text-bold"><em>thread pool</em></span></span> is a set of pre-initialized threads. Its size can be fixed or variable. </p>
+
+<img data-max-width="512" data-id="29e42550-7f47-455c-9d8b-205c94ea90a1" src="https://cdn.codegym.cc/images/article/29e42550-7f47-455c-9d8b-205c94ea90a1/512.jpeg" alt="">
+
+    <p>If there are more tasks than threads, then tasks wait in a task queue. The Nth thread in the pool takes a task from the queue, and after it is done, the thread picks up a new task from the queue. Once all tasks in the queue are executed, the threads remain active and wait for new tasks. When new tasks appear, the threads start executing them as well. </p>
+
+    <h2>ThreadPoolExecutor </h2>
+
+    <p>Starting with Java 5, the <span class="text-bold">Executor framework</span> gained a multithreading solution. In general, it has lots of components and its purpose is to help us efficient manage queues and thread pools. </p>
+
+    <p>The main interfaces are <span class="text-neon"><span class="text-bold"><em>Executor</em></span></span> and <span class="text-neon"><span class="text-bold"><em>ExecutorService</em></span></span>. </p>
+
+    <p><span class="text-neon"><span class="text-bold"><em>Executor</em></span></span> is an interface with a single void execute(Runnable runnable) method.</p>
+
+    <p>When passing a task to an implementation of this method, know that it will be executed asynchronously in the future. </p>
+
+    <p><span class="text-neon"><span class="text-bold"><em>ExecutorService</em></span></span> — An interface that extends the <span class="text-neon"><span class="text-bold"><em>Executor</em></span></span> interface, adding capabilities for executing tasks. It also has methods for interrupting a running task and terminating the thread pool. <p>
+
+    <p><span class="code"><span class="text-green">ThreadPoolExecutor</span></span> implements the <span class="text-neon"><span class="text-bold"><em>Executor</em></span></span> and <span class="text-neon"><span class="text-bold"><em>ExecutorService</em></span></span> interfaces and separates task creation from task execution. We need to implement <span class="text-neon"><span class="text-bold"><em>Runnable</em></span></span> objects and send them to an executor. The <span class="code"><span class="text-green">ThreadPoolExecutor</span></span> is then responsible executing the tasks, and creating and working with threads.</p>
+ 
+<img data-max-width="800" data-id="9e48fd33-a221-411b-b02b-bca711a1aedc" src="https://cdn.codegym.cc/images/article/9e48fd33-a221-411b-b02b-bca711a1aedc/800.jpeg" alt="">
+
+    <p>After a task is sent for execution, an existing thread in the pool is used. This improve performance. It solves the problem of wasting resources on creating and initializing a new thread, and then again on garbage collection once we're done with the thread. </p>
+
+    <p><span class="code"><span class="text-green">ThreadPoolExecutor</span></span> has 4 constructors:</p>
+
+    <pre class='language-java line-numbers'><code>
+ThreadPoolExecutor(
+int corePoolSize,
+int maximumPoolSize,
+long keepAliveTime, 
+TimeUnit unit, 
+BlockingQueue&lt;Runnable&gt; workQueue)
+    </code></pre>
+ 
+    <pre class='language-java line-numbers'><code>
+ThreadPoolExecutor(
+int corePoolSize,
+int maximumPoolSize,
+long keepAliveTime,
+TimeUnit unit,
+BlockingQueue&lt;Runnable&gt; workQueue,
+RejectedExecutionHandler handler)
+    </code></pre>
+ 
+    <pre class='language-java line-numbers'><code>
+ThreadPoolExecutor(
+int corePoolSize,
+int maximumPoolSize,
+long keepAliveTime, 
+TimeUnit unit,
+BlockingQueue&lt;Runnable&gt; workQueue,
+ThreadFactory threadFactory)
+    </code></pre>
+ 
+    <pre class='language-java line-numbers'><code>
+ThreadPoolExecutor(
+int corePoolSize,
+int maximumPoolSize,
+long keepAliveTime, 
+TimeUnit unit,
+BlockingQueue&lt;Runnable&gt; workQueue,
+ThreadFactory threadFactory, 
+RejectedExecutionHandler handler)
+    </code></pre> 
+
+    <p>The <span class="code"><span class="text-green">ThreadPoolExecutor</span></span> constructor has the following parameters: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="text-green">corePoolSize</span></td>
+                <td>This parameter indicates how many threads will be ready (started) when the executor service starts.</td>
+            </tr>
+            <tr>
+                <td><span class="text-green">maximumPoolSize</span></td>
+                <td>The maximum number of threads that an executor service can create.</td>
+            </tr>
+            <tr>
+                <td><span class="text-green">keepAliveTime</span></td>
+                <td>The time that a freed thread will continue to live before being destroyed if the number of threads is greater than <mark class="user">corePoolSize</mark>. The time units are specified in the next parameter.</td>
+            </tr>
+            <tr>
+                <td><span class="text-green">unit</span></td>
+                <td>Time units (hours, minutes, seconds, milliseconds, etc.).</td>
+            </tr>
+            <tr>
+                <td><span class="text-green">workQueue</span></td>
+                <td>Implementation of a queue for tasks.</td>
+            </tr>
+            <tr>
+                <td><span class="text-green">handler</span></td>
+                <td>Handler for tasks that cannot be completed.</td>
+            </tr>
+            <tr>
+                <td><span class="text-green">threadFactory</span></td>
+                <td>An object that creates new threads on demand. Using thread factories makes calls to a new thread hardware independent, allowing applications to use special thread subclasses, priorities, and so on.</td>
+            </tr>
+        </tbody>
+    </table>
+ 
+    <h2>Creating a ThreadPoolExecutor</h2>
+
+    <p>The <span class="code"><span class="text-green">Executors</span></span> utility class can simplify creation of a <span class="code"><span class="text-green">ThreadPoolExecutor</span></span>. The methods of this utility class help us prepare a <mark class="green">ThreadPoolExecutor</mark> object.</p>
+ 
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="code text-orange">newFixedThreadPool</span> — Creates a thread pool that reuses a fixed number of threads to execute any number of tasks.</td>
+ 
+                <td>
+                    <pre class='language-java line-numbers'><code>
+ExecutorService executor = Executors.newFixedThreadPool(10);
+                    </code></pre>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">newWorkStealingPool</span> — Creates a thread pool where number of threads is equal to the number of processor cores available to the JVM. The default concurrency level is one. This means that as many threads will be created in the pool as there are CPU cores available to the JVM. If the concurrency level is 4, then the passed value is used instead of the number of cores.</td>
+ 
+                <td>
+                    <pre class='language-java line-numbers'><code>
+ExecutorService executor = Executors.newWorkStealingPool(4);
+                    </code></pre>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">newSingleThreadExecutor</span> — Creates a pool with a single thread to execute all tasks.</td>
+ 
+                <td>
+                    <pre class='language-java line-numbers'><code>
+ExecutorService executor = Executors.newSingleThreadExecutor();
+                    </code></pre>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">newCachedThreadPool</span> — Creates a thread pool that creates new threads as needed, but reuses previously created threads when they are available.</td>
+ 
+                <td>
+                    <pre class='language-java line-numbers'><code>
+ExecutorService executor = Executors.newCachedThreadPool();
+                    </code></pre>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">newScheduledThreadPool</span> — Creates a thread pool that can schedule commands to execute after a given delay or periodically.</td>
+ 
+                <td>
+                    <pre class='language-java line-numbers'><code>
+ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
+                    </code></pre>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>We will consider each type of pool in the following lessons.</p>

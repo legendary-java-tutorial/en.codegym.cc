@@ -1,0 +1,159 @@
+<p>Another type of thread pool is "cached". Such thread pools are just as commonly used as fixed ones. </p>
+
+    <p>As indicated by the name, this kind of thread pool caches threads. It keeps unused threads alive for a limited time in order to reuse those threads to perform new tasks. Such a thread pool is best for when we have some reasonable amount of light work. </p>
+
+    <p>The meaning of "some reasonable amount" is rather broad, but you should know that such a pool is not suitable for every number of tasks. For example, suppose we want to create a million tasks. Even if each takes a very small amount of time, we will still use an unreasonable amount of resources and degrade performance. We should also avoid such pools when the execution time is unpredictable, for example, with I/O tasks.</p>
+
+    <p>Under the hood, the <span class="code text-orange"><span class="text-bold">ThreadPoolExecutor</span></span> constructor is called with the following arguments:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static ExecutorService newCachedThreadPool() {
+    return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, 
+      new SynchronousQueue&lt;Runnable&gt;());
+}</code></pre>
+
+    <p>The following values are passed to the constructor as arguments:</p> 
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td><span class="text-green">corePoolSize</span> (how many threads will be ready (started) when the <span class="text-green"><span class="text-bold"><em>executor</em></span></span> service starts)</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td><span class="text-green">maximumPoolSize</span> (the maximum number of threads that an <span class="text-green"><span class="text-bold"><em>executor</em></span></span> service can create)</td>
+                <td><span class="text-yellow"><span class="text-bold">Integer.MAX_VALUE</span></span></td>
+            </tr>
+            <tr>
+                <td><span class="text-green">keepAliveTime</span> (the time that a freed thread will continue to live before being destroyed if the number of threads is greater than <span class="text-green">corePoolSize</span>)</td>
+                <td>60L</td>
+            </tr>
+            <tr>
+                <td><span class="text-green">unit</span> (units of time)</td>
+                <td><span class="text-yellow"><span class="text-bold">TimeUnit.SECONDS</span></td>
+            </tr>
+            <tr>
+                <td><span class="text-green">workQueue</span> (implementation of a queue)</td>
+                <td><span class="code text-orange">new SynchronousQueue&lt;Runnable&gt;()</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>And we can pass our own implementation of <span class="text-neon"><span class="text-bold"><em>ThreadFactory</em></span></span> in exactly the same way.</p>
+
+    <h2>Let's talk about SynchronousQueue</h2>
+
+    <p>The basic idea of a synchronous transfer is quite simple and yet counter-intuitive (that is, intuition or common sense tells you that it is wrong): you can add an element to a queue <em>if and only if</em> another thread receives the element at the same time. In other words, <span class="text-bold">a synchronous queue cannot have tasks in it, because as soon as a new task arrives, the executing thread has already picked up the task</span>.</p>
+
+<img data-max-width="800" data-id="61bbeb7c-218b-46d1-b6d7-603daeca6b72" src="https://cdn.codegym.cc/images/article/61bbeb7c-218b-46d1-b6d7-603daeca6b72/800.jpeg" alt="">
+
+    <p>When a new task enters the queue, if there is a free active thread in the pool, then it picks up the task. If all the threads are busy, then a new thread is created.</p>
+
+    <p>A cached pool starts with zero threads and can potentially grow to <span class="text-yellow"><span class="text-bold">Integer.MAX_VALUE</span></span> threads. Essentially, the size of a cached thread pool is limited only by system resources.</p>
+
+    <p>To conserve system resources, cached thread pools remove threads that are idle for one minute.</p>
+
+    <p>Let's see how it works in practice. We'll create a task class that models a user request: </p>
+
+    <pre class='language-java line-numbers'><code>
+public class Task implements Runnable {
+   int taskNumber;
+
+   public Task(int taskNumber) {
+       this.taskNumber = taskNumber;
+   }
+
+   @Override
+   public void run() {
+       System.out.println("Processed user request #" + taskNumber + " on thread " + Thread.currentThread().getName());
+   }
+}
+    </code></pre>
+
+    <p>In the <span class="code text-orange">main</span> method, we create <span class="code text-orange">newCachedThreadPool</span> and then add 3 tasks for execution. Here we print the status of our service <span class="text-bold">(1)</span>.</p>
+
+    <p>Next, we pause for 30 seconds, start another task, and display the status <span class="text-bold">(2)</span>.</p>
+
+    <p>After that, we pause our main thread for 70 seconds, print the status <span class="text-bold">(3)</span>, then again add 3 tasks, and again print the status <span class="text-bold">(4)</span>.</p>
+
+    <p>In places where we display the status immediately after adding a task, we first add a 1-second <span class="code text-orange">sleep</span> for up-to-date output.</p>
+
+    <pre class='language-java line-numbers'><code>
+ExecutorService executorService = Executors.newCachedThreadPool();
+        for (int i = 0; i &lt; 3; i++) {
+            executorService.submit(new Task(i));
+        }
+ 
+        TimeUnit.SECONDS.sleep(1);
+            System.out.println(executorService);	//(1)
+ 
+        TimeUnit.SECONDS.sleep(30);
+ 
+        executorService.submit(new Task(3));
+        TimeUnit.SECONDS.sleep(1);
+            System.out.println(executorService);	//(2)
+ 
+        TimeUnit.SECONDS.sleep(70);
+ 
+            System.out.println(executorService);	//(3)
+ 
+        for (int i = 4; i &lt; 7; i++) {
+            executorService.submit(new Task(i));
+        }
+ 
+        TimeUnit.SECONDS.sleep(1);
+            System.out.println(executorService);	//(4)
+        executorService.shutdown();</code></pre>
+
+    <p>And here's the result:</p>
+
+    <div class="terminal">Processed user request #0 on pool-1-thread-1 thread<br />
+Processed user request #1 on pool-1-thread-2 thread<br />
+Processed user request #2 on pool-1-thread-3 thread<br />
+(1) java.util.concurrent.ThreadPoolExecutor@f6f4d33[Running, pool size = 3, active threads = 0, queued tasks = 0, completed tasks = 3]<br />
+Processed user request #3 on pool-1-thread-2 thread<br />
+(2) java.util.concurrent.ThreadPoolExecutor@f6f4d33[Running, pool size = 3, active threads = 0, queued tasks = 0, completed tasks = 4]<br />
+(3) java.util.concurrent.ThreadPoolExecutor@f6f4d33[Running, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 4]<br />
+Processed user request #4 on pool-1-thread-4 thread<br />
+Processed user request #5 on pool-1-thread-5 thread<br />
+Processed user request #6 on pool-1-thread-4 thread<br />
+(4) java.util.concurrent.ThreadPoolExecutor@f6f4d33[Running, pool size = 2, active threads = 0, queued tasks = 0, completed tasks = 7]</div>
+
+    <p>Let's go over each of the steps: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Step</th>
+                <th>Explanation</th>
+            </tr>
+            <tr>
+                <td>1 (after 3 completed tasks)</td>
+                <td>We created 3 threads, and 3 tasks were executed on these three threads.<br />
+When the status is displayed, all 3 tasks are done, and the threads are ready to perform other tasks.</td>
+            </tr>
+            <tr>
+                <td>2 (after 30-second pause and execution of another task)</td>
+                <td>After 30 seconds of inactivity, the threads are still alive and waiting for tasks.<br />
+Another task is added and executed on a thread taken from the pool of the remaining live threads.<br />
+No new thread was added to the pool.</td>
+            </tr>
+            <tr>
+                <td>3 (after a 70-second pause)</td>
+                <td>The threads have been removed from the pool.<br />
+There are no threads ready to accept tasks.</td>
+            </tr>
+            <tr>
+                <td>4 (after executing 3 more tasks)</td>
+                <td>After more tasks were received, new threads were created. This time just two threads managed to process 3 tasks.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Well, now you're acquainted with the logic of another type of executor service.</p>
+
+    <p>By analogy with other methods of the <span class="code"><span class="text-green">Executors</span></span> utility class, the <span class="code text-orange">newCachedThreadPool</span> method also has an overloaded version that takes a <span class="text-orange">ThreadFactory</span> object as an argument.</p>

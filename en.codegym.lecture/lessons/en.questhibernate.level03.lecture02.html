@@ -1,0 +1,41 @@
+IN operator</h2>
+<p>As the amount of data in tables grows, duplicate values ​​often appear in them. For example, the product table has brand names. which are sometimes repeated. It would be useful to have a separate brand table for them, which would contain, for example, such data:</p>
+<ul>
+ <li>id - brand id;</li>
+ <li>name – brand name;</li>
+ <li>company_owner - the name of the company owner of the brand;</li>
+ <li>company_contacts - contacts of the brand owner's company.</li>
+</ul>
+<p>Then we would like to create a table of addresses into which we could put all the addresses:</p>
+<ul>
+ <li>id – id-addresses;</li>
+ <li>country;</li>
+ <li>region;</li>
+ <li>city;</li>
+ <li>street;</li>
+ <li>house;</li>
+ <li>zip.</li>
+</ul>
+<p>Moreover, in this table it would be possible to store the addresses of not only brand-owning companies, but also the addresses of customers and employees. And this approach is simply a consequence of the growth in the amount of data (the number of rows in the tables). This makes it easier to manipulate data in tables and maintain their integrity.</p>
+<p>When you have 5 employees, you can simply enter their occupation in the <strong>occupation</strong> column . If you have 5 thousand employees in your company, then you need a table with a list of x professions and their responsibilities.</p>
+<p>In the Java language, by the way, there is something similar. If you have a lot of code in a method, then there is a desire to break it into several methods. If there are many methods in a class, then I want to break it into several classes.</p>
+<p>That is why large databases have thousands of tables. And almost all queries are executed on several tables at once. And the Cartesian product of the rows of three tables in each of which has a thousand records is already a billion rows.</p>
+<p>But just filtering a billion rows using WHERE can take hours. Therefore, the creators of the SQL language offered their solution - the JOIN operator.</p>
+<h2>Introduction to the JOIN operator</h2>
+<p><strong>The JOIN operator</strong> is used to explicitly tell the SQL server that we do not need a Cartesian product of all rows of tables for all, but a smart gluing of rows of different tables that refer to each other using an ID (or in another way). The server has a separate algorithm for processing table joins using the JOIN operator, which allows such operations to be performed much faster. The general form of the JOIN operator is as follows:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-orange">table <span class="token number">1</span></span><span class="token number"></span> <span class="text-red">JOIN</span> <span class="text-orange">table <span class="token number">2</span></span><span class="token number"></span> <span class="text-red">ON</span> <span class="text-user">condition</span></code></pre>
+</div>
+<p>It says here that you need to combine the tables <span class="text-orange"><strong>table1</strong></span> and <span class="text-orange"><strong>table2</strong></span><strong> into one table, and use the condition</strong> as the join criterion .</p>
+<p>Let's take our old example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="token class-name"><span class="text-red">FROM</span></span> <span class="text-orange">employee</span><span class="token punctuation">,</span> <span class="text-orange">task</span> <span class="text-red">WHERE</span> <span class="text-orange">emploee</span><span class="token punctuation">.</span><span class="text-green">id</span> <span class="token operator">=</span> <span class="text-orange">task</span><span class="token punctuation">.</span><span class="text-green">emploee_id</span></code></pre>
+</div>
+<p>And rewrite it using the JOIN operator:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-orange">employee</span> <span class="text-red">JOIN</span> <span class="text-orange">task</span> <span class="text-red">ON</span> <span class="text-orange">emploee</span><span class="token punctuation">.</span><span class="text-green">id</span> <span class="token operator">=</span> <span class="text-orange">task</span><span class="token punctuation">.</span><span class="text-green">emploee_id</span></code></pre>
+</div>
+<p>Both queries will give the same result in our case, but this is only because the queries are very simple. In the future, WHERE allows you to build up exactly the row filter, and the one specified after ON allows you to write complex scripts for linking tables. You can also use aliases (table aliases) when using the JOIN statement. Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-orange">employee e</span> <span class="text-red">JOIN</span> <span class="text-orange">task t</span> <span class="text-red">ON e</span><span class="token punctuation">.</span><span class="text-green">id</span> <span class="token operator">=</span> <span class="text-orange">t</span><span class="token punctuation">.</span><span class="text-green">emploee_id</span></code></pre>
+</div>

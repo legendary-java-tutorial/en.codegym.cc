@@ -1,0 +1,163 @@
+store various records in a database for many years, two questions often arise:</p>
+<ul>
+ <li>When was this entry added to the database?</li>
+ <li>When was this entry last changed?</li>
+</ul>
+<p>These are such frequent tasks that two columns are added to almost every table in the database:</p>
+<ul>
+ <li>created_time</li>
+ <li>updated_time</li>
+</ul>
+<p>The first stores the date and time the record was created, and the second stores the date and time it was last modified. And each Entity class has fields:</p>
+<pre class="line-numbers"><code>
+@Entity
+@Table(name = "entities")	
+public class Entity {
+  ...
+ 
+  <span class="text-brown">@Column(name="created_time")</span>
+  private Date created;
+ 
+  <span class="text-brown">@Column(name="updated_time")</span>
+  private Date updated;
+}
+
+</code></pre>
+<p>Hibernate can do all the work of controlling when objects in the database are updated with two annotations <code>@CreationTimestamp</code>and <code>@UpdateTimestamp</code>.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"entities"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Entity</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+	<span class="token annotation punctuation"><span class="text-red">@CreationTimestamp</span></span>
+    <span class="token annotation punctuation">@Temporal</span><span class="token punctuation">(</span><span class="token class-name">TemporalType</span><span class="token punctuation">.</span>TIMESTAMP<span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"create_date"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Date</span> createDate<span class="token punctuation">;</span>
+
+	<span class="token annotation punctuation"><span class="text-red">@UpdateTimestamp</span></span>
+    <span class="token annotation punctuation">@Temporal</span><span class="token punctuation">(</span><span class="token class-name">TemporalType</span><span class="token punctuation">.</span>TIMESTAMP<span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"modify_date"</span><span class="token punctuation">)</span>
+	<span class="token keyword">private</span> <span class="token class-name">Date</span> modifyDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The columns marked with these annotations will always store the correct time when the object was created and when it was last modified.</p>
+<h2>5.2 @PrePersist annotation</h2>
+<p>If you need some more complex scripts to control the time of an object, then Hibernate has annotations for this case too. They can mark class methods, and Hibernate will call these methods when it saves the object to the database. There are 7 such annotations in total:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>@PrePersist</strong></td>
+    <td>Called before the object is saved to the database. (SQL INSERT)</td>
+   </tr>
+   <tr>
+    <td><strong>@PostPersist</strong></td>
+    <td>Called immediately after the object is saved to the database. (SQL INSERT)</td>
+   </tr>
+   <tr>
+    <td><strong>@PreRemove</strong></td>
+    <td>Called before deleting an object in the database.</td>
+   </tr>
+   <tr>
+    <td><strong>@PostRemove</strong></td>
+    <td>Called after an object has been deleted from the database.</td>
+   </tr>
+   <tr>
+    <td><strong>@PreUpdate</strong></td>
+    <td>Called before updating (SQL UPDATE) an object in the database.</td>
+   </tr>
+   <tr>
+    <td><strong>@PostUpdate</strong></td>
+    <td>Called after an update (SQL UPDATE) of an object in the database.</td>
+   </tr>
+   <tr>
+    <td><strong>@postload</strong></td>
+    <td>Called after the object has been loaded from the database.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's write an example where we tell a class the correct time to create and update its objects:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"entities"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Entity</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+  <span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_time"</span><span class="token punctuation">)</span></span><span class="token punctuation"></span>
+  <span class="token keyword">private</span> <span class="token class-name">Date</span> created<span class="token punctuation">;</span>
+
+  <span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"updated_time"</span><span class="token punctuation">)</span></span><span class="token punctuation"></span>
+  <span class="token keyword">private</span> <span class="token class-name">Date</span> updated<span class="token punctuation">;</span>
+
+  <span class="token annotation punctuation"><span class="text-red">@PrePersist</span></span>
+  <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    created <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token annotation punctuation"><span class="text-red">@PreUpdate</span></span>
+  <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  updated <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>If Hibernate saves the object for the first time, then it will call the method annotated with <code>@PrePersist</code>. If it updates an existing object in the database, it will call the method marked with the annotation <code>@PreUpdate</code>.</p>
+<h2>5.3 Adding our EntityListeners</h2>
+<p>If you really need to, then you can separate the methods that Hibernate calls from the object on which it calls them. The JPA specification allows you to declare listener classes that will be called at certain times when processing Entity objects.</p>
+<p>If you have a lot of similar Entity objects, then you can move some of them into the base class and add a Listener that would control their behavior. Example:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@MappedSuperclass</span>
+public abstract class <span class="text-user">BaseEntity</span> {
+ 
+    private Timestamp createdOn;
+ 
+    private Timestamp updatedOn;
+ 
+}
+
+
+<span class="text-brown">@Entity</span>
+public class <span class="text-yellow">User</span> extends <span class="text-user">BaseEntity</span> {
+ 
+     @Id
+     private Long id;
+ 
+     private String name;
+}
+</code></pre>
+<p>Then for the BaseEntity class, you can create a special listener class:</p>
+<pre class="line-numbers"><code>
+public class TimeEntityListener {
+ 
+    public void <span class="text-brown">onPersist</span>(Object entity) {
+    	if (entity instanceof <span class="text-user">BaseEntity</span>) {
+        	<span class="text-user">BaseEntity</span> baseEntity = (<span class="text-user">BaseEntity</span>) entity;
+        	baseEntity.createdOn = <span class="text-brown">now</span>();
+    	}
+    }
+ 
+    public void <span class="text-brown">onUpdate</span>(Object entity) {
+    	if (entity instanceof <span class="text-user">BaseEntity</span>) {
+        	<span class="text-user">BaseEntity</span> baseEntity = (<span class="text-user">BaseEntity</span>) entity;
+        	baseEntity.updatedOn = <span class="text-brown">now</span>();
+    	}
+    }
+ 
+    private Timestamp <span class="text-brown">now</span>() {
+    	return Timestamp.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)   );
+    }
+}
+</code></pre>
+<p>And you can connect the User class and its listener using a couple of annotations:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@EntityListeners(class= TimeEntityListener.class)</span>
+public class <span class="text-yellow">User</span> extends BaseEntity {
+ 
+     @Id
+     private Long id;
+ 
+     private String name;
+}
+</code></pre>
+<p></p>
+<p></p>
+<p></p>

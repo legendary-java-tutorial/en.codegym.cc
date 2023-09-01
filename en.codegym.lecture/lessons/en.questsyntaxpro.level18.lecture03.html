@@ -1,0 +1,492 @@
+<h2>1. List of methods of the <code>Stream</code> class</h2>
+<p>The <code>Stream</code> class was created to make it easy to <span class="text-bold">construct</span> chains of data streams. To achieve this, the <code><span class="text-viola">Stream</span>&lt;T&gt;</code> class has methods that return new <code>Stream</code> objects.</p>
+<p>Each of these data streams does one simple action, but if you combine them into chains and add interesting <span class="term">lambda functions</span>, then you have a powerful mechanism for generating the output you want. Soon you will see for yourself.</p>
+<p>Here are the methods of the <code>Stream</code> class (only the most basic ones):</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">of</span>()</code></pre>
+        </td>
+        <td>Creates a stream from a set of objects</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">generate</span>()</code></pre>
+        </td>
+        <td>Generates a stream according to the specified rule</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">concat</span>()</code></pre>
+        </td>
+        <td>Concatenates two streams</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">filter</span>()</code></pre>
+        </td>
+        <td>Filters the data, only passing along data that matches the specified rule</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">distinct</span>()</code></pre>
+        </td>
+        <td>Removes duplicates. Does not pass along data that has already been encountered</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">sorted</span>()</code></pre>
+        </td>
+        <td>Sorts the data</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">peek</span>()</code></pre>
+        </td>
+        <td>Performs an action on each element in the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">limit</span>(n)</code></pre>
+        </td>
+        <td>Returns a stream that is truncated so that it is no longer than the specified limit</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;T&gt; <span class="text-red">skip</span>(n)</code></pre>
+        </td>
+        <td>Skips the first n elements</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;R&gt; <span class="text-red">map</span>()</code></pre>
+        </td>
+        <td>Converts data from one type to another</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">Stream</span>&lt;R&gt; <span class="text-red">flatMap</span>()</code></pre>
+        </td>
+        <td>Converts data from one type to another</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>boolean <span class="text-red">anyMatch</span>()</code></pre>
+        </td>
+        <td>Checks whether there is at least one element in the stream that matches the specified rule</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>boolean <span class="text-red">allMatch</span>()</code></pre>
+        </td>
+        <td>Checks whether all the elements in the stream match the specified rule</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>boolean <span class="text-red">noneMatch</span>()</code></pre>
+        </td>
+        <td>Checks whether none of the elements in the stream match the specified rule</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-user">Optional</span>&lt;T&gt; <span class="text-red">findFirst</span>()</code></pre>
+        </td>
+        <td>Returns the first element found that matches the rule</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-user">Optional</span>&lt;T&gt; <span class="text-red">findAny</span>()</code></pre>
+        </td>
+        <td>Returns any element in the stream that matches the rule</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-user">Optional</span>&lt;T&gt; <span class="text-red">min</span>()</code></pre>
+        </td>
+        <td>Searches for the minimum element in the data stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-user">Optional</span>&lt;T&gt; <span class="text-red">max</span>()</code></pre>
+        </td>
+        <td>Returns the maximum element in the data stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>long <span class="text-red">count</span>()</code></pre>
+        </td>
+        <td>Returns the number of elements in the data stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>R <span class="text-red">collect</span>()</code></pre>
+        </td>
+        <td>Reads all the data from the stream and returns it as a collection</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. Intermediate and terminal operations by the <code>Stream</code> class</h2>
+<p>As you can see, not all methods in the table above return a <code>Stream</code>. This is related to the fact that the methods of the <code>Stream</code> class can be divided into <span class="term">intermediate</span> (also known as <span class="term">non-terminal</span>) methods and <span class="term">terminal</span> methods.</p>
+<h3>Intermediate methods</h3>
+<p>Intermediate methods return an object that implements the <code>Stream</code> interface, and they can be chained together.</p>
+<h3>Terminal methods</h3>
+<p>Terminal methods return a value other than a <code>Stream</code>.</p>
+<h3>Method call pipeline</h3>
+<p>Thus, you can build a stream pipeline consisting of any number of intermediate methods and a single terminal method call at the end. This approach lets you implement rather complex logic, while increasing code readability.</p>
+<img data-max-width="1024" data-id="6a883a9d-027f-47bc-91b6-2c955c695e70" src="https://cdn.codegym.cc/images/article/6a883a9d-027f-47bc-91b6-2c955c695e70/1024.jpeg" alt="Method call pipeline">
+<p>The data inside a data stream does not change at all. A chain of intermediate methods is a slick (declarative) way of specifying a data processing pipeline that will be executed after the terminal method is called.</p>
+<p>In other words, if the terminal method is not called, then the data in the data stream is not processed in any way. Only after the terminal method is called does the data begin to be processed according to the rules specified in the stream pipeline. </p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present-sm"><code><span class="text-viola">stream</span>()
+  .<span class="text-yellow">intemediateOperation1</span>()
+  .<span class="text-yellow">intemediateOperation2</span>()
+  <span class="text-invisible">...</span>
+  .<span class="text-yellow">intemediateOperationN</span>()
+  .<span class="text-red">terminalOperation</span>();</code></pre>
+    <div class="lesson-example-caption">General appearance of a pipeline</div>
+</div>
+<p>Comparison of intermediate and terminal methods:</p>
+<table>
+    <tr>
+        <th></th>
+        <th class="text-center">intermediate</th>
+        <th class="text-center">terminal</th>
+    </tr>
+    <tr>
+        <td>Return type</td>
+        <td class="text-center"><code>Stream</code></td>
+        <td class="text-center">not a <code>Stream</code></td>
+    </tr>
+    <tr>
+        <td>Can be combined with multiple methods of the same type to form a pipeline</td>
+        <td class="text-center">yes</td>
+        <td class="text-center">no</td>
+    </tr>
+    <tr>
+        <td>Number of methods in a single pipeline</td>
+        <td class="text-center">any</td>
+        <td class="text-center">no more than one</td>
+    </tr>
+    <tr>
+        <td>Produces the end result</td>
+        <td class="text-center">no</td>
+        <td class="text-center">yes</td>
+    </tr>
+    <tr>
+        <td>Starts processing the data in the stream</td>
+        <td class="text-center">no</td>
+        <td class="text-center">yes</td>
+    </tr>
+</table>
+<h3>Let's look at an example.</h3>
+<p>Suppose we have a club for animal lovers. Tomorrow the club celebrates Ginger Cat Day. The club has pet owners, each of which has a list of pets. They are not limited to cats.</p>
+<p><i>Task:</i> you need to identify all the names of all the ginger cats in order to create personalized greeting cards for them for tomorrow's "professional holiday". The greeting cards should be sorted by the cat's age, from oldest to youngest.</p>
+<p>First, we provide some classes to help solving this task:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>public enum Color {
+   WHITE,
+   BLACK,
+   DARK_GREY,
+   LIGHT_GREY,
+   FOXY,
+   GREEN,
+   YELLOW,
+   BLUE,
+   MAGENTA
+}</code></pre>
+</div>
+<div class="lesson-example">
+        <pre class="language-java"><code>public abstract class Animal {
+   private String name;
+   private Color color;
+   private int age;
+
+   public Animal(String name, Color color, int age) {
+      this.name = name;
+      this.color = color;
+      this.age = age;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public Color getColor() {
+      return color;
+   }
+
+   public int getAge() {
+      return age;
+   }
+}</code></pre>
+</div>
+<div class="lesson-example">
+        <pre class="language-java"><code>public class Cat extends Animal {
+   public Cat(String name, Color color, int age) {
+      super(name, color, age);
+   }
+}</code></pre>
+</div>
+<div class="lesson-example">
+        <pre class="language-java"><code>public class Dog extends Animal {
+   public Dog(String name, Color color, int age) {
+      super(name, color, age);
+   }
+}</code></pre>
+</div>
+<div class="lesson-example">
+        <pre class="language-java"><code>public class Parrot extends Animal {
+   public Parrot(String name, Color color, int age) {
+      super(name, color, age);
+   }
+}</code></pre>
+</div>
+<div class="lesson-example">
+        <pre class="language-java"><code>public class Pig extends Animal {
+   public Pig(String name, Color color, int age) {
+      super(name, color, age);
+   }
+}</code></pre>
+</div>
+<div class="lesson-example">
+        <pre class="language-java"><code>public class Snake extends Animal {
+   public Snake(String name, Color color, int age) {
+      super(name, color, age);
+   }
+}</code></pre>
+</div>
+<div class="lesson-example">
+        <pre class="language-java"><code>public class Owner {
+   private String name;
+   private List&lt;Animal&gt; pets = new ArrayList&lt;&gt;();
+
+   public Owner(String name) {
+      this.name = name;
+   }
+
+   public List&lt;Animal&gt; getPets() {
+      return pets;
+   }
+}</code></pre>
+</div>
+<p>Now let's look at the <code>Selector</code> class, where the selection will be made according to the specified criteria:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class Selector {
+   private static List&lt;Owner&gt; owners;
+
+   private static void initData() {
+      final Owner owner1 = new Owner("Ronan Turner");
+      owner1.getPets().addAll(List.of(
+            new Cat("Baron", Color.BLACK, 3),
+            new Cat("Sultan", Color.DARK_GREY, 4),
+            new Dog("Elsa", Color.WHITE, 0)
+      ));
+
+      final Owner owner2 = new Owner("Scarlet Murray");
+      owner2.getPets().addAll(List.of(
+            new Cat("Ginger", Color.FOXY, 7),
+            new Cat("Oscar", Color.FOXY, 5),
+            new Parrot("Admiral", Color.BLUE, 3)
+      ));
+
+      final Owner owner3 = new Owner("Felicity Mason");
+      owner3.getPets().addAll(List.of(
+            new Dog("Arnold", Color.FOXY, 3),
+            new Pig("Vacuum Cleaner", Color.LIGHT_GREY, 8)
+      ));
+
+      final Owner owner4 = new Owner("Mitchell Stone");
+      owner4.getPets().addAll(List.of(
+            new Snake("Mr. Boa", Color.DARK_GREY, 2)
+      ));
+
+      final Owner owner5 = new Owner("Jonathan Snyder");
+      owner5.getPets().addAll(List.of(
+            new Cat("Fisher", Color.BLACK, 16),
+            new Cat("Zorro", Color.FOXY, 14),
+            new Cat("Margo", Color.WHITE, 3),
+            new Cat("Brawler", Color.DARK_GREY, 1)
+      ));
+
+      owners = List.of(owner1, owner2, owner3, owner4, owner5);
+   }
+}</code></pre>
+</div>
+<p>What remains is to add code to the <code>main</code> method. Currently, we first call the <code>initData()</code> method, which populates the list of pet owners in the club. Then we select the names of ginger cats sorted by their age in descending order.</p>
+<p>First, let's look code that does not use streams to solve this task:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>public static void main(String[] args) {
+   initData();
+
+   List&lt;String&gt; findNames = new ArrayList&lt;&gt;();
+   List&lt;Cat&gt; findCats = new ArrayList&lt;&gt;();
+   for (Owner owner : owners) {
+      for (Animal pet : owner.getPets()) {
+         if (Cat.class.equals(pet.getClass()) &amp;&amp; Color.FOXY == pet.getColor()) {
+            findCats.add((Cat) pet);
+         }
+      }
+   }
+
+   Collections.sort(findCats, new Comparator&lt;Cat&gt;() {
+      public int compare(Cat o1, Cat o2) {
+         return o2.getAge() - o1.getAge();
+      }
+   });
+
+   for (Cat cat : findCats) {
+      findNames.add(cat.getName());
+   }
+
+   findNames.forEach(System.out::println);
+}</code></pre>
+</div>
+<p>Now let's look at an alternative:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>public static void main(String[] args) {
+   initData();
+
+   final List&lt;String&gt; findNames = owners.stream()
+           .flatMap(owner -&gt; owner.getPets().stream())
+           .filter(pet -&gt; Cat.class.equals(pet.getClass()))
+           .filter(cat -&gt; Color.FOXY == cat.getColor())
+           .sorted((o1, o2) -&gt; o2.getAge() - o1.getAge())
+           .map(Animal::getName)
+           .collect(Collectors.toList());
+
+   findNames.forEach(System.out::println);
+}</code></pre>
+</div>
+<p>As you can see, the code is much more compact. In addition, each line of the stream pipeline is a single action, so they can be read like sentences in English:</p>
+<table>
+    <tr>
+        <td>
+            <pre class="language-java"><code>.flatMap(owner -&gt; owner.getPets().stream())</code></pre>
+        </td>
+        <td>Move from a <code>Stream&lt;Owner&gt;</code> to a <code>Stream&lt;Pet&gt;</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>.filter(pet -&gt; Cat.class.equals(pet.getClass()))</code></pre>
+        </td>
+        <td>Retain only cats in the data stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>.filter(cat -&gt; Color.FOXY == cat.getColor())</code></pre>
+        </td>
+        <td>Retain only ginger cats in the data stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>.sorted((o1, o2) -&gt; o2.getAge() - o1.getAge())</code></pre>
+        </td>
+        <td>Sort by age in descending order</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>.map(Animal::getName)</code></pre>
+        </td>
+        <td>Get the names</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>.collect(Collectors.toList())</code></pre>
+        </td>
+        <td>Put the result into a list</td>
+    </tr>
+</table>
+<hr>
+<h2>3. Creating streams</h2>
+<p>The <code>Stream</code> class has three methods that we haven't covered yet. The purpose of these three methods is to create new threads.</p>
+<p><b><code>Stream&lt;T&gt;.of(T obj)</code> method</b></p>
+<p>The <code><span class="text-red">of</span>()</code> method creates a <span class="term text-viola">stream</span> that consists of a single element. This is usually needed when, say, a function takes a <code><span class="text-viola">Stream</span>&lt;T&gt;</code> object as an argument, but you only have a <code>T</code> object. Then you can easily and simply use the <code><span class="text-red">of</span>()</code> method to get a <span class="term text-viola">stream</span> that consists of a <span class="term text-user">single element</span>.</p>
+<p>Example:</p>
+<div class="lesson-example">
+    <pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream</span> = <span class="text-viola">Stream</span>.<span class="text-red">of</span>(<span class="code text-user">1</span>);</code></pre>
+</div>
+<p><strong><code>Stream&lt;T&gt; Stream.of(T obj1, T obj2, T obj3, ...)</code> method</strong></p>
+<p>The <code><span class="text-red">of</span>()</code> method creates a <span class="term text-viola">stream</span> that consists of <span class="term text-user">passed elements</span>. Any number of elements is allowed. Example:</p>
+<div class="lesson-example">
+    <pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream</span> = <span class="text-viola">Stream</span>.<span class="text-red">of</span>(<span class="code text-user">1</span>, <span class="code text-user">2</span>, <span class="code text-user">3</span>, <span class="code text-user">4</span>, <span class="code text-user">5</span>);</code></pre>
+</div>
+<p><strong><code>Stream&lt;T&gt; Stream.generate(Supplier&lt;T&gt; obj)</code> method</strong></p>
+<p>The <code><span class="text-red">generate</span>()</code> method lets you set a rule that will be used to generate the next element of the stream when it is requested. For example, you can give out a <span class="term text-neon">random number</span> each time.</p>
+<p>Example:</p>
+<div class="lesson-example">
+    <pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Double&gt; <span class="code text-viola">s</span> = <span class="text-viola">Stream</span>.<span class="text-red">generate</span>(<span class="code text-neon">Math::random</span>);</code></pre>
+</div>
+<p><strong><code>Stream&lt;T&gt; Stream.concat(Stream&lt;T&gt; a, Stream&lt;T&gt; b)</code> method</strong></p>
+<p>The <code><span class="text-red">concat</span>()</code> method concatenates the two passed <span class="term text-viola">streams</span> into <span class="term text-yellow">one</span>. When the <span class="term text-user">data</span> is read, it is read first from the first stream, and then from the second. Example:</p>
+<div class="lesson-example">
+    <pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream1</span> = <span class="text-viola">Stream</span>.of(<span class="code text-user">1</span>, <span class="code text-user">2</span>, <span class="code text-user">3</span>, <span class="code text-user">4</span>, <span class="code text-user">5</span>);
+<span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream2</span> = <span class="text-viola">Stream</span>.of(<span class="code text-user">10</span>, <span class="code text-user">11</span>, <span class="code text-user">12</span>, <span class="code text-user">13</span>, <span class="code text-user">14</span>);
+<span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-yellow">result</span> = <span class="text-viola">Stream</span>.<span class="text-red">concat</span>(<span class="code text-viola">stream1</span>, <span class="code text-viola">stream2</span>);</code></pre>
+</div>
+<hr>
+<h2>4. Filtering data</h2>
+<p>Another 6 methods create new data streams, letting you combine streams into chains (or pipelines) of varying complexity.</p>
+<p><strong><code>Stream&lt;T&gt; filter(Predicate&lt;T&gt;)</code> method</strong></p>
+<p>This method returns a <span class="term text-yellow">new data stream</span> that filters the <span class="term text-viola">source data stream</span> according to the <span class="term text-neon">passed rule</span>. The method must be called on an <span class="term text-viola">object</span> whose type is <code><span class="text-viola">Stream</span>&lt;T&gt;</code>.</p>
+<p>You can specify the filtering rule using a <span class="term text-neon">lambda function</span>, which the compiler will then convert to a <code>Predicate&lt;T&gt;</code> object.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Chained streams</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream</span> = <span class="text-viola">Stream</span>.of(<span class="text-user">1</span>, <span class="text-user">2</span>, <span class="text-user">3</span>, <span class="text-user">4</span>, <span class="text-user">5</span>);
+<span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-yellow">stream2</span> = <span class="code text-viola">stream</span>.<span class="text-red">filter</span>(<span class="code text-neon">x -&gt; (x &lt; 3)</span>);</code></pre>
+        </td>
+        <td><br>Retain only numbers less than three</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream</span> = <span class="text-viola">Stream</span>.of(<span class="text-user">1</span>, <span class="text-user">-2</span>, <span class="text-user">3</span>, <span class="text-user">-4</span>, <span class="text-user">5</span>);
+<span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-yellow">stream2</span> = <span class="code text-viola">stream</span>.<span class="text-red">filter</span>(<span class="code text-neon">x -&gt; (x &gt; 0)</span>);</code></pre>
+        </td>
+        <td><br>Retain only numbers greater than zero</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Stream&lt;T&gt; sorted(Comparator&lt;T&gt;)</code> method</strong></p>
+<p>This method returns a new data stream that sorts the data in the <span class="term">source stream</span>. You pass in a <span class="term">comparator</span>, which sets the rules for comparing two elements of the data stream.</p>
+<p><strong><code>Stream&lt;T&gt; distinct()</code> method</strong></p>
+<p>This method returns a <span class="term text-yellow">new data stream</span> that contains <span class="term text-red">only the unique elements</span> in the <span class="term text-viola">source data stream</span>. All duplicate data is discarded. Example:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream</span> = <span class="text-viola">Stream</span>.of(<span class="text-user">1</span>, <span class="text-user">2</span>, <span class="text-user">3</span>, <span class="text-user">4</span>, <span class="text-user">5</span>, <span class="text-user">2</span>, <span class="text-user">2</span>, <span class="text-user">2</span>, <span class="text-user">3</span>, <span class="text-user">4</span>);
+<span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-yellow">stream2</span> = <span class="code text-viola">stream</span>.<span class="text-red">distinct</span>(); <span class="text-muted">// 1, 2, 3, 4, 5</span></code></pre>
+</div>
+<p><strong><code>Stream&lt;T&gt; peek(Consumer&lt;T&gt;)</code> method</strong></p>
+<p>This method returns a <span class="term text-yellow">new data stream</span>, though the data in it is the same as in the source stream. But when the next element is requested from the stream, the <span class="term text-neon">function</span> you passed to the <code><span class="text-red">peek</span>()</code> method gets called with it.</p>
+<p>If you pass the function <code class="text-neon">System.out::println</code> to the <code><span class="text-red">peek</span>()</code> method, then all the objects will be displayed when they will pass through the stream.</p>
+<p><strong><code>Stream&lt;T&gt; limit(int n)</code> method</strong></p>
+<p>This method returns a <span class="term text-yellow">new data stream</span> that contains <span class="term text-red">only first <code class="text-user">n</code> elements</span> in the <span class="term text-viola">source data stream</span>. All other data is discarded. Example:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream</span> = <span class="text-viola">Stream</span>.of(<span class="text-user">1</span>, <span class="text-user">2</span>, <span class="text-user">3</span>, <span class="text-user">4</span>, <span class="text-user">5</span>, <span class="text-user">2</span>, <span class="text-user">2</span>, <span class="text-user">2</span>, <span class="text-user">3</span>, <span class="text-user">4</span>);
+<span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-yellow">stream2</span> = <span class="code text-viola">stream</span>.<span class="text-red">limit</span>(<span class="code text-user">3</span>); // 1, 2, 3</code></pre>
+</div>
+<p><strong><code>Stream&lt;T&gt; skip(int n)</code> method</strong></p>
+<p>This method returns a <span class="term text-yellow">new data stream</span> that contains all the same elements as the <span class="term text-viola">source stream</span>, but <span class="term text-red">skips</span> (ignores) the first <code class="text-user">n</code> elements. Example:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code><span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-viola">stream</span> = <span class="text-viola">Stream</span>.of(<span class="text-user">1</span>, <span class="text-user">2</span>, <span class="text-user">3</span>, <span class="text-user">4</span>, <span class="text-user">5</span>, <span class="text-user">2</span>, <span class="text-user">2</span>, <span class="text-user">2</span>, <span class="text-user">3</span>, <span class="text-user">4</span>);
+<span class="text-viola">Stream</span>&lt;Integer&gt; <span class="code text-yellow">stream2</span> = <span class="code text-viola">stream</span>.<span class="text-red">skip</span>(<span class="code text-user">3</span>); // 4, 5, 2, 2, 2, 3, 4</code></pre>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1812"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1813"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1814"></div>

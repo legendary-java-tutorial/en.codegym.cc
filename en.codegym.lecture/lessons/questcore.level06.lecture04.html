@@ -1,0 +1,53 @@
+<p>"Hello, Amigo! I see you're making great strides in learning about threads."</p>
+<p class="amigo"><span class="text-user">"It wasn't so difficult after all."</span></p>
+<p>That's great! Today you have an easy lesson, and the topic is the <b>join</b> method.</p>
+<p>Imagine the following situation: the main thread has created a child thread to perform some task. Time passes, and now the main thread needs the results of the work performed by the child thread. But the child thread hasn't yet finished its work. What should the main thread do?</p>
+<p class="amigo"><span class="text-user">Good question. What should the main thread do?</span></p>
+<p>"This is what the <strong>join</strong> method is for. It allows us to make one thread wait while another thread finishes its work:"</p>
+<table class="table_example wide-table">
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Printer <span class="text-user"><strong>implements Runnable</strong></span>
+{
+private String name;
+public Printer(String name)
+{
+this.name = name;
+}
+public void <span class="text-user"><strong>run()</strong></span>
+{
+System.out.println("I’m " + this.name);
+}
+}</code></pre>
+        </td>
+        <td>Class that implements the Runnable interface.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+Printer <span class="text-user">printer1</span> = new Printer("Nick");
+Thread <span class="text-green">thread1</span> = new Thread(<span class="text-user"><strong>printer1</strong></span>);
+<span class="text-green">thread1</span>.<strong>start()</strong>;
+
+<strong><span class="text-green">thread1</span></strong>.<span class="text-red"><strong>join();</strong></span>
+}</code></pre>
+        </td>
+        <td>The main thread creates a child thread – <span class="text-green"><strong>thread1</strong></span>.</p>
+            <p>Then it starts it by calling <strong><span class="text-green">thread1</span>.start();</strong></p>
+            <p>And then it waits for it to complete – <strong><span class="text-red">thread1.join();</span></strong></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="red_text text-red">One thread can call the <strong>join</strong> method on a second thread's Thread object.</span> As a result, the first thread (which called the method) stops its work until the second thread (whose object's join method was called) is finished.</p>
+<p><b>We need to distinguish between two things here: we have a thread (a separate execution environment) and we have a Thread object.</b></p>
+<p class="amigo"><span class="text-user">"That's it?"</span></p>
+<p>"Yes."</p>
+<p class="amigo"><span class="text-user">"But why do we have to create a thread and then immediately wait for it to complete?"</span></p>
+<p>"It might not need to right away. It could be after some time has passed. After starting its first child thread, the main thread can <i>assign many more tasks</i> to other threads (by creating them and calling the <b>start</b> method). Then when it doesn't have any work left, it needs to process the results of the first child thread. Whenever you need to wait for another thread to finish working, you need to call the <b>join</b> method."</p>
+<p class="amigo"><span class="text-user">"Got it."</span></p>

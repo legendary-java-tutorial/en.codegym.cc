@@ -1,0 +1,118 @@
+full of dogmatic precepts about how keys should be chosen and used in relational databases. Sometimes disputes even turn into holivars: should <strong>natural or artificial keys be used? Auto-increment integers or UUIDs?</strong></p>
+<p>After reading sixty-four articles, flipping through sections of five books, and asking tons of questions on IRC and StackOverflow, I (Joe "begriffs" Nelson, the author of the original article) seem to have put the pieces of the puzzle together and can now reconcile adversaries. Many key disputes actually arise from a misunderstanding of someone else's point of view.</p>
+<p>Let's take the problem apart and put it back together at the end. First, let's ask the question - what is a "key"?</p>
+<p>Let's forget about primary keys for a moment, we are interested in a more general idea. A key is a column (column) or columns that <span class="text-red">do not have duplicate values ​​in rows</span> . Also, the columns must be irreducibly unique, i.e. no subset of the columns has this uniqueness.</p>
+<p>But first, some theory:</p>
+<p><strong>primary key</strong></p>
+<p><mark class="green">Primary key</mark>directly used to identify rows in a table. It must comply with the following restrictions:</p>
+<ul>
+ <li>The primary key must be <strong>unique</strong> all the time.</li>
+ <li>It must <strong>always be present</strong> in the table and have a value.</li>
+ <li>It should not change its value frequently. Ideally, it <strong>shouldn't change the value</strong> at all .</li>
+</ul>
+<p>Typically, a primary key represents a single column of a table, but it can also be a composite key consisting of multiple columns.</p>
+<p><strong>Composite key</strong></p>
+<p><mark class="green">Custom Key</mark>- a combination of attributes (columns) that uniquely identify each table row. It can be all columns, and several, and one. In this case, the lines that contain the values ​​of these attributes should not be repeated.</p>
+<p><strong>Potential Key</strong></p>
+<p><mark class="green">candidate key</mark>- represents the minimum composite key of the relation (table), that is, a set of attributes that satisfies a number of conditions:</p>
+<ul>
+ <li><strong>Irreducibility</strong> : It cannot be reduced, it contains the minimum possible set of attributes.</li>
+ <li><strong>Uniqueness</strong> : It must have unique values ​​regardless of the row change.</li>
+ <li><strong>Presence of a value</strong> : It must not have a null value, i.e. it must have a value.</li>
+</ul>
+<h2>5.2 The curious case of primary keys</h2>
+<p>What we just called “keys” in the previous section are commonly referred to as “candidate keys”. The term "candidate" implies that all such keys compete for the honorary role of "primary key" (primary key), and the rest are assigned "alternative keys" (alternate keys).</p>
+<p>It took a while for SQL implementations to get over the mismatch between keys and the relational model, and the earliest databases were geared towards the low-level concept of a primary key. Primary keys in such databases were required to identify the physical location of a row on sequential storage media. Here is how Joe Celko explains it:</p>
+<p><span class="text-green">The term "key" meant a file sort key, which was needed to perform any processing operations on a sequential file system. A set of punched cards was read in one and only one order; it was impossible to go back. Early tape drives mimicked the same behavior and did not allow bidirectional access. That is, the original Sybase SQL Server required to “rewind” the table to the beginning to read the previous row.</span></p>
+<p>In modern SQL, you do not need to focus on the physical representation of information, tables model relationships, and the internal order of rows is not important at all. However, even now SQL server by default creates a clustered index for primary keys and, according to the old tradition, physically arranges the order of the rows.</p>
+<p>In most databases, primary keys are a thing of the past, and provide little more than a reflection or physical location. For example, in a PostgreSQL table, declaring a primary key automatically enforces a constraint <code>NOT NULL</code>and defines a default foreign key. In addition, primary keys are the preferred columns for the operator <code>JOIN</code>.</p>
+<p>The primary key does not override the possibility of declaring other keys. At the same time, if no key is assigned as primary, then the table will still work fine. Lightning, in any case, will not strike you.</p>
+<h2>5.3 Finding natural keys</h2>
+<p>The keys discussed above are called "natural" because they are properties of the modeled object that are interesting in themselves, even if no one wants to make a key out of them.</p><img data-max-width="800" data-id="eadd7f32-0792-44f1-9ab2-483666f8f44c" alt="" src="https://cdn.javarush.com/images/article/eadd7f32-0792-44f1-9ab2-483666f8f44c/800.jpeg" style="width: 800px;">
+<p>The first thing to remember when examining a table for possible natural keys is to try not to be too smart. User sqlvogel on StackExchange gives the following advice:</p>
+<p><span class="text-green"> Some people have difficulty choosing a "natural" key because they come up with hypothetical situations in which a particular key may not be unique. They do not understand the very meaning of the task. The meaning of the key is to define the rule according to which the attributes at any given time must be and always will be unique in a particular table. The table contains data in a specific and well-understood context (in the "subject area" or "discourse area"), and the only meaning is the application of the restriction in that particular area. </span></p>
+<p>Practice shows that it is necessary to introduce a key constraint when the column is unique with the available values ​​and will remain so in likely scenarios. And if necessary, the restriction can be removed (if this bothers you, then below we will talk about key stability.)</p>
+<p>For example, a database of hobby club members may have uniqueness in two columns - <code>first_name</code>, <code>last_name</code>. With a small amount of data, duplicates are unlikely, and before a real conflict arises, it is quite reasonable to use such a key.</p>
+<p>As the database grows and the volume of information increases, choosing a natural key can become more difficult. The data we store is a simplification of external reality, and does not contain some aspects that distinguish objects in the world, such as their coordinates that change over time. If an object lacks any code, how can you tell two cans of drink or two boxes of oatmeal apart from their spatial arrangement or slight differences in weight or packaging?</p>
+<p>That is why standardization bodies create and apply distinctive marks to products. Vehicles are stamped with <strong>a Vehicle Identification Number (VIN)</strong> , books are printed with <strong>ISBNs</strong> , and food packaging has <strong>UPCs</strong> . You may object that these numbers do not seem natural. So why do I call them natural keys?</p>
+<p>The naturalness or artificiality of unique properties in a database is relative to the outside world. A key that was artificial when it was created in a standards body or government agency becomes natural to us, because it becomes a standard in the whole world and / or is printed on objects.</p>
+<p>There are many industry, public, and international standards for a variety of subjects, including currencies, languages, financial instruments, chemicals, and medical diagnoses. Here are some of the values ​​that are often used as natural keys:</p>
+<ul>
+ <li>ISO 3166 country codes</li>
+ <li>ISO 639 language codes</li>
+ <li>Currency codes according to ISO 4217</li>
+ <li>Stock symbols ISIN</li>
+ <li>UPC/EAN, VIN, GTIN, ISBN</li>
+ <li>login names</li>
+ <li>email addresses</li>
+ <li>room numbers</li>
+ <li>network mac address</li>
+ <li>latitude, longitude for points on the Earth's surface</li>
+</ul>
+<p>I recommend declaring keys whenever possible and reasonable, maybe even multiple keys per table. But remember that all of the above may have exceptions.</p>
+<ul>
+ <li>Not everyone has an email address, although this may be acceptable under some database conditions. Also, people change their email addresses from time to time. (More on key stability later.)</li>
+ <li>ISIN stock symbols change from time to time, for example, the symbols GOOG and GOOGL do not accurately describe the reorganization of the company from Google to Alphabet. Sometimes confusion can arise, as with TWTR and TWTRQ, some investors mistakenly bought the latter during the Twitter IPO.</li>
+ <li>Social Security numbers are used only by US citizens, have privacy restrictions, and are reused after death. In addition, after the theft of documents, people can get new numbers. Finally, the same number can identify both a person and an income tax identifier.</li>
+ <li>Zip codes are a poor choice for cities. Some cities have a common index, or vice versa, there are several indexes in one city.</li>
+</ul>
+<h2>5.4 Artificial keys</h2>
+<p>Given that the key is a column with unique values ​​in each row, one way to create it is to cheat - you can write fictitious unique values ​​\u200b\u200bin each row. These are artificial keys: invented code used to refer to data or objects.</p><img data-max-width="800" data-id="e0feb953-16ae-4313-ba14-37c9f8fb7eba" alt="" src="https://cdn.javarush.com/images/article/e0feb953-16ae-4313-ba14-37c9f8fb7eba/800.jpeg" style="width: 800px;">
+<p>It is very important that the code is generated from the database itself and is unknown to anyone except the users of the database. This is what distinguishes artificial keys from standardized natural keys.</p>
+<p>While natural keys have the advantage of protecting against duplicate or inconsistent rows in a table, artificial keys are useful because they make it easier for humans or other systems to refer to the row, and they speed up lookups and joins because they don't use string (or multi-column) comparisons. keys.</p>
+<h3>Surrogates</h3>
+<p><span class="text-green">Artificial keys are used as anchors - no matter how the rules and columns change, one row can always be identified in the same way. The artificial key used for this purpose is called a "surrogate key" and requires special attention. We will consider surrogates below.</span></p>
+<p>Non-surrogate artificial keys are useful for referencing a row from outside the database. An artificial key briefly identifies a data or object: it can be specified as a URL, attached to an invoice, dictated over the phone, obtained from a bank, or printed on a license plate. (A car's license plate is a natural key for us, but designed by the government as an artificial key.)</p>
+<p>Synthetic keys should be chosen with consideration for the possible means of transmission to minimize typos and errors. It should be noted that the key can be spoken, read printed, sent via SMS, read handwritten, typed from the keyboard and embedded in a URL. Additionally, some artificial keys, such as credit card numbers, contain a checksum so that if certain errors occur, they can at least be recognized.</p>
+<p>Examples:</p>
+<ul>
+ <li>For US license plates, there are rules about the use of ambiguous characters, such as O and 0.</li>
+ <li>Hospitals and pharmacies must be especially careful, given the handwriting of doctors.</li>
+ <li>Do you send a confirmation code by text message? Do not go beyond the GSM 03.38 character set.</li>
+ <li>Unlike Base64, which encodes arbitrary byte data, Base32 uses a limited character set that is convenient for humans to use and handle on older computer systems.</li>
+ <li>Proquints are readable, writeable, and pronounceable identifiers. These are PRO-nouncable QUINT-uplets of unambiguously understood consonants and vowels.</li>
+</ul>
+<p>Keep in mind that as soon as you introduce your artificial key to the world, people will strangely begin to give it special attention. Just look at the "thieves" license plates or at the system for creating pronounceable identifiers, which has become the infamous automated curse generator.</p>
+<p>Even if we limit ourselves to numerical keys, there are taboos like the thirteenth floor. While proquints have a higher density of information per spoken syllable, numbers are fine in many ways too: in URLs, pin-keyboards, and handwritten notes, as long as the recipient knows the key is only numbers.</p>
+<p>However, please note that you should not use sequential order in public numeric keys, as this allows you to rummage through resources (/videos/1.mpeg, /videos/2.mpeg, and so on) and also leaks information about the number data. Superimpose a Feistel net on a sequence of numbers and preserve uniqueness while hiding the order of the numbers.</p>
+<p>The only argument against declaring additional keys is that each new one brings with it another unique index and increases the cost of writing to the table. Of course, it depends on how important the correctness of the data is to you, but, most likely, the keys should still be declared.</p>
+<p>It is also worth declaring several artificial keys, if any. For example, an organization has job candidates (Applicants) and employees (Employees). Each employee was once a candidate, and refers to candidates by their own identifier, which should also be the employee's key. Another example, you can set the employee id and login name as two keys in Employees.</p>
+<h2>5.5 Surrogate keys</h2>
+<p>As already mentioned, an important type of artificial key is called a "surrogate key". It does not need to be concise and passable like other artificial keys, but is used as an internal label that always identifies the string. It is used in SQL, but the application does not explicitly access it.</p><img data-max-width="800" data-id="43b5ec60-2937-43f2-9431-b18c81e9a442" alt="" src="https://cdn.javarush.com/images/article/43b5ec60-2937-43f2-9431-b18c81e9a442/800.jpeg" style="width: 800px;">
+<p>If you're familiar with PostgreSQL's system columns, then you can think of surrogates almost as a database implementation parameter (like ctid), which, however, never changes. The surrogate value is selected once per row and never changed thereafter.</p>
+<p>Surrogate keys are great as foreign keys, and cascading constraints must be specified <code>ON UPDATE RESTRICT</code>to match the immutability of the surrogate.</p>
+<p>On the other hand, foreign keys to publicly shared keys should be marked with <code>ON UPDATE CASCADE</code>, to provide maximum flexibility. A cascading update runs at the same isolation level as the surrounding transaction, so don't worry about concurrency issues - the database will be fine if you choose a strict isolation level.</p>
+<p>Don't make surrogate keys "natural". Once you show the value of the surrogate key to end users, or worse, let them work with that value (particularly through a lookup), you are effectively giving the key a value. Then the shown key from your database can become a natural key in someone else's database.</p>
+<p>Forcing external systems to use other artificial keys specifically designed for transmission allows us to change those keys as needed to meet changing needs, while maintaining internal referential integrity with surrogates.</p>
+<h3>Auto-increment INT/BIGINT</h3>
+<p>The most common use for surrogate keys is the auto-incrementing <strong>"bigserial"</strong> column , also known as <strong>IDENTITY</strong> . (In fact, PostgreSQL 10 now supports the IDENTITY construct, as does Oracle, see CREATE TABLE.)</p>
+<p>However, I believe that an auto-incrementing integer is a poor choice for surrogate keys. This opinion is unpopular, so let me explain.</p>
+<p>Disadvantages of serial keys:</p>
+<ul>
+ <li>If all sequences start at 1 and incrementally increase, then rows from different tables will have the same key values. This option is not ideal, it is still preferable to use disjoint sets of keys in tables, so that, for example, queries could not accidentally confuse constants in <code>JOIN</code>and return unexpected results. (Alternatively, to ensure that there are no intersections, one could construct each sequence from multiples of different primes, but this would be rather laborious.)</li>
+ <li>The call <code>nextval() </code>to generate a sequence in today's distributed SQL results in the whole system not scaling well.</li>
+ <li>Consuming data from a database that also used sequential keys will result in conflicts because sequential values ​​will not be unique across systems.</li>
+ <li>From a philosophical point of view, the sequential increase in numbers is associated with old systems in which the order of the lines was implied. If you now want to order the rows, then do so explicitly with a timestamp column or something that makes sense in your data. Otherwise, the first normal form is violated.</li>
+ <li>Weak reason, but these short identifiers are tempting to tell someone.</li>
+</ul>
+<h3>UUID</h3>
+<p>Let's look at another option: using large integers (128-bit) generated according to a random pattern. Algorithms for generating such universally unique identifiers (UUIDs) have an extremely low probability of choosing the same value twice, even when running on two different processors at the same time.</p>
+<p>In that case, <strong>UUIDs</strong> seem like a natural choice to use as surrogate keys, don't they? If you want to label rows in a unique way, then nothing beats a unique label!</p>
+<p>So why isn't everyone using them in PostgreSQL? There are several contrived reasons for this and one logical one that can be worked around, and I will present benchmarks to illustrate my point.</p>
+<p>First, I'll talk about the far-fetched reasons. Some people think that UUIDs are strings because they are written in traditional hexadecimal notation with a dash: <code>5bd68e64-ff52-4f54-ace4-3cd9161c8b7f</code>. Indeed, some databases do not have a compact (128-bit) uuid type, but PostgreSQL does and has a size of two <code>bigint</code>, i.e., compared to the amount of other information in the database, the overhead is negligible.</p>
+<p>UUIDs are also unfairly accused of being cumbersome, but who will pronounce them, type them, or read them? We said that it makes sense for artificial keys to be shown, but no one (by definition) should see the surrogate UUID. It's possible that the UUID will be dealt with by a developer running SQL commands in psql to debug the system, but that's about it. And the developer can also refer to strings using more convenient keys, if they are given.</p>
+<p><span class="text-red">The real problem with UUIDs is that highly randomized values ​​lead to write amplification due to full page writes to the write-ahead log (WAL)</span> . However, the performance degradation actually depends on the UUID generation algorithm.</p>
+<p>Let's measure <strong>write amplification</strong> . In truth, the problem is in older file systems. When PostgreSQL writes to disk, it changes the "page" on disk. If you turn off the computer's power, most file systems will still report a successful write before the data is safely stored on disk. If PostgreSQL naively perceives such an action as completed, then the database will be corrupted during the next system boot.</p>
+<p>Since PostgreSQL cannot trust most operating systems/filesystems/disk configurations to provide continuity, the database saves the full state of the changed disk page to a write-ahead log that can be used to recover from a possible crash. Indexing highly randomized values ​​like UUIDs typically involves a bunch of different disk pages and results in the full page size (usually 4 or 8 KB) being written to the WAL for each new entry. This is the so-called full-page write (full-page write, FPW).</p>
+<p>Some UUID generation algorithms (such as Twitter's "snowflake" or uuid_generate_v1() in PostgreSQL's uuid-ossp extension) generate monotonically increasing values ​​on each machine. This approach consolidates writes into fewer disk pages and reduces FPW.</p>
+<h2>5.6 Conclusions and recommendations</h2>
+<p>Now that we have seen the different types of keys and their uses, I want to list my recommendations for using them in your databases.</p>
+<p>For each table:</p>
+<ul>
+ <li>Define and declare all natural keys.</li>
+ <li>Create a surrogate key <code>&lt;table_name&gt;_id</code>of type <strong>UUID</strong> with a default value of <code>uuid_generate_v1()</code>. You can even mark it as a primary key. If you add the name of the table to this identifier, this will simplify <code>JOIN</code>, i.e. receive <code>JOIN foo USING (bar_id)</code>instead of <code>JOIN foo ON (foo.bar_id = bar.id)</code>. Do not pass this key to clients and do not expose it outside the database at all.</li>
+ <li>For intermediate tables that pass through <code>JOIN</code>, declare all foreign key columns as a single composite primary key.</li>
+ <li>Optionally, add an artificial key that can be used in the URL or other string reference indications. Use <strong>a Feistel grid</strong> or <strong>pg_hashids</strong> to mask out auto-incrementing integers.</li>
+ <li>Specify a cascading constraint <code>ON UPDATE RESTRICT</code>using surrogate UUIDs as foreign keys and for artificial foreign keys <code>ON UPDATE CASCADE</code>. Choose natural keys based on your own logic.</li>
+</ul>
+<p>This approach ensures the stability of internal keys while allowing and even protecting natural keys. In addition, visible artificial keys do not become attached to anything. Having understood everything correctly, you can not get hung up only on “primary keys” and use all the possibilities of using keys.</p>

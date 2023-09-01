@@ -1,0 +1,103 @@
+Create Maven-project
+<p>----------------------------------------</p>
+<h2>Object oriented model to write a project</h2>
+
+<p>One of the things that Maven standardized in the first place was the project description. Before Maven, each IDE had its own project file, which stored information about the project and its assembly (and often in binary form).</p>
+<p>Maven has come up with an XML-based, universal, open standard that describes what a project is, how it should be built, and what dependencies it has using various tags. The project description is contained in a single file, usually named <span class="text-bold">pom.xml</span> .</p>
+<p><span class="text-bold">An example pom.xml</span> file :</p>
+<div class="terminal">
+ <span class="text-viola">&lt;?xml version="1.0" encoding="UTF-8"?&gt; <br>
+   &lt;project xmlns="http://maven.apache.org/POM/4.0.0" <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:xsi="http://www.w3 .org/2001/XMLSchema-instance" <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 <br>
+  http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt; <br></span>
+ <br>
+  &nbsp;&nbsp;<span class="text-user">&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; <br></span>
+ <br>
+  &nbsp;&nbsp;&nbsp;<span class="text-red">&lt;groupId&gt;example.com&lt;/groupId&gt; <br>
+   &nbsp;&nbsp;&nbsp;&lt;artifactId&gt;example&lt;/artifactId&gt; <br>
+   &nbsp;&nbsp;&nbsp;&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt; <br></span>
+ <br>
+  &nbsp;&nbsp;&nbsp;<span class="text-green">&lt;dependencies&gt; <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dependency&gt; <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;commons-io &lt;/groupId&gt; <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;commons-io&lt;/artifactId&gt; <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;2.6&lt;/version&gt;<br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dependency&gt; <br>
+   &nbsp;&nbsp;&nbsp;&lt;/dependencies&gt; </span>
+ <br>
+ <br><span class="text-viola">&lt;/project&gt;</span>
+</div>
+<p>This example has three things written:</p>
+<ul>
+ <li><span class="text-user">Information about the version of the maven project standard is blue.</span></li>
+ <li><span class="text-red">Information about the project itself is in red.</span></li>
+ <li><span class="text-green">Information about used libraries is green.</span></li>
+</ul>
+<p>Let's take a closer look at the pom file device.</p>
+<h2>Maven project structure</h2>
+<p>And immediately the question is: did you pay attention to the strangeness in the last example? <span class="text-red">It does not contain information about the project code itself! </span>There is no word on where java files, resources, properties files, html, build scripts and the like are stored.</p>
+<p>And the answer is simple - Maven standardized the design of the project. There are several options for organizing code within a project, and the most common is:</p><img data-max-width="512" data-id="1fcd876d-df8f-4ea6-b5de-b671582da78e" alt="" src="https://cdn.javarush.com/images/article/1fcd876d-df8f-4ea6-b5de-b671582da78e/512.jpeg" style="width: 512px;">
+<p>The structure is a little unusual after the standard IDEA projects, but for that it is universal. 90% of the projects you will encounter in your life <span class="text-green">will have this folder structure</span> .</p>
+<p>If you create a Maven project (using IDEA or using the console), then it will take the specified form. Let's see how it all works here.</p>
+<p><span class="text-bold">The src</span> folder , you guessed it, contains the source code for the project. It has two subfolders: <span class="text-bold">main</span> and <span class="text-bold">test</span> .</p>
+<p><span class="text-bold">The /src/main/java</span> folder is the root for all Java classes in the project. If you have a com.codegym.Cat class, then it will be in the <span class="text-red">/src/main/java </span><span class="text-green">/com/codegym </span><span class="text-neon">/Cat.java</span> folder . If there are text or binary resources, they should be stored in the <span class="text-red">/src/main/resources</span> folder .</p>
+<p>The structure of the <span class="text-bold">/src/test</span> folder is similar to the structure of the <span class="text-bold">/src/main</span> folder , but it contains the tests and their resources. Maven itself knows how to run the necessary tests when building a project, but we'll talk about this in a separate lecture.</p>
+<p><span class="text-bold">There is also a /target</span> folder in the project , where Maven will save the project after it is built. Since large projects often have non-trivial build scripts, nothing is stored in this folder.</p>
+<p>The second purpose of the <span class="text-bold">/target</span> folder is to cache intermediate build results. When building a large project, Maven can only rebuild that part of it that has changed, thus speeding up the build time by several times.</p>
+<p>Well, as a cherry on the cake - at the very root of the project is the pom.xml file. It contains all the necessary information about the project, which we will discuss below.</p>
+<h2>Device pom.xml</h2>
+<p>To start with, the pom file is xml, so it contains the standard headers and namespaces information. This is all about the purely XML standard, so we won't talk about it in detail. It means this:</p>
+<div class="terminal">
+ <span class="text-viola">&lt;?xml version="1.0" encoding="UTF-8"?&gt; <br>
+   &lt;project xmlns="http://maven.apache.org/POM/4.0.0" <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xmlns:xsi="http://www.w3 .org/2001/XMLSchema-instance" <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt; <br><br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;… <br><br>
+   &lt;/project&gt;</span>
+</div>
+<p>Also, usually the first line inside the &lt;project&gt; tag is a description of the version of the pom-file standard. Almost always it is 4.0. This, too, is of no interest to us.</p>
+<p>The first lines we are interested in look like this:</p>
+<div class="terminal">
+ &nbsp;&nbsp;<span class="text-user">&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; </span>
+ <br>
+ <br>
+  &nbsp;&nbsp;<span class="text-red">&lt;groupId&gt;com.sample.app&lt;/groupId&gt; <br>
+   &nbsp;&nbsp;&lt;artifactId&gt;new-app&lt;/artifactId&gt; <br>
+   &nbsp;&nbsp;&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</span>
+</div>
+<p>In order not to understand once again what we describe (program, project, module, library, etc.) in the Maven standard, this is all called the word <span class="text-bold">artifact</span> . What you can’t refuse the creators of Maven is the love of standardization.</p>
+<p>The three tags you see mean:</p>
+<ul>
+ <li><span class="text-bold">groupId</span> - the package to which the application belongs, with the addition of the domain name;</li>
+ <li><span class="text-bold">artifactId</span> – unique string key (project id);</li>
+ <li><span class="text-bold">version - version of the project.</span></li>
+</ul>
+<p>These three parameters are enough to <span class="text-neon">unambiguously describe any artifact</span> .</p>
+<p>Further, after the description of the project, there is usually a list of artifacts (libraries) that the project uses. It looks something like this:</p>
+<div class="terminal">
+ <span class="text-green">&nbsp;&nbsp;&nbsp;&lt;dependencies&gt; <br><br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dependency&gt; <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;commons-io&lt;/groupId&gt; <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;commons-io&lt;/artifactId&gt; <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;2.6&lt;/version&gt; <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dependency&gt; <br><br>
+   &nbsp;&nbsp;&nbsp;&lt;/dependencies&gt;</span>
+</div>
+<p>In this example, we add the commons-io library from the commons-io package, version 2.6, to our project.</p>
+<p>At build time, Maven will find such a library in its global repository and add it to your project. And by the way, not only Maven can do this.</p>
+<h2>How IDEA works with Maven</h2>
+<p>Intellij IDEA is great at working with Maven. She knows how to open such projects, create them herself, run various build scripts, and perfectly understands the included libraries.</p>
+<p>It even has its own built-in Maven for some time, but you still need to be able to install and configure it yourself, so this feature of IDEA was not mentioned earlier. In theory, IDEA can have a conflict between two Mavens, so it's good for you to know that there are two.</p>
+<p>How to create a new Maven project in IDEA:</p>
+<p>Click the menu Files &gt; New Project. Select the menu item <strong>New Project</strong> on the left .</p><img data-max-width="800" data-id="031564fb-d0de-439c-a134-22347e7b3c6b" alt="maven project" src="https://cdn.javarush.com/images/article/031564fb-d0de-439c-a134-22347e7b3c6b/800.jpeg" style="width: 800px;">
+<p>Let's clarify some points:</p>
+<ol>
+ <li>Project name;</li>
+ <li>Folder for the project;</li>
+ <li>The project language is Java;</li>
+ <li>The project type is Maven.</li>
+</ol>
+<p>In the Advanced Settings section at the bottom, IDEA will prompt you to specify the goupID, artifactID, and version of our new project. This data can always be easily changed later. Choose from the suggested ones or enter your own:</p><img data-max-width="512" data-id="146b77c0-fce6-4a8f-9e18-d1426a336762" alt="Maven project 2" src="https://cdn.javarush.com/images/article/146b77c0-fce6-4a8f-9e18-d1426a336762/512.jpeg" style="width: 512px;">
+<p>Next, create a project in the required location. As a result, we see the structure:</p><img data-max-width="512" data-id="f96079a3-3b41-40dc-9924-9308298ceb17" alt="Maven project 3" src="https://cdn.javarush.com/images/article/f96079a3-3b41-40dc-9924-9308298ceb17/512.jpeg" style="width: 512px;">
+<p>Classes and packages must be created in the java folder, we have already talked about this. And I think you can easily handle it. We're ready to move on, but let's go back a little, to one important issue that we "skipped" a bit.</p>

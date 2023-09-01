@@ -1,0 +1,274 @@
+Appenders in Log4j
+<p>----------------------------------------</p>
+List of appenders
+ConsoleAppender
+FileAppender
+RollingFileAppender
+<p>----------------------------------------</p>
+<h2>List of appenders</h2>
+<p>A logger allows you to save data to several files at once. Such output data streams are called appenders (from
+    append). There are quite a few standard appenders, so we will only cover the most popular ones:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th></th>
+            <th width="200">Appenders</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Console</td>
+            <td>Prints data to the console</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>file</td>
+            <td>Outputs data to a file</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>DailyRollingFile</td>
+            <td>Outputs data to a file, the file is cyclically overwritten</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Async</td>
+            <td>Allows you to write data to another appender asynchronously</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Socket</td>
+            <td>Writes data to a specific socket</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>JDBC</td>
+            <td>Writes messages to the database using the JDBC protocol</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>JPA</td>
+            <td>Writes messages to the database using the JPA protocol</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>http</td>
+            <td>Sends events via HTTP protocol to a remote server</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>SMTP</td>
+            <td>Stores messages in a buffer, and then sends them as an email</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>Good documentation for all appenders is on their <a href="https://logging.apache.org/log4j/2.x/manual/appenders.html"
+                                                       target="_blank">official website</a></p>
+<p>And below we will consider the most popular and simple of them.</p>
+<h2>ConsoleAppender</h2>
+<p><strong>The simplest appender is<code>ConsoleApender</code></strong> . As you may have guessed, he simply writes his
+    messages to the console. It has several interesting parameters for us:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th></th>
+            <th width="200">Attributes</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>name</td>
+            <td>Appender name</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>filter</td>
+            <td>Allows you to filter some messages</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>layout</td>
+            <td>Specifies the formatting of messages when output</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>target</td>
+            <td>Specifies where to write: <code>SYTEM_OUT</code>or<code>SYSTEM_ERR</code></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>It's very easy to configure it:</p>
+<pre class="line-numbers"><code>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;Configuration status="warn" name="MyApp" packages=""&gt;
+    &lt;Appenders&gt;
+<span class="text-red">        &lt;Console name="STDOUT" target="SYSTEM_OUT"&gt;</span>
+<span class="text-green">        &lt;PatternLayout pattern="%m%n"/&gt;</span>
+        &lt;/Console&gt;
+    &lt;/Appenders&gt;
+      &lt;Loggers&gt;
+        &lt;Root level="error"&gt;
+        &lt;AppenderRef ref="<span class="text-red">STDOUT</span>"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+    &lt;/Configuration&gt;
+</code></pre>
+<h2>FileAppender</h2>
+<p><strong>The most useful appender is<code>FileAppender</code></strong> . Unlike <code>ConsoleAppender</code>he writes
+    his messages to a file. Which is very useful when your application is running somewhere on the server. It has a lot
+    of parameters, because it must be able to write files on different operating systems.</p>
+<p>But we will consider only the most popular of them.</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th></th>
+            <th width="200"></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>name</td>
+            <td>Specifies the name of the appender</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>filter</td>
+            <td>Allows you to filter some messages</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>layout</td>
+            <td>Specifies the formatting of messages when output</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>fileName</td>
+            <td>Specifies the name of the file where to write messages</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>append</td>
+            <td>If <code>true</code>, then the messages will be added to the old log, if <code>false</code>- the log
+                file will be recreated each time the application is started.
+            </td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>bufferSize</td>
+            <td>Sets the buffer size in bytes</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>immediateFlush</td>
+            <td>If <code>true</code>, then each message is actually written to disk immediately (without a buffer). The
+                log starts to work slowly, but this saves you from losing data when the program crashes.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>You already know how to work well with files, so these settings are nothing new to you. Configuring such a logger is
+    even easier than a console logger:</p>
+<pre class="line-numbers"><code>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;Configuration status="warn" name="MyApp" packages=""&gt;
+    &lt;Appenders&gt;
+<span class="text-red">        &lt;File name="MyFile" fileName="logs/app.log"&gt;</span>
+        &lt;PatternLayout&gt;
+            &lt;Pattern&gt;%d %p %c{1.} [%t] %m%n&lt;/Pattern&gt;
+        &lt;/PatternLayout&gt;
+        &lt;/File&gt;
+    &lt;/Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;Root level="error"&gt;
+        &lt;AppenderRef ref="<span class="text-red">MyFile</span>"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+    &lt;/Configuration&gt;
+</code></pre>
+<h2>RollingFileAppender</h2>
+<p><strong>The most popular appender is<code>RollingFileAppender</code></strong> . Unlike <code>FileAppender</code>it,
+    it allows you to split the log into many small files. This is very important for large logs. In addition, it allows
+    you to set rules for what to do with old files after new ones have started to be written.</p>
+<p>And this appender has almost a hundred different settings. You can find out more about them <a
+        href="https://logging.apache.org/log4j/2.x/manual/appenders.html#RollingFileAppender" target="_blank">at the
+    link .</a></p>
+<p>Consider the most popular attributes of this appender:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th></th>
+            <th width="200">Attributes</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>name</td>
+            <td>Specifies the name of the appender</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>filter</td>
+            <td>Allows you to filter some messages</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>layout</td>
+            <td>Specifies the formatting of messages when output</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>fileName</td>
+            <td>Specifies the name of the file where to write messages</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>filePattern</td>
+            <td>Specifies a naming pattern for archive files that are no longer written</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>policy</td>
+            <td>Specifies the condition when the file should start being overwritten</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>strategy</td>
+            <td>Describes what to do with old files: archive, history for how many days to keep, etc.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>Here is a good example:</p>
+<pre class="line-numbers"><code>
+&lt;Configuration status="warn" name="MyApp" packages=""&gt;
+  &lt;Appenders&gt;
+<span class="text-red">    &lt;RollingFile name="RollingFile" fileName="logs/app.log" filePattern="logs/app-%d{MM-dd-yyyy}-%i.log.gz"&gt;</span>
+<span class="text-user">    &lt;PatternLayout&gt;
+        &lt;Pattern&gt;%d %p %c{1.} [%t] %m%n&lt;/Pattern&gt;
+    &lt;/PatternLayout&gt;</span>
+<span class="text-green">    &lt;Policies&gt;
+        &lt;TimeBasedTriggeringPolicy /&gt;
+        &lt;SizeBasedTriggeringPolicy size="250 MB"/&gt;
+    &lt;/Policies&gt;</span>
+<span class="text-red">    &lt;/RollingFile&gt;</span>
+  &lt;/Appenders&gt;
+  &lt;Loggers&gt;
+    &lt;Root level="error"&gt;
+    &lt;AppenderRef ref="<span class="text-red">RollingFile</span>"/&gt;
+    &lt;/Root&gt;
+  &lt;/Loggers&gt;
+&lt;/Configuration&gt;
+</code></pre>
+<p>The parameter <code>filePattern</code>specifies a template for archives of old logs. There are also two, when
+    triggered, a new file will be written:</p>
+<ul>
+    <li><code>TimeBasedTriggeringPolicy</code>– will work if a new day starts (the current date changes)</li>
+    <li><code>SizeBasedTriggeringPolicy</code>– will work if the file size reaches 250MB</li>
+</ul>

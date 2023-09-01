@@ -1,0 +1,72 @@
+eed to change existing records in the table, then for this we use the operator <code>UPDATE</code>.</p>
+<p>On the one hand, the operator <code>UPDATE</code>is similar to the operator <code>INSERT</code>, because we need to specify new values ​​for the columns. And on the other hand, on the operator <code>SELECT</code>, because it allows you to work immediately with data groups.</p>
+<p><strong>Important! </strong>The purpose of the operator <code>UPDATE</code>is to change the data not in one row of the table, but in all rows that meet a certain condition. And if you make a small mistake, you can easily lose all the data in the table.</p>
+<p>General view of the request:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">UPDATE</span> <span class="text-yellow">table</span> <span class="text-brown">SET</span>
+  	<span class="text-green">column <span class="token number">1</span></span><span class="token number"></span> <span class="token operator">=</span> <span class="text-user">expression <span class="token number">1</span></span><span class="token number"></span><span class="token punctuation">,</span>
+  	<span class="text-green">column <span class="token number">2</span></span><span class="token number"></span> <span class="token operator">=</span> <span class="text-user">expression <span class="token number">2</span></span><span class="token number"></span><span class="token punctuation">,</span>
+  	<span class="text-green">column <span class="token number">3</span></span><span class="token number"></span> <span class="token operator">=</span> <span class="text-user">expression <span class="token number">3</span></span><span class="token number"></span>
+<span class="text-viola">WHERE condition</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Let's write a query that will increase the salary <strong>of all</strong> our employees by 100. Our query will look like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">UPDATE</span> <span class="text-yellow">employee</span> <span class="token class-name"><span class="text-brown">SET</span></span>
+  	<span class="text-green">salary</span> <span class="token operator">=</span> <span class="text-user">salary<span class="token operator">+</span><span class="token number">100</span></span><span class="token number"></span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>And now <strong>for everyone</strong> who has a salary of less than 50K, we will also increase it by 20%. Request example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">UPDATE</span> <span class="text-yellow">employee</span> <span class="token class-name"><span class="text-brown">SET</span></span>
+  	<span class="text-green">salary</span> <span class="token operator">=</span> <span class="text-user">salary<span class="token operator">*</span><span class="token number">1.2</span></span><span class="token number"></span>
+<span class="text-viola">WHERE salary<span class="token operator">&lt;</span><span class="token number">50000</span></span><span class="token number"></span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>And of course, we will increase the salary of the director by 2 times, how could it be without him:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">UPDATE</span> <span class="text-yellow">employee</span> <span class="token class-name"><span class="text-brown">SET</span></span>
+  	<span class="text-green">salary</span> <span class="token operator">=</span> <span class="text-user">salary<span class="token operator">*</span><span class="token number">2</span></span><span class="token number"></span>
+<span class="token class-name"></span><span class="text-viola"><span class="token class-name">WHERE</span> id<span class="token operator">=</span><span class="token number">4</span></span><span class="token number"></span><span class="token punctuation">;</span></code></pre>
+</div>
+<h2>4.2 Complex data change scenarios</h2>
+<p>If you decide to change data in several tables at the same time, or when you change data in one table, you need to fill it with data from another, or simply somehow use data from another table in the process of changing the first one, then surprises await us.</p>
+<p>Let's try to change the level of all users in the user table that exist in the employee table. For simplicity, we will check the coincidence of users by name.</p>
+<p>How would we like to write this query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">UPDATE</span> <span class="text-yellow">user</span> <span class="token class-name"><span class="text-brown">SET</span></span>
+  	<span class="text-green">level</span> <span class="token operator">=</span> <span class="token number"><span class="text-user">80</span></span><span class="token punctuation">,</span>
+<span class="text-viola">WHERE user <span class="token punctuation">. </span>name IN <span class="token punctuation">(</span> list of names from employee table <span class="token punctuation">)</span></span><span class="token punctuation"></span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Well, let's add a list of names from the employee table to this query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">UPDATE</span> <span class="text-yellow">user</span> <span class="token class-name"><span class="text-brown">SET</span></span>
+  	<span class="text-green">level</span> <span class="token operator">=</span> <span class="token number"><span class="text-user">80</span></span><span class="token punctuation">,</span>
+<span class="text-viola">WHERE user<span class="token punctuation">.</span>name IN</span> <span class="token punctuation">(</span><span class="text-green">select name from employee</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p><strong>Interesting! </strong>The SQL query itself for getting the names turned out to be even shorter than the description of the task. The creators of SQL did not eat their bread in vain.</p>
+<p>Forced to upset you -<mark class="red">this approach will not work</mark>. First you need to join these tables, it will look something like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">UPDATE</span> <span class="text-yellow">table <span class="token number">1</span></span><span class="token number"></span><span class="token punctuation">,</span> <span class="text-yellow">table <span class="token number">2</span></span><span class="token number"></span> <span class="text-brown">SET</span>
+  	<span class="text-green">column <span class="token number">1</span></span><span class="token number"></span> <span class="token operator">=</span> <span class="text-user">expression <span class="token number">1</span></span><span class="token number"></span><span class="token punctuation">,</span>
+  	<span class="text-green">column <span class="token number">2</span></span><span class="token number"></span> <span class="token operator">=</span> <span class="text-user">expression <span class="token number">2</span></span><span class="token number"></span><span class="token punctuation">,</span>
+  	<span class="text-green">column <span class="token number">3</span></span><span class="token number"></span> <span class="token operator">=</span> <span class="text-user">expression <span class="token number">3</span></span><span class="token number"></span>
+<span class="text-viola">WHERE</span> <span class="text-yellow">table <span class="token number">1</span></span><span class="token number">.</span><span class="text-viola">id</span> <span class="token operator">=</span> <span class="text-yellow">table <span class="token number">2</span></span><span class="token number">.</span><span class="text-viola">ref_id</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Let's make it a little more difficult. You need to set the level to 80 only for good employees whose salary will be more than 50k. The complete solution will look like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">UPDATE</span></span> <span class="text-yellow">user</span><span class="token punctuation">,</span> <span class="text-yellow">good_employees</span> <span class="text-brown">SET</span>
+  	<span class="text-yellow">user</span><span class="token punctuation">.</span><span class="text-green">level</span> <span class="token operator">=</span> <span class="token number"><span class="text-user">80</span></span>
+<span class="text-viola">WHERE</span> <span class="text-yellow">user</span><span class="token punctuation">.</span><span class="text-green">name</span> <span class="token operator">=</span> <span class="text-yellow">good_employees</span><span class="token punctuation">.</span><span class="text-green">name</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Such a join of tables is actually <code>INNER JOIN</code>, so that in the end only users who have a match by name in the second table will remain.</p>
+<p>But we still need to somehow select good employees, so let's add some more code:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">SELECT</span> <span class="token operator">*</span> <span class="text-brown">FROM</span> <span class="text-yellow">employee</span> <span class="text-brown">WHERE</span> <span class="text-green">salary</span> <span class="token operator">&gt;=</span> <span class="token number">50000</span></code></pre>
+</div>
+<p>And now we substitute this table in our final query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">UPDATE</span></span> <span class="text-yellow">user</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="text-brown">SELECT</span> <span class="token operator">*</span> <span class="text-brown">FROM</span> <span class="text-yellow">employee</span> <span class="text-brown">WHERE</span> <span class="text-green">salary</span> <span class="token operator">&gt;=</span> <span class="token number">50000</span><span class="token punctuation">)</span> <span class="text-yellow">good_emps</span>
+<span class="text-brown">SET</span>
+    <span class="text-yellow">user</span><span class="token punctuation">.</span><span class="text-green">level</span> <span class="token operator">=</span> <span class="token number"><span class="text-user">80</span></span>
+<span class="text-brown">WHERE</span> <span class="text-yellow">user</span><span class="token punctuation">.</span><span class="text-green">name</span> <span class="token operator">=</span> <span class="text-yellow">good_emps</span><span class="token punctuation">.</span><span class="text-green">name</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Live with it now.</p>

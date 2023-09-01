@@ -1,0 +1,53 @@
+are several kinds of references in Java.</p>
+<p>There is <strong>StrongReference</strong> - these are the most common links that we create every day.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token class-name">Object</span> object <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//created an object</span>
+object <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><span class="token comment">//can now be garbage collected</span></code></pre>
+<p>And there are three “special” types of links - SoftReference, WeakReference, PhantomReference. In fact, there is only one difference between all types of links - the behavior of the GC with the objects they refer to. We will discuss the specifics of each link type in more detail later, but for now, the following knowledge will suffice:</p>
+<ul>
+ <li><strong>SoftReference</strong> is a soft reference, if the GC sees that an object is only accessible through a chain of soft references, then it will remove it from memory. Maybe.</li>
+ <li><strong>WeakReference</strong> - a weak reference, if the GC sees that an object is only accessible through a chain of weak references, then it will remove it from memory.</li>
+ <li><strong>PhantomReference</strong> is a phantom reference, if the GC sees that an object is only available through a chain of phantom references, then it will remove it from memory. After several runs of GC.</li>
+</ul>
+<p>You can also say that link types have a certain degree of softness:</p>
+<ul>
+ <li><strong>A regular hard link</strong> is any variable of a reference type. Not cleaned up by the garbage collector before it becomes unused.</li>
+ <li><strong>SoftReference</strong> . The object will not cause all memory to be used up - it is guaranteed to be deleted before an OutOfMemoryError occurs. Maybe earlier, depending on the implementation of the garbage collector.</li>
+ <li><strong>WeakReference</strong> . Weaker soft. Does not prevent the object from being disposed of; the garbage collector ignores such references.</li>
+ <li><strong>PhantomReference</strong> . Used for "death" processing of an object: the object is available after finalization until it is garbage collected.</li>
+</ul>
+<p>If it is not yet clear what the difference is, then do not worry, soon everything will fall into place. The details are in the details, and the details will follow.</p>
+<h2>8.2 WeakReference and SoftReference in Java</h2>
+<p>First, let's look at the difference between <strong>WeakReference</strong> and <strong>SoftReference</strong> in Java.</p>
+<p>In short, the garbage collector will free the memory of an object if only weak references point to it. If the object is pointed to by SoftReferences, then memory is deallocated when the JVM is in dire need of memory.</p>
+<p>This gives a definite advantage to <strong>SoftReference</strong> over Strong reference in certain cases. For example, SoftReference is used to implement an application cache, so the first thing the JVM will do is delete objects that only SoftReferences point to.</p>
+<p><strong>WeakReference</strong> is great for storing metadata, such as storing a reference to a ClassLoader. If no class is loaded, then you should not refer to the ClassLoader. This is why WeakReference makes it possible for the garbage collector to do its work on the ClassLoader as soon as the last strong reference to it is removed.</p>
+<p>WeakReference example in Java:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// some object</span>
+<span class="token class-name">Student</span> student <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// weak reference to it</span>
+<span class="token class-name">WeakReference</span><student> weakStudent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakReference</span><span class="token punctuation"></span><student><span class="token punctuation">(</span>student<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// now the Student object can be garbage collected</span>
+student <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+</student></student></code></pre>
+<p><strong>SoftReference example in Java:</strong></p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// some object</span>
+<span class="token class-name">Student</span> student <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// weak reference to it</span>
+<span class="token class-name">SoftReference</span><student> softStudent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SoftReference</span><span class="token punctuation"></span><student><span class="token punctuation">(</span>student<span class="token punctuation">)</span>
+
+<span class="token comment">// now the Student object can be garbage collected</span>
+<span class="token comment">// but this will only happen if the JVM has a strong need for memory</span>
+student <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+</student></student></code></pre>
+<h2>8.3 PhantomReference in Java</h2>
+<p>The PhantomReference instance is created in the same way as in the WeakReference and SoftReference examples, but it is rarely used.</p>
+<p>A PhantomReference can be garbage collected if the object does not have strong (Strong), weak (WeakReference), or soft (SoftReference) references.</p>
+<p>You can create a Phantom Reference object like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token class-name">PhantomReference</span> myObjectRef <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhantomReference</span><span class="token punctuation">(</span><span class="token class-name">MyObject</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>PhantomReference</strong> can be used in situations where finalize() doesn't make sense. This reference type is different from other types because it is not designed to access an object. It is a signal that the object has already been finalized and the garbage collector is ready to reclaim its memory.</p>
+<p>To do this, the garbage collector places it in a special <strong>ReferenceQueue</strong> for further processing. ReferenceQueue is where object references are placed to free memory.</p>
+<p>Phantom references are a safe way to know that an object has been removed from memory. For example, consider an application that deals with large images. Let's say we want to load an image into memory when it's already in memory, which is ready for garbage collection. In this case, we want to wait for the garbage collector to kill the old image before loading the new image into memory.</p>
+<p>Here PhantomReference is a flexible and safe choice. The reference to the old image will be passed to the ReferenceQueue after the old image object is destroyed. Once we have this link, we can load the new image into memory.</p>

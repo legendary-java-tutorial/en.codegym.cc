@@ -1,0 +1,140 @@
+Useful Maven plugins
+<p>----------------------------------------</p>
+Your maven repository on GitHub.
+We pack the assembly into a Docker image.
+<p>----------------------------------------</p>
+<h2>My own maven repository on GitHub</h2>
+
+<p>Developers can upload their library to GitHub, for which it has a special <span class="text-bold">site-maven-plugin plugin</span> . Let's look at an example of its use:</p>
+<pre><code>&lt;project&gt;
+    &lt;properties&gt;
+        <span class="text-orange">&lt;github.global.server&gt;github&lt;/github.global.server&gt;
+        &lt;github.maven-plugin&gt;0.9&lt;/github.maven-plugin&gt;</span>
+    &lt;/properties&gt;
+ 
+    &lt;distributionManagement&gt;
+    	<span class="text-neon">&lt;repository&gt;
+            &lt;id&gt;internal.repo&lt;/id&gt;
+        	&lt;name&gt;Temporary Staging Repository&lt;/name&gt;
+            &lt;url&gt;file://${project.build.directory}/mvn-repo&lt;/url&gt;
+    	&lt;/repository&gt;</span>
+    &lt;/distributionManagement&gt;
+ 
+    &lt;build&gt;
+    	&lt;plugins&gt;
+        	<span class="text-red">&lt;plugin&gt;
+                &lt;artifactId&gt;maven-deploy-plugin&lt;/artifactId&gt;
+    	        &lt;version&gt;2.8.1&lt;/version&gt;
+            	&lt;configuration&gt;
+                    <span class="text-bold">&lt;altDeploymentRepository&gt;
+                        internal.repo::default::file://${project.build.directory}/mvn-repo
+                    &lt;/altDeploymentRepository&gt;</span>
+            	&lt;/configuration&gt;
+        	&lt;/plugin&gt;</span>
+        	<span class="text-green">&lt;plugin&gt;
+                &lt;groupId&gt;com.github.github&lt;/groupId&gt;
+                &lt;artifactId&gt;site-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;${github.maven-plugin}&lt;/version&gt;
+            	&lt;configuration&gt;
+                	&lt;message&gt;Maven artifacts for ${project.version}&lt;/message&gt;
+                    &lt;noJekyll&gt;true&lt;/noJekyll&gt;
+                    &lt;outputDirectory&gt;${project.build.directory}/mvn-repo&lt;/outputDirectory&gt;
+                	&lt;branch&gt;refs/heads/mvn-repo&lt;/branch&gt;
+                    &lt;includes&gt;**/*&lt;/includes&gt;
+                	&lt;repositoryName&gt;SuperLibrary&lt;/repositoryName&gt;
+                	&lt;repositoryOwner&gt;codegymu-student&lt;/repositoryOwner&gt;
+            	&lt;/configuration&gt;
+            	&lt;executions&gt;
+                	&lt;execution&gt;
+                    	&lt;goals&gt;
+                            &lt;goal&gt;site&lt;/goal&gt;
+                    	&lt;/goals&gt;
+                        &lt;phase&gt;deploy&lt;/phase&gt;
+                	&lt;/execution&gt;
+            	&lt;/executions&gt;
+        	&lt;/plugin&gt;</span>
+    	&lt;/plugins&gt;
+    &lt;/build&gt;
+ 
+&lt;/project&gt;
+</code></pre>
+<p>Let's see what is written here.</p>
+<p><span class="text-neon">The creation of a temporary local repository is highlighted in blue. </span>Technically it's just a folder, but we need Maven to treat it as a separate repository.</p>
+<p><span class="text-bold">We highlighted in red the launch of the maven-deploy-plugin plugin</span> , where we indicated that the compiled library should be placed in this temporary repository.</p>
+<p><span class="text-green">And finally, the site-maven-plugin plugin is highlighted in green</span> , which should take all the files from the repository and commit them to GitHub. Some explanation is needed here. All parameters are divided into two groups: what to fill and where to fill.</p><span class="text-bold">What we fill in:</span>
+<ul>
+ <li><span class="text-bold">outputDirectory</span> - directory where to get files for commit</li>
+ <li><span class="text-bold">includes</span> - sets the mask of files to commit</li>
+</ul><span class="text-bold">Where do we upload:</span>
+<ul>
+ <li><span class="text-bold">repositoryOwner</span> - the name of the repository owner on GitHub</li>
+ <li><span class="text-bold">repositoryName</span> - repository name</li>
+ <li><span class="text-bold">branch</span> - sets the repository branch on GitHub to which to commit</li>
+ <li><span class="text-bold">message</span> - the message that will be added when committing</li>
+</ul>
+<p>You also need to specify the login and password for your repository in Maven <span class="text-bold">setting.xml</span> :</p>
+<pre><code>&lt;settings&gt;
+  &lt;servers&gt;
+    &lt;server&gt;
+  	&lt;id&gt;github&lt;/id&gt;
+      &lt;username&gt;[username]&lt;/username&gt;
+      &lt;password&gt;[password]&lt;/password&gt;
+    &lt;/server&gt;
+  &lt;/servers&gt;
+&lt;/settings&gt;
+</code></pre>
+<p>To connect (use) a library from a GitHub repository to another project, you need to specify this repository in your <span class="text-bold">pom.xml</span> :</p>
+<pre><code>&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;[name-project]-mvn-repo&lt;/id&gt;
+        &lt;url&gt;https://raw.github.com/[username]/[name-project]/mvn-repo/&lt;/url&gt;
+    	&lt;snapshots&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+            &lt;updatePolicy&gt;always&lt;/updatePolicy&gt;
+    	&lt;/snapshots&gt;
+	&lt;/repository&gt;
+&lt;/repositories&gt;
+</code></pre>
+<p>After that, Maven will understand where to get the library from.</p>
+<ul>
+ <li><span class="text-bold">[name-project]</span> is the name of the project, in our case SuperLibrary</li>
+ <li><span class="text-bold">[username]</span> is the login on GitHub, in the example it is codegym-user</li>
+</ul>
+<h2>Packing the assembly into a Docker image</h2>
+<p>We live in a new time, when projects as a result of the assembly can be placed in the Maven repository, or maybe in docker storage.</p>
+<p>To make Maven and Docker friends, we need the <span class="text-bold">docker-maven-plugin plugin</span> . Nothing complicated:</p>
+<pre><code>  &lt;build&gt;
+    &lt;plugins&gt;
+  	  &lt;plugin&gt;
+        <span class="text-green">&lt;groupId&gt;com.spotify&lt;/groupId&gt;
+        &lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;
+    	&lt;version&gt;0.4.10&lt;/version&gt;</span>
+    	&lt;configuration&gt;
+          <span class="text-red">&lt;dockerDirectory&gt;${project.basedir}&lt;/dockerDirectory&gt;
+      	  &lt;imageName&gt;codegym/${project.artifactId}&lt;/imageName&gt;</span>
+    	&lt;/configuration&gt;
+    	&lt;executions&gt;
+      	  <span class="text-neon">&lt;execution&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+        	&lt;goals&gt;
+          	&lt;goal&gt;build&lt;/goal&gt;
+        	&lt;/goals&gt;
+      	  &lt;/execution&gt;</span>
+    	&lt;/executions&gt;
+  	  &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+</code></pre>
+<p><span class="text-neon">Highlighted in blue is the point where we added the goal bulid to the package phase of the build. </span>It can be called with the <span class="text-bold">mvn docker:build</span> command .</p>
+<p><span class="text-bold">The dockerDirectory</span> tag specifies the folder where the Dockerfile is located. And the name of the image is set using the <span class="text-bold">imageName</span> tag .</p>
+<p>If the project is packaged in a jar file, then the docker file will look something like this:</p>
+<pre><code>FROM java:11
+EXPOSE 8080
+ADD /target/demo.jar demo.jar
+ENTRYPOINT ["java","-jar","demo.jar"]
+</code></pre>
+<p>If you are packaging a web application, then you may need to add Tomcat:</p>
+<pre><code>FROM tomcat8
+ADD sample.war ${CATALINA_HOME}/webapps/ROOT.war
+CMD ${CATALINA_HOME}/bin/catalina.sh run
+</code></pre>

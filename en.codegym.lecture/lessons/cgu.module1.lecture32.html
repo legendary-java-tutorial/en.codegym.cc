@@ -1,0 +1,136 @@
+<p>Fear errors, but don't write them in Java! You probably already know a few things about <a href="https://codegym.cc/groups/posts/28-exceptions-checked-unchecked-and-custom" target="_blank">exceptions in Java</a>. Today, at least a superficial knowledge will benefit you. We're going to analyze the Error class and a special exception type that frightens many people when it appears in their stack traces.</p>
+
+<p>At the top of Java's exception hierarchy is the <span class="code"><span class="text-green">Throwable</span></span> class, which has two descendants: </p>
+
+<ul>
+<li><span class="text-red"><span class="text-bold">Exception</span></span>, which is responsible for errors in your program.</li>
+<li>And our hero for today — <span class="text-red"><span class="text-bold">Error</span></span>, which is responsible for errors in the JVM.<br />
+It is worth mentioning that these are probably not even coding bugs, but rather problems that usually do not depend on the developer.</li>
+</ul>
+
+<h2>What to do with an Error</h2>
+
+<p>When catching "errors", you cannot perform any actions in the <span class="text-viola">catch</span> block, except for <a href="https://codegym.cc/groups/posts/274-logging-what-how-where-and-with-what" target="_blank">logging</a>, since we're talking about problems in the JVM itself. </p>
+
+<p>Logging is good: when you get a runtime error, you can look at the logs, see its cause, and know what to fix.</p>
+
+<p>Since you don't know what kind of error you might get when you write your code, it makes no sense to write a particular type in the <span class="text-viola">catch</span> block. Using the <span class="code"><span class="text-green">Error</span></span> class itself is also not the best solution, since in this case, you will only catch errors. </p>
+
+<p>Accordingly, it is better to use the <span class="code"><span class="text-green">Throwable</span></span> class, which can catch both <span class="text-red"><span class="text-bold">Error</span></span> and <span class="text-red"><span class="text-bold">Exception</span></span>. How does this look in practice?</p>
+
+<table>
+<tbody>
+<tr>
+<th>It's not OK to write code like this:</th>
+</tr>
+<tr>
+<td>
+<pre class='language-java line-numbers'><code>
+try {
+    // Your code
+} catch (OutOfMemoryError outOfMemoryError) {
+    // Code to catch OutOfMemoryError
+}
+</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<tbody>
+<tr>
+<th>Writing code like this is also not OK:</th>
+</tr>
+<tr>
+<td>
+<pre class='language-java line-numbers'><code>
+try {
+    // Your code
+} catch (Error error) {
+    // Code to catch all Errors
+}
+</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+<table>
+<tbody>
+<tr>
+<th>But code like this is OK:</th>
+</tr>
+<tr>
+<td>
+<pre class='language-java line-numbers'><code>
+try {
+    // Your code
+} catch (Throwable throwable) {
+    // Code to catch all Throwables
+}
+</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>The second option for handling errors is to <span class="text-bold">throw</span> them higher after declaring a <span class="text-viola">throws</span> clause on the method. This technique is used when your code could theoretically throw an error and you want to forewarn everyone who might use your code so that they can properly handle the error.</p>
+
+<h2>Common errors</h2>
+
+<p>Some of the most popular errors are the <span class="code"><span class="text-green">OutOfMemoryError</span></span> and <span class="code"><span class="text-green">StackOverflowError</span></span> classes.</p>
+
+<p><span class="text-red"><span class="text-bold">OutOfMemoryError</span></span> often appears when the program <a href="https://codegym.cc/groups/posts/16-more-about-the-garbage-collector-" target="_blank">does not have enough memory to create objects</a> and the garbage collector can't keep up. The result is an <span class="code"><span class="text-green">OutOfMemoryError</span></span>. </p>
+
+<p>Java doesn't let you manually delete objects to prevent memory leaks, but you can avoid littering so as to not overwork the garbage collector and not clutter up the heap. </p>
+
+<p>For example, code like this will create a lot of garbage in memory:</p>
+
+<pre class='language-java line-numbers'><code>
+while (true) {
+    new Object();
+}
+</code></pre>
+
+<p>The second error I want to tell you about is the <span class="text-red"><span class="text-bold">StackOverflowError</span></span>, which is thrown when the stack overflows. Since the stack mainly stores local variables, parameters, and method calls, recursion (or a recursive method call) is a very common cause of this error:</p>
+
+<pre class='language-java line-numbers'><code>
+public void foo() {
+    foo();
+}
+</code></pre>
+
+<p>To avoid problems during program execution, modern IDEs often warn about calling methods recursively.</p>
+
+<p>You can't fix a program that throws <span class="text-red"><span class="text-bold">Errors</span></span>, but you can write code that won't throw an error and break your program. Watch what you do with memory, create objects carefully, and call methods correctly. If you do that, then you will have fewer problems in your code.</p>
+
+<h2>Difference between the Error and Exception types</h2>
+
+<table>
+<tbody>
+<tr>
+<th>Error</th>
+<th>Exception</th>
+</tr>
+<tr>
+<td>Cannot be corrected in <span class="text-viola">catch</span> block</td>
+<td>Can be handled in a <span class="text-viola">catch</span> block</td>
+</tr>
+<tr>
+<td>Does not occur at compile time</td>
+<td>Can be caught at compile time</td>
+</tr>
+<tr>
+<td>Problems in the JVM</td>
+<td>Problems in code logic</td>
+</tr>
+<tr>
+<td>All <span class="text-red"><span class="text-bold">Errors</span></span> are <span class="code">unchecked</span></td>
+<td><span class="code">checked</span> and <span class="code">unchecked</span></td>
+</tr>
+<tbody>
+</table>
+
+<p>You cannot escape exceptions in Java, but you should not be afraid of them. You just need to understand what each type represents and know how to handle it. That's all for today! See you!</p>

@@ -1,0 +1,60 @@
+, we once said that in a server application you can’t just create streams through <code>new Thread().start()</code>? Only the container should create threads. We will now develop this idea even further.</p>
+<p><span class="text-green">All objects should also be created only by the container</span> . Of course, we are not talking about all objects, but rather about the so-called business objects. They are also often referred to as bins. The legs of this approach grow from the fifth principle of SOLID, which requires getting rid of classes and moving to interfaces:</p>
+<ul>
+ <li>Top-level modules should not depend on lower-level modules. Both those, and others should depend on abstractions.</li>
+ <li>Abstractions should not depend on details. The implementation must depend on the abstraction.</li>
+</ul>
+<p>Modules should not contain references to specific implementations, and all dependencies and interactions between them should be built solely on the basis of abstractions (that is, interfaces). The very essence of this rule can be written in one phrase: <span class="text-red">all dependencies must be in the form of interfaces</span> .</p>
+<p>Despite its fundamental nature and apparent simplicity, this rule is violated most often. Namely, every time when we use the new operator in the code of the program/module and create a new object of a specific type, thus, instead of depending on the interface, the dependence on the implementation is formed.</p>
+<p>It is clear that this cannot be avoided and objects must be created somewhere. But, at the very least, you need to minimize the number of places where this is done and in which classes are explicitly specified, as well as localize and isolate such places so that they are not scattered throughout the program code.</p>
+<p>A very good solution is the crazy idea of ​​concentrating the creation of new objects within specialized objects and modules - factories, service locators, IoC containers.</p>
+<p>In a sense, such a decision follows the Single Choice Principle, which says: <span class="text-red">"Whenever a software system must support many alternatives, their complete list should be known only to one module of the system"</span> .</p>
+<p>Therefore, if in the future it is necessary to add new options (or new implementations, as in the case of creating new objects we are considering), then it will be enough to update only the module that contains this information, and all other modules will remain unaffected and will be able to continue their work. as usual.</p>
+<h3>Example 1</h3>
+<p><code>new ArrayList </code>Instead of writing something like , it would make sense <code>List.new()</code>for the JDK to provide you with the correct implementation of a leaf: ArrayList, LinkedList, or even ConcurrentList.</p>
+<p>For example, the compiler sees that there are calls to the object from different threads and puts a thread-safe implementation there. Or too many inserts in the middle of the sheet, then the implementation will be based on LinkedList.</p>
+<h3>Example 2</h3>
+<p>This has already happened with sorts, for example. When was the last time you wrote a sorting algorithm to sort a collection? Instead, now everyone uses the method <code>Collections.sort()</code>, and the elements of the collection must support the Comparable interface (comparable).</p>
+<p>If <code>sort()</code>you pass a collection of less than 10 elements to the method, it is quite possible to sort it with a bubble sort (Bubble sort), and not Quicksort.</p>
+<h3>Example 3</h3>
+<p>The compiler is already watching how you concatenate strings and will replace your code with <code>StringBuilder.append()</code>.</p>
+<h2>9.2 Dependency inversion in practice</h2>
+<p>Now the most interesting: let's think about how we can combine theory and practice. How can modules correctly create and receive their “dependencies” and not violate Dependency Inversion?</p>
+<p>To do this, when designing a module, you must decide for yourself:</p>
+<ul>
+ <li>what the module does, what function it performs;</li>
+ <li>then the module needs from its environment, that is, what objects / modules it will have to deal with;</li>
+ <li>And how will he get it?</li>
+</ul>
+<p>To comply with the principles of Dependency Inversion, you definitely need to decide which external objects your module uses and how it will get references to them.</p>
+<p>And here are the following options:</p>
+<ul>
+ <li>the module itself creates objects;</li>
+ <li>the module takes objects from the container;</li>
+ <li>the module has no idea where the objects come from.</li>
+</ul>
+<p>The problem is that to create an object, you need to call a constructor of a specific type, and as a result, the module will depend not on the interface, but on the specific implementation. But if we do not want objects to be created explicitly in the module code, then we can use the Factory Method <strong>pattern</strong> .</p>
+<p><span class="text-user">"The bottom line is that instead of directly instantiating an object via new, we provide the client class with some interface to create objects. Since such an interface can always be overridden with the right design, we get some flexibility when using low-level modules in high-level modules"</span> .</p>
+<p>In cases where it is necessary to create groups or families of related objects, an Abstract factory is used instead of a Factory <strong>Method</strong> .</p>
+<h2>9.3 Using the Service Locator</h2>
+<p>The module takes the necessary objects from the one who already has them. It is assumed that the system has some repository of objects, in which modules can “put” their objects and “take” objects from the repository.</p>
+<p>This approach is implemented by the Service Locator pattern <strong>,</strong> the main idea of ​​which is that the program has an object that knows how to get all the dependencies (services) that may be required.</p>
+<p>The main difference from factories is that Service Locator does not create objects, but actually already contains instantiated objects (or knows where / how to get them, and if it creates, then only once at the first call). The factory at each call creates a new object that you get full ownership of and you can do whatever you want with it.</p>
+<p><strong>Important</strong> ! <span class="text-green">The service locator produces references to the same already existing objects</span> . Therefore, you need to be very careful with the objects issued by the Service Locator, since someone else can use them at the same time as you.</p>
+<p>Objects in the Service Locator can be added directly through the configuration file, and indeed in any way convenient for the programmer. The Service Locator itself can be a static class with a set of static methods, a singleton, or an interface, and can be passed to the required classes via a constructor or method.</p>
+<p>The Service Locator is sometimes called an anti-pattern and is discouraged (because it creates implicit connections and only gives the appearance of good design). You can read more from Mark Seaman:</p>
+<ul>
+ <li><a href="http://blog.ploeh.dk/2010/02/03/ServiceLocatorIsAnAntiPattern.aspx" target="_blank">Service Locator is an Anti-Pattern</a></li>
+ <li><a href="http://blog.ploeh.dk/2010/11/01/PatternRecognitionAbstractFactoryOrServiceLocator.aspx" target="_blank">Abstract Factory or Service Locator?</a></li>
+</ul>
+<h2>9.4 Dependency Injection</h2>
+<p>The module doesn't care about "mining" dependencies at all. It only determines what it needs to work, and all the necessary dependencies are supplied (introduced) from the outside by someone else.</p>
+<p>This is what is called - <strong>Dependency</strong> Injection. Typically, the required dependencies are passed either as constructor parameters (Constructor Injection) or through class methods (Setter injection).</p>
+<p>This approach inverts the process of creating dependencies - instead of the module itself, the creation of dependencies is controlled by someone from the outside. The module from the active emitter of objects becomes passive - it is not he who creates, but others create for him.</p>
+<p>This change in direction is called <strong>the Inversion of Control</strong> , or the Hollywood Principle - "Don't call us, we'll call you."</p>
+<p>This is <span class="text-green">the most flexible solution, giving the modules the greatest autonomy</span> . We can say that only it fully implements the “Single Responsibility Principle” - the module should be completely focused on doing its job well and not worrying about anything else.</p>
+<p>Providing the module with everything necessary for work is a separate task, which should be handled by the appropriate “specialist” (usually a certain container, an IoC container, is responsible for managing dependencies and their implementation).</p>
+<p>In fact, everything here is like in life: in a well-organized company, programmers program, and the desks, computers and everything they need for work are bought and provided by the office manager. Or, if you use the metaphor of the program as a constructor, the module should not think about wires, someone else is involved in assembling the constructor, and not the parts themselves.</p>
+<p>It would not be an exaggeration to say that the use of interfaces to describe dependencies between modules (Dependency Inversion) + the correct creation and injection of these dependencies (primarily Dependency Injection) are <strong>key techniques for decoupling</strong> .</p>
+<p>They serve as the foundation on which the loose coupling of the code, its flexibility, resistance to changes, reuse, and without which all other techniques make little sense. This is the foundation of loose coupling and good architecture.</p>
+<p>The principle of Inversion of Control (together with Dependency Injection and Service Locator) is discussed in detail by Martin Fowler: <a href="https://martinfowler.com/articles/injection.html" target="_blank">"Inversion of Control Containers and the Dependency Injection pattern"</a> and <a href="https://martinfowler.com/bliki/InversionOfControl.html" target="_blank">"Inversion of Control"</a> .</p>

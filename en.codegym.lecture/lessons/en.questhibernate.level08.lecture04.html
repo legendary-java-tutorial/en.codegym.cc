@@ -1,0 +1,62 @@
+n JDBC API allows you to greatly customize objects.<mark class="green">Statement</mark>And<mark class="green">result set</mark>. For example, using<mark class="green">result set</mark>you can change rows in the database.</p>
+<p>When creating a statement object, we can pass a bunch of our wishes into it. These wishes can be divided into three groups:</p>
+<ul>
+ <li>Base connection type</li>
+ <li>Concurrent access control</li>
+ <li>Persistence and transactions</li>
+</ul>
+<p>These parameters can be passed when creating an object<mark class="green">Statement</mark>or<mark class="green">PreparedStatement</mark>. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Statement</span> statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span>
+    <span class="token class-name">ResultSet</span><span class="token punctuation">.</span>TYPE_FORWARD_ONLY<span class="token punctuation">,</span>
+    <span class="token class-name">ResultSet</span><span class="token punctuation">.</span>CONCUR_READ_ONLY<span class="token punctuation">,</span>
+    <span class="token class-name">ResultSet</span><span class="token punctuation">.</span>CLOSE_CURSORS_OVER_COMMIT <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">PreparedStatement</span> statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">prepareStatement</span><span class="token punctuation">(</span>sql<span class="token punctuation">,</span>
+    <span class="token class-name">ResultSet</span><span class="token punctuation">.</span>TYPE_FORWARD_ONLY<span class="token punctuation">,</span>
+    <span class="token class-name">ResultSet</span><span class="token punctuation">.</span>CONCUR_READ_ONLY<span class="token punctuation">,</span>
+    <span class="token class-name">ResultSet</span><span class="token punctuation">.</span>CLOSE_CURSORS_OVER_COMMIT<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We will not study these things in depth, but I want you to know that this is possible if you come across something similar in someone else's code.</p>
+<h2>ResultSet types</h2>
+<p>ResultSet can be of a specific type. The type defines some of the characteristics and capabilities of the ResultSet.</p>
+<p>Not all types are supported by all databases and JDBC drivers. You will have to check your database and JDBC driver to see if it supports the type you want to use. <span class="code text-orange">The DatabaseMetaData.supportsResultSetType(int type)</span> method returns <em>true</em> or <em>false</em> depending on whether the given type is supported or not.</p>
+<p>At the time of writing, there are three types of ResultSet:</p>
+<ul>
+ <li><strong>ResultSet.TYPE_FORWARD_ONLY</strong></li>
+ <li><strong>ResultSet.TYPE_SCROLL_INSENSITIVE</strong></li>
+ <li><strong>ResultSet.TYPE_SCROLL_SENSITIVE</strong></li>
+</ul>
+<p>The default type is TYPE_FORWARD_ONLY.</p>
+<p><strong>TYPE_FORWARD_ONLY</strong> means that the ResultSet can only be moved forward. That is, you can only move from row 1, row 2, row 3, etc. In a ResultSet, you cannot move backward: you cannot read data from the 9th row after reading the tenth.</p>
+<p><strong>TYPE_SCROLL_INSENSITIVE</strong> means that the ResultSet can be moved (scrolled) forward or backward. You can also move to a position relative to the current position, or move to an absolute position.</p>
+<p>A ResultSet of this type <span class="text-red">is insensitive</span> to changes to the underlying data source while the ResultSet is open. That is, if an entry in the ResultSet is changed in the database by another thread or process, it will not be reflected in the already opened<mark class="green">result set</mark>of this type.</p>
+<p><strong>TYPE_SCROLL_SENSITIVE</strong> means that the ResultSet can be moved (scrolled) forward or backward. You can also move to a position relative to the current position, or move to an absolute position.</p>
+<p>A ResultSet of this type <span class="text-green">is sensitive</span> to changes in the underlying data source while the ResultSet is open. That is, if an entry in the ResultSet is changed in the database by another thread or process, it will be reflected in the already open<mark class="green">result set</mark>of this type.</p>
+<h2>Concurrency</h2>
+<p>The concurrency of a ResultSet determines whether the ResultSet can be updated or only read.</p>
+<p>Some databases and JDBC drivers support updating a ResultSet, but not all. <span class="code text-orange">The DatabaseMetaData.supportsResultSetConcurrency(int concurrency)</span> method returns <em>true</em> or <em>false</em> depending on whether the given concurrency mode is supported or not.</p>
+<p>ResultSet can have one of two levels of concurrency:</p>
+<ul>
+ <li><strong>ResultSet.CONCUR_READ_ONLY</strong></li>
+ <li><strong>ResultSet.CONCUR_UPDATABLE</strong></li>
+</ul>
+<p><strong>CONCUR_READ_ONLY</strong> means the ResultSet can only be read.</p>
+<p><strong>CONCUR_UPDATABLE</strong> means the ResultSet can be read and modified.</p>
+<h2>An example of changing data in the database</h2>
+<p>With these parameters, you can control the generated Statement and its ResultSet.</p>
+<p>For example, you can create an updatable ResultSet and use it to change the database. When creating a Statement, it is important to observe the following conditions:</p>
+<ul>
+ <li>only one table is specified</li>
+ <li>does not contain join or group by clauses</li>
+ <li>query columns must contain a primary key</li>
+</ul>
+<p>When the above conditions are met, the updated ResultSet can be used to update a table in the database. When creating a Statement object, you need to specify the following parameters:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token class-name">Statement</span> st <span class="token operator">=</span> <span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token class-name">Result</span><span class="token punctuation">.</span>TYPE_SCROLL_INSENSITIVE<span class="token punctuation">,</span> <span class="token class-name">Result</span><span class="token punctuation">.</span>CONCUR_UPDATABLE<span class="token punctuation">)</span></code></pre>
+<p>The result of executing such a statement is an updatable result set. The update method is to move the ResultSet cursor to the row you want to update and then call the <span class="code text-orange">updateXXX()</span> method .</p>
+<p><span class="code text-orange">The updateXXX</span> method works similarly to the <span class="code text-orange">getXXX()</span> method . <span class="code text-orange">The updateXXX()</span> method has two parameters. The first is the number of the column being updated, which can be a column name or a serial number. The second is the data to be updated and this data type must be the same as XXX.</p>
+<p>To actually update the row in the database, you need to call the <span class="code text-orange">updateRow()</span> method before the ResultSet cursor leaves the changed row, otherwise the changes will not get into the database.</p>
+<p>You can also add new rows to the table:</p>
+<p>First you need to move the cursor to an empty line. To do this, call the <span class="code text-orange">moveToInsertRow()</span> method .</p>
+<p>Then you need to fill this row with data using the <span class="code text-orange">updateXXX()</span> method .</p>
+<p>Then you need to call the <span class="code text-orange">inserterRow()</span> method to add the row to the base.</p>
+<p>And finally, you need to return the cursor back by calling the <span class="code text-orange">moveToCurrentRow()</span> method .</p>
+<p><strong>Important! </strong>Not all DBMSs support these options for the extended Statement. In case of problems, see the official documentation of a particular DBMS.</p>

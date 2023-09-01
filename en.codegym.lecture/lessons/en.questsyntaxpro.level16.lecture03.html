@@ -1,0 +1,323 @@
+<h2>1. Introducing the Date Time API</h2>
+<p><img data-max-width="1024" data-id="c4deafae-916d-49ee-b145-faa3bc511608" src="https://cdn.codegym.cc/images/article/c4deafae-916d-49ee-b145-faa3bc511608/1024.jpeg" alt="Introducing the Date Time API""></p>
+<p>Java's creators didn't like the situation with the Date and Calendar classes. They were good in their day, but times change. And something simple, powerful and reliable became necessary. And with the release of Java 8 (15 years after <code><span class="text-viola">Calendar</span></code> appeared), the <strong>Java Date Time API</strong> was introduced. It is a set of classes that should be able to solve every possible task dealing with time.</p>
+<p>There were so many classes that they were split into several packages:</p>
+<p>The <code>java.time</code> package is the base package for the Java Date Time API: it contains classes such as <code>LocalDate</code>, <code>LocalTime</code>, <code>LocalDateTime</code>, <code>Instant</code>, <code>Period</code>, and <code>Duration</code>. All objects of these classes are <code>immutable</code>, which means they cannot be changed after creation.</p>
+<p>The <code>java.time.format</code> package contains classes for time formatting, i.e. converting times (and dates) to strings and vice versa. For example, it contains the versatile <code>DateTimeFormatter</code> class, which replaces the <code>SimpleDateFormat</code> class.</p>
+<p>The <code>java.time.zone</code> package contains classes for working with time zones. It contains classes such as <code>TimeZone</code> and <code>ZonedDateTime</code>. If you're writing server code for clients located in different parts of the world, you will really need these classes.</p>
+<hr>
+<h2>2. <code>LocalDate</code> class</h2>
+<p>The first and most useful class from the Date Time API that we'll look at is the <code>LocalDate</code> class. As you can probably guess from its name, this class is designed to work with dates.</p>
+<p>Objects of this class do not change after they are created, i.e. the <code>LocalDate</code> class is immutable. But this property adds simplicity and reliability to the class. Especially if several threads (threads of execution) are interacting with such an object at the same time.</p>
+<p>To create a new <code>LocalDate</code> object, you need to use one of the static methods. Here is a list of the main ones.</p>
+<p><strong>Getting the current date</strong></p>
+<p>To get the current date, you need to use the static <code><span class="text-red">now</span>()</code> method. This is much easier than it seems:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">LocalDate</span> today = <span class="text-neon">LocalDate</span>.<span class="text-red">now</span>();</code></pre>
+</div>
+<p>Where <code>today</code> is a <code><span class="text-neon">LocalDate</span></code> variable, and <code><span class="text-neon">LocalDate</span>.now()</code> is a call to the static <code><span class="text-red">now</span>()</code> method of the <code><span class="text-neon">LocalDate</span></code> class.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">LocalDate</span> <span class="text-user">today</span> = <span class="text-neon">LocalDate</span>.<span class="text-red">now</span>();
+System.out.println("Today = " + <span class="text-user">today</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>
+Today = 2019-02-22</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Getting a date in a specific time zone</strong></p>
+<p>The <code>LocalDate</code> class also has a variation of the <code>now(ZoneId)</code> method that lets you get the current date in a specific time zone.</p>
+<p>To do this, we need another class — the <code>ZoneId</code> class (java.time.ZoneId). It has an <code>of()</code> method that returns a <code>ZoneId</code> object given the name of the time zone.</p>
+<p>To determine the current date in Shanghai, you need to write the following code:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ZoneId  <span class="text-orange">timezone</span> = ZoneId.of(<span class="text-green">"Asia/Shanghai"</span>);
+<span class="text-neon">LocalDate</span> <span class="text-user">today</span> = <span class="text-neon">LocalDate</span>.<span class="text-red">now</span>(timezone);
+System.out.println("In Shanghai, now = " + <span class="text-user">today</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+In Shanghai, now = 2019-02-22</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>You can find a list of the names of all the time zones on the Internet.</p>
+<hr>
+<h2>3. Getting a specific date</h2>
+<p>To get a <code><span class="text-neon">LocalDate</span></code> object that represents a specific date, you need to use the static <code><span class="text-red">of</span>()</code> method. Everything here is also very simple and clear:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">LocalDate</span> date = <span class="text-neon">LocalDate</span>.<span class="text-red">of</span>(2019, Month.<span class="text-green">FEBRUARY</span>, 22);</code></pre>
+</div>
+<p>Where <code>date</code> is a <code><span class="text-neon">LocalDate</span></code> variable, and <code><span class="text-neon">LocalDate</span>.<span class="text-red">of</span>()</code> is a call to the static <code><span class="text-red">of</span>()</code> method of the <code><span class="text-neon">LocalDate</span></code> class.</p>
+<p>Here we see the <code><span class="text-green">FEBRUARY</span></code> constant of the <code>Month</code> class (java.time.Month) being used to specify February as the month.</p>
+<p>You can also specific the month in the old fashioned way — using a number:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">LocalDate</span> date = <span class="text-neon">LocalDate</span>.<span class="text-red">of</span>(2019, <span class="text-user">2</span>, <span class="text-user">22</span>);</code></pre>
+</div>
+<p><span class="text-viola">Two? Instead of February? Does that mean the months are once again being numbered from one?</span></p>
+<p><span class="text-viola">Yes, nearly 20 years after Java's creation, months have finally stopped being numbered from zero.</span></p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">LocalDate</span> <span class="text-user">today</span> = <span class="text-neon">LocalDate</span>.<span class="text-red">of</span>(2019, 2, 22);
+System.out.println("Today = " + <span class="text-user">today</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>
+Today = 2019-02-22</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Getting a date by the index of the day</strong></p>
+<p>There's another interesting way to create a date: using the <code><span class="text-red">ofYearDay</span></code> method, you can get a date based only on the number of the year and the index of the day in the year. Here's the general appearance:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">LocalDate</span> date = <span class="text-neon">LocalDate</span>.<span class="text-red">ofYearDay</span>(<span class="text-user">year</span>, <span class="text-user">day</span>);</code></pre>
+</div>
+<p>Where <code><span class="text-user">year</span></code> is the number of the year and <code><span class="text-user">day</span></code> is the index of the day in the year.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">LocalDate</span> <span class="text-user">today</span> = LocalDate.<span class="text-red">ofYearDay</span>(<span class="text-user">2019</span>, <span class="text-user">100</span>);
+<span>System.out.println("Today = " + today);</span></code></pre>
+        </td>
+        <td>
+                <pre><code>
+Today = 2019-04-10</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The 100th day of 2019 is April 10th.</p>
+<p><strong>Getting a Unix date</strong></p>
+<p>Do you recall that <code>Date</code> objects always stored time as the number of milliseconds since January 1, 1970? To ensure programmers wouldn't miss the good old days, the <code>LocalDate</code> class got an <code><span class="text-red">ofEpochDay()</span></code> method, which returns the date calculated from the January 1, 1970. Here's the general appearance:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">LocalDate</span> date = LocalDate.<span class="text-red">ofEpochDay</span>(<span class="text-user">day</span>);</code></pre>
+</div>
+<p>Where <code><span class="text-user">day</span></code> is the number of days that have elapsed since January 1, 1970.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code><span class="text-neon">LocalDate</span> <span class="text-user">today</span> = LocalDate.<span class="text-red">ofEpochDay</span>(<span class="text-user">1</span>);
+System.out.println("Today = " + <span class="text-user">today</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>
+Today = 1970-01-02</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>4. Getting elements of a date</h2>
+<p>It is impossible to change <code>LocalDate</code> objects, but you can get individual elements of the stored date. <code>LocalDate</code> objects have several methods for this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getYear()</code></pre>
+        </td>
+        <td>Returns the year of a specific date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Month getMonth()</code></pre>
+        </td>
+        <td>Returns the date's month: one of several constants<br><code>JANUARY, FEBRUARY, ...;</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getMonthValue()</code></pre>
+        </td>
+        <td>Returns the index of the date's month. January == 1.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getDayOfMonth()</code></pre>
+        </td>
+        <td>Returns the index of the day of the month</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getDayOfYear()</code></pre>
+        </td>
+        <td>Returns the day's index from the beginning of the year</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>DayOfWeek getDayOfWeek()</code></pre>
+        </td>
+        <td>
+            Returns the day of the week: one of several constants<br>
+            <code>MONDAY, TUESDAY, ...;</code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>IsoEra getEra()</code></pre>
+        </td>
+        <td>Returns the era: either <code>BCE</code> (Before Current Era) and <code>CE</code> (Current Era)</td>
+    </tr>
+    </tbody>
+</table>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">LocalDate</span> <span class="text-user">today</span> = <span class="text-neon">LocalDate</span>.<span class="text-red">now</span>();
+System.out.println(<span class="text-user">today</span>.getYear());
+System.out.println(<span class="text-user">today</span>.getMonth());
+System.out.println(<span class="text-user">today</span>.getMonthValue());
+System.out.println(<span class="text-user">today</span>.getDayOfMonth());
+System.out.println(<span class="text-user">today</span>.getDayOfWeek());</code></pre>
+        </td>
+        <td>
+                <pre><code>
+2019
+FEBRUARY
+2
+22
+FRIDAY</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>5. Changing the date in a <code>LocalDate</code> object</h2>
+<p>The <code>LocalDate</code> class contains several methods that let you work with dates. The implementation of these methods is analogous to the methods of the <code>String</code> class: <span class="text-orange">they do not change the existing <code>LocalDate</code> object, but instead return a new one with the desired data.</span></p>
+<p>Here are the methods of the <code>LocalDate</code> class:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>plusDays(int days)</code></pre>
+        </td>
+        <td>Adds a specified number of days to the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>plusWeeks(int weeks)</code></pre>
+        </td>
+        <td>Adds weeks to the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>plusMonths(int months)</code></pre>
+        </td>
+        <td>Adds months to the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>plusYears(int years)</code></pre>
+        </td>
+        <td>Adds years to the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>minusDays(int days)</code></pre>
+        </td>
+        <td>Subtracts days from the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>minusWeeks(int weeks)</code></pre>
+        </td>
+        <td>Subtracts weeks from the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>minusMonths(int months)</code></pre>
+        </td>
+        <td>Subtracts months from date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>minusYears(int years)</code></pre>
+        </td>
+        <td>Subtracts years from the date</td>
+    </tr>
+    </tbody>
+</table>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>LocalDate <span class="text-viola">birthday</span> = LocalDate.of(2019, 2, 28);
+LocalDate <span class="text-green">nextBirthday</span> = <span class="text-viola">birthday</span>.<span class="text-red">plusYears</span>(1);
+LocalDate <span class="text-user">firstBirthday</span> = <span class="text-viola">birthday</span>.<span class="text-red">minusYears</span>(30);
+
+System.out.println(<span class="text-viola">birthday</span>);
+System.out.println(<span class="text-green">nextBirthday</span>);
+System.out.println(<span class="text-user">firstBirthday</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+
+
+2019-02-28
+2020-02-28
+1989-02-28</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <span class="text-orange"><code><span class="text-orange">birthday</span> object</code> whose methods we call does not change.</span> Instead, its methods return new objects that contain the desired data.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1607"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1608"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1609"></div>

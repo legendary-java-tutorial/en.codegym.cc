@@ -1,0 +1,77 @@
+<a href='https://cdn.codegym.cc/images/article/8793de53-f3cd-4b6a-881b-9f94d557fa20/original.jpeg' target='_blank'><img data-id="8793de53-f3cd-4b6a-881b-9f94d557fa20" data-max-width="850" alt="ThreadGroup - 1" src="https://cdn.codegym.cc/images/article/8793de53-f3cd-4b6a-881b-9f94d557fa20/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"We're going to start a more thorough exploration of threads."</p>
+<p>"The concept of a thread group was introduced to prevent a thread from repeatedly stopping and interrupting every other thread. A thread can only affect other threads in the same thread group. ThreadGroup is a class for managing thread groups. This approach lets you protect threads from unwanted changes."</p>
+<p>"Sometimes you have to run code that you can't fully trust. So it's convenient to put all of its threads in a separate group and block them from interfering with the work of the main thread group."</p>
+<p>"A thread group can contain other groups. This lets you organize all your threads and groups in a hierarchical tree. In such a tree, each thread group (except the initial group) has its own parent."</p>
+<p>"The ThreadGroup class has methods that let you get lists of all threads and affect/change them. When we create a new thread without explicitly specifying a group, it joins the same group as the creator thread."</p>
+<p>"Here are some of the methods in the ThreadGroup class:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <strong>getName</strong>()</code></pre>
+        </td>
+        <td>Returns the group name</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>ThreadGroup <strong>getParent</strong>()</code></pre>
+        </td>
+        <td>Returns the parent group</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void <strong>interrupt</strong>()</code></pre>
+        </td>
+        <td>Interrupts all threads in the group.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isDaemon</strong>()</code></pre>
+        </td>
+        <td>Checks whether the group is a daemon</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void <strong>setDaemon</strong>(boolean daemon)</code></pre>
+        </td>
+        <td>Sets the group's daemon property</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <strong>activeCount</strong>()</code></pre>
+        </td>
+        <td>Returns the number of live threads in the group and its subgroups</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <strong>activeGroupCount</strong>()</code></pre>
+        </td>
+        <td>Returns the number of live groups in the group and its subgroups</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <strong>enumerate</strong>(Thread[] list)</code></pre>
+        </td>
+        <td>Puts all live threads into the array and returns the number of them.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <strong>getMaxPriority</strong>()</code></pre>
+        </td>
+        <td>Returns the maximum priority for threads in the group.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void <strong>setMaxPriority</strong>(int priority)</code></pre>
+        </td>
+        <td>Lets you set the maximum priority of threads in the group and subgroups.</td>
+    </tr>
+    </tbody>
+</table>

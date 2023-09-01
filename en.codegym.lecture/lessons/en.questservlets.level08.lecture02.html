@@ -1,0 +1,234 @@
+Subnets
+<p>----------------------------------------</p>
+Introduction to hosts and subnets
+Subnet masks
+DHCP
+localhost and 127.0.0.1
+<p>----------------------------------------</p>
+<h2>3.1 Introduction to hosts and subnets</h2>
+<p><strong>IP addresses</strong> are used to identify devices on a network. To communicate with other devices over a
+    network, an IP address must be assigned to each network device (including computers, servers, routers, printers).
+    Such devices on the network are called <strong>hosts</strong> .</p>
+<p>Network equipment also has its own numbers. And all computers that are served by specific network equipment are
+    called <strong>subnet</strong> . Each subnet has a pattern by which network equipment assigns IP addresses to its
+    subnets. Such a pattern is called <strong>a subnet mask</strong> .</p>
+<p>Subnet masks allow you to divide one network into several subnets, and also set the maximum number of sponsored
+    hosts.</p>
+<h3>Introduction to IP addresses</h3>
+<p>An IP address consists of four parts, written as dotted decimal numbers (for example, <code>192.168.1.1</code>). Each
+    of these four parts is called <strong>an octet</strong> . An octet is eight binary digits, such as
+    <code>00001111</code>.</p>
+<p>Thus, each octet can take the binary value from <code>00000000</code>to <code>11111111</code>or from <code>0</code>to
+    <code>255</code>decimal.</p>
+<h3>IP address structure</h3>
+<p>The first part of the IP address is the network number, the other part is the host ID. Together they form a unique
+    host IP address. The shorter the network number, the more hosts it can fit. If the network number occupies <code>3
+        byteа</code>, then only one byte will remain per host number (the maximum <code>255</code>of hosts in the
+    network).</p>
+<p>The network number is used by routers (routers, routers) to forward packets to the desired networks, while the host
+    ID identifies the specific device on that network to which the packets should be delivered.</p>
+<h3>Network and host number example</h3>
+<p>The following figure shows an example of an IP address where the first three octets ( <code>192.168.1</code>) are the
+    network number and the fourth octet ( <code>16</code>) is the host ID.</p><img data-max-width="512"
+                                                                                   data-id="fb836885-cafa-404c-8130-d65294f56825"
+                                                                                   alt="Network and host number example"
+                                                                                   src="https://cdn.javarush.com/images/article/fb836885-cafa-404c-8130-d65294f56825/512.jpeg"
+                                                                                   style="width: 512px;">
+<p>The number of binary digits in an IP address that are per network number and the number of digits in an address that
+    are per host ID can be different depending on the subnet mask.</p>
+<h2>3.2 Subnet masks</h2>
+<h3>Private IPs</h3>
+<p>Every host on the Internet must have a unique address. The exception is IP addresses within local networks.</p>
+<p>If you have your own local network in your office, then its computers will have their own non-unique IP addresses.
+    However, if it is a computer directly connected to the Internet, or a server, then it must have a publicly unique IP
+    address.</p>
+<p>There is a special organization (IANA) that deals with the distribution of IP addresses. ISPs buy IP addresses from
+    it in blocks (subnets) and then sell them to their customers. So if you pay for a white IP address, then everything
+    is in order (the provider also pays money for it).</p>
+<p>Also, IANA has identified several subnets that are commonly used for non-public local area networks. Since these
+    subnets are non-public, they can be used by anyone for any purpose. There are three such subnets: large, medium and
+    small.</p>
+<p>The following three blocks of IP addresses are reserved for them:</p>
+<ul>
+    <li><code>10.0.0.0</code>—<code>10.255.255.255</code></li>
+    <li><code>172.16.0.0</code>—<code>172.31.255.255</code></li>
+    <li><code>192.168.0.0</code>—<code>192.168.255.255</code></li>
+</ul>
+<p>The IP addresses of these private subnets are sometimes referred to as "gray" addresses.</p>
+<h3>Subnet masks</h3>
+<p>In order to determine which bits of an IP address refer to the host number and which bits refer to the subnet number,
+    a so-called <strong>subnet mask</strong> is used .</p>
+<p>Let's say you have an IP address written in binary:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token number"></span><span class="text-red"><span class="token number">11110101</span>  <span
+            class="token number">01010101</span> <span class="token number">1111</span></span><span
+            class="token number"></span><span class="text-green"><span class="token number">1111</span> <span
+            class="token number">00000001</span></span><span class="token number"></span></code></pre>
+</div>
+<p>The bits responsible for the network number are marked in red, the bits responsible for the host number are marked in
+    green. Yes, that's also possible. There is no hard binding to bytes.</p>
+<p>The subnet mask will be called such a number, where the subnet bits will correspond to ones, and the host bits will
+    correspond to zeros. Subnet mask example for the previous address:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token number"></span><span class="text-red"><span class="token number">11111111</span>  <span
+            class="token number">11111111</span> <span class="token number">1111</span></span><span
+            class="token number"></span><span class="text-green"><span class="token number">0000</span> <span
+            class="token number">00000000</span></span><span class="token number"></span></code></pre>
+</div>
+<p>All subnet bits are equal <code class="text-red">1</code>, all host bits are equal <code class="text-green">0</code>.
+</p>
+<p>An example of extracting the network number and host ID in an IP address:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th></th>
+            <th>1st octet: (192)</th>
+            <th>2nd octet: (168)</th>
+            <th>3rd octet: (1)</th>
+            <th>4th octet: (2)</th>
+        </tr>
+        <tr>
+            <td><strong>IP address (binary)</strong></td>
+            <td>11000000</td>
+            <td>10101000</td>
+            <td>00000001</td>
+            <td>00000010</td>
+        </tr>
+        <tr>
+            <td><strong>Subnet mask (binary)</strong></td>
+            <td>11111111</td>
+            <td>11111111</td>
+            <td>11111111</td>
+            <td>00000000</td>
+        </tr>
+        <tr>
+            <td><strong>Network number</strong></td>
+            <td>11000000</td>
+            <td>10101000</td>
+            <td>00000001</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><strong>Host ID</strong></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>00000010</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>Subnet masks always consist of a series of consecutive 1's, starting with the leftmost bit of the mask, followed by a
+    series of consecutive 0's for a total of <code>32</code>bits.</p>
+<p>The subnet mask can be defined as the number of bits in the address that represent the network number (the number of
+    bits with a value of " <code>1</code>"). For example, " <code>8-bit mask</code>" is a mask in which <code>8</code>the
+    bits are ones and the rest of <code>24</code>the bits are zeros.</p>
+<p>Subnet masks are written in dotted decimal notation, just like IP addresses. The following examples show the binary
+    and decimal notation of <code>8-bit</code>, <code>16-bit</code>, <code>24-bit</code>and <code>29-bit</code>subnet
+    masks.</p>
+<p>Subnet masks:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th></th>
+            <th>Decimal</th>
+            <th>Binary 1st octet:</th>
+            <th>Binary 2nd octet:</th>
+            <th>Binary 3rd octet:</th>
+            <th>Binary 4th octet:</th>
+        </tr>
+        <tr>
+            <td><strong>8-bit mask</strong></td>
+            <td>255.0.0.0</td>
+            <td>11111111</td>
+            <td>00000000</td>
+            <td>00000000</td>
+            <td>00000000</td>
+        </tr>
+        <tr>
+            <td><strong>16-bit mask</strong></td>
+            <td>255.255.0.0</td>
+            <td>11111111</td>
+            <td>11111111</td>
+            <td>00000000</td>
+            <td>00000000</td>
+        </tr>
+        <tr>
+            <td><strong>24 bit mask</strong></td>
+            <td>255.255.255.0</td>
+            <td>11111111</td>
+            <td>11111111</td>
+            <td>11111111</td>
+            <td>00000000</td>
+        </tr>
+        <tr>
+            <td><strong>29-bit mask</strong></td>
+            <td>255.255.255.248</td>
+            <td>11111111</td>
+            <td>11111111</td>
+            <td>11111111</td>
+            <td>11111000</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<h2>3.3 DHCP</h2>
+<p>Inside the local network, there can be both static and dynamic IP addresses. System administrators can assign static
+    addresses to computers. Dynamic ones are assigned to computers automatically using the <strong>DHCP</strong> service
+    .</p>
+<p><strong>Dynamic Host Configuration Protocol</strong> (DHCP) is an application protocol that allows network devices to
+    automatically obtain an IP address and other parameters necessary to operate on a TCP/IP network.</p>
+<p>After the computer has booted up, the operating system accesses the DHCP server (usually built into the router) and
+    receives an IP address (and other necessary parameters) from it. This avoids manual configuration of computers on
+    the network. This approach is used in most local networks.</p>
+<h3>IP address distribution</h3>
+<p>The DHCP protocol provides three ways to allocate IP addresses:</p>
+<p><strong>Manual distribution</strong> . In this method, the network administrator maps the hardware address (MAC
+    address) of each computer to a specific IP address. In fact, this method of address allocation differs from manually
+    configuring each computer only in that address information is stored centrally (on the DHCP server) and therefore it
+    is easier to change it if necessary.</p>
+<p><strong>Automatic distribution</strong> . With this method, each computer is allocated an arbitrary free IP address
+    from the range defined by the administrator for permanent use.</p>
+<p><strong>dynamic distribution</strong> . This method is similar to automatic distribution, except that the address is
+    given to the computer not for permanent use, but for a certain period. This is called an address lease. After the
+    lease expires, the IP address is again considered free and the client is obliged to request a new one (however, it
+    may turn out to be the same). In addition, the client himself can refuse the received address.</p>
+<p>Advanced DHCP services are able to automatically update DNS records corresponding to client computers when new
+    addresses are allocated to them. This can be useful when you have a large corporate network that uses internal DNS
+    for server and computer names.</p>
+<h3>DHCP Options</h3>
+<p>In addition to the IP address, DHCP can also provide the client with additional parameters necessary for normal
+    network operation. These options are called DHCP options. There are many, but you only need to know a few of
+    them.</p>
+<p>Some of the most commonly used options are:</p>
+<ul>
+    <li>default router IP address;</li>
+    <li>Subnet mask;</li>
+    <li>DNS server addresses;</li>
+    <li>DNS domain name.</li>
+</ul>
+<h2>3.4 localhost and 127.0.0.1</h2>
+<p>There are several IP addresses that are useful to know. For example, the IP address of your router. Another IP
+    address that is useful to know is <code>127.0.0.1.</code>Now we will talk about it in a little more detail.</p>
+<h3>What is 127.0.0.1?</h3>
+<p>The IP address <code>127.0.0.1</code>is known as the loopback address, but you can see it as
+    <strong>localhost</strong> . When you point your browser to <code>127.0.0.1</code>, it tries to connect to the
+    computer you are using right now. This is handy when you want to connect to a server on your computer.</p>
+<p><code>127.0.0.1</code>is special among IP addresses. As a rule, the IP address is unique for each computer both on
+    the local network and on the Internet. However, <code>127.0.0.1</code>it always points to the computer you are
+    currently using, no matter what.</p>
+<p>For example, you set up a server on your work computer and you can connect to it by typing <code>127.0.0.1</code>in
+    your browser at work. However, when you get home and type in <code>127.0.0.1</code>, you'll connect to your home
+    computer instead. To connect to a work computer, you will need its public IP address.</p>
+<h3>What is localhost?</h3>
+<p><strong>localhost</strong> is actually a domain name for there is no <code>127.0.0.1.</code>particular difference
+    between <code>127.0.0.1</code>and localhost. You can write it this way and that way, as you like.</p>
+<p>You can think of localhost as the "name" for an address <code>127.0.0.1</code>, just as "www.google.com" is the
+    "name" for a Google IP address. However, when you visit www.google.com, it must go through a DNS server so that your
+    computer can determine which IP address matches the name.</p>
+<p>Localhost doesn't need a DNS server because your computer already knows you want to connect to it. This way you can
+    use localhost even if you don't have an internet connection.</p>

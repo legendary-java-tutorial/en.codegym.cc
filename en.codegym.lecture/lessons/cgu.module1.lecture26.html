@@ -1,0 +1,220 @@
+<p>Perhaps you've heard that Singleton single malt Scotch whisky is good? Well, alcohol is bad for your health, so today we will tell you about the singleton design pattern in Java instead. </p>
+ 
+    <p>We previously reviewed the creation of objects, so we know that to create an object in Java, you need to write something like: </p>
+ 
+    <pre class='language-java line-numbers'><code>
+Robot robot = new Robot(); 
+    </code></pre>
+ 
+    <p>But what if we want to ensure that only one instance of the class is created?</p>
+ 
+    <p>The <span class="code text-orange">new Robot()</span> statement can create many objects, and nothing stops us from doing so. This is where the singleton pattern comes to the rescue.</p>
+ 
+    <p>Suppose you need to write an application that will connect to a printer — just ONE printer — and tell it to print: </p>
+ 
+    <pre class='language-java line-numbers'><code>
+public class Printer { 
+ 
+	public Printer() { 
+	} 
+     
+	public void print() { 
+    	… 
+	} 
+}
+    </code></pre> 
+ 
+    <p>This looks like an ordinary class... BUT! There is one "but": I can create multiple instances of my printer object and call methods on them in different places. This could harm or even break my printer. So we need to make sure that there is only one instance of our printer, and that's what a singleton will do for us! </p>
+
+    <h2>Ways to create a singleton</h2>
+ 
+    <p>There are two ways to create a singleton:  </p>
+
+    <ul>
+        <li>use a private constructor;  </li>
+        <li>export a public static method to provide access to a single instance. </li>
+     </ul>
+
+    <p>Let's first consider using a private constructor. To do this, we need to declare a field as <span class="code">final</span> in our class and initialize it. Since we marked it as <span class="code">final</span>, we know it will be <a href="https://codegym.cc/groups/posts/30-fixed-values-in-java-final-constants-and-immutable" target="_blank">immutable</a>, i.e. we can no longer change it.  </p>
+ 
+    <p>You also need to declare the constructor as <span class="code">private</span> to prevent <a href="https://codegym.cc/groups/posts/98-principles-of-encapsulation" target="_blank">creating objects outside the class</a>. This guarantees for us that there will be no other instances of our printer in the program. The constructor will be called just once during initialization and will create our <span class="code"><span class="text-green">Printer</span></span>: </p>
+ 
+    <pre class='language-java line-numbers'><code>
+public class Printer { 
+     
+	public static final Printer PRINTER = new Printer(); 
+     
+	private Printer() { 
+	} 
+ 
+	public void print() { 
+        // Printing... 
+ 
+	} 
+}
+    </code></pre> 
+ 
+    <p>We used a private constructor to create a PRINTER singleton — there will only ever be a one instance. The <mark class="user">PRINTER</mark> variable has the <a href="https://codegym.cc/groups/posts/141-10-things-you-need-to-know-about-the-static-modifier-in-java" target="_blank">static modifier</a>, because it belongs not to any object, but to the <span class="code"><span class="text-green">Printer</span></span> class itself. </p>
+ 
+    <p>Now let's consider creating a singleton using a static method to provide access to a single instance of our class (and note that the field is now <span class="code">private</span>):</p>
+ 
+    <pre class='language-java line-numbers'><code>
+public class Printer { 
+ 
+	private static final Printer PRINTER = new Printer(); 
+ 
+	private Printer() { 
+	} 
+ 
+	public static Printer getInstance() { 
+    	return PRINTER; 
+	} 
+     
+	public void print() { 
+        // Printing... 
+	} 
+} 
+    </code></pre>
+ 
+    <p>No matter how many times we call the <span class="code text-orange">getInstance()</span> method here, we will always get the same <mark class="green">PRINTER</mark> object. </p>
+ 
+    <p>Creating a singleton using a <span class="code">private</span> constructor is simpler and more concise. What's more, the API is obvious, since the <span class="code">public</span> field is declared as <span class="code">final</span>, which guarantees that it will always will contain a reference to the same object. </p>
+ 
+    <p>The static method option gives us the flexibility to change the singleton to a non-singleton class without changing its API. The <span class="code text-orange">getInstance()</span> method gives us a single instance of our object, but we can change it so that it returns a separate instance for each user that calls it.  </p>
+ 
+    <p>The static option also lets us write a generic singleton factory.</p>
+ 
+    <p>The final benefit of the static option is that you can use it with a method reference.</p>
+ 
+    <p>If you don't need any of the above advantages, then we recommend using the option that involves a <span class="code">public</span> field. </p>
+ 
+    <p>If we need serialization, then it won't be enough to just implement the <span class="text-neon"><span class="text-bold"><em>Serializable</em></span></span> interface. We also need to add the <span class="code text-orange">readResolve</span> method, otherwise we will get a new singleton instance during deserialization. </p>
+ 
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="text-bold">Serialization</span> is needed to save the state of an object as a sequence of bytes, and <span class="text-bold">deserialization</span> is needed to restore the object from those bytes. You can read more about serialization and deserialization in <a href="https://codegym.cc/groups/posts/112-serialization-and-deserialization-in-java" target="_blank">this article</a>.</td>
+            </tr>
+        </tbody>
+    </table>
+
+ 
+    <p>Now let's rewrite our singleton:  </p>
+ 
+    <pre class='language-java line-numbers'><code>
+public class Printer implements Serializable { 
+ 
+	private static final Printer PRINTER = new Printer(); 
+ 
+	private Printer() { 
+	} 
+ 
+	public static Printer getInstance() { 
+    	return PRINTER; 
+	} 
+} 
+    </code></pre>
+ 
+    <p>Now we will serialize and deserialize it. </p>
+ 
+    <table>
+        <tbody>
+            <tr>
+                <td>Note that the example below is the standard mechanism for serialization and deserialization in Java. A complete understanding of what is happening in the code will come after you study "I/O streams" (in the Java Syntax module) and "Serialization" (in the Java Core module).  </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <pre class='language-java line-numbers'><code>
+var printer = Printer.getInstance(); 
+var fileOutputStream = new FileOutputStream("printer.txt"); 
+var objectOutputStream = new ObjectOutputStream(fileOutputStream); 
+objectOutputStream.writeObject(printer); 
+objectOutputStream.close(); 
+ 
+var fileInputStream = new FileInputStream("printer.txt"); 
+var objectInputStream = new ObjectInputStream(fileInputStream); 
+var deserializedPrinter =(Printer) objectInputStream.readObject(); 
+objectInputStream.close(); 
+ 
+System.out.println("Singleton 1 is: " + printer); 
+System.out.println("Singleton 2 is: " + deserializedPrinter);
+    </code></pre> 
+ 
+    <p>And we get this result:  </p>
+ 
+    <div class="terminal">Singleton 1 is: Printer@6be46e8f <br />
+Singleton 2 is: Printer@3c756e4d</div>
+ 
+    <p>Here we see that deserialization gave us a different instance of our singleton. To fix this, let's add the <span class="code text-orange">readResolve</span> method to our class: </p>
+ 
+    <pre class='language-java line-numbers'><code>
+public class Printer implements Serializable { 
+ 
+	private static final Printer PRINTER = new Printer(); 
+ 
+	private Printer() { 
+	} 
+ 
+	public static Printer getInstance() { 
+    	return PRINTER; 
+	} 
+ 
+	public Object readResolve() { 
+    	return PRINTER; 
+	} 
+}
+    </code></pre> 
+ 
+    <p>Now we'll serialize and deserialize our singleton again: </p>
+ 
+    <pre class='language-java line-numbers'><code>
+var printer = Printer.getInstance(); 
+var fileOutputStream = new FileOutputStream("printer.txt"); 
+var objectOutputStream = new ObjectOutputStream(fileOutputStream); 
+objectOutputStream.writeObject(printer); 
+objectOutputStream.close(); 
+ 
+var fileInputStream = new FileInputStream("printer.txt"); 
+var objectInputStream = new ObjectInputStream(fileInputStream); 
+var deserializedPrinter=(Printer) objectInputStream.readObject(); 
+objectInputStream.close(); 
+ 
+System.out.println("Singleton 1 is: " + printer); 
+System.out.println("Singleton 2 is: " + deserializedPrinter); 
+    </code></pre>
+ 
+    <p>And we get: </p>
+ 
+    <div class="terminal">Singleton 1 is: com.company.Printer@6be46e8f <br />
+Singleton 2 is: com.company.Printer@6be46e8f </div>
+ 
+    <p>The <span class="code text-orange">readResolve()</span> method lets us get the same object that we deserialized, thereby preventing the creation of rogue singletons. </p>
+  
+    <h2>Summary</h2>
+ 
+    <p>Today we learned about singletons: how to create them and when to use them, what they are for, and what options Java offers for creating them. The specific features of both options are given below: </p>
+ 
+    <table>
+        <tbody>
+            <tr>
+                <th>Private constructor</th>
+                <th>Static method</th>
+            </tr>
+            <tr>
+                <td>
+                    <ul>
+                        <li>Easier and more concise</li>
+                        <li>Obvious API since the singleton field is <span class="code">public final</span></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Can be used with a method reference</li>
+                        <li>Can be used to write a generic singleton factory</li>
+                        <li>Can be used to return a separate instance for each user</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+     </table>

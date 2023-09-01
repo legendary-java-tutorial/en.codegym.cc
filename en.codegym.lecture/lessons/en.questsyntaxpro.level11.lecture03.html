@@ -1,0 +1,242 @@
+<h2>1. Inner classes</h2>
+<p>You recently learned that there are static variables and static methods. It turns out that there are also static classes. But we'll approach this topic from a distance.</p>
+<p>In Java, you are entirely allowed to declare classes within classes. And even classes within classes that are within classes within classes. It all looks very simple:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>class <span class="code text-viola">OuterClass</span>
+{
+   <span class="text-green">variables of the class</span>
+   <span class="text-user">methods of the class
+</span>
+   class <span class="code text-neon">NestedClass</span>
+   {
+      <span class="text-green">variables of the class</span>
+      <span class="text-user">methods of the class</span>
+   }
+}</code></pre>
+</div>
+<p>We just declare one class inside another. As simple as that.</p>
+<p>Example:</p>
+<pre class="language-java"><code>public class <span class="code text-viola">Solution</span>
+{
+   static ArrayList&lt;<span class="text-neon">Point</span>&gt; <span class="text-green">points</span> = new ArrayList&lt;<span class="text-neon">Point</span>&gt;();
+
+   public static void main(String[] args)
+   {
+      <span class="text-neon">Point</span> <span class="text-orange">point</span> = new <span class="text-neon">Point</span>();
+      <span class="text-orange">point</span>.x = 100;
+      <span class="text-orange">point</span>.y = 200;
+      <span class="text-green">points</span>.add(<span class="text-orange">point</span>);
+   }
+
+   static class <span class="code text-neon">Point</span>
+   {
+      int x;
+      int y;
+   }
+}</code></pre>
+<p>Nested classes can be static or non-static. Static nested classes are simply called <span class="term">static nested classes</span>. Non-static nested classes are called <strong>inner classes</strong> (<span class="term">inner classes</span>).</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1107"></div>
+<hr>
+<h2>2. Static classes</h2>
+<p>Static nested classes can be used outside of their outer class. If such a class has the public access modifier, then it can be used anywhere in the program. Such classes are almost indistinguishable from any ordinary class. But there are a couple of differences.</p>
+<p><strong>Class name</strong></p>
+<p>If you want to refer to a static nested class from somewhere other than its outer class, you need to specify the class name, which consists of the name of the outer class and the name of the nested class. Here's the general appearance of this name:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code><span class="text-viola">OuterClass</span>.<span class="text-neon">InnerClass</span></code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Outer class</th>
+        <th>Nested class</th>
+        <th>Full name of the nested class</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">com.javarush.Solution</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-neon">Point</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-viola">com.javarush.Solution</span>.<span class="text-neon">Point</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">java.util.Map</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-neon">Entry</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-viola">java.util.Map</span>.<span class="text-neon">Entry</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">java.util.Files</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-neon">DirectoryStream</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-viola">java.util.Files</span>.<span class="text-neon">DirectoryStream</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">java.nio.Windows<span class="text-viola">Path</span></span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-neon">Closeable</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-viola">java.nio.WindowsPath</span>.<span class="text-neon">Closeable</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If a nested class has its own nested class, their names are simply joined using a dot.</p>
+<p>A typical example of a nested class in the JDK is the <code><span class="text-neon">Entry</span></code> class inside of <code><span class="text-viola">Map</span></code> class. If you want to get the set of key-value pairs stored in a <code>HashMap</code> object, then use the <code>entrySet()</code> method, which returns a <code>Set&lt;<span class="text-viola">Map</span>.<span class="text-neon">Entry</span>&gt;</code>.</p>
+<p>Note that <code><span class="text-viola">Map</span>.<span class="text-neon">Entry</span></code> is an example of an outer class and a nested class.</p>
+<p><strong>Creating an object</strong></p>
+<p>It's very easy to create an object of a static nested class. This is how it looks:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-kava"><code><span class="text-viola">OuterClass</span>.<span class="text-neon">NestedClass</span> <span class="code text-green">name</span> = new <span class="text-viola">OuterClass</span>.<span class="text-neon">NestedClass</span>();</code></pre>
+</div>
+<p>It's all the same as with ordinary classes, but the name consists of two parts.</p>
+<p><strong>Calling static methods</strong></p>
+<p>If a static class has static methods, you can access them in the same way as the static methods of ordinary classes (but the class name will consist of two parts).</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm"><code><span class="text-viola">OuterClass</span>.<span class="text-neon">NestedClass</span>.<span class="text-red">staticMethod</span>();</code></pre>
+</div>
+<p><strong>Accessing static variables</strong></p>
+<p>Accessing the public static variables of a nested class is easy too:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm"><code><span class="text-viola">OuterParent</span>.<span class="text-neon">NestedClass</span>.<span class="text-red">nameOfStaticVariable</span></code></pre>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1108"></div>
+<hr>
+<h2>3. Features of static classes</h2>
+<p>Static nested classes have the <strong>least reason</strong> to be called static. They behave <strong>just like regular classes</strong>. There are no restrictions on accessing them from non-static methods.</p>
+<p>If you're working with a static nested class inside its outer class, you won't notice any difference from the most ordinary (not nested and not static) class.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Static nested Point class</th>
+        <th>Ordinary Point class.</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-viola">Solution</span>
+{
+   static ArrayList&lt;<span class="text-neon">Point</span>&gt; <span class="text-green">points</span>;
+
+   public static void main(String[] args)
+   {
+      <span class="text-neon">Point</span> <span class="text-orange">point</span> = new <span class="code text-neon">Point</span>();
+      <span class="text-orange">point</span>.x = 100;
+      <span class="text-orange">point</span>.y = 200;
+      <span class="text-green">points</span> = new ArrayList&lt;<span class="text-neon">Point</span>&gt;();
+      <span class="text-green">points</span>.add(<span class="text-orange">point</span>);
+   }
+
+   static class <span class="code text-neon">Point</span>
+   {
+      int x;
+      int y;
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-viola">Solution</span>
+{
+   static ArrayList&lt;<span class="text-red">Point</span>&gt; <span class="text-green">points</span>;
+
+   public static void main(String[] args)
+   {
+      <span class="text-red">Point</span> <span class="text-orange">point</span> = new <span class="code text-red">Point</span>();
+      <span class="text-orange">point</span>.x = 100;
+      <span class="text-orange">point</span>.y = 200;
+      <span class="text-green">points</span> = new ArrayList&lt;<span class="text-red">Point</span>&gt;();
+      <span class="text-green">points</span>.add(<span class="text-orange">point</span>);
+   }
+}
+
+class <span class="code text-red">Point</span>
+{
+   int x;
+   int y;
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If you take some static nested class and move it out of its outer class, the only thing that will change is that <span class="text-orange">the new class will no longer be able to access the <code><span class="text-orange">private static</span></code> variables and methods of its former outer class.</span></p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Static nested Point class</th>
+        <th>Ordinary Point class.</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="text-viola">Solution</span>
+<span>{
+</span>   private static ArrayList&lt;<span class="text-neon">Point</span>&gt; <span class="code text-green">points</span>;
+
+   static class <span class="code text-neon">Point</span>
+   {
+      int x;
+      int y;
+
+      public static void main(String[] args)
+      {
+         <span class="text-neon">Point</span> <span class="text-orange">point</span> = new <span class="code text-neon">Point</span>();
+         <span class="text-orange">point</span>.x = 100;
+         <span class="text-orange">point</span>.y = 200;
+
+         <span class="text-green">// This will work</span>
+         <span class="code text-green">points</span> = new ArrayList&lt;<span class="text-neon">Point</span>&gt;();
+         <span class="code text-green">points</span>.add(<span class="text-orange">point</span>);
+      }
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>public class <span class="text-viola">Solution</span>
+{
+   private static ArrayList&lt;<span class="text-red">Point</span>&gt; <span class="code text-green">points</span>;
+}
+
+class <span class="code text-red">Point</span>
+{
+   int x;
+   int y;
+
+   public static void main(String[] args)
+   {
+      <span class="text-red">Point</span> <span class="text-orange">point</span> = new <span class="code text-red">Point</span>();
+      <span class="text-orange">point</span>.x = 100;
+      <span class="text-orange">point</span>.y = 200;
+
+      <span class="text-red">// This will generate an error</span>
+      <span class="code text-green">points</span> = new ArrayList&lt;<span class="text-red">Point</span>&gt;();
+      <span class="code text-green">points</span>.add(<span class="text-orange">point</span>);
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>main</code> method in the ordinary <code>Point</code> class <span class="text-red">cannot</span> access the <code>private static</code> <code class="text-green">points</code> variable of the <code><span class="text-viola">Solution</span></code> class!</p>
+<p><strong>This is the main difference between a static nested class and an ordinary class.</strong> Methods of a static nested class can access all the static variables and methods of their outer class, even if they are declared <code>private</code>.</p>
+<p>And if you think about it, why should that be surprising? The <code>private</code> modifier explicitly says that the variables and methods marked by this modifier can only be accessed from within their class. Is a static nested class inside its outer class? Yes, so no problem! Access them as much as you want.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1109"></div>

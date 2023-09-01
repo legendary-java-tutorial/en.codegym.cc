@@ -1,0 +1,255 @@
+<h2>1. Checking</h2>
+<p>I think you might already be bored with learning how to chain together data streams. You want to finally do something with the data.</p>
+<p>The <code>Stream</code> class has three standard methods that do not construct streams, but instead check what kind of data is in them. These methods are: <code>anyMatch()</code>, <code>allMatch()</code>, and <code>noneMatch()</code>.</p>
+<p><strong><code>boolean anyMatch(rule)</code> method</strong></p>
+<p>This method checks whether the stream has at least one element that satisfies the rule that is passed to the method. If there is such an element, the method returns <code>true</code>, otherwise <code>false</code>.</p>
+<p>Examples</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, 2, 3, 4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.<span class="text-red">anyMatch</span>(<span class="text-orange">x -&gt; x &gt; 0</span>);</code></pre>
+        </td>
+        <td><pre><code>
+true</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, -2, 3, -4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.<span class="text-red">anyMatch</span>(<span class="text-orange">x -&gt; x &gt; 0</span>);</code></pre>
+        </td>
+        <td><pre><code>
+true</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, -2, 3, -4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.filter(<span class="text-orange">x -&gt; x &lt; 0</span>).<span class="text-red">anyMatch</span>(<span class="text-orange">x -&gt; x &gt; 0</span>);</code></pre>
+        </td>
+        <td><pre><code>
+false</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>In the last example, we first retain only the elements that are less than zero, and then we check the result to see whether any of filtered elements is greater than zero. Of course, such elements are no longer there.</p>
+<p><strong>boolean allMatch(rule) method</strong></p>
+<p>This method checks whether all elements in the stream match the rule (also known as a predicate). The rule is passed as an argument to the method:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, 2, 3, 4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.<span class="text-red">allMatch</span>(<span class="text-orange">x -&gt; x &gt; 0</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>true</code></pre>
+            (all elements greater than zero)
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, -2, 3, -4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.<span class="text-red">allMatch</span>(<span class="text-orange">x -&gt; x &gt; 0</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>false</code></pre>
+            (are there elements less than or equal to zero?)
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, -2, 3, -4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.filter(<span class="text-orange">x -&gt; x &lt; 0</span>).<span class="text-red">allMatch</span>(<span class="text-orange">x -&gt; x &lt; 0</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>true</code></pre>
+            (we retained the elements that are less than zero)
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>In the last example, we first allow only elements that are less than zero to pass through the filter, and then we check whether all the retained elements are less than zero. The check yields a positive result.</p>
+<p><strong>boolean noneMatch(rule) method</strong></p>
+<p>The <code><span class="text-red">noneMatch</span>()</code> method checks whether the stream has no elements that match the passed rule. It is like the opposite of the <code>anyMatch()</code> method.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, 2, 3, 4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.<span class="text-red">noneMatch</span>(<span class="text-orange">x -&gt; x &gt; 0</span>);</code></pre>
+        </td>
+        <td><pre><code>
+false</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, -2, 3, -4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.<span class="text-red">noneMatch</span>(<span class="text-orange">x -&gt; x &gt; 0</span>);</code></pre>
+        </td>
+        <td><pre><code>
+false</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, -2, 3, -4, 5);
+boolean <span class="text-green">result</span> = <span class="text-user">stream</span>.filter(<span class="text-orange">x -&gt; x &lt; 0</span>).<span class="text-red">noneMatch</span>(<span class="text-orange">x -&gt; x &gt; 0</span>);</code></pre>
+        </td>
+        <td><pre><code>
+true</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1817"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1818"></div>
+<hr>
+<h2>2. Utility classes: <code>Optional</code> class</h2>
+<p>Sometimes it is very inconvenient for programmers to work with <code>null</code> references. For example, suppose you are comparing two strings. If both variables are not <code>null</code>, then you can simply call <code>s1.equals(s2)</code>, and everything will work. But if <code>s1</code> could be <code>null</code>, then you have to write code that handles this situation in order to avoid a <code>NullPointerException</code>.</p>
+<p>That's why programmers came up with the <code>Optional&lt;T&gt;</code> utility class. Its code looks roughly like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="text-neon">Optional</span>&lt;<span class="text-orange">Type</span>&gt;
+{
+   private final <span class="text-orange">Tип</span> <span class="code text-user">value</span>;
+   private <span class="text-neon">Optional</span>() { this.<span class="code text-user">value</span> = null;}
+   private <span class="text-neon">Optional</span>(value) { this.<span class="code text-user">value</span> = <span class="text-green">value</span>;}
+   public static &lt;<span class="text-orange">Type</span>&gt; <span class="text-neon">Optional</span>&lt;<span class="text-orange">Type</span>&gt; of(<span class="text-orange">Type</span> <span class="text-green">value</span>)
+   {
+      return new <span class="text-neon">Optional</span>&lt;<span class="text-orange">Type</span>&gt;(<span class="text-green">value</span>);
+   }
+
+   public boolean <span class="text-red">isPresent</span>()
+   {
+      return <span class="code text-user">value</span> != null;
+   }
+
+   public boolean <span class="text-red">isEmpty</span>()
+   {
+      return <span class="code text-user">value</span> == null;
+   }
+
+   public <span class="text-orange">Type</span> <span class="text-red">get</span>()
+   {
+      if (<span class="code text-user">value</span> == null)
+      {
+         throw new NoSuchElementException();
+      }
+      return <span class="code text-user">value</span>;
+   }
+
+   public <span class="text-orange">Type</span> <span class="text-red">orElse</span>(<span class="text-orange">Type</span> <span class="text-green">other</span>)
+   {
+      return <span class="code text-user">value</span> != null ? <span class="code text-user">value</span> : <span class="text-green">other</span>;
+   }
+
+   public <span class="text-orange">Type</span> <span class="text-red">orElseThrow</span>()
+   {
+      if (<span class="code text-user">value</span> == null)
+      {
+         throw new NoSuchElementException();
+      }
+      return <span class="code text-user">value</span>;
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><br><br><br><br><br><br><br>Checks whether the value is not <code>null</code>
+            <br><br><br><br>Checks whether the value is <code>null</code>
+            <br><br><br><br><br>Returns the stored value. Throws an exception if the value is null.
+            <br><br><br><br><br><br><br><br>Returns the stored non-null value. Or if the stored value is <code>null</code>, then returns the value passed in as a method argument
+            <br><br><br><br>Returns the stored non-null value or throws an exception if the value is null.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The purpose of this class is simply to store a T object (a reference to an object whose type is T). The object reference inside an <code>Optional&lt;T&gt;</code> object can be <code>null</code>.</p>
+<p>This class lets programmers write slightly prettier code. Let's compare:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Using Optional</th>
+        <th>Not using Optional</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void printString(<span class="text-viola">String</span> s)
+{
+   <span class="text-neon">Optional</span>&lt;<span class="text-viola">String</span>&gt; <span class="text-green">str</span> = <span class="text-neon">Optional</span>.<span class="text-red">ofNullable</span>(s);
+   System.out.println(<span class="text-green">str</span>.<span class="text-user">orElse</span>(""));
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>public void printString(<span class="text-viola">String</span> s)
+{
+   <span class="text-viola">String</span> <span class="text-green">str</span> = <span class="text-user">s</span> != null ? <span class="text-user">s</span> : "";
+   System.out.println(<span class="text-green">str</span>)
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>One <code>Optional</code> object can always be compared to another <code>Optional</code> object using the <code>equals</code> method, even if they store <code>null</code> references.</p>
+<p>Simply speaking, the <code>Optional</code> class lets you write "beautiful" checks for <code>null</code> and "beautiful" actions in the event that an <code>Optional</code> object stores a <code>null</code> value.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1819"></div>
+<hr>
+<h2>3. Finding elements</h2>
+<p>Let's return to the <code>Stream</code> class. The <code>Stream</code> class has 4 more methods that let you search for elements in a stream. These methods are <code>findFirst()</code>, <code>findAny()</code>, <code>min()</code>, and <code>max()</code>.</p>
+<p><strong><code>Optional&lt;T&gt; findFirst()</code> method</strong></p>
+<p>The <code>findFirst()</code> method simply returns the first element in the stream. That's all it does.</p>
+<p>The more interesting thing to note here is that the method does not return a <code>T</code> object, but rather an <code>Optional&lt;T&gt;</code> wrapper object. This ensures that the method will never return <code>null</code> after failing to find an object.</p>
+<p>Example:</p>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;String&gt; <span class="text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="text-green">list</span>, "Hello", "how's", "life?");
+<span class="text-orange">String</span> str = <span class="text-green">list</span>.<span class="text-red">stream</span>().<span class="text-red">findFirst</span>().<span class="text-red">get</span>(); // Hello</code></pre>
+<p>For greater clarify, let's break the last line into several lines:</p>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="text-green">list</span>, "Hello", "how's", "life?");
+
+Stream&lt;<span class="text-orange">String</span>&gt; <span class="text-user">stream</span> = <span class="text-green">list</span>.<span class="text-red">stream</span>();
+Optional&lt;<span class="text-orange">String</span>&gt; <span class="text-viola">result</span> = <span class="text-user">stream</span>.<span class="text-red">findFirst</span>();
+<span class="text-orange">String</span> str = <span class="text-viola">result</span>.<span class="text-red">get</span>(); // Hello</code></pre>
+<p>The last <code>get()</code> method is simply retrieves the value stored inside the <code>Optional</code> object.</p>
+<p><strong><code>Optional&lt;T&gt; findAny()</code> method</strong></p>
+<p>The <code><span class="text-red">findAny()</span></code> method returns any element from the stream and ends there. This method is similar to <code><span class="text-red">findFirst()</span></code>, but it is great for streams used in parallel operations.</p>
+<p>When processing streams in parallel, it may be an element has already been found in some part of a stream, but it is not yet clear whether it is the first or not.</p>
+<p>If many elements have matched all the filters, and it is important for the programmer to get exactly the first of them, then the <code><span class="text-red">findFirst()</span></code> method is what should be called. If the programmer knows that in reality 0 or 1 element will match all the filters, then it is enough to simply call <code><span class="text-red">findAny()</span></code> — and this will be faster.</p>
+<p><strong><code>Optional&lt;T&gt; min(Comparator&lt;T&gt;)</code> method</strong></p>
+<p>The <code>min()</code> method uses a <code>comparator</code> object to compare all elements in the stream and returns the minimum element. The most convenient way to define a comparator object is with a lambda function.</p>
+<p>Example of searching for the shortest string:</p>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="text-green">list</span>, "Hello", "how's", "life?");
+<span class="text-orange">String</span> min = <span class="text-green">list</span>.<span class="text-red">stream</span>().<span class="text-red">min</span>(<span class="text-viola"> (s1, s2)-&gt; s1.length()-s2.length() </span>).<span class="text-red">get</span>();</code></pre>
+<p><strong><code>Optional&lt;T&gt; max(Comparator&lt;T&gt;)</code> method</strong></p>
+<p>The <code>max()</code> method uses a <code>comparator</code> object to compare all elements in the stream and returns the maximum element. The most convenient way to define a comparator object is with a lambda function.</p>
+<p>Example of searching for the longest string:</p>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="text-green">list</span>, "Hello", "how's", "life?");
+<span class="text-orange">String</span> max = <span class="text-green">list</span>.<span class="text-red">stream</span>().<span class="text-red">max</span>(<span class="text-viola"> (s1, s2)-&gt; s1.length()-s2.length() </span>).<span class="text-red">get</span>();
+</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1820"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1821"></div>

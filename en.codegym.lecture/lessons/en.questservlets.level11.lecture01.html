@@ -1,0 +1,26 @@
+mcat on your computer in two ways: using the Windows Installer or by downloading it as an archive. The first method is simpler, while the second allows you to manage all aspects of setting up and installing a web server.</p>
+<p>Let's start with a simple way, and then you will decide for yourself which one you prefer.</p>
+<p>You can download Tomcat from its <a href="https://tomcat.apache.org/download-90.cgi" target="_blank">official page</a> . On this page, we can see various options for downloading: as an archive, which is enough to unpack, or as an installer.</p><img data-max-width="512" data-id="01a9c12a-58d4-4983-ae71-d88295dc3c66" alt="" src="https://cdn.javarush.com/images/article/01a9c12a-58d4-4983-ae71-d88295dc3c66/512.jpeg" style="width: 512px;">
+<p>There are many ways to install Tomcat, but for simplicity we will choose <span class="text-bold">32-bit/64-bit Windows Service Installer</span> .</p>
+<h2>Installing and configuring Tomcat</h2>
+<p>After selecting this option, an installer will be downloaded to your computer, which you must run and accept the license agreement.</p>
+<p>Then you need to configure the installed components:</p><img data-max-width="512" data-id="8e6833d3-68dd-498f-9c93-35d9e9ba4f62" alt="Installing and configuring Tomcat" src="https://cdn.javarush.com/images/article/8e6833d3-68dd-498f-9c93-35d9e9ba4f62/512.jpeg" style="width: 512px;">
+<p>At this stage, you can select the components that we want to install, in particular, you can select the <span class="text-bold">Service Startup</span> item and then Tomcat will start automatically at system startup. You can select everything, or you can limit yourself to those components that are already selected by default.</p>
+<p>Next, you will be prompted to configure ports and a number of additional Tomcat configuration points:</p><img data-max-width="512" data-id="fa59cf09-cf7f-40e6-bef4-8378b68fbaac" alt="Installing and configuring Tomcat 2" src="https://cdn.javarush.com/images/article/fa59cf09-cf7f-40e6-bef4-8378b68fbaac/512.jpeg" style="width: 512px;">
+<p>The standard port for a web server on which it will accept requests is 80. But it may already be occupied by another web server. Or even such programs as Skype, Telegram and so on. Therefore, we will indicate the number 8081 in this field (but you can leave 80).</p>
+<p>Then you will need to specify the location of the JRE that will be used:</p><img data-max-width="512" data-id="e4b8af89-7d13-409d-bb44-68e71bb6389a" alt="Installing and configuring Tomcat 3" src="https://cdn.javarush.com/images/article/e4b8af89-7d13-409d-bb44-68e71bb6389a/512.jpeg" style="width: 512px;">
+<p>The installer usually determines the path to Java itself, but if you have more than one JRE installed, you can choose a different one.</p>
+<p>And at the end, you will need to specify the folder in which to install Tomcat:</p><img data-max-width="512" data-id="83054eac-5146-4d5e-83b3-d72e19f852c8" alt="Installing and configuring Tomcat 4" src="https://cdn.javarush.com/images/article/83054eac-5146-4d5e-83b3-d72e19f852c8/512.jpeg" style="width: 512px;">
+<p>I recommend leaving the default path. And after that, in fact, Tomcat will be installed.</p>
+<p>After installation, on the final screen, leave the Run Apache Tomcat option selected and click on the Finish button. After that, Tomcat will be started and you will be able to work with it.</p><img data-max-width="512" data-id="0f08bb13-f8cf-4fbb-9716-4dd30f92211a" alt="Installing and configuring Tomcat 5" src="https://cdn.javarush.com/images/article/0f08bb13-f8cf-4fbb-9716-4dd30f92211a/512.jpeg" style="width: 512px;">
+<p>Make sure Tomcat is running. To do this, let's turn to the browser line at <a data-savepage-href="http://localhost:8081" href="http://localhost:8081/" target="_blank">http://localhost:8081</a> . In this case, 8081 is the port that was specified during the installation step above.</p>
+<p>If Tomcat is installed and running correctly, then in the browser we will see some standard content:</p><img data-max-width="800" data-id="9e465c84-5a9e-4c09-93f6-45caa34460e6" alt="Installing and configuring Tomcat 6" src="https://cdn.javarush.com/images/article/9e465c84-5a9e-4c09-93f6-45caa34460e6/800.jpeg" style="width: 800px;">
+<h2>Starting and stopping the service</h2>
+<p>If you need to start or stop the Tomcat service on Windows, then you need to:</p>
+<p><span class="text-bold">Step 1.</span> Open Task Manager Ctrl+Shift+Esc.</p>
+<p><span class="text-bold">Step 2.</span> Open the Services tab and find the Tomcat service there.</p>
+<p><span class="text-bold">Step 3.</span> Stop the Tomcat9 service.</p>
+<p>The right column displays its status Running/Running or Stopped/Stopped.</p>
+<p>Right-click on the line Tomcat9 and click Stop Service / Stop.</p>
+<img data-max-width="800" data-id="93efc5c0-0c41-4f55-a86b-52bd2e66e5db" src="https://cdn.codegym.cc/images/article/93efc5c0-0c41-4f55-a86b-52bd2e66e5db/800.jpeg" alt="">
+<p>To stop the service, click Stop Service, this item will be active if the Tomcat service is running.</p>

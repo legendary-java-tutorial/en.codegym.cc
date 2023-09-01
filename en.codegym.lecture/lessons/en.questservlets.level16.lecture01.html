@@ -1,0 +1,57 @@
+ter)</strong> is a structural design pattern designed to organize the use of the functions of an object that is not available for modification through a specially created interface.</p>
+<p>The official definition is a bit tricky, but if you put it in your own words, an adapter is a design pattern that <span class="text-red">allows objects with incompatible interfaces to work together</span>.</p>
+<img data-max-width="800" data-id="95aa4e6d-a7eb-4f5b-a228-9bbe87547610" src="https://cdn.codegym.cc/images/article/95aa4e6d-a7eb-4f5b-a228-9bbe87547610/800.jpeg" alt="">
+<p><strong>Used</strong> to organize the use of the functions of an object that is not available for modification through a specially created interface. An additional class is created that has the required interface, and this class in turn calls the methods of the desired object (which does not have the required interface).</p>
+<p><strong>Important! </strong>If in the code you meet the suffix Adapter for a class, then you have every right to consider that this class acts as an adapter and is associated with a group of classes that work according to the scheme described above.</p>
+<p><strong>It is used in cases</strong> where the system supports the required data and behavior, but has an inappropriate interface. The most common use of the Adapter pattern is when you want to create a class that inherits from a new or existing abstract class.</p>
+<p><strong>Strengths: </strong></p>
+<ul>
+ <li>The transition to using other external classes does not require reworking the system itself, it is enough to implement one more Adapter class.</li>
+ <li>Independence from the implementation of external classes (classes from libraries whose code we cannot change). Your program becomes independent of the interface of external classes.</li>
+</ul>
+<h2>2.2 Decorators</h2>
+<p><strong>Decorator</strong> is a structural design pattern for dynamically attaching additional behavior to an object. The Decorator pattern provides a good and flexible alternative to the practice of subclassing to extend functionality.</p>
+<img data-max-width="800" data-id="c8dcccfe-d3d4-4054-bca0-a984f7371f76" src="https://cdn.codegym.cc/images/article/c8dcccfe-d3d4-4054-bca0-a984f7371f76/800.jpeg" alt="">
+<p><strong>Used to</strong> dynamically connect additional obligations to an object.</p>
+<p>Many of you will ask: how can you dynamically (while the program is running) add new behavior to an object? An object can be assembled from pieces, that is, small objects. Remember filter chains in servlets? Or the Stream API when you wrote a query using filter(), map(), list()?</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token class-name">IntStream</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">,</span> <span class="token number">70</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">-&gt;</span> x <span class="token operator">&lt;</span> <span class="token number">90</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">-&gt;</span> x <span class="token operator">+</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">limit</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">print</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Strengths of the Decorator pattern:</strong></p>
+<ul>
+ <li>There is no need to create subclasses to extend the functionality of an object.</li>
+ <li>The ability to dynamically connect new functionality anywhere: before or after the main functionality of the ConcreteComponent object.</li>
+</ul>
+<h2>2.3 Proxies</h2>
+<p><strong>Proxy</strong> is a structural design pattern that provides an object that controls access to another object, intercepting and passing through all its calls.</p>
+<img data-max-width="800" data-id="5f67cf48-0f30-42ca-aa0c-661e9121210d" src="https://cdn.codegym.cc/images/article/5f67cf48-0f30-42ca-aa0c-661e9121210d/800.jpeg" alt="">
+<p>The Proxy pattern provides a substitute object in place of the real object. This object controls access to the original object. Used very often.</p>
+<p>Remember how we used the Mockito framework and intercepted a call to a real object using the Mockito.spy() method or the @Spy annotation? It was then that a special Proxy object was created, through which all calls to the original object passed.</p>
+<p>And then we could manage these calls by adding rules to the object. That's right - the original object does not change, and working with it becomes much more flexible. It is especially useful when we do not call the proxy object from our code, but pass it somewhere. Thus controlling the communication of two objects independent of us.</p>
+<p><strong>Types of proxies</strong> by purpose:</p>
+<ul>
+ <li><strong>Logging proxy</strong> : logs all calls to the “Subject” with their parameters.</li>
+ <li><strong>Remote proxy</strong> (remote proxies): provides communication with the “Subject”, which is in a different address space or on a remote machine. It may also be responsible for encoding the request and its arguments and sending the encoded request to the real “Subject”.</li>
+ <li><strong>Virtual proxy</strong> (virtual proxies): ensures that the real "Subject" is created only when it is really needed. It can also cache some of the information about the real "Subject" to delay its creation.</li>
+ <li><strong>Copy-on-write</strong> : Provides a copy of the "subject" when the client performs certain actions (a special case of the "virtual proxy").</li>
+ <li><strong>Protection proxies</strong> : Can check if the caller has the necessary permissions to make the request.</li>
+ <li><strong>Caching Proxy</strong> : Provides temporary storage of calculation results before serving them to multiple clients who can share the results.</li>
+ <li>Screening Proxy: Protects the "Subject" from dangerous clients (or vice versa).</li>
+ <li><strong>Synchronization Proxy</strong> : performs synchronized access control to the “Subject” in an asynchronous multi-threaded environment.</li>
+ <li><strong>“Smart” link</strong> (smart reference proxy): performs additional actions when a link to the “Subject” is created, for example, calculates the number of active links to the “Subject”.</li>
+</ul>
+<h2>2.4 Bridge</h2>
+<p><strong>The Bridge pattern</strong> is a structural design pattern used to "separate abstraction and implementation so that they can change independently."</p>
+<p>The bridge pattern uses encapsulation, aggregation, and can use inheritance to share responsibility between classes.</p>
+<img data-max-width="800" data-id="ec00bb42-3e78-4eb5-9b0d-b72ed9a63d4f" src="https://cdn.codegym.cc/images/article/ec00bb42-3e78-4eb5-9b0d-b72ed9a63d4f/800.jpeg" alt="">
+<p>When abstraction and implementation are separated, they can change independently. In other words, when implemented through the bridge pattern, changing the structure of the interface does not interfere with changing the structure of the implementation.</p>
+<p>Consider such an abstraction as a figure. There are many types of shapes, each with its own properties and methods. However, there is something that unites all the figures. For example, each shape must be able to draw itself, scale, and so on.</p>
+<p>At the same time, drawing graphics may differ depending on the type of OS or graphics library. Shapes should be able to draw themselves in various graphics environments. But it's impractical to implement all the drawing methods in each shape, or to modify the shape every time the drawing method changes.</p>
+<p>In this case, the bridge pattern helps, allowing you to create new classes that will implement drawing in various graphical environments. Using this approach, it is very easy to add both new shapes and ways to draw them.</p>
+<p>The connection represented by the arrow in the diagrams can have 2 meanings: a) “a kind”, in accordance with the Liskov substitution principle, and b) one of the possible implementations of the abstraction. Languages ​​typically use inheritance to implement both a) and b), which tends to bloat class hierarchies.</p>
+<p>The bridge serves exactly to solve this problem: <strong>objects are created in pairs</strong> from an object of a class of hierarchy A and hierarchy B, inheritance within the hierarchy A has the meaning of “variety” according to Liskov, and for the concept of “implementation of abstraction” a link from object A to its paired object B is used.</p>
+<h2>2.5 Facade</h2>
+<p><strong>The Facade pattern</strong> is a structural design pattern that hides the complexity of a system by reducing all possible external calls to a single object that delegates them to the appropriate objects in the system.</p>
+<img data-max-width="800" data-id="e6717d3d-f5fb-467f-866c-0c610c2d4a4e" src="https://cdn.codegym.cc/images/article/e6717d3d-f5fb-467f-866c-0c610c2d4a4e/800.jpeg" alt="">
+<p>How to provide a unified interface with a set of disparate implementations or interfaces, for example, to a subsystem, if strong coupling to that subsystem is undesirable, or the implementation of the subsystem might change?</p>
+<p>Define one point of interaction with the subsystem - a facade object that provides a common interface with the subsystem, and assign it the responsibility for interacting with its components. A facade is an external object that provides a single entry point for subsystem services.</p>
+<p>The implementation of other subsystem components is private and not visible to external components. Facade object provides an implementation of the GRASP pattern Resistant to changes in terms of protection against changes in the implementation of the subsystem.</p>
+<p><strong>Important! </strong>This pattern is used when we want to completely hide some group of objects and pass all communication with them through our object. If you just want to provide some control over the communication process of objects and not necessarily hide them, then it is better to use the Proxy pattern.</p>

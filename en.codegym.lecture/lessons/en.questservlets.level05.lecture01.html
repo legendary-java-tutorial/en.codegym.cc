@@ -1,0 +1,230 @@
+Log History in Java
+<p>----------------------------------------</p>
+First logger - log4j
+First official logger - JUL: java.util.logging
+The first logger wrapper is JCL: jakarta commons logging
+First Last Logger - Logback
+Latest universal logger - SLF4J: Simple Logging Facade for Java
+<p>----------------------------------------</p>
+<h2>2.1 First logger - log4j</h2>
+<p>As you already know, the history of logs began with <code>System.err.println()</code>the output of a record to the
+    console. It is still actively used for debugging, for example, Intellij IDEA uses it to display error messages to
+    the console. But this option does not have any settings, so let's move on.</p>
+<p>The first and most popular logger was called <code>Log4j</code>. It was a good and highly customizable solution. Due
+    to various circumstances, this decision never got into the JDK, which greatly upset the entire community.</p>
+<p>This logger was not just able to log, it was created by programmers for programmers and allowed them to solve
+    problems that constantly arose in connection with logging.</p>
+<p>As you already know, logs are written in the end so that some person reads them and tries to understand what happened
+    during the program's operation - what and when went wrong as expected.</p>
+<p>There <code>log4j</code>were three things for this:</p>
+<ul>
+    <li><strong>subpackage logging;</strong></li>
+    <li><strong>set of appenders (results);</strong></li>
+    <li><strong>hot reload settings.</strong></li>
+</ul>
+<p>Firstly, the settings <code>log4j</code>could be written in such a way as to enable logging in one package and
+    disable it in another. For example, it was possible to enable logging in the <code>com.codegym.server</code>, but
+    disable it in <code>com.codegym.server.payment</code>. This made it possible to quickly remove unnecessary
+    information from the log.</p>
+<p>Secondly, <code>log4j</code>it allowed writing logging results to several log files at once. And the output to each
+    could be configured individually. For example, in one file it was possible to write only information about serious
+    errors, in another - logs from a specific module, and in a third - logs for a certain time.</p>
+<p>Each log file was thus tuned to a particular type of expected problem. This greatly simplifies the life of
+    programmers who do not enjoy looking through gigabyte log files manually.</p>
+<p>And finally, thirdly, <code>log4j</code>it allowed changing the log settings directly while the program was running,
+    without restarting it. This was very handy when it was necessary to correct the work of the logs in order to find
+    additional information on a specific error.</p>
+<p>Important! There are two versions of the log <code>log4j</code>: <strong>1.2.x</strong> and <strong>2.xx</strong> ,
+    which <span class="text-red">are incompatible with each other</span> .</p>
+<p>You can connect the logger to the project using the code:</p>
+<pre class="line-numbers"><code>&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+    &lt;version&gt;2.17.2&lt;/version&gt;
+  &lt;/dependency&gt;
+ 
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+    &lt;version&gt;2.17.2&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+<h2>2.2 First official logger - JUL: java.util.logging</h2>
+<p>After the zoo of loggers appeared in the Java community, the developers <code>JDK</code>decided to make one standard
+    logger that everyone would use. This is how the logger appeared <code>JUL</code>: package
+    <code>java.util.logging</code>.</p>
+<p>However, during its development, the creators of the logger took as a basis not <code>log4j</code>, but a variant of
+    the logger from IBM, which influenced its development. The good news is that the logger <code>JUL</code>is included
+    <code>JDK</code>, the bad news is that few people use it.</p><img data-max-width="800"
+                                                                      data-id="3b660d0c-a0bf-4afb-a496-e0ccb7e659fb"
+                                                                      alt="JUL"
+                                                                      src="https://cdn.javarush.com/images/article/3b660d0c-a0bf-4afb-a496-e0ccb7e659fb/800.jpeg"
+                                                                      style="width: 800px;">
+<p>Not only did the developers <code>JUL</code>make <strong>“another universal standard”</strong> , they also made their
+    own logging levels for it, which differed from those accepted by popular loggers at that time.</p>
+<p>And that was a big problem. After all, products are <code>Java</code>often collected from a large number of
+    libraries, and each such library had its own logger. So it was necessary to configure all the loggers that are in
+    the application.</p>
+<p>Although the logger itself is pretty good. Creating a logger is more or less the same. To do this, you need to
+    import:</p>
+<pre><code>
+<span class="text-red">java.util.logging.Logger</span> <span class="text-green">log</span> = <span class="text-red">java.util.logging.Logger</span>.<span
+        class="text-orange">getLogger</span>(<span class="text-user">LoggingJul.class.getName()</span>);
+</code></pre>
+<p><span class="text-user">The class name</span> is specially passed in order to know where the logging is coming from.
+</p>
+<p>Only with the release, the developers solved important problems, after which it <code>JUL</code>is really convenient
+    to use. Before that, it was some kind of second-rate logger.</p>
+<p>This logger also supports lambda expressions and lazy evaluation. Starting with <code>Java 8</code>, you can pass
+    <code>Supplier&lt;String&gt;</code>. This helps to read and create a string only at the moment when it is really
+    needed, and not every time, as it was before.</p>
+<p>Methods with an argument <code>Supplier&lt;String&gt; msgSupplier</code>look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span
+        class="token function">info</span><span class="token punctuation">(</span><span class="token class-name">Supplier</span><string> msgSupplier<span
+        class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token function">log</span><span class="token punctuation">(</span><span
+            class="token class-name">Level</span><span class="token punctuation">.</span>INFO<span
+            class="token punctuation">,</span> msgSupplier<span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</string></code></pre>
+<h2>2.3 First logger wrapper - JCL: jakarta commons logging</h2>
+<p>For a long time there was no single standard among loggers, it <code>JUL</code>should have become one, but it was
+    worse <code>log4j</code>, so a single standard never appeared. But a whole zoo of loggers appeared, each of which
+    wanted to become the same.</p><img data-max-width="800" data-id="134a78f3-d92d-425d-a70d-6eaf950ecc6b" alt="JCL"
+                                       src="https://cdn.javarush.com/images/article/134a78f3-d92d-425d-a70d-6eaf950ecc6b/800.jpeg"
+                                       style="width: 800px;">
+<p>However, ordinary Java developers did not like that almost every library has its own logger and needs to be
+    configured somehow in a special way. Therefore, the community decided to create a special wrapper over other loggers
+    - this is how<code>JCL: jakarta commons logging</code></p>
+<p>And again, the project, which was created to be a leader, did not become one. You can't create a winner, you can only
+    become a winner. The functionality <code>JCL</code>was very poor and no one wanted to use it. The logger, designed
+    to replace all loggers, met the same fate as it <code>JUL</code>was not used.</p>
+<p>Although it has been added to many libraries released by the Apache community, the zoo of loggers has only grown.</p>
+<h2>2.4 First last logger - Logback</h2>
+<p>But that's not all. The developer <code>log4j</code>decided that he was the smartest (well, after all, most people
+    used his logger) and decided to write a new improved logger that would combine the advantages <code>log4j</code>of
+    other loggers.</p>
+<p>The new logger was called <code>Logback</code>. It was this logger that was supposed to become the future single
+    logger that everyone would use. It was based on the same idea as in <code>log4j</code>.</p>
+<p>You can connect this logger to the project using the code:</p>
+<pre class="line-numbers"><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+    &lt;version&gt;1.2.6&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>The differences were in <code>Logback</code>:</p>
+<ul>
+    <li>improved performance;</li>
+    <li>added native support <code>slf4j</code>;</li>
+    <li>expanded filtering option.</li>
+</ul>
+<p>Another advantage of this logger was that it had very good default settings. And you had to configure the logger only
+    if you wanted to change something in them. Also, the settings file was better adapted to corporate software - all
+    its configurations were set as <code>xml/</code>.</p>
+<p>By default, <code>Logback</code>it does not require any settings and records all logs from the level
+    <code>DEBUG</code>and above. If you need different behavior, it can be configured via <code>xml</code>configuration:
+</p>
+<pre class="line-numbers"><code>&lt;configuration&gt;
+    &lt;appender name="FILE" class="ch.qos.logback.core.FileAppender"&gt;
+        &lt;file&gt;app.log&lt;/file&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%d{HH:mm:ss,SSS} %-5p [%c] - %m%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+    &lt;logger name="org.hibernate.SQL" level="DEBUG" /&gt;
+    &lt;logger name="org.hibernate.type.descriptor.sql" level="TRACE" /&gt;
+    &lt;root level="info"&gt;
+        &lt;appender-ref ref="FILE" /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h2>2.5 Latest universal logger - SLF4J: Simple Logging Facade for Java</h2>
+<p>How long can it be to find the golden mean...</p>
+<p>In 2006, one of the creators <code>log4j</code>left the project and decided to try again to create a universal
+    logger. But this time it was not a new logger, but a new universal standard (wrapper) that allowed different loggers
+    to interact together.</p>
+<p>This logger was called <code>slf4j — Simple Logging Facade for Java</code>, it was a wrapper around
+    <code>log4j</code>, <code>JUL</code>, <code>common-loggins и logback</code>. This logger solved a real problem -
+    managing a zoo of loggers, so everyone immediately started using it.</p>
+<p>We heroically solve the problems we create for ourselves. As you can see, progress has reached the point that we have
+    created a wrapper over the wrapper ...</p>
+<p>The wrap itself consists of two parts:</p>
+<ul>
+    <li><code>API</code>, which is used in applications;</li>
+    <li>Implementations that are added as separate dependencies for each logger.</li>
+</ul>
+<p>You can connect the logger to the project using the code:</p>
+<pre class="line-numbers"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+    &lt;version&gt;2.17.2&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+    &lt;version&gt;2.17.2&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j-slf4j-impl&lt;/artifactId&gt;
+    &lt;version&gt;2.17.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>It is enough to connect the correct implementation and that's it: the whole project will work with it.</p>
+<h2>2.6 Optimization in slf4j</h2>
+<p><code>Slf4j</code>supports all new features such as <span class="text-green">string formatting for logging</span> .
+    Before this there was such a problem. Let's say you want to print a message to the log:</p>
+<pre class=" language-java" tabindex="0"><code class=" language-java">log<span class="token punctuation">.</span><span
+        class="token function">debug</span><span class="token punctuation">(</span><span
+        class="token string">"User "</span> <span class="token operator">+</span> user <span
+        class="token operator">+</span> <span class="token string">" connected from "</span> <span
+        class="token operator">+</span> request<span class="token punctuation">.</span><span class="token function">getRemoteAddr</span><span
+        class="token punctuation">(</span><span class="token punctuation">)</span><span
+        class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>There is a problem with this code. Suppose your application works on <code>production</code>and does not write any to
+    the log <code>DEBUG-messages</code>, however, the method <code>log.debug()</code>will still be called, and when it
+    is called, the following methods will also be called:</p>
+<ul>
+    <li><code>user.toString();</code></li>
+    <li><code>request.getRemoteAddr();</code></li>
+</ul>
+<p>Calling these methods slows down the application. Their call is needed only during debugging, but they are called
+    anyway.</p>
+<p>From the point of view of logic, this problem had to be solved in the logging library itself. And in the first
+    version of log4j the solution came up:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token keyword">if</span> <span class="token punctuation">(</span>log<span
+        class="token punctuation">.</span><span class="token function">isDebugEnabled</span><span
+        class="token punctuation">(</span><span class="token punctuation">)</span><span
+        class="token punctuation">)</span> <span class="token punctuation">{</span>
+    log<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span
+            class="token string">"User "</span> <span class="token operator">+</span> user <span class="token operator">+</span> <span
+            class="token string">" connected from "</span> <span class="token operator">+</span> request<span
+            class="token punctuation">.</span><span class="token function">getRemoteAddr</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Instead of one line for the log, now it was necessary to write three. Which dramatically worsened the readability of
+    the code, and lowered the popularity of <code>log4j</code>.</p>
+<p>The logger <code>slf4j</code>was able to slightly improve the situation by offering smart logging. It looked like
+    this:</p>
+<pre class=" language-java" tabindex="0"><code class=" language-java">log<span class="token punctuation">.</span><span
+        class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"User {} connected from {}"</span><span
+        class="token punctuation">,</span> user<span class="token punctuation">,</span> request<span
+        class="token punctuation">.</span><span class="token function">getRemoteAddr</span><span
+        class="token punctuation">(</span><span class="token punctuation">)</span><span
+        class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>where <code>{}</code>denote the insertion of arguments that are passed in the method. That is, the first
+    <code>{}</code>corresponds to user, the second <code>{}</code>to <code>request.getRemoteAddr()</code>.</p>
+<p>These parameters will be concatenated into a single message only if the logging level allows logging. Not perfect,
+    but better than all the other options.</p>
+<p>After that, <code>SLF4J</code>it began to grow rapidly in popularity, at the moment this is the best solution.</p>
+<p>Therefore, we will consider logging using the example of a bundle <code>slf4j-log4j12</code>.</p>

@@ -1,0 +1,70 @@
+ted as XID or TxID (if there is a difference, tell me). Timestamps can be used as TxID, which can play into the hands if we want to restore all actions to some point in time. The problem can arise if the timestamp is not granular enough - then transactions can get the same ID.</p>
+<p>Therefore, the most reliable option is to generate unique UUID prod IDs. In Python this is very easy:</p>
+<pre><code>&gt;&gt;&gt; import uuid 
+&gt;&gt;&gt; str(uuid.uuid4()) 
+'f50ec0b7-f960-400d-91f0-c42a6d44e3d0' 
+&gt;&gt;&gt; str(uuid.uuid4()) 
+'d15bed89-c0a5-4a72-98d9-5507ea7bc0ba' 
+</code></pre>
+<p>There is also an option to hash a set of transaction-defining data and use this hash as the TxID.</p>
+<h2>8.2 Retries</h2>
+<p>If we know that a certain function or program is idempotent, then this means that we can and should try to repeat its call in case of an error. And we just have to be prepared for the fact that some operation will give an error - given that modern applications are distributed over the network and hardware, the error should be considered not as an exception, but as the norm. The error can occur due to a server crash, network error, remote application congestion. How should our application behave? That's right, try to repeat the operation.</p>
+<p>Since one piece of code can say more than a whole page of words, let's use one example to understand how the naive retrying mechanism should ideally work. I'll demonstrate this using the Tenacity library (it's so well-designed that even if you don't plan to use it, the example should show you how you can design the recurrence mechanism):</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">import</span> <span class="token namespace">logging</span>
+<span class="token keyword">import</span> <span class="token namespace">random</span>
+<span class="token keyword">import</span> <span class="token namespace">sys</span>
+from tenacity <span class="token keyword">import</span> <span class="token namespace">retry</span><span class="token punctuation">,</span> stop_after_attempt<span class="token punctuation">,</span> stop_after_delay<span class="token punctuation">,</span> wait_exponential<span class="token punctuation">,</span> retry_if_exception_type<span class="token punctuation">,</span> before_log
+
+logging<span class="token punctuation">.</span><span class="token function">basicConfig</span><span class="token punctuation">(</span>stream<span class="token operator">=</span>sys<span class="token punctuation">.</span>stderr<span class="token punctuation">,</span> level<span class="token operator">=</span>logging<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span>
+logger <span class="token operator">=</span> logging<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+
+<span class="token annotation punctuation">@retry</span><span class="token punctuation">(</span>
+	stop<span class="token operator">=</span><span class="token punctuation">(</span><span class="token function">stop_after_delay</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token function">stop_after_attempt</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	wait<span class="token operator">=</span><span class="token function">wait_exponential</span><span class="token punctuation">(</span>multiplier<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> min<span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">,</span> max<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	retry<span class="token operator">=</span><span class="token function">retry_if_exception_type</span><span class="token punctuation">(</span><span class="token class-name">IOError</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	before<span class="token operator">=</span><span class="token function">before_log</span><span class="token punctuation">(</span>logger<span class="token punctuation">,</span> logging<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+def <span class="token function">do_something_unreliable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span>
+	<span class="token keyword">if</span> random<span class="token punctuation">.</span><span class="token function">randint</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">1</span><span class="token operator">:</span>
+    	raise <span class="token class-name">IOError</span><span class="token punctuation">(</span><span class="token string">"Broken sauce, everything is hosed!!!111one"</span><span class="token punctuation">)</span>
+	<span class="token keyword">else</span><span class="token operator">:</span>
+    	<span class="token keyword">return</span> <span class="token string">"Awesome sauce!"</span>
+
+<span class="token function">print</span><span class="token punctuation">(</span>do_something_unreliable<span class="token punctuation">.</span>retry<span class="token punctuation">.</span>statistics<span class="token punctuation">)</span></code></pre>
+<p>&gt; Just in case, I'll say: \@retry(...) is a special Python syntax called a "decorator". It's just a retry(...) function that wraps another function and does something before or after it's executed.</p>
+<p>As we can see, retries can be designed creatively:</p>
+<ul>
+ <li>You can limit attempts by time (10 seconds) or number of attempts (5).</li>
+ <li>Can be exponential (that is, 2 ** some increasing number n ). or somehow else (for example, fixed) to increase the time between separate attempts. The exponential variant is called "congestion collapse".</li>
+ <li>You can retry only for certain types of errors (IOError).</li>
+ <li>Retry attempts can be preceded or completed by some special entries in the log.</li>
+</ul>
+<p>Now that we have completed the young fighter course and know the basic building blocks that we need to work with transactions on the application side, let's get acquainted with two methods that allow us to implement transactions in distributed systems.</p>
+<h2>8.3 Advanced tools for transaction lovers</h2>
+<p>I will only give fairly general definitions, since this topic is worthy of a separate large article.</p>
+<p><strong>Two-phase commit (2pc)</strong> . 2pc has two phases: a preparation phase and a commit phase. During the prepare phase, all microservices will be asked to prepare for some data changes that can be done atomically. Once they are all ready, the commit phase will make the actual changes. To coordinate the process, a global coordinator is needed, which locks the necessary objects - that is, they become inaccessible for changes until the coordinator unlocks them. If a particular microservice is not ready for changes (for example, does not respond), the coordinator will abort the transaction and begin the rollback process.</p>
+<p>Why is this protocol good? It provides atomicity. In addition, it guarantees isolation when writing and reading. This means that changes to one transaction are not visible to others until the coordinator commits the changes. But these properties also have a disadvantage: since this protocol is synchronous (blocking), it slows down the system (despite the fact that the RPC call itself is quite slow). And again, there is a danger of mutual blocking.</p>
+<p><strong>Saga</strong> . In this pattern, a distributed transaction is executed by asynchronous local transactions across all associated microservices. Microservices communicate with each other via an event bus. If any microservice fails to complete its local transaction, other microservices will perform compensating transactions to roll back the changes.</p>
+<p>The advantage of Saga is that no objects are blocked. But there are, of course, downsides.</p>
+<p>Saga is hard to debug, especially when there are many microservices involved. Another disadvantage of the Saga pattern is that it lacks read isolation. That is, if the properties indicated in ACID are important to us, then Saga is not very suitable for us.</p>
+<p>What do we see from the description of these two techniques? The fact that in distributed systems, the responsibility for atomicity and isolation lies with the application. The same thing happens when using databases that do not provide ACID guarantees. That is, things like conflict resolution, rollbacks, commits, and freeing up space fall on the shoulders of the developer.</p>
+<h2>8.4 How do I know when I need ACID guarantees?</h2>
+<p><strong>When there is a high probability that a certain set of users or processes will simultaneously work on the same data</strong> .</p>
+<p>Sorry for the banality, but a typical example is financial transactions.</p>
+<p><strong>When the order in which transactions are executed matters.</strong></p>
+<p>Imagine that your company is about to switch from FunnyYellowChat messenger to FunnyRedChat messenger, because FunnyRedChat allows you to send gifs, but FunnyYellowChat cannot. But you are not just changing the messenger - you are migrating your company's correspondence from one messenger to another. You do this because your programmers were too lazy to document programs and processes somewhere centrally, and instead they published everything in different channels in the messenger. Yes, and your salespeople published the details of negotiations and agreements in the same place. In short, the whole life of your company is there, and since no one has time to transfer the whole thing to a service for documentation, and the search for instant messengers works well, you decided instead of clearing the rubble to simply copy all the messages to a new location. The order of the messages is important</p>
+<p>By the way, for correspondence in a messenger, the order is generally important, but when two people write something in the same chat at the same time, then in general it is not so important whose message will appear first. So, for this particular scenario, ACID would not be needed.</p>
+<p>Another possible example is bioinformatics. I don’t understand this at all, but I assume that order is important when deciphering the human genome. However, I heard that bioinformaticians generally use some of their tools for everything - perhaps they have their own databases.</p>
+<p><strong>When you can't give a user or process stale data.</strong></p>
+<p>And again - financial transactions. To be honest, I couldn't think of any other example.</p>
+<p><strong>When pending transactions are associated with significant costs. </strong>Imagine the problems that can arise when a doctor and a nurse both update a patient record and erase each other's changes at the same time, because the database cannot isolate transactions. The healthcare system is another area, besides finance, where ACID guarantees tend to be critical.</p>
+<h2>8.5 When do I not need ACID?</h2>
+<p><strong>When users update only some of their private data.</strong></p>
+<p>For example, a user leaves comments or sticky notes on a web page. Or edits personal data in a personal account with a provider of any services.</p>
+<p><strong>When users do not update data at all, but only supplement with new ones (append).</strong></p>
+<p>For example, a running application that saves data on your runs: how much you ran, for what time, route, etc. Each new run is new data, and the old ones are not edited at all. Perhaps, based on the data, you get analytics - and just NoSQL databases are good for this scenario.</p>
+<p><strong>When business logic does not determine the need for a certain order in which transactions are performed.</strong></p>
+<p>Probably, for a Youtube blogger who collects donations for the production of new material during the next live broadcast, it is not so important who, when and in what order, threw him money.</p>
+<p>When users will stay on the same web page or application window for several seconds or even minutes, and therefore they will somehow see stale data.</p>
+<p>Theoretically, these are any online news media, or the same Youtube. Or "Habr". <strong>When it doesn’t matter to you that incomplete transactions can be temporarily stored in the system, you can ignore them without any damage.</strong></p>
+<p>If you are aggregating data from many sources, and data that is updated at a high frequency - for example, data on the occupancy of parking spaces in a city that changes at least every 5 minutes, then in theory it will not be a big problem for you if at some point the transaction for one of the parking lots will not go through. Although, of course, it depends on what exactly you want to do with this data.</p>

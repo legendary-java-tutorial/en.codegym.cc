@@ -1,0 +1,164 @@
+istently google, it turns out that there is a rather blurred border between the so-called partitioning and the so-called sharding. Everyone calls whatever they want, whatever they want. Some people distinguish between horizontal partitioning and sharding. Others say that sharding is a certain kind of horizontal partitioning.</p>
+<p>I did not find a single terminological standard that would be approved by the founding fathers and certified by ISO. Personal inner conviction is something like this: Partitioning on average is “cutting the base into pieces” in an arbitrarily taken way.</p>
+<ul>
+ <li><strong>Vertical partitioning</strong> - by column. For example, there is a giant table with a couple of billion records in 60 columns. Instead of keeping one such giant table, we keep 60 at least giant tables of 2 billion records each - and this is not a column base, but vertical partitioning (as an example of terminology).</li>
+ <li><strong>Horizontal partitioning</strong> - we cut line by line, maybe inside the server.</li>
+</ul>
+<p>The awkward moment here is the subtle difference between horizontal partitioning and sharding. I can be cut into pieces, but I can’t tell you for sure what it is. There is a feeling that sharding and horizontal partitioning are about the same thing.</p>
+<p><strong>Sharding</strong> is, in general, when a large table in terms of databases or a pro-collection of documents, objects, if you don’t have a database, but a document store, is cut exactly by objects. That is, from 2 billion objects, pieces are selected no matter what size. The objects themselves inside each object are not cut into pieces, we do not lay them out into separate columns, namely, we lay them out in batches in different places.</p>
+<p>There are subtle terminological differences. For example, relatively speaking, Postgres developers can say that horizontal partitioning is when all the tables into which the main table is divided lie in the same schema, and when on different machines, this is already sharding.</p>
+<p>In a general sense, without being tied to the terminology of a specific database and a specific data management system, there is a feeling that <strong>sharding is just slicing line by line / document by document,</strong> and so on - that's all.</p>
+<p>I emphasize typical. In the sense that we are doing all this not just to cut 2 billion documents into 20 tables, each of which would be more manageable, but in order to distribute it over many cores, many disks or many different physical or virtual servers .</p>
+<h2>1.2 Divide the indivisible</h2>
+<p>It is understood that we do this so that each shard - each piece of data - is replicated many times. But really, no.</p>
+<pre><code>INSERT INTO docs00 
+SELECT * FROM documents WHERE (id%16)=0 
+... 
+ 
+INSERT INTO docs15 
+SELECT * FROM documents WHERE (id%16)=15 
+</code></pre>
+<p>In fact, if you do such a slicing of data, and from one giant SQL table on MySQL on your valiant laptop, you will generate 16 small tables, without going beyond a single laptop, not a single schema, not a single database, etc. and so on. - that's it, you already have sharding.</p>
+<p>This results in the following:</p>
+<ul>
+ <li>The bandwidth increases.</li>
+ <li>Latency does not change, that is, each, so to speak, worker or consumer in this case, gets his own. Different requests are serviced at about the same time.</li>
+ <li>Or both, and another, and also high availability (replication).</li>
+</ul>
+<p><strong>Why bandwidth? </strong>We can sometimes have such volumes of data that do not fit - it is not clear where, but they do not fit - on 1 {kernel | disk | server | ...}. There just aren't enough resources, that's all. In order to work with this large dataset, you need to cut it.</p>
+<p><strong>Why latency? </strong>On one core, scanning a table of 2 billion rows is 20 times slower than scanning 20 tables on 20 cores, doing it in parallel. Data is processed too slowly on a single resource.</p>
+<p><strong>Why high availability? </strong>Or we cut the data in order to do both at the same time, and at the same time several copies of each shard - replication ensures high availability.</p>
+<h2>1.3 A simple example "how to do it by hand"</h2>
+<p>Conditional sharding can be cut out using the test table test.documents for 32 documents, and generating 16 test tables from this table, approximately 2 documents each test.docs00, 01, 02, ..., 15.</p>
+<pre><code>INSERT INTO docs00 
+SELECT * FROM documents WHERE (id%16)=0 
+... 
+ 
+INSERT INTO docs15 
+SELECT * FROM documents WHERE (id%16)=15 
+</code></pre>
+<p>Why about? Because a priori we do not know how id are distributed, if from 1 to 32 inclusive, then there will be exactly 2 documents each, otherwise not.</p>
+<p><strong>We do it here why. </strong>After we have made 16 tables, we can "grab" 16 of what we need. Regardless of what we hit, we can parallelize these resources. For example, if there is not enough disk space, it would make sense to decompose these tables on separate disks.</p>
+<p>All this, unfortunately, is not free. I suspect that in the case of the canonical SQL standard (I haven't read the SQL standard for a long time, maybe it hasn't been updated for a long time), there is no official standardized syntax for saying to any SQL server: "Dear SQL server, make me 32 shards and divide them into 4 disks. But in individual implementations, there is often a specific syntax for doing basically the same thing. PostgreSQL has mechanisms for partitioning, MySQL has MariaDB, Oracle probably did all this a long time ago.</p>
+<p>Nevertheless, if we do it by hand, without database support and within the framework of the standard, then <strong>we pay conditionally with the complexity of data access</strong> . Where there was a simple SELECT * FROM documents WHERE id=123, now 16 x SELECT * FROM docsXX. And it's good if we tried to get the record by key. Much more interesting if we were trying to get an early range of records. Now (if we, I emphasize, are, as it were, fools, and remain within the framework of the standard), the results of these 16 SELECT * FROM will have to be combined in the application.</p>
+<p><strong>What performance change can you expect?</strong></p>
+<ul>
+ <li>Intuitively - linear.</li>
+ <li>Theoretically - sublinear, because Amdahl law.</li>
+ <li>Practically, maybe almost linearly, maybe not.</li>
+</ul>
+<p>In fact, the correct answer is unknown. With a clever application of the sharding technique, you can achieve a significant super-linear degradation in the performance of your application, and even the DBA will come running with a red-hot poker.</p>
+<p>Let's see how this can be achieved. It is clear that just setting the setting to PostgreSQL shards=16, and then it takes off by itself, is not interesting. Let's think about how we can make sure that we slow down from sharding by 16 times by 32 - this is interesting from the point of view of how not to do this.</p>
+<p>Our attempts to speed up or slow down will always run into the classics - the good old Amdahl law, which says that there is no perfect parallelization of any request, there is always some consistent part.</p>
+<h2>1.4 Amdahl law</h2>
+<p><span class="text-green">There is always a serialized part.</span></p>
+<p>There is always a part of the query execution that is parallelized, and there is always a part that is not parallelized. Even if it seems to you that a perfectly parallel query, at least the collection of the result row that you are going to send to the client from the rows received from each shard is always there, and it is always sequential.</p>
+<p>There is always some consistent part. It can be tiny, completely invisible against the general background, it can be gigantic and, accordingly, strongly affect parallelization, but it always exists.</p>
+<p>In addition, its influence is changing and can grow significantly, for example, if we cut our table - let's raise the stakes - from 64 records into 16 tables of 4 records, this part will change. Of course, judging by such gigantic amounts of data, we are working on a mobile phone and a 2 MHz 86 processor, and we don’t have enough files that can be kept open at the same time. Apparently, with such inputs, we open one file at a time.</p>
+<ul>
+ <li>It was <strong>Total = Serial + Parallel</strong> . Where, for example, parallel is all the work inside the DB, and serial is sending the result to the client.</li>
+ <li>Became <strong>Total2 = Serial + Parallel/N + Xserial</strong> . For example, when the overall ORDER BY, Xserial&gt;0.</li>
+</ul>
+<p>With this simple example, I'm trying to show that some Xserial appears. In addition to the fact that there is always a serialized part, and the fact that we are trying to work with data in parallel, there is an additional part to provide this data slicing. Roughly speaking, we may need:</p>
+<ul>
+ <li>find these 16 tables in the database's internal dictionary;</li>
+ <li>open files;</li>
+ <li>allocate memory;</li>
+ <li>unallocate memory;</li>
+ <li>merge results;</li>
+ <li>synchronize between cores.</li>
+</ul>
+<p>Some out-of-sync effects still appear. They can be insignificant and occupy one billionth of the total time, but they are always non-zero and always there. With their help, we can dramatically lose performance after sharding.</p><img data-max-width="1024" data-id="271eab10-2784-46cd-bc06-65a0aa0211c7" alt="" src="https://cdn.javarush.com/images/article/271eab10-2784-46cd-bc06-65a0aa0211c7/1024.jpeg" style="width: 1024px;">
+<p>This is a standard picture about Amdahl's law. The important thing here is that the lines, which should ideally be straight and grow linearly, run into an asymptote. But since the graph from the Internet is unreadable, I made, in my opinion, more visual tables with numbers.</p>
+<p>Let's say we have some serialized part of the request processing that only takes 5%: <strong>serial = 0.05 = 1 / 20</strong> .</p>
+<p>Intuitively, it would seem that with a serialized part that takes only 1/20 of the request processing, if we parallelize the request processing for 20 cores, it will become about 20, in the worst case 18, times faster.</p>
+<p>In fact, <strong>mathematics is a heartless thing</strong> :</p>
+<p>wall = 0.05 + 0.95/num_cores, speedup = 1 / (0.05 + 0.95/num_cores)</p>
+<p>It turns out that if you carefully calculate, with a serialized part of 5%, the speedup will be 10 times (10.3), which is 51% compared to the theoretical ideal.</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>8 cores</td>
+    <td>= 5.9</td>
+    <td>= 74%</td>
+   </tr>
+   <tr>
+    <td>10 cores</td>
+    <td>= 6.9</td>
+    <td>= 69%</td>
+   </tr>
+   <tr>
+    <td>20 cores</td>
+    <td>= 10.3</td>
+    <td>= 51%</td>
+   </tr>
+   <tr>
+    <td>40 cores</td>
+    <td>= 13.6</td>
+    <td>= 34%</td>
+   </tr>
+   <tr>
+    <td>128 cores</td>
+    <td>= 17.4</td>
+    <td>= 14%</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Having used 20 cores (20 disks, if you like) for the task that one used to work on, we will never even theoretically get an acceleration of more than 20 times, but in practice - much less. Moreover, with an increase in the number of parallels, the inefficiency increases greatly.</p>
+<p>When only 1% of serialized work remains, and 99% is parallelized, the speedup values ​​improve somewhat:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>8 cores</td>
+    <td>= 7.5</td>
+    <td>= 93%</td>
+   </tr>
+   <tr>
+    <td>16 cores</td>
+    <td>= 13.9</td>
+    <td>= 87%</td>
+   </tr>
+   <tr>
+    <td>32 cores</td>
+    <td>= 24.4</td>
+    <td>= 76%</td>
+   </tr>
+   <tr>
+    <td>64 cores</td>
+    <td>= 39.3</td>
+    <td>= 61%</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>For a perfectly thermonuclear query, which naturally takes hours to complete, and the preparatory work and the assembly of the result take very little time (serial = 0.001), we will already see good efficiency:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>8 cores</td>
+    <td>= 7.94</td>
+    <td>= 99%</td>
+   </tr>
+   <tr>
+    <td>16 cores</td>
+    <td>= 15.76</td>
+    <td>= 99%</td>
+   </tr>
+   <tr>
+    <td>32 cores</td>
+    <td>= 31.04</td>
+    <td>= 97%</td>
+   </tr>
+   <tr>
+    <td>64 cores</td>
+    <td>= 60.20</td>
+    <td>= 94%</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Please note that <strong>we will never see 100%</strong> . In especially good cases, you can see, for example, 99.999%, but not exactly 100%.</p>

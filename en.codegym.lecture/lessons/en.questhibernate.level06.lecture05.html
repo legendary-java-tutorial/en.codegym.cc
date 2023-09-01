@@ -1,0 +1,98 @@
+</h2>
+<p>And finally, the most delicious part of working with databases is changing the database. If you think that this is something very simple, then here is an anecdote for you on the subject:</p>
+<pre><code>
+The service station master, wiping his hands, hands over the car to the client and chats along the way:
+- But who do you work for?
+- I am a cardiac surgeon, I perform heart operations.
+- And they pay a lot?
+- $20,000 per operation.
+- Nothing for myself ... But we, in fact, are doing the same thing, sorting out the engines, and they pay me only $ 300 ...
+- Do you want to earn as much as I do?
+- Want...
+The surgeon starts the engine in the car and turns to the master:
+- Move over!
+</code></pre>
+<p>The situation is exactly the same with databases. You want to take out a part of the data in the separate table? Okay, you need:</p>
+<ul>
+ <li>create a new table</li>
+ <li>copy the data into this new table</li>
+ <li>remove columns from old table</li>
+ <li>change all SQL queries that referred to the old table</li>
+ <li>add SQL queries that will access the new table</li>
+ <li>change the Java code that worked with tables in the old way</li>
+ <li>change the backup and restore scripts, since now the table structures do not match</li>
+ <li>if you have test data for developers, you need to change them too</li>
+</ul>
+<p>Although in reality it is even worse:</p>
+<h4>New database structure:</h4>
+<ul>
+ <li>first you change the table structure on the developer's machine</li>
+ <li>then you are convinced that such a structure is really better</li>
+ <li>approve the new database structure</li>
+</ul>
+<h4>Migration scripts:</h4>
+<ul>
+ <li>you write scripts that will change table data, etc. on a real database</li>
+ <li>run these scripts on a machine with the old database structure and see how it changes</li>
+ <li>verify all the critical places of the new base</li>
+</ul>
+<h4>Update on sale</h4>
+<ul>
+ <li>stop the production database</li>
+ <li>make a full backup</li>
+ <li>executing scripts</li>
+ <li>since there are usually a lot on the market, these scripts can work for hours</li>
+</ul>
+<h4>You launch the prod and hope that you don't have to roll everything back.</h4>
+<h2>6.2 ALTER TABLE statement</h2>
+<p>On the other hand, the script itself, which changes the table structure, is very simple. In some ways, it is similar to a table creation script. General view of a table change request:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">table</span>
+<span class="text-user">team <span class="token number">1</span></span><span class="token number"></span><span class="token punctuation">,</span>
+<span class="text-user">team <span class="token number">2</span></span><span class="token number"></span><span class="token punctuation">,</span>
+<span class="text-user">Team <span class="token class-name">N</span></span><span class="token class-name"></span></code></pre>
+</div>
+<p>Commands are very different, but three main groups can be distinguished:</p>
+<ul>
+ <li><code>ADD</code>- adds something to the table</li>
+ <li><code>MODIFY</code>- changes something in the table</li>
+ <li><code>DROP</code>- deletes something in the table</li>
+</ul>
+<p>And when I say something, it's not about the data, but about the structure of the table.</p>
+<p>For example, you decide to add a new column to the table, then you need to execute the following query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">table</span>
+	<span class="text-brown">ADD COLUMN</span> <span class="text-green">Name</span> <span class="text-user">type</span></code></pre>
+</div>
+<p>Let's write a query that will add an <strong>email</strong> column to our <strong>employee</strong> table :<strong></strong></p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">employee</span>
+	<span class="text-brown">ADD COLUMN</span> <span class="text-green">email </span> <span class="token function"></span><span class="text-user"><span class="token function">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p>Now let's change the length of the email string from 10 to 100: for this we need a new script:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">employee</span>
+	<span class="text-red">MODIFY</span> <span class="text-brown">COLUMN</span> <span class="text-green">email</span> <span class="token function"></span><span class="text-user"><span class="token function">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p>If you want to change some attributes of a column, but not its type, then you need <strong>the command</strong> <code>ALTER COLUM</code> . Let's set the default <strong>email value:</strong></p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">employee</span>
+	<span class="text-red">ALTER</span> <span class="text-brown">COLUMN</span> <span class="text-green">email</span> <span class="token function"></span><span class="text-user"><span class="token function">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span></span><span class="token punctuation"></span>  <span class="text-brown">DEFAULT</span> <span class="token string"><span class="text-viola">'test@test.com'</span></span></code></pre>
+</div>
+<p>And finally, the column can be removed if you don't need it:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">employee</span>
+	<span class="text-red">DROP</span> <span class="text-brown">COLUMN</span> <span class="text-green">email </span></code></pre>
+</div>
+<h2>6.3 Adding and removing a primary key</h2>
+<p>And some more useful examples.</p>
+<p>Let's say we forgot to declare the <strong>id</strong> column as the primary key. You can always do it separately via <code>ALTER TABLE</code>:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">employee</span>
+	<span class="text-red">ADD <span class="token class-name">PRIMARY</span> KEY</span> <span class="token punctuation">(</span><span class="text-green">email</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Removing it is even easier:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">employee</span>
+	<span class="text-red">DELETE <span class="token class-name">PRIMARY</span> KEY</span><span class="token punctuation">;</span></code></pre>
+</div>

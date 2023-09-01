@@ -1,0 +1,229 @@
+<p>"Now I'll tell you about some methods that are just as helpful: <strong>equals(Object o) &amp; hashCode()</strong>."
+</p>
+<p>"You've probably already remembered that, in Java, when comparing reference variables the objects themselves aren't
+    compared, but rather the references to the objects."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre data-line="" data-start="" class="line-numbers language-java"><code>Integer i = new Integer(1);
+Integer j = new Integer(1);
+System.out.println(i==j);</code></pre>
+        </td>
+        <td>i is not equal to j<br/>
+            The variables point to different objects.<br/>
+            Even though the objects contain the same data.
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre data-line="" data-start="" class="line-numbers language-java"><code>Integer i = new Integer(1);
+Integer j = i;
+System.out.println(i==j);</code></pre>
+        </td>
+        <td>i equals j. The variables contain a reference to the same object.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Yes, I remember that."</span></p>
+<p>The <strong>equals</strong>.</p>
+<p>"The equals method is the standard solution here. The purpose of the equals method is to determine whether objects are internally identical by comparing what is stored inside them."</p>
+<span class="text-user">"And how does it do that?"</span>
+<p>"It's all very similar to the toString() method."</p>
+<p>The Object class has its own implementation of the equals method, which simply compares the references:</p>
+<pre data-line="" data-start="" class="line-numbers language-java"><code>public boolean equals(Object obj)
+{
+return (this == obj);
+}</code></pre>
+<p><span class="text-user">"Great... back to that again, are we?"</span></p>
+<p>"Keep your chin up! It's actually very tricky."</p>
+<p>"This method was created to allow developers to overwrite it in their own classes. After all, only a class's developer knows what data is relevant and what is not when comparing."</p>
+<p><span class="text-user">"Can you provide an example?"</span></p>
+<p>"Sure. Suppose we have a class that represents mathematical fractions. It would look like this:"</p>
+<div class="code-heading">Example:</div>
+<pre data-line="" data-start="" class="line-numbers language-java"><code>class Fraction
+{
+private int numerator;
+private int denominator;
+Fraction(int numerator, int denominator)
+{
+this.numerator  = numerator;
+this.denominator = denominator;
+}public boolean equals(Object obj)
+{
+if (obj==null)
+return false;
+
+if (obj.getClass() != this.getClass() )
+return false;
+
+Fraction other = (Fraction) obj;
+return this.numerator* other.denominator == this.denominator * other.numerator;
+}
+}</code></pre>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Example method call:</th>
+    </tr>
+    <tr>
+        <td><code>Fraction <strong>one</strong> = <strong>new</strong> Fraction(2,3);</code><br/>
+            <code>Fraction <strong>two</strong> = <strong>new</strong> Fraction(4,6);</code><br/>
+            <strong><code> System.out.println(one.equals(two));</code></strong></td>
+    </tr>
+    <tr>
+        <td><strong>The method call will return true.</strong><br/>
+            <strong>The fraction 2/3 is equal to the fraction 4/6</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Now, let's dissect this example."</p>
+<p>"We overrode the <strong>equals</strong> method, so <strong>Fraction</strong> objects will have their own implementation.</p>
+<p>"There are several checks in the method:"</p>
+<p>"<strong>1)</strong> If the object passed for comparison is <strong>null</strong>, then the objects are not equal. If you can call the <strong>equals</strong> method on an object, then it is definitely not <strong>null</strong>."</p>
+<p>"<strong>2)</strong> A class comparison. If the objects are instances of different classes, then we won't try to compare them. Instead, we'll immediately use <strong>return false</strong> to indicate that these are different objects."</p>
+<p>"<strong>3)</strong> Everyone remembers from the second grade that 2/3 is equal to 4/6. But how do you check that?"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">2/3 == 4/6</th>
+    </tr>
+    <tr>
+        <td><strong>We multiply both sides by both divisors (6 and 3), and we get:</strong></td>
+    </tr>
+    <tr>
+        <td><strong>6 * 2 == 4 * 3</strong></td>
+    </tr>
+    <tr>
+        <td><strong>12 == 12</strong></td>
+    </tr>
+    <tr>
+        <td><strong>General rule:</strong></td>
+    </tr>
+    <tr>
+        <td><strong>If</strong><br/>
+            <strong> a / b == c / d</strong><br/>
+            <strong>Then</strong><br/>
+            <strong> a * d == c * b</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Accordingly, in the third part of the <strong>equals</strong> method, we cast the passed object to a Fraction and compare the fractions."</p>
+<p><span class="text-user">"Got it. If we simply compare the numerator with the numerator and the denominator with the denominator, then 2/3 is not equal to 4/6."</span></p>
+<p><span class="text-user">"Now I understand what you meant when you said that only a class's developer knows how to compare it correctly."</span></p>
+<p>"Yes, but that's only half the story. <strong>There's another method: hashCode().</strong>"</p>
+<p><span class="text-user">"Everything about the equals method makes sense now, but why do we need <strong>hashCode</strong>()?</span>"</p>
+<p>"The <strong>hashCode</strong> method is needed for quick comparisons."</p>
+<p>"The <strong>equals</strong> method has a major downside: it works too slowly. Suppose you have a Set of millions of elements and need to check whether it contains a specific object. How do you do that?"</p>
+<p><span class="text-user">"I could cycle through all the elements using a loop and compare the object with each object in the set. Until I find a match."</span></p>
+<p>"And if it's not there? We'd perform a million comparisons just to find out that the object isn't there? Doesn't that seem like a lot?"</p>
+<p><span class="text-user">"Yes, even I recognize that is too many comparisons. Is there another way?"</span></p>
+<p>"Yes, you can use <strong>hashCode</strong>() for this.</p>
+<p>The <strong>hashCode</strong>() method returns a specific number for each object. A class's developer decides what number is returned, just like he or she does for the equals method.</p>
+<p>"Let's look at an example:"</p>
+<p>"Imagine that you have a million 10-digit numbers. Then, you could make each number's hashCode be the remainder after dividing the number by 100."</p>
+<p>Here's an example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Number</th>
+        <th width="50%">Our hashCode</th>
+    </tr>
+    <tr>
+        <td>1234567890</td>
+        <td>90</td>
+    </tr>
+    <tr>
+        <td>9876554321</td>
+        <td>21</td>
+    </tr>
+    <tr>
+        <td>9876554221</td>
+        <td>21</td>
+    </tr>
+    <tr>
+        <td>9886554121</td>
+        <td>21</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Yeah, that makes sense. And what do we do with this hashCode?"</span></p>
+<p>"Instead of comparing the numbers, we compare their <strong>hashCodes</strong>. It's faster that way."</p>
+<p>"And we call <strong>equals</strong> only if their <strong>hashCodes</strong> are equal."</p>
+<p><span class="text-user">"Yeah, that's faster. But we still have to make a million comparisons. We're just comparing smaller numbers, and we still have to call equals for any numbers with matching hashCodes."</span></p>
+<p>"No, you can get away with a much smaller number of comparisons."</p>
+<p>"Imagine that our Set stores numbers grouped or sorted by <strong>hashCode</strong> (sorting them in this way is essentially grouping them, since numbers with the same hashCode will be next to each other). Then you can very quickly and easily discard irrelevant groups. It's enough to check once per group to see whether its hashCode matches the object's hashCode."</p>
+<p>"Imagine you're a student looking for a friend you can recognize by sight and whom we know lives in Dorm 17. Then you just go to every dorm at the university and ask, 'Is this Dorm 17?' If it's not, then you ignore everyone in the dorm and move on to the next. If the answer is 'yes', then you start walking past each of the rooms, looking for your friend."</p>
+<p>"In this example, the dorm number (17) is the hashCode."</p>
+<p>"A developer who implements a hashCode function must know the following:"</p>
+<p><strong>A)</strong> <strong><span class="text-green">two different objects can have the same hashCode</span></strong> (different people can live in the same dorm)</p>
+<p><strong>B)</strong> <span class="text-green"><strong> objects that are the same</strong></span> (<strong>according to the equals method</strong>) <strong><span class="text-green">must have the same hashCode.</span></strong>.</p>
+<p><strong>C)</strong> <span class="text-red"><strong>hash codes must be chosen so that there aren't a lot of different objects with the same hashCode.</strong></span> If there are, then hashcodes' potential advantages are lost (You get to Dorm 17 and find that half the university lives there. Bummer!).</p>
+<p>"And now the most important thing. If you override the <strong>equals</strong> method, you absolutely must override the <strong>hashCode</strong>() method and comply with the three rules described above.</p>
+<p>"The reason is this: <strong>in Java, objects in a collection are always compared/retrieved using hashCode() before they are compared/retrieved using equals.</strong> And if identical objects have different hashCodes, then the objects will be considered different and the equals method won't even be called.</p>
+<p>"In our Fraction example, if we made the hashCode equal to the numerator, the fractions 2/3 and 4/6 would have different hashCodes. The fractions are the same and the equals method says they're the same, but their hashCodes say they are different. And if we compare using hashCode before we compare using equals, then we conclude that the objects are different and we never even make it to the equals method."</p>
+<p>Here's an example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%"></th>
+    </tr>
+    <tr>
+        <td><code><span class="text-green">HashSet&lt;Fraction&gt;set = new HashSet&lt;Fraction&gt;();</span></code><br/>
+            <code><span class="text-green"> set.add(new Fraction(2,3));</span></code><code><span class="text-green">System.out.println( set.contains(new Fraction(4,6)) );</span></code>
+        </td>
+    </tr>
+    <tr>
+        <td>If the <span class="text-green"><strong>hashCode()</strong></span> method returns the fractions' numerator, the result will be <span class="text-green"><strong>false</strong></span>.<br/>
+            And the «new <span class="text-green"><strong>Fraction(4,6)</strong></span>» object will not be found in the collection.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"So what's the right way to implement hashCode for fractions?"</span></p>
+<p>"Here you need to remember that equivalent fractions must have the same hashCode."</p>
+<p>"<strong>Version 1</strong>: the hashCode equals the result of integer division."</p>
+<p>"For 7/5 and 6/5, this would be 1."</p>
+<p>"For 4/5 and 3/5, this would be 0."</p>
+<p>"But this option is poorly suited for comparing fractions that are deliberately less than 1. The hashCode (result of integer division) will always be 0."</p>
+<p>"<strong>Version 2</strong>: the hashCode equals the result of integer division of the denominator by the numerator."</p>
+<p>"This option is suitable for instances where the fraction is less than 1. If the fraction is less than 1, then its inverse is greater than 1. And if we invert all of the fractions, then the comparisons are in no way affected."</p>
+<p>"Our final version combines both solutions:"</p>
+<pre data-line="" data-start="" class="line-numbers language-java"><code>public int hashCode()
+{
+return numerator/denominator + denominator/numerator;
+}</code></pre>
+</table>
+<p>Let's test it using 2/3 and 4/6. They should have identical hashCodes:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="33%"></th>
+        <th width="33%">Fraction 2/3</th>
+        <th width="33%">Fraction 4/6</th>
+    </tr>
+    <tr>
+        <td><strong>numerator / denominator</strong></td>
+        <td>2 / 3 == 0</td>
+        <td>4 / 6 == 0</td>
+    </tr>
+    <tr>
+        <td><strong>denominator / numerator</strong></td>
+        <td>3 / 2 == 1</td>
+        <td>6 / 4 == 1</td>
+    </tr>
+    <tr>
+        <td><strong>numerator / denominator</strong><br/>
+            <strong> +</strong><br/>
+            <strong>denominator / numerator</strong></td>
+        <td>0 + 1 == 1</td>
+        <td>0 + 1 == 1</td>
+    </tr>
+    </tbody>
+</table>
+<p>"That's all for now."</p>
+<p><span class="text-user">"Thanks, Ellie. That was really interesting."</span></p>

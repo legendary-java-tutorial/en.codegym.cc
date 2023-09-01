@@ -1,0 +1,275 @@
+form is a property of a relation in a relational data model that characterizes it in terms of redundancy, potentially leading to logically erroneous results of sampling or changing data. Normal form is defined as the set of requirements that a relation (tables in a database) must satisfy.</p>
+<p>The process of converting database relationships to a form that conforms to normal forms is called normalization. Normalization is intended to bring the structure of the database to a form that provides <span class="text-green">minimal logical redundancy</span> , and <span class="text-red">is not intended to reduce or increase performance, or reduce or increase the physical volume of the database</span> .</p>
+<p>The ultimate goal of normalization is to reduce the potential inconsistency of the information stored in the database. The general purpose of the normalization process is as follows:</p>
+<ul>
+ <li>exclusion of certain types of redundancy;</li>
+ <li>fix some update anomalies;</li>
+ <li>development of a database project that is a sufficiently “high-quality” representation of the real world, is intuitive and can serve as a good basis for subsequent expansion;</li>
+ <li>simplifying the procedure for applying the necessary integrity constraints.</li>
+</ul>
+<p>Redundancy is usually eliminated by decomposing relations in such a way that only primary facts are stored in each relation (that is, facts that are not derived from other stored facts).</p>
+<p>While normalization ideas are very useful for database design, they are by no means a universal or exhaustive means of improving the quality of a database design. This is due to the fact that there is too much variety of possible errors and shortcomings in the database structure that cannot be eliminated by normalization.</p>
+<p>Despite these considerations, the theory of normalization is a very valuable achievement of relational theory and practice, since it provides scientifically rigorous and reasonable criteria for the quality of a database project and formal methods for improving this quality. This makes normalization theory stand out from the purely empirical design approaches that are offered in other data models. Moreover, it can be argued that in the entire field of information technology there are practically no methods for evaluating and improving design solutions that are comparable with the theory of normalization of relational databases in terms of the level of formal rigor.</p>
+<p>Normalization is sometimes criticized on the grounds that "it's just common sense" and any competent professional will "naturally" design a fully normalized database without having to apply dependency theory.</p>
+<p>However, as Professor Christopher Date noted, <strong>normalization is precisely the principles of common sense that guide a mature designer in his mind, that is, the principles of normalization are formalized common sense</strong> . Meanwhile, identifying and formalizing the principles of common sense is a very difficult task, and success in solving it is a significant achievement.</p>
+<h2>3.2 First normal form</h2>
+<p><strong>First normal form (1NF)</strong> is the basic normal form of a relation in the relational data model.</p>
+<p><span class="text-green">A relation variable is in first normal form if and only if, in any valid value of that variable, each relation tuple contains exactly one value for each of the attributes.</span></p>
+<p>In a relational model, a relation is always in first normal form, by definition of the concept of relation.</p>
+<p>As for the various tables, they may not be correct representations of relationships and, accordingly, may not be in 1NF. According to Christopher Date's definition for such a case, a table is normalized (equivalently, is in first normal form) if and only if it is a direct and true representation of some relation. More specifically, the table in question must satisfy the following five conditions:</p>
+<ul>
+ <li>There is no ordering of rows from top to bottom (in other words, the order of rows does not convey any information).</li>
+ <li>There is no left-to-right ordering of the columns (in other words, the order of the columns carries no information).</li>
+ <li>No duplicate lines.</li>
+ <li>Each intersection of a row and a column contains exactly one value from the corresponding domain (and nothing else).</li>
+ <li>All columns are "regular".</li>
+</ul>
+<p>The "regularity" of all columns of a table means that there are no "hidden" components in the table that can only be accessed in the invocation of some special operator instead of referring to regular column names, or which lead to side effects for rows or tables when invoking standard operators.</p>
+<p>The original non-normalized (that is, not a correct representation of some relation) table:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Employee</th>
+    <th>Phone number</th>
+   </tr>
+   <tr>
+    <td>Ivanov I.I.</td>
+    <td>
+     <p>283-56-82</p>
+     <p>390-57-34</p></td>
+   </tr>
+   <tr>
+    <td>Petrov P.P.</td>
+    <td>708-62-34</td>
+   </tr>
+   <tr>
+    <td>Sidorov S.S.</td>
+    <td></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>A table reduced to 1NF, which is the correct representation of some relation:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Employee</th>
+    <th>Phone number</th>
+   </tr>
+   <tr>
+    <td>Ivanov I.I.</td>
+    <td>283-56-82</td>
+   </tr>
+   <tr>
+    <td>Ivanov I.I.</td>
+    <td>390-57-34</td>
+   </tr>
+   <tr>
+    <td>Petrov P.P.</td>
+    <td>708-62-34</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>3.3 Second normal form</h2>
+<p>A relation variable is in second normal form if and only if it is in first normal form and <span class="text-green">every non-key attribute is irreducibly dependent on (every) its candidate key</span> .</p>
+<p>Irreducibility means that the potential key does not contain a smaller subset of attributes from which this functional dependency can also be derived. For an irreducible functional dependency, the equivalent concept of "full functional dependency" is often used.</p>
+<p>If the candidate key is simple, that is, it consists of a single attribute, then any functional dependence on it is irreducible (complete). If the candidate key is a composite key, then, according to the definition of the second normal form, there must be no non-key attributes in the relation that depend on part of the composite candidate key.</p>
+<p>An example of converting a relation to <strong>second normal form</strong></p>
+<p>Let the pair of attributes {Company branch, Position} form the primary key in the following relation:</p>
+<center>
+ <strong>R</strong>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Company branch</th>
+    <th>Job title</th>
+    <th>Salary</th>
+    <th>Availability of a computer</th>
+   </tr>
+   <tr>
+    <td>Branch in Tomsk</td>
+    <td>Cleaner</td>
+    <td>20000</td>
+    <td>No</td>
+   </tr>
+   <tr>
+    <td>Branch in Moscow</td>
+    <td>Programmer</td>
+    <td>40000</td>
+    <td>Eat</td>
+   </tr>
+   <tr>
+    <td>Branch in Tomsk</td>
+    <td>Programmer</td>
+    <td>25000</td>
+    <td>Eat</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's say that the salary depends on the branch and position, and the availability of a computer depends only on the position.</p>
+<p>There is a functional dependence Position -&gt; Having a computer, in which the left side (determinant) is only a part of the primary key, which violates the condition of the second normal form.</p>
+<p>To reduce to 2NF, the original relation should be decomposed into two relations:</p>
+<center>
+ <strong>R1</strong>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Company branch</th>
+    <th>Job title</th>
+    <th>Salary</th>
+   </tr>
+   <tr>
+    <td>Branch in Tomsk</td>
+    <td>Cleaner</td>
+    <td>20000</td>
+   </tr>
+   <tr>
+    <td>Branch in Moscow</td>
+    <td>Programmer</td>
+    <td>40000</td>
+   </tr>
+   <tr>
+    <td>Branch in Tomsk</td>
+    <td>Programmer</td>
+    <td>25000</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<center>
+ <strong>R2</strong>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Job title</th>
+    <th>Availability of a computer</th>
+   </tr>
+   <tr>
+    <td>Cleaner</td>
+    <td>No</td>
+   </tr>
+   <tr>
+    <td>Programmer</td>
+    <td>Eat</td>
+   </tr>
+   <tr>
+    <td>Programmer</td>
+    <td>Eat</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>3.4 Third normal form (3NF)</h2>
+<p>A relation variable R is in 3NF if and only if the following conditions are true:</p>
+<ul>
+ <li><mark class="green">R</mark>is in second normal form.</li>
+ <li>no non-key attribute<mark class="green">R</mark>is not in transitive functional dependence on the candidate key<mark class="green">R</mark>.</li>
+</ul>
+<p>Explanations for the definition:</p>
+<p>A non-key attribute of a relation R is an attribute that does not belong to any of the candidate keys of R.</p>
+<p>The functional dependence of the set of attributes Z on the set of attributes X (written X → Z, pronounced “x determines z”) is transitive if there is such a set of attributes Y that X → Y and Y → Z. In this case, none of the sets X, Y and Z is not a subset of the other, i.e. the functional dependencies X → Z, X → Y, and Y → Z are not trivial, and there is also no functional dependency Y → X.</p>
+<p>A definition of 3NF, equivalent to Codd's but worded differently, was given by Carlo Zaniolo in 1982. According to it, a relation variable is in 3NF if and only if each of its functional dependencies X → A satisfies at least one of the following conditions:</p>
+<ul>
+ <li>X contains A (that is, X → A is a trivial functional dependency)</li>
+ <li>X - super key</li>
+ <li>A is a key attribute (that is, A is part of a candidate key).</li>
+</ul>
+<p>Zaniolo's definition clearly defines the difference between 3NF and the more stringent Boyce-Codd Normal Form (BCNF): BCNF eliminates the third condition ("A is a key attribute").</p>
+<p>A memorable and traditionally descriptive summary of Codd's 3NF definition was given by Bill Kent: each non-key attribute "should provide information about the key, the full key, and <strong>nothing but the key</strong> ".</p>
+<p>The condition of depending on the "full key" of non-key attributes ensures that the relation is in second normal form; and the condition for them to depend on "nothing but the key" is that they are in third normal form.</p>
+<p>Chris Date speaks of Kent's summary as an "intuitively attractive feature" of 3NF, and observes that, with a slight modification, it can also serve as a definition of the stricter Boyce-Codd normal form: "each attribute must provide information about a key, a full key, and neither anything but the key.</p>
+<p>Kent's version of the 3NF definition is less strict than the Boyce-Codd normal form version of Data's formulation, since the former only states that non-key attributes depend on keys.</p>
+<p>Primary attributes (which are keys or parts of them) need not be functionally dependent at all; each of them provides information about the key by providing the key itself or part of it. It should be noted here that this rule is valid only for non-key attributes, since applying it to all attributes will completely disable all complex alternative keys, since each element of such a key will violate the "full key" condition.</p>
+<p>Consider the relation variable R1 as an example:</p>
+<center>
+ <strong>R1</strong>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Employee</th>
+    <th>Department</th>
+    <th>Telephone</th>
+   </tr>
+   <tr>
+    <td>Grishin</td>
+    <td>Accounting</td>
+    <td>11-22-33</td>
+   </tr>
+   <tr>
+    <td>Vasiliev</td>
+    <td>Accounting</td>
+    <td>11-22-33</td>
+   </tr>
+   <tr>
+    <td>Petrov</td>
+    <td>Supply</td>
+    <td>44-55-66</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Each employee belongs exclusively to one department; each department has a single telephone. The Employee attribute is the primary key. Employees do not have personal phones, and the employee's phone number depends solely on the department.</p>
+<p>In the example, the following functional dependencies exist: Employee → Department, Department → Phone, Employee → Phone.</p>
+<p>The relation variable R1 is in second normal form because each attribute has an irreducible functional dependency on the potential key Employee.</p>
+<p>The relationship Employee → Phone is transitive, so the relation is not in third normal form.</p>
+<p>Splitting R1 results in two relation variables that are in 3NF:</p>
+<center>
+ <strong>R2</strong>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Department</th>
+    <th>Telephone</th>
+   </tr>
+   <tr>
+    <td>Accounting</td>
+    <td>11-22-33</td>
+   </tr>
+   <tr>
+    <td>Supply</td>
+    <td>44-55-66</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<hr>
+<center>
+ <strong>R3</strong>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Employee</th>
+    <th>Department</th>
+   </tr>
+   <tr>
+    <td>Grishin</td>
+    <td>Accounting</td>
+   </tr>
+   <tr>
+    <td>Vasiliev</td>
+    <td>Accounting</td>
+   </tr>
+   <tr>
+    <td>Petrov</td>
+    <td>Supply</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The initial relation R1, if necessary, is easily obtained as a result of the operation of joining the relations R2 and R3.</p>

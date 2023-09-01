@@ -1,0 +1,276 @@
+e the first program and it worked perfectly. We wrote a query, executed it, and as a result, the <span class="code text-orange">executeQuery()</span> method returned an object to us<mark class="green">result set</mark>An that contains all the results of the query. And now we will try to figure out how to get these results from it.</p>
+<p>The query result can contain thousands of rows and hundreds of columns of various types, so this is not as trivial a task as you might think. For example, pictures can be stored in the database, then you can get a picture as a set of bytes or <span class="text-green"><span class="text-bold">an InputStream</span></span> to download it.</p>
+<p>But we will start with the simplest - with the concept of “ <strong>current result line</strong> ”. Since the result usually has a lot of rows, the object<mark class="green">result set</mark>has a pointer to the current line inside. And sequentially switches the lines to read them using the <span class="code text-orange">next()</span> method .</p>
+<p>This approach is primarily done for optimization. The JDBC Driver may not load strings from the database until you sequentially get to read them. <span class="text-green"><span class="text-bold">You too read FileInputStream</span></span> sequentially from the beginning to the end. So this approach should be familiar and understandable to you.</p>
+<p>However, if you really need it, then files can be read anywhere using the <span class="code"><span class="text-green">RandomAccessFile</span></span> class .</p>
+<p><span class="code"><span class="text-green">The ResultSet</span></span> class also allows something similar and allows you to move the current row along the result anywhere. To do this, it has the following methods:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th>Method</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><span class="code text-orange">next()</span></td>
+    <td>Switch to next line</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><span class="code text-orange">previous()</span></td>
+    <td>Switch to previous line</td>
+   </tr>
+   <tr>
+    <td colspan="3"></td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><span class="code text-orange">isFirst()</span></td>
+    <td>Current line first?</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><span class="code text-orange">isBeforeFirst()</span></td>
+    <td>Are we in front of the first line?</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><span class="code text-orange">isLast()</span></td>
+    <td>Is the current line the last one?</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td><span class="code text-orange">isAfterLast()</span></td>
+    <td>Are we after the deadline?</td>
+   </tr>
+   <tr>
+    <td colspan="3"></td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td><span class="code text-orange">absolute(int n)</span></td>
+    <td>Makes the Nth line current</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td><span class="code text-orange">relative(int n)</span></td>
+    <td>Moves the current line N positions forward. N can be &lt;0</td>
+   </tr>
+   <tr>
+    <td colspan="3"></td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td><span class="code text-orange">getRow()</span></td>
+    <td>Returns the line number</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The methods are quite simple, but two explanations need to be made. The results are, as it were, framed by empty lines on both sides. Therefore, initially the current line is <strong>before the first</strong> line of the result. <span class="code text-orange">And to get the first row, you need to call the next()</span> method at least once .</p>
+<p>If you called the <span class="code text-orange">next() method </span><strong>on the last</strong> row , then you moved to the line <strong>after the last one</strong> . You cannot read data from it, but no error will occur. Here the <span class="code text-orange">isAfterLast()</span> method will declare true as the result.<span class="code text-orange"></span><strong></strong><span class="code text-orange"></span></p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Statement</span> statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ResultSet</span> results <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeQuery</span><span class="token punctuation">(</span><span class="token string">"SELECT * FROM user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">getRow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>        	<span class="token comment">// 0</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">isBeforeFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// true</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">isFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>          	<span class="token comment">// false</span>
+
+results<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">getRow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>        	<span class="token comment">// 1</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">isBeforeFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// false</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">isFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>          	<span class="token comment">// true</span>
+
+results<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">getRow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>        	<span class="token comment">// 2</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">isBeforeFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// false</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> results<span class="token punctuation">.</span><span class="token function">isFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>          	<span class="token comment">// false</span></code></pre>
+<h2>Getting data from the current row</h2>
+<p>You have learned to masterfully manage the current line. Now let's figure out how to get data from it. For this, the object<mark class="green">result set</mark>there are special methods that can all be described by one template:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token function"><span class="text-red">get</span>Type</span><span class="token punctuation">(</span><span class="text-user">numberColumns</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>However, if the column has a name, then you can also get by the column name:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token function"><span class="text-red">get</span>Type</span><span class="token punctuation">(</span><span class="text-green">nameColumns</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">while</span> <span class="token punctuation">(</span>results<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        	<span class="token class-name">Integer</span> id <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getInt</span><span class="token punctuation">(</span>“id”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token class-name">String</span> name <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getString</span><span class="token punctuation">(</span>“name”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>results<span class="token punctuation">.</span><span class="token function">getRow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">". "</span> <span class="token operator">+</span> id <span class="token operator">+</span> <span class="token string">"\t"</span><span class="token operator">+</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Below I will provide a table that will help you associate SQL data types and ResultSet methods:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>SQL data type</th>
+    <th>getXXX() Methods</th>
+   </tr>
+   <tr>
+    <td>CHAR</td>
+    <td><span class="code text-orange">getString()</span></td>
+   </tr>
+   <tr>
+    <td>VARCHAR</td>
+    <td><span class="code text-orange">getString()</span></td>
+   </tr>
+   <tr>
+    <td>INT</td>
+    <td><span class="code text-orange">getInt()</span></td>
+   </tr>
+   <tr>
+    <td>FLOAT</td>
+    <td><span class="code text-orange">getDouble()</span></td>
+   </tr>
+   <tr>
+    <td>CLOB</td>
+    <td><span class="code text-orange">getClob()</span></td>
+   </tr>
+   <tr>
+    <td>BLOB</td>
+    <td><span class="code text-orange">getBlob()</span></td>
+   </tr>
+   <tr>
+    <td>DATE</td>
+    <td><span class="code text-orange">getDate()</span></td>
+   </tr>
+   <tr>
+    <td>TIME</td>
+    <td><span class="code text-orange">getTime()</span></td>
+   </tr>
+   <tr>
+    <td>TIMESTAMP</td>
+    <td><span class="code text-orange">getTimestamp()</span></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The point, I think you get it.</p>
+<h2>Getting different data about ResultSet</h2>
+<p>We figured out how to read data from the current line: both by the column number and by its name. By the way, how can I find out the column name by its number? Or the number of columns in the result?</p>
+<p>On the one hand, if you write a request, then you seem to have to know all this. On the other hand, we can write a program that displays the result of a query on the screen: the query is passed to us and we just want to display on the screen (in the console, web page) everything that the SQL server returned to us.</p>
+<p>JDBC has a special object for this, the <span class="text-neon"><span class="text-bold"><em>ResultSetMetaData</em></span></span> interface . Getting an object of this type is quite simple:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Statement</span> statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ResultSet</span> results <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeQuery</span><span class="token punctuation">(</span><span class="token string">"SELECT * FROM user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ResultSetMetaData</span> resultSetMetaData <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getMetaData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><span class="text-neon"><span class="text-bold"><em>The ResultSetMetaData</em></span></span> interface has some very interesting methods. Below are the most popular ones:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>1</td>
+    <td>getColumnCount()</td>
+    <td>Returns the number of result columns</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>getColumnName(int column)</td>
+    <td>Returns the column name</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>getColumnLabel(int column)</td>
+    <td>Returns the description of the column</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>getColumnType()</td>
+    <td>Returns column type: number (special code)</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>getColumnTypeName()</td>
+    <td>Returns column type: string</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>getColumnClassName()</td>
+    <td>Returns the java class name for the column type</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>getTableName()</td>
+    <td>Returns the table name</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>getCatalogName()</td>
+    <td>Returns the directory name of the column</td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td>getSchemaName()</td>
+    <td>Returns the schema name of the database</td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td>isAutoIncrement(int column)</td>
+    <td>Does the column support AUTO INCREMENT?</td>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td>isNullable()</td>
+    <td>Can a column contain NULL?</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's use it to learn a little about our table:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">ResultSetMetaData</span> metaData <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getMetaData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> columnCount <span class="token operator">=</span> metaData<span class="token punctuation">.</span><span class="token function">getColumnCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> column <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> column <span class="token operator">&lt;=</span> columnCount<span class="token punctuation">;</span> column<span class="token operator">++</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        	<span class="token class-name">String</span> name <span class="token operator">=</span> metaData<span class="token punctuation">.</span><span class="token function">getColumnName</span><span class="token punctuation">(</span>column<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token class-name">String</span> className <span class="token operator">=</span> metaData<span class="token punctuation">.</span><span class="token function">getColumnClassName</span><span class="token punctuation">(</span>column<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token class-name">String</span> typeName <span class="token operator">=</span> metaData<span class="token punctuation">.</span><span class="token function">getColumnTypeName</span><span class="token punctuation">(</span>column<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token keyword">int</span> type <span class="token operator">=</span> metaData<span class="token punctuation">.</span><span class="token function">getColumnType</span><span class="token punctuation">(</span>column<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>name <span class="token operator">+</span> <span class="token string">"\t"</span> <span class="token operator">+</span> className <span class="token operator">+</span> <span class="token string">"\t"</span> <span class="token operator">+</span> typeName <span class="token operator">+</span> <span class="token string">"\t"</span> <span class="token operator">+</span> type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>Important! </strong>Pay attention that columns are numbered from 1. Rows, by the way, too. How unusual is that, right?</p>
+<p>And this is the result I got after running the program:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td colspan="4"><span class="text-gray">"C:\Program Files\Java\jdk-17.0.3.1\bin\java.exe...</span></td>
+   </tr>
+   <tr>
+   </tr>
+   <tr>
+    <td>id</td>
+    <td>java.lang.Integer</td>
+    <td>INT</td>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>name</td>
+    <td>java.lang.string</td>
+    <td>VARCHAR</td>
+    <td>12</td>
+   </tr>
+   <tr>
+    <td>level</td>
+    <td>java.lang.Integer</td>
+    <td>INT</td>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>created_date</td>
+    <td>java.sql.date</td>
+    <td>DATE</td>
+    <td>91</td>
+   </tr>
+   <tr>
+    <td colspan="4"><span class="text-user">Process finished with exit code 0</span></td>
+   </tr>
+  </tbody>
+ </table>
+</div>

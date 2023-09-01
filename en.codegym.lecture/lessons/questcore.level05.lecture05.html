@@ -1,0 +1,242 @@
+<p>"Hello, Amigo! Now I'm going to tell you about how objects are created."</p>
+<p><span class="text-user">"What's so complicated about it, Uncle Rishi? You write new and the class name, indicate the correct constructor, and you're done!"</span></p>
+<p>"That's true. But what happens inside the object when you do that?"</p>
+<p><span class="text-user">"What happens?"</span></p>
+<p>"This is what happens: The object is created in several stages."</p>
+<p><b><i>1)</i></b><i> First, memory is allocated for all the class's member variables.</i></p>
+<p><b><i>2)</i></b><i> Then the base class is initialized.</i></p>
+<p><b><i>3)</i></b><i> Then all the variables are assigned values, if any are specified.</i></p>
+<p><b><i>4)</i></b><i> Finally, the constructor is called.</i></p>
+<p><span class="text-user">"It doesn't look very difficult: first the variables, then the constructor."</span></p>
+<p>"Let's see how this works in an example with two classes:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="54%">Code</th>
+        <th width="45%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="3,4,8,9,14,18,19" data-start=""><code>class Pet
+{
+ int x = 5, y = 5; <span class="text-red">←-</span>
+ int weight = 10; <span class="text-red">←-</span>
+
+ Pet(int x, int y)
+ {
+  this.x = x; <span class="text-user">←-</span>
+  this.y = y; <span class="text-user">←-</span>
+ }
+}
+class Cat <span class="text-red">extends Pet</span>
+{
+ int tailLength = 8; <span class="text-green">←-</span>
+ int age;
+ Cat(int x, int y, int age)
+ {
+  <span class="text-red">super</span>(x, y); <span class="text-viola">←-</span>
+  this.age = age; <span class="text-yellow">←-</span>
+ }
+}</code></pre>
+        </td>
+        <td>Declare two classes: Pet(pet) and Cat(cat).</p>
+            <p>In the Cat class, we see an explicit call to the <a href='https://codegym.cc/groups/posts/12-base-class-constructors--' target='_blank'>base class's constructor</a>.<br />
+                <strong><span class="text-red">It should always be on the first line in the constructor.</span></strong></p>
+            <p>Here's what happens after the memory is allocated:<br />
+                <span class="text-viola">18</span> – call the constructor of the base class.<br />
+                <span class="text-red">3, 4</span> – initialize variables in Pet.<br />
+                <span class="text-user">8, 9</span> – execute the code in the Pet constructor.</p>
+            <p>Then the Cat class begins to be initialized.<br />
+                <span class="text-green">14</span> – initialize variables in Cat<br />
+                <span class="text-yellow">19</span> – execute the code in the Cat constructor</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ Cat cat = new Cat (50, 50, 5);
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That's a little confusing. Why is it so complicated?"</span></p>
+<p>"It's actually not difficult if you know what's really going on:"<br />
+<p style="text-align: center;"><strong><span class="text-red">If a class does not have any constructors, one will be created automatically.</span></strong></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Default constructor</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ int x = 5;
+ int y = 5;
+}</code></pre>
+        </td>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ int x = 5;
+ int y = 5;
+ <span class="text-red">public Cat() </span>
+<span class="text-red"> {</span>
+<span class="text-red"> }</span>
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p style="text-align: center;"><strong><span class="text-red">If you don't call the base class constructor, it will be called automatically.</span></strong></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Call of the base class's constructor</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Pet
+{
+ public String name;
+}</code></pre>
+        </td>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Pet <span class="text-red"><strong>extends</strong> Object</span>
+{
+ public String name;
+ public Pet()
+ {
+  <span class="text-red"><strong>super()</strong>;</span>
+ }
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat extends Pet
+{
+ int x = 5;
+ int y = 5;
+}</code></pre>
+        </td>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat extends Pet
+{
+ int x = 5;
+ int y = 5;
+ <span class="text-red">public Cat()
+ {
+  super();
+ }</span>
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p style="text-align: center;"><span class="text-red"><strong>Member variables are initialized in the constructor.</strong></span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Initialization of member variables</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ <span class="text-green">int x = 5;
+ int y = 5;</span>
+}</code></pre>
+        </td>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ <span class="text-green">int x;
+ int y;</span>
+ <span class="text-red">public Cat()
+ {
+  super();</span>
+  <span class="text-green">this.x = 5;
+  this.y = 5;</span>
+  <span class="text-red">}</span>
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>What really happens</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td style="vertical-align: top;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Pet
+{
+ int x <span class="text-red">= 5</span>, y <span class="text-red">= 5</span>;
+ int weight <span class="text-red">= 10</span>;
+ Pet(int x, int y)
+ {
+  <span class="text-green">this.x = x;
+  this.y = y;</span>
+ }
+}
+
+class Cat extends Pet
+{
+ int tailLength = 8;
+ int age;
+ Cat(int x, int y, int age)
+ {
+  <span class="text-user">super(x, y);</span>
+  <span class="text-green">this.age = age;</span>
+ }
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Pet <span class="text-red">extends Object</span>
+{
+ int x;
+ int y;
+ int weight;
+
+ Pet(int x, int y)
+ {
+  //call of the base class's constructor
+  <span class="text-user">super();</span>
+  //initialize variables
+  <span class="text-red">this.x = 5;
+  this.y = 5;
+  this.weight = 10;</span>
+  //execute the constructor code
+  <span class="text-green">this.x = x;
+  this.y = y;</span>
+ }
+}
+class Cat extends Pet
+{
+ int tailLength;
+ int age;
+ Cat(int x, int y, int age)
+ {
+  //call of the base class's constructor
+   <span class="text-user">super(x, y);</span>
+  //initialize variables
+  <span class="text-red">this.tailLength = 8;</span>
+  //execute the constructor code
+  <span class="text-green">this.age = age;</span>
+ }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task15.task1532"></div>
+<p><span class="text-user">"Now it's much more clear: first the base class, then variables outside the constructor, then the constructor code."</span></p>
+<p>"Well done, Amigo! That's it!"</p>

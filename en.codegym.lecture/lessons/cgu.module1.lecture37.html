@@ -1,0 +1,329 @@
+<p>The <span class="code"><span class="text-green">ByteArrayInputStream</span></span> class in the <span class="text-bold">java.io</span> package can be used to read an input array (of bytes).</p>
+
+    <img data-max-width="512" data-id="9356b8c0-65a1-4a2a-978b-12eafbfa8d5c" src="https://cdn.codegym.cc/images/article/9356b8c0-65a1-4a2a-978b-12eafbfa8d5c/original.png" alt="">
+
+    <p>To create a byte array input stream, we must first import the <span class="text-bold">java.io.ByteArrayInputStream</span> package. After we import the package, we have two constructors available for creating an input stream:</p>
+
+    <pre class='language-java line-numbers'><code>
+ByteArrayInputStream input = new ByteArrayInputStream(arr);
+ByteArrayInputStream input = new ByteArrayInputStream(arr, 2, 2);
+    </code></pre>
+
+    <p>There are 4 fields inside the class: </p>
+
+    <pre class='language-java line-numbers'><code>
+// Byte array provided by the creator of the stream
+protected byte buf[];
+
+// Index of the next character to read from the input stream's buffer
+protected int pos;
+
+// Current marked position in the stream
+protected int mark = 0;
+
+// Index is one greater than the last valid character in the input stream's buffer
+protected int count;
+    </code></pre>
+
+    <p>And here are our constructors:</p>
+
+    <pre class='language-java line-numbers'><code>
+public ByteArrayInputStream(byte buf[]) {
+    this.buf = buf;
+    this.pos = 0;
+    this.count = buf.length;
+}
+
+public ByteArrayInputStream(byte buf[], int offset, int length) {
+    this.buf = buf;
+    this.pos = offset;
+    this.count = Math.min(offset + length, buf.length);
+    this.mark = offset;
+}
+    </code></pre>
+
+    <h2>Methods of the ByteArrayInputStream class</h2>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Method</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">int read()</span></td>
+                <td>Reads the next byte of data from this input stream.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">int read(byte b[], int off, int len)</span></td>
+                <td>Reads several bytes from the input stream and stores them in buffer array <span class="text-neon">b</span>.<br />
+                <span class="code">off</span> is an offset into target array <span class="text-neon">b</span>.<br />
+                <span class="code">len</span> is the maximum number of bytes to read.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">long skip(long n)</span></td>
+                <td>Skips n bytes of input from this input stream. Returns the number of bytes skipped (it may be less than n if we reach the end of the input stream).</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">int available()</span></td>
+                <td>Returns the number of remaining bytes that can be read (or skipped) from this input stream.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void reset()</span></td>
+                <td>Resets the buffer to the marked position. The marked position is 0 unless another position is marked or a different offset is specified in the constructor.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">boolean markSupported()</span></td>
+                <td>Checks whether this <span class="code"><span class="text-green">InputStream</span></span> supports marking/resetting. Returns <span class="text-green"><em>true</em></spam> for <span class="code"><span class="text-green">ByteArrayInputStream</span></span>.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void close()</span></td>
+                <td>Doesn't do anything.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void mark(int readAheadLimit)</span></td>
+                <td>Sets the <mark>mark</mark> field equal to the current position. If the <span class="code text-orange">reset</span> method is called, then subsequent reading will start from that position. The <span class="code text-orange">readAheadLimit</span> parameter is not used and does not affect the behavior of the method.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Let's take a closer look at these methods and see how they work in practice.</p>
+
+    <h3>read()</h3>
+
+    <p>When you want to read bytes from a <span class="code"><span class="text-green">ByteArrayInputStream</span></span> just like you would from an ordinary <span class="code"><span class="text-green">InputStream</span></span>, you can use the <span class="code text-orange">read()</span> method.</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+   byte[] array = {1, 2, 3, 4};
+
+   try (ByteArrayInputStream input = new ByteArrayInputStream(array)) {
+       for (int i = 0; i &lt; array.length; i++) {
+           int data = input.read();
+           System.out.print(data + ", ");
+       }
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+}
+    </code></pre>
+
+    <h3>available()</h3>
+
+    <p>If you want to check whether there is something in your buffer, you can call the <span class="code text-orange">available()</span> method.</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+   byte[] array = {1, 2, 3, 4};
+
+   try (ByteArrayInputStream input = new ByteArrayInputStream(array)) {
+       System.out.println("Bytes available for reading: " + input.available());
+
+       input.read();
+       System.out.println("Bytes available for reading " + input.available());
+
+       input.read();
+       System.out.println("Bytes available for reading " + input.available());
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+}
+    </code></pre>
+
+    <p>We will see that the number of bytes available for reading changes after each read from the buffer.</p>
+
+    <p>Output:</p>
+
+<div class="terminal">
+Bytes available for reading: 4<br />
+Bytes available for reading: 3<br />
+Bytes available for reading: 2
+</div>
+
+    <h3>skip(long n)</h3>
+
+    <p>You can use the <span class="code text-orange">skip()</span> method to skip a certain number of bytes and not read them.</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+   byte[] array = {1, 2, 3, 4};
+
+   try (ByteArrayInputStream input = new ByteArrayInputStream(array)) {
+       input.skip(2);
+
+       while (input.available() != 0) {
+           int data = input.read();
+           System.out.print(data + ", ");
+       }
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+}
+    </code></pre>
+
+    <p>Output:</p>
+
+    <div class="terminal">3, 4, </div>
+
+    <h3>reset() </h3>
+
+    <p>This method resets the buffered stream's position to the last marked position. It is position 0 unless a different mark is set.</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+   byte[] buf = {65, 66, 67, 68, 69};
+   try (ByteArrayInputStream input = new ByteArrayInputStream(buf)) {
+       System.out.println("Read: " + input.read());
+       System.out.println("Read: " + input.read());
+       System.out.println("Read: " + input.read());
+       System.out.println("Read: " + input.read());
+
+       System.out.println("Calling reset() method");
+       input.reset();
+       System.out.println("Read: " + input.read());
+       System.out.println("Read: " + input.read());
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+}
+    </code></pre>
+
+    <p>We will see that calling the <span class="code text-orange">reset()</span> method takes us to our stream's starting point.</p>
+
+    <p>Output:</p>
+
+    <div class="terminal">Read: 65<br />
+Read: 66<br />
+Read: 67<br />
+Read: 68<br />
+Calling reset() method<br />
+Read: 65<br />
+Read: 66</div>
+
+    <h3>mark(int readAheadLimit)</h3>
+
+    <p>The <span class="code text-orange">mark()</span> method of the <span class="code"><span class="text-green">ByteArrayInputStream</span></span> class sets the internal mark at the current byte position, that is, immediately after the previously read byte. This method takes a parameter that indicates how many bytes can be read after the mark before it stream becomes invalid. By default, if the mark is not set explicitly, a <span class="code"><span class="text-green">ByteArrayInputStream</span></span> marks position 0 or the position of the offset passed to its constructor. It is important to note that the <span class="text-green">readAheadLimit</span> mark is irrelevant for this class.</p>
+
+    <pre class='language-java line-numbers'><code>
+/* Note: For this class, {@code readAheadLimit}
+*  has no meaning.
+*
+* @since   1.1
+*/
+public void mark(int readAheadLimit) {
+   mark = pos;
+}
+    </code></pre>
+
+    <p>Here is an example of setting a mark in a <span class="code"><span class="text-green">ByteArrayInputStream</span></span> using its <span class="code text-orange">mark()</span> and <span class="code text-orange">reset()</span> methods. We will add a call to the <span class="code text-orange">mark()</span> method to the previous example:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+   byte[] buf = {65, 66, 67, 68, 69};
+   try (ByteArrayInputStream input = new ByteArrayInputStream(buf)) {
+       System.out.println("Read: " + input.read());
+       System.out.println("Read: " + input.read());
+       System.out.println("Read: " + input.read());
+       input.mark(5);
+
+       System.out.println("Read: " + input.read());
+       System.out.println("Read: " + input.read());
+
+       System.out.println("Calling reset() method");
+       input.reset();
+
+       System.out.println("Read: " + input.read());
+       System.out.println("Read: " + input.read());
+
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+}
+    </code></pre>
+
+    <p>We can see that the current stream's position has changed.</p>
+
+    <p>Output:</p>
+
+    <div class="terminal">Read: 65<br />
+Read: 66<br />
+Read: 67<br />
+Read: 68<br />
+Read: 69<br />
+Calling reset() method<br />
+Read: 68<br />
+Read: 69</div>
+
+    <h3>markSupported()</h3>
+
+    <p>The <span class="code text-orange">markSupported()</span> method lets you check whether a mark can be set. To understand where the return value comes from, let's go to the code of the method:</p>
+
+    <pre class='language-java line-numbers'><code>
+/**
+* Tests if this {@code InputStream} supports mark/reset. The
+* {@code markSupported} method of {@code ByteArrayInputStream}
+* always returns {@code true}.
+*
+* @since   1.1
+*/
+public boolean markSupported() {
+   return true;
+}
+    </code></pre>
+
+    <p>The method always returns <span class="text-green"><em>true</em></span>. Let's test this in practice.</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+   byte[] buf = {65, 66, 67, 68, 69};
+   try (ByteArrayInputStream bais = new ByteArrayInputStream(buf)) {
+       boolean isMarkSupported = bais.markSupported();
+
+       System.out.println("isMarkSupported: " + isMarkSupported);
+       System.out.println("Read: " + bais.read());
+       System.out.println("Read: " + bais.read());
+
+       bais.mark(1);
+       System.out.println("Read: " + bais.read());
+       isMarkSupported = bais.markSupported();
+       System.out.println("isMarkSupported: " + isMarkSupported);
+
+       bais.reset();
+       isMarkSupported = bais.markSupported();
+       System.out.println("isMarkSupported: " + isMarkSupported);
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+}
+    </code></pre>
+
+    <p>After executing the <span class="code text-orange">mark()</span> and <span class="code text-orange">reset()</span> methods, our stream is always ready and supports marks:</p>
+
+    <p>Output:</p>
+
+    <div class="terminal">isMarkSupported: true<br />
+Read: 65<br />
+Read: 66<br />
+Read: 67<br />
+isMarkSupported: true<br />
+isMarkSupported: true</div>
+
+    <h3>close()</h3>
+
+    <p>And to understand the <span class="code text-orange">close</span> method, let's also take a peek inside it:</p>
+
+    <pre class='language-java line-numbers'><code>
+/**
+* Closing a {@code ByteArrayInputStream} has no effect. The methods in
+* this class can be called after the stream has been closed without
+* generating an {@code IOException}.
+*/
+public void close() throws IOException {
+}
+    </code></pre>
+
+    <p>The documentation for the close method tells us that closing a <span class="code"><span class="text-green">ByteArrayInputStream</span></span> has no effect. The <span class="code"><span class="text-green">ByteArrayInputStream</span></span> class methods can be called after the stream is closed without throwing an <span class="text-red"><span class="text-bold">IOException</span></span>.</p>
+
+    <h2>What can we conclude?</h2>
+
+    <p>We need a <span class="code"><span class="text-green">ByteArrayInputStream</span></span> when we want to read data from a byte array. It usually makes sense to use this class in combination with other code that knows how to work with <span class="code"><span class="text-green">InputStreams</span></span> rather than by itself.</p>

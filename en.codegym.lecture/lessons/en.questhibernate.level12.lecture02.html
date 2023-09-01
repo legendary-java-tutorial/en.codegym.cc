@@ -1,0 +1,143 @@
+in Hibernate must have a field that will be the primary key: it contains a unique value for all objects of this class. Typically, this field is annotated with the <span class="text-yellow"><span class="text-bold">@Id</span></span> annotation .</p>
+<p>General form:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token annotation punctuation"><span class="text-red">@Id</span></span>
+<span class="text-user">Class</span> <span class="text-green">Name</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Embedded</span>
+   <span class="token keyword">public</span> <span class="token class-name">UserAddress</span> address<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_date"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Annotation placement</h2>
+<p>By the way, you can write <span class="text-yellow"><span class="text-bold">@Column</span></span> annotations not only for fields, but also for methods: for getters or setters. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   	<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setId</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span>    <span class="token punctuation">{</span>
+  	<span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_date"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> <span class="token function">getDate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  	<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>createdDate<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setCreatedDate</span><span class="token punctuation">(</span><span class="token class-name">Date</span> date<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span> createdDate <span class="token operator">=</span> date<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This approach appeared when annotations began to be added not only to classes, but also to interfaces. The interface does not have class fields, but there are methods: getters and setters. Hibernate supports both of these standards.</p>
+<p><strong>Important! </strong>If a class has the <span class="text-yellow"><span class="text-bold">@Entity</span></span> annotation , then all of its fields are treated by Hibernate as persistent fields (unless they have the <span class="text-yellow"><span class="text-bold">@Transient</span></span> annotation specified ). Even if the fields do not have any annotations at all: in this case, the column name is considered equal to the class field name.</p>
+<p>This is where the <span class="text-yellow"><span class="text-bold">@Id</span></span> annotation plays an important role. If the annotation is placed on a class field, then Hibernate will look at the names and types of the fields. If the <span class="text-yellow"><span class="text-bold">@Id</span></span> annotation is placed on a method, then Hibernate will look at the names and types of the methods.</p>
+<p>Example 1:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Id</span>
+    <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>  <span class="token comment">//this field will be treated as if it had @Column(name=" createdDate ")</span>
+
+<span class="token punctuation">}</span></code></pre>
+<p>Example 2:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Id</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   	<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setId</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span>    <span class="token punctuation">{</span>
+  	<span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> <span class="token function">getDate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">//this field will be treated as if it had @Column(name=”date ”)</span>
+  	<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>createdDate<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setCreatedDate</span><span class="token punctuation">(</span><span class="token class-name">Date</span> date<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  	<span class="token keyword">this</span><span class="token punctuation">.</span> createdDate <span class="token operator">=</span> date<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span></code></pre>
+<h2>@GeneratedValue annotation</h2>
+<p>You can assign an id to your new objects yourself, or leave it at the mercy of Hibernate. In order for Hibernate to better understand how to assign IDs to your objects, it has a special annotation:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token annotation punctuation"><span class="text-red"><span class="text-red">@GeneratedValue</span></span></span></code></pre>
+</div>
+<p>This annotation usually marks the same field as the <span class="text-yellow"><span class="text-bold">@Id</span></span> annotation . She has 4 possible ID assignment strategies:</p>
+<ul>
+ <li>AUTO</li>
+ <li>IDENTITY</li>
+ <li>SEQUENCE</li>
+ <li>TABLE</li>
+</ul>
+<p>An example of an annotation with the specified strategy:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+	<span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> <span class="token class-name">GenerationType</span><span class="token punctuation">.</span>AUTO<span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>If no policy value is specified, the AUTO strategy will be selected. The AUTO strategy means that Hibernate will assign the ID itself, based primarily on the data type of the ID field.</p>
+<p>Why on type? Yes, because ID types can be very different, for example, String or GUID. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+	<span class="token annotation punctuation">@GeneratedValue</span>
+    <span class="token keyword">public</span> <span class="token class-name">UUID</span> id<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Note: A GUID in Java is called a UUID, historically speaking. And Hibernate can generate unique UUIDs for your objects if you ask it to.</p>
+<h2>Various @GeneratedValue Strategies</h2>
+<p>If you specify the type <strong>GeneratedValue(strategy = GenerationType.IDENTITY)</strong> , then Hibernate delegates the ID setting to the database layer. Typically, this uses a column labeled PRIMARY KEY, AUTOINCREMENT.</p>
+<p>But if you want your IDs to be unique and generated according to a specially specified algorithm, then you can use the <strong>GeneratedValue(strategy = GenerationType.SEQUENCE)</strong> annotation , for example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+	<span class="token annotation punctuation">@Id</span>
+	<span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>generator <span class="token operator">=</span> <span class="token string">"sequence-generator"</span><span class="token punctuation">)</span>
+	<span class="token annotation punctuation">@GenericGenerator</span><span class="token punctuation">(</span>
+  	name <span class="token operator">=</span> <span class="token string">"sequence-generator"</span><span class="token punctuation">,</span>
+  	strategy <span class="token operator">=</span> <span class="token string">"org.hibernate.id.enhanced.SequenceStyleGenerator"</span><span class="token punctuation">,</span>
+  	parameters <span class="token operator">=</span> <span class="token punctuation">{</span>
+    	<span class="token annotation punctuation">@Parameter</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"sequence_name"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"user_sequence"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    	<span class="token annotation punctuation">@Parameter</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"initial_value"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"4"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    	<span class="token annotation punctuation">@Parameter</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"increment_size"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"1"</span><span class="token punctuation">)</span>
+    	<span class="token punctuation">}</span>
+	<span class="token punctuation">)</span>
+	<span class="token keyword">private</span> <span class="token keyword">long</span> userId<span class="token punctuation">;</span>
+
+	<span class="token comment">// ...</span>
+<span class="token punctuation">}</span></code></pre>
+<p>There are many more ways to generate an ID. For example, you may have a composite unique key consisting of several columns. And when writing an object to the database, you need to fill in all these columns.</p>
+<p>I will not give them in detail. Still, the purpose of our lectures is to get acquainted with Hibernate, and not to retell the official documentation.</p>

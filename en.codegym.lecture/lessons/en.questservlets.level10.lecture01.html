@@ -1,0 +1,255 @@
+Making a request with HttpRequest
+<p>----------------------------------------</p>
+Methods newBuilder(), build().
+uri() method.
+Methods GET(), POST(), PUT(), DELETE().
+version() method.
+timeout() method.
+header() method.
+<p>----------------------------------------</p>
+<h2>Methods newBuilder(), build()</h2>
+
+<p class="code"><span class="text-green">The HttpRequest</span> class is used to describe an http-request, which
+    is easy to understand from its name. This object does nothing by itself, it just contains various information about
+    the http request. Therefore, as you probably already guess, the Builder template is also used to create it.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name"></span><span class="text-red"><span
+        class="token class-name">HttpRequest</span> request <span class="token operator">=</span> <span
+        class="token class-name"><span class="text-red">HttpRequest</span></span><span
+        class="token punctuation">.</span><span class="token function"><span class="text-green">newBuilder</span></span><span
+        class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation"></span><span class="text-neon"><span class="token punctuation">.</span><span
+            class="token function">method1</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span></span><span class="token punctuation"></span>
+	<span class="token punctuation"></span><span class="text-neon"><span class="token punctuation">.</span><span
+            class="token function">method2</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span></span><span class="token punctuation"></span>
+	<span class="token punctuation"></span><span class="text-neon"><span class="token punctuation">.</span><span
+            class="token function">methodN</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span></span><span class="token punctuation"></span>
+    <span class="token punctuation">.</span><span class="token function"><span
+            class="text-green">build</span></span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+</span></code></pre>
+<p>Where between calls to the methods <span class="code text-orange">newBuilder()</span> and <span
+        class="code text-orange">build()</span> you need to call all the methods to construct an object
+    <mark class="green">HttpRequest</mark>
+    .
+</p>
+<p>An example of a simple request looks like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">HttpClient</span> <span
+        class="text-green">client</span> <span class="token operator">=</span> <span
+        class="token class-name">HttpClient</span><span class="token punctuation">.</span><span class="token function">newHttpClient</span><span
+        class="token punctuation">(</span><span class="token punctuation">)</span><span
+        class="token punctuation">;</span>
+<span class="token class-name">HttpRequest</span> <span class="text-red">request</span> <span
+            class="token operator">=</span> <span class="token class-name">HttpRequest</span><span
+            class="token punctuation">.</span><span class="token function">newBuilder</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">uri</span><span
+            class="token punctuation">(</span>URI<span class="token punctuation">.</span><span class="token function">create</span><span
+            class="token punctuation">(</span><span class="text-green">“http<span class="token operator">:</span><span
+            class="token operator">/</span><span class="token operator">/</span>codegym<span
+            class="token punctuation">.</span>cc”</span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+<span class="token class-name">HttpResponse</span> <span class="text-neon">response</span> <span class="token operator">=</span> <span
+            class="text-green">client</span><span class="token punctuation">.</span><span
+            class="token function">send</span><span class="token punctuation">(</span><span
+            class="text-red">request</span><span class="token punctuation">,</span> <span class="token class-name">HttpResponse<span
+            class="token punctuation">.</span>BodyHandlers</span><span class="token punctuation">.</span><span
+            class="token function">ofString</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<p>You can find all methods of the <span class="code"><span class="text-green">HttpRequest</span></span><a
+        href="https://docs.oracle.com/en/java/javase/12/docs/api/java.net.http/java/net/http/HttpRequest.html"
+        target="_blank"> class at the link in the official documentation</a> .</p>
+<p>And then we will analyze the most popular of them.</p>
+<h2>uri() Method</h2>
+<p>Using the <span class="code text-orange">uri()</span> method , you can set the URI (or URL) to which the http request
+    will be sent. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">HttpRequest</span> request <span
+        class="token operator">=</span> <span class="token class-name">HttpRequest</span><span
+        class="token punctuation">.</span><span class="token function"></span><span class="text-green"><span
+        class="token function">newBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span
+        class="token punctuation"></span>
+    <span class="token punctuation">.</span><span class="token function"><span class="text-red">uri</span></span><span
+            class="token punctuation">(</span> <span class="text-neon">URI<span class="token punctuation">.</span><span
+            class="token function">create</span><span class="token punctuation">(</span>“http<span
+            class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>codegym<span
+            class="token punctuation">.</span>cc”<span class="token punctuation">)</span></span><span
+            class="token punctuation"></span> <span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function"><span
+            class="text-green">build</span></span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>By the way, you can make this code a little shorter by passing the URI directly to the <span
+        class="code text-orange">newBuilder()</span> method :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span></span><code
+        class=" language-java"><span class="token class-name">HttpRequest</span> request <span
+        class="token operator">=</span> <span class="token class-name">HttpRequest</span><span
+        class="token punctuation">.</span><span class="token function"><span class="text-green">newBuilder</span></span><span
+        class="token punctuation">(</span> <span class="text-neon">URI<span class="token punctuation">.</span><span
+        class="token function">create</span><span class="token punctuation">(</span>“http<span
+        class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>codegym<span
+        class="token punctuation">.</span>cc”<span class="token punctuation">)</span></span><span
+        class="token punctuation"></span> <span class="token punctuation">)</span><span
+        class="token punctuation">.</span><span class="token function"><span class="text-green">build</span></span><span
+        class="token punctuation">(</span><span class="token punctuation">)</span><span
+        class="token punctuation">;</span></code></pre>
+<p><span class="text-red"><span class="text-bold">Important! </span></span>A URI can be created in two ways:</p>
+<ul>
+    <li><span class="code text-orange">newURI(String)</span></li>
+    <li><span class="code text-orange">URI.create(String)</span></li>
+</ul>
+<p>The second way is preferable. The first way, unfortunately, is not very good, because the URI constructor is declared
+    as <span class="code">public URI(String str) throws URISyntaxException</span> , and <span class="text-red"><span
+            class="text-bold">URISyntaxException</span></span> is a checked exception.</p>
+<h2>Methods GET(), POST(), PUT(), DELETE()</h2>
+<p>You can set the http request method using the following methods:</p>
+<ul>
+    <li><span class="code text-orange">GET()</span></li>
+    <li><span class="code text-orange">POST()</span></li>
+    <li><span class="code text-orange">PUT()</span></li>
+    <li><span class="code text-orange">DELETE()</span></li>
+</ul>
+<p>Here's what a simple GET request would look like:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">HttpRequest</span> request <span
+        class="token operator">=</span> <span class="token class-name">HttpRequest</span><span
+        class="token punctuation">.</span><span class="token function">newBuilder</span><span class="token punctuation">(</span><span
+        class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">uri</span><span
+            class="token punctuation">(</span><span class="token keyword">new</span> <span
+            class="token function">URI</span><span class="token punctuation">(</span><span class="token string"><span
+            class="text-green">"https://codegym.cc"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+  <span class="token punctuation"></span><span class="text-red"><span class="token punctuation">.</span><span
+            class="token function">GET</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span></span><span class="token punctuation"></span>
+  <span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<h2>version() method</h2>
+<p>You can also set the HTTP protocol version. There are only 2 options:</p>
+<ul>
+    <li>HttpClient.Version.HTTP_1_1</li>
+    <li>HttpClient.Version.HTTP_2</li>
+</ul>
+<p>Let's say you want to create a request using the HTTP/2 protocol, then you will need to write:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">HttpRequest</span> request <span
+        class="token operator">=</span> <span class="token class-name">HttpRequest</span><span
+        class="token punctuation">.</span><span class="token function">newBuilder</span><span class="token punctuation">(</span><span
+        class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function">uri</span><span
+            class="token punctuation">(</span><span class="token keyword">new</span> <span
+            class="token function">URI</span><span class="token punctuation">(</span><span class="token string"><span
+            class="text-green">"https://codegym.cc"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+   <span class="token punctuation"></span><span class="text-red"><span class="token punctuation">.</span><span
+            class="token function">version</span><span class="token punctuation">(</span> <span
+            class="token class-name">HttpClient<span class="token punctuation">.</span>Version</span><span
+            class="token punctuation">.</span>HTTP_2 <span class="token punctuation">)</span></span><span
+            class="token punctuation"></span>
+   <span class="token punctuation">.</span><span class="token function">GET</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<p>Very simple, isn't it? :)</p>
+<h2>timeout() method</h2>
+<p>You can also set the query execution time. If it passes and the request is never completed, an <span
+        class="text-red"><span class="text-bold">HttpTimeoutException</span></span> will be thrown .</p>
+<p>The time itself is set using the object
+    <mark class="green">duration</mark>
+    from Java DateTime API. Example:
+</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">HttpRequest</span> request <span
+        class="token operator">=</span> <span class="token class-name">HttpRequest</span><span
+        class="token punctuation">.</span><span class="token function">newBuilder</span><span class="token punctuation">(</span><span
+        class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function">uri</span><span
+            class="token punctuation">(</span><span class="token keyword">new</span> <span
+            class="token function">URI</span><span class="token punctuation">(</span><span class="token string"><span
+            class="text-green">"https://codegym.cc"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+   <span class="token punctuation"></span><span class="text-red"><span class="token punctuation">.</span><span
+            class="token function">timeout</span><span class="token punctuation">(</span> <span
+            class="token class-name">Duration</span><span class="token punctuation">.</span><span
+            class="token function">of</span><span class="token punctuation">(</span><span
+            class="token number">5</span><span class="token punctuation">,</span> SECONDS<span
+            class="token punctuation">)</span> <span class="token punctuation">)</span></span><span
+            class="token punctuation"></span>
+   <span class="token punctuation">.</span><span class="token function">GET</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<p>The presence of this method shows that the <span class="code"><span class="text-green">HttpClient</span></span> and
+    <span class="code"><span class="text-green">HttpRequest</span></span> classes can perform a variety of tasks.
+    Imagine that you are executing a request, and something happened to the network and it lasted 30 seconds. It is much
+    more useful to immediately receive an exception and react to it correctly.</p>
+<h2>header() method</h2>
+<p>You can also add any number of headers to any request. And it's as easy to do as anything else. There is a special
+    method for this - <span class="code text-orange">header()</span> . Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">HttpRequest</span> request <span
+        class="token operator">=</span> <span class="token class-name">HttpRequest</span><span
+        class="token punctuation">.</span><span class="token function">newBuilder</span><span class="token punctuation">(</span><span
+        class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function">uri</span><span
+            class="token punctuation">(</span><span class="token keyword">new</span> <span
+            class="token function">URI</span><span class="token punctuation">(</span><span class="token string"><span
+            class="text-green">"https://codegym.cc"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+   <span class="token punctuation"></span><span class="text-red"><span class="token punctuation">.</span><span
+            class="token function">header</span><span class="token punctuation">(</span><span class="token string">"name1"</span><span
+            class="token punctuation">,</span> <span class="token string">"value1"</span><span
+            class="token punctuation">)</span></span><span class="token punctuation"></span>
+   <span class="token punctuation"></span><span class="text-red"><span class="token punctuation">.</span><span
+            class="token function">header</span><span class="token punctuation">(</span><span class="token string">"name2"</span><span
+            class="token punctuation">,</span> <span class="token string">"value2"</span><span
+            class="token punctuation">)</span></span><span class="token punctuation"></span>
+   <span class="token punctuation">.</span><span class="token function">GET</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<p>There is another alternative way to set many headers at once. It may come in handy if, for example, you converted a
+    list of headers into an array:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">HttpRequest</span> request <span
+        class="token operator">=</span> <span class="token class-name">HttpRequest</span><span
+        class="token punctuation">.</span><span class="token function">newBuilder</span><span class="token punctuation">(</span><span
+        class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function">uri</span><span
+            class="token punctuation">(</span><span class="token keyword">new</span> <span
+            class="token function">URI</span><span class="token punctuation">(</span><span class="token string"><span
+            class="text-green">"https://codegym.cc"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function"></span><span class="text-red"><span
+            class="token function">headers</span><span class="token punctuation">(</span><span class="token string">"name1"</span><span
+            class="token punctuation">,</span> <span class="token string">"value1"</span><span
+            class="token punctuation">,</span> <span class="token string">"name2"</span><span class="token punctuation">,</span> <span
+            class="token string">"value2"</span><span class="token punctuation">)</span></span><span
+            class="token punctuation"></span>
+   <span class="token punctuation">.</span><span class="token function">GET</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<p>Everything elementary is simple.</p>

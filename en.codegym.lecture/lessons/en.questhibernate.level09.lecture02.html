@@ -1,0 +1,182 @@
+<p>We learned how to connect Hibernate to our application using Maven, and how to map tables to classes using annotations. And now the next question arises - how do we read objects from the database or save them there?</p>
+<p>Not so fast. First of all, you need to deal with three more things:</p>
+<ul>
+ <li><strong>Configuring a database connection</strong></li>
+ <li><strong>Setting up Hibernate</strong></li>
+ <li><strong>Working with EntityManager</strong></li>
+</ul><img data-max-width="1024" data-id="2f7dae23-c127-4d4b-8041-9530f765996a" alt="" src="https://cdn.javarush.com/images/article/2f7dae23-c127-4d4b-8041-9530f765996a/1024.jpeg" style="width: 1024px;">
+<p>Hibernate completely hides the work with the database from your application, but in order to avoid any excesses, it must be configured correctly. You can’t skip this stage - otherwise how will Hibernate know which database to save objects to?</p>
+<p>Hibernate can be configured and given database information in three ways</p>
+<ul>
+ <li>Use Properties file</li>
+ <li>Use hibernate.cfg.xml file</li>
+ <li>Use Configuration bean methods</li>
+</ul>
+<p>And although I like the last one the most, you will definitely encounter all three, so we will analyze all three here.</p>
+<h2>3.2 Authorization in the database</h2>
+<p>Let's start with the most important - database connections. To do this, you will need to provide data so that Hibernate can log in to the desired database.</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Properties File Configuration</th>
+   </tr>
+   <tr>
+    <td>hibernate.properties</td>
+   </tr>
+   <tr>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="text-green">hibernate<span class="token punctuation">.</span>dialect<span class="token operator">=</span> <span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>dialect<span class="token punctuation">.</span></span>Oracle9Dialect</span>
+hibernate<span class="token punctuation">.</span>connection<span class="token punctuation">.</span>driver_class<span class="token operator">=</span> <span class="token class-name"><span class="token namespace">oracle<span class="token punctuation">.</span>jdbc<span class="token punctuation">.</span>driver<span class="token punctuation">.</span></span>OracleDriver</span> </span>
+<span class="text-brown">hibernate<span class="token punctuation">.</span>connection<span class="token punctuation">.</span>url<span class="token operator">=</span> jdbc<span class="token operator">:</span>oracle<span class="token operator">:</span>thin<span class="token operator">:</span><span class="token annotation punctuation">@localhost</span><span class="token operator">:</span><span class="token number">1521</span><span class="token operator">:</span>supershop
+hibernate<span class="token punctuation">.</span>connection<span class="token punctuation">.</span>username<span class="token operator">=</span>root
+hibernate<span class="token punctuation">.</span>connection<span class="token punctuation">.</span>password<span class="token operator">=</span>secret</span>
+<span class="text-user">hibernate<span class="token punctuation">.</span>show_sql<span class="token operator">=</span><span class="token boolean">true</span>
+hibernate<span class="token punctuation">.</span>hbm2ddl<span class="token operator">=</span>update</span></code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The same settings can be set in the form of an xml file:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>XML Based Configuration</th>
+   </tr>
+   <tr>
+    <td>hibernate.cfg.xml</td>
+   </tr>
+   <tr>
+    <td>
+     <pre class="line-numbers"><code>
+&lt;hibernate-configuration&gt;	
+	&lt;session-factory&gt;	
+        	
+    	<span class="text-green">&lt;property name="dialect"&gt;org.hibernate.dialect.Oracle9Dialect&lt;/property&gt;  	
+    	&lt;property name="connection.driver_class"&gt;oracle.jdbc.driver.OracleDriver&lt;/property&gt;</span> 	
+    	<span class="text-brown">&lt;property name="connection.url"&gt;jdbc:oracle:thin:@localhost:1521:supershop&lt;/property&gt;  	
+    	&lt;property name="connection.username"&gt;root&lt;/property&gt;  	
+    	&lt;property name="connection.password"&gt;secret&lt;/property&gt;</span>
+    	<span class="text-user">&lt;property name="hibernate.show_sql "&gt;true&lt;/property&gt;        
+    	&lt;property name="hbm2ddl.auto"&gt;update&lt;/property&gt; </span>	
+     	
+	&lt;/session-factory&gt;	
+&lt;/hibernate-configuration&gt; 
+
+</code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>In both examples, we see the same settings with the same values. It's just that the first example represents them as <strong>a properties file</strong> , and the second one as <strong>an xml file</strong> .</p>
+<p>These settings are divided into three groups:</p>
+<ol>
+ <li><span class="text-green">Specify the type of DBMS</span></li>
+ <ul>
+  <li>Specify the dialect (DBMS type), for example, Oracle 9.0</li>
+  <li>Specify the name of the JDBC driver for working with this DBMS</li>
+ </ul>
+ <li><span class="text-brown">Specify data for authorization in the database</span></li>
+ <ul>
+  <li>database url</li>
+  <li>username</li>
+  <li>password</li>
+ </ul>
+ <li><span class="text-user">Configuring the Hibernate Engine</span></li>
+ <ul>
+  <li><code>hibernate.show_sql</code>- Hibernate will duplicate in the console all requests that it executes</li>
+  <li><code>hbm2ddl.auto</code>- Hibernate will change the database structure if necessary</li>
+ </ul>
+</ol>
+<p>There is a third way of setting configuration - through bins. It is usually used in conjunction with Spring, so we'll look at it when we learn SpringFramework.</p>
+<h2>3.3 Get the SessionFactory</h2>
+<p>The next step is to get the SessionFactory object. There are several ways to do this:</p>
+<p>The first way is <strong>to use the hibernate.properties file</strong> .</p>
+<p>To do this, you just need to write the following code:</p>
+<pre class=" language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SessionFactory</span></span> sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"><span class="text-brown">buildSessionFactory</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>If the hibernate.properties file is not found in the current project directory, an exception will be thrown.</p>
+<p>The second way is <strong>configuration using hibernate.cfg.xml</strong> .</p>
+<pre class=" language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SessionFactory</span></span> sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"></span><span class="text-red"><span class="token function">configure</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token punctuation"></span><span class="token punctuation">.</span><span class="token function"><span class="text-brown">buildSessionFactory</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>If you write such code, then the <code>hibernate.cfg.xml</code>. If no such file is found, the method <code>buildSessionFactory()</code>will throw an exception.</p>
+<p>The third way is <strong>to set the configuration file manually</strong> .</p>
+<p>Sometimes during the development process it becomes necessary to switch to a test base or change some other settings for working with the base, for this you can set the configuration file manually:</p>
+<pre class=" language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SessionFactory</span></span> sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span><span class="token string">"hibernate-dev.cfg.xml"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"><span class="text-brown">buildSessionFactory</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Method four - <strong>we use a custom hibernate.properties file:</strong></p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">ClassLoader</span> <span class="text-yellow">classLoader</span> <span class="token operator">=</span> <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Properties</span> <span class="text-user">properties</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-user">properties</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="text-yellow">classLoader</span><span class="token punctuation">.</span><span class="token function">getResourceAsStream</span><span class="token punctuation">(</span><span class="token string">"hibernate-dev.properties"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name"><span class="text-brown">SessionFactory</span></span> sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">addProperties</span><span class="token punctuation">(</span><span class="text-user"><span class="text-user">properties</span></span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function"><span class="text-brown">buildSessionFactory</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>And finally, you can simply sew all the necessary parameters directly into the code:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Properties</span> <span class="text-user">properties</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-user">properties</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-brown"><span class="token class-name">Environment</span><span class="token punctuation">.</span>DRIVER</span><span class="token punctuation">,</span> <span class="token string">"com.mysql.jdbc.Driver"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-user">properties</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-brown"><span class="token class-name">Environment</span><span class="token punctuation">.</span>URL</span><span class="token punctuation">,</span> <span class="token string">"jdbc:mysql://localhost:3306/supershop"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-user">properties</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-brown"><span class="token class-name">Environment</span><span class="token punctuation">.</span>USER</span><span class="token punctuation">,</span> <span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-user">properties</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-brown"><span class="token class-name">Environment</span><span class="token punctuation">.</span>PASS</span><span class="token punctuation">,</span> <span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name"><span class="text-brown">SessionFactory</span></span> sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">setProperties</span><span class="token punctuation">(</span><span class="text-user">properties</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function"><span class="text-brown">buildSessionFactory</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>3.4 Specify where to look for Entity classes</h2>
+<p>But that is not all. When we configure a <strong>SessionFactory</strong> object in Hibernate, this <strong>SessionFactory</strong> checks that all the required tables with the required column types exist in the database.</p>
+<p>And in order for <strong>the SessionFactory</strong> to be able to do this, it needs to be passed a list of entity classes that it needs to map to the database.</p>
+<p>There are three ways to pass a list of entity classes:</p>
+<p><strong>Method one. </strong>In <code>hibernate.cfg.xml</code>add a line like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token operator">&lt;</span><span class="text-brown">mapping</span> <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"class-qualified-name"</span> <span class="token operator">/</span><span class="token operator">&gt;</span></code></pre>
+</div>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token operator">&lt;</span>mapping <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"com.codegym.data.User"</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>mapping <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"com.codegym.data.Employee"</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>mapping <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"com.codegym.data.Task"</span> <span class="token operator">/</span><span class="token operator">&gt;</span></code></pre>
+<p><strong>Method two. </strong>Call the method on the <strong>Configuration</strong><code>addAnnotatedClass()</code> object . Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name"><span class="text-brown">SessionFactory</span></span> sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   	<span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   	<span class="token punctuation">.</span><span class="token function"><span class="text-red">addAnnotatedClass</span></span><span class="token punctuation">(</span><span class="token class-name"><span class="token namespace"></span></span><span class="text-viola"><span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>data<span class="token punctuation">.</span></span>User</span><span class="token punctuation">.</span><span class="token keyword">class</span></span><span class="token keyword"></span><span class="token punctuation">)</span>
+   	<span class="token punctuation">.</span><span class="token function"><span class="text-brown">buildSessionFactory</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>If there are many classes, then you can add them in whole packages:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name"><span class="text-brown">SessionFactory</span></span> sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   	<span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   	<span class="token punctuation">.</span><span class="token function"><span class="text-red">addPackage</span></span><span class="token punctuation">(</span><span class="token string"><span class="text-green">"com.codegym.data"</span></span><span class="token punctuation">)</span>
+   	<span class="token punctuation">.</span><span class="token function"><span class="text-brown">buildSessionFactory</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>3.5 Final example</h2>
+<p>Now that we've learned how to configure the SessionFactory object, let's write the code that will use it.</p>
+<p>It will consist of three methods:</p>
+<ol>
+ <li>Configuring Hibernate</li>
+ <li>Method that gets all employees from the database</li>
+ <li>Method that saves a new employee to the database</li>
+</ol>
+<p>This code template would look something like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">class</span> <span class="token class-name">EmployeeManager</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">SessionFactory</span> <span class="text-yellow">sessionFactory</span><span class="token punctuation">;</span>
+
+    <span class="token keyword"></span><span class="text-brown"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token keyword">class</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token punctuation"></span> <span class="token punctuation">{</span>
+    	<span class="token keyword">this</span><span class="token punctuation">.</span>sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        	<span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        	<span class="token punctuation">.</span><span class="token function">buildSessionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword"></span><span class="text-brown"><span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> <span class="token function">getAllEmployes</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token punctuation"></span> <span class="token punctuation">{</span>
+         <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">Session</span> <span class="text-user">session</span> <span class="token operator">=</span> <span class="text-yellow">sessionFactory</span><span class="token punctuation">.</span><span class="token function">openSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  	          <span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> <span class="text-user">session</span><span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"from Employee"</span><span class="token punctuation">,</span> <span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	        <span class="token keyword">return</span> <span class="text-viola">query</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token keyword"></span><span class="text-brown"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addEmployee</span><span class="token punctuation">(</span><span class="token class-name">Employee</span></span><span class="token class-name"></span> <span class="text-red">employee</span> <span class="token punctuation"><span class="text-brown">)</span></span> <span class="token punctuation">{</span>
+     	<span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">Session</span> <span class="text-user">session</span> <span class="token operator">=</span> <span class="text-yellow">sessionFactory</span><span class="token punctuation">.</span><span class="token function">openSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">Transaction</span> <span class="text-viola">transaction</span> <span class="token operator">=</span> <span class="text-user">session</span><span class="token punctuation">.</span><span class="token function">beginTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       	    <span class="text-user">session</span><span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="text-red">employee</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="text-viola">transaction</span><span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     	<span class="token punctuation">}</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Before executing a query to the database, you need to create a separate session. If the requests are related, then they can be executed in the same session. If the requests are unrelated (and several minutes can pass between them), then they need to make their own sessions.</p>
+<p>If you want to read data from the database or execute a complex query, you must first create a Query object and use it to execute your query.</p>
+<p>Also, each query to the database is executed in its own transaction. You need to open it, perform the necessary operations, and then close (commit).</p>
+<p>In the following lectures, we will analyze in more detail how this all works.</p>

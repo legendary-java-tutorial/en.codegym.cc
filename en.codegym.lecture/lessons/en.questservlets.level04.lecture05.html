@@ -1,0 +1,42 @@
+Popular scenarios for working with Mockito
+<p>----------------------------------------</p>
+Mocking the static method mockStatic()
+final class and final method
+<p>----------------------------------------</p>
+<h2>6.1 Mocking the static method mockStatic()</h2>
+<p>And one more important point is mocking and verification of static methods. “What’s wrong with that?” you ask. Yes, static, but methods are the same. And you will be wrong.</p>
+<p>Remember where we started learning about mock objects? Since these objects are artificially created through the <code>DynamicProxy</code>. <span class="text-red">And static methods are not bound to any objects and <code>DynamicProxy</code>it is impossible</span> to intercept calls to them through . That's all.</p>
+<p>But the creators of Mockito were able to dodge here too - they wrote their own class loader and with its help they were able to replace classes on the fly. A big and difficult job, but they still managed to do it.</p>
+<p>You will need to add an additional library to <code>pom.xml</code>:</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.mockito&lt;/groupId&gt;
+    &lt;artifactId&gt;mockito-inline&lt;/artifactId&gt;
+    &lt;version&gt;4.2.0&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Here's how to work if you need to mock a static method.</p>
+<p><strong>1 Create a special mock class object:</strong></p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present"><code>MockedStatic&lt;<span class="text-user">ClassName</span>&gt;<span class="text-green">managerObject</span> = Mockito.<span class="text-red">mockStatic</span>(<span class="text-user">ClassName.class</span>);</code></pre>
+</div>
+<p><strong>2 Add operation rules to this object:</strong></p>
+<p>To this object of the rule it is necessary to cling in other ways.</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present"><code><span class="text-green">managerObject</span>.when(<span class="text-user">ClassName</span>::<span class="text-orange">method name</span>).thenReturn(<span class="text-violet">result</span>);</code></pre>
+</div>
+<p><strong>3</strong> Be sure <strong>to wrap the use of this object in<code>try-with-resources</code></strong> so that the object is immediately deleted and Mockito can clear the rules associated with it.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-green">@Test</span></span>
+<span class="token keyword">void</span> givenStaticMethodWithNoArgs <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name"><span class="text-red">MockedStatic</span></span><span class="token generics"><span class="token punctuation">&lt;</span> <span class="token class-name"><span class="text-user">StaticUtils</span></span><span class="token punctuation">&gt;</span></span> utilities <span class="token operator">=</span>  <span class="token class-name"></span><span class="text-red"><span class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">mockStatic</span></span><span class="token function"></span><span class="token punctuation">(</span> <span class="token class-name"></span><span class="text-user"><span class="token class-name">StaticUtils</span><span class="token punctuation">.</span><span class="token keyword">class</span></span><span class="token keyword"></span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// add rule</span>
+ <span class="text-yellow">        utilities</span><span class="token punctuation">.</span><span class="token function">when</span><span class="token punctuation">(</span><span class="token class-name"><span class="text-user">StaticUtils</span></span><span class="token operator">::</span><span class="token function"><span class="text-orange">name</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">thenReturn</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// check if the rule works</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token class-name"><span class="text-red">StaticUtils</span></span><span class="token punctuation">.</span><span class="token function"><span class="text-orange">name</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Not as beautiful as with annotations <code>@Mock</code>and <code>@Spy</code>, but very practical. It was very difficult to write tests when it was impossible to mock a simple static method that was used inside the methods under test.</p>
+<p></p>
+<p></p>

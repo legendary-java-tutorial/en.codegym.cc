@@ -1,0 +1,68 @@
+<p>"Hi! I'm going to continue Ellie's lesson on generics. Ready to listen?"</p>
+<p><span class="text-user">"Yes."</span></p>
+<p>"Then let's begin."</p>
+<p>"The first thing you need to know is that a class's methods can also have their own type parameters."</p>
+<p><span class="text-user">"I know."</span></p>
+<p>"No, I specifically mean their <strong><span class="text-red">own type parameters:</span></strong>"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> Calculator
+{
+  T <strong>add</strong>(T a, T b); // Add
+  T <strong>sub</strong>(T a, T b); // Subtract
+  T <strong>mul</strong>(T a, T b); // Multiply
+  T <strong>div</strong>(T a, T b); // Divide
+}</code></pre>
+<p>"These type parameters pertain specifically to the methods. The class doesn't have parameters. You could even declare these methods static and call them without an object."</p>
+<p><span class="text-user">"I see. The point of the type parameters in methods is the same as for classes?"</span></p>
+<p>"Yes. But there's something new."</p>
+<p>"As you already know, you can use a wildcard in the type declaration. Then imagine the following situation:"</p>
+<div class="code-heading">Example 1</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public void doSomething(<span class="text-user">List&lt;? extends MyClass&gt;</span> list)
+{
+ for(<span class="text-user">MyClass object</span> : list)
+ {
+  System.out.println(<span class="text-user">object</span>.<strong>getState</strong>()); // Everything works well here.
+ }
+}</code></pre>
+<p>"But what if we want to add a new item to the collection:"</p>
+<div class="code-heading">Example 2</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public void doSomething(<span class="text-user">List&lt;? extends MyClass&gt;</span> list)
+{
+ list.add(new <span class="text-user">MyClass</span>()); <span class="text-red">// Error!</span>
+}</code></pre>
+<p><span class="text-red">"The problem is that in the general case the doSomething method may be passed a List whose elements are not MyClass objects, but rather objects of any subclass of MyClass. But you can't add MyClass objects to such a list!"</span></p>
+<p><span class="text-user">"Ah. So, what can be done about that?"</span></p>
+<p>"Nothing. In this situation, you can't do anything. But this gave Java's creators something to think about. And they came up with a new keyword: <strong>super</strong>."</p>
+<p>"The syntax looks almost the same:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>List&lt;? <span class="text-red">super</span> MyClass&gt; list</code></pre>
+<p>But there's an important distinction between extends and super.</p>
+<p>"«? extends T» means that the class must be a descendant of T."</p>
+<p>"«? super T» means that the class must be a ancestor of T."</p>
+<p><span class="text-user">"Holy moly. So where is this used?"</span></p>
+<p>"«? super T» is used when a method involves adding to a collection of T objects. In this case, it could be a collection of T objects or any ancestor of T."</p>
+<p><span class="text-user">"Ah. A T object can be assigned to a reference variable whose type is any of T's ancestors"</span></p>
+<p>"Honestly, this approach is not used very often. What's more, it has a shortcoming. For example:"</p>
+<div class="code-heading">Examples</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public void doSomething(<span class="text-user">List&lt;? <span class="text-red">super</span> MyClass&gt;</span> list)
+{
+ for(<span class="text-user">MyClass object</span> : list) <span class="text-red">// Error!</span>
+ {
+  System.out.println(<span class="text-user">object</span>.<strong>getState</strong>());
+ }
+}</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public void doSomething(<span class="text-user">List&lt;? <span class="text-red">super</span> MyClass&gt;</span> list)
+{
+ list.add(new <span class="text-user">MyClass</span>()); // Everything works well here.
+}</code></pre>
+<p>"Now the first example doesn't work."</p>
+<p>"Since list could even be a List&lt;Object&gt; (Object is MyClass's topmost superclass), we're essentially writing the following invalid code:"</p>
+<div class="code-heading">Example 1</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="dblue_text text-user">List&lt;Object&gt;</span> list; 
+
+for(<span class="blue_text text-user">MyClass object</span> : list) <span class="red_text text-red">// Error!</span>
+{ 
+ <span class="grey_text">System.out.println</span>(<span class="blue_text text-user">object</span>.<b>getState</b>()); 
+}
+</code></pre>
+<p><span class="text-user">"I see. Thanks for the interesting lesson."</span></p>
+<p>"You're welcome."</p>

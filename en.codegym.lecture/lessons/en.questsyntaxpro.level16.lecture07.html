@@ -1,0 +1,281 @@
+<h2>1. DateTimeFormatter class</h2>
+<p>The special <code><span class="text-neon">DateTimeFormatter</span></code> class founds its way into the Date Time API. Its purpose is to make it as easy as possible for programmers to convert a date and time into the exact format that they want. And we are happy to report that Java's creators succeeded.</p>
+<p>Using it is very easy. First, you need to create a <code><span class="text-neon">DateTimeFormatter</span></code> class and pass in a pattern that specifies how it will display the date and time:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">DateTimeFormatter</span> <span class="text-user">dtf</span> = <span class="text-neon">DateTimeFormatter</span>.<span class="text-red">ofPattern</span>(<span class="text-green">pattern</span>);</code></pre>
+</div>
+<p>Where <code><span class="text-user">dtf</span></code> is a <code><span class="text-neon">DateTimeFormatter</span></code> variable. <code><span class="text-neon">DateTimeFormatter</span>.<span class="text-red">ofPattern</span>()</code> is a static method of the <code><span class="text-neon">DateTimeFormatter</span></code> class. And <span class="text-green">pattern</span> is a string that specifies the pattern that will be used to display the date and time.</p>
+<p>Examples</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">DateTimeFormatter</span> <span class="text-user">dtf</span> = <span class="text-neon">DateTimeFormatter</span>.<span class="text-red">ofPattern</span>(<span class="text-green">"MM-dd-yy"</span>);
+String <span class="text-orange">text</span> = <span class="text-user">dtf</span>.<span class="text-red">format</span>( LocalDateTime.<span class="text-viola">now</span>() );
+System.out.println(<span class="text-orange">text</span>);</code></pre>
+        </td>
+        <td><pre><code>
+
+02-22-19</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>In the example above, we use the <code><span class="text-red">ofPattern</span>()</code> method to create a <code><span class="text-neon">DateTimeFormatter</span></code> object based on the pattern. And in the next line, we use the <code><span class="text-red">format</span>()</code> method to convert a <code>LocalDateTime</code> object into a string. You see the result on the screen.</p>
+<p>You can pass almost any object from the Date Time API to the <code><span class="text-red">format</span>()</code> method.</p>
+<p>The static <code><span class="text-red">ofPattern()</span></code> is also very simple: it takes a pattern as an argument and returns a <code><span class="text-neon">DateTimeFormatter</span></code> object. The most interesting part is found in the pattern.</p>
+<hr>
+<h2>2. Formatting pattern</h2>
+<p>The string passed in as a pattern is used as a pattern when displaying information. <strong>MM</strong> is replaced by the number of the month, <strong>dd</strong> by the day of the month, and <strong>yy</strong> by the number of the year. The case of the letters matters.</p>
+<p>The full table for these time patterns is this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Letter</th>
+        <th>Meaning</th>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>y</strong></td>
+        <td>Year</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>M</strong></td>
+        <td>Month</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>d</strong></td>
+        <td>Day</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>H</strong></td>
+        <td>Hours</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>m</strong></td>
+        <td>Minutes</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>s</strong></td>
+        <td>Seconds</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>S</strong></td>
+        <td>Thousandths of a second</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>n</strong></td>
+        <td>Nanoseconds.</td>
+    </tr>
+    </tbody>
+</table>
+<p>Not particularly difficult to remember.</p>
+<p>But why does the pattern in the example include repeated letters MM, dd and yy? Well, this is where it gets more interesting.</p>
+<p><strong>General idea</strong></p>
+<p>The number of letters affects the length of the text. The more letters there are, the longer the text will be.</p>
+<p>If the letter H is specified once, then 9 hours will be displayed as 9, but if the letter H is specified twice in a row, then 9 hours will be displayed as 09.</p>
+<p>If the letter y is specified 2 times in a row, then the year is written using 2 digits. If it occurs 4 times in a row, then 4 digits are used.</p>
+<p>If the letter M is specified 2 times in a row, then the number of the month is written. If 3 times in a row, then the name of the month (its first 3 letters) is used. If 4 times in a row, then the full name of the month is used.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>DateTimeFormatter <span class="text-user">dtf</span> = DateTimeFormatter.<span class="text-red">ofPattern</span>(<span class="text-green">"MMMM-dd-yyyy"</span>);
+String <span class="text-orange">text</span> = <span class="text-user">dtf</span>.<span class="text-red">format</span>( LocalDateTime.now() );
+System.out.println(<span class="text-orange">text</span>);</code></pre>
+        </td>
+        <td><pre><code>
+
+February-22-2019</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1619"></div>
+<hr>
+<h2>3. Complete table of patterns</h2>
+<p>The full table is quite large and super interesting:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Pattern</th>
+        <th>Variations of the pattern</th>
+        <th>Example</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>y</strong></td>
+        <td>yy, yyyy</td>
+        <td>19; 2019</td>
+        <td>Year</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>M/L</strong></td>
+        <td>M, MM, MMM, MMMM, MMMMM</td>
+        <td>1; 01; Jan; January; J</td>
+        <td>Month</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>d</strong></td>
+        <td>d, dd</td>
+        <td>9; 09</td>
+        <td>Day</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>H</strong></td>
+        <td>H, HH</td>
+        <td>2; 02</td>
+        <td>Hours</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>m</strong></td>
+        <td>m, mm</td>
+        <td>3; 03</td>
+        <td>Minutes</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>s</strong></td>
+        <td>s, ss</td>
+        <td>5; 05</td>
+        <td>Seconds</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>S</strong></td>
+        <td>S, SS, SSS, ...</td>
+        <td>1; 12; 123</td>
+        <td>Thousandths of a second</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>n</strong></td>
+        <td>n</td>
+        <td>123456789</td>
+        <td>Nanoseconds</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>G</strong></td>
+        <td>G, GGGG, GGGGG</td>
+        <td>AD; Anno Domini; A;</td>
+        <td>Era</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>Q/q</strong></td>
+        <td>q, qq, qqq, qqqq</td>
+        <td>3; 03; Q3; 3rd quarter</td>
+        <td>Quarter</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>w</strong></td>
+        <td>w</td>
+        <td>13</td>
+        <td>Week of the year</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>W</strong></td>
+        <td>W</td>
+        <td>3</td>
+        <td>Week of the month</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>E</strong></td>
+        <td>EEE, EEEE, EEEEE</td>
+        <td>Mon; Monday; M</td>
+        <td>Day of the week</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>e/c</strong></td>
+        <td>e, ee, eee, eeee, eeeee</td>
+        <td>1; 01; Mon; Monday; M</td>
+        <td>Day of the week</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>a</strong></td>
+        <td>a</td>
+        <td>PM</td>
+        <td>AM or PM</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>h</strong></td>
+        <td>h</td>
+        <td>12</td>
+        <td>12-hour clock.</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>V</strong></td>
+        <td>VV</td>
+        <td>Europe/Helsinki</td>
+        <td>Time zone</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>z</strong></td>
+        <td>z zzzz</td>
+        <td>EET; &nbsp;Eastern European Standard Time</td>
+        <td>Time zone</td>
+    </tr>
+    <tr>
+        <td class="text-center"><strong>O</strong></td>
+        <td>O OOOO</td>
+        <td>GMT+2; &nbsp;GMT+02:00</td>
+        <td>Time zone</td>
+    </tr>
+    </tbody>
+</table>
+<p>By the way, this isn't actually a complete version. You can find the most complete version <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/time/format/DateTimeFormatter.html" target="_blank">here</a>.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1620"></div>
+<hr>
+<h2>4. Parsing time</h2>
+<p>The <code><span class="text-neon">DateTimeFormatter</code></span> class is also interesting for its ability to not only convert a date and time to a string according to a given pattern, but also to perform the reverse operation!</p>
+<p><span class="term">Parsing</span> a string is the process of splitting it into meaningful tokens.</p>
+<p>Here's what it looks like:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>DateTimeFormatter <span class="text-user">dtf</span> = DateTimeFormatter.<span class="text-red">ofPattern</span>(<span class="text-green">"MMMM-dd-yyyy"</span>);
+LocalDate <span class="text-viola">date</span> = LocalDate.parse(<span class="text-green">"February-23-2019"</span>, <span class="text-user">dtf</span>);
+System.out.println(<span class="text-viola">date</span>);</code></pre>
+        </td>
+        <td><pre><code>
+
+February-23-2019</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>First, we create a <code>DateTimeFormatter</code> object and set the pattern that is used for parsing.</p>
+<p>Then we call the <code>LocalDate.parse()</code> or <code>LocalTime.parse()</code> or <code>LocalDateTime.parse()</code> method and pass in the string to be parsed along with the <code>DateTimeFormatter</code> object, which understands how to parse the passed text and what pattern should be used to do it.</p>
+<p>Another example: this time we'll parse time.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>DateTimeFormatter <span class="text-user">dtf</span> = DateTimeFormatter.<span class="text-red">ofPattern</span>(<span class="text-green">"HH:mm:ss"</span>);
+LocalTime <span class="text-viola">time</span> = LocalTime.<span class="text-red">parse</span>(<span class="text-green">"23:59:59"</span>, <span class="text-user">dtf</span>);
+System.out.println(<span class="text-viola">time</span>);</code></pre>
+        </td>
+        <td><pre><code>
+
+23:59:59 </code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1621"></div>

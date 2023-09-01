@@ -1,0 +1,173 @@
+<p>Consider a simple program:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws Exception {
+	// Create an ExecutorService with a fixed number of threads: three
+	ExecutorService service = Executors.newFixedThreadPool(3);
+ 
+	// Pass a simple Runnable task to the ExecutorService
+	service.submit(() -&gt; System.out.println("done"));
+}
+</code></pre>
+
+    <p>Running the program produces the console output we expect:</p>
+
+    <div class="terminal">done</div>
+
+    <p>But this isn't followed by the output that we usually see in IntelliJ IDEA:</p>
+
+    <div class="terminal">Process finished with exit code 0</div>
+
+    <p>We usually see that when a program ends.</p>
+
+    <p>Why does that happen?</p>
+
+    <p>The description of the <span class="code text-orange">newFixedThreadPool()</span> method tells us that threads created using an <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span> continue to exist until they are explicitly stopped. That means that because we passed a task to the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span>, a thread was created to execute it, and that thread continues to exist even after the task is done.</p>
+
+    <h2>Stopping at ExecutorService</h2>
+
+    <p>As a result, we need to "shut down" (or stop) the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span>. We can do this in two ways:</p>
+
+    <ol>
+        <li><p><span class="code text-orange">void shutdown()</span> — after this method is called, the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span> stops accepting new jobs. All tasks previously submitted to the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span> will continue to run.</p>
+
+            <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws Exception {
+ExecutorService service = Executors.newFixedThreadPool(3);
+    	service.submit(() -&gt; System.out.println("task 1"));
+    	service.submit(() -&gt; System.out.println("task 2"));
+    	service.shutdown();
+    	// A RejectedExecutionException will occur here
+    	service.submit(() -&gt; System.out.println("task 3"));
+}
+</code></pre>
+        </li>
+ 
+        <li><p><span class="code text-orange">List&lt;Runnable&gt; shutdownNow()</span> — This method attempts to stop jobs that are currently active. Tasks that are still waiting for their turn are discarded and returned as a list of <span class="text-red">Runnables</span>.</p>
+
+            <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws Exception {
+    ExecutorService service = Executors.newFixedThreadPool(5);
+    List.of(1, 2, 3, 4, 5, 6, 7, 8).forEach(i -&gt; service.submit(() -&gt; System.out.println(i)));
+    List&lt;Runnable&gt; runnables = service.shutdownNow();
+    runnables.forEach(System.out::println);
+}
+</code></pre>
+        </li>
+    </ol>
+ 
+    <p>Output:</p>
+
+    <div class="terminal">1<br />
+2<br />
+4<br />
+3<br />
+java.util.concurrent.FutureTask@1e80bfe8[Not completed, task = java.util.concurrent.Executors$RunnableAdapter@4edde6e5[Wrapped task = Test$$Lambda$16/0x0000000800b95040@70177ecd]]<br />
+java.util.concurrent.FutureTask@cc34f4d[Not completed, task = java.util.concurrent.Executors$RunnableAdapter@66a29884[Wrapped task = Test$$Lambda$16/0x0000000800b95040@4769b07b]]<br />
+java.util.concurrent.FutureTask@6f539caf[Not completed, task = java.util.concurrent.Executors$RunnableAdapter@17a7cec2[Wrapped task = Test$$Lambda$16/0x0000000800b95040@65b3120a]]<br />
+5<br />
+ <br />
+Process finished with exit code 0</div>
+ 
+    <p>The output will differ from run to run. There are 2 kinds of lines in the output:</p>
+
+    <ul>
+        <li><p>A number means that the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span> managed to process the corresponding task, displaying the number from the list we used to create tasks.</p></li>
+        <li><p>The results of calling the <span class="code text-orange">toString()</span> method on a <span class="text-orange">FutureTask</span> object. These objects are the tasks that were submitted to the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span> but were not processed.</p></li>
+    </ul>
+
+    <p>The output has another interesting nuance. In an ideal world, we would first see all the displayed numbers, followed by the <span class="text-orange">FutureTask</span> objects. But synchronization issues jumble the lines in the output.</p>
+
+    <h2>Other methods</h2>
+
+    <p><span class="text-neon"><span class="text-bold"><em>ExecutorService</em></span></span> has several more methods related to stopping it:</p>
+
+    <ol>
+        <li><p><span class="code text-orange">boolean awaitTermination(long timeout, TimeUnit unit)</span> — this method blocks the thread that calls it. The block ends as soon as any one of the following three events occurs:</p>
+
+            <ul>
+                <li>after the <span class="code text-orange">shutdown()</span> method is called, all active jobs and all scheduled tasks have been executed;</li>
+                <li>the timeout determined by the method parameters has elapsed;</li>
+                <li>the thread that called the <span class="code text-orange">awaitTermination()</span> method is terminated.</li>
+            </ul>
+
+            <p>The method returns <span class="text-green"><em>true</em></span> if the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span> is stopped before the timeout elapses, and <span class="text-red"><em>false</em></span> if the timeout had already elapsed.</p>
+
+            <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws Exception {
+	ExecutorService service = Executors.newFixedThreadPool(2);
+	service.submit(() -&gt; System.out.println("task 1"));
+	service.submit(() -&gt; System.out.println("task 2"));
+	service.submit(() -&gt; System.out.println("task 3"));
+	service.shutdown();
+	System.out.println(service.awaitTermination(1, TimeUnit.MICROSECONDS));
+}
+</code></pre>
+        </li>
+
+        <li><p><span class="code text-orange">boolean isShutdown()</span> — Returns <span class="text-green"><em>true</em></span> if the <span class="code text-orange">shutdown()</span> or <span class="code text-orange">shutdownNow()</span> method has been called on the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span>.</p>
+
+            <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws Exception {
+	ExecutorService service = Executors.newFixedThreadPool(2);
+	service.submit(() -&gt; System.out.println("task 1"));
+	service.submit(() -&gt; System.out.println("task 2"));
+	service.submit(() -&gt; System.out.println("task 3"));
+	System.out.println(service.isShutdown());
+	service.shutdown();
+	System.out.println(service.isShutdown());
+}
+</code></pre>
+        </li>
+
+        <li><p><span class="code text-orange">boolean isTerminated()</span> — Returns <span class="text-green"><em>true</em></span> if the <span class="code text-orange">shutdown()</span> or <span class="code text-orange">shutdownNow()</span> method has been called on the <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span> and all tasks are done.</p>
+
+            <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws Exception {
+    ExecutorService service = Executors.newFixedThreadPool(5);
+    List.of(1, 2, 3, 4, 5, 6, 7, 8).forEach(i -&gt; service.submit(() -&gt; System.out.println(i)));
+    service.shutdownNow();
+    System.out.println(service.isTerminated());
+}
+</code></pre>
+        </li>
+    </ol>    
+
+    <h3>Example code that uses these methods:</h3>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws Exception {
+   ExecutorService service = Executors.newFixedThreadPool(16);
+   Callable&lt;String&gt; task = () -&gt; {
+       Thread.sleep(1);
+       return "Done";
+   };
+ 
+   // Add 10,000 tasks to the queue
+   List&lt;Future&lt;String&gt;&gt; futures = IntStream.range(0, 10_000)
+           .mapToObj(i -&gt; service.submit(task))
+           .collect(Collectors.toList());
+   System.out.printf("%d tasks were submitted for execution.%n", futures.size());
+ 
+   // Attempt to shut down
+   service.shutdown();
+   // Wait 100 milliseconds to finish the work
+   if (service.awaitTermination(100, TimeUnit.MILLISECONDS)) {
+       System.out.println("All tasks completed!");
+   } else {
+       // Stop forcibly
+       List&lt;Runnable&gt; notExecuted = service.shutdownNow();
+       System.out.printf("%d tasks were not started.%n", notExecuted.size());
+   }
+ 
+   System.out.printf("Total tasks completed: %d.%n", futures.stream().filter(Future::isDone).count());
+}
+</code></pre>
+ 
+    <p>Output (differs from run to run):</p>
+
+    <div class="terminal">10,000 tasks were submitted for execution.<br />
+9170 tasks were not started.<br />
+Total tasks completed: 830 tasks.<br />
+ <br />
+Process finished with exit code 0</div>

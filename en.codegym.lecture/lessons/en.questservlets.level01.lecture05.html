@@ -1,0 +1,86 @@
+Maven-plug-ins
+<p>----------------------------------------</p>
+Getting to know plug-ins
+Lifecycle of a plug-in
+Goals in Maven
+<p>----------------------------------------</p>
+<h2>6.1 Getting to know plug-ins</h2>
+<p>Standard lifecycles can be enhanced with functionality using Maven plugins. Plugins allow you to insert new steps into the standard cycle (for example, distribution to the application server) or extend existing steps.</p>
+<p>Plugins in Maven are not something extraordinary, on the contrary, they are the most common and frequently encountered thing. After all, if you want to set some nuances of building your project, then you need to specify the necessary information in pom.xml. And the only way to do this is to write a “plugin”.</p>
+<p>Since plugins are just as much artifacts as dependencies, they are described in much the same way. Instead of the dependencies section - plugins, instead of dependency - plugin, instead of repositories - pluginRepositories, repository - pluginRepository.</p>
+<p>Example:</p>
+<pre class=""><code>&lt;plugins&gt;
+    &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-checkstyle-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.6&lt;/version&gt;
+    &lt;/plugin&gt;
+&lt;/plugins&gt;
+</code></pre>
+<p>Declaring a plugin in pom.xml allows you to fix the plugin version, as well as set the necessary parameters for it, define various configuration parameters and bind to phases.</p>
+<p>In other words, Maven runs certain plugins that do all the work. That is, if we want to teach Maven about special builds of the project, <strong>then we need to add to pom.xml an indication to launch the desired plugin in the required phase and with the required parameters</strong> .</p>
+<p>The number of plugins available is very large, there are various plugins that allow you to run a web application directly from maven to test it in a browser, generate resources, and the like. The main task of the developer in this situation is <strong>to find and apply the most appropriate set of plugins</strong> .</p>
+<h2>6.2 Life cycle and plugins</h2>
+<p>Very often, a plugin is used to launch some kind of console utility during the execution of a certain phase. Moreover, we can even run a regular Java class (which has a main method, of course).</p>
+<p>Example:</p>
+<pre class=""><code>&lt;plugin&gt;
+  &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+  &lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;1.2.1&lt;/version&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;java&lt;/goal&gt;
+      &lt;/goals&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+  &lt;configuration&gt;
+  <span class="text-green">  &lt;mainClass&gt;com.example.Main&lt;/mainClass&gt;
+    &lt;arguments&gt;
+      &lt;argument&gt;first-argument&lt;/argument&gt;
+      &lt;argument&gt;second-argument&lt;/argument&gt;
+    &lt;/arguments&gt;</span>
+  &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>Usually plugins can be very flexibly configured. All official plugins from Maven developers are very well documented on the official Maven website. For example, for <strong>the maven-compiler-plugin</strong> on the Apache Maven Project page, you can see a list of all the variables that control the plugin. Information on the plugin is available <a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html" target="_blank">at the link</a></p>
+<p>More important information. Different plugins are called by Maven at different stages of their life cycle. For example, a project describing a swing Java desktop application has different life cycle stages from those that are typical for the development of a web application (war).</p>
+<p>Or, for example, when the command “mvn test” is executed, a whole set of steps in the life cycle of the project is initiated: “process-resources”, “compile”, “process-classes”, “process-test-resources”, “test-compile” , test. You can see the mention of these phases in the messages displayed by Maven:</p>
+<pre class=""><code>[INFO] Scanning for projects...
+[INFO]
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources)     @ codegym ---
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile)      @ codegym
+[INFO] --- maven-resources-plugin:2.6:testResources         (default-testResources) @ codegym ---
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile)          @ codegym ---
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test)         @ codegym ---
+[INFO] Surefire report directory:           t:\ projects\codegym\target\surefire-reports
+</code></pre>
+<h2>6.3 Goals in Maven - goals</h2>
+<p>In Maven, there is also such a thing as a goal (goal). goal is sort of like the Maven startup target. The main goals coincide with the main phases:</p>
+<ul>
+ <li><strong>validate;</strong></li>
+ <li><strong>compile;</strong></li>
+ <li><strong>test;</strong></li>
+ <li><strong>package;</strong></li>
+ <li><strong>verify;</strong></li>
+ <li><strong>install;</strong></li>
+ <li><strong>deploy.</strong></li>
+</ul>
+<p>In each phase of the project life cycle, a specific plugin (jar-library) is called, which includes a number of goals (goal)</p>
+<p>For example, the "maven-compiler-plugin" plugin contains two targets: compiler:compile for compiling the project's main source code, and compiler:testCompile for compiling tests. Formally, the list of phases can be changed, although this is rarely necessary.</p>
+<p>If you need to perform some non-standard actions in a certain phase, then you just need to add the appropriate plugin to pom.xml</p>
+<pre class=""><code>&lt;plugin&gt;
+  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+  &lt;artifactId&gt;Name-plugin&lt;/artifactId&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;id&gt;customTask&lt;/id&gt;
+      &lt;phase&gt;generate-sources&lt;/phase&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;pluginGoal&lt;/goal&gt;
+      &lt;/goals&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>The most important thing in this case is to define for the plugin the name of the “execution/phase” phase, in which you need to embed the call to the goal of the plugin “goal”. For example, you need to generate Java code based on xml. Then you need the “generate-sources” phase, which is placed before the call to the compile phase and is ideal for generating part of the project's sources.</p>

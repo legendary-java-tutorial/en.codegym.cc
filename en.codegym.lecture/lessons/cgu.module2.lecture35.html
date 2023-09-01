@@ -1,0 +1,161 @@
+<h2>Class with a private field</h2>
+
+<p>You all know very well about field access modifiers. And if a field has the <span class="code">private</span> modifier, then we cannot access it from the outside.</p>
+
+<pre class='language-java line-numbers'><code>
+public class Person {
+  private int age;
+  public String nickname;
+  public Person(int age, String nickname) {
+   this.age = age;
+   this.nickname = nickname;
+  }
+}
+</code></pre>
+
+<p>Let's check accessibility in our <span class="code"><span class="text-green">Main</span></span> class:</p>
+
+<pre class='language-java line-numbers'><code>
+public class Main {
+   public static void main(String[] args) {
+     Person person = new Person();  
+     System.out.println(person.nickname);
+    // System.out.println(person.age); No access to the field
+  }
+}
+</code></pre>
+
+<p>We don't have access to the <mark>age</mark> field, but we do have reflection. :) And with its help, we can access and work with private fields.</p>
+
+<h2>Getting a private field from an object using reflection</h2>
+
+<p>Let's get an array of all the fields in our class using the <span class="code text-orange">getDeclaredFields()</span> method. It returns a <span class="code"><span class="text-green">Field</span></span> object that we can work with and modify:</p>
+
+<pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+        Field[] fields = Person.class.getDeclaredFields();
+        List&lt;String&gt; actualFieldNames = getFieldNames(fields);
+        actualFieldNames.forEach(System.out::println);
+    }
+
+    static List&lt;String&gt; getFieldNames(Field[] fields) {
+        List&lt;String&gt; fieldNames = new ArrayList&lt;&gt;();
+        for (Field field : fields)
+            fieldNames.add(Modifier.toString(field.getModifiers()) + " " + field.getName());
+        return fieldNames;
+    }
+</code></pre>
+
+<div class="terminal">private age<br />
+public nickname</div>
+
+<p>In the <span class="code text-orange">getFieldNames</span> method, we get two fields from our class. The getModifiers method returns our field's modifier, and <span class="code text-orange">getName</span> returns its name. Now let's try to modify and access this field. First, let's try to get data from a public field:</p>
+
+<pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+    Person person = new Person(10, "CodeGym");
+
+    Field field = Person.class.getDeclaredField("nickname");
+    String nickname = (String) field.get(person);
+    System.out.println(nickname);
+
+    System.out.println(person.nickname);
+}
+</code></pre>
+
+<div class="terminal">CodeGym<br />
+CodeGym</div>
+
+<p>We can access the field both with the help of reflection and using our reference to the object. Everything is great! Let's move on to a private field.</p>
+
+<p>We'll change the name of the requested field to our private <mark>age</mark> field:</p>
+
+<pre class='language-java line-numbers'><code>
+public static void main(String[]args)throws NoSuchFieldException, IllegalAccessException {
+		Person person = new Person(10, "CodeGym");
+
+    Field field = Person.class.getDeclaredField("age");
+    int age =(int)field.get(person);
+    System.out.println(age);
+
+    // System.out.println(person.age);
+}
+</code></pre>
+
+<p>We don't have access through the created object, so try using reflection. We get an error:</p>
+
+<img data-max-width="1080" data-id="78a4d178-949f-4656-a48b-4c4e6f3a2244" src="https://cdn.javarush.ru/images/article/78a4d178-949f-4656-a48b-4c4e6f3a2244/original.png" alt="">
+
+<h2>IllegalAccessException</h2>
+
+<p>We get an <span class="text-red"><span class="text-bold">IllegalAccessException</span></span>. Let's take a peek at what's inside:</p>
+
+<img data-max-width="800" data-id="b7c8db6e-62d6-4e30-9a87-ecc996b40d0f" src="https://cdn.javarush.ru/images/article/b7c8db6e-62d6-4e30-9a87-ecc996b40d0f/original.png" alt="">
+
+<p>Let's try to figure it out. </p>
+
+<p>An <span class="text-red"><span class="text-bold">IllegalAccessException</span></span> is thrown when an application attempts to reflectively create an instance (other than an array), set or get a field, or invoke a method, when the currently executing method does not have access to the definition of the specified class, field, method, or constructor.</p>
+
+<p>The methods here also throw this exception. To avoid this exception, we will use a special method to access the private field.</p>
+
+<h2>setAccessible(boolean flag)</h2>
+
+<p>This method makes it possible to avoid security access checks for a field or class. We can pass <span class="text-green"><em>true</em></span> or <span class="text-red"><em>false</em></span> to the method to determine whether security access checks will be performed for the field. Let's try to fix our code: </p>
+
+<pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+    Person person = new Person(10, "CodeGym");
+
+    Field field = Person.class.getDeclaredField("age");
+    field.setAccessible(true);
+
+    int age = (int) field.get(person);
+    System.out.println("The current value is " + age);
+}
+</code></pre>
+
+<p>Let's look at the result: </p>
+
+<div class="terminal">The current value is 10</div>
+
+<p>Great! We got information about our class. Let's also try changing our field by assigning a new value to it:</p>
+
+<pre class='language-java line-numbers'><code>
+public static void main(String[]args)throws NoSuchFieldException, IllegalAccessException {
+Person person = new Person(10, "CodeGym");
+
+    Field field = Person.class.getDeclaredField("age");
+    field.setAccessible(true);
+
+    field.set(person, 19);
+
+    int age =(int)field.get(person);
+    System.out.println("The current value is " + age);
+}
+</code></pre>
+
+<p>After changing our field, we get:</p>
+
+<div class="terminal">The current value is 19</div>
+
+<p>Let's try calling <span class="code text-orange">setAccessible(false)</span>.
+
+<pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+    Person person = new Person(10, "CodeGym");
+
+    Field field = Person.class.getDeclaredField("age");
+    
+    field.setAccessible(true);
+    field.set(person, 19);
+    field.setAccessible(false);
+
+    System.out.println("The current value is " + field.get(person));
+}
+</code></pre>
+
+<p>After restoring the accessibility to <span class="text-red"><em>false</em></span>, we run into our exception again when we try to call the <span class="code text-orange">get</span> method:</p>
+
+<img data-max-width="1080" data-id="272e221a-c92b-4ff9-82c8-4d2585c86b16" src="https://cdn.javarush.ru/images/article/272e221a-c92b-4ff9-82c8-4d2585c86b16/original.png" alt="">
+
+<p>So be careful when working with <span class="code">private</span> fields, and don't forget that reflection is a very powerful tool!</p>

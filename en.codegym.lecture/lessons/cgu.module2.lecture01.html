@@ -1,0 +1,133 @@
+<p>Hi! Let's dedicate today's lesson to encapsulation and begin right away with examples :) </p>
+
+<p>Here you have an <em>ordinary soda machine</em>. I have one question for you: how does it work? Try to provide a detailed answer: where does the cup come from, how is the internal temperature maintained, where is the ice stored, how does the machine know which syrup to add, etc.?</p>
+
+<p>You probably don't have answers to these questions. Fair enough, since not everyone uses such machines. They are not so popular nowadays.</p> 
+
+<p>Let's try to give another example. Something that you definitely use many times every day. Oh, here's an idea!</p>
+
+<img data-max-width="800" data-id="5b055cf4-37ac-4d90-9143-bfcc37c0420d" src="https://cdn.codegym.cc/images/article/5b055cf4-37ac-4d90-9143-bfcc37c0420d/800.jpeg" alt="">
+
+<p>Tell us how the <em>Google search engine</em> works. How exactly does it search for information related to the words you enter? Why are certain results ranked high and not others?</p> 
+
+<p>Even though you use Google every day, chances are, you don't know. But it doesn't matter. <strong>You don't need to know this.</strong> </p>
+
+<p>You can enter queries into a search engine without thinking about how it works. You can buy soda from a machine without knowing how it works. You can drive a car without understanding how an internal combustion engine works, and without knowing physics at all, even at the level of elementary school. </p>
+
+<p>All this is possible thanks to one of the main principles of object-oriented programming: <strong>encapsulation</strong>. </p>
+
+<p>Reading various articles on object-oriented programming (OOP), you must have come across the fact that programming involves two common concepts: <strong>encapsulation</strong> and <strong>hiding</strong>. And authors use the word "encapsulation" to mean one thing and then another. We'll explore both terms so that you gain a complete understanding.</p>
+
+<p>In programming, the original meaning of <em>encapsulation</em> is <strong>the bundling of data, along with the methods that operate on that data, into a single unit</strong> (i.e. a "capsule").</p> 
+
+<p>In Java, the <em>class</em> is the unit of encapsulation. A class contains both <em>data</em> (fields) and <em>methods</em> for working with this data. </p>
+
+<p>This may seem like the obviously correct approach to you, but in other programming paradigms, everything is arranged differently. For example, in functional programming, data is strictly separated from operations on it. </p>
+
+<p>In OOP, programs consist of capsules, or classes, which consists of both data and functions for working with that data.</p>
+
+<h2>Now let's talk about <strong>hiding</strong></h2>
+
+<p>How is it that we use all sorts of complex devices without understanding how they are organized or how they work? It's simple: their creators provided us with a simple and convenient <strong>interface</strong>.</p>
+
+<p>On a soda machine, the interface is the buttons on the panel. Pressing one button, you choose the cup size. Pressing another, you choose the flavor. A third is responsible for adding ice. And that's all you need to do.</p>
+
+<p>The internal organization of the machine does not matter. What matters is that <strong>it is designed in a way that requires the user to press three buttons to get soda</strong>.</p>
+
+<p>The same is true about cars. It doesn't matter what's going on inside. What matters is that <strong>when you press the right pedal, the car moves forward, and when you press the left pedal, it slows down</strong>.</p>
+
+<p>That's what hiding amounts to. All of a program's "insides" are hidden from the user. For the user, this superfluous, unnecessary information. The user needs the end result, not the internal process.</p>
+
+<p>Let's look at the <code>Auto</code> class as an example:</p>
+
+<pre class="lang-java line-numbers"><code>
+public class Auto {
+
+   public void go() {
+
+       /* Some complicated things happen inside the car.
+       As a result, it moves forward */
+   }
+
+   public void brake() {
+
+       /* Some complicated things happen inside the car.
+       As a result, it slows down. */
+   }
+
+   public static void main(String[] args) {
+
+       Auto auto = new Auto();
+
+       // From the user's perspective,
+
+       // one pedal is pressed and the car accelerates.
+       auto.gas();
+      
+       // The other is pressed, and the car slows down.
+       auto.brake();
+   }
+}
+</code></pre>
+
+<p>Here's what implementation hiding looks like in a Java program. It's just like in real life: the user is provided with an interface (methods). If the user needs a car in a program to perform an action, he or she just calls the desired method. What happens inside these methods is superfluous. What matters is that everything works as it should. Here we're talking about <strong>implementation hiding</strong>. Besides that, Java also has <strong>data hiding</strong>.</p>
+
+<p>For example, we have a <code>Cat</code> class:</p>
+
+<pre class="lang-java line-numbers"><code>
+public class Cat {
+
+   public String name;
+   public int age;
+   public int weight;
+
+   public Cat(String name, int age, int weight) {
+       this.name = name;
+       this.age = age;
+       this.weight = weight;
+   }
+
+   public Cat() {
+   }
+
+   public void sayMeow() {
+       System.out.println("Meow!");
+   }
+
+  
+}
+</code></pre>
+
+<p>The problem is that its data (fields) are open to everyone — another programmer can easily create a nameless cat with a weight of 0 and an age of -1000 years:</p>
+
+<pre class="lang-java line-numbers"><code>
+public static void main(String[] args) {
+
+   Cat cat = new Cat();
+   cat.name = "";
+   cat.age = -1000;
+   cat.weight = 0;
+
+}
+</code></pre>
+
+<p>Maybe you can keep a close eye on whether one of your coworkers has created objects with invalid state, but it would be much better to exclude even the possibility of creating such "invalid objects".</p>
+
+<p>The following mechanisms help us achieve data hiding:</p>
+
+<ol>
+<li>access modifiers (<em>private</em>, <em>protected</em>, <em>package default</em>)</li>
+<li>getters and setters</li>
+</ol>
+
+<p>For example, we can put a check there to see if someone is trying to assign a negative number to the cat's age.</p>
+
+<p>As we said earlier, the authors of various articles about encapsulation sometimes mean combining data and methods, or hiding them, or both (combining and hiding them). Java has both mechanisms (this is not necessarily true for other OOP languages), so the last meaning is most correct.</p>
+
+<p>Encapsulation gives us several important advantages:</p>
+
+<ol>
+<li><strong>Control over the correct state of an object.</strong> There were examples of this above. A setter and the private modifier ensure that our program won't have cats whose weight is 0.</li><br>
+<li><strong>User-friendliness through an interface.</strong> Only methods are left "exposed" to the outside world. Calling methods is enough to get a result — there's absolutely no need to delve into the details of how they work.</li><br>
+<li><strong>Code changes do not affect users.</strong> We make any and all changes inside of the methods. This doesn't affect the user of the method: if the right code was previously "auto.gas()" to apply the gas pedal, then it will continue to be. The fact that we have changed something inside the gas() method remains invisible to the user: as before, the caller simply receives the desired result.</li>
+</ol>

@@ -1,0 +1,279 @@
+<a href='https://cdn.codegym.cc/images/article/d5eb43fc-e6a1-4821-8432-08d53f92073a/original.jpeg' target='_blank'><img data-id="d5eb43fc-e6a1-4821-8432-08d53f92073a" data-max-width="850" alt="Anonymous inner classes, and examples - 1" src="https://cdn.codegym.cc/images/article/d5eb43fc-e6a1-4821-8432-08d53f92073a/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"But we've already said hello, Ellie!"</span></p>
+<p>"Hey, don't argue with your aunt. In the 31st century, if you haven't seen someone for more than half an hour, it's customary to say hello again. So don't give me your attitude!"</p>
+<p>"Anyway, it's time for another interesting topic: robot reproduction!"</p>
+<p><span class="text-user">"O_O."</span></p>
+<p>"Just kidding, the new topic is <strong>anonymous inner classes</strong>."</p>
+<p>"In Java, sometimes there are situations where you'll need a class to inherit several classes. Since Java doesn't support multiple inheritance, they've solved this problem using inner classes: in our class, we declare an inner class and make it inherit whatever class we need it to inherit. Here's an example:"</p>
+<div class="code-heading">Example of an inner class that inherits the Thread class</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-green">Tiger</span> extends Cat
+{
+ public void <span class="text-green">tigerRun</span>()
+ {
+  .....
+ }
+
+ public void <span class="text-green">startTiger</span>()
+ {
+  <span class="text-viola">TigerThread</span> <span class="text-user">thread</span> = new <span class="text-viola">TigerThread</span>();
+  <span class="text-user">thread</span>.start();
+ }
+
+ class <span class="text-viola">TigerThread</span> extends Thread
+ {
+  public void run()
+  {
+   <span class="text-green">tigerRun</span>();
+  }
+ }
+}</code></pre>
+<p>"Let's dig into another example:"</p>
+<p>We need a subclass of the Thread class in order to override its run method."</p>
+<p>"That's why in the Tiger class we declared the <strong>TigerThread</strong> inner class, which inherits Thread and overrides the run method.</p>
+<p>"For convenience, we defined two methods in the Tiger class: <strong>tigerRun and startTiger</strong> (which are analogous to Thread's run and start methods."</p>
+<p>"In the tigerStart method, we create a <strong>TigerThread</strong> object and invoke its start() method."</p>
+<p>"The JVM will create a new thread that will start running when <strong>TigerThread's</strong> run method is called."</p>
+<p>"This method then calls our <strong>run</strong> method: <strong>tigerRun</strong>."</p>
+<p><span class="text-user">"I've worked with threads before, so this seems straightforward."</span></p>
+<p><span class="text-user">"Do we have to name the methods tigerRun and tigerStart?"</span></p>
+<p>"No, we could have called them run and start, but I also wanted to demonstrate that we are not inheriting Thread. An explanation might have been more confusing."</p>
+<p><span class="text-user">"OK. Then I think I get it. But if tigerStart is called a second time, we'll create and start a second Thread object. Doesn't that mean that we'll have «one tiger running on two different threads»?"</span></p>
+<p>"Well, aren't you sharp! You're right, and that's not good. Let's rewrite the code like this:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-green">Tiger</span> extends Cat
+{
+ public void <span class="text-green">tigerRun</span>()
+ {
+  .....
+ }
+
+ public void <span class="text-green">startTiger</span>()
+ {
+  thread.start();
+ }
+
+ private <span class="text-viola">TigerThread</span> <span class="text-user">thread</span> = new <span class="text-viola">TigerThread</span>();
+
+ private class <span class="text-viola">TigerThread</span> extends Thread
+ {
+  public void run()
+  {
+   <span class="text-green">tigerRun</span>();
+  }
+ }
+}</code></pre>
+<p><span class="text-user">"It's not quite perfect. You still can't call a method like that twice. But this time, at least we won't create a second thread and make it seem like everything is fine."</span></p>
+<p>"That's right. The second time a Tiger is started, you'll get an exception."</p>
+<p><span class="text-user">"I'm already spotting mistakes better than you, Ellie!"</span></p>
+<p>"Yeah, you're doing great. Then let's move on to anonymous inner classes."</p>
+<p>"Note several aspects of the code above:"</p>
+<p><strong>1)</strong> We inherited the Thread class, but implemented practically no code there. "It was more «we had to inherit the Thread class» rather than «we inherited it to extend it».</p>
+<p><strong>2)</strong> Only one TigerThread object will be created.</p>
+<p>In other words, we wrote a whole bunch of code just to override one method and create one object.</p>
+<p>Do you remember how I talked about the invention of constructors?</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Before constructors</th>
+        <th>After constructors</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-viola">TigerThread</span> <span class="text-user">thread</span> = new <span class="text-viola">TigerThread</span>();
+
+private class <span class="text-viola">TigerThread</span> extends Thread
+{
+ public void run()
+ {
+  <span class="text-green">tigerRun</span>();
+ }
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Thread <span class="text-user">thread</span> = new Thread()
+{
+ public void run()
+ {
+  <span class="text-green">tigerRun</span>();
+ }
+};</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I see the code became more compact, but I don't quite understand what's happening."</span></p>
+<p>"We can combine four things into one:"</p>
+<p>1) declaration of a derived class</p>
+<p>2) method overriding</p>
+<p>3) declaration of a variable</p>
+<p>4) creation of an instance of a derived class.</p>
+<p>"In fact, what we're doing is combining two operations: declaring a derived class and creating an instance of that class."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Without anonymous class</th>
+        <th>With anonymous class</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat tiger = new <del>Tiger();</del>
+
+<del>class Tiger extends</del> Cat
+{
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat tiger = new Cat()
+{
+};</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Let's explore the syntax again:"</p>
+<div class="code-heading">Declaration of a Thread variable</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Thread thread = new Thread();</code></pre>
+<div class="code-heading">Declaration of a variable whose type is «an anonymous class that inherits Thread»</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Thread thread = new Thread()
+{
+
+};</code></pre>
+<p>"Note that we aren't simply defining a new class. We're creating a variable—there's a semicolon at the end!"</p>
+<p><span class="text-user">"And if we want to override the run method, then we need to write this:"</span></p>
+<div class="code-heading">Declaration of a Thread variable</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Thread thread = new Thread()
+{
+ public void run()
+  {
+   System.out.println("new run-method");
+  }
+};</code></pre>
+<p>"You catch on quickly. Well done!"</p>
+<p><span class="text-user">"Thanks. What if we need other methods that aren't part of the Thread class?"</span></p>
+<p>"You can write them."</p>
+<p>"Though anonymous, this is a full-fledged inner class:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">Thread thread</span> <span class="text-green">= new Thread()</span>
+<span class="text-user">{
+  public void run()
+  {
+   printHi();
+  }
+
+  public void printHi()
+  {
+   System.out.println("Hi!");
+  }
+};	 </span></code></pre>
+        </td>
+        <td><span class="text-red">Red: code for creating the variable.</span></p>
+            <p><span class="text-green">Green: code for creating the object.</span></p>
+            <p><span class="text-user">Blue: code for the anonymous derived class.</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"A full-fledged inner class?"</span></p>
+<p><span class="text-user">"So I can use the variables of the outer class?"</span></p>
+<p>"Absolutely."</p>
+<p><span class="text-user">"And I can pass something to the constructor?"</span></p>
+<p>"Yes, but only the arguments for the superclass's constructor:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Class</th>
+        <th>Instance of an anonymous inner class</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ int x, y;
+ Cat(int x, int y)
+ {
+  this.x = x;
+  thix.y = y;
+ }
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Cat cat = new Cat(3,4)
+{
+  public void print()
+  {
+   System.out.println(x+" "+y);
+  }
+};</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"We can't add our own parameters to someone else's constructor. But we can use the variables of the outer class, which compensates nicely for this shortcoming."</p>
+<p><span class="text-user">"What if I still really need to add other parameters to the constructor?"</span></p>
+<p>"Then declare an ordinary (non-anonymous) inner class and use that."</p>
+<p><span class="text-user">"Right, I almost forgot about that."</span></p>
+<p><span class="text-user">"What if I declare a static variable? Would that make the anonymous class become a static nested class rather than an inner class? In other words, will it lack a reference to the outer class?"</span></p>
+<p>"No. It would be an anonymous inner class. Look at these examples."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>With anonymous class</th>
+        <th>Without anonymous class</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Thread <span class="text-user">thread</span> = new Thread()
+{
+  public void run()
+  {
+   <span class="text-green">tigerRun</span>();
+  }
+};</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-viola">TigerThread</span> <span class="text-user">thread</span> = new <span class="text-viola">TigerThread</span>();
+
+private class <span class="text-viola">TigerThread</span> extends Thread
+{
+ public void run()
+ {
+  <span class="text-green">tigerRun</span>();
+ }
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">static</span> Thread <span class="text-user">thread</span> = new Thread()
+{
+  public void run()
+  {
+   <span class="text-green">tigerRun</span>();
+  }
+};</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">static</span> <span class="text-viola">TigerThread</span> <span class="text-user">thread</span> = new <span class="text-viola">TigerThread</span>();
+
+private class <span class="text-viola">TigerThread</span> extends Thread
+{
+ public void run()
+ {
+  <span class="text-green">tigerRun</span>();
+ }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I see. Only the static variable would be static, not the class."</span></p>
+<p>"Yep."</p>
+<p>"In fact, the compiler creates inner classes for all anonymous inner classes. These classes are usually named «1», «2», «3», etc."</p>

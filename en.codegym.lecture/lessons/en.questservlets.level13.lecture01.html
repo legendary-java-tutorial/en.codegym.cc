@@ -1,0 +1,134 @@
+out that the JSP file is converted into a regular servlet, then you can write normal Java code in it. And in this Java code, you can use various classes (Math from the example). This is even better! But we can see that all the code has been moved to a <code>doGet()</code>servlet method. And this immediately raises several questions:</p>
+<ul>
+ <li>How to make it so that the code is moved to the method <code>doPost()</code>?</li>
+ <li>How to add your own code to the method <code>init()</code>?</li>
+ <li>How in the end to register class imports?</li>
+</ul>
+<p>Great questions, and, of course, they have an answer - JSP directives. All non-HTML code within a JSP must be enclosed in special brackets <code>&lt;%</code>and <code>%&gt;</code>. All JSP directives are given by a template:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token operator"></span><span class="text-red"><span class="token operator">&lt;</span><span class="token operator">%</span>@</span> <span class="text-green">directive</span> <span class="token operator"></span><span class="text-red"><span class="token operator">%</span><span class="token operator">&gt;</span></span><span class="token operator"></span></code></pre>
+</div>
+<p>Here is a list of the most popular page directive attributes:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th></th>
+    <th>Example</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><strong>import</strong></td>
+    <td><code>&lt;%@ page import="java.util.Date" %&gt; </code></td>
+    <td>Imports a class</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><strong>contentType</strong></td>
+    <td><code>&lt;%@ page contentType=text/html %&gt;</code></td>
+    <td>Sets contentType</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><strong>extends</strong></td>
+    <td><code>&lt;%@ page extends="Object" %&gt;</code></td>
+    <td>You can set the base class</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><strong>info</strong></td>
+    <td><code>&lt;%@ page info="Author: Peter Ivanович; version:1.0" %&gt;</code></td>
+    <td>Sets data for getServletInfo()</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><strong>buffer</strong></td>
+    <td><code>&lt;%@ page buffer="16kb" %&gt;</code></td>
+    <td>Sets the size of the response buffer</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td><strong>language</strong></td>
+    <td><code>&lt;%@ page language="java" %&gt;</code></td>
+    <td>Specifies the language, default is Java</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td><strong>isELIgnored</strong></td>
+    <td><code>&lt;%@ page isELIgnored="true" %&gt;</code></td>
+    <td>Allows you to disable EL scripts</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td><strong>isThreadSafe</strong></td>
+    <td><code>&lt;%@ page isThreadSafe="false" %&gt;</code></td>
+    <td>Points to threadsafe</td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td><strong>autoFlush</strong></td>
+    <td><code>&lt;%@ page autoFlush="false" %&gt;</code></td>
+    <td>Manages buffer writes</td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td><strong>session</strong></td>
+    <td><code>&lt;%@ page session="false" %&gt;</code></td>
+    <td>You can disable the session for the page</td>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td><strong>pageEncoding</strong></td>
+    <td><code>&lt;%@ page pageEncoding="UTF-8"%&gt;</code></td>
+    <td>You can set the page encoding</td>
+   </tr>
+   <tr>
+    <td>12</td>
+    <td><strong>errorPage</strong></td>
+    <td><code>&lt;%@ page errorPage="errorpage.jsp" %&gt;</code></td>
+    <td>You can set an error page</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>2.2 Imports</h2>
+<p>Let's add a few imports to our JSP file for fun and define a base class.</p>
+<p>JSP file example:</p>
+<pre class="line-numbers"><code>
+<span class="text-red">    &lt;%@ page import="java.util.Date" %&gt; 
+    &lt;%@ page import="java.lang.Math" %&gt; 
+    &lt;%@ page extends="com.codegym.MyHttpServlet" %&gt; </span>
+ 
+    &lt;html&gt; 
+    &lt;body&gt; 
+<span class="text-red">    &lt;%</span>
+<span class="text-user">        double num = Math.random();
+        if (num &gt; 0.95) {</span>
+<span class="text-red">     %&gt;</span>
+         &lt;h2&gt;You are lucky, user!&lt;/h2&gt;&lt;p&gt;(<span class="text-red">&lt;%=</span> num <span class="text-red">%&gt;</span>)&lt;/p&gt;
+<span class="text-red">    &lt;%</span>
+<span class="text-user">    }</span>
+<span class="text-red">    %&gt; </span>
+  &lt;/body&gt; 
+   &lt;/html&gt; 
+</code></pre>
+<p>And this is what will come of it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Date</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">Math</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloServlet</span> <span class="token keyword">extends</span> <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span></span>MyHttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+    <span class="token class-name">PrintWriter</span> out <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;html&gt;  "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;body&gt; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">double</span> num <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>num <span class="token operator">&gt;</span>  <span class="token number">0.95</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+             out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;h2&gt; You're lucky, user! &lt;/h2&gt; &lt;p&gt; ("</span> <span class="token operator">+</span> num <span class="token operator">+</span> <span class="token string">")&lt;/p&gt; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;/body&gt; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;/html&gt; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Works. Great!</p>

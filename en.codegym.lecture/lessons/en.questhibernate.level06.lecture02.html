@@ -1,0 +1,37 @@
+figured out how to create tables, let's now take a detailed look at how to add data to a table using a SQL query.</p>
+<p>In fact, it is very simple to do this, but there are several nuances. The simplest option for inserting data into a table requires specifying two things:</p>
+<ul>
+ <li>column names</li>
+ <li>column values ​​(data)</li>
+</ul>
+<p>Column names must be specified, as very often columns have default values ​​that are not specified when inserting data. And usually every table has at least one such column, for example row id.</p>
+<p>The general form of the query for inserting data into a table looks like this:</p>
+<pre><code><strong><span class="text-red">INSERT INTO</span> <span class="text-orange">table</span> (<span class="text-green">column1</span>, <span class="text-green">column2</span>, <span class="text-green">column3</span>) <span class="text-red">VALUES</span>
+    (<span class="text-user">value1</span>, <span class="text-user">value2</span>, <span class="text-user">value3</span>),
+    (<span class="text-user">value1</span>, <span class="text-user">value2</span>, <span class="text-user">value3</span>),
+    (<span class="text-user">value1</span>, <span class="text-user">value2</span>, <span class="text-user">value3</span>);</strong>
+</code></pre>
+<p>For example, if you want to insert a new record into the user table, this is how the query would look like:</p>
+<pre><code><strong><span class="text-red">INSERT INTO</span> <span class="text-orange">user</span> (<span class="text-green">name</span>, <span class="text-green">level</span>, <span class="text-green">created_time</span>) <span class="text-red">VALUES</span>
+	(<span class="text-user">'Rabinovich'</span>, <span class="text-user">5</span>, <span class="text-user">‘2022-06-06’</span>);</strong>
+</code></pre>
+<h2>INSERT INTO SELECT statement</h2>
+<p>Another common scenario for inserting data into a table is to take it from another table, schema, or even a DBMS.</p>
+<p>To do this, there is another INSERT INTO query format, in which, instead of the VALUES part, you can specify a query to select data.</p>
+<p>The general form of such a request is:</p>
+<pre><code><strong><span class="text-red">INSERT INTO</span> <span class="text-orange">table</span> (<span class="text-green">column1</span>, <span class="text-green">column2</span>, <span class="text-green">column3</span>)
+SELECT-request;</strong>
+</code></pre>
+<p>Let's write a query that will add all users from the employee table to the user table:</p>
+<pre><code><strong><span class="text-red">INSERT INTO</span> <span class="text-orange">user</span> (<span class="text-green">name</span>, <span class="text-green">created_time</span>)
+   <span class="text-red">SELECT</span> <span class="text-orange">employee</span>.<span class="text-green">name</span>, <span class="text-orange">employee</span>.<span class="text-green">join_date</span>
+   <span class="text-red">FROM</span> <span class="text-orange">employee</span>;</strong>
+</code></pre>
+<p>We have various data in the employee table, but from them we select only two fields - the name and time of arrival at the company.</p>
+<p>Also, the user table requires you to specify the user level - level. In the employee table, employees do not have a level, so we will use the fact that the user table has a default value for the level field. We just don't specify the level and SQL will set the default value.</p>
+<p>Suppose we are not satisfied with the default value, and we want the level to be 99, and replace user.created_time with today's date, then we can write this:</p>
+<pre><code><strong><span class="text-red">INSERT INTO</span> <span class="text-orange">user</span> (<span class="text-green">name</span>, <span class="text-user">level</span>, <span class="text-green">created_time</span>)
+   <span class="text-red">SELECT</span> <span class="text-orange">employee</span>.<span class="text-green">name</span>, <span class="text-user">99</span>, <span class="text-neon">CURDATE()</span>
+   <span class="text-red">FROM</span> <span class="text-orange">employee</span>;</strong>
+</code></pre>
+<p>There is a lot more that could be done, but I think this will suffice for now. You can read more on the official MySQL page.</p>

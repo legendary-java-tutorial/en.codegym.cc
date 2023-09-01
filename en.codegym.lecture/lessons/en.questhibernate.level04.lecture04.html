@@ -1,0 +1,200 @@
+ctions than date and time - only the String type. Which in SQL is given by CHAR(n) and VARCHAR(n) types. Let's recall the most popular of them:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th>Function</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>LENGTH(str)</td>
+    <td>Returns the length of the passed string in bytes</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>CHAR_LENGTH(str)</td>
+    <td>Returns the length of the passed string in chars</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>LOCATE(substr,str),</td>
+    <td>Searches for a substring in a string similar to the indexOf() method</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>LOCATE(substr,str,pos)</td>
+    <td>Searches for a substring in a string starting at pos</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>CONCAT(str1,str2,...)</td>
+    <td>Concatenates multiple lines</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>SUBSTR(), SUBSTRING()</td>
+    <td>Returns a substring given by a range of characters</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>LOWER(str)</td>
+    <td>Converts a string to lowercase</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>UPPER(str)</td>
+    <td>Converts a string to uppercase</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td>REPLACE()</td>
+    <td>Replaces a substring in a string</td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td>MATCH()</td>
+    <td>Checks if a string matches a given pattern</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td>TRIM(str)</td>
+    <td>Trims empty characters at the beginning and end of a string</td>
+   </tr>
+   <tr>
+    <td>12</td>
+    <td>LTRIM(str)</td>
+    <td>Trims empty characters at the beginning of a string</td>
+   </tr>
+   <tr>
+    <td>13</td>
+    <td>RTRIM(str)</td>
+    <td>Trims empty characters at the end of a string</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>14</td>
+    <td>TO_BASE64(str)</td>
+    <td>Converts a string to Base64</td>
+   </tr>
+   <tr>
+    <td>15</td>
+    <td>FROM_BASE64(str)</td>
+    <td>Converts a string from Base64</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>I deliberately grouped the functions into small groups to make it easier to understand how to work with them. Below we will consider one function from each group. You can find a complete list of functions for working with strings in <a href="https://dev.mysql.com/doc/refman/8.0/en/string-functions.html" target="_blank" rel="nofollow">the official documentation</a> .</p>
+<h2>Let's convert the string</h2>
+<p>Let's first deal with the simplest functions that simply convert a string to a slightly different form. For example, convert a string to upper and lower case. In general, their behavior is similar to the same functions in the Java language.</p>
+<p>So I'll just give a table with a few examples.</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th>Request</th>
+    <th>Result</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><strong>SELECT <span class="text-red">LENGTH</span> ('text')</strong></td>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><strong>SELECT <span class="text-red">LENGTH</span> ('Hello')</strong></td>
+    <td>12</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><strong>SELECT <span class="text-red">LOWER</span> ('Hi')</strong></td>
+    <td>Hello</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><strong>SELECT <span class="text-red">UPPER</span> ('Hello')</strong></td>
+    <td>HELLO</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><strong>SELECT <span class="text-red">SUBSTR</span> ('Hello', 2, 3)</strong></td>
+    <td>riv</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td><strong>SELECT <span class="text-red">SUBSTR</span> ('Hi, how are you?', 8)</strong></td>
+    <td>How are you?</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The functions work as expected, just like their counterparts from the JDK.</p>
+<p>The only caveat: in the first line, the result is 4, not 8. The thing is that 1 byte (ASCII encoding) is used <strong>in the request to encode Latin characters. </strong>But if you work with data from the database, then <span class="text-user">the length of the string will depend on the database encoding settings</span> . You will find many surprises while working with the database :)</p>
+<h2>Complex actions with strings</h2>
+<p>Well, let's look at more complex things when working with strings. What would you come up with...</p>
+<p>Let's display tasks from the task table, and if the task deadline has already passed, then add the word <em><strong>EXPIRED to the task description!</strong></em></p>
+<p>Sounds interesting. Although we have not yet learned complex conditions, so let's simplify the task a little. Let's just write a query that will display a list of past tasks, but be sure to add the word <em><strong>“EXPIRED!” to the title. </strong></em>.</p>
+<p>To do this, we will have to use the CONCAT function:</p>
+<pre><code><strong>   <span class="text-red">SELECT</span> <span class="text-user">CONCAT</span>( <span class="text-viola">'EXPIRED! '</span>, <span class="text-green">name</span>) <span class="text-red">FROM</span> <span class="text-orange">task</span> 
+   <span class="text-red">WHERE</span> <span class="text-green">deadline</span> &lt; <span class="text-neon">CURDATE()</span> </strong>
+</code></pre>
+<p>The result of this query will be:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+  </tbody>
+ </table>
+ <table>
+  <tbody>
+   <tr>
+    <th>concat('EXPIRED! ', name)</th>
+   </tr>
+   <tr>
+    <td>EXPIRED! Fix a bug on the frontend</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><strong>Recommendation. </strong>If you just need to convert the data to a slightly different form, then this can also be done at the Java code level. But if you want to use SQL server-side string functions (inside WHERE), then you definitely cannot do without them.</p>

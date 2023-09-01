@@ -1,0 +1,753 @@
+<h1>1. A detailed guide to Git for beginners</h1>
+
+    <p>Today we're going to talk about a version control system, namely Git. </p>
+
+    <p>You really can't be a full-fledged programmer without knowing and understanding this tool. Of course, you don't have to keep all the Git commands and features in your head in order to be continuously employed. You need to know a set of commands that will help you understand everything that is happening.</p>
+
+    <h2>Git basics</h2>
+
+    <p>Git is a distributed version control system for our code. Why do we need it? Teams need some kind of system for managing their work. It is needed to track changes that occur over time. </p>
+
+    <p>That is, we need to be able to see step-by-step which files have changed and how. This is especially important when you are investigating what changed in the context of a single task, making it possible to revert the changes.</p>
+
+    <p>Let's imagine the following situation: we have working code, everything in it is good, but then we decide to improve or tweak something. No big deal, but our "improvement" broke half of the program's features and made it impossible to work. So now what? Without Git, you would have to sit and think for hours, trying to remember how everything was originally. But with Git, we just roll back the commit — and that's it. </p>
+
+    <p>Or what if there are two developers making their own code changes at the same time? Without Git, they copy the original code files and modify them separately. There comes a time when both want to add their changes to the main directory. What do you do in this case? </p>
+
+    <p>There will be no such problems if you use Git. </p>
+
+    <h2>Installing Git</h2>
+
+    <p>Let's install Java on your computer This process differs slightly for different operating systems.</p>
+
+    <h3>Installing on Windows</h3>
+
+    <p>As usual, you need to download and run an exe file. Everything is simple here: click on <a href="https://git-scm.com/downloads" target="_blank">the first Google link</a>, perform the install, and that's it. To do this, we will use the bash console provided by Windows.</p>
+
+    <p>On Windows, you need to run Git Bash. Here's how it looks in the Start Menu:</p>
+
+<img data-max-width="800" data-id="b99e1066-843c-42d1-98a8-41df931eb359" src="https://cdn.codegym.cc/images/article/b99e1066-843c-42d1-98a8-41df931eb359/800.jpeg" alt="">
+
+    <p>Now this is a command prompt you can work with.</p>
+
+    <p>To avoid having to go to the folder with the project every time in order to order to open Git there, you can open the command prompt in the project folder with the right mouse button with the path we need:</p>
+
+<img data-max-width="800" data-id="e368af6a-71d4-41d9-8824-f10512660bd1" src="https://cdn.codegym.cc/images/article/e368af6a-71d4-41d9-8824-f10512660bd1/original.png" alt="">
+
+    <h3>Installing on Linux</h3>
+
+    <p>Usually Git is part of Linux distributions and is already installed, since it is a tool that was originally written for Linux kernel development. But there are situations when it is not. To check, you need to open a terminal and write: git --version. If you get an intelligible answer, then nothing needs to be installed.</p>
+
+    <p>Open a terminal and install. For Ubuntu, you need to write: sudo apt-get install git. And that's it: now you can use Git in any terminal.</p>
+
+    <h3>Installing on macOS</h3>
+
+    <p>Here, too, you first need to check whether Git is already there (see above, the same as on Linux).</p>
+
+    <p>If you don't have it, then the easiest way to get it is to <a href="https://sourceforge.net/projects/git-osx-installer/files/" target="_blank">download the latest version</a>. If Xcode is installed, then Git will definitely be automatically installed.</p>
+
+    <h3>Git settings</h3>
+
+    <p>Git has user settings for the user who will submit work. This makes sense and is necessary, because Git takes this information for the Author field when a commit is created.</p>
+
+    <p>Set up a username and password for all your projects by running the following commands:</p>
+
+<div class="terminal">git config --global user.name "Ivan Ivanov" git config --global user.email ivan.ivanov@gmail.com</div>
+
+    <p>If you need to change the author for a specific project (for a personal project, for example), you can remove "--global". This will give us the following:</p>
+
+<div class="terminal">git config user.name "Ivan Ivanov" git config user.email ivan.ivanov@gmail.com</div>
+
+    <h3>A bit of theory</h3>
+
+    <p>To dive into the topic, we should introduce you to a few new words and actions... Otherwise, there will be nothing to talk about. Of course, this is jargon that comes to us from English, so I'll add translations in parentheses.</p>
+
+    <p>What words and actions?</p>
+
+    <ul>
+        <li>git repository</li>
+        <li>commit</li>
+        <li>branch</li>
+        <li>merge</li>
+        <li>conflicts</li>
+        <li>pull</li>
+        <li>push</li>
+        <li>how to ignore some files (.gitignore)</li>
+    </ul>
+
+    <p>And so on.</p>
+
+    <h3>Statuses in Git</h3>
+
+    <p>Git has several statues that need to be understood and remembered:</p>
+
+    <ul>
+        <li>untracked</li>
+        <li>modified</li>
+        <li>staged</li>
+        <li>committed</li>
+    </ul>
+
+    <h4>How should you understand this?</h4>
+
+    <p>These are statuses that apply to the files containing our code. In other words, their life cycle usually looks like this:</p>
+
+    <ul>
+        <li>A file that is created but not yet added to the repository has the "untracked" status.</li>
+        <li>When we make changes to files that have already been added to the Git repository, then their status is "modified".</li>
+        <li>Among the files that we have changed, we select the ones that we need (for example, we do not need compiled classes), and these classes are changed to the "staged" status.</li>
+        <li>A commit is created from prepared files in the staged state and goes into the Git repository. After that, there are no files with the "staged" status. But there may still be files whose status is "modified".</li>
+    </ul>
+
+    <p>This is how it looks:</p>
+
+<img data-max-width="512" data-id="1bae5457-4d7d-40b4-b2d0-7aa55ecc3c13" src="https://cdn.codegym.cc/images/article/1bae5457-4d7d-40b4-b2d0-7aa55ecc3c13/original.png" alt="">
+
+    <h3>What is a commit?</h3>
+
+    <p>A commit is the main event when it comes to version control. It contains all the changes made since the commit began. Commits are linked together like a singly linked list. </p>
+
+    <p>Specifically, there is a first commit. When the second commit is created, it (the second) knows what comes after the first. And in this manner, information can be tracked. </p>
+
+    <p>A commit also has its own information, so-called metadata:</p>
+
+    <ul>
+        <li>the commit's unique identifier, which can be used to find it</li>
+        <li>the name of the commit's author, who created it</li>
+        <li>the date the commit was created</li>
+        <li>a comment that describes what was done during the commit</li>
+    </ul>
+
+    <p>Here's how it looks:</p>
+
+<img data-max-width="512" data-id="d3a9c778-0590-4669-abe7-1c1be88eebae" src="https://cdn.codegym.cc/images/article/d3a9c778-0590-4669-abe7-1c1be88eebae/original.png" alt="">
+
+    <h3>What is a branch?</h3>
+
+<img data-max-width="512" data-id="86022f61-9bca-4fe5-9af6-e77cad628b2a" src="https://cdn.codegym.cc/images/article/86022f61-9bca-4fe5-9af6-e77cad628b2a/original.png" alt="">
+
+    <p>A branch is a pointer to some commit. Because a commit knows which commit precedes it, when a branch points to a commit, all those previous commits also apply to it. </p>
+
+    <p>Accordingly, we could say that you can have as many branches as you want pointing to the same commit.</p>
+
+    <p>Work happens in branches, so when a new commit is created, the branch moves its pointer to the more recent commit.</p>
+
+    <h2>Getting started with Git</h2>
+
+    <p>You can work with a local repository alone as well as with a remote one.</p>
+
+    <p>To practice the required commands, you can limit yourself to the local repository. It only stores all the project's information locally in the .git folder.</p>
+
+    <p>If we're talking about the remote repository, then all the information is stored somewhere on the remote server: only a copy of the project is stored locally. Changes made to your local copy can be pushed (git push) to the remote repository.</p>
+
+    <p>In our discussion here and below, we are talking about working with Git in the console. Of course, you can use some sort of GUI-based solution (for example, IntelliJ IDEA), but first you should figure out what commands are being executed and what they mean.</p>
+
+    <h3>Working with Git in a local repository</h3>
+
+    <p>To create a local repository, you need to write:</p>
+
+<div class="terminal">git init</div>
+
+<img data-max-width="800" data-id="1b966c96-94e4-4457-a206-2aab492e5c45" src="https://cdn.codegym.cc/images/article/1b966c96-94e4-4457-a206-2aab492e5c45/original.png" alt="">
+
+    <p>This will create a hidden .git folder in the console's current directory.</p>
+
+    <p>The .git folder stores all information about the Git repository. Don't delete it ;)</p>
+
+    <p>Next, files are added to the project, and they are assigned the "Untracked" status. To check the current status of your work, write this:</p>
+
+<div class="terminal">git status</div>
+
+<img data-max-width="800" data-id="84d7d32f-0b38-48e4-b314-bcfe863ed6c1" src="https://cdn.codegym.cc/images/article/84d7d32f-0b38-48e4-b314-bcfe863ed6c1/original.png" alt="">
+
+    <p>We are in the master branch, and here we will remain until we switch to another branch.</p>
+
+    <p>This shows which files have changed but have not yet been added to the "staged" status. To add them to the "staged" status, you need to write "git add". We have a few options here, for example:</p>
+
+    <ul>
+        <li>git add -A — add all files to the "staged" status</li>
+        <li>git add . — add all files from this folder and all subfolders. Essentially the same as the previous one;</li>
+        <li>git add <имя файла> — adds a specific file. Here you can use regular expressions to add files according to some pattern. For example, git add *.java: This means that you only want to add files with the java extension.</li>
+    </ul>
+
+    <p>The first two options are clearly simple. Things get more interesting with the latest addition, so let's write:</p>
+
+<div class="terminal">git add *.txt</div>
+
+    <p>To check the status, we use the command already known to us:</p>
+
+<div class="terminal">git status</div>
+
+<img data-max-width="800" data-id="97edaa45-bf20-4b81-8351-3f9fef5a7f7d" src="https://cdn.codegym.cc/images/article/97edaa45-bf20-4b81-8351-3f9fef5a7f7d/original.png" alt="">
+
+    <p>Here you can see that the regular expression has worked correctly: test_resource.txt is now has the "staged" status.</p>
+
+    <p>And finally, the last stage for working with a local repository (there is one more when working with the remote repository ;)) — creating a new commit:</p>
+
+<div class="terminal">git commit -m “all txt files were added to the project”</div>
+
+<img data-max-width="800" data-id="e9cdc244-b44b-4cc7-b0ee-b5d6d9e20f9f" src="https://cdn.codegym.cc/images/article/e9cdc244-b44b-4cc7-b0ee-b5d6d9e20f9f/original.png" alt="">
+
+    <p>Next up is a great command for looking at the commit history on a branch. Let's make use of it:</p>
+
+<div class="terminal">git log</div>
+
+<img data-max-width="800" data-id="7fbf41ba-ae17-4e11-b2a8-0cd68b6b9ba0" src="https://cdn.codegym.cc/images/article/7fbf41ba-ae17-4e11-b2a8-0cd68b6b9ba0/original.png" alt="">
+
+    <p>Here you can see that we have created our first commit and it includes the text that we provided on the command line. It is very important to understand that this text should explain as accurately as possible what was done during this commit. This will help us many times in the future.</p>
+
+    <p>An inquisitive reader who has not yet fallen asleep may be wondering what happened to the GitTest.java file. Let's find out right now. To do this, we use:</p>
+
+<div class="terminal">git status</div>
+
+<img data-max-width="800" data-id="5169fe2f-0e70-422a-b81a-381a2bee1217" src="https://cdn.codegym.cc/images/article/5169fe2f-0e70-422a-b81a-381a2bee1217/original.png" alt="">
+
+    <p>As you can see, it is still "untracked" and is waiting in the wings. But what if we don't want to add it to the project at all? Sometimes that happens. </p>
+
+    <p>To make things more interesting, let's now try to change our test_resource.txt file. Let's add some text there and check the status:</p>
+
+<div class="terminal">git status</div>
+
+<img data-max-width="800" data-id="5ae28510-9fd2-4d9a-8c91-b1fe1d8ccf90" src="https://cdn.codegym.cc/images/article/5ae28510-9fd2-4d9a-8c91-b1fe1d8ccf90/original.png" alt="">
+
+    <p>Here you can clearly see the difference between the "untracked" and "modified" statuses. </p>
+
+    <p>GitTest.java is "untracked", while test_resource.txt is "modified".</p>
+
+    <p>Now that we have files in the modified state, we can examine the changes made to them. This can be done using the following command: </p>
+
+<div class="terminal">git diff</div>
+
+<img data-max-width="800" data-id="a33326e3-9f91-4c9d-b90f-88fb3484528c" src="https://cdn.codegym.cc/images/article/a33326e3-9f91-4c9d-b90f-88fb3484528c/original.png" alt="">
+
+    <p>That is, you can clearly see here what I added to our text file: hello world!</p>
+
+    <p>Let's add our changes to the text file and create a commit:
+
+<div class="terminal">git add test_resource.txt</div>
+<div class="terminal">git commit -m “added hello word! to test_resource.txt”</div>
+
+    <p>To look at all commits, write:</p>
+
+<div class="terminal">git log</div>
+
+<img data-max-width="800" data-id="d4f5620e-b416-4284-bb74-e3f9ad498a62" src="https://cdn.codegym.cc/images/article/d4f5620e-b416-4284-bb74-e3f9ad498a62/original.png" alt="">
+
+    <p>As you can see, we now have two commits.</p>
+
+    <p>We'll add GitTest.java in the same way. No comments here, just commands:</p>
+
+<div class="terminal">git add GitTest.java</div>
+<div class="terminal">git commit -m “added GitTest.java”</div>
+<div class="terminal">git status</div>
+
+<img data-max-width="800" data-id="ba4eafbb-bb4b-4ea3-9e37-f0e86308baeb" src="https://cdn.codegym.cc/images/article/ba4eafbb-bb4b-4ea3-9e37-f0e86308baeb/original.png" alt="">
+
+    <h3>Working with .gitignore</h3>
+
+    <p>Clearly, we only want to keep source code alone, and nothing else, in the repository. So what else could there be? At a minimum, compiled classes and/or files generated by development environments. </p>
+
+    <p>To tell Git to ignore them, we need to create a special file. Do this: create a file called .gitignore in the root of the project. Each line in this file represents a pattern to ignore.</p>
+
+    <p>In this example, the .gitignore file will look like this:</p>
+
+<div class="terminal">
+*.class<br/>
+target/<br/>
+*.iml<br/>
+.idea/<br/>
+</div>
+
+    <p>Let's take a look:</p>
+
+    <ul>
+        <li>The first line is to ignore all files with the .class extension</li>
+        <li>The second line is to ignore the "target" folder and everything it contains</li>
+        <li>The third line is to ignore all files with the .iml extension</li>
+        <li>The fourth line is to ignore the .idea folder</li>
+    </ul>
+
+    <p>Let's try using an example. To see how it works, let's add the compiled GitTest.class to the project and check the project status:</p>
+
+<div class="terminal">git status</div>
+
+<img data-max-width="800" data-id="2332f40d-82bf-4578-9905-3a59bc68c2ca" src="https://cdn.codegym.cc/images/article/2332f40d-82bf-4578-9905-3a59bc68c2ca/original.png" alt="">
+
+    <p>Clearly, we do not want to somehow accidentally add the compiled class to the project (using git add -A). To do this, create a .gitignore file and add everything that was described earlier:</p>
+
+<img data-max-width="800" data-id="27f06471-d0a9-4cec-8eac-423c63ab2a2b" src="https://cdn.codegym.cc/images/article/27f06471-d0a9-4cec-8eac-423c63ab2a2b/original.png" alt="">
+
+    <p>Now let's use a commit to add the .gitignore file to the project:</p>
+
+<div class="terminal">git add .gitignore</div>
+<div class="terminal">git commit -m “added .gitignore file”</div>
+
+    <p>And now the moment of truth: we have a compiled class GitTest.class that is "untracked", which we did not want to add to the Git repository. </p>
+
+    <p>Now we should see the effects of the .gitignore file:</p>
+
+<div class="terminal">git status</div>
+
+<img data-max-width="800" data-id="27531cd0-8316-4692-89f2-a35df55c436d" src="https://cdn.codegym.cc/images/article/27531cd0-8316-4692-89f2-a35df55c436d/original.png" alt="">
+
+    <p>Perfect! .gitignore +1 :)</p>
+
+    <h3>Working with branches</h3>
+
+    <p>Naturally, working in just one branch is inconvenient for solitary developers, and it is impossible when there is more than one person on a team. This is why we have branches.</p>
+
+    <p>A branch is just a movable pointer to commits.</p>
+
+    <p>In this part, we'll explore working in different branches: how to merge changes from one branch into another, what conflicts may arise, and much more.</p>
+
+    <p>To see a list of all branches in the repository and understand which one you are in, you need to write:</p>
+
+<div class="terminal">git branch -a</div>
+
+<img data-max-width="800" data-id="8ce8198b-3020-4c86-bc02-848427291a0f" src="https://cdn.codegym.cc/images/article/8ce8198b-3020-4c86-bc02-848427291a0f/original.png" alt="">
+
+    <p>You can see that we only have one master branch. The asterisk in front of it indicates that we are in it. By the way, you can also use the "git status" command to find out which branch we are in.</p>
+
+    <p>Then there are several options for creating branches (there may be more — these are the ones that I use):</p>
+
+    <ul>
+        <li>create a new branch based on the one we are in (99% of cases)</li>
+        <li>create a branch based on a specific commit (1% of cases)</li>
+    </ul>
+
+    <h4>Let's create a branch based on a specific commit</h4>
+
+    <p>We will rely on the commit's unique identifier. To find it, we write:</p>
+
+<div class="terminal">git log</div>
+
+<img data-max-width="800" data-id="9bd03635-859b-423a-b13e-39cadb6cd492" src="https://cdn.codegym.cc/images/article/9bd03635-859b-423a-b13e-39cadb6cd492/original.png" alt="">
+
+    <p>We have highlighted the commit with the comment "added hello world..." Its unique identifier is 6c44e53d06228f888f2f454d3cb8c1c976dd73f8. We want to create a "development" branch that starts from this commit. To do this, we write:</p>
+
+<div class="terminal">git checkout -b development 6c44e53d06228f888f2f454d3cb8c1c976dd73f8</div>
+
+    <p>A branch is created with only the first two commits from the master branch. To verify this, we first make sure to switch to a different branch and look at the number of commits there:</p>
+
+<div class="terminal">git status</div>
+<div class="terminal">git log</div>
+
+<img data-max-width="800" data-id="10717a93-669c-4a24-95c2-4db2a3c2483b" src="https://cdn.codegym.cc/images/article/10717a93-669c-4a24-95c2-4db2a3c2483b/original.png" alt="">
+
+    <p>And as expected, we have two commits. By the way, here's an interesting point: there is no .gitignore file in this branch yet, so our compiled file (GitTest.class) is now highlighted with "untracked" status.</p>
+
+    <p>Now we can review our branches again by writing this:</p>
+
+<div class="terminal">git branch -a</div>
+
+<img data-max-width="800" data-id="43b973d9-f6a4-4bc2-a053-87db5995be1b" src="https://cdn.codegym.cc/images/article/43b973d9-f6a4-4bc2-a053-87db5995be1b/original.png" alt="">
+
+    <p>You can see that there are two branches: "master" and "development". We are currently in development.</p>
+
+    <h4>Let's create a branch based on the current one</h4>
+
+    <p>The second way to create a branch is to create it from another. We want to create a branch based on the master branch. First, we need to switch to it, and the next step is to create a new one. Let's take a look:</p>
+
+    <ul>
+        <li>git checkout master — switch to the master branch</li>
+        <li>git status — verify that we are actually in the master branch</li>
+    </ul>
+
+<img data-max-width="800" data-id="0ea5f721-9a07-4944-a7f2-7d587e1219c5" src="https://cdn.codegym.cc/images/article/0ea5f721-9a07-4944-a7f2-7d587e1219c5/original.png" alt="">
+
+    <p>Here you can see that we switched to the master branch, the .gitignore file is in effect, and the compiled class is no longer highlighted as "untracked".</p>
+
+    <p>Now we create a new branch based on the master branch:</p>
+
+<div class="terminal">git checkout -b feature/update-txt-files</div>
+
+<img data-max-width="800" data-id="d97d1c17-b3fe-47a2-8807-52f053b4206b" src="https://cdn.codegym.cc/images/article/d97d1c17-b3fe-47a2-8807-52f053b4206b/original.png" alt="">
+
+    <p>If you are unsure whether this branch is the same as "master", you can easily check by executing "git log" and looking at all the commits. There should be four of them.</p>
+
+    <h3>Conflict resolution</h3>
+
+    <p>Before we explore what a conflict is, we need to talk about merging one branch into another.</p> 
+
+    <p>This picture depicts the process of merging one branch into another:</p>
+
+<img data-max-width="512" data-id="b87da9da-ca0d-4273-a9e2-662efcf4acc2" src="https://cdn.codegym.cc/images/article/b87da9da-ca0d-4273-a9e2-662efcf4acc2/original.png" alt="">
+
+    <p>Here, we have a main branch. At some point, a secondary branch is created off of the main branch and then modified. Once the work is done, we need to merge one branch into the other.</p>
+
+    <p>In our example, we created the feature/update-txt-files branch. As indicated by the name of the branch, we're updating text.</p>
+
+<img data-max-width="800" data-id="433b626f-155e-48a3-b2cc-f54a4ee6db47" src="https://cdn.codegym.cc/images/article/433b626f-155e-48a3-b2cc-f54a4ee6db47/original.png" alt="">
+
+    <p>Now we need to create a new commit for this work:</p>
+
+<div class="terminal">git add *.txt</div>
+<div class="terminal">git commit -m “updated txt files”</div>
+<div class="terminal">git log</div>
+
+<img data-max-width="800" data-id="82072317-e44a-4dd9-8f89-1079181006bb" src="https://cdn.codegym.cc/images/article/82072317-e44a-4dd9-8f89-1079181006bb/original.png" alt="">
+
+    <p>Now, if we want to merge the feature/update-txt-files branch into master, we need to go to master and write "git merge feature/update-txt-files":</p>
+
+<div class="terminal">git checkout master</div>
+<div class="terminal">git merge feature/update-txt-files</div>
+<div class="terminal">git log</div>
+
+<img data-max-width="800" data-id="6dba57d4-87f1-46bf-82b6-8d2bb650ab65" src="https://cdn.codegym.cc/images/article/6dba57d4-87f1-46bf-82b6-8d2bb650ab65/original.png" alt="">
+
+    <p>As a result, the master branch now also includes the commit that was added to feature/update-txt-files.</p>
+
+    <p>This functionality was added, so you can delete a feature branch. To do this, we write:</p>
+
+<div class="terminal">git branch -D feature/update-txt-files</div>
+
+    <p>Let's complicate the situation: now let's say that you need to change the txt file again. But now this file will be changed in the master branch as well. In other words, it will change in parallel. Git will not be able to figure out what to do when we want to merge our new code into the master branch.</p>
+
+    <p>We'll create a new branch based on master, make changes to text_resource.txt, and create a commit for this work:</p>
+
+<div class="terminal">git checkout -b feature/add-header</div>
+<p>... we make changes to the file</p>
+
+<img data-max-width="800" data-id="ea8e0c09-182f-433d-b78d-75b454450bf3" src="https://cdn.codegym.cc/images/article/ea8e0c09-182f-433d-b78d-75b454450bf3/original.png" alt="">
+
+<div class="terminal">git add *.txt</div>
+<div class="terminal">git commit -m “added header to txt”</div>
+
+<img data-max-width="800" data-id="3a34c7df-6d0f-462e-b8bc-0df6905184d4" src="https://cdn.codegym.cc/images/article/3a34c7df-6d0f-462e-b8bc-0df6905184d4/original.png" alt="">
+
+    <p>Go to the master branch and also update this text file on the same line as in the feature branch:</p>
+
+<div class="terminal">git checkout master</div>
+<p>… we updated test_resource.txt</p>
+
+<img data-max-width="800" data-id="00ec4058-b488-41b1-b1d9-7617c744dd48" src="https://cdn.codegym.cc/images/article/00ec4058-b488-41b1-b1d9-7617c744dd48/original.png" alt="">
+
+<div class="terminal">git add test_resource.txt</div>
+<div class="terminal">git commit -m “added master header to txt”</div>
+
+    <p>And now the most interesting point: we need to merge changes from the feature/add-header branch to master. We are in the master branch, so we only need to write:</p>
+
+<div class="terminal">git merge feature/add-header</div>
+
+    <p>But the result will be a conflict in the test_resource.txt file:</p>
+
+<img data-max-width="800" data-id="2a035c91-af85-4660-871b-40e0d2960d6d" src="https://cdn.codegym.cc/images/article/2a035c91-af85-4660-871b-40e0d2960d6d/original.png" alt="">
+
+    <p>Here we can see that Git could not decide on its own how to merge this code. It tells us that we need to resolve the conflict first, and only then perform the commit.</p>
+
+    <p>OK. We open the file with the conflict in a text editor and see:</p>
+
+<img data-max-width="800" data-id="f8a71988-c82d-4b6d-9861-38558a7c7eef" src="https://cdn.codegym.cc/images/article/f8a71988-c82d-4b6d-9861-38558a7c7eef/original.png" alt="">
+
+    <p>To understand what Git did here, we need to remember which changes we made and where, and then compare:</p>
+
+    <ol>
+        <li>The changes that were on this line in the master branch are found between "&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD" and "=======".</li>
+        <li>The changes that were in the feature/add-header branch are found between "=======" and "&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/add-header".</li>
+    </ol>
+
+    <p>This is how Git tells us that it could not figure out how to perform the merge at this location in the file. It divided this section into two parts from the different branches and invites us to resolve the merge conflict ourselves.</p>
+
+    <p>Fair enough. I boldly decide to remove everything, leaving only the word "header":</p>
+
+<img data-max-width="800" data-id="97bb4eb6-47eb-4017-a9d2-ac6dec7a5fe2" src="https://cdn.codegym.cc/images/article/97bb4eb6-47eb-4017-a9d2-ac6dec7a5fe2/original.png" alt="">
+
+    <p>Let's look at the status of the changes. The description will be slightly different. Rather than a "modified" status, we have "unmerged". So could we have mentioned a fifth status? I don't think this is necessary. Let's see:</p>
+
+<div class="terminal">git status</div>
+
+<img data-max-width="800" data-id="bbcca912-c5d6-4043-bb5a-8f9cfe5f893e" src="https://cdn.codegym.cc/images/article/bbcca912-c5d6-4043-bb5a-8f9cfe5f893e/original.png" alt="">
+
+    <p>We can convince ourselves that this is a special, unusual case. Let's continue:</p>
+
+<div class="terminal">git add *.txt</div>
+
+<img data-max-width="800" data-id="3d5ae004-f402-41bb-b677-f2d63aad1db8" src="https://cdn.codegym.cc/images/article/3d5ae004-f402-41bb-b677-f2d63aad1db8/original.png" alt="">
+
+    <p>You may notice that the description suggest writing only "git commit". Let's try writing that:</p>
+
+<div class="terminal">git commit</div>
+
+<img data-max-width="800" data-id="73595e92-6b14-4d4c-936c-1e232045a0c9" src="https://cdn.codegym.cc/images/article/73595e92-6b14-4d4c-936c-1e232045a0c9/original.png" alt="">
+
+    <p>And just like that, we did it — we resolved the conflict in the console.</p>
+
+    <p>Of course, this can be done a little easier in integrated development environments. For example, in IntelliJ IDEA, everything is set up so well that you can perform all the necessary actions right within it. But IDEs do a lot of things "under the hood", and we often don't understand what exactly is happening there. And when there is no understanding, problems can arise.</p>
+
+    <h2>Working with remote repositories</h2>
+
+    <p>The last step is to figure out a few more commands that are needed to work with the remote repository. </p>
+
+    <p>As I said, a remote repository is some place where the repository is stored and from which you can clone it.</p>
+
+    <p>What kind of remote repositories are there? Examples:</p>
+
+    <ul>
+        <li>GitHub is the largest storage platform for repositories and collaborative development.</li>
+        <li>GitLab is a web-based tool for the DevOps lifecycle with open source. It is a Git-based system for managing code repositories with its own wiki, bug tracking system, CI/CD pipeline, and other functions.</li>
+        <li>BitBucket is a web service for project hosting and collaborative development based on the Mercurial and Git version control systems. At one time it had a big advantage over GitHub in that it offered free private repositories. Last year, GitHub also introduced this capability to everyone for free.</li>
+        <li>And so on…</li>
+    </ul>
+
+    <p>When working with a remote repository, the first thing to do is clone the project to your local repository. </p>
+
+    <p>For this, we exported the project that we made locally Now everyone can clone it for themselves by writing:</p>
+
+<div class="terminal">git clone https://github.com/romankh3/git-demo</div>
+
+    <p>There is now a complete local copy of the project. To be sure that the local copy of the project is the latest, you need to pull the project by writing:</p>
+
+<div class="terminal">git pull</div>
+
+<img data-max-width="800" data-id="8c67c8bb-1a56-4ff2-bdee-78396d2472fb" src="https://cdn.codegym.cc/images/article/8c67c8bb-1a56-4ff2-bdee-78396d2472fb/original.png" alt="">
+
+    <p>In our case, nothing in the remote repository has changed at present, so the response is: Already up to date.</p>
+
+    <p>But if we make any changes to the remote repository, the local one is updated after we pull them.</p>
+
+    <p>And finally, the last command is to push the data to the remote repository. When we have done something locally and want to send it to the remote repository, we must first create a new commit locally. To demonstrate this, let's add something else to our text file:</p>
+
+<img data-max-width="800" data-id="e8baa1a1-915f-4476-93b4-8012cd2994ff" src="https://cdn.codegym.cc/images/article/e8baa1a1-915f-4476-93b4-8012cd2994ff/original.png" alt="">
+
+    <p>Now something quite common for us — we create a commit for this work:</p>
+
+<div class="terminal">git add test_resource.txt</div>
+<div class="terminal">git commit -m "prepared txt for pushing"</div>
+
+    <p>The command to push this to the remote repository is:</p>
+
+<div class="terminal">git push</div>
+
+    <p>That's it for now! </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Useful links</th>
+            </tr>
+            <tr>
+                <td>
+                    <ul>
+                        <li><a href="https://bit.ly/3eUqoaa" target="_blank">Official documentation for Git</a>. We recommend it as a reference.</li>
+                        <li><a href="https://www.geeksforgeeks.org/difference-between-git-and-github/" target="_blank">Difference between Git and GitHub</a></li>
+                        <li>Habr: <a href="https://codegym.cc/groups/posts/379-getting-started-with-git-a-comprehensive-guide-for-newbies" target="_blank">Git Getting Started.</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h1>2. How to work with Git in IntelliJ IDEA</h1>
+
+    <p>In this part, you will learn how to work with Git in IntelliJ IDEA.</p>
+
+    <h2>Required inputs:</h2>
+
+    <ol>
+        <li>Read, follow along, and understand the previous part. This will help ensure that everything is set up and ready to go.</li>
+        <li>Install IntelliJ IDEA. Everything should be in order here :)</li>
+        <li>Allocate an hour to achieve complete mastery.</li>
+    </ol>
+
+    <p>Let's work with the <a href="https://github.com/romankh3/git-demo" target="_blank">demo project</a> that I used for the article about Git.</p>
+
+    <h2>Clone the project locally</h2>
+
+    <p>There are two options here:</p>
+
+    <ol>
+        <li>If you already have a GitHub account and want to push something later, it is better to fork the project and clone your own copy. You can read about how to create a fork in another article under the heading <a href="https://codegym.cc/groups/posts/454-teamwork-without-confusion-understanding-branching-strategies-in-git" target="_blank">An example of the forking workflow</a>.</li>
+        <li>Clone the repository and do everything locally without the ability to push the whole thing to the server. </li>
+    </ol>
+
+    <p>To clone a project from GitHub, you need to copy the project link and pass it to IntelliJ IDEA:</p>
+
+    <ol>
+        <li><p>Copy the project address:</p>
+<img data-max-width="1024" data-id="8ac45105-e050-4271-898a-37159e684330" src="https://cdn.codegym.cc/images/article/8ac45105-e050-4271-898a-37159e684330/original.png" alt=""></li>
+        <li><p>Open IntelliJ IDEA and select "Get from Version Control":</p>
+<img data-max-width="800" data-id="fac7b816-9c59-454b-812d-7b5d0d5b1494" src="https://cdn.codegym.cc/images/article/fac7b816-9c59-454b-812d-7b5d0d5b1494/original.png" alt=""></li>
+        <li><p>Copy and paste the project address:</p>
+<img data-max-width="800" data-id="f1fa861f-e03b-4f09-8bcf-f1ca6887f263" src="https://cdn.codegym.cc/images/article/f1fa861f-e03b-4f09-8bcf-f1ca6887f263/original.png" alt=""></li>
+        <li><p>You will be prompted to create an IntelliJ IDEA project. Accept the offer:</p>
+<img data-max-width="800" data-id="37378112-85c8-413c-8e5f-8685711585f7" src="https://cdn.codegym.cc/images/article/37378112-85c8-413c-8e5f-8685711585f7/original.png" alt=""></li>
+        <li><p>Since there is no build system, we select "Create project from existing sources":</p>
+<img data-max-width="800" data-id="7b133f7d-24c2-4158-b328-c95b6d73bf1d" src="https://cdn.codegym.cc/images/article/7b133f7d-24c2-4158-b328-c95b6d73bf1d/800.jpeg" alt=""></li>
+        <li><p>Next you'll see this beautiful screen:</p>
+<img data-max-width="1024" data-id="bc2cd4e3-eba1-4c85-be33-526524e8e1e6" src="https://cdn.codegym.cc/images/article/bc2cd4e3-eba1-4c85-be33-526524e8e1e6/original.jpeg" alt=""></li>
+    </ol>
+
+    <p>Now that we figured out cloning, you can take a look around.</p>
+
+    <h2>First glance at IntelliJ IDEA as a Git UI</h2>
+
+    <p>Take a closer look at the cloned project: you can already get a lot of information about the version control system.</p>
+
+    <p>First, we have the Version Control pane in the lower left corner. Here you can find all local changes and get a list of commits (analogous to "git log"). </p>
+
+    <p>Let's move on to a discussion of Log. There is a certain visualization that helps us understand exactly how development has proceeded. For example, you can see that a new branch was created with a added header to txt commit, which was then merged into the master branch. If you click on a commit, you can see in the right corner all the information about the commit: all its changes and metadata.</p>
+
+<img data-max-width="1024" data-id="5338d3df-792f-4ed8-8f56-f1932d3d0577" src="https://cdn.codegym.cc/images/article/5338d3df-792f-4ed8-8f56-f1932d3d0577/original.png" alt="">
+
+    <p>Moreover, you can see the actual changes. We also see that a conflict was resolved there. IDEA also presents this very well. </p>
+
+    <p>If you double-click on the file that was changed during this commit, we will see how the conflict was resolved:</p>
+
+<img data-max-width="1024" data-id="782af919-8aea-4bc1-8980-97fe6b5d7ed5" src="https://cdn.codegym.cc/images/article/782af919-8aea-4bc1-8980-97fe6b5d7ed5/original.png" alt="">
+
+    <p>We note that on the left and the right we have the two versions of the same file that needed to be merged into one. And in the middle, we have the final merged result. </p>
+
+    <p>When a project has many branches, commits, and users, you need to search separately by branch, user, and date:</p>
+
+<img data-max-width="1024" data-id="14a82cc6-c0cc-4154-89ba-6420b9ea63a1" src="https://cdn.codegym.cc/images/article/14a82cc6-c0cc-4154-89ba-6420b9ea63a1/original.png" alt="">
+
+    <p>Before getting started, it is also worthwhile to explain how to understand which branch we are in. </p>
+
+    <p>In the lower right corner, there is a button labeled "Git: master". Whatever follows "Git:" is the current branch. If you click the button, you can do a lot of useful things: switch to another branch, create a new one, rename an existing one, and so on.</p>
+
+<img data-max-width="1024" data-id="df1b2a92-8ab0-4e59-9a69-04c502b040e8" src="https://cdn.codegym.cc/images/article/df1b2a92-8ab0-4e59-9a69-04c502b040e8/original.png" alt="">
+
+    <h2>Working with a repository</h2>
+
+    <h3>Useful hotkeys</h3>
+
+    <p>For future work, you need to remember a few very useful hotkeys:</p>
+
+    <ol>
+        <li><span class="text-bold">CTRL+T</span> — Get the latest changes from the remote repository (git pull).</li>
+        <li><span class="text-bold">CTRL+K</span> — Create a commit / see all the current changes. This includes both untracked and modified files (git commit).</li>
+        <li><span class="text-bold">CTRL+SHIFT+K</span> — This is the command for pushing changes to the remote repository. All commits created locally and not yet in the remote repository will be pushed (git push).</li>
+        <li><span class="text-bold">ALT+CTRL+Z</span> — Rollback changes in a specific file to the state of the last commit created in the local repository. If you select the entire project in the upper left corner, you can roll back changes in all files.</li>
+    </ol>
+
+    <h2>What do we want?</h2>
+
+    <p>To get work done, we need to master a basic scenario that is used everywhere.</p>
+
+    <p>The objective is to implement new functionality in a separate branch and then push it to a remote repository (then you also need to create a pull request to the main branch, but that's beyond the scope of this lesson).</p>
+
+    <p>What is required to do this?</p>
+
+    <ol>
+        <li><p>Get all the current changes in the main branch (for example, "master").</p></li>
+        <li><p>From this main branch, create a separate branch for your work.</p></li>
+        <li><p>Implement the new functionality.</p></li>
+        <li><p>Go to the main branch and check if there have been any new changes while we were working. If not, then everything is fine. But if there were changes, then we do the following: go to the working branch and <a href="https://docs.github.com/en/get-started/using-git/about-git-rebase" target="_blank">rebase</a> the changes from the main branch to ours. If everything goes well, then great. But it's entirely possible that there will be conflicts. As it happens, they just can be resolved in advance, without wasting time in the remote repository.</p>
+    <p><em>Are you wondering why you should do this? It's good manners and prevents conflicts from occurring after pushing your branch to the local repository (there is, of course, a possibility that conflicts will still occur, but it becomes <span class="text-bold">much</span> smaller).</em></p></li>
+        <li><p>Push your changes to the remote repository.</p></li>
+    </ol>
+
+    <h3>How to get changes from the remote server?</h3>
+    <p>We added a description to the README with a new commit and want to get these changes. If changes were made both in the local repository and in the remote one, then we are invited to choose between a merge and a rebase. We choose to merge.</p>
+
+    <p><span class="text-bold">Enter CTRL+T</span>:</p>
+
+<img data-max-width="1024" data-id="cf224b05-d24d-4ccc-b9c8-34adc2d72202" src="https://cdn.codegym.cc/images/article/cf224b05-d24d-4ccc-b9c8-34adc2d72202/original.png" alt="">
+
+    <p>You can now see how the README has changed, i.e. the changes from the remote repository were pulled in, and in the lower right corner you can see all the details of the changes that came from the server.</p>
+
+<img data-max-width="1024" data-id="5b7278ab-32f6-4c0c-801e-698999b34c28" src="https://cdn.codegym.cc/images/article/5b7278ab-32f6-4c0c-801e-698999b34c28/original.png" alt="">
+
+    <h3>Create a new branch based on master</h3>
+
+    <p>Everything is simple here. </p>
+
+    <p>Go to the bottom right corner and click <span class="text-bold">Git: master</span>. Select <span class="text-bold">+ New Branch</span>.</p>
+
+<img data-max-width="512" data-id="328d4315-f521-4cd2-9d9f-8ca4196bcb7e" src="https://cdn.codegym.cc/images/article/328d4315-f521-4cd2-9d9f-8ca4196bcb7e/original.png" alt="">Leave the <span class="text-bold">Checkout branch</span> checkbox selected and enter the name of the new branch. In our case: this will be <span class="text-bold">readme-improver</span>. <img data-max-width="512" data-id="c5548b15-e67b-4ab8-bf8d-3dbc0e0ee20d" src="https://cdn.codegym.cc/images/article/c5548b15-e67b-4ab8-bf8d-3dbc0e0ee20d/original.png" alt="">
+
+    <p><span class="text-bold">Git: master</span> will then change to <span class="text-bold">Git: readme-improver</span>.</p>
+
+    <h3>Let's simulate parallel work</h3>
+
+    <p>For conflicts to appear, someone has to create them.</p>
+
+    <p>We will edit the README with a new commit through the browser, thus simulating parallel work. It's as if someone made changes in the same file while we were working on it. The result will be a conflict. We will remove the word "полностью" from line 10.</p>
+
+    <h2>Implement our functionality</h2>
+
+    <p>Our task is to change the README and add a description to the new article. That is, the work in Git goes through IntelliJ IDEA. Add this:</p>
+
+<img data-max-width="1024" data-id="55af2f94-068d-45a2-b236-25683da22923" src="https://cdn.codegym.cc/images/article/55af2f94-068d-45a2-b236-25683da22923/original.png" alt="">
+
+    <p>The changes are done. Now we can create a commit. Press <span class="text-bold">CTRL+K</span>, which gives us:</p>
+
+<img data-max-width="800" data-id="9c46eceb-cefd-4d22-b383-62b652dbf580" src="https://cdn.codegym.cc/images/article/9c46eceb-cefd-4d22-b383-62b652dbf580/original.png" alt="">
+
+    <p>Before creating a commit, we need to take a close look at what this window offers. </p>
+
+    <p>In the <span class="text-bold">Commit Message</span> section, we write text associated with the commit. Then to create it, we need to click <span class="text-bold">Commit</span>. </p>
+
+    <p>We write that the README has changed and create the commit. An alert pops up in the lower left corner with the name of the commit:</p>
+
+<img data-max-width="512" data-id="ad1b12f2-a9a3-4f03-be03-65138d3f0fce" src="https://cdn.codegym.cc/images/article/ad1b12f2-a9a3-4f03-be03-65138d3f0fce/original.png" alt="">
+
+    <h3>Check if the main branch has changed</h3>
+
+    <p>We completed our task. It works. We wrote tests. Everything is fine. But before pushing to the server, we still need to check if there were any changes in the main branch in the meantime. How could that happen? Quite easily: someone receives a task after you, and that someone finishes it faster than you finish your task.</p>
+
+   <p>So we need to go to the master branch. To do this, we need to do what is shown in the lower right corner in the screenshot below:</p>
+
+<img data-max-width="512" data-id="47aeed84-70c0-4c2c-bd3d-23ded477331f" src="https://cdn.codegym.cc/images/article/47aeed84-70c0-4c2c-bd3d-23ded477331f/original.png" alt="">
+
+    <p>In the master branch, press <span class="text-bold">CTRL+T</span> to get its latest changes from the remote server. Looking at what the changes, you can easily see what happened:</p>
+
+<img data-max-width="1024" data-id="8841f8a3-26b7-4951-b9ae-fce4c6ee963d" src="https://cdn.codegym.cc/images/article/8841f8a3-26b7-4951-b9ae-fce4c6ee963d/original.png" alt="">
+
+    <p>The word "полностью" was removed. Maybe someone from marketing decided that it should not be written like that and gave the developers a task to update it.</p>
+
+    <p>We now have a local copy of the latest version of the master branch. Go back to <span class="text-bold">readme-improver</span>.</p>
+
+    <p>Now we need to rebase the changes from the master branch to ours. We do this: <img data-max-width="512" data-id="ed807227-2b62-4c17-8502-09bf43da5f36" src="https://cdn.codegym.cc/images/article/ed807227-2b62-4c17-8502-09bf43da5f36/512.jpeg" alt="">
+
+    <p>If you did everything correctly and followed along with me, the result should show a conflict in the README file:</p>
+
+<img data-max-width="800" data-id="87da0371-4afa-45b9-8a17-26288d4ed82b" src="https://cdn.codegym.cc/images/article/87da0371-4afa-45b9-8a17-26288d4ed82b/original.png" alt="">
+
+    <p>Here we also have a lot of information to understand and soak up. Shown here is a list of files (in our case, one file) that have conflicts. We can choose from three options:</p>
+
+    <ol>
+        <li>accept yours — accept only changes from readme-improver.</li>
+        <li>accept theirs — accept only changes from master.</li>
+        <li>merge — choose yourself what you want to keep and what to discard.</li>
+    </ol>
+
+<p>It is not clear what changed. If there are changes are the master branch, they must be needed there, so we cannot simply accept our changes. Accordingly, we select <span class="text-bold">merge</span>: <img data-max-width="1080" data-id="e3dd8341-b91a-4364-82ec-98c4380e7f07" src="https://cdn.codegym.cc/images/article/e3dd8341-b91a-4364-82ec-98c4380e7f07/original.png" alt="">
+
+    <p>Here we can see that there are three parts:</p>
+
+    <ol>
+        <li>These are the changes from readme-improver.</li>
+        <li>The merged result. For now, it is what existed before the changes.</li>
+        <li>The changes from the master branch.</li>
+    </ol>
+
+    <p>We need to produce a merged result that will satisfy everyone. Reviewing what was changed BEFORE our changes, we realize that they simply removed the word "полностью". Okay, no problem! That means that we will also remove it in the merged result and then add our changes. Once we correct the merged result, we can click <span class="text-bold">Apply</span>. </p>
+
+    <p>Then a notification will pop up, telling us that the rebase was successful:</p>
+
+<img data-max-width="512" data-id="91e5c63a-32b4-4c22-8e87-1948f4155d16" src="https://cdn.codegym.cc/images/article/91e5c63a-32b4-4c22-8e87-1948f4155d16/original.png" alt="">
+
+    <p>There! We resolved our first conflict through IntelliJ IDEA.</p>
+
+    <h3>Push changes to the remote server</h3>
+
+    <p>The next step is to push the changes to the remote server and create a pull request. To do this, simply press <span class="text-bold">CTRL+SHIFT+K</span>. Then we get:</p>
+
+<img data-max-width="800" data-id="daa1f58f-5272-4fa8-ac9e-4fe5269b980d" src="https://cdn.codegym.cc/images/article/daa1f58f-5272-4fa8-ac9e-4fe5269b980d/original.png" alt="">
+
+    <p>On the left, there will be a list of commits that have not been pushed to the remote repository. On the right will be all the files that have changed. And that's it! Press <span class="text-bold">Push</span> and you will experience happiness :)</p>
+
+    <p>If the push is successful, you will see a notification like this in the lower right corner:</p>
+
+<img data-max-width="512" data-id="6baae013-ef6b-4e95-870c-95fd9fc6b593" src="https://cdn.codegym.cc/images/article/6baae013-ef6b-4e95-870c-95fd9fc6b593/original.png" alt="">
+
+    <h2>Bonus: creating a pull request</h2>
+
+    <p>Let's go to a GitHub repository and we see that GitHub already knows what we want:</p>
+
+<img data-max-width="1024" data-id="53ed0d01-b0af-4a11-bcb0-b52d136efc31" src="https://cdn.codegym.cc/images/article/53ed0d01-b0af-4a11-bcb0-b52d136efc31/original.jpeg" alt="">
+
+    <p>Click <span class="text-bold">Compare &amp; pull request</span>. Then click <span class="text-bold">Create pull request</span>. Because we resolved the conflicts in advance, now when creating a pull request, we can immediately merge it: <img data-max-width="1024" data-id="c81448bd-da06-4479-985b-4e17099f3d7f" src="https://cdn.codegym.cc/images/article/c81448bd-da06-4479-985b-4e17099f3d7f/original.jpeg" alt="">
+
+    <p>That's it for now!</p>

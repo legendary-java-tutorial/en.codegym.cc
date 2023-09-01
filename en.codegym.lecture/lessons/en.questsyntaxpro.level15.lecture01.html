@@ -1,0 +1,243 @@
+<h2>1. Data streams</h2>
+<p>Rarely does a program exist as an island unto itself. Programs usually somehow interact with the "outside world". This can happen through reading data from the keyboard, sending messages, downloading pages from the Internet, or, conversely, uploading files to a remote server.</p>
+<p>We can refer to all of these behaviors in one word: <strong>data exchange</strong> between the program and the outside world. Wait, that's not just one word.</p>
+<p>Of course, data exchange itself can be divided into two parts: receiving data and sending data. For example, you read data from the keyboard using a <code>Scanner</code> object — this is receiving data. And you display data on the screen using a <code>System.out.println()</code> command — this is sending data.</p>
+<p><span class="text-green">In programming, the term "stream" is used to describe data exchange.</span> Where did that term come from?</p>
+<p>In real life, you can have a stream of water or a stream of consciousness. In programming, we have <strong>data streams</strong>.</p>
+<p>Streams are a versatile tool. They allow the program to receive data from anywhere (input streams) and send data anywhere (output streams). Thus, there are two types:</p>
+<ul>
+    <li>An input stream is for receiving data</li>
+    <li>An output stream is for sending data</li>
+</ul>
+<p>To make streams 'tangible', Java's creators wrote two classes: <code>InputStream</code> and <code>OutputStream</code>.</p>
+<p>The <code>InputStream</code> class has a <code>read()</code> method that lets you read data from it. And the <code>OutputStream</code> class has a <code>write()</code> method that lets you write data to it. They have other methods as well, but more on that later.</p>
+<p><strong>Byte streams</strong></p>
+<p>What kind of data are we talking about? What format does it take? In other words, what data types do these classes support?</p>
+<p>These are generic classes, so they support the most common data type — the <code>byte</code>. An <code>OutputStream</code> can write bytes (and byte arrays), and an <code>InputStream</code> object can read bytes (or byte arrays). That's it — they don't support any other data types.</p>
+<p>As a result, these streams are also called <span class="term">byte streams</span>.</p>
+<p>One feature of streams is that their data can only be read (or written) sequentially. You can't read data from the middle of a stream without reading all the data that comes before it.</p>
+<p>This is how reading data from the keyboard works through the <code>Scanner</code> class: you read data from the keyboard sequentially, line by line. We read a line, then the next line, then the next line, and so on. Fittingly, the method for reading lines is called <code>nextLine()</code>.</p>
+<p>Writing data to an <code>OutputStream</code> also happens sequentially. A good example of this is console output. You output a line, followed by another and another. This is sequential output. You can't output the first line, then the tenth, and then the second. All data is written to an output stream only sequentially.</p>
+<p><strong>Character streams</strong></p>
+<p>You recently learned that strings are the second most popular data type, and indeed they are. A lot of information is passed around in the form of characters and whole strings. A computer excels at sending and receiving everything as bytes, but humans aren't that perfect.</p>
+<p>Accounting for this fact, Java programmers wrote two more classes: <code>Reader</code> and <code>Writer</code>. The <code>Reader</code> class is analogous the <code>InputStream</code> class, but its <code>read()</code> method reads not bytes, but characters (<code>char</code>). The <code>Writer</code> class corresponds to the <code>OutputStream</code> class. And just like the <code>Reader</code> class, it works with characters (<code>char</code>), not bytes.</p>
+<p>If we compare these four classes, we get the following picture:</p>
+<table>
+    <tbody>
+    <tr>
+        <th></th>
+        <th width="37%" class="text-center">Bytes (byte)</th>
+        <th width="37%" class="text-center">Characters (char)</th>
+    </tr>
+    <tr>
+        <td class="text-center"><span class="text-bold">Reading data</span></td>
+        <td>
+            <pre class="text-center"><code>InputStream</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>Reader</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td class="text-center"><span class="text-bold">Writing data</span></td>
+        <td>
+            <pre class="text-center"><code>OutputStream</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>Writer</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Practical application</strong></p>
+<p>The <code>InputStream</code>, <code>OutputStream</code>, <code>Reader</code> and <code>Writer</code> classes themselves are not used directly by anyone, since they are not associated with any concrete objects from which data can be read (or into which data can be written). But these four classes have plenty of descendant classes that can do a lot.</p>
+<hr>
+<h2>2. <code>InputStream</code> class</h2>
+<p>The <code>InputStream</code> class is interesting because it is the parent class for hundreds of descendant classes. It doesn't have any data of its own, but it does have methods that all of its derived classes inherit.</p>
+<p>In general, it is rare for stream objects to store data internally. A stream is a tool for reading/writing data, but not storage. That said, there are exceptions.</p>
+<p>Methods of the <code>InputStream</code> class and all its descendant classes:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">read</span>()</code></pre>
+        </td>
+        <td>Reads one byte from the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">read</span>(byte[] buffer)</code></pre>
+        </td>
+        <td>Reads an array of bytes from the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>byte[] <span class="text-red">readAllBytes</span>()</code></pre>
+        </td>
+        <td>Reads all the bytes from the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>long <span class="text-red">skip</span>(long n)</code></pre>
+        </td>
+        <td>Skips <code>n</code> bytes in the stream (reads and discards them)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">available</span>()</code></pre>
+        </td>
+        <td>Checks how many bytes are left in the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">close</span>()</code></pre>
+        </td>
+        <td>Closes the stream</td>
+    </tr>
+    </tbody>
+</table>
+<p>Let's briefly go through these methods:</p>
+<p><strong><code>read()</code> method</strong></p>
+<p>The <code>read()</code> method reads <span class="text-bold">one byte</span> from the stream and returns it. You might be confused by the <code>int</code> return type. This type was chosen because <code>int</code> is the standard integer type. The first three bytes of the <code>int</code> will be zero.</p>
+<p><strong><code>read(byte[] buffer)</code> method</strong></p>
+<p>This is the second variant of the <code>read()</code> method. It lets you read a byte array from an <code>InputStream</code> all at once. The array that will store the bytes must be passed as an argument. The method returns a number — the number of bytes actually read.</p>
+<p>Let's say you have a 10 kilobyte buffer and you're reading data from a file using the <code>FileInputStream</code> class. If the file contains only 2 kilobytes, all the data will be loaded into the buffer array, and the method will return the number 2048 (2 kilobytes).</p>
+<p><strong><code>readAllBytes()</code> method</strong></p>
+<p>A very good method. It just reads all the data from the <code>InputStream</code> until it runs out and returns it as a single byte array. This is very handy for reading small files. Large files may not physically fit in memory, and the method will throw an exception.</p>
+<p><strong><code>skip(long n)</code> method</strong></p>
+<p>This method allows you to skip the first n bytes from the <code>InputStream</code> object. Because the data is read strictly sequentially, this method simply reads the first n bytes from the stream and discards them.</p>
+<p>Returns the number of bytes that were actually skipped (in case the stream ended before <code>n</code> bytes were skipped).</p>
+<p><strong><code>int available()</code> method</strong></p>
+<p>The method returns the number of bytes that are still left in the stream</p>
+<p><strong><code>void close()</code> method</strong></p>
+<p>The <code>close()</code> method closes the data stream and releases the external resources associated with it. Once a stream is closed, no more data can be read from it.</p>
+<p>Let's write an example program that copies a very large file. We cannot use the <code>readAllBytes()</code> method to read the entire file into memory. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">src</span> = "c:\\projects\\log.txt";
+String <span class="code text-user">dest</span> = "c:\\projects\\copy.txt";
+
+try(<span class="text-viola">FileInputStream</span> <span class="text-green">input</span> = new <span class="text-viola">FileInputStream</span>(<span class="code text-green">src</span>);
+<span class="text-viola">FileOutputStream</span> <span class="text-user">output</span> = new <span class="text-viola">FileOutputStream</span>(<span class="code text-user">dest</span>))
+{
+   byte[] <span class="code text-orange">buffer</span> = new byte[65536]; // 64Kb
+   while (<span class="text-green">input</span>.<span class="text-red">available</span>() &gt; 0)
+   {
+      int <span class="code text-neon">real</span> = <span class="text-green">input</span>.<span class="text-red">read</span>(<span class="code text-orange">buffer</span>);
+      <span class="text-user">output</span>.<span class="text-red">write</span>(<span class="code text-orange">buffer</span>, 0, <span class="code text-neon">real</span>);
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><code>InputStream</code> for reading from the file<br>
+            <code>OutputStream</code> for write to file<br><br>
+            Buffer into which we will read the data<br>
+            As long as there is data in the stream<br><br>
+            Read data into the buffer<br>
+            Write the data from the buffer to the second stream
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>In this example, we used two classes: <code>FileInputStream</code> is a descendant of <code>InputStream</code> for reading data from a file, and <code>FileOutputStream</code> is a descendant of <code>OutputStream</code> for writing data to a file. We will talk about the second class a little later.</p>
+<p>Another interesting point here is the <code>real</code> variable. When the last block of data is read from a file, it could easily have less than 64KB of data. Accordingly, we need to output not the entire buffer, but only part of it — the first <code>real</code> bytes. This is exactly what happens in the <code>write()</code> method.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1504"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1505"></div>
+<hr>
+<h2>3. <code>Reader</code> class</h2>
+<p>The <code>Reader</code> class is a complete analogue of the <code>InputStream</code> class. The only one difference is that it works with characters (<code>char</code>), not with bytes. Just like the <code>InputStream</code> class, the <code>Reader</code> class is not used anywhere on its own: it is the parent class for hundreds of descendant classes and defines common methods for all of them.</p>
+<p>Methods of the <code>Reader</code> class (and all its descendant classes):</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">read</span>()</code></pre>
+        </td>
+        <td>Reads one <code>char</code> from the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">read</span>(char[] buffer)</code></pre>
+        </td>
+        <td>Reads an <code>char</code> array from the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>long <span class="text-red">skip</span>(long n)</code></pre>
+        </td>
+        <td>Skips <code>n</code> <code>chars</code> in the stream (reads and discards them)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>boolean <span class="text-red">ready</span>()</code></pre>
+        </td>
+        <td>Checks whether there is still something left in the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">close</span>()</code></pre>
+        </td>
+        <td>Closes the stream</td>
+    </tr>
+    </tbody>
+</table>
+<p>The methods are very similar to those of the <code>InputStream</code> class, although there are slight differences.</p>
+<p><strong><code>int read()</code> method</strong></p>
+<p>This method reads one <code>char</code> from the stream and returns it. The <code>char</code> type widens to an <code>int</code>, but the first two bytes of the result are always zero.</p>
+<p><strong><code>int read(char[] buffer)</code> method</strong></p>
+<p>This is the second variant of the <code>read()</code> method. It lets you read a char array from a <code>Reader</code> all at once. The array that will store the characters must be passed as an argument. The method returns a number — the number of characters actually read.</p>
+<p><strong><code>skip(long n)</code> method</strong></p>
+<p>This method allows you to skip the first n characters from the <code>Reader</code> object. It works exactly the same as the analogous method of the <code>InputStream</code> class. Returns the number of characters that were actually skipped.</p>
+<p><strong><code>boolean ready()</code> method</strong></p>
+<p>Returns <code>true</code> if there are unread bytes in the stream.</p>
+<p><strong><code>void close()</code> method</strong></p>
+<p>The <code>close()</code> method closes the data stream and releases the external resources associated with it. Once a stream is closed, no more data can be read from it.</p>
+<p>For comparison, let's write a program that copies a text file:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">src</span> = "c:\\projects\\log.txt";
+String <span class="code text-user">dest</span> = "c:\\projects\\copy.txt";
+
+try(<span class="text-viola">FileReader</span> <span class="text-green">reader</span> = new <span class="text-viola">FileReader</span>(<span class="code text-green">src</span>);
+<span class="text-viola">FileWriter</span> <span class="text-user">writer</span> = new <span class="text-viola">FileWriter</span>(<span class="code text-user">dest</span>))
+{
+   char[] <span class="code text-orange">buffer</span> = new char[65536]; // 128Kb
+   while (<span class="text-green">reader</span>.<span class="text-red">ready</span>())
+   {
+      int <span class="code text-neon">real</span> = <span class="text-green">reader</span>.<span class="text-red">read</span>(<span class="code text-orange">buffer</span>);
+      <span class="text-user">writer</span>.<span class="text-red">write</span>(<span class="code text-orange">buffer</span>, 0, <span class="code text-neon">real</span>);
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><code>Reader</code> for reading from a file<br>
+            <code>Writer</code> for writing to a file<br><br>
+            Buffer into which we will read the data<br>
+            As long as there is data in the stream<br><br>
+            Read data into a buffer<br>
+            Write the data from the buffer to the second stream
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1506"></div>

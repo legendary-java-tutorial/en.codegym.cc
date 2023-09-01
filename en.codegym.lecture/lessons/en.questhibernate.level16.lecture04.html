@@ -1,0 +1,167 @@
+with a database through JDBC or even through Hibernate, the code often turns out to be more cumbersome than we would like. A database query often contains:</p>
+<ul>
+ <li>data validation</li>
+ <li>setting request parameters</li>
+ <li>HQL query selection depending on query parameters</li>
+ <li>constructing a query using the Criteria API</li>
+ <li>caching settings</li>
+ <li>initial error handling, etc.</li>
+</ul>
+<p>Therefore, the common practice is to create special classes for working with the database. Such classes are called DAO, Data Access Object. Their task is to hide all the complexities of working with the database and provide a beautiful and convenient interface to the outside.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EmployeeDAO</span> <span class="token punctuation">{</span>
+
+   <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> <span class="token function">getEmployeeList</span><span class="token punctuation">(</span><span class="token keyword">int</span> from<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   	<span class="token class-name">String</span> hqlQuery <span class="token operator">=</span> “from <span class="token class-name">Employee</span>”<span class="token punctuation">;</span>
+   	<span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>hqlQuery<span class="token punctuation">,</span> <span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	query<span class="token punctuation">.</span><span class="token function">setFirstResult</span><span class="token punctuation">(</span>from<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	query<span class="token punctuation">.</span><span class="token function">setMaxResults</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	<span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">getResultList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getEmployeeCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	     <span class="token class-name">String</span> hqlQuery <span class="token operator">=</span> “select <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> from <span class="token class-name">Employee</span>”<span class="token punctuation">;</span>
+     	<span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>hqlQuery<span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     	<span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">getSingleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token class-name">Employee</span> <span class="token function">getEmployeeByUniqName</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	     <span class="token class-name">String</span> hqlQuery <span class="token operator">=</span> “from <span class="token class-name">Employee</span> where name <span class="token operator">=</span> <span class="token operator">:</span>name”<span class="token punctuation">;</span>
+     	<span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>hqlQuery<span class="token punctuation">,</span> <span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     	query<span class="token punctuation">.</span>setParametу<span class="token function">r</span><span class="token punctuation">(</span>“name”<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     	<span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">getSingleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We have a class <span class="code"><span class="text-green">EmployeeDAO</span></span> , with the help of which we get objects of type Employee from the database. The class itself, although stuffed with annotations, does not contain methods for saving itself to the database.</p>
+<h2>Benefits of DAO</h2>
+<p>There are many advantages to this approach:</p>
+<p>First, we have completely hidden the work with the database in the DAO class. If you decide in the future to rewrite all queries from HQL to Criteria API or Native Query, this will not affect the code outside of this class in any way.</p>
+<p>Secondly, you can complicate the behavior of these methods. You can add caching, events, parameter validation. This will all be hidden from the outside code.</p>
+<p>Thirdly, if you need a method that doesn't exist yet, you just add it here. For example, I need a method that will return all user tasks that have already been expired. Then I'll just do this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EmployeeDAO</span> <span class="token punctuation">{</span>
+
+   <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">&gt;</span></span> <span class="token function">getExpiredTasks</span><span class="token punctuation">(</span><span class="token keyword">int</span> userId<span class="token punctuation">,</span> <span class="token keyword">int</span> from<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   	<span class="token class-name">String</span> hqlQuery <span class="token operator">=</span> “from <span class="token class-name">Task</span> where task<span class="token punctuation">.</span>user<span class="token punctuation">.</span>id <span class="token operator">=</span> <span class="token operator">:</span>id and deadline <span class="token operator">&lt;</span> <span class="token function">curdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>”<span class="token punctuation">;</span>
+   	<span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>hqlQuery<span class="token punctuation">,</span> <span class="token class-name">Task</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	query<span class="token punctuation">.</span><span class="token function">setFirstResult</span><span class="token punctuation">(</span>from<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	query<span class="token punctuation">.</span><span class="token function">setMaxResults</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	<span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">getResultList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+   <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getExpiredTasksCount</span><span class="token punctuation">(</span><span class="token keyword">int</span> userId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   	<span class="token class-name">String</span> hqlQuery <span class="token operator">=</span> “select <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> from <span class="token class-name">Task</span> where task<span class="token punctuation">.</span>user<span class="token punctuation">.</span>id <span class="token operator">=</span> <span class="token operator">:</span>id and deadline <span class="token operator">&lt;</span> <span class="token function">curdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>”<span class="token punctuation">;</span>
+   	<span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>hqlQuery<span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	<span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">getSingleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>I added two methods to the class:</p>
+<ul>
+ <li><span class="code text-orange">getExpiredTasksCount()</span> - returns the number of expired tasks for the user</li>
+ <li><span class="code text-orange">getExpiredTasks()</span> - returns a list of expired tasks for the user</li>
+</ul>
+<p>I need methods - I added them. And I can use it right away. I'll optimize them later.</p>
+<p>Moreover, these methods can be covered with unit tests before rewriting and optimizations, so we will know that the work with the database has remained the same as it was.</p>
+<h2>Standard Approach</h2>
+<p>Very often, DAO classes have methods that are the same. For example, these:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><span class="code text-orange">T <span class="text-red">getById</span> (final long id)</span></td>
+    <td>Get an object by its id</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">List&lt;T&gt; <span class="text-red">getItems</span> (int from, int count)</span></td>
+    <td>Get a list of objects within a given range</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">List&lt;T&gt; <span class="text-red">getAll</span> ()</span></td>
+    <td>Get all objects of a given type</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">int <span class="text-red">getCount</span> ()</span></td>
+    <td>Find out the number of objects</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">T <span class="text-red">save</span> (final T entity)</span></td>
+    <td>Save object to database</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">T <span class="text-red">update</span> (final T entity)</span></td>
+    <td>Update object in database</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">void <span class="text-red">delete</span> (final T entity)</span></td>
+    <td>Delete an object from the database</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">void <span class="text-red">deleteById</span> (final long entityId)</span></td>
+    <td>Delete object from database by id</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>These methods are found in almost every DAO class in the world. Now, if there is some kind of DAO class, then with 90% probability it will have such methods.</p>
+<p>Yes, there may be others, but there will be those too. Because it's very convenient. And it allows you not to interact with the base or Hibernate directly.</p>
+<p>And if there are identical methods, then what do they need? That's right, put it in the base class.</p>
+<p>It looks something like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">AbstractHibernateDao</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span> <span class="token punctuation">&gt;</span></span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">&gt;</span></span> clazz<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">SessionFactory</span> sessionFactory<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">AbstractHibernateDao</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">&gt;</span></span> clazzToSet<span class="token punctuation">)</span>   <span class="token punctuation">{</span>
+    	<span class="token keyword">this</span><span class="token punctuation">.</span>clazz <span class="token operator">=</span> clazzToSet<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getById</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token keyword">long</span> id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">T</span><span class="token punctuation">)</span> <span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>clazz<span class="token punctuation">,</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">&gt;</span></span> <span class="token function">getItems</span><span class="token punctuation">(</span><span class="token keyword">int</span> from<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token class-name">Query</span> query <span class="token operator">=</span> <span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>clazz <span class="token punctuation">,</span> <span class="token string">"from "</span> <span class="token operator">+</span> clazz<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    	query<span class="token punctuation">.</span><span class="token function">setFirstResult</span><span class="token punctuation">(</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	query<span class="token punctuation">.</span><span class="token function">setMaxResults</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	  <span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">singleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">&gt;</span></span> <span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> <span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>clazz<span class="token punctuation">,</span> <span class="token string">"from "</span> <span class="token operator">+</span> clazz<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">T</span> entity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">saveOrUpdate</span><span class="token punctuation">(</span>entity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token keyword">return</span> entity<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">T</span> entity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">T</span><span class="token punctuation">)</span> <span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">merge</span><span class="token punctuation">(</span>entity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">delete</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">T</span> entity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>entity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">deleteById</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token keyword">long</span> entityId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">final</span> <span class="token class-name">T</span> entity <span class="token operator">=</span> <span class="token function">getById</span><span class="token punctuation">(</span>entityId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token function">delete</span><span class="token punctuation">(</span>entity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> <span class="token class-name">Session</span> <span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> sessionFactory<span class="token punctuation">.</span><span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And then our <span class="code"><span class="text-green">EmployeeDAO</span></span> will look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EmployeeDAO</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractHibernateDAO</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> <span class="token punctuation">{</span>
+
+   <span class="token keyword">public</span> <span class="token class-name">EmployeeDAO</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  	<span class="token keyword">super</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And <span class="code"><span class="text-green">TaskDAO</span></span> is like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TaskDAO</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractHibernateDAO</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">&gt;</span></span> <span class="token punctuation">{</span>
+
+   <span class="token keyword">public</span> <span class="token class-name">TaskDAO</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  	<span class="token keyword">super</span><span class="token punctuation">(</span><span class="token class-name">Task</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And both of these classes will have all the methods we declared on <span class="code"><span class="text-green">AbstractHibernateDAO</span></span> . Unification is very convenient and practical.</p>

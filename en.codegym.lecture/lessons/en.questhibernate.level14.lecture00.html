@@ -1,0 +1,68 @@
+n you start working with real databases, you will immediately remember the phrase “Premature optimization is the root of all evil.” Only now you remember her in a negative way. When working with a database, optimization is indispensable. And you need to work with it already at the design stage.</p>
+<p>Hibernate makes working with the database very convenient. You can easily get any child objects just by properly annotating <code>@OneToMany</code>and <code>@ManyToMany</code>. Example:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>=<span class="text-green">"user"</span><span class="text-brown">)</span>
+class User {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   <span class="text-brown">@OneToMany(cascade = CascadeType.ALL)
+   @JoinColumn(name = "user_id")</span>
+   public List&lt;<span class="token keyword">Comment</span>&gt; <span class="text-user">comments</span>;
+}
+</code></pre>
+<p>And how easy it is to get the user's comments:</p>
+<pre class="line-numbers"><code>
+User user = session.get(User.class, 1);
+List&lt;Comment&gt; comments = user.getComments();
+</code></pre>
+<p>And you will be in for a big surprise. The user has several thousand comments. If you write code like this, Hibernate will of course load all of the user's comments. But it will be very slow, comments will take up a lot of memory and so on.</p>
+<p>That's why you can't write like that! In theory, yes, but in practice, no.</p>
+<h2>1.2 Making things worse with collections</h2>
+<p>The problem is even more interesting. After all, usually you never need all the user's comments. Even if you display them somewhere on the client, you prefer to do it in parts - pages.</p>
+<p>So you need methods like this:</p>
+<pre class="line-numbers"><code>
+public class CommentsManager {
+    private static final <span class="text-viola">PAGE_SIZE</span> = 50;
+ 
+    public List&lt;Comment&gt; getCommentsPage(int <span class="text-green">userId</span>, int <span class="text-yellow">pageIndex</span>){
+     	User <span class="text-green">user</span> = session.get(User.class, <span class="text-green">userId</span>);
+     	List&lt;Comment&gt; <span class="text-user">comments</span> = user.getComments();
+     	return <span class="text-user">comments</span>.subList(<span class="text-yellow">pageIndex</span> * <span class="text-viola">PAGE_SIZE</span>, <span class="text-viola">PAGE_SIZE</span>);
+    }
+ 
+   public int <span class="text-brown">getCommentsPageCount</span>(int <span class="text-green">userId</span>)   {
+     	User <span class="text-green">user</span> = session.get(User.class, <span class="text-green">userId</span>);
+     	List&lt;Comment&gt; <span class="text-user">comments</span> = <span class="text-green">user</span>.getComments();
+     	return Math.ceil(  <span class="text-user">comments</span>.size()/<span class="text-viola">PAGE_SIZE</span>);
+   }
+ 
+}
+</code></pre>
+<p>The first method returns only one page of comments - 50 pieces. The second method returns the number of pages of comments. And this is the worst. In order to simply find out the number of comments, you had to download all the comments from the database!</p>
+<h2>1.3 Light at the end of the tunnel</h2>
+<p>Therefore, no one uses our wonderful child collections. No, of course they are used, but only as part of HQL queries. For example like this:</p>
+<pre class="line-numbers"><code>
+public class CommentsManager {
+      private static final <span class="text-viola">PAGE_SIZE</span> = 50;
+ 
+       public List&lt;<span class="token keyword">Comment</span>&gt; <span class="text-brown">getCommentsPage</span>(int <span class="text-green">userId</span>, int <span class="text-yellow">pageIndex</span>){
+           	String hql = <span class="text-green">"select comments from User where id = :id"</span>;
+           	Query&lt;<span class="token keyword">Comment</span>&gt; <span class="text-viola">query</span> = session.createQuery( hql, <span class="token keyword">Comment</span>.class);
+           	<span class="text-viola">query</span>.setParametr(<span class="text-green">"id"</span>, <span class="text-green">userId</span>);
+           	<span class="text-viola">query</span>.setOffset(<span class="text-yellow">pageIndex</span> * <span class="text-viola">PAGE_SIZE</span>);
+           	<span class="text-viola">query</span>.setLimit(<span class="text-viola">PAGE_SIZE</span>);
+           	return <span class="text-viola">query</span>.<span class="text-red">list</span>();
+      }
+ 
+      public int getCommentsPageCount(int <span class="text-green">userId</span>)   {
+           	String hql = <span class="text-green">"select count(comments) from User where id = :id"</span>;
+           	Query&lt;<span class="token keyword">Integer</span>&gt; <span class="text-viola">query</span> = session.createQuery( hql, <span class="token keyword">Integer</span>.class);
+           	<span class="text-viola">query</span>.setParametr(<span class="text-green">"id"</span>, <span class="text-green">userId</span>);
+           	return Math.ceil(<span class="text-viola">query</span>.<span class="text-red">singleResult</span>()/<span class="text-viola">PAGE_SIZE</span>);
+     }
+ 
+}
+</code></pre>
+<p>The good news is that we can implement our methods in such a way that we do not need to load extra data from the database. The bad news is that it's not easy to work with our collections.</p>

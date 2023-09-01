@@ -1,0 +1,597 @@
+ourth JRU module. What will it be? Let's try to work with different technologies: MySQL, Hibernate, Redis, Docker. Now more subject.</p>
+<p><strong>Task: we have a relational MySQL database with a schema (country-city, language by country). And there is a frequent request of the city, which slows down. We came up with a solution - to move all the data that is requested frequently to Redis (in memory storage of the key-value type).</strong></p>
+<p>And we need not all the data that is stored in MySQL, but only a selected set of fields. The project will be in the form of a tutorial. That is, here we will raise the problem and immediately solve it.</p>
+<p>So, let's start with what software we will need:</p>
+<ol>
+ <li>IDEA Ultimate (who ran out of the key - write to Roman in the Slack)</li>
+ <li>Workbench (or any other client for MySQL)</li>
+ <li><a href="https://www.docker.com/products/docker-desktop/" target="_blank" rel="nofollow">Docker</a></li>
+ <li><a href="https://redis.com/redis-enterprise/redis-insight/" target="_blank" rel="nofollow">redis-insight</a> - optional</li>
+</ol>
+<p><strong>Our action plan:</strong></p>
+<ol>
+ <li>Set up docker (I won’t do this in the tutorial, because each OS will have its own characteristics and there are a lot of answers on the Internet to questions like “how to install docker on windows”), check that everything works.</li>
+ <li>Run MySQL server as a docker container.</li>
+ <li>Expand <a href="https://codegym.cc/downloads/ide/codegym/dump-hibernate-final.sql" target="_blank">dump</a> .</li>
+ <li>Create a project in Idea, add maven dependencies.</li>
+ <li>Make layer domain.</li>
+ <li>Write a method to get all data from MySQL.</li>
+ <li>Write a data transformation method (in Redis we will write only the data that is requested frequently).</li>
+ <li>Run the Redis server as a docker container.</li>
+ <li>Write data to Redis.</li>
+ <li>Optional: install redis-insight, look at the data stored in Redis.</li>
+ <li>Write a method for getting data from Redis.</li>
+ <li>Write a method for getting data from MySQL.</li>
+ <li>Compare the speed of getting the same data from MySQL and Redis.</li>
+</ol>
+<h2>Docker setup</h2>
+<p>Docker is an open platform for developing, delivering and operating applications. We will use it in order not to install and configure Redis on the local machine, but to use a ready-made image. You can read more about docker <a href="https://docs.docker.com/get-started/overview/" target="_blank" rel="nofollow">here</a> or see it <a href="https://www.youtube.com/watch?v=3c-iBn73dDE&amp;ab_channel=TechWorldwithNana" target="_blank" rel="nofollow">here</a> . If you are not familiar with docker, I recommend looking at just the second link.</p>
+<p>To make sure you have docker installed and configured, run the command:<code>docker -v</code></p>
+<p>If everything is OK, you will see the docker version</p><img data-max-width="512" data-id="1bc6d1a9-3231-461f-a31c-46ce4a487c04" alt="" src="https://cdn.javarush.com/images/article/1bc6d1a9-3231-461f-a31c-46ce4a487c04/512.jpeg" style="width: 512px;">
+<h2>Run MySQL server as docker container</h2>
+<p>In order to be able to compare the time of returning data from MySQL and Redis, we will also use MySQL in the docker. In PowerShell (or another console terminal if you're not using Windows), run the command:</p>
+<pre><code>docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root --restart unless-stopped -v mysql:/var/lib/mysql mysql:8 
+</code></pre>
+<p>Consider what we are doing with this command:</p>
+<ul>
+ <li><code>docker run</code>– launching (and downloading, if it has not yet been downloaded to the local machine) the image. As a result of the launch, we get a running container.</li>
+ <li><code>--name mysql</code>- set the name of the mysql container.</li>
+ <li><code>-d</code>- a flag that says that the container should continue to work, even if you close the terminal window from which this container was launched.</li>
+ <li><code>-p 3306:3306</code>- specifies ports. Before the colon - the port on the local machine, after the colon - the port in the container.</li>
+ <li><code>-e MYSQL_ROOT_PASSWORD=root</code>– passing the environment variable MYSQL_ROOT_PASSWORD with the value root to the container. Flag specific to the mysql/ image</li>
+ <li><code>--restart unless-stopped</code>- setting the behavior policy (whether the container should be restarted when closed). The unless-stopped value means to always restart, except when the container was stopped /</li>
+ <li><code>-v mysql:/var/lib/mysql </code>– add volume (image for storing information).</li>
+ <li><code>mysql:8 </code> – the name of the image and its version.</li>
+</ul>
+<p>After executing the command in the terminal, the docker will download all the layers of the image and start the container:</p><img data-max-width="1024" data-id="2d4880df-a10e-4553-9354-b854018f53c7" alt="" src="https://cdn.javarush.com/images/article/2d4880df-a10e-4553-9354-b854018f53c7/1024.jpeg" style="width: 1024px;">
+<p><span class="text-red">Important note:</span> if you have MySQL installed as a service on your local computer and it is running, you need to specify a different port in the start command, or stop this running service.</p><img data-max-width="1024" data-id="5354d6b9-187d-4514-b504-e157b1ef003a" alt="" src="https://cdn.javarush.com/images/article/5354d6b9-187d-4514-b504-e157b1ef003a/1024.jpeg" style="width: 1024px;">
+<h2>Expand dump</h2>
+<p>To expand the dump, you need to create a new connection to the database from Workbench, where you specify the parameters. I used the default port (3306), didn't change the username (root by default), and set the password for the root user (root).</p><img data-max-width="1024" data-id="7e1b4972-af30-4aa7-9212-c99ff69920f2" alt="" src="https://cdn.javarush.com/images/article/7e1b4972-af30-4aa7-9212-c99ff69920f2/1024.jpeg" style="width: 1024px;">
+<p>In Workbench, do <code>Data Import/Restore</code>and select <code>Import from Self Contained File</code>. <a href="https://codegym.cc/downloads/ide/codegym/dump-hibernate-final.sql" target="_blank">Specify where you downloaded the dump</a> as a file . You don't need to create the schema beforehand - its creation is included in the dump file. After a successful import, you will have a world schema with three tables:</p>
+<ol>
+ <li>city ​​is a table of cities.</li>
+ <li>country - country table.</li>
+ <li>country_language - a table that indicates what percentage of the population in the country speaks a particular language.</li>
+</ol><img data-max-width="512" data-id="697339c6-8214-483a-9283-6696ad2ecf7d" alt="" src="https://cdn.javarush.com/images/article/697339c6-8214-483a-9283-6696ad2ecf7d/512.jpeg" style="width: 512px;">
+<p>Since we used a volume when starting the container, after stopping and even deleting the mysql container and re-executing the start command ( <code>docker run --name mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root --restart unless-stopped -v mysql:/var/lib/mysql mysql:8</code>), there will be no need to deploy the dump again - it is already deployed in the volume.</p>
+<h2>Create project in Idea, add maven dependencies</h2>
+<p>You already know how to create a project in the Idea - this is the easiest point in today's project.</p><img data-max-width="1024" data-id="db14c218-aea0-4108-9a23-0ce172271cf0" alt="" src="https://cdn.javarush.com/images/article/db14c218-aea0-4108-9a23-0ce172271cf0/1024.jpeg" style="width: 1024px;">
+<p>Add dependencies to the pom file:</p>
+<pre><code>
+&lt;dependencies&gt; 
+   &lt;dependency&gt; 
+      &lt;groupId&gt;mysql&lt;/groupId&gt; 
+      &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt; 
+      &lt;version&gt;8.0.30&lt;/version&gt; 
+   &lt;/dependency&gt; 
+ 
+   &lt;dependency&gt; 
+      &lt;groupId&gt;org.hibernate&lt;/groupId&gt; 
+      &lt;artifactId&gt;hibernate-core-jakarta&lt;/artifactId&gt; 
+      &lt;version&gt;5.6.14.Final&lt;/version&gt; 
+   &lt;/dependency&gt; 
+ 
+   &lt;dependency&gt; 
+      &lt;groupId&gt;p6spy&lt;/groupId&gt; 
+      &lt;artifactId&gt;p6spy&lt;/artifactId&gt; 
+      &lt;version&gt;3.9.1&lt;/version&gt; 
+   &lt;/dependency&gt; 
+    
+   &lt;dependency&gt; 
+      &lt;groupId&gt;io.lettuce&lt;/groupId&gt; 
+      &lt;artifactId&gt;lettuce-core&lt;/artifactId&gt; 
+      &lt;version&gt;6.2.2.RELEASE&lt;/version&gt; 
+   &lt;/dependency&gt; 
+ 
+   &lt;dependency&gt; 
+      &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt; 
+      &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt; 
+      &lt;version&gt;2.14.0&lt;/version&gt; 
+   &lt;/dependency&gt; 
+&lt;/dependencies&gt; 
+</code></pre>
+<p>The first three dependencies have long been familiar to you.</p>
+<p><code>lettuce-core</code>is one of the available Java clients for working with Redis.</p>
+<p><code>jackson-databind</code>– dependency for using ObjectMapper (to transform data for storage in Redis (key-value of type String)).</p>
+<p>Also in the resources folder (src/main/resources) add spy.properties to view the requests with parameters that Hibernate executes. File contents:</p>
+<pre><code>driverlist=com.mysql.cj.jdbc.Driver 
+dateformat=yyyy-MM-dd hh:mm:ss a 
+appender=com.p6spy.engine.spy.appender.StdoutLogger 
+logMessageFormat=com.p6spy.engine.spy.appender.MultiLineFormat 
+</code></pre>
+<h2>Make layer domain</h2>
+<p>Create package com.codegym.domain</p>
+<p>It is convenient for me when mapping tables on an entity to use the table structure in the Idea, so let's add a database connection in the Idea.</p><img data-max-width="800" data-id="7c7320ea-4dd5-4eff-b757-503a401565fb" alt="" src="https://cdn.javarush.com/images/article/7c7320ea-4dd5-4eff-b757-503a401565fb/800.jpeg" style="width: 800px;"> <img data-max-width="1024" data-id="91b9ed51-e724-4cb9-900c-56e06d499c43" alt="" src="https://cdn.javarush.com/images/article/91b9ed51-e724-4cb9-900c-56e06d499c43/1024.jpeg" style="width: 1024px;">
+<p>I suggest creating entities in this order:</p>
+<ul>
+ <li>Country</li>
+ <li>City</li>
+ <li>CountryLanguage</li>
+</ul>
+<p><span class="text-red">It is desirable that you perform the mapping yourself.</span></p>
+<p>Country class code:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>domain</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">jakarta<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span><span class="token class-name">BigDecimal</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Set</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>schema <span class="token operator">=</span> <span class="token string">"world"</span><span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token string">"country"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Country</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> code<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"code_2"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> alternativeCode<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"continent"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Enumerated</span><span class="token punctuation">(</span><span class="token class-name">EnumType</span><span class="token punctuation">.</span>ORDINAL<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Continent</span> continent<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> region<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"surface_area"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">BigDecimal</span> surfaceArea<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"indep_year"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Short</span> independenceYear<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> population<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"life_expectancy"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">BigDecimal</span> lifeExpectancy<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"gnp"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">BigDecimal</span> GNP<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"gnpo_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">BigDecimal</span> <span class="token class-name">GNPOId</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"local_name"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> localName<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"government_form"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> governmentForm<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"head_of_state"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> headOfState<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@OneToOne</span>
+    <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"capital"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">City</span> city<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@OneToMany</span><span class="token punctuation">(</span>fetch <span class="token operator">=</span> <span class="token class-name">FetchType</span><span class="token punctuation">.</span>EAGER<span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"country_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">CountryLanguage</span><span class="token punctuation">&gt;</span></span> languages<span class="token punctuation">;</span>
+
+
+    <span class="token comment">//Getters and Setters omitted</span>
+
+<span class="token punctuation">}</span></code></pre>
+<p>There are 3 interesting points in the code.</p>
+<p><strong>The first is the Continent enam</strong> , which is stored in the database as ordinal values. In the structure of the country table, in the comments to the continent field, you can see which numerical value corresponds to which continent.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>domain</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">enum</span> <span class="token class-name">Continent</span> <span class="token punctuation">{</span>
+    ASIA<span class="token punctuation">,</span>
+    EUROPE<span class="token punctuation">,</span>
+    NORTH_AMERICA<span class="token punctuation">,</span>
+    AFRICA<span class="token punctuation">,</span>
+    OCEANIA<span class="token punctuation">,</span>
+    ANTARCTICA<span class="token punctuation">,</span>
+    SOUTH_AMERICA
+<span class="token punctuation">}</span></code></pre>
+<p><strong>The second point is a set of entities<code>CountryLanguage</code></strong> . Here's a link <code>@OneToMany</code>that wasn't in the second draft of this module. By default, Hibernate will not pull the value of this set when requesting a country entity. But since we need to subtract all values ​​from the relational database for caching, the <code>FetchType.EAGER</code>.</p>
+<p><strong>The third is the city field</strong> . Communication <code>@OneToOne</code>- like everything is familiar and understandable. But, if we look at the foreign key structure in the database, we see that the country (country) has a link to the capital (city), and the city (city) has a link to the country (country). There is a cyclical relationship.</p>
+<p>We won’t do anything with this yet, but when we get to the “Write a method for getting all data from MySQL” item, let’s see what queries Hibernate executes, look at their number, and remember this item. Hibernate</p>
+<p>City class code:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>domain</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">jakarta<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>schema <span class="token operator">=</span> <span class="token string">"world"</span><span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token string">"city"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">City</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> <span class="token class-name">GenerationType</span><span class="token punctuation">.</span>IDENTITY<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@ManyToOne</span>
+    <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"country_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Country</span> country<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> district<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> population<span class="token punctuation">;</span>
+
+
+    <span class="token comment">//Getters and Setters omitted</span>
+
+<span class="token punctuation">}</span></code></pre>
+<p>CountryLanguage class code:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>domain</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">jakarta<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span></span><span class="token class-name">Type</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span><span class="token class-name">BigDecimal</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>schema <span class="token operator">=</span> <span class="token string">"world"</span><span class="token punctuation">,</span> name <span class="token operator">=</span> <span class="token string">"country_language"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CountryLanguage</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> <span class="token class-name">GenerationType</span><span class="token punctuation">.</span>IDENTITY<span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@ManyToOne</span>
+    <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"country_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Country</span> country<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> language<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"is_official"</span><span class="token punctuation">,</span> columnDefinition <span class="token operator">=</span> <span class="token string">"BIT"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Type</span><span class="token punctuation">(</span>type <span class="token operator">=</span> <span class="token string">"org.hibernate.type.NumericBooleanType"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> isOfficial<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">BigDecimal</span> percentage<span class="token punctuation">;</span>
+
+
+    <span class="token comment">//Getters and Setters omitted</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Write a method to get all data from MySQL</h2>
+<p>In the Main class, we declare the fields:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">SessionFactory</span> sessionFactory<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">RedisClient</span> redisClient<span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">ObjectMapper</span> mapper<span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">CityDAO</span> cityDAO<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">CountryDAO</span> countryDAO<span class="token punctuation">;</span></code></pre>
+<p>and initialize them in the constructor of the Main class:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token class-name">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    sessionFactory <span class="token operator">=</span> <span class="token function">prepareRelationalDb</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    cityDAO <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CityDAO</span><span class="token punctuation">(</span>sessionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    countryDAO <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountryDAO</span><span class="token punctuation">(</span>sessionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    redisClient <span class="token operator">=</span> <span class="token function">prepareRedisClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mapper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectMapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>As you can see, there are not enough methods and classes - let's write them.</p>
+<p>Declare a package com.codegym.dao and add 2 classes to it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>dao</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>domain<span class="token punctuation">.</span></span><span class="token class-name">Country</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span></span><span class="token class-name">SessionFactory</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>query<span class="token punctuation">.</span></span><span class="token class-name">Query</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CountryDAO</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">SessionFactory</span> sessionFactory<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">CountryDAO</span><span class="token punctuation">(</span><span class="token class-name">SessionFactory</span> sessionFactory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>sessionFactory <span class="token operator">=</span> sessionFactory<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Country</span><span class="token punctuation">&gt;</span></span> <span class="token function">getAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Country</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> sessionFactory<span class="token punctuation">.</span><span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"select c from Country c"</span><span class="token punctuation">,</span> <span class="token class-name">Country</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>dao</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>domain<span class="token punctuation">.</span></span><span class="token class-name">City</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span></span><span class="token class-name">SessionFactory</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>query<span class="token punctuation">.</span></span><span class="token class-name">Query</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CityDAO</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">SessionFactory</span> sessionFactory<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">CityDAO</span><span class="token punctuation">(</span><span class="token class-name">SessionFactory</span> sessionFactory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>sessionFactory <span class="token operator">=</span> sessionFactory<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">City</span><span class="token punctuation">&gt;</span></span> <span class="token function">getItems</span><span class="token punctuation">(</span><span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> limit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">City</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> sessionFactory<span class="token punctuation">.</span><span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"select c from City c"</span><span class="token punctuation">,</span> <span class="token class-name">City</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        query<span class="token punctuation">.</span><span class="token function">setFirstResult</span><span class="token punctuation">(</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        query<span class="token punctuation">.</span><span class="token function">setMaxResults</span><span class="token punctuation">(</span>limit<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getTotalCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Long</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> sessionFactory<span class="token punctuation">.</span><span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"select count(c) from City c"</span><span class="token punctuation">,</span> <span class="token class-name">Long</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">toIntExact</span><span class="token punctuation">(</span>query<span class="token punctuation">.</span><span class="token function">uniqueResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Now you can import these 2 classes into Main. Still missing two methods:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token class-name">SessionFactory</span> <span class="token function">prepareRelationalDb</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">final</span> <span class="token class-name">SessionFactory</span> sessionFactory<span class="token punctuation">;</span>
+    <span class="token class-name">Properties</span> properties <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Environment</span><span class="token punctuation">.</span>DIALECT<span class="token punctuation">,</span> <span class="token string">"org.hibernate.dialect.MySQL8Dialect"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Environment</span><span class="token punctuation">.</span>DRIVER<span class="token punctuation">,</span> <span class="token string">"com.p6spy.engine.spy.P6SpyDriver"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Environment</span><span class="token punctuation">.</span>URL<span class="token punctuation">,</span> <span class="token string">"jdbc:p6spy:mysql://localhost:3306/world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Environment</span><span class="token punctuation">.</span>USER<span class="token punctuation">,</span> <span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Environment</span><span class="token punctuation">.</span>PASS<span class="token punctuation">,</span> <span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Environment</span><span class="token punctuation">.</span>CURRENT_SESSION_CONTEXT_CLASS<span class="token punctuation">,</span> <span class="token string">"thread"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Environment</span><span class="token punctuation">.</span>HBM2DDL_AUTO<span class="token punctuation">,</span> <span class="token string">"validate"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Environment</span><span class="token punctuation">.</span>STATEMENT_BATCH_SIZE<span class="token punctuation">,</span> <span class="token string">"100"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">addAnnotatedClass</span><span class="token punctuation">(</span><span class="token class-name">City</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">addAnnotatedClass</span><span class="token punctuation">(</span><span class="token class-name">Country</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">addAnnotatedClass</span><span class="token punctuation">(</span><span class="token class-name">CountryLanguage</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">addProperties</span><span class="token punctuation">(</span>properties<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">buildSessionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> sessionFactory<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We have not yet reached the radish, so the implementation of the initialization of the radish client will remain a stub for now:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">nonNull</span><span class="token punctuation">(</span>sessionFactory<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        sessionFactory<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">nonNull</span><span class="token punctuation">(</span>redisClient<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        redisClient<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Finally, we can write a method in which we pull out all the cities:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">City</span><span class="token punctuation">&gt;</span></span> <span class="token function">fetchData</span><span class="token punctuation">(</span><span class="token class-name">Main</span> main<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">Session</span> session <span class="token operator">=</span> main<span class="token punctuation">.</span>sessionFactory<span class="token punctuation">.</span><span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">City</span><span class="token punctuation">&gt;</span></span> allCities <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        session<span class="token punctuation">.</span><span class="token function">beginTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">int</span> totalCount <span class="token operator">=</span> main<span class="token punctuation">.</span>cityDAO<span class="token punctuation">.</span><span class="token function">getTotalCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> step <span class="token operator">=</span> <span class="token number">500</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> totalCount<span class="token punctuation">;</span> i <span class="token operator">+=</span> step<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            allCities<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>main<span class="token punctuation">.</span>cityDAO<span class="token punctuation">.</span><span class="token function">getItems</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> step<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        session<span class="token punctuation">.</span><span class="token function">getTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> allCities<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The implementation feature is such that we get 500 cities each. This is necessary because there are restrictions on the amount of transmitted data. Yes, in our case, we will not get to them, because. we have a total of 4079 cities in the database. But in production applications, when you need to get a lot of data, this technique is often used.</p>
+<p>And the implementation of the main method:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">Main</span> main <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">City</span><span class="token punctuation">&gt;</span></span> allCities <span class="token operator">=</span> main<span class="token punctuation">.</span><span class="token function">fetchData</span><span class="token punctuation">(</span>main<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    main<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Now we can run our application in debug for the first time and see how it works (or does not work - yes, it often happens).</p><img data-max-width="800" data-id="016f2ea1-822d-43eb-a572-39286c2c4830" alt="" src="https://cdn.javarush.com/images/article/016f2ea1-822d-43eb-a572-39286c2c4830/800.jpeg" style="width: 800px;">
+<p>Cities are getting. Each city gets a country, if it has not been previously subtracted from the database for another city. Let's roughly calculate how many queries Hibernate will send to the database:</p>
+<ul>
+ <li>1 request to find out the total number of cities (needed to iterate over 500 cities in order to know when to stop).</li>
+ <li>4079 / 500 = 9 requests (list of cities).</li>
+ <li>Each city gets a country, if it has not been subtracted earlier. Since there are 239 countries in the database, this will give us 239 queries.</li>
+</ul>
+<p><code>Total 249 requestов</code>. And we also said that together with the country we would immediately receive a set of languages, otherwise there would be darkness in general. But it's still a lot, so let's tweak the behavior a bit. Let's start with reflections: what to do, where to run? But seriously - why are there so many requests. If you look at the request log, we see that each country is requested separately, so the first simple solution: let's request all the countries together, because we know in advance that we will need all of them in this transaction.</p>
+<p>In the fetchData() method, immediately after the start of the transaction, add the following line:</p>
+<pre><code>List&lt;Country&gt; countries = main.countryDAO.getAll(); 
+</code></pre>
+<p>We count requests:</p>
+<ul>
+ <li>1 - get all countries</li>
+ <li>239 - query for each country of its capital</li>
+ <li>1 - request for the number of cities</li>
+ <li>9 - request for lists of cities</li>
+</ul>
+<p><code>Total 250</code>. The idea is good, but it didn't work. The problem is that the country has a connection with the capital (city) <code>@OneToOne</code>. And such a link is loaded immediately by default ( <code>FetchType.EAGER</code>). Let's put <code>FetchType.LAZY</code>, because anyway, we will load all the cities later in the same transaction.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@OneToOne</span><span class="token punctuation">(</span>fetch <span class="token operator">=</span> <span class="token class-name">FetchType</span><span class="token punctuation">.</span>LAZY<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"capital"</span><span class="token punctuation">)</span>
+<span class="token keyword">private</span> <span class="token class-name">City</span> city<span class="token punctuation">;</span></code></pre>
+<p>Capitals are no longer requested separately, but the number of requests has not changed. Now, for each country, <strong>the CountryLanguage</strong> list is requested by a separate query . That is, there is progress, and we are moving in the right direction. If you remember, the lectures suggested the <strong>“join fetch”</strong> solution in order to request an entity with dependent data in one request by adding an additional join to the request. In <strong>CountryDAO</strong> , rewrite the HQL query in the method <code>getAll()</code>to:</p>
+<pre><code>"select c from Country c join fetch c.languages" 
+</code></pre>
+<p>Launch. We look at the log, count requests:</p>
+<ul>
+ <li>1 - all countries with languages</li>
+ <li>1 - number of cities</li>
+ <li>9 - lists of cities.</li>
+</ul>
+<p><code>Total 11</code>- we succeeded)) If you not only read all this text, but also tried to run it after each step of tuning the application, you should even visually note the acceleration of the entire application several times.</p>
+<h2>Write a data transformation method</h2>
+<p>Let's create a package <code>com.codegym.redis</code>in which we add 2 classes: <strong>CityCountry</strong> (data on the city and the country in which this city is located) and <strong>Language</strong> (data on the language). Here are all the fields that are often requested “by task” in the “braking request”.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>redis</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>domain<span class="token punctuation">.</span></span><span class="token class-name">Continent</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span><span class="token class-name">BigDecimal</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Set</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CityCountry</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> district<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> population<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> countryCode<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> alternativeCountryCode<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> countryName<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Continent</span> continent<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">String</span> countryRegion<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">BigDecimal</span> countrySurfaceArea<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> countryPopulation<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Language</span><span class="token punctuation">&gt;</span></span> languages<span class="token punctuation">;</span>
+
+    <span class="token comment">//Getters and Setters omitted</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>redis</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span><span class="token class-name">BigDecimal</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Language</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> language<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> isOfficial<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">BigDecimal</span> percentage<span class="token punctuation">;</span>
+
+    <span class="token comment">//Getters and Setters omitted</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In the main method, after getting all the cities, add the line</p>
+<pre><code>List&lt;CityCountry&gt;&gt; preparedData = main.transformData(allCities); 
+</code></pre>
+<p>And implement this method:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">CityCountry</span><span class="token punctuation">&gt;</span></span> <span class="token function">transformData</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">City</span><span class="token punctuation">&gt;</span></span> cities<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> cities<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>city <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+        <span class="token class-name">CityCountry</span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CityCountry</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span>city<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span>city<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setPopulation</span><span class="token punctuation">(</span>city<span class="token punctuation">.</span><span class="token function">getPopulation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setDistrict</span><span class="token punctuation">(</span>city<span class="token punctuation">.</span><span class="token function">getDistrict</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">Country</span> country <span class="token operator">=</span> city<span class="token punctuation">.</span><span class="token function">getCountry</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setAlternativeCountryCode</span><span class="token punctuation">(</span>country<span class="token punctuation">.</span><span class="token function">getAlternativeCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setContinent</span><span class="token punctuation">(</span>country<span class="token punctuation">.</span><span class="token function">getContinent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setCountryCode</span><span class="token punctuation">(</span>country<span class="token punctuation">.</span><span class="token function">getCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setCountryName</span><span class="token punctuation">(</span>country<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setCountryPopulation</span><span class="token punctuation">(</span>country<span class="token punctuation">.</span><span class="token function">getPopulation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setCountryRegion</span><span class="token punctuation">(</span>country<span class="token punctuation">.</span><span class="token function">getRegion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setCountrySurfaceArea</span><span class="token punctuation">(</span>country<span class="token punctuation">.</span><span class="token function">getSurfaceArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">CountryLanguage</span><span class="token punctuation">&gt;</span></span> countryLanguages <span class="token operator">=</span> country<span class="token punctuation">.</span><span class="token function">getLanguages</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Language</span><span class="token punctuation">&gt;</span></span> languages <span class="token operator">=</span> countryLanguages<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>cl <span class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+            <span class="token class-name">Language</span> language <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Language</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            language<span class="token punctuation">.</span><span class="token function">setLanguage</span><span class="token punctuation">(</span>cl<span class="token punctuation">.</span><span class="token function">getLanguage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            language<span class="token punctuation">.</span><span class="token function">setOfficial</span><span class="token punctuation">(</span>cl<span class="token punctuation">.</span><span class="token function">getOfficial</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            language<span class="token punctuation">.</span><span class="token function">setPercentage</span><span class="token punctuation">(</span>cl<span class="token punctuation">.</span><span class="token function">getPercentage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> language<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token class-name">Collectors</span><span class="token punctuation">.</span><span class="token function">toSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        res<span class="token punctuation">.</span><span class="token function">setLanguages</span><span class="token punctuation">(</span>languages<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token class-name">Collectors</span><span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>I think this method is self-explanatory: we just create a <strong>CityCountry</strong> entity and fill it with data from <strong>City</strong> , <strong>Country</strong> , <strong>CountryLanguage</strong> .</p>
+<h2>Run Redis server as a docker container</h2>
+<p><strong>There are 2 options here. </strong>If you do the optional step "install redis-insight, look at the data stored in Redis", then the command is for you:</p>
+<pre><code>docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest 
+</code></pre>
+<p>If you decide to skip this step, then just:</p>
+<pre><code>docker run -d --name redis -p 6379:6379 redis:latest 
+</code></pre>
+<p>The difference is that in the first option, port 8001 is forwarded to the local machine, to which you can connect with an external client to see what is stored inside. And I used to give meaningful names, therefore, <code>redis-stack</code>or <code>redis</code>.</p>
+<p>After launch, you can see the list of running containers. To do this, run the command:</p>
+<pre><code>docker container ls 
+</code></pre>
+<p>And you will see something like this:</p><img data-max-width="1024" data-id="5c44653a-fa4e-4e4c-ac41-c4e5ed26ebf6" alt="" src="https://cdn.javarush.com/images/article/5c44653a-fa4e-4e4c-ac41-c4e5ed26ebf6/1024.jpeg" style="width: 1024px;">
+<p>If you need to find some command, you can either look at the help in the terminal (docker help) or google "how to ..." (for example, docker how to remove running container).</p>
+<p>And we also called the initialization of the radish client in the Main constructor, but did not implement the method itself. Add implementation:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token class-name">RedisClient</span> <span class="token function">prepareRedisClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">RedisClient</span> redisClient <span class="token operator">=</span> <span class="token class-name">RedisClient</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token class-name">RedisURI</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token string">"localhost"</span><span class="token punctuation">,</span> <span class="token number">6379</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">StatefulRedisConnection</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> connection <span class="token operator">=</span> redisClient<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\nConnected to Redis\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> redisClient<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><i>sout was added for educational purposes so that in the launch log you can see that everything is OK and the connection through the radish client passed without errors.</i></p>
+<h2>Write data to Redis</h2>
+<p>Add a call to the main method</p>
+<pre><code>main.pushToRedis(preparedData); 
+</code></pre>
+<p>With this method implementation:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">pushToRedis</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">CityCountry</span><span class="token punctuation">&gt;</span></span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">StatefulRedisConnection</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> connection <span class="token operator">=</span> redisClient<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">RedisStringCommands</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> sync <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">sync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">CityCountry</span> cityCountry <span class="token operator">:</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                sync<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>cityCountry<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> mapper<span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>cityCountry<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">JsonProcessingException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Here, a synchronous connection is opened with the radish client, and sequentially each object of <strong>the CityCountry</strong> type is written to the radish. Since the radish is a <strong>String</strong> key-value store , the key (city id) is converted to a string. And the value is also to the string, but using <strong>ObjectMapper</strong> in JSON format.</p>
+<p>It remains to run and check that there are no errors in the log. Everything worked.</p>
+<h2>Install redis-insight, look at the data stored in Redis (optional)</h2>
+<p>Download redis-insight from <a href="https://redis.com/redis-enterprise/redis-insight/" target="_blank" rel="nofollow">the link</a> and install it. After starting, it immediately shows our radish instance in the docker container:</p><img data-max-width="800" data-id="15311a8f-a8af-4a6d-862b-cb10ca70d2ef" alt="" src="https://cdn.javarush.com/images/article/15311a8f-a8af-4a6d-862b-cb10ca70d2ef/800.jpeg" style="width: 800px;">
+<p>If you log in, we will see a list of all keys:</p><img data-max-width="800" data-id="97477080-6693-421a-81da-742753a3de5e" alt="" src="https://cdn.javarush.com/images/article/97477080-6693-421a-81da-742753a3de5e/800.jpeg" style="width: 800px;">
+<p>And you can go to any key to see what data is stored on it:</p><img data-max-width="800" data-id="7f0836ac-09ba-4c0a-a759-2f85b4c29947" alt="" src="https://cdn.javarush.com/images/article/7f0836ac-09ba-4c0a-a759-2f85b4c29947/800.jpeg" style="width: 800px;">
+<h2>Write a method for getting data from Redis</h2>
+<p>For testing, we use the following test: we get 10 CityCountry records. Each with a separate request, but in one connection.</p>
+<p>Data from radish can be obtained through our radish client. To do this, let's write a method that takes a list of id's to get.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">testRedisData</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> ids<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">StatefulRedisConnection</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> connection <span class="token operator">=</span> redisClient<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">RedisStringCommands</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> sync <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">sync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Integer</span> id <span class="token operator">:</span> ids<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">String</span> value <span class="token operator">=</span> sync<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                mapper<span class="token punctuation">.</span><span class="token function">readValue</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> <span class="token class-name">CityCountry</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">JsonProcessingException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The implementation, I think, is intuitive: we open a synchronous connection, and for each <strong>id</strong> we get <strong>a JSON String , which we convert into the object of </strong><strong>the CityCountry</strong> type we need .</p>
+<h2>Write a method to get data from MySQL</h2>
+<p>In the <strong>CityDAO</strong> class, add a method <code>getById(Integer id)</code>in which we will get the city along with the country:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token class-name">City</span> <span class="token function">getById</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">City</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> sessionFactory<span class="token punctuation">.</span><span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"select c from City c join fetch c.country where c.id = :ID"</span><span class="token punctuation">,</span> <span class="token class-name">City</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    query<span class="token punctuation">.</span><span class="token function">setParameter</span><span class="token punctuation">(</span><span class="token string">"ID"</span><span class="token punctuation">,</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">getSingleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>By analogy with the previous paragraph, let's add a similar method for MySQL to the Main class:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">testMysqlData</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> ids<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">Session</span> session <span class="token operator">=</span> sessionFactory<span class="token punctuation">.</span><span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        session<span class="token punctuation">.</span><span class="token function">beginTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Integer</span> id <span class="token operator">:</span> ids<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">City</span> city <span class="token operator">=</span> cityDAO<span class="token punctuation">.</span><span class="token function">getById</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">CountryLanguage</span><span class="token punctuation">&gt;</span></span> languages <span class="token operator">=</span> city<span class="token punctuation">.</span><span class="token function">getCountry</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLanguages</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        session<span class="token punctuation">.</span><span class="token function">getTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Of the features, in order to be sure to get the full object (without proxy stubs), we explicitly request a list of languages ​​from the country.</p>
+<h2>Compare the speed of getting the same data from MySQL and Redis</h2>
+<p>Here I will immediately give the code of the main method, and the result that is obtained on my local computer.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">Main</span> main <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">City</span><span class="token punctuation">&gt;</span></span> allCities <span class="token operator">=</span> main<span class="token punctuation">.</span><span class="token function">fetchData</span><span class="token punctuation">(</span>main<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">CityCountry</span><span class="token punctuation">&gt;</span></span> preparedData <span class="token operator">=</span> main<span class="token punctuation">.</span><span class="token function">transformData</span><span class="token punctuation">(</span>allCities<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    main<span class="token punctuation">.</span><span class="token function">pushToRedis</span><span class="token punctuation">(</span>preparedData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// close the current session in order to make a query to the database for sure, and not to pull data from the cache</span>
+    main<span class="token punctuation">.</span>sessionFactory<span class="token punctuation">.</span><span class="token function">getCurrentSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//choose random 10 id cities</span>
+    <span class="token comment">//since we did not handle invalid situations, use the existing id in the database</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">&gt;</span></span> ids <span class="token operator">=</span> <span class="token class-name">List</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2545</span><span class="token punctuation">,</span> <span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">189</span><span class="token punctuation">,</span> <span class="token number">89</span><span class="token punctuation">,</span> <span class="token number">3458</span><span class="token punctuation">,</span> <span class="token number">1189</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">102</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">long</span> startRedis <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    main<span class="token punctuation">.</span><span class="token function">testRedisData</span><span class="token punctuation">(</span>ids<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">long</span> stopRedis <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">long</span> startMysql <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    main<span class="token punctuation">.</span><span class="token function">testMysqlData</span><span class="token punctuation">(</span>ids<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">long</span> stopMysql <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s:\t%d ms\n"</span><span class="token punctuation">,</span> <span class="token string">"Redis"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>stopRedis <span class="token operator">-</span> startRedis<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s:\t%d ms\n"</span><span class="token punctuation">,</span> <span class="token string">"MySQL"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>stopMysql <span class="token operator">-</span> startMysql<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    main<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>When testing, there is a feature - data from MySQL is only read, so it can not be restarted between launches of our application. And in Redis they are written.</p>
+<p>Although when you try to add a duplicate for the same key, the data will simply be updated, I would recommend that you run the commands to stop the container <code>docker stop redis-stack</code>and delete the container between application launches in the terminal <code>docker rm redis-stack</code>. After that, raise the container with the radish again <code>docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest</code>and only after that execute our application.</p>
+<p>Here are my test results:</p><img data-max-width="800" data-id="51a91b8a-d86c-433b-ab4a-085c73a0c814" alt="" src="https://cdn.javarush.com/images/article/51a91b8a-d86c-433b-ab4a-085c73a0c814/800.jpeg" style="width: 800px;">
+<p>In total, we have achieved an increase in the performance of the response to the "braking frequent" request by one and a half times. And this is taking into account the fact that in testing we used not the fastest deserialization through <strong>ObjectMapper</strong> . If you change it to GSON, most likely, you can "win" a little more time.</p>
+<p>At this moment, I remember <a href="https://www.reddit.com/r/ProgrammerHumor/comments/51qbzj/bad_code_kills/" target="_blank" rel="nofollow">a joke about a programmer and time:</a> read and think about how to write and optimize your code.</p>

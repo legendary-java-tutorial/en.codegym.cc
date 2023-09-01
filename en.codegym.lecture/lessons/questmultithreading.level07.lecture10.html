@@ -1,0 +1,67 @@
+<p>"Hi, Amigo!"</p>
+<p>"There's this huge topic out there—the Java Memory Model. Basically, you don't have to know about it yet, but it will be helpful to hear about it."</p>
+<p>"To eliminate all potential problems, Java changed its memory management mechanism. Now memory isn't simply divided into a thread's local cache and global memory—the mechanism is even better."</p>
+<p><span class="text-user">"And more complicated!"</span></p>
+<p>"Yes, better and more complicated. It's like an airplane. Flying by plane is better than walking, but more complicated. I'll try to explain the new situation very simply."</p>
+<p>"Here's what they came up with. <span class="text-red"><strong>A mechanism for synchronizing local thread memory, called 'happens-before', was added to the code. Several rules/conditions were invented. When these conditions are satisfied, memory is synchronized or updated to the current state.</strong></span</p>
+<p>"Here's an example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Order</th>
+        <th>Thread 1</th>
+        <th>Thread 2</th>
+    </tr>
+    <tr>
+        <td><strong>1</strong><br />
+            <strong> 2</strong><br />
+            <strong> …</strong><br />
+            <strong> 101</strong><br />
+            <strong> 102</strong><br />
+            <strong> 103</strong><br />
+            <strong> 104</strong><br />
+            <strong> 105</strong><br />
+            <strong> …</strong><br />
+            <strong> 201</strong><br />
+            <strong> 202</strong><br />
+            <strong> 203</strong><br />
+            <strong> 204</strong><br />
+            <strong> 205</strong></td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public</strong> int y = 1;
+<strong>public</strong> int x = 1;
+
+x = 2;
+synchronized(mutex)
+{
+ y = 2;
+}</code></pre>
+        </td>
+        <td>The thread is waiting for the mutex to be released</p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>synchronized(mutex)
+{
+<strong> if</strong> (y == x)
+ System.out.println("YES");
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"One of these conditions is the acquisition of the released mutex. If a mutex is released and re-acquired, then memory will be synchronized before the acquisition. Thread 2 will see the 'latest' values of the variables x and y, even if you don't declare them volatile."</p>
+<p><span class="text-user">"How interesting! And are there a lot of these conditions?"</span></p>
+<p>"Enough—here are some conditions for synchronizing memory:"</p>
+<ul>
+    <li>"Within a single thread, any command <strong>happens-before</strong> any operation that follows it in the source code."</li>
+    <li>"The release of a lock <strong>happens-before</strong> the same lock is acquired."</li>
+    <li>"An exit from a <strong>synhronized</strong> block/method <strong>happens-before</strong> the synchronized block/method is entered on the same monitor."</li>
+    <li>"The writing of a volatile field to memory <strong>happens-before</strong> the same volatile field is read from memory."</li>
+    <li>"A end of a Thread object's run method <strong>happens-before</strong> the join() method ends or the isAlive() method returns false on the object in the same thread."</li>
+    <li>"A call to a Thread object's start() method <strong>happens-before</strong> the run() method starts on the object in the same thread."</li>
+    <li>"The end of the constructor <strong>happens-before</strong> the beginning of this class's finalize() method."</li>
+    <li>"A call to the interrupt() method <strong>happens-before</strong> the thread determines that this method has been called, either because an InterruptedException is thrown or by using the isInterrupted() or interrupted() methods."</li>
+</ul>
+<p><span class="text-user">"So, it's all a bit more complicated than I thought?"</span></p>
+<p>"Yes, a bit more complicated…"</p>
+<p><span class="text-user">"Thank you, Rishi. I will think about it."</span></p>
+<p>"Don't worry about this topic too much. The time will come when you'll understand it all on your own. For now, it would be better for you to understand the basics, rather than delve into the dense forest that is the internal workings of the Java machine. Java 9 will be released and then everything will change again."</p>
+<p><span class="text-user">"O_o. Yeah... Some things it is better to not know."</span></p>

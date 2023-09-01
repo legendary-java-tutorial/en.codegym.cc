@@ -1,0 +1,115 @@
+<p>"Hello, Amigo! You remember that Ellie told you about the problems that arise when several threads try to simultaneously access a shared resource, yes?"</p>
+<p><span class="text-user">"Yes."</span></p>
+<p>"The thing is, that's not all. There's another small problem."</p>
+<p>As you know, a computer has memory where data and commands (code) are stored, as well as a processor that executes these commands and works with the data. The processor reads data from memory, changes it, and writes it back to memory. To speed up computations, the processor has its own built-in "fast" memory: the cache.</p>
+<p>The processor runs faster by copying the most frequently used variables and areas of memory to its cache. Then it makes all the changes in this fast memory. And then it copies the data back to «slow» memory. All this while, the slow memory contains the old (unchanged!) variables.</p>
+<p>This is where the problem arises. <span class="text-red">One thread changes a variable</span>, such as isCancel or isInterrupted in the example above, but <span class="text-red">a second thread «doesn't see this change</span>, because it happened in the fast memory. This is a consequence of the fact that the threads don't have access to each other's cache. (A processor often contains several independent cores and the threads can run on physically different cores.)</p>
+<p>Let's recall yesterday's example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Clock implements<strong> Runnable
+{</strong>
+private boolean isCancel = false;
+
+public void <strong>cancel</strong>()
+{
+this.isCancel = true;
+}
+
+public void run()
+{
+while (<span class="text-red">!this.isCancel</span>)
+{
+Thread.sleep(1000);
+System.out.println("Tick");
+}
+}
+}</code></pre>
+        </td>
+        <td>The thread «doesn't know» that the other threads exist.</p>
+            <p>In the run method, the isCancel variable is put into the child thread's cache when it is used for the first time. This operation is equivalent to the following code:</p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public void run()
+{
+<span class="text-red">boolean isCancelCached = this.isCancel;</span>
+while (!isCancelCached)
+{
+Thread.sleep(1000);
+System.out.println("Tick");
+}
+}</code></pre>
+            <p>Calling the <strong>cancel</strong> method from another thread will change the value of<strong> isCancel</strong> in normal (slow) memory, but not in other threads' caches.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+Clock clock = new Clock();
+Thread clockThread = new Thread(clock);
+clockThread.start();
+
+Thread.sleep(10000);
+clock.<strong>cancel</strong>();
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Whoa! And did they come up with a beautiful solution for this too, like with <strong>synchronized</strong>?"</span></p>
+<p>"You won't believe it!"</p>
+<p>The first thought was to disable the cache, but this made programs run several times slower. Then a different solution emerged.</p>
+<p>The <span class="text-red"><strong>volatile</strong></span> keyword was born. We put this keyword before a variable declaration to indicate that its value must not be put in the cache. More precisely, it wasn't that it couldn't be put into the cache, it was simply that it always had to be read from and written to the normal (slow) memory.</p>
+<p>Here's how to fix our solution so everything works fine:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Clock implements Runnable
+{
+private <span class="text-red">volatile</span> boolean isCancel = false;
+
+public void <strong>cancel</strong>()
+{
+this.<strong>isCancel</strong> = true;
+}
+
+public void run()
+{
+while (<span class="text-red">!this.isCancel</span>)
+{
+Thread.sleep(1000);
+System.out.println("Tick");
+}
+}
+}</code></pre>
+        </td>
+        <td>The volatile modifier causes a variable to always be read from and written to normal memory shared by all threads.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+Clock clock = new Clock();
+Thread clockThread = new Thread(clock);
+clockThread.start();
+
+Thread.sleep(10000);
+clock.<strong>cancel</strong>();
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That's it?"</span></p>
+<p>"That's it. Simple and beautiful."</p>

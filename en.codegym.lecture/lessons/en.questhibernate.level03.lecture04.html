@@ -1,0 +1,156 @@
+guage allows you to nest one query within another query. This makes it possible to write one very large query that will do something large and complex, although the readability of the code is greatly reduced.</p>
+<p>Depending on how many values ​​are returned by subqueries, the area where they can be applied changes. There are three options in total:</p>
+<ul>
+ <li>The subquery returns <strong>one single value</strong> (one column and one row).</li>
+ <li>The subquery returns <strong>a list of values</strong> ​​(a table with one column).</li>
+ <li>The subquery returns <strong>a table</strong> (many columns, any number of rows).</li>
+</ul>
+<p>Let's look at one example for each case.</p>
+<h2>Subquery with scalar result</h2>
+<p>Let's find a list of all our employees from the employee table whose salary is higher than the average for the company. How can we do it?</p>
+<p>We can easily filter employees by comparing their salary with the average if we know it in advance. At the same time, we have already written a query that allows us to calculate the average salary of the company's employees. Let's remember it:</p>
+<pre><code><strong><span class="text-red">SELECT</span> <span class="text-user">AVG(<span class="text-green">salary</span>)</span> <span class="text-red">FROM</span> <span class="text-orange">employee</span></strong> 
+</code></pre>
+<p>Then MySQL returned us the value: <strong>76833.3333</strong> .</p>
+<p>How now to find a list of all employees whose salary is above average? It's also very simple:</p>
+<pre><code> <strong><span class="text-red">SELECT</span> <span class="text-neon">*</span> <span class="text-red">FROM</span> <span class="text-orange">employee</span> 
+   <span class="text-red">WHERE</span> <span class="text-green">salary</span> &gt; 76833.3333 </strong>
+</code></pre>
+<p>The result of this query will be:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100000</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80000</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200000</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>And now we just combine both requests by substituting the first request instead of the value 76833:</p>
+<pre><code><strong>   <span class="text-red">SELECT</span> <span class="text-neon">*</span> <span class="text-red">FROM</span> <span class="text-orange">employee</span> 
+   <span class="text-red">WHERE</span> <span class="text-green">salary</span> &gt; <span class="term">(<span class="text-red">SELECT</span> <span class="text-neon">AVG(<span class="text-green">salary</span>)</span> <span class="text-red">FROM</span> <span class="text-orange">employee</span>)</span> </strong>
+</code></pre>
+<p>The result of this query will be the same:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100000</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80000</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200000</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>Subquery with list of values</h2>
+<p>Do you remember once upon a time we had a task - to find all records from one table for which there are no corresponding records from another?</p>
+<p>There was also this picture:</p><img data-max-width="512" data-id="a0eff64c-0bb4-4480-833e-c1305cd03a5e" alt="" src="https://cdn.javarush.com/images/article/a0eff64c-0bb4-4480-833e-c1305cd03a5e/512.jpeg" style="width: 512px;">
+<p>If I'm not mistaken, the task is as follows: display <strong>a list of all employees from the employee table for which there are no tasks in the task table</strong> .</p>
+<p>Let's also find a solution in two steps.</p>
+<p>First, let's write a query that will return the id of all employees who have tasks in the task table. Just remember two things:</p>
+<ul>
+ <li>remove duplicates - use the DISTINCT keyword.</li>
+ <li>remove NULL values ​​from the result.</li>
+</ul>
+<pre><code><strong><span class="text-red">SELECT DISTINCT</span> <span class="text-user">employee_id</span> <span class="text-red">FROM</span> <span class="text-orange">task</span> 
+   <span class="text-red">WHERE</span> <span class="text-user">employee_id</span> <span class="text-red">IS NOT NULL</span></strong>
+</code></pre>
+<p>And here we got a beautiful result of such a request:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>employee_id</th>
+   </tr>
+   <tr>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>5</td>
+   </tr>
+   <tr>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>6</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's temporarily write it down for convenience as a sequence: 1,2,5,4,6. Now let's write a second query - to the employee table, which will return a list of employees whose id is not contained in the first list:</p>
+<pre><code><strong><span class="text-red">SELECT</span> * <span class="text-red">FROM</span> <span class="text-orange">employee</span>  
+<span class="text-red">WHERE</span> <span class="text-green">id</span> <span class="text-red">NOT IN</span> <span class="text-user">(1,2,5,4,6)</span></strong>
+</code></pre>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40000</td>
+    <td>thirty</td>
+    <td>2014-01-01</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>And now, as in the previous example, you can combine both requests by simply substituting the body of the first request instead of the id list.</p>
+<pre><code><strong> <span class="text-red">SELECT</span> <span class="text-user">*</span> <span class="text-red">FROM</span> <span class="text-orange">employee</span> 
+   <span class="text-red">WHERE</span> <span class="text-green">id</span> <span class="text-red">NOT IN</span> <span class="text-user">( </span>
+      	<span class="text-red">SELECT DISTINCT</span> <span class="text-user">employee_id</span> <span class="text-red">FROM</span> <span class="text-orange">task </span>
+      	<span class="text-red">WHERE</span> <span class="text-user">employee_id</span> <span class="text-red">IS NOT NULL </span>
+   <span class="text-user">)</span></strong>
+</code></pre>

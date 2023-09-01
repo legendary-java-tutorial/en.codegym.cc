@@ -1,0 +1,60 @@
+gins. We will study the states of Entity objects. You have to pay for everything, and for using Hibernate too. Don't you think that learning HQL is such a price? No, life is a little more complicated.</p>
+<p>If you have some kind of Entity object that you can save to the database using Hibernate, then from the point of view of Hibernate, this object can have four states:</p>
+<ul>
+ <li><strong>Transient</strong></li>
+ <li><strong>Persistent</strong> (or Managed)</li>
+ <li><strong>Detached</strong></li>
+ <li><strong>Removed</strong></li>
+</ul>
+<p>And to interest you, I will add this picture to this lecture:</p><img data-max-width="1024" data-id="d15d6a38-29e8-4efc-95a3-f4969c546ad8" alt="" src="https://cdn.javarush.com/images/article/d15d6a38-29e8-4efc-95a3-f4969c546ad8/1024.jpeg" style="width: 1024px;">
+<h2>Transient</h2>
+<p>In fact, everything is much simpler than it seems, although not without nuances. For example, every Entity object that you explicitly created using Java code, and did not load from the database using Hibernate, has a Transient (transparent) status.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token class-name">EmployeeEntity</span> employee <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EmployeeEntity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>The Transient status means that Hibernate has no idea about this object, and no action on the object affects Hibernate, nor does Hibernate's work on this object.</p>
+<p>Such objects are also called <strong>POJO - Plain Old Java Object</strong> . The term is often used as the opposite of various objects with tricky behavior. Remember the Moc objects that Mockito created? Here they are not POJO.</p>
+<p>If some client code works with an object with the Transient status, then their interaction can be described by a super-simple scheme:</p><img data-max-width="256" data-id="7efaf11a-7648-4b95-bae0-c1270b14acd8" alt="" src="https://cdn.javarush.com/images/article/7efaf11a-7648-4b95-bae0-c1270b14acd8/256.jpeg" style="width: 256px;">
+<h2>Persistent or Managed</h2>
+<p>The next most common case is objects related to the Hibernate engine. Their status is called Persistent (or Managed). There are exactly two ways to get an object with this status:</p>
+<ul>
+ <li>Load object from Hibernate.</li>
+ <li>Save object in Hibernate.</li>
+</ul>
+<p>Examples:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token class-name">Employee</span> employee <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token class-name">Employee</span> employee <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Employee</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+session<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>employee<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Such an object usually corresponds to some kind of record in the database, it has an ID and the like. This object is attached to the Hibernate session, and in general can be represented not by a real object, but by some kind of proxy.</p>
+<p>It is quite possible that after calling the <span class="code text-orange">session.load()</span> method , you will get back some stub object (proxy), and all calls to the database will be performed only after calling the methods of this object. But we will talk about such details a little later.</p>
+<p>And the interaction between the client code and the object in the Managed status can be described with the following picture:</p><img data-max-width="800" data-id="1694d9d6-c078-419a-8ece-6c4cee3fedf2" alt="" src="https://cdn.javarush.com/images/article/1694d9d6-c078-419a-8ece-6c4cee3fedf2/800.jpeg" style="width: 800px;">
+<h2>Detached</h2>
+<p>The next state is when the object has been detached from the session. That is, once the object was attached to the Hibernate session, but then the session was closed or the transaction ended, and Hibernate no longer monitors this object.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">session<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">session<span class="token punctuation">.</span><span class="token function">evict</span><span class="token punctuation">(</span>entity<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>In the first example, the session was closed. In the second case, we have explicitly indicated that we want to detach the object from the session using the <span class="code text-orange">evict()</span> method .</p>
+<p>The new code-object interaction scheme will look like this:</p><img data-max-width="512" data-id="bc666ba5-2a4b-4a4c-9d1e-39a3530f42bd" alt="" src="https://cdn.javarush.com/images/article/bc666ba5-2a4b-4a4c-9d1e-39a3530f42bd/512.jpeg" style="width: 512px;">
+<p>And here is where it gets interesting. If your object was obtained from Hibernate, then it is likely that you were given a proxy instead of a real object. And this proxy object, after disconnecting from the session, will throw exceptions when its methods are called.</p>
+<p>This is the most common problem for all beginners when working with Hibernate. <span class="text-green">You need to know exactly at any given time the answer to questions like this when you're working with an Entity object</span> :</p>
+<ul>
+ <li>Do you have a real object or just a proxy from a real object?</li>
+ <li>Are you currently in a transaction or not?</li>
+ <li>Is it a read-write transaction or a read-only transaction?</li>
+ <li>Is the object managed by the LazyLoading mechanism?</li>
+ <li>Which parts of the object are already loaded into memory, and which parts will be loaded when accessed?</li>
+ <li>How is your object connected to dependent objects?</li>
+</ul>
+<p>The good news is that most of the time it's obvious. But you still need to understand how it all works under the hood. Declarative programming is what it is - you can write code in 10 minutes, understand why it does not work as it should - in 10 hours :)</p>
+<h2>Removed</h2>
+<p>And the last state your Entity object can have is Removed. As you probably already guessed from its name, this is the state of a remote object.</p>
+<p>This state appears due to the fact that if you delete some object from the database, then the Java object will not immediately disappear anywhere.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Employee</span> employee <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//after loading the object's state is Persisted</span>
+
+session<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>employee<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//after deletion, the state of the object is Removed</span>
+
+session<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>employee<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//and now Persisted again</span>
+
+session<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//and now the Detached state</span></code></pre>

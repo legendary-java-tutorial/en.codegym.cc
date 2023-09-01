@@ -1,0 +1,183 @@
+<h2>1. Adding an element to the middle (or at the beginning) of a list</h2>
+<p>If we want to insert an element in the middle of the list, here's what happens inside the list.</p>
+<p>Suppose we have a list of 11 elements:</p>
+<p><img data-max-width="1024" data-id="01cd2326-1542-4382-83ab-682196cc9851" src="https://cdn.codegym.cc/images/article/01cd2326-1542-4382-83ab-682196cc9851/1024.jpeg" alt="Adding an element to the middle (or at the beginning) of a list"></p>
+<p>We want to insert the number 10,000 into the list at index 5. To do this, we just need to execute:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">list</span>.<span class="text-red">add</span>(<span class="text-user">5</span>, <span class="text-viola">10000</span>);</code></pre>
+</div>
+<p>Where <code><span class="text-green">list</span></code> is an <code>ArrayList</code> variable. The <code><span class="text-red">add</span>(int index, type value)</code> method adds the value 10000 at position 5 in the list. Here's what happens in the <code>add()</code> method:</p>
+<p>Step 1: All elements of the array, starting from the 5th position, will be shifted (copied) by 1 element toward the end of the array:</p>
+<p><img data-max-width="1024" data-id="19a66e65-8930-4fff-ade0-13a03bfa0936" src="https://cdn.codegym.cc/images/article/19a66e65-8930-4fff-ade0-13a03bfa0936/1024.jpeg" alt="Adding an element to the middle (or at the beginning) of a list 1"></p>
+<p>Note that the elements in the 5th and 6th cell of the array are now the same.</p>
+<p>Step 2: Write the value 10,000 into the 5th cell:</p>
+<p><img data-max-width="1024" data-id="86c6c09f-4ee1-4149-a2ee-93b94bcf312d" src="https://cdn.codegym.cc/images/article/86c6c09f-4ee1-4149-a2ee-93b94bcf312d/1024.jpeg" alt="Adding an element to the middle (or at the beginning) of a list 2"></p>
+<p>Now the list contains all the elements of the array, and the fifth cell contains the number 10,000. Just what we wanted.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1213"></div>
+<hr>
+<h2>2. Removing an element from a list</h2>
+<p>Removing an element from a list is similar to inserting it, but the process is reversed.</p>
+<p>Let's remove the 3rd element from a list. To do this, we need to execute:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">list</span>.<span class="text-red">remove</span>(<span class="text-user">3</span>);</code></pre>
+</div>
+<p>Here's what happens in the remove() method:</p>
+<p>Step 1: The elements of the array, starting from the 4th position, will be shifted (copied) by 1 element toward the start of the array:</p>
+<p><img data-max-width="1024" data-id="30552823-c39c-4e4e-82a7-b209c0cb0ac0" src="https://cdn.codegym.cc/images/article/30552823-c39c-4e4e-82a7-b209c0cb0ac0/1024.jpeg" alt="Removing an element from a list"></p>
+<p>Step 2: The value of the <code>size</code> variable will be decreased by 1.</p>
+<p><img data-max-width="1024" data-id="c0c95092-4db9-44ed-8503-b05826dd8dfa" src="https://cdn.codegym.cc/images/article/c0c95092-4db9-44ed-8503-b05826dd8dfa/1024.jpeg" alt="Removing an element from a list 2"></p>
+<p>Please note there are some values colored gray at the end of the array. Technically, these are garbage. They need to be removed in order not to interfere with <span class="term">garbage collection</span>.</p>
+<p>Step 3: Cleaning up garbage</p>
+<p><img data-max-width="1024" data-id="5a43de32-3c61-4b1e-ab29-7a49b28b5fa3" src="https://cdn.codegym.cc/images/article/5a43de32-3c61-4b1e-ab29-7a49b28b5fa3/1024.jpeg" alt="Removing an element from a list 3"></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1214"></div>
+<hr>
+<h2>3. Practical examples of working with a list in Java</h2>
+<p>Let's write some examples of working with lists:</p>
+<p>We'll list all the even numbers in the range from 1 to 20:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt; list = new <span class="text-neon">ArrayList</span>&lt;<span class="text-viola">Integer</span>&gt;();
+
+for (int i = 1; i &lt;= 20; i++)
+&nbsp; &nbsp;if (i%2 == 0)
+&nbsp; &nbsp; &nbsp; <span class="text-user">list</span>.<span class="text-red">add</span>(i);</code></pre>
+        </td>
+        <td>Create a list object<br><br>
+            Loop over all the indices <code>1</code> to <code>20</code><br>
+            If the index is divisible by <code>2</code> without a remainder,<br>
+            add it to the list
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Now let's display all the elements of the list on the screen:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;Integer&gt; <span class="text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;Integer&gt;();
+
+for (int i = 1; i &lt;= 20; i++)
+   if (i%2 == 0)
+      <span class="text-user">list</span>.<span class="text-red">add</span>(i);
+
+for (int i = 0; i &lt; <span class="text-user">list</span>.size(); i++)
+   System.out.println(<span class="text-user">list</span>.<span class="text-red">get</span>(i));</code></pre>
+        </td>
+        <td>Create a list object<br>
+            Loop over all the indices <code>1</code> to <code>20</code><br><br>
+            If the number is divisible by <code>2</code> without a remainder,<br>
+            add it to the list<br><br>
+            Loop from zero to the size of the list<br>
+            Display each element on the screen
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Removing elements:</p>
+<p>Now let's remove all elements that are divisible by 4. Note that after removing an element from the list, <span class="text-red">the positions of the remaining elements immediately change.</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;Integer&gt; <span class="text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;Integer&gt;();
+
+for (int i = 1; i &lt;= 20; i++)
+   if (i%2 == 0)
+      <span class="text-user">list</span>.<span class="text-red">add</span>(i);
+
+for (int i = 0; i &lt; <span class="text-user">list</span>.<span class="text-red">size</span>(); i++)
+   if (<span class="text-user">list</span>.<span class="text-red">get</span>(i)%4 == 0)
+   {
+      <span class="text-user">list</span>.<span class="text-red">remove</span>(i);
+      i--;
+   }</code></pre>
+        </td>
+        <td>Create a list object<br><br>
+            Loop over all the indices <code>1</code> to <code>20</code><br>
+            If the index is divisible by <code>2</code> without a remainder,<br>
+            add it to the list<br><br>
+            Loop from zero to the size of the list<br>
+            If an element of the list is divisible by <code>4</code> without a remainder:<br><br>
+            a) remove the element<br>
+            b) decrease the <code>i</code> counter so we get the same index on the next iteration of the loop
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Let's say you need to remove the last 3 elements from a list.</p>
+<p>Here's how to do that incorrectly:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;Integer&gt; <span class="text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;Integer&gt;();
+
+for (int i = 1; i &lt;= 20; i++)
+   if (i%2 == 0)
+      <span class="text-user">list</span>.<span class="text-red">add</span>(i);
+
+int <span class="text-green">n</span> = <span class="text-user">list</span>.<span class="text-red">size</span>();
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 3);
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 2);
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 1);</code></pre>
+        </td>
+        <td>Create a list object<br><br>
+            The list has 10 elements: <code>2</code>, <code>4</code>, <code>6</code>, ... <code>20</code><br><br><br><br>
+            <code><span class="text-green">n</span> = 10</code><br>
+            <code><span class="text-green">n</span> - 3 = 7</code> (there are 9 elements left in the list)<br>
+            <code><span class="text-green">n</span> - 2 = 8</code> (there are 8 elements left in the list)<br>
+            <code><span class="text-green">n</span> - 1 = 9</code> (there are 7 elements left in the list)
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>After removing the 7th and 8th elements, only 8 elements will remain in the list. That means it won't be possible to delete the 9th element — an error will occur in the program.</p>
+<p>Here's the right way to remove the elements:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Option 1</th>
+        <th>Option 2</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="text-green">n</span> = <span class="text-user">list</span>.<span class="text-red">size</span>();
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 3);
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 3);
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 3);
+</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>int <span class="text-green">n</span> = <span class="text-user">list</span>.<span class="text-red">size</span>();
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 1);
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 2);
+<span class="text-user">list</span>.<span class="text-red">remove</span>(<span class="text-green">n</span> - 3);
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The elements need to be removed either from the end or from another consistent location, since the elements get shifted by one after each removal operation.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1215"></div>

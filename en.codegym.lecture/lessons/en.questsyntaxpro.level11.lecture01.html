@@ -1,0 +1,311 @@
+<h2>1. Static variables</h2>
+<p>When a class is loaded into memory a <strong>static object</strong> is created immediately. This object stores static class variables (static class fields). <span class="text-green">The static object exists even if no ordinary (non-static) objects of the class have been created.</span></p>
+<p>When we declare variables in a class, we indicate whether they will be created just once, or whether there should be distinct instances of these variables in each object. By default, a new copy of each variable is created for each object.</p>
+<p>A <strong>static</strong> variable is bound to the class's static object and there is always a single instance of it.</p>
+<p>To create a static variable in a class, you need to write the <code><span class="text-red">static</span></code> keyword before its name. The general format for declaring a static variable is:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code><span class="text-red">static</span> <span class="text-viola">Type</span> <span class="code text-user">name</span> = <span class="text-green">value</span>;</code></pre>
+</div>
+<p>If a static variable is not assigned an initial value, it is initialized with a default value:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Type</th>
+        <th>Default value</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>byte</code></pre>
+        </td>
+        <td>
+            <pre><code>0</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>short</code></pre>
+        </td>
+        <td>
+            <pre><code>0</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int</code></pre>
+        </td>
+        <td>
+            <pre><code>0</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>long</code></pre>
+        </td>
+        <td>
+            <pre><code>0</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>float</code></pre>
+        </td>
+        <td>
+            <pre><code>0.0</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>double</code></pre>
+        </td>
+        <td>
+            <pre><code>0.0</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>char</code></pre>
+        </td>
+        <td>
+            <pre class="inline-block"><code>'\u0000'</code></pre>
+            (the same thing as
+            <pre class="inline-block"><code>0</code></pre>
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>boolean</code></pre>
+        </td>
+        <td>
+            <pre><code>false</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="inline-block"><code>Object</code></pre>
+            and any classes
+        </td>
+        <td>
+            <pre><code>null</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>public <span class="text-red">static</span> <span class="text-viola">int</span> <span class="text-user">WIDTH</span> = 100;</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>public <span class="text-red">static</span> <span class="text-viola">String</span> <span class="text-user">message</span> = "Hello";</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>private <span class="text-red">static</span> <span class="text-viola">Scanner</span> <span class="text-user">console</span>;</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>private <span class="text-red">static</span> <span class="text-viola">int</span> <span class="text-user">count</span> = 0;</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>private <span class="text-red">static</span> <span class="text-viola">boolean</span> <span class="text-user">flag</span>;</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<p>Inside of a class, you can refer to its static variables simply by using their names. But to access them from another class, you need to write the name of the class before the name of the static variable.</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code><span class="text-neon">ClassName</span>.<span class="text-user">variable</span></code></pre>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Variable</th>
+        <th>Class</th>
+        <th>Accessing a variable outside its class</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>public <span class="text-red">static</span> <span class="text-viola">int</span> <span class="text-user">WIDTH</span> = 100;</code></pre>
+        </td>
+        <td>
+            <pre><code>Solution</code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-neon">Solution</span>.<span class="text-user">WIDTH</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>public <span class="text-red">static</span> <span class="text-viola">String</span> <span class="text-user">message</span> = "Hello";</code></pre>
+        </td>
+        <td>
+            <pre><code>Main</code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-neon">Main</span>.<span class="text-user">message</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>private <span class="text-red">static</span> <span class="text-viola">Scanner</span> <span class="text-user">console</span>;</code></pre>
+        </td>
+        <td>
+            <pre><code>JavaGame</code></pre>
+        </td>
+        <td>The variable is <code>private</code>. It is not visible outside the class.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code class="language-java">private <span class="text-red">static</span> <span class="text-viola">int</span> <span class="text-user">count</span> = 0;</code></pre>
+        </td>
+        <td>
+            <pre><code>Counter</code></pre>
+        </td>
+        <td>The variable is <code>private</code>. It is not visible outside the class.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code class="language-java">private <span class="text-red">static</span> <span class="text-viola">boolean</span> <span class="text-user">flag</span>;</code></pre>
+        </td>
+        <td>
+            <pre><code>Arithmetic</code></pre>
+        </td>
+        <td>The variable is <code>private</code>. It is not visible outside the class.</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1101"></div>
+<hr>
+<h2>2. Difference between static and non-static variables</h2>
+<p>Non-static (ordinary) variables of a class are declared in the same way as static ones, only without the <code>static</code> keyword.</p>
+<p>What's the difference between ordinary variables and static variables?</p>
+<p>Ordinary variables of a class are bound to objects of the class (instances of the class), while static variables are bound to the class's static object.</p>
+<p>If there are multiple instances of a class, each of them has its own copy of the non-static (ordinary) variables. Static variables of a class are always stored in its static object and only a single instance of them exists.</p>
+<p>You can access the ordinary variables (fields) of a class only if you have a reference to an object of the class. And inside methods of the class, of course.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Accessing a field of a class using an object reference</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="text-neon">DataInfo</span>
+{
+   public int <span class="code text-orange">value</span> = 100;
+}
+
+public class Solution
+{
+   public static void main(String[] args)
+   {
+      <span class="text-neon">DataInfo</span> <span class="code text-user">info</span> = new <span class="text-neon">DataInfo</span>();
+      System.out.println(<span class="code text-user">info</span>.<span class="code text-orange">value</span>);
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>You can access static variables from anywhere (after accounting for the visibility modifiers): from ordinary methods, from static methods of the same class, from methods of other classes, etc.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Accessing a static field of a class <span class="text-red">without</span> using an object reference</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="text-neon">DataInfo</span>
+{
+   public static int <span class="code text-orange">value</span> = 100;
+}
+
+public class Solution
+{
+   public static void main(String[] args)
+   {
+      System.out.println(<span class="text-neon">DataInfo</span>.<span class="code text-orange">value</span>);
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>How memory is organized:</strong></p>
+<p>Let's say we have a <code>Person</code> class with 4 fields: two are static and two are not.</p>
+<div class="lesson-example">
+<pre class="language-java"><code>public class Person
+{
+   public <span class="text-red">static</span> <span class="text-viola">int</span> <span class="code text-user">count</span> = 0;
+   public <span class="text-red">static</span> <span class="text-viola">int</span> <span class="code text-user">sum</span> = 0;
+   public <span class="text-viola">int</span> <span class="code text-green">age</span> = 0;
+   public <span class="text-viola">String</span> <span class="code text-green">name</span>;
+}</code></pre>
+</div>
+<p><strong>Immediately after loading the class</strong></p>
+<p>When the Java machine has finished loading the <code>Person</code> class, memory will look like this:</p>
+<p><img data-max-width="512" data-id="d9b1fa81-2721-4280-9731-8b4120d836e3" src="https://cdn.codegym.cc/images/article/d9b1fa81-2721-4280-9731-8b4120d836e3/512.jpeg" alt=""></p>
+<p><strong>After creating the first object</strong></p>
+<p>If we create a <code>Person</code> object, then the picture becomes this:</p>
+<p><img data-max-width="1024" data-id="99f2f5ae-2926-4100-9eb1-a666f1ae9f51" src="https://cdn.codegym.cc/images/article/99f2f5ae-2926-4100-9eb1-a666f1ae9f51/1024.jpeg" alt="Difference between static and non-static variables 2"></p>
+<p>Please note that although both objects have two variables, these are different variables: the ordinary objects have ordinary variables, and the static object has the static variables.</p>
+<p><strong>We need more objects</strong></p>
+<p><span>Let's create two more </span><code><span>Person</span></code><span> objects. Now memory will look like this:</span></p>
+<p><img data-max-width="1024" data-id="717c516a-9860-4c18-ae05-281b77818472" src="https://cdn.codegym.cc/images/article/717c516a-9860-4c18-ae05-281b77818472/1024.jpeg" alt="Difference between static and non-static variables 3"></p>
+<p>Please note that each object has its own age and name variables.<strong><br>
+</strong></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1102"></div>
+<hr>
+<h2>3. Removing and adding the <code>static</code> modifier</h2>
+<p><strong>From static to ordinary</strong></p>
+<p>What happens if we take a static variable and turn it into an ordinary one by removing its <code>static</code> modifier? For example, the <code>static int sum</code> variable.</p>
+<p>The modified code will look like this:</p>
+<div class="lesson-example">
+<pre class="language-java"><code>public class Person
+{
+   public <span class="text-red">static</span> <span class="text-viola">int</span> <span class="code text-user">count</span> = 0;
+   public <span class="text-viola">int</span> <span class="code text-green">sum</span> = 0;
+   public <span class="text-viola">int</span> <span class="code text-green">age</span> = 0;
+   public <span class="text-viola">String</span> <span class="code text-green">name</span>;
+}</code></pre>
+</div>
+<p>Now memory looks like this:</p>
+<p><img data-max-width="1024" data-id="1f7fda87-dbd7-426c-9bc1-7c135763641f" src="https://cdn.codegym.cc/images/article/1f7fda87-dbd7-426c-9bc1-7c135763641f/1024.jpeg" alt="Difference between static and non-static variables"></p>
+<p>The static variable disappeared from the static object, and now each ordinary object has its own <code><span class="text-user">sum</span></code> variable.</p>
+<p><strong>From ordinary to static</strong></p>
+<p>We can do the opposite: add the <code>static</code> modifier to ordinary variables of a class. They will disappear from all ordinary objects and will appear in the static object. <span class="text-red">Suppose we decide to make the <code>age</code> and <code>name</code> variables static.</span> Then the code will look like this:</p>
+<div class="lesson-example">
+<pre class="language-java"><code>public class Person
+{
+   public <span class="text-red">static</span> <span class="text-viola">int</span> <span class="code text-user">count</span> = 0;
+   public <span class="text-viola">int</span> <span class="code text-green">sum</span> = 0;
+   public <span class="text-red">static</span> <span class="text-viola">int</span> <span class="code text-user">age</span> = 0;
+   public <span class="text-red">static</span> <span class="text-viola">String</span> <span class="code text-user">name</span>;
+}</code></pre>
+</div>
+<p>And now memory will look like this:</p>
+<img data-max-width="1024" data-id="2b307f2d-3496-446b-aa94-ecc0d5d476db" src="https://cdn.codegym.cc/images/article/2b307f2d-3496-446b-aa94-ecc0d5d476db/1024.jpeg" alt="Removing and adding the static modifier">
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1103"></div>

@@ -1,0 +1,247 @@
+<h2>1. Pegasus</h2>
+<p>Let's take a deeper look at the third principle of <span class="term">OOP</span>: <span class="term text-red">inheritance</span>. This is a very interesting topic that you will use often. <span class="text-green">To the uninitiated, programming is indistinguishable from magic. So let's start with an interesting analogy...;</span></p>
+<p>Let's say you are a wizard who wants to create a flying horse. On the one hand, you could try conjuring a pegasus. But because pegasi do not exist in nature, this will be very difficult. You will have to do a lot yourself. <span class="text-orange">It's much easier to take a horse and conjure its wings.</span></p>
+<p><img data-max-width="1024" data-id="ae53ef14-d3c3-417f-b56b-907b065ea4bd" src="https://cdn.codegym.cc/images/article/ae53ef14-d3c3-417f-b56b-907b065ea4bd/1024.jpeg" alt=""></p>
+<p><span class="text-green">In programming, this process is called "inheritance". </span>Suppose you need to write a very complex class. It takes a long time to write code from scratch and then test everything for a long time to look for errors. Why go the hard way? It's better to look to see whether such a class already exists.</p>
+<p>Suppose you find a class whose methods implement 80% of the functionality you need. What do you do with it next? You could just copy its code into your class. But this solution has several drawbacks:</p>
+<ol>
+    <li><span class="text-orange">The class you find may already be compiled into bytecode, and you may not have access to its source code.</span></li>
+    <li><span class="text-red">The source code of the class is available, but you work for a company that could be sued for a couple of billion for using even 6 lines of someone else's code. And then your employer will sue you.</span></li>
+    <li><span class="text-user">Unnecessary duplication of a large amount of code. Additionally, if the author of an external class finds a bug in it and fixes it, you will still have the bug.</span></li>
+</ol>
+<p>There is a more elegant solution, and it doesn't require getting legal access to the original class's code. <span class="text-green">In Java, you can simply declare that class as the parent of your class. </span>That will be equivalent to adding the code for that class to your own code. <span class="text-orange">Your class will see all the data and all the methods of the parent class.</span> For example, you can do this: we inherit "horse" and then add "wings" to get a "pegasus"</p>
+<p><img width="512" src="https://cdn.codegym.cc/images/article/90a5aa73-76bf-4d1f-aa6f-dc63a9044dd8/original.jpeg" alt=""></p>
+<hr>
+<h2>2. Common base class</h2>
+<p>Inheritance can be used for other purposes as well. Let's say you have ten classes that are very similar. They have the same data and methods. You can create a special base class, move the data (and associated methods) into this base class, and declare those ten classes to be descendants. In other words, in each class indicate that its parent class is this base class.</p>
+<p>Just as <span class="text-red">the advantages of abstraction are revealed only along side encapsulation, so too are the advantages of inheritance much enhanced when using polymorphism.</span> But you will learn about that a little later. Today we will look at several examples of using inheritance.</p>
+<p>Chess pieces</p>
+<p>Suppose we are writing a program that plays chess with a human user. Accordingly, we need classes to represent the pieces. What classes would they be?</p>
+<p>If you've ever played chess, the obvious answer is <span class="text-user">King, Queen, Bishop, Knight, Rook and Pawn.</span></p>
+<p>But the classes themselves would still need to store information about each piece. For example, the x and y coordinates, and the value of the piece. After all, some pieces are more valuable than others.</p>
+<p>In addition, the pieces move differently, which means that the classes will implement different behavior. Here's how you could define them as classes:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>class King
+{
+   int x;
+<strong>   </strong>int y;
+   int worth;
+
+   void kingMove()
+   {
+     // Code that decides
+     // how to move
+     // the king
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>class Queen
+{
+   int x;
+   int y;
+   int worth;
+
+   void queenMove()
+   {
+     // Code that decides
+     // how to move
+     // the queen
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>class Rook
+{
+   int x;
+   int y;
+   int worth;
+
+   void rookMove()
+   {
+     // Code that decides
+     // how to move
+     // the rook
+   }
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Knight
+{
+   int x;
+   int y;
+   int worth;
+
+   void knightMove()
+   {
+     // Code that decides
+     // how to move
+     // the knight
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>class Bishop
+{
+   int x;
+<span>   int y;
+</span>   int worth;
+
+   void bishopMove()
+   {
+     // Code that decides
+     // how to move
+     // the bishop
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>class Pawn
+{
+   int x;
+   int y;
+   int worth;
+
+   void pawnMove()
+   {
+     // Code that decides
+     // how to move
+     // the pawn
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>This is a very primitive description of chess pieces.</p>
+<p><strong>Common base class</strong></p>
+<p>And here's how you could use inheritance to reduce the amount of code. We can bring the common methods and data into a common class. We'll call it <code>ChessItem</code>. There's no point in creating <span class="text-orange">objects of the <code><span class="text-orange">ChessItem</span> class</code>, since the class doesn't correspond to any chess piece</span>. That said, the class will prove very useful:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>class King extends ChessItem
+{
+   void kingMove()
+   {
+     // Code that decides
+     // how to move the king
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>class Queen extends ChessItem
+{
+   void queenMove()
+   {
+     // Code that decides
+     // how to move the queen
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>class Rook extends ChessItem
+{
+   void rookMove()
+   {
+     // Code that decides
+     // how to move the rook
+   }
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+<pre class="language-java"><code>class ChessItem
+{
+   int x;
+   int y;
+   int worth;
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Knight extends ChessItem
+{
+   void knightMove()
+   {
+     // Code that decides
+     // how to move the knight
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>class Bishop extends ChessItem
+{
+   void bishopMove()
+   {
+     // Code that decides
+     // how to move the bishop
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>class Pawn extends ChessItem
+{
+   void pawnMove()
+   {
+     // Code that decides
+     // how to move the pawn
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">This is a great way to simplify the code for similar objects.</span> <span class="text-orange">The benefits are particularly noticeable when there are thousands of different objects and hundreds of classes in the project.</span> So properly selected parent (base) classes let you not only greatly simplify the logic, but also reduce the code tenfold.</p>
+<hr>
+<h2>3. Class inheritance — <code>extends</code></h2>
+<p><span class="text-user">So what does it take to inherit a class?</span> For one class to inherit another, you need to write the <code><span class="text-red">extends</span></code> keyword after the child class declaration and then write the name of the parent class. It usually looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>class <span class="text-green">Descendant</span> <span class="text-red">extends</span> <span class="text-user">Parent</span></code></pre>
+</div>
+<p>This is what you need to write when declaring the Descendant class. <span class="text-red">By the way, a class can inherit only one class.</span></p>
+<p><img data-max-width="1024" data-id="43cf5835-7fca-4cc5-8974-aaa3055b17c9" src="https://cdn.codegym.cc/images/article/43cf5835-7fca-4cc5-8974-aaa3055b17c9/1024.jpeg" alt=""></p>
+<p>In the picture, we see that a cow inherited a pig, which inherited a chicken, which inherited an egg. <span class="text-red">Only one parent!</span> Such inheritance is not always logical. But when all you have is a pig and you really need a cow, programmers often cannot resist the urge to make a cow out of a pig.</p>
+<p>Java does not have multiple inheritance: a class cannot inherit two classes. Each class can have only one parent class. <span class="text-green">If no parent class is specified, the parent class is <code><span class="text-green">Object</span></code>.</span></p>
+<p>That said, Java does have multiple inheritance of interfaces. This mitigates the problem slightly. We'll talk about interfaces a little later, but for now let's continue to explore inheritance.</p>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task07.task0713"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task07.task0714"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task07.task0715"></div>
+<hr>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="7a257b58-bb13-4e41-8cbe-541fcd4ad9eb" src="https://cdn.javarush.ru/images/article/7a257b58-bb13-4e41-8cbe-541fcd4ad9eb/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="101b84d3-6284-45f3-b892-eb29ec327f6e" src="https://cdn.javarush.ru/images/article/101b84d3-6284-45f3-b892-eb29ec327f6e/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="26ce485b-aed1-412a-9c04-1f042c895ea2" src="https://cdn.javarush.ru/images/article/26ce485b-aed1-412a-9c04-1f042c895ea2/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="0b90f671-71b6-44c5-960e-c4452cf9060e" src="https://cdn.javarush.ru/images/article/0b90f671-71b6-44c5-960e-c4452cf9060e/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="eb6c5904-f9a2-4364-a0e4-ca19f7cc2a00" src="https://cdn.javarush.ru/images/article/eb6c5904-f9a2-4364-a0e4-ca19f7cc2a00/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="962e279f-605e-40ad-aba5-af852c30fc7a" src="https://cdn.javarush.ru/images/article/962e279f-605e-40ad-aba5-af852c30fc7a/original.png" alt="">
+        </div>
+    </div>
+</div>

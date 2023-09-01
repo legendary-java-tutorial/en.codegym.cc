@@ -1,0 +1,61 @@
+course is designed for beginners, because you will not be designing the architecture of a serious application for a long time. But don't worry, good architecture is the exception rather than the rule. It is very difficult to choose the right application architecture <strong>before</strong> building the application.</p>
+<p>Examples of popular architectures for large server applications:</p>
+<ul>
+ <li>Layered architecture (Layered Architecture).</li>
+ <li>Tiered Architecture.</li>
+ <li>Service Oriented Architecture (SOA).</li>
+ <li>Microservice architecture (Microservice Architecture).</li>
+</ul>
+<p>Each of them has its pros and cons. But studying them will not give you anything. Architecture is the answer to the question <strong>"how to organize the interaction of thousands of objects within the system"</strong> . And until you experience the full complexity of the problem, you will not be able to understand the full versatility of the solution.</p>
+<p>All applications use some kind of architecture, or at least pretend to. Therefore, knowledge of popular approaches to application design will allow you to quickly and better understand how the application works. And that means making changes exactly where you need them.</p>
+<p>What does “make changes where necessary” mean? Are there places where you don't need to make changes? Exactly.</p>
+<p>To be specific, let's say you're working on <strong>a medium backend project</strong> . It has been written for 5 years by a team of 20 people. The project took 100 man-years and contains about 100 thousand lines of code. In total, it consists of two thousand classes, which are divided into 10 modules of different sizes.</p>
+<p>And add a harsh reality. The logic of some tasks is spread over several modules. Also, business logic can be in the frontend (written in JavaScript) and / or written as a stored procedure directly in the database. Are you still sure that you can immediately determine the place <strong>where exactly to make changes</strong> ?</p>
+<p>This is not some nightmare I made up to scare you. This is a typical project. It happens even worse. Why is this happening? There can be any number of reasons, but almost always there are such:</p>
+<ul>
+ <li>A lot of people work on the project - each of them sees it a little differently.</li>
+ <li>For 5 years, 10 people have changed in the project, newcomers did not understand it much.</li>
+ <li>Creating software is a constant making of changes that constantly change everything.</li>
+ <li>Five years ago, when we decided on the architecture, the idea of ​​the project was somewhat different.</li>
+</ul>
+<img data-max-width="512" data-id="f94e8c29-d9b7-4d6d-8f74-722772d8adc3" src="https://cdn.codegym.cc/images/article/f94e8c29-d9b7-4d6d-8f74-722772d8adc3/512.jpeg" alt="">
+<p>But the main thing is that regardless of the architecture of the project, all the programmers working on it adhered to the same understanding of how this project works. Let's start with the simplest concept - client-server architecture.</p>
+<h2>1.2 The concept of client-server interaction</h2>
+<p>Now we will understand the concept that underlies the <strong>client-server</strong> architecture and will allow you to better understand how the interaction of millions of programs on the Internet is organized.</p>
+<p>As the name implies, this concept involves two parties: <strong>client</strong> and <strong>server</strong> . Everything is like in life here: the client is the customer of this or that service, and the server is the service provider. The client and server are physically <strong>programs</strong> , for example <span class="text-green">a typical client is a browser</span> .</p>
+<p>The following examples can be given as a server:</p>
+<ul>
+ <li>Web servers such as Tomcat.</li>
+ <li>Database servers such as MySQL.</li>
+ <li>Payment gateways like Stripe.</li>
+</ul>
+<p>The client and the server usually communicate via the Internet (although they can work in the same local area network and in general in any other types of networks). Communication takes place over standard protocols such as HTTP, FTP, or lower-level protocols such as TCP or UDP.</p>
+<p>The protocol is usually chosen according to the type of service that the servers provide. For example, if it is a video call, then UDP is usually used.</p>
+<p>Remember how Tomcat and its servlets work? The server receives an HTTP message, unpacks it, extracts all the necessary information from there and passes it to the servlet for processing. Then the processing result is packaged back into an HTTP-response and sent to the client.</p>
+<p>This is the typical client-server interaction. The browser is the web client and Tomcat is the web server. Tomcat is even called a web server.</p>
+<p>But if you think about it, it is not the name that is important, but the essence - the distribution of roles between programs. Your JS script running in an HTML page could well be called <strong>a client</strong> , and your servlet a <strong>server</strong> . After all, they work in pairs within the framework <strong>of the client-server concept</strong> .</p>
+<h2>1.3 An important nuance</h2>
+<p>It is also worth noting that <strong>the client-server interaction is based on the principle that such interaction is initiated by the client</strong> : the server only answers the client and reports whether it can provide the service to the client and, if so, on what conditions.</p>
+<p>It doesn't matter where the client is physically located and where the server is. The client software and server software are usually installed on different machines, but they can also run on the same computer.</p>
+<p>This concept was developed as a first step towards simplifying a complex system. She has these strengths:</p>
+<ul>
+ <li><strong>Logic simplification</strong> : the server does not know anything about the client and how it will use its data in the future.</li>
+ <li>There may be <strong>weak clients</strong> : all resource-intensive tasks can be transferred to the server.</li>
+ <li>Independent development of client code and server code.</li>
+ <li>Lots of different clients, for example Tomcat and different browsers.</li>
+</ul>
+<p>The most basic version of the interaction between the client and the server is shown in the picture:</p><img data-max-width="512" data-id="20aca3ae-a74c-4cbc-9caa-e5ab1447c1a5" alt="client-server" src="https://cdn.javarush.com/images/article/20aca3ae-a74c-4cbc-9caa-e5ab1447c1a5/512.jpeg" style="width: 512px;">
+<p>It is important to note two details here. First, the picture shows that many clients can access one server. Secondly, they can access it at the same time. This is also an important part of the server.</p>
+<p>One client usually interacts with one user, so often even authorization is not needed there. However, the server processes requests from thousands of clients, and when developing code for it, you need to be able to distinguish between authorization and authentication.</p>
+<p>It is also important that the server processes thousands of requests in parallel. And this means that when developing the backend code, you will constantly need to think about the task of concurrent access to resources. Also, the server code has a very high probability of race condition (thread race), deadlock (mutual blocking of threads).</p>
+<p><strong>The life cycle of important objects must be monitored:</strong></p>
+<p>You can't just start a new thread on the server via <code>new Thread().start()</code>. Instead, you need to have a ThreadPool that will share between all service threads.</p>
+<p>Also, you can’t just start an asynchronous task, because they are also executed in separate threads. When creating such a task, you should always know which pool of threads is executing it and what will happen if such a pool overflows.</p>
+<p>All work with files and directories must be done through try-with-resources. If in a normal application you forgot to close a stream or a file, is that a problem? It will close itself when you exit the program. But if you forgot to close a file on the server somewhere in the code, and your server has been running for months ... Soon, thousands of such unclosed files will accumulate and the OS will stop opening new files for reading (work with files is controlled by the OS). Teamlead won't pat you on the head...</p>
+<h2>1.4 Client-server architecture</h2>
+<p>another important point. <strong>The client-server architecture defines only the general principles of interaction between computers</strong> , the details of the interaction are determined by various protocols.</p>
+<p>This concept (client-server) tells us that we need to divide the machines on the network into client machines, which always need something, and server machines, which give what they need. In this case, the client always starts the interaction, and the rules by which the interaction occurs are described by the protocol.</p>
+<p>There are two types of client-server interaction architecture: the first is called the two-tier client-server <strong>architecture , the second is the multi-tier client-server architecture (sometimes called </strong><strong>a three-tier architecture</strong> or a three-tier architecture, but this is a special case).</p>
+<p>The principle of operation of the two-tier architecture of client-server interaction is that the processing of a request occurs on one server without referring to other servers in the process of this processing.</p>
+<p>The two-tier client-server interaction model can be drawn as a simple diagram.</p><img data-max-width="800" data-id="fc9e05b7-e396-4057-96ac-e8417be7b534" alt="two-tier client-server architecture" src="https://cdn.javarush.com/images/article/fc9e05b7-e396-4057-96ac-e8417be7b534/800.jpeg" style="width: 800px;">
+<p>Here you can see that the first level is everything that concerns the client, and the second level is everything that concerns the server.</p>

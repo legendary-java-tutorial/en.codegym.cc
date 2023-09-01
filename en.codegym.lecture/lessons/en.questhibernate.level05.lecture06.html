@@ -1,0 +1,28 @@
+ned how to create database schemas and tables, so the logical question has come: how to add data to a table?</p>
+<p>Before adding data to a table, let's learn how to view data in tables.</p>
+<p>First of all, Workbench is aimed at executing SQL queries and viewing the results of their execution, so when you want to view the contents of a table, it simply prompts you to execute the query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-orange">table</span></code></pre>
+</div>
+<p>And I'm not kidding.</p>
+<p>Workbench has a special button that allows you to view the contents of the table. It is displayed if you hover over the table name:</p><img data-max-width="256" data-id="84fb2859-d6ab-4183-83e4-ff32379f39f6" alt="" src="https://cdn.javarush.com/images/article/84fb2859-d6ab-4183-83e4-ff32379f39f6/256.jpeg" style="width: 256px;">
+<p>Let's click it and see what happens:</p><img data-max-width="800" data-id="1bbeec02-d7eb-41f1-8f71-d638821ba3ec" alt="" src="https://cdn.javarush.com/images/article/1bbeec02-d7eb-41f1-8f71-d638821ba3ec/800.jpeg" style="width: 800px;">
+<p>Here, a query to the table is displayed on top, and in the lower half of the screen - Result Grid - a table of results.</p>
+<p>And this is the only way to view the contents of the tables.</p>
+<h2>Adding data to a table</h2>
+<p>If you're wondering how to view the contents of a table, then wait until you know how to add data to a table.</p>
+<p>You can add them directly through the Result Grid, which you see in the lower half of the screen.</p>
+<p>We just take and write lines there:</p><img data-max-width="1024" data-id="880efd47-26fc-4d2e-939f-175edbf14ff2" alt="" src="https://cdn.javarush.com/images/article/880efd47-26fc-4d2e-939f-175edbf14ff2/1024.jpeg" style="width: 1024px;">
+<p>Then press the Apply button. As a result, we get the following SQL script:</p><img data-max-width="1080" data-id="d8d43805-723f-4473-b810-78cddca00c82" alt="" src="https://cdn.javarush.com/images/article/d8d43805-723f-4473-b810-78cddca00c82/1080.jpeg" style="width: 1080px;">
+<p>Click the "Run script" button and get the result:</p><img data-max-width="1080" data-id="37ad76f8-192c-4146-b5ee-7b361f9a26bb" alt="" src="https://cdn.javarush.com/images/article/37ad76f8-192c-4146-b5ee-7b361f9a26bb/1080.jpeg" style="width: 1080px;">
+<h2>Changing data in a table</h2>
+<p>Data in the table is even easier to change than to add - just take it and change it.</p>
+<p>Let's make 3 changes to our table:</p>
+<ol>
+ <li>Ivanov will change the level to 40.</li>
+ <li>Petrov will change the year to 2021.</li>
+ <li>Let's change Sidorov's name to "Vitaly".</li>
+</ol>
+<p>Change the data in the table:</p><img data-max-width="1080" data-id="5b251dfb-2bcf-41b6-86df-a24f5f2acbd3" alt="" src="https://cdn.javarush.com/images/article/5b251dfb-2bcf-41b6-86df-a24f5f2acbd3/1080.jpeg" style="width: 1080px;">
+<p>Click Apply and get a list of requests:</p><img data-max-width="800" data-id="a7cae541-ca2c-4eb3-ab27-bdf886d93fc7" alt="" src="https://cdn.javarush.com/images/article/a7cae541-ca2c-4eb3-ab27-bdf886d93fc7/800.jpeg" style="width: 800px;">
+<p>That's it, the data in the table has been changed.</p>

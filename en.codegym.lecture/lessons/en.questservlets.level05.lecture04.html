@@ -1,0 +1,230 @@
+Log filters in Log4j
+<p>----------------------------------------</p>
+List of filters
+TimeFilter
+RegexFilter
+ThresholdFilter
+<p>----------------------------------------</p>
+<h2>5.1 List of filters</h2>
+<p>Logger allows you to configure message filtering. To do this, he has a couple of dozen filters with all sorts of parameters. The table below shows the most popular ones.</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th width="200">Filters</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>BurstFilter</td>
+    <td>Allows you to control the frequency of messages per second for a given logging level.</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>CompositeFilter</td>
+    <td>Allows you to set multiple sequential filters.</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>DynamicThresholdFilter</td>
+    <td>Allows you to enable detailed logging if certain information is found in the log.</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>MapFilter</td>
+    <td>Allows you to build a complex logical expression for the filter from several parameters.</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>MarkerFilter</td>
+    <td>Allows you to filter messages by tags, the tag must first be added during the event logging.</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>RegexFilter</td>
+    <td>Allows you to set a mask - a regular expression.</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>StructuredDataFilter</td>
+    <td>Allows you to filter messages by the presence of certain data in them.</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>ThreadContextMapFilter</td>
+    <td>Allows you to manage filters based on data taken from the context of the current thread.</td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td>ThresholdFilter</td>
+    <td>Controls logging based on the log message level.</td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td>TimeFilter</td>
+    <td>Allows you to turn filters on and off at specific times.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Below we will talk about just three of them. You can learn more about these filters on their <a href="https://logging.apache.org/log4j/2.x/manual/filters.html" target="_blank">official website</a> .</p>
+<h2>5.2 TimeFilter</h2>
+<p>The filter <code>TimeFilter</code>allows you to turn filters on and off at a certain time, it has 5 parameters:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th width="150"></th>
+    <th></th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>start</td>
+    <td>Logging start time in the format<code>HH:mm:ss</code></td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>end</td>
+    <td>Logging off time in the format<code>HH:mm:ss</code></td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>timezone</td>
+    <td>Sets the time zone.</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>onMatch</td>
+    <td>How to log if filter condition <strong>is true</strong> . Maybe <code>ACCEPT</code>, <code>DENY</code>or <code>NEUTRAL</code>. Default <code>NEUTRAL</code>.</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>onMismatch</td>
+    <td>How to log if filter condition <strong>is false</strong> . Maybe <code>ACCEPT</code>, <code>DENY</code>or <code>NEUTRAL</code>. Default <code>NEUTRAL</code>.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's set up a filter that will turn on logging at 5am and turn it off at 5:30am every day. An example with a complete filter configuration is below:</p>
+<pre class="line-numbers"><code>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;Configuration status="warn" name="MyApp" packages=""&gt;
+    &lt;Appenders&gt;
+        &lt;RollingFile name="RollingFile" fileName="logs/app.log" filePattern="logs/app-%d{MM-dd-yyyy}.log.gz"&gt;
+<span class="text-red">        &lt;TimeFilter start="05:00:00" end="05:30:00" onMatch="ACCEPT" onMismatch="DENY"/&gt;</span>
+        &lt;PatternLayout&gt;
+            &lt;pattern&gt;%d %p %c{1.} [%t] %m%n&lt;/pattern&gt;
+        &lt;/PatternLayout&gt;
+        &lt;TimeBasedTriggeringPolicy /&gt;
+        &lt;/RollingFile&gt;
+    &lt;/Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;Root level="error"&gt;
+        &lt;AppenderRef ref="RollingFile"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+    &lt;/Configuration&gt;
+</code></pre>
+<h2>5.3 RegexFilter</h2>
+<p>The filter <code>RegexFilter</code>allows you to set a mask (regular expression) for filtering messages. This filter has 4 parameters:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th width="150"></th>
+    <th></th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>regex</td>
+    <td>Specifies a regular expression - a mask that is used to filter messages.<code>HH:mm:ss</code></td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>useRawMsg</td>
+    <td>The mask is applied in the message before formatting (true) or after formatting (false)</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>onMatch</td>
+    <td>How to log if filter condition <strong>is true</strong> . Maybe <code>ACCEPT</code>, <code>DENY</code>or <code>NEUTRAL</code>. Default <code>NEUTRAL</code>.</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>onMismatch</td>
+    <td>How to log if filter condition <strong>is false</strong> . Maybe <code>ACCEPT</code>, <code>DENY</code>or <code>NEUTRAL</code>. Default <code>NEUTRAL</code>.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's set up a filter that will only allow messages containing the word codegym. An example with a complete filter configuration is below:</p>
+<pre class="line-numbers"><code>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;Configuration status="warn" name="MyApp" packages=""&gt;
+    &lt;Appenders&gt;
+        &lt;RollingFile name="RollingFile" fileName="logs/app.log"   filePattern="logs/app-%d{MM-dd-yyyy}.log.gz"&gt;
+<span class="text-red">        &lt;RegexFilter regex=".* codegym .*" onMatch="ACCEPT" onMismatch="DENY"/&gt;</span>
+        &lt;PatternLayout&gt;
+            &lt;pattern&gt;%d %p %c{1.} [%t] %m%n&lt;/pattern&gt;
+        &lt;/PatternLayout&gt;
+        &lt;TimeBasedTriggeringPolicy /&gt;
+        &lt;/RollingFile&gt;
+      &lt;/Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;Root level="error"&gt;
+        &lt;AppenderRef ref="RollingFile"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+    &lt;/Configuration&gt;
+</code></pre>
+<h2>5.4 ThresholdFilter</h2>
+<p><strong>The ThresholdFilter</strong> filter allows you to configure filtering by message level. It has only 3 parameters:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th width="150"></th>
+    <th></th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>level</td>
+    <td>Sets the name of the message logging level: <code>ERROR</code>, <code>DEBUG</code>, …</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>onMatch</td>
+    <td>How to log if filter condition <strong>is true</strong> . Maybe <code>ACCEPT</code>, <code>DENY</code>or <code>NEUTRAL</code>. Default <code>NEUTRAL</code>.</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>onMismatch</td>
+    <td>How to log if filter condition <strong>is false</strong> . Maybe <code>ACCEPT</code>, <code>DENY</code>or <code>NEUTRAL</code>. Default <code>NEUTRAL</code>.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's set up a filter that will only allow messages of level <code>DEBUG</code>. An example with a complete filter configuration is below:</p>
+<pre class="line-numbers"><code>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;Configuration status="warn" name="MyApp" packages=""&gt;
+    &lt;Appenders&gt;
+        &lt;RollingFile name="RollingFile" fileName="logs/app.log" filePattern="logs/app-%d{MM-dd-yyyy}.log.gz"&gt;
+<span class="text-red">           &lt;ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/&gt;</span>
+        &lt;PatternLayout&gt;
+            &lt;pattern&gt;%d %p %c{1.} [%t] %m%n&lt;/pattern&gt;
+        &lt;/PatternLayout&gt;
+        &lt;TimeBasedTriggeringPolicy /&gt;
+        &lt;/RollingFile&gt;
+    &lt;/Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;Root level="error"&gt;
+        &lt;AppenderRef ref="RollingFile"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+    &lt;/Configuration&gt;
+</code></pre>

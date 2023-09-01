@@ -1,0 +1,172 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="70bba411-0231-4021-8db3-fe57c923677e" data-max-width="1024" src="https://cdn.javarush.ru/images/article/70bba411-0231-4021-8db3-fe57c923677e/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="1dd313d0-aa43-487d-9c7b-654f109ad751" data-max-width="1024" src="https://cdn.javarush.ru/images/article/1dd313d0-aa43-487d-9c7b-654f109ad751/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="d506efdc-76ac-4a88-86f5-c4c476422f48" data-max-width="1024" src="https://cdn.javarush.ru/images/article/d506efdc-76ac-4a88-86f5-c4c476422f48/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="1dd7a82e-7592-48af-9cb0-cbaea0ca4d1e" data-max-width="512" src="https://cdn.javarush.ru/images/article/1dd7a82e-7592-48af-9cb0-cbaea0ca4d1e/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="7ef26fe1-c202-4062-b107-f82116fd4827" data-max-width="512" src="https://cdn.javarush.ru/images/article/7ef26fe1-c202-4062-b107-f82116fd4827/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="23987bef-168d-4fa1-849a-8ba119dded09" data-max-width="512" src="https://cdn.javarush.ru/images/article/23987bef-168d-4fa1-849a-8ba119dded09/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="f3b91c51-d090-4ca0-bee0-cc10d7191aa3" data-max-width="512" src="https://cdn.javarush.ru/images/article/f3b91c51-d090-4ca0-bee0-cc10d7191aa3/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="ebbeefa4-cd7a-454d-a473-c70988d2625f" data-max-width="512" src="https://cdn.javarush.ru/images/article/ebbeefa4-cd7a-454d-a473-c70988d2625f/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="37a30642-4288-436c-8edc-34d3e4ba6d23" data-max-width="512" src="https://cdn.javarush.ru/images/article/37a30642-4288-436c-8edc-34d3e4ba6d23/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Jagged arrays</h2>
+<p>As a Java programmer you can not only swap the rows of a two-dimensional array, but also construct an array however you want.</p>
+<p>Let's say you want the first row of a two-dimensional array to have a length of <code>10</code>, and you want the length of the second row to be <code>50</code>. Can we do that? Yes, we can.</p>
+<p>First, we need to create a 'container of containers' — this is the first array, which will store references to arrays of rows. This is how it's done:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-orange">int[][]</span> <span class="text-red">name</span> = new <span class="text-viola">int</span>[<span class="text-user">height</span>][];</code></pre>
+</div>
+<p>You simply <strong>omit the second dimension</strong>, and the Java machine creates a container of containers. This is what will be in memory after executing this code:</p>
+<img data-max-width="1024" data-id="75efb0e6-e112-47a0-b922-744ffb2f356a" src="https://cdn.codegym.cc/images/article/75efb0e6-e112-47a0-b922-744ffb2f356a/1024.jpeg" alt="Jagged arrays in Java"">
+<p>And, well, you already know how to create one-dimensional arrays 🙂</p>
+<p>This is what the resulting code will look like:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>// Matrix of important data
+int[][] <span class="text-red">matrix</span> = new int[2][];
+<span class="text-red">matrix</span>[0] = new int[10];
+<span class="text-red">matrix</span>[1] = new int[50]</code></pre>
+        </td>
+        <td>Two-dimensional array<br><br>
+            The zeroth row is an array of <code>10</code> elements<br>
+            The first row is an array of <code>50</code> elements
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>We have just created a so-called "<strong>jagged array</strong>".</p>
+<p>And if we now want to display all the elements of this array on the screen, then the array's <code>length</code> property will come in handy: after all, the lengths of the array's rows are different.</p>
+<p>By the way, how do you find the length of a 'container of containers' in our example? It is also an array object, which means that it has a length. The correct answer is <code>matrix.length</code>.</p>
+<p>How about for the arrays that comprise our rows? <code>matrix[<span class="token number">0</span>].length</code></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0510"></div>
+<hr>
+<h2>2. Working with a two-dimensional array</h2>
+<p>Suppose you want to display a two-dimensional array. How do you do that?</p>
+<p>Our code will look something like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[][] <span class="text-red">matrix</span> = new int[3][];
+<span class="text-red">matrix</span>[0] = new int[]{1, 2, 3, 4, 5, 6};
+<span class="text-red">matrix</span>[1] = new int[]{1, 2, 3};
+<span class="text-red">matrix</span>[2] = new int[]{1};
+for (int <span class="text-green">i</span> = 0; <span class="text-green">i</span> &lt; <span class="text-red">matrix</span>.length; <span class="text-green">i</span>++) {
+   for (int <span class="text-neon">j</span> = 0; <span class="text-neon">j</span> &lt; <span class="text-red">matrix</span>[<span class="text-green">i</span>].length; <span class="text-neon">j</span>++)
+      <span class="text-viola">System.out.print</span>( <span class="text-red">matrix</span>[<span class="text-green">i</span>][<span class="text-neon">j</span>] + " " );
+   <span class="text-viola">System.out.println</span>();
+}</code></pre>
+        </td>
+        <td>Create an array<br>
+            Fill the array with values<br><br><br>
+            Outer loop that iterators over the rows of the array.<br>
+            Inner loop that iterates over the cells of a single row.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>You need two nested loops. The first we call <span class="text-green">outer</span>, and the second — <span class="text-neon">inner</span>.</p>
+<p>In the outer loop (the <code><span class="text-green">i</span></code> variable), we sequentially go through all the rows (arrays) that make up our two-dimensional array. Each value of <code><span class="text-green">i</span></code> corresponds to a row with that index.</p>
+<p>In the inner loop (the <code><span class="text-neon">j</span></code> variable), we iterate over all the cells in the rows. Thanks to the inner loop, a row, which consists of the values of one one-dimensional array, will be displayed on the screen.</p>
+<p>This is what will be displayed:</p>
+<table>
+    <tbody>
+    <tr>
+        <td> One row of the array is processed</td>
+        <td>
+            <pre><code>1 2 3 4 5 6</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>Two rows of the array are processed</td>
+        <td>
+                <pre><code>1 2 3 4 5 6
+1 2 3</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>Three rows of the array are processed</td>
+        <td>
+                <pre><code>1 2 3 4 5 6
+1 2 3
+1</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0511"></div>
+<hr>
+<h2>3. Multidimensional arrays</h2>
+<p>One more interesting fact about arrays, one that you've probably already guessed. If you can make a two-dimensional array, then can you make a three-dimensional array?</p>
+<p>Yes, you can create an array of any dimension. Such arrays are called 'multidimensional'.</p>
+<p>Just for fun, let's create a multidimensional array that has 4 dimensions.</p>
+<pre class="language-java"><code> int[][][][] <span class="text-red">matrix</span> = new int[2][3][4][5];</code></pre>
+<p>This code is too simple, isn't it?</p>
+<p>What if you create it manually?</p>
+<pre class="language-java"><code>int[][][][] <span class="text-red">matrix</span>;
+<span class="text-red">matrix</span> = new int[2][][][];                // Create a 2-element array of references to references to references
+for (int <span class="text-green">i</span> = 0; <span class="text-green">i</span> &lt; <span class="text-red">matrix</span>.length; <span class="text-green">i</span>++)
+{
+  <span class="text-red">matrix</span>[<span class="text-green">i</span>] = new int[3][][];                // Create a 3-element array of references to references
+  for (<span class="text-neon">j</span> = 0; <span class="text-neon">j</span> &lt; <span class="text-red">matrix</span>[<span class="text-green">i</span>].length; <span class="text-neon">j</span>++)
+  {
+    <span class="text-red">matrix</span>[<span class="text-green">i</span>][<span class="text-neon">j</span>] = new int[4][];             // Create a 4-element array of references
+    for (<span class="text-orange">k</span> = 0; <span class="text-orange">k</span> &lt; <span class="text-red">matrix</span>[<span class="text-green">i</span>][<span class="text-neon">j</span>].length; <span class="text-orange">k</span>++)
+      <span class="text-red">matrix</span>[<span class="text-green">i</span>][<span class="text-neon">j</span>][<span class="text-orange">k</span>] = new int[5];          // Create 5-element arrays of integers
+  }
+}</code></pre>
+<p>And that's just creating the array! Then you also need to work with it somehow.</p>
+<p>Bonus task: write code that displays all the values in a three-dimensional array.</p>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0512"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="37b4a6aa-6314-4479-a21e-02eaf447b3e6" data-max-width="1024" src="https://cdn.javarush.ru/images/article/37b4a6aa-6314-4479-a21e-02eaf447b3e6/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="c5b9de6a-cc84-4951-932b-4c3026e409d1" data-max-width="512" src="https://cdn.javarush.ru/images/article/c5b9de6a-cc84-4951-932b-4c3026e409d1/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="6f8545fa-d9a0-46dd-8d67-3e7acc3bc93b" data-max-width="512" src="https://cdn.javarush.ru/images/article/6f8545fa-d9a0-46dd-8d67-3e7acc3bc93b/original.png" alt="">
+        </div>
+    </div>
+</div>

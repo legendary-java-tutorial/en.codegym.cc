@@ -1,0 +1,449 @@
+<h2>1. Comparing strings</h2>
+<p>One of the most common operations with strings is comparison. The String class has over ten different methods that are used to compare one string with another string. Below we will take a look at seven of the main ones.</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-red">equals</span>(String str)</code></pre>
+        </td>
+        <td>Strings are considered equal if all of their characters match.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-red">equalsIgnoreCase</span>(String str)</code></pre>
+        </td>
+        <td>Compares strings, ignoring the case of letters (ignores whether they are uppercase or lowercase)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">compareTo</span>(String str)</code></pre>
+        </td>
+        <td>Compares strings lexicographically. Returns 0 if the strings are equal. The return value is less than zero if the current string is less than the string parameter. The return value is greater than if the current string is greater than the string parameter.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">compareToIgnoreCase</span>(String str)</code></pre>
+        </td>
+        <td>Compares strings lexicographically while ignoring case. Returns 0 if the strings are equal. The return value is negative if the current string is less than the string parameter. The return value is greater than if the current string is greater than the string parameter.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-red">regionMatches</span>(int toffset, String str, int offset, int len)</code></pre>
+        </td>
+        <td>Compares parts of strings</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-red">startsWith</span>(String prefix)</code></pre>
+        </td>
+        <td>Checks whether the current string starts with the string <code>prefix</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-red">endsWith</span>(String suffix)</code></pre>
+        </td>
+        <td>Checks whether the current string ends with the string <code>suffix</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>Let's say you want to write a program that asks the user for a path to a file and then checks the file type based on its extension. The code of such a program might look something like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="60%">Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Scanner <span class="text-orange">console</span> = new Scanner(System.in);
+String <span class="text-green">path</span> = <span class="text-orange">console</span>.nextLine();
+
+if (<span class="text-green">path</span>.<span class="text-red">endsWith</span>(<span class="text-green">".jpg"</span>) || <span class="text-green">path</span>.<span class="text-red">endsWith</span>(<span class="text-green">".jpeg"</span>))
+{
+   System.out.println(<span class="text-green">"This is a jpeg!"</span>);
+}
+else if (<span class="text-green">path</span>.<span class="text-red">endsWith</span>(<span class="text-green">".htm"</span>) || <span class="text-green">path</span>.<span class="text-red">endsWith</span>(<span class="text-green">".html"</span>))
+{
+   System.out.println(<span class="text-green">"This is an HTML page"</span>);
+}
+else if (<span class="text-green">path</span>.<span class="text-red">endsWith</span>(<span class="text-green">".doc"</span>) || <span class="text-green">path</span>.<span class="text-red">endsWith</span>(<span class="text-green">".docx"</span>))
+{
+   System.out.println(<span class="text-green">"This is a Word document"</span>);
+}
+else
+{
+   System.out.println(<span class="text-green">"Unknown format"</span>);
+}</code></pre>
+        </td>
+        <td>Create a <code>Scanner</code> object<br>
+            Read a line from the console<br><br>
+            Check whether the string <code><span class="text-green">path</span></code> ends with the given string
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task09.task0912"></div>
+<hr>
+<h2>2. Searching for substrings</h2>
+<p>After comparing strings, the second most popular operation is finding one string inside another. The String class also has a few methods for this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">indexOf</span>(String str)</code></pre>
+        </td>
+        <td>Searches for the string <code>str</code> in the current string. Returns the index of the first character of the first occurrence.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">indexOf</span>(String str, int <span class="text-green">index</span>)</code></pre>
+        </td>
+        <td>Searches for the string <code>str</code> in the current string, skipping the first <code><span class="text-green">index</span></code> characters. Returns the index of the occurrence.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">lastIndexOf</span>(String str)</code></pre>
+        </td>
+        <td>Searches for the string <code>str</code> in the current string, starting from the end. Returns the index of the first occurrence.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">lastIndexOf</span>(String str, int <span class="text-green">index</span>)</code></pre>
+        </td>
+        <td>Searches for the string <code>str</code> in the current string from the end, skipping the first <code><span class="text-green">index</span></code> characters.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-red">matches</span>(String regex)</code></pre>
+        </td>
+        <td>Checks whether the current string matches a pattern specified by a regular expression.</td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>indexOf(String)</code> and <code>indexOf(String, index)</code> methods are often used in combination. The first method lets you find the first occurrence of the passed substring in the current string. And the second method lets you find the second, third, etc. occurrences by skipping the first index characters.</p>
+<p>Suppose we have a url like "<span class="text-orange"><strong>https://domain.com/about/reviews</strong></span>", and we want to replace the domain name with "<span class="text-orange"><strong>codegym.cc</strong></span>". Urls can have all sorts of different domain names, but we know the following:</p>
+<ul>
+    <li>The domain name is preceded by two forward slashes — "<code>//</code>"</li>
+    <li>The domain name is followed by a single forward slash — "<code>/</code>"</li>
+</ul>
+<p>Here's what the code for such a program would look like:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Scanner <span class="text-orange">console</span> = new Scanner(System.in);
+String <span class="text-green">path</span> = <span class="text-orange">console</span>.nextLine();
+
+int <span class="text-user">index</span> = <span class="text-green">path</span>.<span class="text-red">indexOf</span>("//");
+int <span class="text-user">index2</span> = <span class="text-green">path</span>.<span class="text-red">indexOf</span>("/", <span class="text-user">index</span> + 2);
+
+String <span class="text-orange">first</span> = <span class="text-green">path</span>.<span class="text-red">substring</span>(0, <span class="text-user">index</span> + 2);
+String <span class="text-orange">last</span> = <span class="text-green">path</span>.<span class="text-red">substring</span>(<span class="text-user">index2</span>);
+
+String <span class="text-viola">result</span> = <span class="text-orange">first</span> + <span class="text-green">"codegym.cc"</span> + <span class="text-orange">last</span>;
+System.out.println(<span class="text-viola">result</span>);</code></pre>
+        </td>
+        <td>Create a Scanner object<br>
+            Read a line from the console<br><br>
+            Get the index of the first occurrence of the string "<code>//</code>"<br>
+            We get the index of the first occurrence of the string <code>/</code>, but look only after an occurrence of the characters <code>//</code>.<br>
+            We get the string from the beginning to the end of the characters <code>//</code><br>
+            We get the string from <code>/</code> to the end.<br><br>
+            We concatenate the strings and the new domain.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>lastIndexOf(String)</code> and <code>lastIndexOf(String, index)</code> methods work the same way, only the search is performed from the end of the string to the beginning.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task09.task0913"></div>
+<hr>
+<h2>3. Creating substrings</h2>
+<p>In addition to comparing strings and finding substrings, there is another very popular action: getting a substring from a string. As it happens, the previous example showed you a <code>substring()</code> method call that returned part of a string.</p>
+<p>Here is a list of 8 methods that return substrings from the current string:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">substring</span>(int beginIndex, int endIndex)</code></pre>
+        </td>
+        <td>Returns the substring specified by the index range <code>beginIndex..endIndex</code>.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">repeat</span>(int count)</code></pre>
+        </td>
+        <td>Repeats the current string n times</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">replace</span>(char oldChar, char newChar)</code></pre>
+        </td>
+        <td>Returns a new string: replaces the character <code>oldChar</code> with the character <code>newChar</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">replaceFirst</span>(String regex, String replacement)</code></pre>
+        </td>
+        <td>Replaces the first substring, specified by a regular expression, in the current string.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">replaceAll</span>(String regex, String replacement)</code></pre>
+        </td>
+        <td>Replaces all substrings in the current string that match the regular expression.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">toLowerCase</span>()</code></pre>
+        </td>
+        <td>Converts the string to lowercase</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">toUpperCase</span>()</code></pre>
+        </td>
+        <td>Converts the string to uppercase</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">trim</span>()</code></pre>
+        </td>
+        <td>Removes all spaces at the beginning and end of a string</td>
+    </tr>
+    </tbody>
+</table>
+<p>Here is a summary of the available methods:</p>
+<p><strong><code>substring(int beginIndex, int endIndex)</code> method</strong></p>
+<p>The <code>substring</code> method returns a new string that consists of characters in the current string, starting at the character with index <code>beginIndex</code> and ending at <code>endIndex</code>. As with all intervals in Java, the character with index <code>endIndex</code> is not included in the interval. Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"<span class="text-red">Hel</span>los".substring(0, 3);</code></pre>
+        </td>
+        <td>
+            <pre><code>"Hel"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"H<span class="text-red">ell</span>os".substring(1, 4);</code></pre>
+        </td>
+        <td>
+            <pre><code>"ell"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"H<span class="text-red">ellos</span>".substring(1, 6);</code></pre>
+        </td>
+        <td>
+            <pre><code>"ellos"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"H<span class="text-red">ellos</span>".substring(1);</code></pre>
+        </td>
+        <td>
+            <pre><code>"ellos"</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If the <code>endIndex</code> parameter is not specified (which is possible), then the substring is taken from character at beginIndex to the end of the string.</p>
+<p><strong><code>repeat(int n)</code> method</strong></p>
+<p>The repeat method simply repeats the current string <code>n</code> times. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Hello".repeat(3);</code></pre>
+        </td>
+        <td>
+            <pre><code>"HelloHelloHello"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Hello".repeat(2);</code></pre>
+        </td>
+        <td>
+            <pre><code>"HelloHello"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Hello".repeat(1);</code></pre>
+        </td>
+        <td>
+            <pre><code>"Hello"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Hello".repeat(0);</code></pre>
+        </td>
+        <td>
+            <pre><code>""</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>replace(char oldChar, char newChar)</code> method</strong></p>
+<p>The <code>replace()</code> method returns a new string in which all characters <code>oldChar</code> are replaced with the character <code>newChar</code>. This does not change the length of the string. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Programming".replace('Z', 'z');</code></pre>
+        </td>
+        <td>
+            <pre><code>"Programming"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Programming".replace('g', 'd');</code></pre>
+        </td>
+        <td>
+            <pre><code>"Prodrammind"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Programming".replace('a', 'e');</code></pre>
+        </td>
+        <td>
+            <pre><code>"Progremming"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Programming".replace('m', 'w');</code></pre>
+        </td>
+        <td>
+            <pre><code>"Prograwwing"</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>replaceFirst()</code> and <code>replaceAll()</code> methods</strong></p>
+<p>The <code>replaceAll()</code> method replaces all occurrences of one substring with another. The <code>replaceFirst()</code> method replaces the first occurrence of the passed substring with the specified substring. The string to be replaced is specified by a regular expression. We will delve into regular expressions in the <span class="term">Java Multithreading</span> quest.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Good news everyone!".replaceAll("e.", "EX");</code></pre>
+        </td>
+        <td>
+            <pre><code>"Good nEXs EXEXyonEX"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Good news everyone!".replaceAll("o.", "-o-");</code></pre>
+        </td>
+        <td>
+            <pre><code>"G-o-d news every-o-e!"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Good news everyone!".replaceFirst("e.", "EX");</code></pre>
+        </td>
+        <td>
+            <pre><code>"Good nEXs everyone!"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Good news everyone!".replaceFirst("o.", "-o-");</code></pre>
+        </td>
+        <td>
+            <pre><code>"G-o-d news everyone!"</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>toLowerCase() and  toUpperCase()</code> methods</strong></p>
+<p>We got to know these methods when we first learned about calling the methods of the <code>String</code> class.</p>
+<p><strong><code>trim()</code> method</strong></p>
+<p>The <code>trim()</code> method removes leading and trailing spaces from a string. Does not touch spaces that are inside a string (i.e. not at the beginning or end). Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"     ".trim();</code></pre>
+        </td>
+        <td>
+            <pre><code>""</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"Hello".trim();</code></pre>
+        </td>
+        <td>
+            <pre><code>"Hello"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>" Hello\n how are you?\n   ".trim();</code></pre>
+        </td>
+        <td>
+            <pre><code>"Hello<span class="text-invisible">\n</span> how are you?<span class="text-invisible">\n</span>"</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"  Password\n   \n ".trim();</code></pre>
+        </td>
+        <td>
+            <pre><code>"Password<span class="text-invisible">\n</span>   <span class="text-invisible">\n</span>"</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task09.task0914"></div>

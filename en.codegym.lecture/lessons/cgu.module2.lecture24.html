@@ -1,0 +1,171 @@
+<p>Let's figure out the <span class="code text-orange">newWorkStealingPool</span> method, which prepares a <span class="text-green"><span class="text-bold"><em>ExecutorService</em></span></span> for us. </p>
+<img data-max-width="512" data-id="679f6263-6a3c-48a9-9c45-7f040ca3839a" src="https://cdn.codegym.cc/images/article/679f6263-6a3c-48a9-9c45-7f040ca3839a/512.jpeg" alt="">
+
+    <p>This thread pool is special. Its behavior is based on the idea of "stealing" work. </p>
+
+    <p>Tasks are queued and distributed among processors. But if a processor is busy, then another free processor can steal a task from it and execute it. This format was introduced in Java in order to reduce conflicts in multi-threaded applications. It is built on the <span class="text-bold">fork/join</span> framework. </p>
+
+    <h2>fork/join</h2>
+
+<img data-max-width="800" data-id="814e6c1d-80e2-4c0f-84d9-35cfab71eef8" src="https://cdn.codegym.cc/images/article/814e6c1d-80e2-4c0f-84d9-35cfab71eef8/800.jpeg" alt="">
+
+    <p>In the <span class="text-bold">fork/join</span> framework, tasks are decomposed recursively, that is, they are broken down into subtasks. Then the subtasks are executed individually, and the results of the subtasks are combined to form the result of the original task.</p>
+
+    <p>The <span class="code text-orange">fork</span> method starts a task asynchronously on some thread, and the <span class="code text-orange">join</span> method lets you wait for this task to finish.</p>
+
+    <h2>newWorkStealingPool </h2>
+
+    <p>The <span class="code text-orange">newWorkStealingPool</span> method has two implementations: </p>
+
+    <pre class='language-java line-numbers'><code>
+public static ExecutorService newWorkStealingPool(int parallelism) {
+        return new ForkJoinPool
+            (parallelism,
+             ForkJoinPool.defaultForkJoinWorkerThreadFactory,
+             null, true);
+    }
+ 
+public static ExecutorService newWorkStealingPool() {
+        return new ForkJoinPool
+            (Runtime.getRuntime().availableProcessors(),
+             ForkJoinPool.defaultForkJoinWorkerThreadFactory,
+             null, true);
+    }
+</code></pre>
+
+    <p>From the outset, we note that under the hood we are not calling the <span class="text-green"><span class="text-bold"><em>ThreadPoolExecutor</em></span></span> constructor. Here we are working with the <span class="text-green"><span class="text-bold"><em>ForkJoinPool</em></span></span> entity. Like <span class="text-green"><span class="text-bold"><em>ThreadPoolExecutor</em></span></span>, it is an implementation of <span class="code"><span class="text-green">AbstractExecutorService</span></span>.</p>
+
+    <p>We have 2 methods to choose from. In the first, we ourselves indicate what level of parallelism we want to see. If we do not specify this value, then the parallelism of our pool will be equal to the number of processor cores available to the Java virtual machine. </p>
+
+    <p>It remains to figure out how it works in practice:</p>
+
+    <pre class='language-java line-numbers'><code>
+Collection&lt;Callable&lt;Void&gt;&gt; tasks = new ArrayList&lt;&gt;();
+        ExecutorService executorService = Executors.newWorkStealingPool(10);
+ 
+        for (int i = 0; i &lt; 10; i++) {
+            int taskNumber = i;
+            Callable&lt;Void&gt; callable = () -&gt; {
+                System.out.println("Processed user request #" + taskNumber + " on thread " + Thread.currentThread().getName());
+                return null;
+            };
+            tasks.add(callable);
+        }
+        executorService.invokeAll(tasks);
+</code></pre>
+
+    <p>We create 10 tasks that display their own completion status. After that, we launch all the tasks using the <span class="code text-orange">invokeAll</span> method. </p>
+
+    <p>Results when executing 10 tasks on 10 threads in the pool: </p>
+
+    <div class="terminal">Processed user request #9 on ForkJoinPool-1-worker-10 thread<br />
+Processed user request #4 on ForkJoinPool-1-worker-5 thread<br />
+Processed user request #7 on ForkJoinPool-1-worker-8 thread<br />
+Processed user request #1 on ForkJoinPool-1-worker-2 thread<br />
+Processed user request #2 on ForkJoinPool-1-worker-3 thread<br />
+Processed user request #3 on ForkJoinPool-1-worker-4 thread<br />
+Processed user request #6 on ForkJoinPool-1-worker-7 thread<br />
+Processed user request #0 on ForkJoinPool-1-worker-1 thread<br />
+Processed user request #5 on ForkJoinPool-1-worker-6 thread<br />
+Processed user request #8 on ForkJoinPool-1-worker-9 thread</div>
+
+<p>We see that after the queue is formed, the threads take tasks for execution. You can also check how 20 tasks will be distributed in a pool of 10 threads.</p>
+
+<div class="terminal">Processed user request #3 on ForkJoinPool-1-worker-4 thread<br />
+Processed user request #7 on ForkJoinPool-1-worker-8 thread<br />
+Processed user request #2 on ForkJoinPool-1-worker-3 thread<br />
+Processed user request #4 on ForkJoinPool-1-worker-5 thread<br />
+Processed user request #1 on ForkJoinPool-1-worker-2 thread<br />
+Processed user request #5 on ForkJoinPool-1-worker-6 thread<br />
+Processed user request #8 on ForkJoinPool-1-worker-9 thread<br />
+Processed user request #9 on ForkJoinPool-1-worker-10 thread<br />
+Processed user request #0 on ForkJoinPool-1-worker-1 thread<br />
+Processed user request #6 on ForkJoinPool-1-worker-7 thread<br />
+Processed user request #10 on ForkJoinPool-1-worker-9 thread<br />
+Processed user request #12 on ForkJoinPool-1-worker-1 thread<br />
+Processed user request #13 on ForkJoinPool-1-worker-8 thread<br />
+Processed user request #11 on ForkJoinPool-1-worker-6 thread<br />
+Processed user request #15 on ForkJoinPool-1-worker-8 thread<br />
+Processed user request #14 on ForkJoinPool-1-worker-1 thread<br />
+Processed user request #17 on ForkJoinPool-1-worker-6 thread<br />
+Processed user request #16 on ForkJoinPool-1-worker-7 thread<br />
+Processed user request #19 on ForkJoinPool-1-worker-6 thread<br />
+Processed user request #18 on ForkJoinPool-1-worker-1 thread</div>
+
+    <p>From the output, we can see that some threads manage to complete several tasks (<span class="text-green"><span class="text-bold">ForkJoinPool-1-worker-6</span></span> completed 4 tasks), while some complete only one (<span class="text-green"><span class="text-bold">ForkJoinPool-1-worker-2</span></span>). If a 1-second delay is added to the implementation of the <span class="code text-orange">call</span> method, the picture changes.</p>
+
+    <pre class='language-java line-numbers'><code>
+Callable&lt;Void&gt; callable = () -&gt; {
+   System.out.println("Processed user request #" + taskNumber + " on thread " + Thread.currentThread().getName());
+   TimeUnit.SECONDS.sleep(1);
+   return null;
+};
+</code></pre>
+
+    <p>For the sake of experiment, let's run the same code on another machine. The resulting output:</p>
+
+    <div class="terminal">Processed user request #2 on ForkJoinPool-1-worker-23 thread<br />
+Processed user request #7 on ForkJoinPool-1-worker-31 thread<br />
+Processed user request #4 on ForkJoinPool-1-worker-27 thread<br />
+Processed user request #5 on ForkJoinPool-1-worker-13 thread<br />
+Processed user request #0 on ForkJoinPool-1-worker-19 thread<br />
+Processed user request #8 on ForkJoinPool-1-worker-3 thread<br />
+Processed user request #9 on ForkJoinPool-1-worker-21 thread<br />
+Processed user request #6 on ForkJoinPool-1-worker-17 thread<br />
+Processed user request #3 on ForkJoinPool-1-worker-9 thread<br />
+Processed user request #1 on ForkJoinPool-1-worker-5 thread<br />
+Processed user request #12 on ForkJoinPool-1-worker-23 thread<br />
+Processed user request #15 on ForkJoinPool-1-worker-19 thread<br />
+Processed user request #14 on ForkJoinPool-1-worker-27 thread<br />
+Processed user request #11 on ForkJoinPool-1-worker-3 thread<br />
+Processed user request #13 on ForkJoinPool-1-worker-13 thread<br />
+Processed user request #10 on ForkJoinPool-1-worker-31 thread<br />
+Processed user request #18 on ForkJoinPool-1-worker-5 thread<br />
+Processed user request #16 on ForkJoinPool-1-worker-9 thread<br />
+Processed user request #17 on ForkJoinPool-1-worker-21 thread<br />
+Processed user request #19 on ForkJoinPool-1-worker-17 thread</div>
+
+    <p>In this output, it is notable that we "asked for" the threads in the pool. What's more, the names of the worker threads don't go from one to ten, but are instead sometimes higher than ten. Looking at the unique names, we see that there really are ten workers (3, 5, 9, 13, 17, 19, 21, 23, 27 and 31). Here it is quite reasonable to ask why this happened? Whenever you don't understand what is going on, use the debugger.</p
+
+
+
+
+
+
+
+
+                                <p>This is what we'll do. Let's cast the <mark class="green">executorService</mark> object to a <span class="text-green"><span class="text-bold"><em>ForkJoinPool</em></span></span>:</p>
+
+    <pre class='language-java line-numbers'><code>
+final ForkJoinPool forkJoinPool = (ForkJoinPool) executorService;
+</code></pre>
+
+    <p>We will use the Evaluate Expression action to examine this object after calling the <span class="code text-orange">invokeAll</span> method. To do this, after the <span class="code text-orange">invokeAll</span> method, add any statement, such as an empty sout, and set a breakpoint on it.</p>
+
+<img data-max-width="800" data-id="2f27c53d-7c78-4e3c-be1d-fa17f8ad7942" src="https://cdn.codegym.cc/images/article/2f27c53d-7c78-4e3c-be1d-fa17f8ad7942/800.jpeg" alt="">
+
+    <p>We can see that the pool has 10 threads, but the size of the array of worker threads is 32. Weird, but okay. Let's keep digging. When creating a pool, let's try to set the parallelism level to more than 32, say 40.</p>
+
+    <pre class='language-java line-numbers'><code>
+ExecutorService executorService = Executors.newWorkStealingPool(40);
+</code></pre>
+
+    <p>In the debugger, let's look at the <mark class="green">forkJoinPool</span> object again.</p>
+
+<img data-max-width="800" data-id="fd089397-eaf1-40c5-9ec9-f4e67f6e4386" src="https://cdn.codegym.cc/images/article/fd089397-eaf1-40c5-9ec9-f4e67f6e4386/800.jpeg" alt="">
+
+    <p>Now the size of the array of worker threads is 128. We can assume that this is one of the JVM's internal optimizations. Let's try to find it in the code of the JDK (openjdk-14):</p>
+<img data-max-width="512" data-id="fc7b36e9-7f0d-4298-a585-d4b532a8cb54" src="https://cdn.codegym.cc/images/article/fc7b36e9-7f0d-4298-a585-d4b532a8cb54/512.jpeg" alt="">
+
+    <p>Just as we suspected: the size of the array of worker threads is calculated by performing bitwise manipulations on the parallelism value. We don't need to try to figure out what exactly is happening here. It is enough to simply know that such an optimization exists.</p>
+
+    <p>Another interesting aspect of our example is the use of the <span class="code text-orange">invokeAll</span> method. It is worth noting that the <span class="code text-orange">invokeAll</span> method can return a result, or rather a list of results (in our case, a <span class="text-red">List&lt;Future&lt;Void&gt;&gt;)</span>, where we can find the result of each of the tasks.</p>
+
+    <pre class='language-java line-numbers'><code>
+var results = executorService.invokeAll(tasks);
+        for (Future&lt;Void&gt; result : results) {
+            // Process the task's result
+        }
+</code></pre>
+
+    <p>This special kind of service and thread pool can be used in tasks with a predictable, or at least implicit, level of concurrency.</p>

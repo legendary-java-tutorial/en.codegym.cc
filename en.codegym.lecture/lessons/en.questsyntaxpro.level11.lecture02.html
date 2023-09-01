@@ -1,0 +1,262 @@
+<h2>1. Static methods</h2>
+<p>In addition to static variables, classes can also have static methods.</p>
+<p>Regular methods are bound to objects (instances) of a class and can refer to ordinary (non-static) variables of the class (as well as <span class="text-red">static variables and methods</span>). Static methods are bound to the class's static object and can only access the static variables and/or other static methods of the class.</p>
+<p>To call an ordinary (non-static) method on a class, <span class="text-green">you must first create an object of the class</span> and then call the method on the object. <span class="text-red">You cannot call an ordinary method on the class rather than an object.</span></p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th><span class="text-red">You cannot call a non-static method on a class!</span></th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="text-neon">DataInfo</span>
+{
+   public int getValue()
+   {
+      return 100;
+   }
+}
+
+public class Solution
+{
+   public static void main(String[] args)
+   {
+      System.out.println(<span class="text-neon">DataInfo</span>.getValue()); // This will generate an error!
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>But to call a static method, it is enough for the class's static object to simply exist (and it always exists after the class is loaded into memory). This is why the main() method is static. It is bound to the class's static object, so you don't need to create any objects to call it.</p>
+<p>To declare a method static, you need to write the static keyword before the method header. The general appearance of this construct is as follows:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present"><code><span class="text-red">static</span> <span class="text-viola">Type</span> <span class="text-user">name</span>(<span class="text-orange">parameters</span>)
+{
+   <span class="code code--demo text-green">method code</span>
+}</code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="text-neon">Solution</span>
+{
+   public <span class="text-red">static</span> void <span class="code text-user">main</span>(String args[])
+   {
+      <span class="code text-user">test</span>();
+   }
+
+   public <span class="text-red">static</span> void <span class="code text-user">test</span>()
+   {
+      int d = <span class="text-user">2</span>/<span class="text-user">0</span>;
+   }
+}</code></pre>
+        </td>
+        <td>
+            <br><br>The Java machine calls the <code>main</code> method with a command like this: <code>Solution.main()</code>;
+            <br><br><br><br>The static <code>test()</code> method is called in the static <code>main()</code> method.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>To call a static method from another class, you need to specify the class name before the name of the static method. The general appearance of this construct is as follows:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Type</span> <span class="text-user">name</span> = <span class="text-neon">ClassName</span>.<span class="text-red">methodName</span>(<span class="text-orange">arguments</span>)</code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Static method</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int x = <span class="text-neon">Math</span>.<span class="text-red">min</span>(a, b);</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">min</span>(int a, int b)</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Thread</span>.<span class="text-red">sleep</span>(200);</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code>void <span class="text-red">sleep</span>(long ms)</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Path path = <span class="text-neon">Path</span>.<span class="text-red">of</span>("c:\\readme.txt");</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code>Path <span class="text-red">of</span>(String str)</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1104"></div>
+<hr>
+<h2>2. Static vs ordinary (non-static) methods</h2>
+<p>What is the difference between static methods and ordinary ones?</p>
+<p>An ordinary method is bound to an ordinary object (an instance of a class), while a static method is not. An ordinary method can access variables in its instance, but a static method cannot: it simply doesn't have an associated instance.</p>
+<p>The differences between the two types of methods are expressed in the following table:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Ability/property</th>
+        <th>Ordinary method</th>
+        <th>Static method</th>
+    </tr>
+    <tr>
+        <td>Bound to an instance of the class</td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+        <td class="text-center"><strong><span class="text-red">No</span></strong></td>
+    </tr>
+    <tr>
+        <td>Can call ordinary methods of the class</td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+        <td class="text-center"><strong><span class="text-red">No</span></strong></td>
+    </tr>
+    <tr>
+        <td>Can call static methods of the class</td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td>Can access ordinary variables of the class</td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+        <td class="text-center"><strong><span class="text-red">No</span></strong></td>
+    </tr>
+    <tr>
+        <td>Can access static variables of the class</td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td>Can be called on an object</td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+    </tr>
+    <tr>
+        <td>Can be called on the class</td>
+        <td class="text-center"><strong><span class="text-red">No</span></strong></td>
+        <td class="text-center"><strong><span class="text-green">Yes</span></strong></td>
+    </tr>
+    </tbody>
+</table>
+<p>Why are such methods needed if they are so severely limited? The answer is that this approach also has its advantages.</p>
+<p>First, you don't need to pass any object reference in order to access static methods and variables.</p>
+<p>Second, sometimes you need there to be just a single instance of a variable. For example, <code>System.out</code> (<span class="text-orange">the System class's static out variable</span>).</p>
+<p>And, third, sometimes you need to call a method before it is even possible to create objects. For example, the Java machine calls the main() method to start the execution of the program even before an instance of the class is created.</p>
+<p><strong>Bound to an instance of the class</strong></p>
+<p>When an ordinary method is called, an argument — <span class="text-green">the object on which the method is called</span> — is implicitly passed to it. <span class="text-orange">This parameter is called <code>this</code>.</span> <span class="text-viola">This implicit parameter (a reference to the object on which the method is called) distinguishes ordinary methods from static ones.</span></p>
+<p>Static methods do not have this implicit parameter, so you cannot use the <code>this</code> keyword inside static methods, and you cannot call a non-static method inside a static method. There is simply nowhere to get a reference to an instance of a class.</p>
+<p><strong>Can call ordinary methods of the class</strong></p>
+<p>An ordinary method always has the implicit <code><span class="text-red">this</span></code> parameter, so you always have a reference to the object on which the method is called. Whenever you call an ordinary method inside another ordinary method, the implicit <code>this</code> parameter is used to make that call. Example</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>How it works</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-user">min</span>(int a, int b)
+{
+   return a &lt; b ? a : b;
+}
+
+int <span class="code text-user">min</span>(int a, int b, int c)
+{
+   int t = <span class="code text-user">min</span>(a, b);
+   return <span class="code text-user">min</span>(t, c);
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>int <span class="code text-user">min</span>(int a, int b)
+{
+   return a &lt; b ? a : b;
+}
+
+int <span class="code text-user">min</span>(int a, int b, int c)
+{
+   int t = <span class="text-red">this</span>.<span class="code text-user">min</span>(a, b);
+   return <span class="text-red">this</span>.<span class="code text-user">min</span>(t, c);
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>That is why you cannot call an ordinary method from a static one. There is simply no implicit variable named <code>this</code> inside a static method.</p>
+<p>Or imagine another situation: not a single object of our class has yet been created in our program. Can we call a static method of our class? Yes. And can this static method call an ordinary (non-static) method?</p>
+<p>Well, what object would we call it on? After all, not a single instance of our class exists yet!</p>
+<p><strong>Can call static methods of the class</strong></p>
+<p>Static methods can be called from anywhere — from any place in the program. This means that they can be called from both static methods and ordinary ones. There are no restrictions here.</p>
+<p><strong>Can access ordinary variables of the class</strong></p>
+<p>You can access ordinary variables of a class from an ordinary method, since it can easily obtain a reference to an instance of the class via the implicit <code>this</code> parameter.</p>
+<p>A static method doesn't know which instance of the class it should use to get values of ordinary variables. And more generally, we can easily have a situation where a static method is called but not a single instance of the class has yet been created in the program.</p>
+<p><span class="text-red">As a result, static methods cannot access ordinary variables of a class.</span></p>
+<p><span>Suppose a static method calls an ordinary method. What object should that ordinary method be called on?</span></p>
+<img data-max-width="1024" data-id="1cbd2338-979f-428d-871f-c2afb08c2abc" src="https://cdn.codegym.cc/images/article/1cbd2338-979f-428d-871f-c2afb08c2abc/1024.jpeg" alt="Static methods">
+<p><span class="text-red">Nobody knows!</span> That's why you <span class="text-red">cannot</span> call an ordinary method from a static one without passing in a reference to an object!</p>
+<p><strong>Can access static variables of the class</strong></p>
+<p>The situation with calls to static variables is the same as with calls to static methods. Static variables can be accessed from anywhere in the program. That means that you can access them from static and ordinary methods.</p>
+<p><strong>Can be called on an object</strong></p>
+<p>Both static and ordinary methods can be called on an object. An ordinary method call possible — indeed, that is the only way to call an ordinary method. A static method can also be called on an object: in this case <span class="text-green">the compiler itself determines the type of the variable and calls the static method based on its type:</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>How the compiler sees it</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Thread</span> th = <span class="text-neon">Thread</span>.current();
+th.<span class="text-red">sleep</span>(1000);</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Thread</span> th = <span class="text-neon">Thread</span>.current();
+<span class="text-neon">Thread</span>.<span class="text-red">sleep</span>(1000);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Integer</span> i = 1;
+int x = i.<span class="text-red">parseInt</span>("12");</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Integer</span> i = 1;
+int x = <span class="text-neon">Integer</span>.<span class="text-red">parseInt</span>("12");</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>"".<span class="text-red">valueOf</span>(12);</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">String</span>.<span class="text-red">valueOf</span>(12);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Can be called on the class</strong></p>
+<p>You can call only a static method on a class. To call an ordinary method, you need a reference to an instance of the class. Therefore, you cannot call an ordinary method using this construct: <code><span class="text-neon">ClassName</span>.<span class="text-user">methodName</span>(<span class="text-orange">arguments</span>)</code></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1105"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1106"></div>

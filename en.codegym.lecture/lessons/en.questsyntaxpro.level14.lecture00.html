@@ -1,0 +1,79 @@
+<h2>1. The job of a programmer</h2>
+<p>Very often <span class="text-red">novice programmers</span> think of the work of a programmer completely differently than how <span class="text-green">experienced programmers</span> think of it.</p>
+<p>Beginners often saying something like "The program works, what else do you need?" An experienced programmer knows that "works correctly" is only <span class="text-orange">one of the requirements for a program</span>, and <span class="text-red">it's not even the most important thing</span>!</p>
+<p><strong>Code readability</strong></p>
+<p>The most important thing is that <span class="text-green">the program code is understandable to other programmers</span>. <span class="text-red">This is more important than a correctly working program. </span>Much more.</p>
+<p>If you have a program that does not work correctly, you can fix it. But if you have a program whose code is incomprehensible, you can't do anything with it.</p>
+<p>Just take the any compiled program, such as notepad, and change its background color to red. You have a working program, but you do not have understandable source code: it is impossible to make changes to a program like that.</p>
+<p>A textbook example is when Microsoft developers removed the Pinball game from Windows because they could not port it to 64-bit architecture. And they even had its source code. They simply <a href="https://devblogs.microsoft.com/oldnewthing/20121218-00/?p=5803">couldn't understand how the code worked</a>.</p>
+<p><strong>Accounting for every use case</strong></p>
+<p>The second most important requirement for a program is to account for every scenario. Often times, things are a little more complicated than they seem.</p>
+<p>How a novice programmer sees sending SMS messages:</p>
+<p><img data-max-width="1024" data-id="6cbfa421-e743-4193-8556-a08117304195" src="https://cdn.codegym.cc/images/article/6cbfa421-e743-4193-8556-a08117304195/1024.jpeg" alt="A correctly working program"></p>
+<p>How a professional programmer sees it:</p>
+<p><img data-max-width="1024" data-id="19161492-82ae-4b0f-b1df-d2bb1d456c44" src="https://cdn.codegym.cc/images/article/19161492-82ae-4b0f-b1df-d2bb1d456c44/1024.jpeg" alt="A correctly working program"></p>
+<p>The "works correctly" scenario is usually just one many possible. And that's why many newbies complain about CodeGym's task validator: only one scenario out of 10 works, and the newbie programmer thinks that's enough.</p>
+<hr>
+<h2>2. Abnormal situations</h2>
+<p><img data-max-width="1024" data-id="d0243d55-b9ad-4565-8afe-d3c0d7663ac3" src="https://cdn.codegym.cc/images/article/d0243d55-b9ad-4565-8afe-d3c0d7663ac3/1024.jpeg" alt="Abnormal situations"></p>
+<p>Abnormal situations may arise in the execution of any program.</p>
+<p>For example, you decide to save a file but there is no disk space. Or the program is trying to write data to memory, but available memory is low. Or you download a picture from the Internet, but the connection is lost during the download process.</p>
+<p>For each abnormal situation, the programmer (the author of the program) must a) <span class="text-red">anticipate</span> it, b) <span class="text-red">decide how exactly the program should handle it</span>, and c) <span class="text-green">write a solution that is as close as possible to the desired one.</span></p>
+<p>That's why programs had very simple behavior for quite a long time: <span class="text-red">if an error occurred in the program, the program terminated.</span> And that was a pretty good approach.</p>
+<p>Let's say you want to save a document to disk, during the save process you discover that there is not enough disk space. Which behavior would you like the most:</p>
+<ul>
+    <li>The program terminates</li>
+    <li>The program continues to run, but does not save the file.</li>
+</ul>
+<p>A novice programmer may think that the second option is better, because the program is still running. But in reality that is not so.</p>
+<p>Imagine that you typed out a document in Word for 3 hours, but two minutes into your writing process it became clear that the program would not be able to save the document to disk. Is it better to lose two minutes of work or three hours?</p>
+<p><span class="text-green">If the program can't do what it needs to, it is better to let it close than continue to pretend that everything is okay.</span> The best thing that a program can do when it encounters a failure that it cannot fix on its own is to immediately report the problem to the user.</p>
+<hr>
+<h2>3. Background about exceptions</h2>
+<p>Programs aren't the only ones that face abnormal situations. They also occur inside programs — in methods. For example:</p>
+<ul>
+    <li>A method wants to write a file to disk, but there is no space.</li>
+    <li>A method wants to call a function on a variable, but the variable is equal to null.</li>
+    <li>Division by 0 happens in a method.</li>
+</ul>
+<p>In this case, the calling method could possibly correct the situation (execute an alternative scenario) if it knows what kind of problem occurred in the called method.</p>
+<p>If we are trying to save a file to disk and such a file already exists, we can simply ask the user to confirm that we should overwrite the file. If there is no available disk space, we can display a message to the user and ask the user to select a different disk. But if the program runs out of memory, it will crash.</p>
+<p>Once upon a time, programmers pondered this question and came up with the following solution: <span class="text-orange">all methods/functions must return an error code that indicates the result of their execution. </span>If a function worked perfectly, it returned <span class="text-green">0</span>. If not, it returned an <span class="text-red">error code</span> (not zero).</p>
+<p>With this approach to errors, after almost every function call, programmers had to add a check to see if the function finished with an error. Code ballooned in size and came to look like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code without error handling</th>
+        <th>Code with error handling</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>File <span class="text-user">file</span> = new File("ca:\\note.txt");
+<span class="text-user">file</span>.<span class="text-red">writeLine</span>("Text");
+<span class="text-user">file</span>.<span class="text-red">close</span>();</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>File <span class="text-user">file</span> = new File("ca:\\note.txt");
+int <span class="text-green">status</span> = <span class="text-user">file</span>.<span class="text-red">writeLine</span>("Text");
+if (<span class="text-green">status</span> == 1)
+{
+   ...
+}
+else if (<span class="text-green">status</span> == 2)
+{
+   ...
+}
+status = <span class="text-user">file</span>.<span class="text-red">close</span>();
+if (<span class="text-green">status</span> == 3)
+{
+   ...
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>What's more, quite often a function that discovered that an error occurred did not know what to do with it: the caller had to return the error, and the caller of the caller returned it to its caller, and so on.</p>
+<p><span class="text-orange">In a large program, a chain of dozens of function calls is the norm: sometimes you can even find a call depth of hundreds of functions. </span>And now you have to pass the error code from the very bottom to the very top. And if somewhere along the way some function does not handle the exit code, then the error will be lost.</p>
+<p>Another disadvantage of this approach is that if functions returned an error code, they could no longer return the results of their own work. The result of calculations had to be passed via reference parameters. This made the code even more cumbersome and further increased the number of errors.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1401"></div>

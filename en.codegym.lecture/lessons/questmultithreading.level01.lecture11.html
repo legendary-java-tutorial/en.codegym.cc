@@ -1,0 +1,128 @@
+<a href='https://cdn.codegym.cc/images/article/e011ea33-a11f-415f-ab52-390f728ed331/original.jpeg' target='_blank'><img data-id="e011ea33-a11f-415f-ab52-390f728ed331" data-max-width="850" alt="The getClass() method, the Class object, and an introduction to Reflection - 1" src="https://cdn.codegym.cc/images/article/e011ea33-a11f-415f-ab52-390f728ed331/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"Now it's time for the main event. We'll get acquainted with the Class class and touch on Reflection.<br />
+    As you probably already realized, everything in Java is an object. And what does an object need? What does each object have that defines what it's all about?"</p>
+<p><span class="text-user">"A class!"</span></p>
+<p>"Right! Well done. Each object has a class. But getting back to objects... Some objects entirely contain an entity, while others simply help manage it."</p>
+<p>"This latter type includes <strong>FileOutputStream</strong> and <strong>Thread</strong>. When you create a <strong>Thread</strong> object, a new thread is not created. The thread is created by the Java virtual machine after the start() method is called. This object simply helps manage the process."</p>
+<p>"Same with <strong>FileOutputStream</strong>: the file is stored on disk, and the OS manages storage and access. But we can interact with it through File objects, once again with the help of the Java virtual machine."</p>
+<p><span class="text-user">"Yes, I already understand that."</span></p>
+<p>"So, there's a special class called Class for interacting with classes."</p>
+<p><span class="text-user">"That wasn't hard to guess."</span></p>
+<p>"Yep. Each time the Java virtual machine loads a new class into memory, it creates a Class object, which you can use to get specific information about the loaded class."</p>
+<p>"Each class and object is associated with a «<strong>Class object</strong>»."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>Class clazz = Integer.class;</code></pre>
+        </td>
+        <td>Gets the Integer class's Class object.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>Class clazz = int.class;</code></pre>
+        </td>
+        <td>Gets the int class's Class object.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>Class clazz = "123".getClass();</code></pre>
+        </td>
+        <td>Gets a String object's Class object.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>Class clazz = new Object().getClass();</code></pre>
+        </td>
+        <td>Gets the Object object's Class object.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Wow! How interesting!"</span></p>
+<p>"Do you remember that the word <strong>class</strong> is a keyword in Java and can't be used as a variable name?"</p>
+<p><strong>"Oh yeah, I know, I know. I just forgot."</strong></p>
+<p>"Have you already used the Class object somewhere?"</p>
+<p><strong>"Yes, we used it when we wrote our own implementation of the equals method."</strong></p>
+<p>"Yes, you can use the getClass() method to test whether objects have the same class."</p>
+<p><span class="text-user">"And what can you do with this object?"</span></p>
+<p>"Well, a lot of things:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java " data-line="" data-start=""><code>Class s = int.class;
+String name = s.getName();</code></pre>
+        </td>
+        <td>Gets the class name.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>Class s = Class.forName("java.lang.String");</code></pre>
+        </td>
+        <td>Gets a class by name.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java " data-line="" data-start=""><code>Object o1 = String.valueOf(1);
+Object o2 = 123 + "T";
+o1.getClass() == o2.getClass();</code></pre>
+        </td>
+        <td>Compares objects' classes.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Interesting, but not as cool as I thought."</span></p>
+<p>"You want it to be cool? There's also <strong>Reflection</strong>. <strong>Reflection</strong> is super cool."</p>
+<p><span class="text-user">"What's <strong>Reflection</strong>?"</span></p>
+<p>"<strong>Reflection</strong> is a class's ability to obtain information about itself. Java has special classes: <strong>Field</strong> and <strong>Method</strong>, which are similar to the <strong>Class</strong> class for classes. Just as <strong>Class</strong> objects let you get information about a class, Field objects provide information about a field, and the Method object provides information about a method. And look at what you can do with them:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>Class[] interfaces = List.class.getInterfaces();</code></pre>
+        </td>
+        <td>Gets a list of Class objects for the List class's interfaces</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>Class parent = String.class.getSuperclass();</code></pre>
+        </td>
+        <td>Gets the Class object of the String class's parent class</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>Method[] methods = List.class.getMethods();</code></pre>
+        </td>
+        <td>Gets a list of the List class's methods</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java " data-line="" data-start=""><code>String s = String.class.newInstance();</code></pre>
+        </td>
+        <td>Creates a new String</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java " data-line="" data-start=""><code>String s = String.class.newInstance();
+Method m = String.class.getMethod("length");
+int length = (int) m.invoke(s)</code></pre>
+        </td>
+        <td>Gets the String class's length method and calls it on the String s</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Wow! Now that's really cool!"</span></p>

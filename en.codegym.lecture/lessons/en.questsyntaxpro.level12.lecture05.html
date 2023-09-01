@@ -1,0 +1,276 @@
+<h2>1. Syntactic sugar</h2>
+<p>Programmers love when some complex code or logic can be written in a couple of lines, making code compact and readable. And the creators of programming languages sometimes help with this.</p>
+<p>A slick language feature that lets you take a shortcut (write less code) is called <span class="term">syntactic sugar</span>. But, to be honest, there is very little of it in Java.</p>
+<p>Java's creators did everything they could to eliminate any redundancy in Java. If C++ lets you do something 20 ways, then Java lets you do it only one way.</p>
+<p>But neither Java programmers nor Java's creators liked the lack of freedom. And sometimes sugar makes life easier for ordinary folks like you and me.</p>
+<p>By the way, you've already encountered some syntactic sugar: <span class="term">autoboxing</span> and <span class="term">unboxing</span>. Let's compare:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Long code</th>
+        <th>Compact code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer a = <span class="code"><span class="text-red">new Integer</span></span>(5);
+int b = a.<span class="code"><span class="text-red">intValue()</span></span>;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>Integer a = 5;
+int b = a;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int b = 5;
+Integer c = <span class="code"><span class="text-red">new Integer</span></span>(b);</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>int b = 5;
+Integer c = b;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer a = <span class="code"><span class="text-red">new Integer</span></span>(1);
+int b = 1;
+if (a.<span class="code"><span class="text-red">intValue()</span></span> == b)
+{
+   ...
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>Integer a = 1;
+int b = 1;
+if (a == b)
+{
+   ...
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Instead of the long code like on the left, you can write the more compact code on the right. And intelligent <span class="term">Java compiler</span> will generate the verbose version of the code based on the short version of the code. This is exactly what syntactic sugar is.</p>
+<hr>
+<h2>2. Inference of a variable's type: the <code>var</code> keyword</h2>
+<p>In Java 11, the compiler became even smarter and can now determine <strong>the type of a declared variable based on the type of the value assigned to it</strong>. In code, it looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>var <span class="code text-green">name</span> = <span class="code text-user">value</span>;</code></pre>
+</div>
+<p>Where <code class="text-green">name</code> is the name of a new variable, <span class="code text-user">value</span> is its initial value, and <code>var</code> is a keyword used to declare the variable. The type of the <span class="code text-green">name</span> variable will be the same as the type of the value assigned to it.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>How we see the code</th>
+        <th>What the compiler sees</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">var</span> i = 1;</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-red">int</span> i = 1;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">var</span> s = "Hello";</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-red">String</span> s = "Hello";</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">var</span> console = new Scanner(System.in);</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-red">Scanner</span> console = new Scanner(System.in);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">var</span> list = new ArrayList&lt;String&gt;();</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-red">ArrayList&lt;String&gt;</span> list = new ArrayList&lt;String&gt;();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">var</span> data = new int[]{1, 2, 3};</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-red">int[]</span> data = new int[]{1, 2, 3};</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The compiler itself determines, or infers, <strong>the variable's type</strong> based on the value assigned to it.</p>
+<p>Programmers debated hotly over whether to add such a feature to the language. Many people feared that <code>var</code> would be abused and that code readability would suffer as a result.</p>
+<p>There is a grain of truth to this, so it is best to use <code>var</code> where it increases the readability of the code. For example, these in two cases:</p>
+<p><strong>Case 1: Looking at the value assigned to the variable, the variable's type is immediately clear</strong></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>var stream = url.getInputStream();</code></pre>
+        </td>
+        <td>The variable is an <code>InputStream</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>var name = person.getFullName();</code></pre>
+        </td>
+        <td>The variable is a <code>String</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>In these cases, you <span class="text-red">shouldn't</span> use <code>var</code>. Well, what is the variable's type?</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>var result = task.execute();</code></pre>
+        </td>
+        <td>It's difficult to determine the variable's type</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>var status = person.getStatus();</code></pre>
+        </td>
+        <td>It's difficult to determine the variable's type</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Case 2: The variable's type is not important for understanding the code</strong></p>
+<p>Code often has no need to call methods on a variable, e.g. when a variable is simply used to temporarily store something. In this case, using <code>var</code> definitely does not reduce the readability of the code:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Long code</th>
+        <th>Compact code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>var data = stream.getMetaData();
+storage.save(data)</code></pre>
+        </td>
+        <td>We got metadata from the <code>stream</code> stream and saved it in the <code>storage</code> repository. The <code>data</code> variable's specific type is not important.</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>The golden mean</strong></p>
+<p>Now I'll give three ways to write the same code. Using <code>var</code> would be the best option.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="code text-user">dest</span>.writeHeaderInfo(<span class="code text-green">src</span>.getFileMetaInfo());</code></pre>
+        </td>
+        <td>Too compact</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-red text-bold">var</span> <span class="code text-orange">headerInfo</span> = <span class="code text-green">src</span>.getFileMetaInfo();
+<span class="code text-user">dest</span>.writeHeaderInfo(<span class="code text-orange">headerInfo</span>);</code></pre>
+        </td>
+        <td>Just right</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>FileMetaInfo <span class="code text-orange">headerInfo</span> = <span class="code text-green">src</span>.getFileMetaInfo();
+<span class="code text-user">dest</span>.writeHeaderInfo(<span class="code text-orange">headerInfo</span>);</code></pre>
+        </td>
+        <td>Too detailed</td>
+    </tr>
+    </tbody>
+</table>
+<p>Moving from the version with 1 line to the version on 2 lines, we made the code a little more readable by using a variable name (<code>headerInfo</code>). Now it's clear that the method returns not just meta information, but header information.</p>
+<p>The third version is overly verbose. The fact that <code class="text-orange">headerInfo</code> is a <code>FileMetaInfo</code> is already fairly clear from the <code>getFileMetaInfo()</code> method. The purpose of the meta information is much more interesting.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1216"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1217"></div>
+<hr>
+<h2>3. Omitting the type with the diamond operator: <code>&lt;&gt;</code></h2>
+<p>Even before the <code>var</code> operator appeared, there were attempts to teach the compiler how to infer collection types. You'll agree that this notation looks a little redundant:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();</code></pre>
+</div>
+<p>Starting from the seventh version of Java, when writing a collection type, you could omit the type of the collection elements if it was specified when declaring a variable. In other words, the code above can be written in a slightly abbreviated form:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;&gt;();</code></pre>
+</div>
+<p>As you can see, you no longer need to write String a second time. Not as cool as with the var operator, but it seemed like progress at the time.</p>
+<p>The empty angle brackets in the collection type were called the <strong>diamond operator</strong>, since the two angle brackets vaguely resemble a diamond.</p>
+<p>It's undesirable to use the <code>var</code> keyword and the <span class="term">diamond operator</span> <strong>at the same time</strong>:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">var</span> <span class="text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;&gt;();</code></pre>
+</div>
+<p>There is no information at all about the type of the elements stored in the collection, and the collection type will be <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">Object</span>&gt;.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1218"></div>
+<hr>
+<h2>4. Double curly braces</h2>
+<p>Remember quick array initialization?</p>
+<p>We just listed values in curly braces, like this:</p>
+<table>
+    <tr>
+        <th>Examples</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int[] data = new int[] {1, 2, 3, 4, 5, 6, 7};</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int[] data = {1, 2, 3, 4, 5, 6, 7};</code></pre>
+        </td>
+    </tr>
+</table>
+<p>Java's creators loved the idea of using curly braces to simplify writing elements of an array. But what about collections?</p>
+<p>Java's creators had enough creative thinking for collections as well, allowing them to use a trick with double curly braces.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>With sugar</th>
+        <th>Without sugar</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>var <span class="code text-user">list</span> = new ArrayList&lt;String&gt;()
+<span class="text-red">{{</span>
+   <span class="text-viola">add</span>("Hello");
+   <span class="text-viola">add</span>("How's");
+   <span class="text-viola">add</span>("Life?");
+<span class="text-red">}}</span>;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>var <span class="code text-user">list</span> = new ArrayList&lt;String&gt;();
+
+<span class="code text-user">list</span>.<span class="text-viola">add</span>("Hello");
+<span class="code text-user">list</span>.<span class="text-viola">add</span>("How's");
+<span class="code text-user">list</span>.<span class="text-viola">add</span>("Life?");</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If the compiler encounters code like in the example on the left, then it converts it to the code on the right.</p>
+<p>The code doesn't become a lot more compact. The savings here are fairly insignificant: you don't have to write <code class="text-user">list</code> every time. This can be helpful if the variable name is very long.</p>
+<p>But if you come across code like this in a project, don't be surprised 🙂</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1219"></div>

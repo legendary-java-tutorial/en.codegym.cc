@@ -1,0 +1,46 @@
+e database tables into regular tables, you can now analyze the relationships between them. The number of elements interacting between two related tables is called the cardinality. Cardinality helps you control how efficiently you partitioned your data into tables.</p>
+<p>Theoretically, all entities can maintain relationships with each other, but in practice, there are three types of relationships between entities:</p>
+<ul>
+ <li><strong>One to one</strong></li>
+ <li><strong>One to many</strong></li>
+ <li><strong>many to many</strong></li>
+</ul>
+<h2>4.2 One-to-one communication</h2>
+<p>If there is only one instance of entity A for each instance of entity B, they are said to have a one-to-one relationship (often denoted as "1:1"). On ER diagrams, such a relationship is indicated by a line with a small bar at each end:</p><img data-max-width="800" data-id="0f4b8ae1-8f1d-4b91-beee-42a7dc7a6d43" alt="" src="https://cdn.javarush.com/images/article/0f4b8ae1-8f1d-4b91-beee-42a7dc7a6d43/800.jpeg" style="width: 800px;">
+<p>A 1:1 relationship generally indicates that, unless you have a good reason to keep them separate, the two tables' data is best combined into one.</p>
+<p>However, in some circumstances it is reasonable to use tables with 1:1 relationships. If your tables have fields with optional data, such as descriptions, and in many cases they are empty, it makes sense to move all descriptions to a separate table, which will allow you to get rid of frequent gaps and increase the efficiency of your database.</p>
+<p>Then, in order to properly map the data, you'll have to include at least one identical column in each table (it's best to choose a primary key for this).</p>
+<h2>4.3 One-to-many relationship</h2>
+<p>This type of relationship occurs when a record in one table is associated with multiple entities in another. For example, the same customer could place multiple orders, or a library visitor could borrow multiple books in one visit. One-to-many relationships (or 1:M for short) are expressed in a diagram using crow's feet notation, as shown in the example below:</p><img data-max-width="800" data-id="5aba6739-39b5-407d-9b73-d6f34e433100" alt="" src="https://cdn.javarush.com/images/article/5aba6739-39b5-407d-9b73-d6f34e433100/800.jpeg" style="width: 800px;">
+<p>To apply a 1:M relationship when planning a database, simply add the primary key from the "one" table as an attribute to the "many" table. If the primary key is in another table, it is called a "foreign key". The "one" table is considered the parent table, while the "many" table is considered the child table.</p>
+<h2>4.4 Many-to-many relationship</h2>
+<p>When multiple entities in one table can be connected to multiple entities in another, they are considered to have a many-to-many (or M:M) relationship. For example, such a relationship exists between students and classes, since each student can attend several different classes, and, accordingly, many students can come to each class.</p>
+<p>On the ER diagram, this type of relationship is displayed as follows:</p><img data-max-width="800" data-id="f93e6b36-0af0-4b54-ad91-e742f312fb84" alt="" src="https://cdn.javarush.com/images/article/f93e6b36-0af0-4b54-ad91-e742f312fb84/800.jpeg" style="width: 800px;">
+<p>Unfortunately, it is impossible to directly implement such a relationship in the database. Therefore, it will have to be split into two one-to-many relationships.</p>
+<p>To do this, you will need to create a new entity between the two tables. If an M:M relationship is established between sales and products, the new entity can be called "products sold" because it will represent the contents of each sale.</p>
+<p>With "goods sold" and the table "sales" and the table "goods" will be linked by type 1:M. In different models, such intermediate entities are called differently - "connecting tables", "associative entities" or "node tables".</p>
+<p>Each link table entry connects two different entities of adjacent tables (and may also contain additional information). For example, a link table between students and classes might look like this:</p><img data-max-width="800" data-id="32d7695b-e54e-4dc9-8179-3bf0bd4dcc07" alt="" src="https://cdn.javarush.com/images/article/32d7695b-e54e-4dc9-8179-3bf0bd4dcc07/800.jpeg" style="width: 800px;">
+<h2>4.5 Mandatory or not?</h2>
+<p>Another approach to link analysis is to determine which of the connected entities is a prerequisite for the presence of another entity. The optional link side is marked with a circle on the trunk.</p>
+<p>For example, in order for a state to have its own representative in the UN, it must exist on the world map, but the statement to the contrary will be false:</p><img data-max-width="800" data-id="e52ad077-5f55-4bc5-8d3f-b04bc75394ea" alt="" src="https://cdn.javarush.com/images/article/e52ad077-5f55-4bc5-8d3f-b04bc75394ea/800.jpeg" style="width: 800px;">
+<p>Two entities can be interdependent (that is, one cannot exist without the other).</p>
+<h4>Recursive links</h4>
+<p>Sometimes a table can refer to itself. For example, an employee table might have a "manager" attribute that would refer us to another employee in the same table. This is the recursive relationship.</p>
+<h4>Extra connections</h4>
+<p>Links are considered redundant if they are expressed more than once. As a rule, one of them can be deleted without losing important information. For example, if the entity "students" is connected to the entity "teachers" not only directly, but also indirectly through "classes", it makes sense to remove the relationship between the entities "students" and "teachers". This decision is justified by the fact that it is possible to assign students to teachers only through classes.</p>
+<h2>4.6 Referential integrity of data</h2>
+<p>When changing primary and foreign keys, one should observe such an aspect as referential <strong>integrity of data</strong> . Its main idea is to keep two tables in a database that store the same data consistent.</p>
+<p>Data integrity represents properly built relationships between tables with correct linking between them. In what cases data integrity can be violated:</p>
+<ul>
+ <li><strong>Deletion anomaly</strong> . Occurs when a row is deleted from the main table. In this case, the foreign key from the dependent table continues to refer to the deleted row from the master table.</li>
+ <li><strong>Insertion anomaly</strong> . Occurs when a row is inserted into a dependent table. In this case, the foreign key from the dependent table does not match the primary key of any of the rows from the master table.</li>
+ <li><strong>Update</strong> anomaly. With such an anomaly, several rows of one table may contain data that belongs to the same object. If you change the data in one row, they can come into conflict with the data from another row.</li>
+</ul>
+<h4>Deletion anomaly</h4>
+<p>To resolve the deletion anomaly, the foreign key should be set to one of two constraints:</p>
+<p>If a row from a dependent table necessarily requires a row from the master table, then the foreign key is set to cascade delete. That is, when a row is deleted from the master table, the associated row(s) are deleted from the dependent table.</p>
+<p>If a row from a dependent table allows no relation to a row from the main table (that is, such a relationship is optional), then the foreign key is set to NULL when the related row is deleted from the main table. The foreign key column must be nullable.</p>
+<h4>Insertion anomaly</h4>
+<p>To resolve the insert anomaly when adding to a dependent data table, the column that represents the foreign key must be nullable. And thus, if the object being added has no connection with the main table, then the foreign key column will have a NULL value.</p>
+<h4>Update anomalies</h4>
+<p>To solve the update anomaly problem, normalization is applied, which was discussed earlier.</p>

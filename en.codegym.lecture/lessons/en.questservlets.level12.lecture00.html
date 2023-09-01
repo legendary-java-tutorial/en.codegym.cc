@@ -1,0 +1,161 @@
+e starting a new and interesting topic - <strong>servlets</strong> . It was the addition of servlets to Java that led to Java being the de facto standard for large server applications. 80% of all enterprise software in the world is written in Java. And in China, everything is 100%. So what are servlets?</p>
+<p>A servlet is exactly what turns a Java program into a web service and allows it to process requests from clients. And it was like this...</p>
+<p>In the 90s, immediately after the advent of the World Wide Web, web clients (browsers) and web servers appeared. <strong>Web servers</strong> usually simply distributed the file they had stored over the Internet: html pages, scripts, pictures, etc.</p>
+<p>At some point, everyone came to the conclusion that it would be necessary to make both sides smarter. JavaScript was added to the HTML pages, and plugins were added to the servers - <span class="text-green">special scripts that were called in response to certain requests</span> and made the server's behavior more flexible and smarter.</p>
+<p>So <strong>a servlet</strong> is such a <strong>Java plugin</strong> that was built into <code>Java веб-server</code>and allowed it to execute Java code when requested for certain pages. And already this Java code, represented by a class inherited from the Servlet class, did what its developers intended.</p>
+<p>And as you already know, the most popular Java web server is <a href="https://tomcat.apache.org/" target="_blank">Tomcat</a> . Named, by the way, in honor of the cat Tom from the cartoon “Tom and Jerry”.</p>
+<p>How does Tomcat interact with servlets? In fact, this process is standardized and is called <span class="text-viola">the servlet life cycle</span> . In it, a servlet is a loadable object, and a web server is a servlet <strong>container</strong> .</p>
+<p><strong>If the servlet has not yet been loaded</strong> , then:</p>
+<ol>
+ <li>The servlet class is loaded by the container.</li>
+ <li>The container creates an instance of the class (object) of the servlet.</li>
+ <li>The container calls a method <code>init()</code>on the servlet object. The method is called only once.</li>
+</ol>
+<p>Standard work cycle - <strong>servicing a client request</strong> :</p>
+<ul>
+ <li>Each request is processed in a separate thread.</li>
+ <li>The container calls a method <code>service()</code>on the servlet and passes the ServletRequest and ServletResponse objects there.</li>
+ <li>To terminate the servlet, a method is called <code>destroy()</code>on the servlet object. It is called only once.</li>
+</ul>
+<p>There can be many reasons why a servlet terminates:</p>
+<ul>
+ <li>The programmer restarts the web server, it is necessary to gracefully shut down all servlets.</li>
+ <li>The programmer loads a new version of the servlet, the old one must be unloaded correctly.</li>
+ <li>And so on.</li>
+</ul>
+<p>Remember the main thing: the web server and its servlets should work without failures and restarts for months, serving thousands of requests per minute. Therefore, the code for both loading, and working, and unloading a servlet should always be written very high quality.</p>
+<h2>1.2 HttpServlet class</h2>
+<p>The Servlet class exists to standardize how a servlet and a container work. Programmers do not work directly with this class. Well, they rarely work. The most commonly used class <code>HttpServlet</code>is inherited from Servlet.</p>
+<p>This class has several methods that will be useful to us. You will often use them:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th>Method</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><code>init()</code></td>
+    <td>Called once when the servlet is loaded</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><code>destroy()</code></td>
+    <td>Called once when the servlet is unloaded</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><code>service(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new request to the servlet</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><code><span class="text-red">doGet</span>(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new GET request to the servlet</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><code><span class="text-red">doPost</span>(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new POST request to the servlet</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td><code>doHead(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new HEAD request to the servlet</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td><code>doDelete(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new DELETE request to the servlet</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td><code>doPut(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new PUT request to the servlet</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><code>init()</code>The and methods <code>destroy()</code>are inherited from the Servlet class. Therefore, if you decide to override them in your servlet, you will also need to call their implementation from the base class. The command is used for this <code>super.method name()</code>.</p>
+<p>Servlet example:</p>
+<pre class="line-numbers"><code>
+public class <span class="text-orange">FirstHttpServlet</span> extends <span class="text-red">HttpServlet</span> {
+  
+    @Override
+    protected void <span class="text-red">doGet</span>(<span class="text-green">HttpServletRequest request</span>, <span class="text-user">HttpServletResponse response</span>) throws ServletException, IOException {
+        
+        // Getting the parameter “secret” from request
+        String secret = <span class="text-green">request</span>.getParameter("secret");
+ 
+        // Кладем параметр “secret” в Http-сессию
+        HttpSession <span class="text-viola">session</span> = <span class="text-green">request</span>.getSession(true);
+        <span class="text-viola">session</span>.setAttribute("secret", secret);
+ 
+        // Печатаем HTML в качестве ответа для браузера
+        <span class="text-user">response</span>.setContentType("text/html;charset=UTF-8");
+        PrintWriter <span class="text-yellow">out</span> = <span class="text-user">response</span>.getWriter();
+        try {
+            <span class="text-yellow">out</span>.println("&lt;html&gt;");
+            <span class="text-yellow">out</span>.println("&lt;head&gt;");
+            <span class="text-yellow">out</span>.println("&lt;title&gt;Заголовок&lt;/title&gt;");
+            <span class="text-yellow">out</span>.println("&lt;/head&gt;");
+            <span class="text-yellow">out</span>.println("&lt;body&gt;");
+            <span class="text-yellow">out</span>.println("&lt;h1&gt;Пример сервлета "+ secret +"&lt;/h1&gt;");
+            <span class="text-yellow">out</span>.println("&lt;/body&gt;");
+            <span class="text-yellow">out</span>.println("&lt;/html&gt;");
+        } finally {
+            <span class="text-yellow">out</span>.close();
+        }
+    }
+}
+
+</code></pre>
+<h2>1.3 service(HttpServletRequest, HttpServletResponse) method</h2>
+<p>If you look at the processing of a client request from the point of view of a servlet, then things are something like this.</p>
+<p>For each client request, the container (web server) creates <code>HttpServletRequest</code>and objects <code>HttpServletResponse</code>, and then calls a method <code>service(HttpServletRequest request, HttpServletResponse response)</code>on the corresponding servlet. These objects are passed to it so that the method can take the necessary data from <code>request’а</code>and put the result of the work into <code>response</code>.</p>
+<p>The method <code>service()</code>has a default implementation. If it is not redefined, then it will be executed. That's what he does.</p>
+<p>The method <code>service()</code>determines the HTTP method type from request (GET, POST, ...) and calls the method corresponding to the request.</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th width="350">Method</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><code>service(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new request to the servlet</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><code><span class="text-red">doGet</span>(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new GET request to the servlet</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><code><span class="text-red">doPost</span>(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new POST request to the servlet</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><code><span class="text-red">doHead</span>(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new HEAD request to the servlet</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><code><span class="text-red">doDelete</span>(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new DELETE request to the servlet</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td><code><span class="text-red">doPut</span>(HttpRequest, HttpResponse)</code></td>
+    <td>Called for every new PUT request to the servlet</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>In your class, you can either redefine one method <code>service()</code>, or leave it alone, but then redefine methods <code>doGet()</code>, <code>doPost()</code>, ... as needed.</p>

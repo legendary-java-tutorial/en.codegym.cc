@@ -1,0 +1,129 @@
+f several requests come from the same client, then they say that a session has been established between the client and the server. To control this process, the container has a special HttpSession object.</p>
+<p>When a client makes a request to a servlet, the servlet container checks to see if the session ID parameter is present in the request. If there is no such parameter (for example, the client is contacting the server for the first time), then the servlet container creates a new HttpSession object and also assigns it a unique ID.</p>
+<p>The session object is stored on the server, and the ID is sent in the response to the client, and by default is stored on the client in a cookie. Then, when a new request comes in from the same client, the servlet container retrieves the ID from it, and by that ID finds the correct HttpSession object on the server.</p>
+<p>You can get the session object from a request (an HttpServletRequest object), on which you need to call the getSession() method. It returns an HttpSession object.</p>
+<p>Why is a session needed? It can store information about the client between calls. She has something like a HashMap inside, in which you can store objects by keys. And some methods for this:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th>Methods</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><code>setAttribute(String name, Object o)</code></td>
+    <td>Adds an object to the session</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><code>getAttribute(String name)</code></td>
+    <td>Gets an object from the session</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><code>removeAttribute(String name)</code></td>
+    <td>Removes an object from the session</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's write a servlet that will sum up all the numbers passed to it from different requests:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CalculatorServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+         <span class="token comment">// Get the "sum" attribute from the session</span>
+        <span class="token class-name">HttpSession</span> session <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Integer</span> sum <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Integer</span><span class="token punctuation">)</span> session<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">"sum"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//Handling the situation when the session does not yet have such an attribute</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>sum <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+         <span class="token comment">// Get the "n" parameter from the request</span>
+        <span class="token class-name">String</span> n <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getParameter</span><span class="token punctuation">(</span><span class="token string">"n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        sum <span class="token operator">+=</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token comment">// Write the "sum" attribute to the session</span>
+        session<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"sum"</span><span class="token punctuation">,</span> sum<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Print the HTML as a response to the browser</span>
+        <span class="token class-name">PrintWriter</span> out <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"&lt;html&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"&lt;head&gt; &lt;title&gt; CalculatorServlet &lt;/title&gt; &lt;/head&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"&lt;body&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"&lt;h1&gt; Sum == "</span> <span class="token operator">+</span> sum <span class="token operator">+</span> <span class="token string">"&lt;/h1&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"&lt;/body&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"&lt;/html&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>4.2 More about HttpSession</h2>
+<p>Is there anything else we haven't said about the HttpSession object?</p>
+<p>First, it is the name J <span class="text-red">SESSION</span> ID. It is under it that the session ID is stored in cookies. As you can see, it's pretty easy to remember: <code>J+SESSION+ID</code>.</p>
+<p>Secondly, the session has a few more useful methods:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th>Methods</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><code>getAttributeNames()</code></td>
+    <td>Returns a list of all keys stored in the session</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><code>getId()</code></td>
+    <td>Returns the session ID (string)</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><code>isNew()</code></td>
+    <td>Returns true if the session object was created in the current request</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><code>setMaxInactiveInterval(int seconds)</code></td>
+    <td>Sets the session inactivity interval in seconds</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><code>invalidate()</code></td>
+    <td>Removes all objects from the session</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Here all the methods are obvious, but <code>setMaxInactiveInterval()</code>we will talk about a little more.</p>
+<p>If the server stores tens of thousands of sessions, including the data of clients who visited it last month, then it will simply run out of memory. Therefore, there is a way to set the “session lifetime”.</p>
+<p>If no one used the session for an interval of time, then it clears itself - all objects that it stored are deleted from it. This is done to save memory.</p>
+<p>By default, this interval is 1800 seconds == 30 minutes. If you set the value to -1, then the session will be “eternal” and will be deleted only when the user closes the browser tab (well, or the client disconnects).</p>
+<p>Examples:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// get all keys</span>
+<span class="token class-name">Enumeration</span> keys <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">getAttributeNames</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span> keys<span class="token punctuation">.</span><span class="token function">hasMoreElements</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> keys<span class="token punctuation">.</span><span class="token function">nextElement</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></td>
+   </tr>
+   <tr>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// set the inactivity interval</span>
+session<span class="token punctuation">.</span><span class="token function">setMaxInactiveInterval</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token operator">*</span><span class="token number">60</span><span class="token operator">*</span><span class="token number">24</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">// 1 day</span>
+session<span class="token punctuation">.</span><span class="token function">setMaxInactiveInterval</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// until the browser is closed</span></code></pre></td>
+   </tr>
+   <tr>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token comment">// remove all data from the session</span>
+session<span class="token punctuation">.</span><span class="token function">invalidate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>

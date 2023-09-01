@@ -1,0 +1,79 @@
+<p>The most popular application architecture that every programmer knows about is <span class="text-bold">MVC</span> . MVC stands for <span class="text-bold">Model-View-Controller</span> .</p>
+<p>This is not so much the architecture of applications as the architecture of application components, but we will return to this nuance later. What is MVC?</p>
+<p>MVC is a scheme for separating application data and control logic into three separate components— <span class="text-bold">model, view, and controller</span> —so that each component can be modified independently.</p>
+<ul>
+ <li><span class="text-bold">Model (Model)</span> provides data and responds to controller commands by changing its state.</li>
+ <li><span class="text-bold">The View</span> is responsible for displaying model data to the user in response to model changes.</li>
+ <li><span class="text-bold">The Controller (Controller)</span> interprets the actions of the user, notifying the model of the need for changes.</li>
+</ul>
+<p>This model was invented back in 1978 (!) Year. Yes, problems with proper software architecture were relevant 50 years ago. Here is how this model is described by the diagram in the original:</p>
+<img data-max-width="800" data-id="f0c1243a-0dbc-445d-9cff-fe34276351af" src="https://cdn.codegym.cc/images/article/f0c1243a-0dbc-445d-9cff-fe34276351af/800.jpeg" alt="">
+<p><span class="text-bold">The model</span> provides data and methods for working with them: queries to the database, checking for correctness. <span class="text-bold">The model is independent of the view</span> (does not know how to render data) and the controller (does not have user interaction points), providing access to and management of data.</p>
+<p>The model is built in such a way as to respond to requests by changing its state, and the notification of “observers” can be built in. The model, due to independence from the visual representation, <span class="text-bold">can have several different representations</span> for one “model”.</p>
+<p><span class="text-bold">The view</span> is responsible for getting the required data from the model and sending it to the user. The view does not process user input.</p>
+<p><span class="text-bold">The controller</span> provides the "communication" between the user and the system. Controls and directs data from the user to the system and vice versa. Uses a model and a view to implement the desired action.</p>
+<p>There is a certain difficulty with the fact that this model has evolved a little over the decades. That is, the name remained the same, but the purpose of the parts began to change.</p>
+<h2>MVC architecture on the web</h2>
+<p>The idea behind the MVC design pattern is very simple: we need to clearly separate the responsibility for different behaviors in our applications:</p>
+<p><mark class="green">Model</mark>— data processing and application logic.</p>
+<p><mark class="orange">view</mark>— providing data to the user in any supported format.</p>
+<p><mark class="viola">Controller</mark>- processing user requests and calling the appropriate resources.</p>
+<p>The application is divided into three main components, each of which is responsible for different tasks. Let's take a closer look at the components of a client-server application using an example.</p>
+<h4>Controller</h4>
+<p>The user clicks on various elements on the page in the browser, as a result of which the browser sends various HTTP requests: GET, POST, or others. The controller can include the browser and JS code that work inside the page.</p>
+<p>The main function of the controller in this case is to call methods on the necessary objects, manage access to resources to perform tasks specified by the user. Typically, the controller calls the appropriate model for the task and selects the appropriate view.</p>
+<h4>Model</h4>
+<p><span class="text-bold">Model in a broad sense</span> is the data and rules that are used to work with the data - together they make up the business logic of the application. Designing an application always starts with building models of the objects it operates on.</p>
+<p>Let's say we have an online store that sells books, then is a person only an application user or also an author of a book? These important questions must be addressed during model design.</p>
+<p>Further there are sets of rules: what can be done, what cannot be done, which data sets are acceptable and which are not. Can a book exist without an author? And the author without books? Can the user's date of birth be in the year 300 and so on.</p>
+<p>The model gives the controller a view of the data that the user has requested (message, book page, pictures, etc.). The data model will be the same no matter how we want to present it to the user. Therefore, we choose any available view to display the data.</p>
+<p><span class="text-bold">The model contains the most important part of our application logic</span> , the logic that solves the problem we are dealing with (forum, shop, bank, etc.). The controller contains mostly organizational logic for the application itself (just like your Project Manager).</p>
+<h4>View</h4>
+<p>View provides various ways to represent the data that is received from the model. It can be a template that is filled with data. There can be several different views and the controller chooses which one is best for the current situation.</p>
+<p>A web application usually consists of a set of controllers, models, and views. The controller can only be on the backend, but there can also be a variant of several controllers, when its logic is spread over the frontend too. A good example of this approach is any mobile application.</p>
+<h2>MVC example on the web</h2>
+<p>Let's say you need to develop an online store that will sell books. The user can perform the following actions: view books, register, buy, add items to the current order, mark books he likes and buy them.</p>
+<p>Your application should have <span class="text-bold">a model</span> that is responsible for all business logic. You also need <span class="text-bold">a controller</span> that will process all user actions and turn them into method calls from business logic. However, one controller method can call many different model methods.</p>
+<p>You also need sets of views: a list of books, information about one book, a shopping cart, a list of orders. Each page of a web application is actually a separate view that displays a certain aspect of the model to the user.</p>
+<p>Let's see what happens if a user opens a list of bookstore recommended books to view titles. The whole sequence of actions can be described in the form of 6 steps:</p><img data-max-width="800" data-id="a7f52906-62ff-44d9-8cb4-3357b5b9fe63" alt="MVC example on the web" src="https://cdn.javarush.com/images/article/a7f52906-62ff-44d9-8cb4-3357b5b9fe63/800.jpeg" style="width: 800px;">
+<p>Steps:</p>
+<ol>
+ <li>The user clicks on the "recommended" link and <span class="text-bold">the browser sends a request</span> to, say, /books/recommendations.</li>
+ <li><span class="text-bold">The controller checks the request</span> : the user must be logged in. Or we should have collections of books for non-logged in users. The controller then calls the model and asks it to return the list of books recommended to user N.</li>
+ <li><span class="text-bold">The model</span> accesses the database, retrieves information about books from there: books that are currently popular, books bought by the user, books bought by his friends, books from his wish list. Based on this data, the model builds a list of 10 recommended books and returns them to the controller.</li>
+ <li><span class="text-bold">The controller</span> receives a list of recommended books and looks at it. At this stage, the controller makes decisions! If there are few books or the list is completely empty, then it requests a list of books for an unlogged user. If there is a promotion going on right now, the controller can add promotional books to the list.</li>
+ <li><span class="text-bold">The controller</span> determines which page to show to the user. It can be an error page, a page with a list of books, a page congratulating that the user has become a millionth visitor.</li>
+ <li>The server gives the client the page ( <span class="text-bold">view</span> ) selected by the controller. It is filled with the necessary data (username, list of books) and goes to the client.</li>
+ <li>The client receives the page and displays it to the user.</li>
+</ol>
+<p><span class="text-bold">What are the benefits of this approach?</span></p>
+<p>The most obvious advantage that we get from using the MVC concept is a clear separation of presentation logic (user interface) and application logic (backend).</p>
+<p>The second advantage is the division of the server part into two: a smart model ( <span class="text-bold">executor</span> ) and a controller ( <span class="text-bold">decision center</span> ).</p>
+<p>In the previous example, there was a moment when the controller could receive an empty list of recommended books from the model and decide what to do with it. Theoretically, this logic could be put directly into the model.</p>
+<p>First, when requesting recommended books, the model would decide what to do if the list is empty. Then I would have to add the code in the same place, what to do if there is a promotion going on now, then more different options.</p>
+<p>Then it turned out that the store admin wanted to see how the user's page would look without a promotion, or vice versa, there is no promotion now, but he wants to see how the future promotion will be displayed. And there are no methods for this. Therefore, it was decided to separate the decision center (controller) from the business logic (model).</p>
+<p>In addition to isolating views from application logic, the MVC concept greatly reduces the complexity of large applications. The code is much more structured, making it easier to maintain, test, and reuse solutions.</p>
+<p>Understanding the concept of MVC, you, as a developer, realize where you need to add sorting the list of books:</p>
+<ul>
+ <li>At the database query level.</li>
+ <li>At the level of business logic (model).</li>
+ <li>At the business logic level (controller).</li>
+ <li>In the view - on the client side.</li>
+</ul>
+<p>And this is not a rhetorical question. Right now, think about where and why you need to add the code for sorting the list of books.</p>
+<h2>Classic MVC Model</h2>
+<p>Interaction between MVC components is implemented differently in web applications and mobile applications. This is because the web app is short-lived, processes one user request and exits, while the mobile app processes many requests without restarting.</p>
+<p>Web applications typically use the "passive" model, while mobile applications use the "active" model. The active model, unlike the passive one, allows you to subscribe and receive notifications of changes in it. This is not required for web applications.</p>
+<p>This is how the interaction of components in various models looks like:</p>
+<img data-max-width="1024" data-id="08f6a9ed-262d-4930-ac41-b9d8fe23027f" src="https://cdn.codegym.cc/images/article/08f6a9ed-262d-4930-ac41-b9d8fe23027f/1024.jpeg" alt="">
+<p>Mobile applications (active model) actively use <span class="text-bold">events</span> and the event subscription mechanism. With this approach, view ( <span class="text-bold">view</span> ) subscribes to model changes. Then, when some event occurs (for example, the user clicks a button), <span class="text-bold">the controller</span> is called . It also gives <span class="text-bold">the model</span> a command to change the data.</p>
+<p>If some data has changed, then the model generates an event about changing this data. All views that have subscribed to this event (for which it is important to change this particular data) receive this event and update the data in their interface.</p>
+<p>In web applications, things are organized a little differently. The main technical difference is that <span class="text-red">the client cannot receive server-side messages on the initiative of the server</span> .</p>
+<p>Therefore, a controller in a web application usually does not send any messages to the view, but gives the client a new page, which is technically a new view or even a new client application (if one page does not know anything about the other).</p>
+<p>At the present time, this problem is partially solved using the following approaches:</p>
+<ul>
+ <li>Regularly polling the server for changes to important data (once a minute or more).</li>
+ <li>WebSockets allow a client to subscribe to server messages.</li>
+ <li>Web push notifications from the server side.</li>
+ <li>The HTTP/2 protocol allows the server to initiate the sending of messages to the client.</li>
+</ul>

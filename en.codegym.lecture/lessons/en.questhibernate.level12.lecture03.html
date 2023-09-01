@@ -1,0 +1,141 @@
+k of saving Java objects to the database was relevant almost immediately after the creation of the Java language. At that time, there was only one data type in the Java language, Date, which stored time according to the UNIX-time standard: as the number of milliseconds since 1970.</p>
+<p>Well, in the databases at that time there were already different data types for dates, at least there were separate types for date, time and date + time:</p>
+<ul>
+ <li>DATE</li>
+ <li>TIME</li>
+ <li>TIMESTAMP</li>
+</ul>
+<p>Therefore, the creators of the Java language added a special package to it - java.sql, which contained classes:</p>
+<ul>
+ <li>java.sql.date</li>
+ <li>java.sql.Time</li>
+ <li>java.sql.timestamp</li>
+</ul>
+<p>Mapping these classes is a real pleasure:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity</span>
+public class TemporalValues {
+ 
+	<span class="text-brown">@Basic</span>
+    private <span class="text-user">java.sql.Date</span> sqlDate;
+ 
+	<span class="text-brown">@Basic</span>
+    private <span class="text-user">java.sql.Time</span> sqlTime;
+ 
+    <span class="text-brown">@Basic</span>
+    private <span class="text-user">java.sql.Timestamp</span> sqlTimestamp;
+}
+
+</code></pre>
+<p>But since programmers used to work with the class <code>java.util.Date</code>, Hibernate added a special annotation <code>@Temporal</code>in order to control the mapping of the Date type.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// If the annotation is missing, then the database will have a TIMESTAMP type</span>
+<span class="token class-name">Date</span> dateAsTimestamp<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@Temporal</span><span class="token punctuation">(</span><span class="token class-name">TemporalType</span><span class="token punctuation">.</span>DATE<span class="token punctuation">)</span></span><span class="token punctuation"></span> <span class="token comment">// will be mapped to DATE type</span>
+<span class="token class-name">Date</span> dateAsDate<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@Temporal</span><span class="token punctuation">(</span><span class="token class-name">TemporalType</span><span class="token punctuation">.</span>TIME<span class="token punctuation">)</span></span><span class="token punctuation"></span> <span class="token comment">// will be mapped to TIME type</span>
+<span class="token class-name">Date</span> dateAsTime<span class="token punctuation">;</span></code></pre>
+<p>The type <code>java.util.Calendar</code>and <code>java.util.Date</code>default type use the <strong>TIMESTAMP</strong> type to represent them in the database.</p>
+<h2>4.2 New time</h2>
+<p>At present, with mapping, everything is much simpler and better. All databases support 4 types of data to work with time:</p>
+<ul>
+ <li><strong>DATE</strong> - date: year, month and day.</li>
+ <li><strong>TIME</strong> - time: hours, minutes, seconds.</li>
+ <li><strong>TIMESTAMP</strong> - date, time and nanoseconds.</li>
+ <li><strong>TIMESTAMP WITH TIME ZONE</strong> - TIMESTAMP and time zone (zone name or offset).</li>
+</ul>
+<p>To represent <strong>the type</strong> <mark class="red">DATE</mark>in Java, you need to use a class <code>java.time.LocalDate</code>from the JDK 8 DateTime API.</p>
+<p>Type<mark class="red">TIME</mark>from the database can be represented by two types from Java: <code>java.time.LocalTime</code>and <code>java.time.OffsetTime</code>. Nothing complicated.</p>
+<p>And the exact date and time represented by the type<mark class="red">TIMESTAMP</mark>in the base, in Java it can be represented by 4 types:</p>
+<ul>
+ <li><strong>java.time.Instant</strong></li>
+ <li><strong>java.time.LocalDateTime</strong></li>
+ <li><strong>java.time.OffsetDateTime</strong></li>
+ <li><strong>java.time.ZonedDateTime</strong></li>
+</ul>
+<p>And finally<mark class="red">TIMESTAMP WITH TIME ZONE</mark>can be represented by two types:</p>
+<ul>
+ <li><strong>java.time.OffsetDateTime</strong></li>
+ <li><strong>java.time.ZonedDateTime</strong></li>
+</ul>
+<p>Since you are already familiar with <strong>the DateTime API</strong> , remembering this matter will not be difficult for you :)</p>
+<p>Mapping them is pure pleasure:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>LocalDate</span></span> localDate<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>LocalTime</span></span> localTime<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>OffsetTime</span></span> offsetTime<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>Instant</span></span> instant<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>LocalDateTime</span></span> localDateTime<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>OffsetDateTime</span></span> offsetDateTime<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>ZonedDateTime</span></span> zonedDateTime<span class="token punctuation">;</span></code></pre>
+<p>The annotation <code>@Basic</code>means that the field should be processed <strong>automatically</strong> : Hibernate will decide on which column and type this field should be mapped.</p>
+<h2>4.3 Working with time zones</h2>
+<p>If the time zone is part of a date, then storing them in the database is simple - just like a regular date:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>OffsetDateTime</span></span> offsetDateTime<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>ZonedDateTime</span></span> zonedDateTime<span class="token punctuation">;</span></code></pre>
+<p>However, if you want to store timezones separately from the date:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>TimeZone</span></span> timeZone<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@Basic</span></span>
+<span class="token keyword">private</span> <span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>ZoneOffset</span></span> zonedOffset<span class="token punctuation">;</span></code></pre>
+<p>Then Hibernate will store them in VARCHAR type by default. Which, in fact, is logical, since the TimeZone usually has a string name like "UTC + 3" or "Cairo".</p>
+<h2>4.4 Setting your own time zone</h2>
+<p>When you work with saving dates to the database, you will come across the fact that there are already 4 places where you can set the current time zone:</p>
+<ul>
+ <li>Server operating system;</li>
+ <li>DBMS;</li>
+ <li>Java application</li>
+ <li>Hibernate.</li>
+</ul>
+<p>If the DBMS does not specify a time zone (TimeZone), then it will take it from the operating system settings. This can be inconvenient, since backup DBMSs are often located in other data centers that have their own time zone.</p>
+<p>Therefore, almost all DBMS admins set a single zone so that data can be easily transferred from one server to another.</p>
+<p>The situation is similar with a Java application. It can also be run on different servers in different data centers, so it usually has an explicit time zone.</p>
+<pre class="line-numbers"><code>
+java -Duser.timezone=UTC ...
+</code></pre>
+<p>Or while the program is running:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token class-name"><span class="text-brown">TimeZone</span></span><span class="token punctuation">.</span><span class="token function">setDefault</span><span class="token punctuation">(</span><span class="token class-name"><span class="text-brown">TimeZone</span></span><span class="token punctuation">.</span><span class="token function"><span class="text-user">getTimeZone</span></span><span class="token punctuation">(</span><span class="token string">"UTC"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>And, of course, Hibernate allows you to set your time zone explicitly.</p>
+<p>First, it can be specified when configuring the SessionFactory:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java">settings<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>
+    <span class="token class-name"></span><span class="text-viola"><span class="token class-name">AvailableSettings</span><span class="token punctuation">.</span>JDBC_TIME_ZONE<span class="token punctuation">,</span></span><span class="token punctuation"></span>
+    <span class="token class-name"><span class="text-brown">TimeZone</span></span><span class="token punctuation">.</span><span class="token function"><span class="text-user">getTimeZone</span></span><span class="token punctuation">(</span><span class="token string">"UTC"</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Secondly, the time zone can be specified<mark class="user">for a specific session</mark>:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Session</span> session <span class="token operator">=</span> <span class="token function">sessionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">withOptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">jdbcTimeZone</span><span class="token punctuation">(</span><span class="token class-name"><span class="text-brown">TimeZone</span></span><span class="token punctuation">.</span><span class="token function"><span class="text-user">getTimeZone</span></span><span class="token punctuation">(</span><span class="token string">"UTC"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">openSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>4.5 @TimeZoneStorage annotation</h2>
+<p>It often happens that programmers started designing a database based on working in one country (and one time zone), and then after a couple of years they needed to add support for working in different time zones.</p>
+<p>Therefore, they simply added a separate column to the database to store the time zone. This is such a common situation that Hibernate has added a special annotation that allows you to store the TimeZone of a specific date in a separate column.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@</span><span class="text-red">TimeZoneStorage</span></span><span class="token punctuation"></span><span class="text-brown"><span class="token punctuation">(</span><span class="token class-name">TimeZoneStorageType</span><span class="token punctuation">.</span>COLUMN<span class="token punctuation">)</span></span><span class="token punctuation"></span>
+<span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@TimeZoneColumn</span><span class="token punctuation">(</span>name</span> <span class="token operator">=</span> <span class="token string">"birthday_offset_offset"</span><span class="token punctuation"><span class="text-brown">)</span></span>
+<span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name</span> <span class="token operator">=</span> <span class="token string">"birthday_offset"</span><span class="token punctuation"><span class="text-brown">)</span></span>
+<span class="token keyword">private</span> <span class="token class-name">OffsetDateTime</span> offsetDateTimeColumn<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation"><span class="text-brown">@</span><span class="text-red">TimeZoneStorage</span></span><span class="token punctuation"></span><span class="text-brown"><span class="token punctuation">(</span><span class="token class-name">TimeZoneStorageType</span><span class="token punctuation">.</span>COLUMN<span class="token punctuation">)</span></span><span class="token punctuation"></span>
+<span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@TimeZoneColumn</span><span class="token punctuation">(</span>name</span> <span class="token operator">=</span> <span class="token string">"birthday_zoned_offset"</span><span class="token punctuation"><span class="text-brown">)</span></span>
+<span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name</span> <span class="token operator">=</span> <span class="token string">"birthday_zoned"</span><span class="token punctuation"><span class="text-brown">)</span></span>
+<span class="token keyword">private</span> <span class="token class-name">ZonedDateTime</span> zonedDateTimeColumn<span class="token punctuation">;</span></code></pre>
+<p>This is a crutch. But there is also an excuse for it: it appeared at a time when the DateTime API did not yet exist. And it was impossible to store TimeZone in the class <code>java.util.Date</code>.</p>
+<p>I really hope that you will not often see this in your code.</p>

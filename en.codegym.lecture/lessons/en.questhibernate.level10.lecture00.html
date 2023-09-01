@@ -1,0 +1,113 @@
+y, you got acquainted with Hibernate, and now I will introduce you to <strong>HQL</strong> , aka <strong>Hibernate Query Language</strong> . In fact, this is SQL converted for writing queries in Hibernate. It has several key differences.</p>
+<ol>
+ <li>Using <strong>the class name</strong> instead of the table name.</li>
+ <li>Using <strong>the class field name</strong> instead of the table column name.</li>
+ <li><strong>Optional</strong> use of select.</li>
+</ol>
+<p>Let's ask Hibernate to return to us all the users that it has in the database. Here's what that request would look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">from</span> <span class="token class-name">User</span></code></pre>
+</div>
+<p>That's all, for comparison, we present a similar query in SQL:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">select</span> <span class="token operator">*</span> <span class="text-brown">from</span> user</code></pre>
+</div>
+<p>Here <code>User</code>is the name of the class, and <code>user</code>is the name of the table.</p>
+<p>The complete Java code will look like this:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">public List&lt;User&gt; getAllUsers()</span> {
+    try (Session <span class="text-user">session</span> = <span class="text-yellow">sessionFactory</span>.openSession()) {
+            return <span class="text-user">session</span>.createQuery(<span class="text-green">"from User"</span>, User.class).list();
+    }
+}
+</code></pre>
+<p>Otherwise, HQL is very similar to SQL - it also has operators:</p>
+<ul>
+ <li><code>WHERE</code></li>
+ <li><code>ORDER BY</code></li>
+ <li><code>GROUP BY</code></li>
+ <li><code>HAVING</code></li>
+</ul>
+<h2>1.2 Example of working with HQL</h2>
+<p>Perhaps the previous example is a bit confusing due to the same table and field names. Let's come up with a special example where this would be easier.</p>
+<p>Let's say we have a <strong>user_data</strong> table that contains the following fields:</p>
+<ul>
+ <li><strong>id</strong> INT</li>
+ <li><strong>username</strong> VARCHAR(100)</li>
+ <li><strong>user_level</strong> INT</li>
+ <li><strong>user_created</strong> DATE</li>
+</ul>
+<p>We will create a Java class that will map to this table:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity</span>
+<span class="text-brown">@Table(name</span>=<span class="text-green">"user_data"</span><span class="text-brown">)</span>
+class User {
+   <span class="text-brown">@Id</span>
+   <span class="text-red">@GeneratedValue</span>
+   public Integer id;
+ 
+   <span class="text-brown">@Column(name</span>=<span class="text-green">"user_name"</span><span class="text-brown">)</span>
+   public String name;
+ 
+   <span class="text-brown">@Column(name</span>=<span class="text-green">"user_level"</span><span class="text-brown">)</span>
+   public Integer level;
+ 
+   <span class="text-brown">@Column(name</span>=<span class="text-green">"user_created"</span><span class="text-brown">)</span>
+   public Date created;
+}
+</code></pre>
+<p>Now let's write some examples:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>HQL</th>
+    <th>SQL</th>
+   </tr>
+   <tr>
+    <td>from User</td>
+    <td>select * from user_data</td>
+   </tr>
+   <tr>
+    <td>from User where id=3</td>
+    <td>select * from user_data where id=3</td>
+   </tr>
+   <tr>
+    <td>from User where level in (10,20,30)</td>
+    <td>select * from user_data where user_level IN (10, 20, 30)</td>
+   </tr>
+   <tr>
+    <td>from User order by created asc</td>
+    <td>select * from user_data order by user_created asc</td>
+   </tr>
+   <tr>
+    <td>from User where name like 'test'</td>
+    <td>select * from user_data where user_name like 'test'</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The queries are very similar, and reading HQL queries when you are familiar with class names and their fields is just as easy as reading SQL queries. It may be a little more difficult to write, but then again, very complex queries are rarely written in HQL.</p>
+<h2>1.3 Using select</h2>
+<p>In HQL, you can use <code>select</code>when the data type of the result does not match the type specified in <code>from</code>.</p>
+<p>For example, we want to get the names of all users that are in our <strong>user_data</strong> table , then we need to write the following query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">select</span> name <span class="text-brown">from</span> <span class="token class-name">User</span></code></pre>
+</div>
+<p>Also, if there are duplicates among the names, then you can use the operator <code>DISTINCT</code>:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">select distinct</span> name <span class="text-brown">from</span> <span class="token class-name">User</span></code></pre>
+</div>
+<p>Aliases work the same as in SQL:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">select distinct</span> u<span class="token punctuation">.</span>name <span class="text-brown">from</span> <span class="token class-name">User</span> u <span class="text-brown">where</span> u<span class="token punctuation">.</span>created <span class="token operator">&gt;</span> <span class="token string">'2020-01-01'</span></code></pre>
+</div>
+<p>Well, completely in the form of Java code, this request will look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword"></span><span class="text-brown"><span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> <span class="token function">getUserNames</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token punctuation"></span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">Session</span> <span class="text-user">session</span> <span class="token operator">=</span> sessionFactory<span class="token punctuation">.</span><span class="token function">openSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">String</span> hql <span class="token operator">=</span> <span class="token string">"select distinct u.name from User u where u.created &gt; '2020-01-01'"</span><span class="token punctuation">;</span>
+            <span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> <span class="text-viola">query</span> <span class="token operator">=</span> <span class="text-user">session</span><span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>hql <span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="text-viola">query</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Note that the query must return a list of names. Names are of type String, so both the type of the function and the type parameter of the Query class are of type String.</p>

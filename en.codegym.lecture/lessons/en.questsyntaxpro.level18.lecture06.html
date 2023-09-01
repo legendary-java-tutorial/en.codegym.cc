@@ -1,0 +1,97 @@
+<h2>1. Collecting elements</h2>
+<p>Finally, we've reached the most interesting method in the <code>Stream</code> class, the <code>collect()</code> method. It is used to move from streams to our familiar collections — <code>List&lt;T&gt;</code>, <code>Set&lt;T&gt;</code>, <code>Map&lt;T, R&gt;</code> and others.</p>
+<p>The <code>collect()</code> method takes a special <code>collector</code> object as an argument. This object reads all the data from the stream, converts it to a specific kind of collection, and returns it. And then the collect method itself returns this collection.</p>
+<p>All this is done in a rather slick manner: the <code>collector</code> object's type is <code>Collector&lt;T, A, R&gt;</code>. As you can see, it has three type parameters. The last type parameter (<code>R</code>) is usually a type like <code>List&lt;T&gt;</code>. This means the compiler can use this type to determine the correct return type for the <code>collect()</code> method itself.</p>
+<p>I hope you're not too confused. In any case, you don't need to create Collector objects yourself. The ready-made objects returned by the static methods of the <code>Collectors</code> class will be sufficient.</p>
+<p><strong>Collectors</strong> class</p>
+<p>The <code>Collectors</code> class has several static methods that return ready-made collector objects — something for every occasion. Here we'll consider the most important ones.</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <pre class="language-java"><code>toList()</code></pre>
+        </td>
+        <td>An object that converts a stream to a list (<code>List&lt;T&gt;</code>)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>toSet()</code></pre>
+        </td>
+        <td>An object that converts a stream to a set (<code>Set&lt;T&gt;</code>)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>toMap()</code></pre>
+        </td>
+        <td>An object that converts a stream to a map(<code>Map&lt;K, V&gt;</code>)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>joining()</code></pre>
+        </td>
+        <td>Concatenates the elements of a stream into a single string</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>mapping()</code></pre>
+        </td>
+        <td>Converts the elements of a string to a <code>Map&lt;K, V&gt;</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>groupingBy()</code></pre>
+        </td>
+        <td>Groups the elements and returns <code>Map&lt;K, V&gt;</code></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. Converting a stream to a list</h2>
+<p>The following is a typical example of working with a stream and converting the result to a list</p>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="text-green">list</span>, "Hello", "how's", "life?");
+
+List&lt;<span class="text-orange">String</span>&gt; result = <span class="text-green">list</span>.<span class="text-red">stream</span>()
+   .<span class="text-red">filter</span>( <span class="text-viola">s -&gt; Character.isUpperCase(s.charAt(0))</span> )
+   .<span class="text-red">collect</span>( <span class="text-orange">Collectors.toList()</span> );</code></pre>
+<p>We got a stream from the collection. Then we got a new stream by retaining only strings whose first character is uppercase. Then all the data from that stream is collected into a collection, which is then returned.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1822"></div>
+<hr>
+<h2>3. Converting a stream to a set</h2>
+<p>The following is a typical example of working with a stream and converting the result to a set</p>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="text-green">list</span>, "Hello", "how's", "life?");
+
+Set&lt;<span class="text-orange">String</span>&gt; result = <span class="text-green">list</span>.<span class="text-red">stream</span>()
+   .<span class="text-red">filter</span>( <span class="text-viola">s -&gt; Character.isUpperCase(s.charAt(0)) </span>)
+   .<span class="text-red">collect</span>( <span class="text-orange">Collectors.toSet()</span> );</code></pre>
+<p>Everything is very similar to the code for converting a stream to a <code>List</code>, only we use a different collector object, which is returned by the <code><span class="text-orange">toSet()</span></code> method.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1823"></div>
+<hr>
+<h2>4. Converting a stream to a map</h2>
+<p>But converting a stream to a map is a little more difficult. Each entry in a Map consists of two elements: a key and a value. We need to figure out how we will define the key and value for each element in the stream.</p>
+<p>Example:</p>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="text-green">list</span>, "a=2", "b=3", "c=4", "d==3");
+
+Map&lt;<span class="text-orange">String</span>, <span class="text-orange">String</span>&gt; result = <span class="text-green">list</span>.<span class="text-red">stream</span>()
+   .<span class="text-red">map</span>( <span class="text-viola">e -&gt; e.split("=")</span> )
+   .<span class="text-red">filter</span>( <span class="text-user">e -&gt; e.length == 2</span> )
+   .<span class="text-red">collect</span>( <span class="text-green">Collectors.toMap</span>(<span class="text-user">e -&gt; e[0]</span>, <span class="text-viola">e -&gt; e[1]</span>) );</code></pre>
+<p>Let's take a look at what's going on here.</p>
+<p>In the first line, we use <code>map(...)</code> to convert each string into an array of strings. Using the split method, we split each string into two parts.</p>
+<p>In the second line, we pass to the <code>filter()</code> method only those arrays that contain exactly two elements. The <code>d==3</code> string gets split into an array of three elements, which does not match the filter.</p>
+<p>And finally, in the last line, we convert the stream into a <code>Map&lt;String, String&gt;</code>. Two functions are passed to the <code>toMap()</code> method. For each element of the stream, <span class="text-user">the first function should return the key</span>, and <span class="text-viola">the second returns the value</span>.</p>
+<p>The first element of each array ("a", "b", "c") will be our key, and the second element of each array ("2", "3", "4") will be our value.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1824"></div>
+<hr>
+<h2>5. Converting a stream to a string</h2>
+<p>Another interesting collector object is returned by <code><span class="text-viola">Collectors.joining()</span></code>. It converts all elements of a stream to <code>String</code> and concatenates them into a single string. Example</p>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt; <span class="text-green">list</span> = new <span class="text-neon">ArrayList</span>&lt;<span class="text-orange">String</span>&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="text-green">list</span>, "a=2", "b=3", "c=4", "d==3");
+String <span class="text-user">result</span> = <span class="text-green">list</span>.<span class="text-red">stream</span>().<span class="text-red">collect</span>( <span class="text-viola">Collectors.joining</span>(<span class="text-viola">", "</span>) );</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1825"></div>

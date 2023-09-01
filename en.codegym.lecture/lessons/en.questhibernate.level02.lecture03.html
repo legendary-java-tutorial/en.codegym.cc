@@ -1,0 +1,231 @@
+very important is that if you group records, then in the section <code>SELECT</code>you can only specify the columns by which the data is grouped.</p>
+<p>You<mark class="red">can not</mark>write a type query and specify <strong>the name</strong><code>SELECT</code> column in the section :<strong></strong></p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span> <span class="text-green">brand</span><span class="token punctuation">,</span> <span class="text-user">name</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">product</span>
+<span class="text-red">GROUP BY</span> <span class="text-green">brand</span></code></pre>
+</div>
+<p>You have a bunch of rows in the <strong>product table with the </strong><strong>name</strong> field , and it's not clear which row you need to substitute here. Think again: you want to know the number of products of each brand and how the resulting table can get the name of the product?</p>
+<p>If you use the operator <code>GROUP BY</code>, then normal rows cannot get into your result, but only columns by which data is grouped and “calculated columns”, such as<code>COUNT(*)</code></p>
+<h2>4.2 Grouping by calculated columns</h2>
+<p>But you can group by multiple columns and even by calculated columns. Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span>
+<span class="token function"><span class="text-user">YEAR</span></span><span class="token punctuation">(</span><span class="text-green">join_date</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-red">AS</span></span> <span class="text-viola">hire_year</span><span class="token punctuation">,</span>
+<span class="token function"><span class="text-user">COUNT</span></span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="text-red">AS</span> <span class="text-viola">total</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">employee</span>
+<span class="text-red">GROUP BY</span> <span class="text-viola">hire_year</span></code></pre>
+</div>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>hire_year</th>
+    <th>total</th>
+   </tr>
+   <tr>
+    <td>2012</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2013</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2014</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2015</td>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>2018</td>
+    <td>1</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's analyze our request.</p>
+<p>In the <strong>employee</strong> table , each employee has a unique hire date, so grouping data by it will not work - there will be one record for each date and grouping will not make much sense. But if we move from the date of hiring to the year of hiring, then it may well be a situation where the company hired several employees in the same year.</p>
+<p>Let's see again what this table will look like before grouping:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span>
+ 	<span class="text-green">id</span><span class="token punctuation">,</span>
+ 	<span class="text-green">name</span><span class="token punctuation">,</span>
+ 	<span class="token function"><span class="text-user">YEAR</span></span><span class="token punctuation">(</span><span class="text-green">join_date</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-brown">AS</span></span> <span class="text-viola">hire_year</span><span class="token punctuation">,</span>
+ 	<span class="text-green">join_date</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">employee</span></code></pre>
+</div>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>hire_year</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>2012</td>
+    <td>2012-06-30</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>2013</td>
+    <td>2013-08-12</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>2014</td>
+    <td>2014-01-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>2015</td>
+    <td>2015-05-12</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>2015</td>
+    <td>2015-10-10</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>2018</td>
+    <td>2018-11-11</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>But this resulting table can be grouped by <strong>hire_year</strong> and find out how many people were hired in a particular year.</p>
+<h2>4.3 Grouping by multiple columns</h2>
+<p>Now let's try to find out how many employees we hired in each month of each year. To do this, we need to add not one, but two calculated fields to the query at once - the year of hire (hire_year) and the month of hire (hire_month).</p>
+<p>Let's write a query like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span>
+ 	<span class="text-green">id</span><span class="token punctuation">,</span>
+ 	<span class="text-green">name</span><span class="token punctuation">,</span>
+ 	<span class="token function"><span class="text-user">YEAR</span></span><span class="token punctuation">(</span><span class="text-green">join_date</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-brown">AS</span></span> <span class="text-viola">hire_year</span><span class="token punctuation">,</span>
+ 	<span class="token function"><span class="text-user">MONTH</span></span><span class="token punctuation">(</span><span class="text-green">join_date</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-brown">AS</span></span> <span class="text-viola">hire_month</span><span class="token punctuation">,</span>
+ 	<span class="text-green">join_date</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">employee</span></code></pre>
+</div>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>hire_year</th>
+    <th>hire_month</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>2012</td>
+    <td>6</td>
+    <td>2012-06-30</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>2013</td>
+    <td>8</td>
+    <td>2013-08-12</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>2014</td>
+    <td>1</td>
+    <td>2014-01-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>2015</td>
+    <td>5</td>
+    <td>2015-05-12</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>2015</td>
+    <td>10</td>
+    <td>2015-10-10</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>2018</td>
+    <td>eleven</td>
+    <td>2018-11-11</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>If we group the data in this result table by month, then we simply group people into groups, regardless of the year they were hired. And we need the resulting table to have three columns: year, month, and the number of employees hired.</p>
+<p>To do this, after the operator, <code>GROUP BY</code>you need to use the name of not one column, but two. Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span>
+ 	<span class="token function"><span class="text-user">YEAR</span></span><span class="token punctuation">(</span><span class="text-green">join_date</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-brown">AS</span></span> <span class="text-viola">hire_year</span><span class="token punctuation">,</span>
+ 	<span class="token function"><span class="text-user">MONTH</span></span><span class="token punctuation">(</span><span class="text-green">join_date</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-brown">AS</span></span> <span class="text-viola">hire_month</span><span class="token punctuation">,</span>
+ 	<span class="token function"><span class="text-user">COUNT</span></span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="text-brown">AS</span> <span class="text-viola">total</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">employee</span>
+<span class="text-red">GROUP <span class="token class-name">BY</span></span><span class="token class-name"></span> <span class="text-viola">hire_year<span class="token punctuation">,</span> hire_month</span></code></pre>
+</div>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>hire_year</th>
+    <th>hire_month</th>
+    <th>total</th>
+   </tr>
+   <tr>
+    <td>2012</td>
+    <td>6</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2013</td>
+    <td>8</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2014</td>
+    <td>1</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2015</td>
+    <td>5</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2015</td>
+    <td>10</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2018</td>
+    <td>eleven</td>
+    <td>1</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>We have few records in the table, so there are units everywhere in the total column. And by the way, note that the more columns we group by, the more rows we have in the result.</p>

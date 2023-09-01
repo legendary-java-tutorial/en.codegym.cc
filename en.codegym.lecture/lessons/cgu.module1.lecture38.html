@@ -1,0 +1,374 @@
+<p>The <span class="code"><span class="text-green">ByteArrayOutputStream</span></span> class implements an output stream that writes data to a byte array. The buffer grows automatically as data is written to it.</p>
+
+    <p>The <span class="code"><span class="text-green">ByteArrayOutputStream</span></span> class creates a buffer in memory, and all the data sent to the stream is stored in the buffer.</p>
+
+    <img data-max-width="512" data-id="f0c488fa-366a-4a36-95e9-2a80ed846b0c" src="https://cdn.codegym.cc/images/article/f0c488fa-366a-4a36-95e9-2a80ed846b0c/original.png" alt="">
+
+    <h2>ByteArrayOutputStream constructors</h2>
+
+    <p>The <span class="code"><span class="text-green">ByteArrayOutputStream</span></span> class has the following constructors:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Constructor</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">ByteArrayOutputStream()</span></span></td>
+                <td>This constructor creates an in-memory buffer that is 32 bytes long.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">ByteArrayOutputStream(int a)</span></span></td>
+                <td>This constructor creates an in-memory buffer with a specific size.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>And this is what the class looks like inside: </p>
+
+    <pre class='language-java line-numbers'><code>
+// The buffer itself, where the data is stored.
+protected byte buf[];
+
+// Current number of bytes written to the buffer.
+protected int count;
+
+public ByteArrayOutputStream() {
+    this(32);
+}
+
+public ByteArrayOutputStream(int size) {
+    if (size &lt; 0) {
+        throw new IllegalArgumentException("Negative initial size: "
+                                           + size);
+    }
+    buf = new byte[size];
+}
+    </code></pre>
+
+    <h2>Methods of the ByteArrayOutputStream class </h2>
+
+    <p>Let's talk about the methods we can use in our class.</p>
+
+    <p>Let's try to put something in our stream. To do this, we'll use the <span class="code text-orange">write()</span> method — it can accept one byte or a set of bytes for writing.</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Method</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void write(int b)</span></td>
+                <td>Writes one byte.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void write(byte b[], int off, int len)</span></td>
+                <td>Writes an array of bytes of a specific size.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void writeBytes(byte b[])</span></td>
+                <td>Writes an array of bytes.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void writeTo(OutputStream out)</span></td>
+                <td>Writes all data from the current output stream to the passed output stream.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Method implementation:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws IOException {
+   ByteArrayOutputStream outputByte = new ByteArrayOutputStream();
+   // Write one byte
+   while(outputByte.size()!= 7) {
+      outputByte.write("codegym".getBytes());
+   }
+
+   // Write array of bytes
+   String value = "\nWelcome to Java\n";
+   byte[] arrBytes = value.getBytes();
+   outputByte.write(arrBytes);
+
+   // Write part of an array
+   String codeGym = "CodeGym";
+   byte[] b = codeGym.getBytes();
+   outputByte.write(b, 4, 3);
+
+   // Write to a file
+   FileOutputStream fileOutputStream = new FileOutputStream("output.txt");
+   outputByte.write(80);
+   outputByte.writeTo(fileOutputStream);
+}
+    </code></pre>
+
+    <p>The result is a new <span class="code">output.txt</span> file that looks like this:</p>
+
+    <img data-max-width="512" data-id="9a424b34-8fa4-4421-b508-55579562337b" src="https://cdn.codegym.cc/images/article/9a424b34-8fa4-4421-b508-55579562337b/original.png" alt="">
+
+    <p>The <span class="code text-orange">toByteArray()</span> method returns the current contents of this output stream as an array of bytes. And you can use the <span class="code text-orange">toString()</span> method to get the <span class="text-neon">buf</span> byte array as text:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws IOException {
+    ByteArrayOutputStream outputByte = new ByteArrayOutputStream();
+
+    String value = "CodeGym";
+    outputByte.write(value.getBytes());
+
+    byte[] result = outputByte.toByteArray();
+    System.out.println("Result: ");
+
+    for(int i = 0 ; i &lt; result.length; i++) {
+        // Display the characters
+        System.out.print((char)result[i]);
+    }
+}
+    </code></pre>
+
+    <p>Our buffer contains the byte array that we passed to it.</p>
+
+    <p>The <span class="code text-orange">reset()</span> method resets the number of valid bytes in the byte array output stream to zero (so everything accumulated in the output is reset).</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws IOException {
+   ByteArrayOutputStream outputByte = new ByteArrayOutputStream(120);
+
+   String value = "CodeGym";
+   outputByte.write(value.getBytes());
+   byte[] result = outputByte.toByteArray();
+   System.out.println("Output before reset: ");
+
+   for (byte b : result) {
+      // Display the characters
+      System.out.print((char) b);
+   }
+
+   outputByte.reset();
+
+   byte[] resultAfterReset = outputByte.toByteArray();
+   System.out.println("\nOutput after reset: ");
+
+   for (byte b : resultAfterReset) {
+      // Display the characters
+      System.out.print((char) b);
+   }
+}
+    </code></pre>
+
+    <p>When we display our buffer after calling the <span class="code text-orange">reset()</span> method, we get nothing.</p>
+
+    <h3>Specific features of the close() method</h3>
+
+    <p>This method deserves special attention. To understand what it does, let's take a peek inside:</p>
+
+    <pre class='language-java line-numbers'><code>
+/**
+ * Closing a {@code ByteArrayOutputStream} has no effect. The methods in
+ * this class can be called after the stream has been closed without
+ * generating an {@code IOException}.
+ */
+public void close() throws IOException {
+}
+    </code></pre>
+
+    <p>Note that the <span class="code"><span class="text-green">ByteArrayOutputStream</span></span> class's <span class="code text-orange">close()</span> method doesn't actually do anything. </p>
+
+    <p>Why is that? A <span class="code"><span class="text-green">ByteArrayOutputStream</span></span> is a memory-based stream (that is, it is managed and populated by the user in code), so calling <span class="code text-orange">close()</span> has no effect. </p>
+
+    <h2>Practice</h2>
+
+    <p>Now let's try to implement a file system using our <span class="code"><span class="text-green">ByteArrayOutputStream</span></span> and <span class="code"><span class="text-green">ByteArrayInputStream</span></span>. </p>
+
+    <p>Let's write a <span class="code"><span class="text-green">FileSystem</span></span> class using the <span class="code text-brown">singleton</span> design pattern and use a static <span class="code"><span class="text-green">HashMap&lt;String, byte[]&gt;</span></span>, where: </p>
+
+    <ul>
+        <li><span class="code">String</span> is the path to a file</li>
+        <li><span class="code">byte[]</span> is the data in the saved file</li>
+    </ul>
+
+    <pre class='language-java line-numbers'><code>
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
+class FileSystem {
+   private static final FileSystem fileSystem = new FileSystem();
+   private static final Map&lt;String, byte[]&gt; files = new HashMap&lt;&gt;();
+
+   private FileSystem() {
+   }
+
+   public static FileSystem getFileSystem() {
+       return fileSystem;
+   }
+
+   public void create(String path) {
+       validateNotExists(path);
+       files.put(path, new byte[0]);
+   }
+
+   public void delete(String path) {
+       validateExists(path);
+       files.remove(path);
+   }
+
+   public boolean isExists(String path) {
+       return files.containsKey(path);
+   }
+
+   public InputStream newInputStream(String path) {
+       validateExists(path);
+       return new ByteArrayInputStream(files.get(path));
+   }
+
+   public OutputStream newOutputStream(String path) {
+       validateExists(path);
+       return new ByteArrayOutputStream() {
+           @Override
+           public void flush() throws IOException {
+               final byte[] bytes = toByteArray();
+               files.put(path, bytes);
+               super.flush();
+           }
+
+           @Override
+           public void close() throws IOException {
+               final byte[] bytes = toByteArray();
+               files.put(path, bytes);
+               super.close();
+           }
+       };
+   }
+
+   private void validateExists(String path) {
+       if (!files.containsKey(path)) {
+           throw new RuntimeException("File not found");
+       }
+   }
+
+   private void validateNotExists(String path) {
+       if (files.containsKey(path)) {
+           throw new RuntimeException("File exists");
+       }
+   }
+}
+    </code></pre>
+
+    <p>In this class, we created the following public methods: </p>
+
+    <ul>
+        <li>standard CRUD methods (create, read, update, delete), </li>
+        <li>a method to check if a file exists,</li>
+        <li>a method to get an instance of the file system.</li>
+    </ul>
+
+    <p>To read from a file, we return an <span class="code"><span class="text-green">InputStream</span></span>. Under the hood is the <span class="code"><span class="text-green">ByteArrayInputStream</span></span> implementation. The buffer is a byte array stored in the <span class="text-neon">files</span> map.</p>
+
+    <p>Another interesting method is <span class="code text-orange">newOutputStream</span>. When this method is called, we return a new <span class="text-orange">ByteArrayOutputStream</span> object that overrides two methods: <span class="code text-orange">flush</span> and <span class="code text-orange">close</span>. Calling either of these methods should cause the write to take place. </p>
+
+    <p>And that is exactly what we do: we get the byte array that the user has written to, and store a copy as the <mark class="user">value</mark> in the <span class="text-neon">files</span> map with an appropriate key.</p>
+
+    <p>We use the following code to test our file system (FS):</p>
+
+    <pre class='language-java line-numbers'><code>
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+public class MyFileSystemTest {
+   public static void main(String[] args) throws IOException {
+       FileSystem fileSystem = FileSystem.getFileSystem();
+       final String path = "/user/bin/data.txt";
+
+       // Create a file
+       fileSystem.create(path);
+       System.out.println("File created successfully");
+
+       // Make sure it's empty
+       try (InputStream inputStream = fileSystem.newInputStream(path)) {
+           System.out.print("File contents:\t");
+           System.out.println(read(inputStream));
+       }
+
+       // Write data to it
+       try (final OutputStream outputStream = fileSystem.newOutputStream(path)) {
+           outputStream.write("CodeGym".getBytes(UTF_8));
+           System.out.println("Data written to file");
+       }
+
+       // Read data
+       try (InputStream inputStream = fileSystem.newInputStream(path)) {
+           System.out.print("File contents:\t");
+           System.out.println(read(inputStream));
+       }
+
+       // Delete the file
+       fileSystem.delete(path);
+
+       // Verify that the file does not exist in the FS
+       System.out.print("File exists:\t");
+       System.out.println(fileSystem.isExists(path));
+
+   }
+
+   private static String read(InputStream inputStream) throws IOException {
+       return new String(inputStream.readAllBytes(), UTF_8);
+   }
+}
+    </code></pre>
+
+    <p>During the test, we verify the following actions: </p>
+
+    <ol>
+        <li>We create a new file.</li>
+        <li>We check that the created file is empty.</li>
+        <li>We write some data to the file.</li>
+        <li>We read back the data and verify that it matches what we wrote.</li>
+        <li>We delete the file.</li>
+        <li>We verify that the file has been deleted.</li>
+    </ol>
+
+    <p>Running this code gives us this output:</p>
+
+    <div class="terminal">File created successfully<br />
+File contents:	<br />
+Data written to file</br >
+File contents: CodeGym<br />
+File exists: false</div>
+
+    <p>Why was this example necessary? </p>
+
+    <p>Put simply, data is always a set of bytes. If you need to read/write a lot of data from/to disk, your code will run slowly due to I/O problems. In this case, it makes sense to maintain a virtual file system in RAM, working with it in the same way you would with a traditional disk. And what could be simpler than <span class="code"><span class="text-green">InputStream</span></span> and <span class="code"><span class="text-green">OutputStream</span></span>? </p>
+
+    <p>Of course, this is an example for instruction, not production-ready code. It does NOT account for (the following list is not comprehensive):</p>
+
+    <ul>
+        <li>multithreading</li>
+        <li>file size limits (the amount of available RAM for a running JVM)</li>
+        <li>verification of the path structure</li>
+        <li>verification of method arguments</li>
+    </ul>
+
+    <p><span class="text-bold"><em>Interesting insider information:</em></span><br />
+The CodeGym task verification server uses a somewhat similar approach. We spin up a virtual FS, determine which tests need to be run for task verification, run the tests, and read the results.</p>
+
+    <h2>Conclusion and the big question</h2>
+
+    <p>The big question after reading this lesson is "Why can't I just use <span class="text-neon">byte[]</span>, since it's more convenient and doesn't impose restrictions?"</p>
+
+    <p>The advantage of <span class="code"><span class="text-green">ByteArrayInputStream</span></span> is that it strong indicates that you're going to use read-only bytes (because the stream doesn't provide an interface to changing its content). That said, it is important to note that a programmer <em>can</em> still access the bytes directly.</p>
+
+    <p>But if sometimes you have a <span class="text-neon">byte[]</span>, sometimes you have a file, sometimes you have a network connection, and so on, you'll need some kind of abstraction for "a stream of bytes, and I don't care where they come from". And that's what <span class="code"><span class="text-green">InputStream</span></span> is. When the source happens to be a byte array, <span class="code"><span class="text-green">ByteArrayInputStream</span></span> is a good <span class="code"><span class="text-green">InputStream</span></span> to use.</p>
+
+    <p>This is helpful in many situations, but here are two specific examples:</p>
+
+    <ol>
+        <li><p>You're writing a library that receives bytes and processes them somehow (for example, suppose it's a library of image processing utilities). Users of your library can provide bytes from a file, from an in-memory <span class="text-neon">byte[]</span>, or from some other source. So you provide an interface that accepts an <span class="code"><span class="text-green">InputStream</span></span>, which means that if they have a <span class="text-neon">byte[]</span>, they need to wrap it in a <span class="code"><span class="text-green">ByteArrayInputStream</span></span>.</p></li>
+
+        <li><p>You're writing code that reads a network connection. But to perform unit tests on this code, you don't want to open a connection — you just want to feed a few bytes to the code. So the code takes an <span class="code"><span class="text-green">InputStream</span></span> and your test passes in a <span class="code"><span class="text-green">ByteArrayInputStream</span></span>.</p></li>
+    </ol>

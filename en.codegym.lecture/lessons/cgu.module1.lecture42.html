@@ -1,0 +1,126 @@
+<p>Earlier, we got to know the <span class="text-bold">IO API</span> (Input/Output Application Programming Interface) and the <span class="text-bold">java.io</span> package, whose classes are mainly for working with streams in Java. The key here is the concept of a <em>stream</em>.</p>
+
+<p>Today we'll begin to consider the <span class="text-bold">NIO API</span> (New Input/Output). </p>
+
+<p>The main difference between the two approaches to I/O is that the IO API is stream-oriented while the NIO API is buffer-oriented. So the main concepts to understand are <em>buffers</em> and <em>channels</em>.</p>
+
+<h2>What's a buffer and what's a channel?</h2>
+
+<p>A <span class="text-bold">channel</span> is a logical portal through which data moves in and out, while a buffer is the source or destination of this transmitted data. During output, the data you want to send is put into a buffer, and the buffer passes the data to the channel. During input, the data from the channel gets put into the buffer.</p>
+
+<p>In other words: </p>
+
+<ul>
+<li>a <span class="text-bold">buffer</span> is simply a block of memory into which we can write information and from which we can read information,</li>
+<li>a <span class="text-bold">channel</span> is a gateway that provides access to I/O devices such as files or sockets.</li>
+</ul>
+
+<p>Channels are very similar to streams in the java.io package. All data that goes anywhere (or comes from anywhere) must pass through a channel object. In general, to use the NIO system, you get a channel to an I/O entity and a buffer for storing data. Then you work with the buffer, inputting or outputting data as needed.</p>
+
+<p>You can move forward and backward in a buffer, i.e. "walk" the buffer, which is something you could not do in streams. This gives more flexibility when processing data. In the standard library, buffers are represented by the abstract <span class="code"><span class="text-green">Buffer</span></span> class and several of its descendants: </p>
+
+<ul>
+<li><span class="code"><span class="text-green">ByteBuffer</span></span></li>
+<li><span class="code"><span class="text-green">CharBuffer</span></span></li>
+<li><span class="code"><span class="text-green">ShortBuffer</span></span></li>
+<li><span class="code"><span class="text-green">IntBuffer</span></span></li>
+<li><span class="code"><span class="text-green">FloatBuffer</span></span></li>
+<li><span class="code"><span class="text-green">DoubleBuffer</span></span></li>
+<li><span class="code"><span class="text-green">LongBuffer</span></span></li>
+</ul>
+
+<p>The main difference between the subclasses is the data type they store — <span class="text-orange">bytes</span>, <span class="text-orange">ints</span>, <span class="text-orange">longs</span> and other primitive data types.</p>
+
+<h2>Buffer properties</h2>
+
+<p>A buffer has four main properties. These are capacity, limit, position, and mark. </p>
+
+<p><span class="text-bold">Capacity</span> is the maximum amount of data/bytes that can be stored in the buffer. A buffer's capacity <span class="text-bold"><em>cannot be changed</em></span>. Once a buffer is full, it must be cleared before writing more to it.</p>
+
+<p>In write mode, a buffer's <span class="text-bold">limit</span> is the same as its capacity, indicating the maximum amount of data that can be written to the buffer. In read mode, a buffer's limit refers to the maximum amount of data that can be read from the buffer.</p>
+
+<p>The <span class="text-bold">position</span> indicates the current position of the cursor in the buffer. Initially, it is set to 0 when the buffer is created. In other words, it is the index of the next element to be read or written. </p>
+
+<p>The <span class="text-bold">mark</span> is used to save a cursor position. As we manipulate a buffer, the cursor position changes constantly, but we can always return it to the previously marked position.</p>
+
+<h2>Methods for working with a buffer</h2>
+
+<p>Now let's look at the main set of methods that let us work with our buffer (memory block) for reading and writing data to and from channels.</p>
+
+<ol>
+<li><p><span class="code text-orange">allocate(int capacity)</span> — this method is used to allocate a new buffer with the specified capacity. The <span class="code text-orange">allocate()</span> method throws an <span class="text-red"><span class="text-bold">IllegalArgumentException</span></span> if the passed capacity is a negative integer.</p></li>
+<li><p><span class="code text-orange">capacity()</span> returns the current buffer's <em>capacity</em>.</p></li>
+<li><p><span class="code text-orange">position()</span> returns the current cursor position. Read and write operations move the cursor to the end of the buffer. The return value is always less than or equal to the limit.</p></li>
+<li><p><span class="code text-orange">limit()</span> returns the current buffer's limit.</p></li>
+<li><p><span class="code text-orange">mark()</span> is used to mark (save) the current cursor position. </p></li>
+<li><p><span class="code text-orange">reset()</span> returns the cursor to the previously marked (saved) position.</p></li>
+<li><p><span class="code text-orange">clear()</span> sets the position to zero and sets the limit to the capacity. This method <span class="text-bold"><em>does not clear</em></span> the data in the buffer. It only reinitializes the position, limit, and mark.</p></li>
+<li><p><span class="code text-orange">flip()</span> switches the buffer from write mode to read mode. It also sets the limit to the current position and then puts the position back at zero.</p></li>
+<li><p><span class="code text-orange">read()</span> — The channel's read method is used to write data from the channel to the buffer, while the buffer's <span class="code text-orange">put()</span> method is used to write data to the buffer.</p></li>
+<li><p><span class="code text-orange">write()</span> — The channel's write method is used to write data from the buffer to the channel, while buffer's <span class="code text-orange">get()</span> method is used to read data from the buffer.</p></li>
+<li><p><span class="code text-orange">rewind()</span> rewinds the buffer. This method is used when you need to reread the buffer — it sets the position to zero and does not change the limit.</p></li>
+</ol>
+ 
+<p>And now a few words about channels.</p>
+
+<p>The most important channel implementations in Java NIO are the following classes:</p>
+
+<ol>
+<li><p><span class="text-orange"><span class="text-bold">FileChannel</span></span> — A channel for reading and writing data from/to a file.</p></li>
+<li><p><span class="text-orange"><span class="text-bold">DatagramChannel</span></span> — This class reads and writes data over the network via UDP (User Datagram Protocol).</p></li>
+<li><p><span class="text-orange"><span class="text-bold">SocketChannel</span></span> — A channel for reading and writing data over the network via TCP (Transmission Control Protocol).</p></li>
+<li><p><span class="text-orange"><span class="text-bold">ServerSocketChannel</span></span> — A channel for reading and writing data over TCP connections, just as a web server does. A <span class="text-orange"><span class="text-bold">SocketChannel</span></span> is created for each incoming connection.</p></li>
+</ol>
+ 
+<h2>Practice</h2>
+
+<p>It's time to write a couple of lines of code. First, let's read the file and display its contents on the console, and then write some string to the file. </p>
+ 
+<p>The code contains a lot of comments — I hope they will help you understand how everything works: </p>
+
+<pre class='language-java line-numbers'><code>
+// Create a RandomAccessFile object, passing in the file path
+// and a string that says the file will be opened for reading and writing
+try (RandomAccessFile randomAccessFile = new RandomAccessFile("text.txt", "rw");
+    // Get an instance of the FileChannel class
+    FileChannel channel = randomAccessFile.getChannel();
+) {
+// Our file is small, so we'll read it in one go   
+// Create a buffer of the required size based on the size of our channel
+   ByteBuffer byteBuffer = ByteBuffer.allocate((int) channel.size());
+   // Read data will be put into a StringBuilder
+   StringBuilder builder = new StringBuilder();
+   // Write data from the channel to the buffer
+   channel.read(byteBuffer);
+   // Switch the buffer from write mode to read mode
+   byteBuffer.flip();
+   // In a loop, write data from the buffer to the StringBuilder
+   while (byteBuffer.hasRemaining()) {
+       builder.append((char) byteBuffer.get());
+   }
+   // Display the contents of the StringBuilder on the console
+   System.out.println(builder);
+ 
+   // Now let's continue our program and write data from a string to the file
+   // Create a string with arbitrary text
+   String someText = "Hello, Amigo!!!!!";
+   // Create a new buffer for writing,
+   // but let the channel remain the same, because we're going to the same file
+   // In other words, we can use one channel for both reading and writing to a file
+   // Create a buffer specifically for our string — convert the string into an array and get its length
+   ByteBuffer byteBuffer2 = ByteBuffer.allocate(someText.getBytes().length);
+   // Write our string to the buffer
+   byteBuffer2.put(someText.getBytes());
+   // Switch the buffer from write mode to read mode
+   // so that the channel can read from the buffer and write our string to the file
+   byteBuffer2.flip();
+   // The channel reads the information from the buffer and writes it to our file
+   channel.write(byteBuffer2);
+} catch (FileNotFoundException e) {
+   e.printStackTrace();
+} catch (IOException e) {
+   e.printStackTrace();
+}
+</code></pre>
+ 
+<p>Try the <span class="text-bold">NIO API</span> — you'll love it!</p>

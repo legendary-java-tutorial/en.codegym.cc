@@ -1,0 +1,41 @@
+oves memory efficiency in Java by removing unreferenced objects from the heap and making room for newly created objects.</p>
+<p>The Java virtual machine has eight types of garbage collectors. Let's consider each of them in detail.</p>
+<p><strong>Serial GC</strong> is the simplest GC implementation. It is intended for small applications running in single-threaded environments. All garbage collection events are executed sequentially on the same thread. Compaction is performed after each garbage collection.</p><img data-max-width="1024" data-id="3cbe67b6-3553-40cf-90a8-6df5080f300f" alt="Serial GC" src="https://cdn.javarush.com/images/article/3cbe67b6-3553-40cf-90a8-6df5080f300f/1024.jpeg" style="width: 1024px;">
+<p>Running the collector results in a "world stop" event, where the entire application is suspended. Since the entire application is frozen during garbage collection, you should not resort to this in real life if you want to keep delays as low as possible.</p>
+<p>The JVM argument to use the serial garbage collector <strong>is -XX:+UseSerialGC</strong> .</p>
+<h2>Parallel GC</h2>
+<p><strong>The parallel garbage collector</strong> is designed for applications with medium to large data sets that run on multithreaded or multiprocessor hardware. This is the default GC implementation and is also known as the throughput collector.</p>
+<p>Several threads are destined for small garbage collection in the young generation. The only thread is busy with the main garbage collection in the older generation.</p><img data-max-width="1024" data-id="9253feb3-a0e1-4ef0-9696-25926c18df42" alt="Parallel GC" src="https://cdn.javarush.com/images/article/9253feb3-a0e1-4ef0-9696-25926c18df42/1024.jpeg" style="width: 1024px;">
+<p>Running a parallel GC also causes the world to “stop” and the application hangs. This behavior is more appropriate for a multi-threaded environment where many tasks need to be completed and long pauses are acceptable, such as when running a batch job.</p>
+<p>The JVM argument to use the parallel garbage collector is <strong>-XX:+UseParallelGC</strong> .</p>
+<h2>CMS GC</h2>
+<p>Also known to us as <strong>the low rest parallel picker</strong> .</p>
+<p>Here, for a small garbage collection, several threads are involved, this happens through the same algorithm as in the parallel collector. The main garbage collection is multi-threaded, just like the old parallel GC, but the CMS runs concurrently with application processes to minimize "world stop" events.</p><img data-max-width="1024" data-id="ba41fb23-bd47-4051-8264-a95a9c9849ad" alt="CMS GC" src="https://cdn.javarush.com/images/article/ba41fb23-bd47-4051-8264-a95a9c9849ad/1024.jpeg" style="width: 1024px;">
+<p>Because of this, the CMS collector consumes more CPU than other collectors. If you have the ability to allocate more CPU to improve performance, then a CMS is preferable to a simple parallel collector. The CMS GC does not compact.</p>
+<p>The JVM argument to use the parallel mark-sweep garbage collector is <strong>-XX:+UseConcMarkSweepGC</strong> .</p>
+<h2>G1 (Garbage first) GC</h2>
+<p><strong>G1GC</strong> was conceived as a replacement for CMS and was developed for multi-threaded applications that are characterized by large heap sizes (greater than 4 GB). It's parallel and competitive like a CMS, but under the hood it works very differently than the old garbage collectors.</p>
+<p>Although G1 also operates on a generational basis, it does not have separate spaces for younger and older generations. Instead, each generation is a set of regions, allowing flexibility in changing the size of the younger generation.</p>
+<p>G1 splits the heap into a set of equally sized regions (depending on the size of the heap) and scans them into multiple threads. The area during the execution of the program can repeatedly become both old and young.</p>
+<p>After the markup phase is complete, G1 knows which areas contain the most junk. If the user is interested in minimizing pauses, G1 can only select a few areas. If the pause time is not important to the user, or if the pause time limit is set to high, G1 will go over more areas.</p>
+<p>Since the G1 GC identifies the regions with the most garbage and performs garbage collection on those regions first, it is called "Garbage First".</p><img data-max-width="800" data-id="a2c26fd4-2e6b-4d2c-a646-473db59d44a6" alt="" src="https://cdn.javarush.com/images/article/a2c26fd4-2e6b-4d2c-a646-473db59d44a6/800.jpeg" style="width: 800px;">
+<p>In addition to the areas of Eden, Survivors and Old Memory, there are two other types in G1GC.</p>
+<ul>
+ <li><strong>Humongous</strong> (Huge) - for objects of large size (more than 50% of the heap size).</li>
+ <li><strong>Available</strong> - Unused or unallocated space.</li>
+</ul>
+<p>The JVM argument to use the G1 garbage collector is <strong>-XX:+UseG1GC</strong> .</p>
+<h2>Shenandoah (Shandara)</h2>
+<p><strong>Shenandoah</strong> is a new GC released as part of JDK 12. The key advantage of Shenandoah over G1 is that most of the garbage collection cycle is done concurrently with application threads. G1 can only evacuate heap areas when the application is suspended, while Shenandoah moves objects at the same time as the application.</p>
+<p>Shenandoah can compact live objects, clean up garbage, and free up RAM almost as soon as free memory is found. Since all this happens at the same time, without suspending the application, Shenandoah is more CPU intensive.</p><o>
+ JVM argument for the Shenandoah garbage collector: 
+ <strong>-XX:+UnlockExperimentalVMOptions -XX:+UseShenandoahGC</strong> .
+ <p></p>
+ <h2>ZGC</h2>
+ <p><strong>ZGC</strong> is another GC released as part of JDK 11 and improved in JDK 12.</p>
+ <p>It is intended for applications that require speed and low latency (pauses of less than 10 ms) and/or use a very large heap (several terabytes).</p>
+ <p>The main goals of ZGC are low latency, scalability, and ease of use. To do this, it allows the Java application to continue running despite the fact that garbage collection operations are in progress. By default, ZGC releases unused memory and returns it to the operating system.</p>
+ <p>Thus, the ZGC brings a significant improvement over other traditional GCs by providing extremely low dead times (typically within 2ms).</p>
+ <img data-max-width="512" data-id="3ca77686-5b92-46ad-ab67-f8623caa9c71" alt="Main objectives of the ZGC " src="https://cdn.javarush.com/images/article/3ca77686-5b92-46ad-ab67-f8623caa9c71/512.jpeg" style="width: 512px;">
+ <p>The JVM argument to use the ZGC garbage collector <strong>is -XX:+UnlockExperimentalVMOptions -XX:+UseZGC</strong> .</p>
+</o>

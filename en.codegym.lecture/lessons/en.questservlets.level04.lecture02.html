@@ -1,0 +1,90 @@
+Mocking objects
+<p>----------------------------------------</p>
+doReturn() method
+when() method
+doThrow() method
+<p>----------------------------------------</p>
+<h2>3.1 doReturn()</h2>
+<p>And now, the magic...</p>
+<p>Let's say you created a fake mock object, but you need it to work somehow. When certain methods were called, something important was done, or the methods returned a certain result. What to do?</p>
+<p><span class="text-green">The Mockito library allows you to add the desired behavior to a mock object.</span></p>
+<p>If you want a mock object to return a certain result when a certain method is called, then this “rule” can be added to the object using the code:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.doReturn(<span class="text-user">result</span>).when(<span class="text-green">an object</span>).<span class="text-yellow">method name</span>();</code></pre>
+</div>
+<p>You see, at the end of the method call, <code>method name?</code>there's actually no call going on here. The method <code>doReturn()</code>returns a special proxy-object with the help of which it monitors the calls of the object's methods and, thus, the rule is written.</p>
+<p>Again. <span class="text-red">It's just such a clever way to write a rule to add to a mock object</span> . It takes some skill to correctly interpret such code in your head when you see it. Comes with experience.</p>
+<p>I think a concrete example is needed. Let's create a mock class object <code>ArrayList</code>and ask its method <code>size()</code>to return the number 10. The complete code will look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">DoReturnTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span class="token annotation punctuation"></span>
+<span class="text-red">    <span class="token class-name">List</span> mockList<span class="token punctuation">;</span></span><span class="token punctuation"></span>
+
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> whenMockAnnotation <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token comment">//create a rule: return 10 when calling the size method</span>
+        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">doReturn</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">when</span><span class="token punctuation">(</span><span class="text-red">mockList</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//the method is called here and will return 10!!</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Yes, this code will work, the test will not fail.</p>
+<h2>3.2 when() method</h2>
+<p>There is another way to add a behavior rule to a mock object - by calling the <code>Mockito.when()</code>. It looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present "><code><span class="text-red">Mockito</span>.when(<span class="text-green">an object</span>.<span class="text-yellow">method name</span>()).thenReturn(<span class="text-user">result</span>);</code></pre>
+</div>
+<p>This is the same way of writing a mock object behavior rule as the previous one. Compare:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present "><code><span class="text-red">Mockito</span>.doReturn(<span class="text-user">result</span>).when(<span class="text-green">an object</span>).<span class="text-yellow">method name</span>();</code></pre>
+</div>
+<p>Here exactly the same thing happens - the construction of a new rule.</p>
+<p>True, the first example has two minuses:</p>
+<ul>
+ <li>the call is very confusing.<code><span class="text-green">an object</span>.<span class="text-yellow">method name</span>()</code></li>
+ <li>will not work if the method <code><span class="text-yellow">methodname()</span></code>returns <code>void</code>.</li>
+</ul>
+<p>Well, let's write down our favorite example using<code>Mockito.when()</code></p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">WhenTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span class="token annotation punctuation"></span>
+<span class="text-red">    <span class="token class-name">List</span> mockList<span class="token punctuation">;</span></span><span class="token punctuation"></span>
+
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">//create a rule: return 10 when calling the size method</span>
+        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">when</span><span class="token punctuation">(</span><span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">size</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">thenReturn</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">//the method is called here and will return 10!!</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">size</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>3.3 doThrow() method</h2>
+<p>We figured out how to make a mock object method return a specific result. How can I make it throw a specific exception? Send it to <code>doReturn()</code>?</p>
+<p>To prevent the method from returning, namely throwing an exception, you need to set the rule using the <code>doThrow()</code>.</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present "><code><span class="text-red">Mockito</span>.doThrow(<span class="text-user">exception.class</span>).when(<span class="text-green">an object</span>).<span class="text-yellow">method name</span>();</code></pre>
+</div>
+<p>And then the second option:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present "><code><span class="text-red">Mockito</span>.when(<span class="text-green">an object</span>.<span class="text-yellow">method name</span>()).thenThrow(<span class="text-user">exception.class</span>);</code></pre>
+</div>
+<p>A bit expected, right?</p>
+<p>Well, you see, you are already starting to understand. Let's fix it with an example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">DoThrowTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span class="token annotation punctuation"></span>
+<span class="text-red">    <span class="token class-name">List</span> mockList<span class="token punctuation">;</span></span><span class="token punctuation"></span>
+
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">when</span><span class="token punctuation">(</span><span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">size</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">thenThrow</span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-user"><span class="token class-name">IllegalStateException</span><span class="token punctuation">.</span><span class="token keyword">class</span></span><span class="token keyword"></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">size</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//an exception will be thrown here</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>If you need to throw a specific exception object, then use the construction of the form:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present "><code><span class="text-red">Mockito</span>.doThrow(<span class="text-user">new Exception()</span>).when(<span class="text-green">an object</span>).<span class="text-yellow">method name</span>();</code></pre>
+</div>
+<p>Just pass <code>doThrow()</code>an exception object to the method and it will be thrown during the method call.</p>

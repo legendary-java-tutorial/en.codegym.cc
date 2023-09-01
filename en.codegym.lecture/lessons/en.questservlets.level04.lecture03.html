@@ -1,0 +1,258 @@
+Calling mock methods with parameters
+<p>----------------------------------------</p>
+Method parameters
+Parameter templates
+doAnswer() method
+<p>----------------------------------------</p>
+<h2>4.1 Method parameters</h2>
+<p>Previous rules added to the mock object dealt with methods without parameters. And how to create rules for methods
+    with parameters? Moreover, I would like to create rules so that for some parameter values ​​there is one result, and
+    for others - another.</p>
+<p>That's how you can do it too. If you want the method to return something specific with a certain parameter, then the
+    rule can be written like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.doReturn(<span
+            class="text-user">result</span>).when(<span class="text-green">an object</span>).<span class="text-yellow">method name</span>(<span
+            class="text-violet">parameter</span>);</code></pre>
+</div>
+<p>Let's take a look at an example to understand better. Let our List return the name Ivan when requesting the 10th
+    element, and the name Marya when requesting the 500th. No sooner said than done.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span
+        class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span
+        class="token punctuation">.</span><span class="token keyword">class</span><span
+        class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">ParamsTest</span> <span
+            class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span
+            class="token annotation punctuation"></span>
+<span class="text-red">    <span class="token class-name">List</span> mockList<span
+        class="token punctuation">;</span></span><span class="token punctuation"></span>
+
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span
+            class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token punctuation">{</span>
+        <span class="token comment">//adding the first rule</span>
+        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span
+            class="token function">doReturn</span><span class="token punctuation">(</span><span
+            class="token string"><span class="text-user">"Ivan"</span></span><span
+            class="token punctuation">)</span><span class="token punctuation">.</span><span
+            class="token function">when</span><span class="token punctuation">(</span><span
+            class="text-red">mockList</span><span class="token punctuation">)</span><span
+            class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-violet">10</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+        <span class="token comment">//adding a second rule</span>
+        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span
+            class="token function">doReturn</span><span class="token punctuation">(</span><span
+            class="token string"><span class="text-user">"Maria"</span></span><span
+            class="token punctuation">)</span><span class="token punctuation">.</span><span
+            class="token function">when</span><span class="token punctuation">(</span><span
+            class="text-red">mockList</span><span class="token punctuation">)</span><span
+            class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-violet">500</span></span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span
+            class="token string"><span class="text-user">"Ivan"</span></span><span
+            class="token punctuation">,</span> <span class="text-red">mockList</span><span
+            class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-violet">10</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span
+            class="token string"><span class="text-user">"Maria"</span></span><span
+            class="token punctuation">,</span> <span class="text-red">mockList</span><span
+            class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-violet">500</span></span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>4.2 Parameter templates</h2>
+<p>And immediately cunning colleagues will ask me the question: “What if the method requires arguments, but for any
+    values ​​it must return the same result?”. Let's not write:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">Mockito</span><span
+        class="token punctuation">.</span><span class="token function">doReturn</span><span
+        class="token punctuation">(</span><span class="token string"><span class="text-user">"Ivan"</span></span><span
+        class="token punctuation">)</span><span class="token punctuation">.</span><span
+        class="token function">when</span><span class="token punctuation">(</span><span class="text-red">mockList</span><span
+        class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"><span
+        class="text-yellow">get</span></span><span class="token punctuation">(</span><span class="token number"><span
+        class="text-violet">1</span></span><span class="token punctuation">)</span><span
+        class="token punctuation">;</span>
+<span class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">doReturn</span><span
+            class="token punctuation">(</span><span class="token string"><span
+            class="text-user">"Ivan"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">.</span><span class="token function">when</span><span
+            class="token punctuation">(</span><span class="text-red">mockList</span><span
+            class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-violet">2</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+<span class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">doReturn</span><span
+            class="token punctuation">(</span><span class="token string"><span
+            class="text-user">"Ivan"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">.</span><span class="token function">when</span><span
+            class="token punctuation">(</span><span class="text-red">mockList</span><span
+            class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-violet">99</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<p>No, no one is forcing you to write like that. If you want to add a rule to a mock object that works for a method with
+    any arguments, then there is a special object for this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token class-name"><span class="text-red">Mockito</span></span><span
+            class="token punctuation">.</span><span class="token function">any</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>Our example with it would be written like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">doReturn</span><span
+            class="token punctuation">(</span><span class="token string"><span
+            class="text-user">"Ivan"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">.</span><span class="token function">when</span><span
+            class="token punctuation">(</span><span class="text-red">mockList</span><span
+            class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token function"></span><span class="text-green"><span class="token function">any</span><span
+            class="token punctuation">(</span><span class="token keyword">int</span><span
+            class="token punctuation">.</span><span class="token keyword">class</span><span
+            class="token punctuation">)</span></span><span class="token punctuation"></span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>There are a couple of nuances here. The object <code>Mockito.any()</code>has type <code>Object</code>, so there are
+    analogues for parameters of different types:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th></th>
+            <th width="300">Method</th>
+            <th>Parameter type</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td><strong>any()</strong></td>
+            <td>Object including null</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><strong>any(ClassName.class)</strong></td>
+            <td>class name</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><strong>anyInt()</strong></td>
+            <td>int</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><strong>anyBoolean()</strong></td>
+            <td>boolean</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td><strong>anyDouble()</strong></td>
+            <td>double</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td><strong>anyList()</strong></td>
+            <td>List</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>More correctly, our example would look like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">doReturn</span><span
+            class="token punctuation">(</span><span class="token string"><span
+            class="text-user">"Ivan"</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">.</span><span class="token function">when</span><span
+            class="token punctuation">(</span><span class="text-red">mockList</span><span
+            class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token function"></span><span class="text-green"><span class="token function">anyInt</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span></span><span
+            class="token punctuation"></span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+</div>
+<h2>4.3 doAnswer() method</h2>
+<p>We got to the complex behavior of virtual methods. Sooner or later there will be a situation when you want this
+    virtual method to have complex behavior. For example, it should return values ​​depending on the parameters, convert
+    the string to upper case.</p>
+<p>There is a special method for this - <code>doAnswer()</code>, which is passed a function that does what you need:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.doAnswer(<span
+            class="text-user">function</span>).when(<span class="text-green">an object</span>).<span
+            class="text-yellow">method name</span>(<span class="text-violet">parameter</span>);</code></pre>
+</div>
+<p>Let's make the <code>get()</code>class method <code>List</code>return the square of the argument passed to it. And
+    write the following program:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span
+        class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span
+        class="token punctuation">.</span><span class="token keyword">class</span><span
+        class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">DoAnswerTest</span> <span
+            class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span
+            class="token annotation punctuation"></span>
+<span class="text-green">    <span class="token class-name">List</span> mockList<span class="token punctuation">;</span></span><span
+            class="token punctuation"></span>
+
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span
+            class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token punctuation">{</span>
+        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span
+            class="token function">doAnswer</span><span class="token punctuation">(</span>invocation <span
+            class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> parameter <span class="token operator">=</span> invocation<span
+            class="token punctuation">.</span><span class="token function">getArgument</span><span
+            class="token punctuation">(</span><span class="token number">0</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> parameter <span class="token operator">*</span> parameter<span
+            class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span
+            class="token function">when</span><span class="token punctuation">(</span><span
+            class="text-red">mockList</span><span class="token punctuation">)</span><span
+            class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token function"></span><span class="text-violet"><span class="token function">anyInt</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span></span><span
+            class="token punctuation"></span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-user">100</span></span><span class="token punctuation">,</span> <span
+            class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-violet">10</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">assertEquals</span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-user">25</span></span><span class="token punctuation">,</span> <span
+            class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span
+            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
+            class="token number"><span class="text-violet">5</span></span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We defined the function using an object of the Answer class.</p>
+<p></p>
+<p></p>

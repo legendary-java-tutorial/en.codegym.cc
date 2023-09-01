@@ -1,0 +1,307 @@
+>Unlike JavaScript, SQL has strong typing. In every table, every column has its own fixed data type.</p>
+<p>There are a lot of data types, but unlike the Java language, there are so many of them not because there are data types for all occasions. Databases are very dependent on the size of the data, so many data types differ from each other only in length.</p>
+<p>In total, data types can be divided into 5 groups:</p>
+<ul>
+ <li><strong>Numeric</strong> types</li>
+ <li><strong>String</strong> types</li>
+ <li>Types for storing <strong>dates</strong> and <strong>times</strong></li>
+ <li>Objects: usually represented as <strong>a collection of bytes</strong></li>
+ <li><strong>Transport</strong> : JSON and XML</li>
+</ul>
+<p>Usually different DBMS still have their own data types. Each DBMS has its own specialization, so adding new data types is a very common thing.</p>
+<p>Another thing is that just adding a new data type is not enough, you need to add functions that will work with it, as well as make this work convenient and fast.</p>
+<p>If you work on any industrial (enterprise) DBMS, then most likely you will have to deal with its data types and its functions. For what it will be necessary to read 2-5 good books.</p>
+<p>As part of our acquaintance with SQL, we will consider three main groups of data types:</p>
+<ul>
+ <li>Numbers</li>
+ <li>Strings</li>
+ <li>Dates</li>
+</ul>
+<h2>Numeric Types in SQL</h2>
+<p>In SQL, numeric types are divided into three groups:</p>
+<ul>
+ <li>Integer types</li>
+ <li>Fixed point numbers (fixed number of decimal places)</li>
+ <li>Floating point numbers</li>
+</ul>
+<p>Let's start with <strong>integers</strong> . There are only 5 of them, and they can be described in one table:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th>Type name</th>
+    <th>Length in bytes</th>
+    <th>Analogue from Java</th>
+    <th>Minimum value</th>
+    <th>Maximum value</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>TINYINT</td>
+    <td>1</td>
+    <td>byte</td>
+    <td>-128</td>
+    <td>127</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>SMALLINT</td>
+    <td>2</td>
+    <td>short</td>
+    <td>-32.768</td>
+    <td>32.767</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>MEDIUMINT</td>
+    <td>3</td>
+    <td></td>
+    <td>-8,388,608</td>
+    <td>8,388,607</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>INT</td>
+    <td>4</td>
+    <td>int</td>
+    <td>-2,147,483,648</td>
+    <td>2,147,483,647</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>BIGINT</td>
+    <td>8</td>
+    <td>long</td>
+    <td>-2 <sup>63</sup></td>
+    <td>2 <sup>63-1</sup></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The data types are very similar to the Java data types, but there is also an integer type that is three bytes long. This is done to save on size.</p>
+<p>Next come <strong>the floating point types</strong> , just like in Java, there are only two of them:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th>Type name</th>
+    <th>Length in bytes</th>
+    <th>Analogue from Java</th>
+    <th>Minimum value</th>
+    <th>Maximum value</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>FLOAT</td>
+    <td>4</td>
+    <td>float</td>
+    <td>-3.40E+38</td>
+    <td>+1.18E+38</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>DOUBLE</td>
+    <td>8</td>
+    <td>double</td>
+    <td>-1.79E+308</td>
+    <td>+1.79E+308</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Again, nothing new. Everything is the same as in Java. However, unlike Java, SQL has another special type, the fixed-point real number. It's called DECIMAL.</p>
+<p>Typically this type is used to store amounts of money. When the name of this type is written, then after it it is usually indicated how many decimal places the number has before and after the decimal point. The general format looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token function"><span class="text-red">DECIMAL</span></span><span class="token punctuation">(</span><span class="text-green">total_characters</span><span class="token punctuation">,</span> <span class="text-user">after_comma</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>And a small example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-green">salary</span> <span class="token function"></span><span class="text-red"><span class="token function">DECIMAL</span><span class="token punctuation">(</span><span class="token number"><span class="text-user">5</span></span><span class="token punctuation">,</span><span class="token number"><span class="text-user">2</span></span><span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p>This is how we described the fact that the salary column can contain integers (maximum 3 decimal places) and a fractional part - 2 decimal places.</p>
+<p>The maximum number of characters that the DECIMAL type supports is 65.</p>
+<h2>String types in SQL</h2>
+<p>Rows in a database can be stored in two forms:</p>
+<ul>
+ <li>Fixed length strings</li>
+ <li>Strings with variable length</li>
+</ul>
+<p><strong>Fixed-length</strong> strings are specified as <strong>CHAR</strong> :</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token function"><span class="text-red">CHAR</span></span><span class="token punctuation">(</span><span class="text-user">length</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>Fixed length means that all values ​​of this column will contain a strictly fixed number of characters.</p>
+<p>An example of a fixed length string:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-green">country_code</span> <span class="token function"></span><span class="text-red"><span class="token function">CHAR</span><span class="token punctuation">(</span><span class="token number"><span class="text-user">2</span></span><span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p><strong>Variable length</strong> strings are specified by the <strong>VARCHAR</strong> type :</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token function"><span class="text-red">VARCHAR</span></span><span class="token punctuation">(</span><span class="text-user">max_length</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>Variable length means that all values ​​of this column will contain text of any length, but no more than the maximum length.</p>
+<p>Variable length string example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-green">phone</span> <span class="token function"></span><span class="text-red"><span class="token function">VARCHAR</span><span class="token punctuation">(</span><span class="token number"><span class="text-user">12</span></span><span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p>Fixed length strings have a very big advantage. If the client asked the SQL server to return to him the 1,000,000th row from the table, and the rows in the table are of fixed length, then, knowing the length of the row, you can easily calculate the bytes that relate to the desired row.</p>
+<p>In the case of a variable length of lines, it will not be possible to quickly find the desired row in the table. Remember the speed of access to ArrayList and LinkedList, the situation is approximately the same here.</p>
+<p>Let's compare how strings of different lengths will be stored in a table, depending on the data type.</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Line</th>
+    <th>CHAR(4)</th>
+    <th>Byte to store</th>
+    <th></th>
+    <th>VARCHAR(4)</th>
+    <th>Byte to store</th>
+   </tr>
+   <tr>
+    <td>''</td>
+    <td>' '</td>
+    <td>4</td>
+    <td></td>
+    <td>''</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>'ab'</td>
+    <td>'ab'</td>
+    <td>4</td>
+    <td></td>
+    <td>'ab'</td>
+    <td>3</td>
+   </tr>
+   <tr>
+    <td>'abcd'</td>
+    <td>'abcd'</td>
+    <td>4</td>
+    <td></td>
+    <td>'abcd'</td>
+    <td>5</td>
+   </tr>
+   <tr>
+    <td>'abcdefgh'</td>
+    <td>'abcd'</td>
+    <td>4</td>
+    <td></td>
+    <td>'abcd'</td>
+    <td>5</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><strong>Note. </strong>The VARCHAR type requires one more byte for the same length, because it has to additionally store the length of the string.</p>
+<h2>Temporary types in SQL</h2>
+<p>SQL also has special types for storing dates and times. There are five types in total:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th>Type name</th>
+    <th>Analogue from Java DateTime API</th>
+    <th>Example</th>
+    <th>Minimum value</th>
+    <th>Maximum value</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>DATE</td>
+    <td>LocalDate</td>
+    <td>'2022-06-30'</td>
+    <td>'1000-01-01'</td>
+    <td>'9999-12-31'</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>TIME</td>
+    <td>LocalTime</td>
+    <td>'hh:mm:ss[.fraction]'</td>
+    <td>'-838:59:59.000000'</td>
+    <td>'838:59:59.000000'</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>DATETIME</td>
+    <td>LocalDateTime</td>
+    <td></td>
+    <td>'1000-01-01 00:00:00.000000'</td>
+    <td>'9999-12-31 23:59:59.999999'</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>TIMESTAMP</td>
+    <td>Date</td>
+    <td></td>
+    <td>'1970-01-01 00:00:01.000000'</td>
+    <td>'2038-01-19 03:14:07.999999'</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>YEAR</td>
+    <td></td>
+    <td></td>
+    <td>1901</td>
+    <td>2155</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>All data in queries is written as a string - in single quotes. The entry format goes from largest to smallest:</p>
+<ul>
+ <li>Year</li>
+ <li>Month</li>
+ <li>Day</li>
+ <li>Hour</li>
+ <li>Minute</li>
+ <li>Second</li>
+ <li>Fractions of a second</li>
+</ul>
+<p>The DATE, TIME and DATETIME types can be conventionally considered analogues of the types from the Java DateTme API: LocalDate, LocalTime, LocalDateTime. The logic is about the same.</p>
+<p>The TIMESTAMP type stores data in milliseconds since the beginning of 1970 (a UNIX operating system standard). It is in this form that they are stored by the Date type in the Java language.</p>
+<p>And finally, there is the YEAR type, which is 1 byte long and stores values ​​from 1 to 255. Therefore, the range of years available to it is 1901-2155. The year 1900 cannot be stored by this type, since the value 0 is used to encode a NULL value.</p>
+<h2>Storing objects in SQL</h2>
+<p>There are special types for storing objects or texts of great length. We won’t go into detail on them, but I’ll list them anyway:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th>Type name</th>
+    <th>Explanation</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>TEXT</td>
+    <td>Used to store long texts. When comparing and sorting on this field, only the first 100 characters are used.</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>BLOB</td>
+    <td>The name stands for Byte Large Object. Stored as just a collection of bytes. Can be used to, for example, store pictures in a database.</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>CLOB</td>
+    <td>The name stands for Char Large Object. Used to store long texts.</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>ENUM</td>
+    <td>Allows you to set a fixed set of values ​​and store one of them as a value.</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>SET</td>
+    <td>Allows you to set a fixed set of values ​​and store any subset of them as a value. Usually stores them as a binary mask.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Theoretically, you can serialize any Java object as a set of bytes and store it in the database as a BLOB. Saving the object is not a problem. How to work with him further?</p>
+<p>Let's say a table stores a million objects in serialized form - how will you search through them? A DBMS only supports a certain type of data when it provides an extensive set of functions for working with it.</p>

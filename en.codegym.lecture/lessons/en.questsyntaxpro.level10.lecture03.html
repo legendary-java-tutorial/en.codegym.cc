@@ -1,0 +1,165 @@
+<h2>1. Properties: getters and setters</h2>
+<p>When a large project is being developed by dozens of programmers at the same time, problems often crop up if they handle the data stored in class fields differently.</p>
+<p>Maybe people fail to study the class documentation in detail, or perhaps it doesn't describe every case. As a result, there are frequent situations when an object's internal data can become "corrupted", making the object invalid.</p>
+<p>To avoid these situations, <strong>it is customary to make all class fields private in Java</strong>. Only the class's methods can modify the variables of the class. No methods from other classes can directly access the variables. </p>
+<p>If you want other classes to be able to get or change the data inside objects of your class, you need to add two methods to your class — a get method and a set method. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="text-viola">Person</span>
+{
+   private String <span class="text-orange">name</span>;
+
+   public <span class="text-viola">Person</span>(String name)
+   {
+      this.<span class="text-orange">name</span> = name;
+   }
+
+   public String <span class="text-user">getName</span>()
+   {
+      return <span class="text-orange">name</span>;
+   }
+
+   public void <span class="text-user">setName</span>(String name)
+   {
+      this.<span class="text-orange">name</span> = name;
+   }
+}</code></pre>
+        </td>
+        <td><br><br><code>private</code> name field<br>
+            <br><br><br>Initialization of the field via the constructor<br>
+            <br><br><code><span class="text-user">getName()</span></code> — This method returns the value of the name field<br>
+            <br><br><br><br><code><span class="text-user">setName()</span></code> — This method changes the value of the name field
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>No other class can directly change the value of the name field. If someone needs to get the value of the name field, they will have to call the <code><span class="text-user"><span class="text-user">getName</span>()</span></code>&nbsp;method on a <code><span class="text-viola">Person</span></code> object. If some code wants to change the value of the name field, it will need to call the <code><span class="text-user"><span class="text-user">setName</span>()</span></code>&nbsp;method on a <code><span class="text-viola">Person</span></code> object.</p>
+<p>The <code><span class="text-red">get</span>Name()</code> method is also called the "<strong>getter</strong> for the name field", and&nbsp;the <code><span class="text-red">set</span>Name()</code> method is called the "<strong>setter</strong> for the name field".</p>
+<p>This is a very common approach. In 80-90% of all Java code, you will never see public variables in a class. Instead, they will be declared <code>private</code> (or <code>protected</code>), and each variable will have public getters and setters.</p>
+<p>This approach makes the code longer, but more reliable.</p>
+<p>Accessing a class variable directly is like <strong>turning your car through double yellow lines</strong>: it's easier and faster, but if everyone does it, then things get worse for everyone.</p>
+<p>Let's say you want to create a class that describes a point (<code><span class="text-green">x</span></code>, <code><span class="text-user">y</span></code>). Here's how a novice programmer would do it:</p>
+<pre class="language-java"><code>class <span class="text-viola">Point</span>
+{
+&nbsp; &nbsp;public int <span class="text-green">x</span>;
+&nbsp; &nbsp;public int <span class="text-user">y</span>;
+}</code></pre>
+<p>Here's how an experienced Java programmer would do it:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="text-viola">Point</span> {
+<strong>   private</strong> int <span class="text-green">x</span>;
+<strong>   private</strong> int <span class="text-user">y</span>;
+
+   public <span class="text-viola">Point</span>(int x, int y) {
+      this.<span class="text-green">x</span> = x;
+      this.<span class="text-user">y</span> = y;
+   }
+
+   public int <span class="text-green">getX</span>() {
+      return <span class="text-green">x</span>;
+   }
+
+   public void <span class="text-green">setX</span>(int x) {
+      this.<span class="text-green">x</span> = x;
+   }
+
+   public int <span class="text-user">getY</span>() {
+      return <span class="text-user">y</span>;
+   }
+
+   public void <span class="text-user">setY</span>(int y) {
+      this.<span class="text-user">y</span> = y;
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Is the code longer? Undoubtedly.</p>
+<p>But you can add parameter validation to getters and setters. For example, you can make sure that <code>x</code> and <code>y</code> are always greater than zero (or not less than zero). Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="text-viola">Point</span> {
+   <strong>private</strong> int <span class="text-green">x</span>;
+   <strong>private</strong> int <span class="text-user">y</span>;
+
+   public <span class="text-viola">Point</span>(int x, int y) {
+      this.<span class="text-green">x</span> = x &lt; 0 ? 0 : x;
+      this.<span class="text-user">y</span> = y &lt; 0 ? 0 : y;
+   }
+
+   public int <span class="text-green">getX</span>() {
+      return x;
+   }
+
+   public void <span class="text-green">setX</span>(int x) {
+      this.<span class="text-green">x</span> = x &lt; 0 ?&nbsp; 0 : x;
+   }
+
+   public int <span class="text-user">getY</span>() {
+      return <span class="text-user">y</span>;
+   }
+
+   public void <span class="text-user">setY</span>(int y) {
+      this.<span class="text-user">y</span> = y &lt; 0 ? 0 : y;
+   }
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task10.task1007"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task10.task1008"></div>
+<hr>
+<h2>2. Object lifetime</h2>
+<p>You already know that objects are created using the <code>new</code> operator, but how are objects deleted? They don't exist forever. There isn't enough memory for that.</p>
+<p>In many programming languages, such as C++, there is a special <code>delete</code> operator for deleting objects. But how does this work in Java?</p>
+<p>In Java, everything is arranged a little differently. Java has no delete operator. Does this mean that objects are not deleted in Java? No, they are deleted, of course. Otherwise, Java applications would quickly run out of memory, and there wouldn't be any talk of programs running without interruption for months.</p>
+<p>In Java, the deletion of objects is completely automated. <strong>The Java machine itself handles the deletion of objects.</strong> This process is called garbage collection, and the mechanism that collects garbage is called the <strong>garbage collector</strong> (<strong>GC</strong>).</p>
+<p>So how does the Java machine know when to delete an object?</p>
+<p>The garbage collector divides all objects into "reachable" and "unreachable". If there is at least one reference to an object, it is considered reachable. If there is no variable that refers to an object, the object is considered unreachable and is declared garbage, which means that it can be deleted.</p>
+<p>In Java, you can't create a reference to an existing object — you can only assign references that you already have. If we erase all references to an object, then it is lost forever.</p>
+<p><strong>Circular references</strong></p>
+<p>That logic sounds great until we come upon a simple counterexample: suppose we have two objects that reference each other (store references to each other). No other objects store references to these objects.</p>
+<p>These objects cannot be accessed from the code, but they are still referenced.</p>
+<p>This is why the garbage collector divides objects into reachable and unreachable rather than "referenced" and "unreferenced".</p>
+<p><strong>Reachable objects</strong></p>
+<p>First, objects that are 100% alive are added to the reachable list. For example, the current thread (<code>Thread.current()</code>) or the console InputStream (<code>System.in</code>).</p>
+<p>Then the list of reachable objects expands to include objects that are referenced by the initial set of reachable objects. Then it is expanded again to include objects that are referenced by this enlarged set, and so on.</p>
+<p>That means that if there are some objects that only refer to each other, but there is no way to reach them from reachable objects, then those objects will be considered garbage and will be deleted.</p>
+<hr>
+<h2>3. Garbage collection</h2>
+<p><strong>Memory fragmentation</strong></p>
+<p>Another important point related to object deletion is memory fragmentation. If you constantly create and delete objects, soon memory will be heavily fragmented: areas of occupied memory will be interspersed with areas of unoccupied memory.</p>
+<p>As a result, we can easily get into a situation where we can't create a large object (for example, an array with a million elements), because there is not a large chunk of free memory. In other words, there may be free memory, even a lot of it, but there may not be a large contiguous block of free memory</p>
+<p><strong>Memory optimization (defragmentation)</strong></p>
+<p>The Java machine solves this problem in a specific way. It looks something like this:</p>
+<p>Memory is divided into two parts. All objects are created (and deleted) in just one half of memory. When it comes time to clean up the holes in memory, all objects in the first half are copied to the second half. But they are copied right next to each other so that there are no holes.</p>
+<p>The process looks roughly like this:</p>
+<p><strong>Step 1: After creating objects</strong></p>
+<p><img data-max-width="1024" data-id="ebb898c7-7129-4b0f-a309-28b41d804706" src="https://cdn.codegym.cc/images/article/ebb898c7-7129-4b0f-a309-28b41d804706/1024.jpeg" alt="Garbage collection in Java"></p>
+<p><strong>Step 2: Appearance of "holes"</strong></p>
+<p><img data-max-width="1024" data-id="e278c27f-6d4f-4b2e-8b5f-b9c299a1abfb" src="https://cdn.codegym.cc/images/article/e278c27f-6d4f-4b2e-8b5f-b9c299a1abfb/1024.jpeg" alt="Garbage collection in Java 2"></p>
+<p><strong>Step 3: Elimination of "holes"</strong></p>
+<p><img data-max-width="1024" data-id="e437c54b-23a9-4717-a5fb-0e8139c5838a" src="https://cdn.codegym.cc/images/article/e437c54b-23a9-4717-a5fb-0e8139c5838a/1024.jpeg" alt="Garbage collection in Java 3"></p>
+<p>And that's why you don't need to delete objects. The Java machine simply copies all reachable objects to a new location, and frees the entire area of memory where the objects used to be stored.</p>

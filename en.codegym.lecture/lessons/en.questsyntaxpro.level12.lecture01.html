@@ -1,0 +1,537 @@
+<h2>1. <code>Integer</code> class</h2>
+<p><code>Integer</code> is also good in that it is a class, which means that it can have fields and methods. And, of course, it has them. A lot of them — dozens of them. Here we'll consider the most basic ones.</p>
+<p>The <code>Integer</code> class has two fields that contain the maximum and minimum possible values of the <code>int</code> type:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Field</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Integer.MAX_VALUE</code></pre>
+        </td>
+        <td>Maximum possible value of the <code>int</code> type</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Integer.MIN_VALUE</code></pre>
+        </td>
+        <td>Minimum possible value of the <code>int</code> type</td>
+    </tr>
+    </tbody>
+</table>
+<p>Sometimes you want to assign the smallest or largest possible <code>int</code> value to a variable. To avoid cluttering up your code with incomprehensible constants, you can write this very clearly as follows:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-user">min</span> = <span class="text-neon">Integer</span>.<span class="text-orange">MIN_VALUE</span>;</code></pre>
+        </td>
+        <td>
+            <pre><code>min == 0x80000000</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>Integer</code> class also has some interesting methods. Here they are:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-neon">Integer</span>.<span class="text-red">toHexString</span>(int)</code></pre>
+        </td>
+        <td>Returns a string that is the hexadecimal representation of the number</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-neon">Integer</span>.<span class="text-red">toBinaryString</span>(int)</code></pre>
+        </td>
+        <td>Returns a string that is the binary representation of the number</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-neon">Integer</span>.<span class="text-red">toOctalString</span>(int)</code></pre>
+        </td>
+        <td>Returns a string that is the octal representation of the number</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Integer <span class="text-neon">Integer</span>.<span class="text-red">valueOf</span>(int i)</code></pre>
+        </td>
+        <td>Wraps the passed <code>int</code> in an <code>Integer</code> object</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Integer <span class="text-neon">Integer</span>.<span class="text-red">parseInt</span>(String)</code></pre>
+        </td>
+        <td>Returns the number obtained from the passed string</td>
+    </tr>
+    </tbody>
+</table>
+<p>You previously encountered the static <code>Integer.parseInt()</code> method. Let's recall how it works:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>int <span class="text-user">name</span> = <span class="text-neon">Integer</span>.<span class="text-red">parseInt</span>(<span class="text-green">string</span>);</code></pre>
+</div>
+<p>If a string containing a number (only digits) is passed to the <code>parseInt()</code> method, it will parse the string and return the number it contains.</p>
+<p>The rest of the methods are also useful. For example, some of them can convert a passed number to a string containing the binary, octal or hexadecimal representation of the number.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1204"></div>
+<hr>
+<h2>2. <code>Double</code> class</h2>
+<p>In general, the <code>Double</code> class is similar to the <code>Integer</code> class, only it wraps a <code>double</code> rather than an <code>int</code>. It also has fields and methods that will be of interest to us. Consider a few of them:</p>
+<p>The <code>Double</code> class has six interesting fields:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Field</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-neon">Double</span>.NEGATIVE_INFINITY</code></pre>
+        </td>
+        <td>Negative infinity</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-neon">Double</span>.POSITIVE_INFINITY</code></pre>
+        </td>
+        <td>Positive infinity</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-neon">Double</span>.MIN_EXPONENT</code></pre>
+        </td>
+        <td>Minimum possible exponent (2<sup>x</sup>)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-neon">Double</span>.MAX_EXPONENT</code></pre>
+        </td>
+        <td>Maximum possible exponent (2<sup>x</sup>)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-neon">Double</span>.MIN_VALUE</code></pre>
+        </td>
+        <td>Minimum possible value of the <code>double</code> type</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-neon">Double</span>.MAX_VALUE</code></pre>
+        </td>
+        <td>Maximum possible value of the <code>double</code> type</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Infinity</strong></p>
+<p>If you divide <code>-1.0</code> by <code>0.0</code>, you get negative infinity. If you divide <code>1.0</code> by <code>0.0</code>, you get positive infinity. Not only can you divide a <code>double</code> by zero, but you can also use it store the result of these operations.</p>
+<p><strong>Exponent of a <code>double</code></strong></p>
+<p>Understanding the exponent is easy. Internally, a double consists of a mantissa and an exponent. But here the value of the exponent is not <code>10<sup>x</sup></code>, but <code>2<sup>x</sup></code>. Thus, if the exponent increases by <code>1</code>, the total value of the number will double.</p>
+<p><code>MIN_EXPONENT == -1024</code>, which means <code>2<sup>-1024</sup></code>, which is approximately equal to <code>10<sup>-308</sup></code></p>
+<p>And of course, the <code>Double</code> class has interesting methods:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-neon">Double</span>.<span class="text-red">toHexString</span>(double)</code></pre>
+        </td>
+        <td>Returns a string that is the hexadecimal representation of the number</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-neon">Double</span>.<span class="text-red">isInfinite</span>(double)</code></pre>
+        </td>
+        <td>Checks whether the passed number is infinity.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-neon">Double</span>.<span class="text-red">isNaN</span>(double)</code></pre>
+        </td>
+        <td>Checks whether the passed number is <code><span class="text-red">NaN</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Double <span class="text-neon">Double</span>.<span class="text-red">valueOf</span>(double)</code></pre>
+        </td>
+        <td>Wraps the passed <code>double</code> in a <code><span class="text-neon">Double</span></code> object</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Double <span class="text-neon">Double</span>.<span class="text-red">parseDouble</span>(String)</code></pre>
+        </td>
+        <td>Returns the number obtained from the passed string</td>
+    </tr>
+    </tbody>
+</table>
+<p>Interestingly, there is an <code>isInfinite()</code> method that returns <code>true</code> if the passed number is positive or negative infinity.</p>
+<p>The <code><span class="text-red">isNaN()</span></code> method is similar — it checks whether the passed number is <code><span class="text-red">NaN</span></code> (<span class="term">Not-a-Number</span>, a special constant that indicates an undefined value).</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1205"></div>
+<hr>
+<h2>3. <code>Character</code> class</h2>
+<p>The <code>Character</code> class is interesting primarily for its large number of static utility methods that let you check whether characters belong to various categories.</p>
+<p>Examples</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">isAlphabetic</span>(int)</code></pre>
+        </td>
+        <td>Checks whether a character is an alphabetic character</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">isLetter</span>(char)</code></pre>
+        </td>
+        <td>Checks whether the character is a letter</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">isDigit</span>(char)</code></pre>
+        </td>
+        <td>Checks whether the character is a digit</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">isSpaceChar</span>(char)</code></pre>
+        </td>
+        <td>Checks whether the character is a space, a line break, or a page break (codes: 12, 13, 14)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">isWhitespace</span>(char)</code></pre>
+        </td>
+        <td>Checks whether the character is whitespace: a space, tab, etc.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">isLowerCase</span>(char)</code></pre>
+        </td>
+        <td>Checks whether the character is lowercase</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">isUpperCase</span>(char)</code></pre>
+        </td>
+        <td>Checks whether the character is uppercase</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">toLowerCase</span>(char)</code></pre>
+        </td>
+        <td>Converts the character to lowercase</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Character.<span class="text-red">toUpperCase</span>(char)</code></pre>
+        </td>
+        <td>Converts the character to uppercase</td>
+    </tr>
+    </tbody>
+</table>
+<p>A feature of these methods is that they work with all known alphabets: Arabic numerals are classified as digits, etc.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1206"></div>
+<hr>
+<h2>4. <code>Boolean</code> class</h2>
+<p>The <code>Boolean</code> type is virtually the same as the <code>boolean</code> type. The differences are minimal.</p>
+<p>Below we show a simplified version of the <code>Boolean</code> class:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="text-neon">Boolean</span>
+{
+   public <span class="text-orange">static</span> final <span class="text-neon">Boolean</span> <span class="text-viola">TRUE</span> = new <span class="text-neon">Boolean</span>(true);
+   public <span class="text-orange">static</span> final <span class="text-neon">Boolean</span> <span class="text-viola">FALSE</span> = new <span class="text-neon">Boolean</span>(false);
+
+   private final boolean <span class="text-user">value</span>;
+
+   public <span class="text-neon">Boolean</span>(boolean <span class="text-green">value</span>)
+   {
+      this.<span class="text-user">value</span> = <span class="text-green">value</span>;
+   }
+
+   public boolean <span class="text-red">booleanValue</span>()
+   {
+      return <span class="text-user">value</span>;
+   }
+
+   public <span class="text-orange">static</span> <span class="text-neon">Boolean</span> valueOf(boolean <span class="text-green">value</span>)
+   {
+      return (<span class="text-green">value</span> ? <span class="text-viola">TRUE</span> : <span class="text-viola">FALSE</span>);
+   }
+}</code></pre>
+        </td>
+        <td style="width:320px"><br><br>Constants: <code><span class="text-viola">TRUE</span></code> и <code><span class="text-viola">FALSE</span></code>
+            <br><br><br>Variable
+            <br><br><code><span class="text-neon">Boolean</span></code> class constructor
+            <br><br><br><br><br>The method returns the value of the internal variable
+            <br><br><br><br>This static method converts <code>true</code> to <code><span class="text-viola">TRUE</span></code> and <code>false</code> to <code><span class="text-viola">FALSE</span></code>.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>Boolean</code> type has two constants (two fields):</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Constants of the class</th>
+        <th>Counterpart for the boolean type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Boolean.TRUE</code></pre>
+        </td>
+        <td>
+            <pre><code>true</code></pre>
+        </td>
+        <td>true</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Boolean.FALSE</code></pre>
+        </td>
+        <td>
+            <pre><code>false</code></pre>
+        </td>
+        <td>false</td>
+    </tr>
+    </tbody>
+</table>
+<p>You can work with them in the same way that you work with the <code>boolean</code> type:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>if (Boolean.TRUE)
+{
+}</code></pre>
+        </td>
+        <td>The <code>Boolean</code> class is the only class that can be written inside a condition</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Boolean a = Boolean.TRUE;
+boolean b = Boolean.TRUE;
+boolean с = true;</code></pre>
+        </td>
+        <td>All three variables are equal to <code>true</code>/<code>TRUE</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Boolean a = Boolean.TRUE;
+Boolean b = Boolean.TRUE;
+if (a == b)</code></pre>
+        </td>
+        <td>Constants can be compared using both <code>equals</code> and <code>==</code>
+            <br><br>This will also work.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Autoboxing works great here. That means you can use this type in the same way as the <code>boolean</code> type — there are no pitfalls to watch out for.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>How it is written</th>
+        <th>How it works</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Boolean</span> a = true;
+<span class="text-neon">Boolean</span> b = true;
+<span class="text-neon">Boolean</span> c = false;
+<span class="text-viola">boolean</span> d = a;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Boolean</span> a = <span class="text-neon">Boolean</span>.<span class="text-red">valueOf</span>(true);
+<span class="text-neon">Boolean</span> b = <span class="text-neon">Boolean</span>.<span class="text-red">valueOf</span>(true);
+<span class="text-neon">Boolean</span> c = <span class="text-neon">Boolean</span>.<span class="text-red">valueOf</span>(false);
+<span class="text-viola">boolean</span> d = a.<span class="text-red">booleanValue</span>();</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>And here a comparison of the <code>boolean</code> and <code>Boolean</code> types:</p>
+<pre class="lecture-code language-java"><code>boolean <span class="text-red">a </span>= true;
+Boolean <span class="text-green">b</span> = true; // b will be equal to Boolean.TRUE
+Boolean <span class="text-user">c</span> = true; // c will be equal to Boolean.TRUE
+
+<span class="text-red">a</span> == <span class="text-green">b</span>; // true (compared by value)
+<span class="text-red">a</span> == <span class="text-user">c</span>; // true (compared by value)
+<span class="text-green">b</span> == <span class="text-user">c</span>; // <span class="code text-green">true</span> (compared by reference, but they point to the same object)</code></pre>
+<p>If you really need an independent <code>Boolean</code> object, then you need to create it explicitly:</p>
+<pre class="language-java"><code>boolean a = <span class="text-user">true</span>;
+Boolean b = <span class="text-red">new</span> <span class="text-neon">Boolean</span>(<span class="text-user">true</span>); // New Boolean object
+Boolean c = <span class="text-user">true</span>; // c will be equal to Boolean.TRUE
+
+a == b; // true (compared by value)
+a == c; // true (compared by value)
+b == c; // <span class="code text-red">false</span> (compared by reference, and they point to different objects)</code></pre>
+<p>One more example, where we'll use a <code>Boolean</code> inside of an <code>if</code>:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Boolean <span class="text-user">less</span> = (2 &lt; 3);
+if (<span class="text-user">less</span>)
+{
+&nbsp; &nbsp;...
+}</code></pre>
+        </td>
+        <td>This will compile and work</td>
+    </tr>
+    </tbody>
+</table>
+<p>This will compile, but it won't work!</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Boolean <span class="text-user">less</span> = <span class="text-red">null</span>;
+if (<span class="text-user">less</span>)
+{
+&nbsp; &nbsp;...
+}</code></pre>
+        </td>
+        <td><br><span class="text-red">Error</span>. This line will throw an exception</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1207"></div>
+<hr>
+<h2>5. Caching values during autoboxing</h2>
+<p>There are some pitfalls related to integer wrapper types.</p>
+<p>As you already know, if we compare an <code>int</code> and an <code>Integer</code>, the <code>Integer</code> is converted to an <code>int</code>:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>How it is written</th>
+        <th>How it works</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-green">a</span> = 5;
+Integer <span class="code text-user">b</span> = 5;
+if (<span class="code text-green">a</span> == <span class="code text-user">b</span>)
+{
+&nbsp; &nbsp;...
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>int <span class="code text-green">a</span> = 5;
+Integer <span class="code text-user">b</span> = <span class="text-viola">Integer</span>.valueOf(5);
+if (<span class="code text-green">a</span> == <span class="code text-user">b</span>.<span class="text-red">intValue</span>())
+{
+&nbsp; &nbsp;...
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If you compare two <code>Integer</code> objects with each other, they are not converted to <code>int</code>s:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer <span class="code text-green">a</span> = 500;
+Integer <span class="code text-user">b</span> = 500;
+int <span class="code text-orange">c</span> = 500;
+
+System.out.println(<span class="code text-green">a</span> == <span class="code text-user">b</span>); // Compared by reference
+System.out.println(<span class="code text-green">a</span> == <span class="code text-orange">c</span>);
+System.out.println(<span class="code text-user">b</span> == <span class="code text-orange">c</span>);</code></pre>
+        </td>
+        <td><pre><code>
+
+
+
+<span class="text-red">false</span>
+true
+true</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><code><span class="text-green">a</span> == <span class="text-orange">c</span></code> and <code><span class="text-user">b</span> == <span class="text-orange">c</span></code>, but <code><span class="text-green">a</span> != <span class="text-user">b</span></code>, because when we compare <code><span class="text-green">a</span></code> and <code><span class="text-user">b</span></code> we are comparing references. Which is essentially what we would expect.</p>
+<p><strong>Surprise</strong></p>
+<p>But if we replace <code>500</code> with <code>100</code>, then we get a completely different result:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer <span class="code text-green">a</span> = 100;
+Integer <span class="code text-user">b</span> = 100;
+int <span class="code text-orange">c</span> = 100;
+
+System.out.println(<span class="code text-green">a</span> == <span class="code text-user">b</span>); // Compared by reference
+System.out.println(<span class="code text-green">a</span> == <span class="code text-orange">c</span>);
+System.out.println(<span class="code text-user">b</span> == <span class="code text-orange">c</span>);</code></pre>
+        </td>
+        <td><pre><code>
+
+
+
+<span class="text-green">true</span>
+true
+true</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The issue here is that <strong>a new <code>Integer</code> object is <span class="text-red">not always</span> actually created during autoboxing</strong>. Objects are cached for values <code>-128</code> through <code>127</code> inclusive.</p>
+<p>The <code>Integer</code> class has a hidden array that stores objects: <code>Integer(-128)</code>, <code>Integer(-127)</code>, ... <code>Integer(126)</code>, <code>Integer(127)</code></p>
+<p>If you write <code>Integer x = 128</code>, then the autoboxing process creates a new object, but if you write <code>Integer x = 127</code>, then the autoboxing process retrieves the existing object from the cache (from the array).</p>
+<p>If you don't want the <code>Integer</code> object to come from the cache, you will have to create it explicitly by writing: <code>Integer x = new Integer(127);</code></p>
+<p>All wrapper types have such a cache: <code>Integer</code>, <code>Long</code>, <code>Byte</code>, <code>Short</code>, <code>Boolean</code>. For the <code>Boolean</code> type, its <code><span class="text-viola">TRUE</span></code> and <code><span class="text-viola">FALSE</span></code> values are both constants, so they are also essentially cached.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1208"></div>

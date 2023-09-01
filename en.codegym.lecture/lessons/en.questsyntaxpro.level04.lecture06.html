@@ -1,0 +1,290 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="a3a1a3f3-d6cd-45c6-b77b-2d23e83ffdd4" data-max-width="1024" src="https://cdn.javarush.ru/images/article/a3a1a3f3-d6cd-45c6-b77b-2d23e83ffdd4/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="cf6e77e4-2989-422d-8248-bdeb00ea0c37" data-max-width="1024" src="https://cdn.javarush.ru/images/article/cf6e77e4-2989-422d-8248-bdeb00ea0c37/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="6cd639a6-1ebd-4445-9566-00e9e8ef6302" data-max-width="512" src="https://cdn.javarush.ru/images/article/6cd639a6-1ebd-4445-9566-00e9e8ef6302/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="47ffcf62-0e68-4a03-a847-f83fcedc828e" data-max-width="512" src="https://cdn.javarush.ru/images/article/47ffcf62-0e68-4a03-a847-f83fcedc828e/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="2e167438-7dcf-48a0-a7e4-6fe920cf79f8" data-max-width="512" src="https://cdn.javarush.ru/images/article/2e167438-7dcf-48a0-a7e4-6fe920cf79f8/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="292a432f-8660-45d0-a9a7-5139fcb1ab4d" data-max-width="512" src="https://cdn.javarush.ru/images/article/292a432f-8660-45d0-a9a7-5139fcb1ab4d/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. <code>double</code> type</h2>
+<p>Java provides the <code>double</code> type for working with real (fractional) numbers. It occupies <code>8 bytes</code> in memory (twice as many as the <code>int</code> type) and can store values in the range from <code>-1.7*10<sup>308</sup></code> to <code>+1.7*10<sup>308</sup></code>. For comparison: the <code>int</code> type can store a value in the range from <code>-2*10<sup>9</sup></code> to <code>+2*10<sup>9</sup></code>.</p>
+<p>In real numbers, the fractional part is written after a decimal point. For example, 123.456, or 2.5, or 100.00, or 0.01. When computers deal with such numbers, we call them <span class="term">floating point</span> numbers.</p>
+<p>By the way, in addition to the <code>double</code> type, we also have the <code>float</code> type (which is only 4 bytes in size). Its name comes from <span class="term">floating point</span>. And the name <code>double</code> comes from <span class="term">double float</span>. A <code>double</code> is twice as large as a <code>float</code>: <code>8 bytes</code> versus <code>4</code>. It is also called a <span class="text-bold">double precision floating-point number</span>.</p>
+<hr>
+<h2>2. Creating a <code>double</code> type</h2>
+<p>The double type is used to store real numbers. To create a variable in code that can store real numbers, you need to use a statement like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>double <span class="code text-green">name</span>;</code></pre>
+    <div class="lesson-example-caption">Creating a <code>double</code> type</div>
+</div>
+<p><span>Where </span><span class="code text-green">name</span><span> is the name of the variable. Examples:</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th width="44%">Statement</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="code text-green">price</span>;</code></pre>
+        </td>
+        <td>A real <code class="text-green">price</code> variable is created</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="code text-green">weight</span>;</code></pre>
+        </td>
+        <td>A real <code class="text-green">weight</code> variable is created</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="code text-green">lightSpeed</span>;</code></pre>
+        </td>
+        <td>A real <code class="text-green">lightSpeed</code> variable is created</td>
+    </tr>
+    </tbody>
+</table>
+<p>As with the <code>int</code> type, you can use shorthand to create multiple <code>double</code> variables simultaneously:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>double <span class="code text-green">name 1</span>, <span class="code text-green">name 2</span>, <span class="code text-green">name 3</span>;</code></pre>
+    <div class="lesson-example-caption">Creating multiple <code>double</code> variables</div>
+</div>
+<p>And even immediately assign values to them:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>double <span class="code text-green">name 1</span> = <span class="code text-user">value 1</span>, <span class="code text-green">name 2</span> = <span class="code text-user">value 2</span>, <span class="code text-green">name 3</span> = <span class="code text-user">value 3</span>;</code></pre>
+    <div class="lesson-example-caption">Creating and initializing multiple <code>double</code> variables</div>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="code text-green">price</span> = <span class="code text-user">5.0</span>;</code></pre>
+        </td>
+        <td>The variable stores <code>5.0</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="code text-green">weight</span> = <span class="code text-user">2</span>;</code></pre>
+        </td>
+        <td>The variable stores <code>2.0</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="code text-green">x</span> = <span class="code text-user">1.0</span>, <span class="code text-green">y</span> = <span class="code text-user">2.0</span>, <span class="code text-green">z</span> = <span class="code text-user">3.0</span>;</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>3. Assigning integers and real numbers</h2>
+<p>It would be bad if integers could be assigned only to <code>int</code> variables, and real numbers — only to <code>double</code> variables. We want to be able to convert between the two kinds of numbers. And Java provides this ability.</p>
+<p>First, both real and integer numbers can be assigned to <code>double</code> variables. When assigning integers, they are simply converted to real numbers. Of course, some accuracy may be lost in the process.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="code text-green">price</span> = <span class="code text-user">5.0</span>;</code></pre>
+        </td>
+        <td>The variable stores <code>5.0</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="code text-green">weight</span> = <span class="code text-user">2</span>;</code></pre>
+        </td>
+        <td>The variable stores <code>2.0</code></td>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code>int <span class="code text-yellow">t</span> = 1000;
+double <span class="code text-green">x</span> =  <span class="code text-yellow">t</span> * <span class="code text-yellow">t</span>;</code></pre>
+        </td>
+        <td><br>The <code class="text-green">x</code> variable stores <code>1000000.0</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>Second, if an integer and a real number are involved in some expression, then the integer is first converted to a real number and only then is the operation with the other real number performed.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code>int <span class="code text-yellow">t</span> = 1000;
+double <span class="code text-green">x</span> = <span class="code text-yellow">t</span> * <span class="code text-user">5.0</span>;</code></pre>
+        </td>
+        <td><br>The <code class="text-green">x</code> variable stores <code>5000.0</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>System.out.println(5 * 2);</code></pre>
+        </td>
+        <td>The number <code>10</code> will be displayed on the screen</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>System.out.println(5 * <span class="code text-user">2.0</span>);</code></pre>
+        </td>
+        <td>The number <code>10.0</code> will be displayed on the screen</td>
+    </tr>
+    </tbody>
+</table>
+<p>And finally, it is also possible to assign real numbers to <code>int</code> variables. When we do this, the fractional part of the real number is discarded — the number is rounded down to the nearest whole number.</p>
+<p>Additionally, the compiler requires the programmer to explicitly document what is happening (to be sure that other programmers understand that the fractional part is being dropped). In general, such a conversion looks like this in code:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="code text-yellow">integer_variable</span> = (int)(<span class="code text-user">real_number</span>);</code></pre>
+    <div class="lesson-example-caption">Assigning a real number to an <code>int</code> variable</div>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="code text-yellow">x</span> = (int)(<span class="code text-user">5.5</span>);</code></pre>
+        </td>
+        <td>The <code class="text-yellow">x</code> variable stores <code>5</code></td>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code>double <span class="code text-green">a</span> = <span class="code text-user">5.999</span>;
+int <span class="code text-yellow">x</span> = (int)(<span class="code text-green">a</span>);</code></pre>
+        </td>
+        <td>The <code class="text-yellow">x</code> variable stores <code>5</code></td>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code>double <span class="code text-green">a</span> = <span class="code text-user">5.999</span>;
+int <span class="code text-yellow">b</span> = 2;
+int <span class="code text-yellow">x</span> = (int)(<span class="code text-green">a</span> * <span class="code text-yellow">b</span>);</code></pre>
+        </td>
+        <td>The <code class="text-yellow">x</code> variable stores <code>11</code></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0415"></div>
+<hr>
+<h2>4. Dividing integers and real numbers in Java</h2>
+<p>When dividing an integer by an integer, the remainder is always discarded. How then can we divide <code>5</code> by <code>2</code> to get <code>2.5</code>?</p>
+<p>At first, it seems like the correct option is:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>double <span class="code text-green">d</span> = <span class="code text-red">5 / 2</span>;</code></pre>
+</div>
+<p>But it's not so simple. The problem here is that the Java machine first calculates the value of <code class="text-red">5 / 2</code> and only then assigns the result to the <code class="text-green">d</code> variable. And the <code class="text-red">5 / 2</code> operation is integer division. That means <code class="text-green">d</code>&nbsp;will contain <code class="text-user">2</code> or, to be more precise, <code class="text-user">2.0</code></p>
+<p>The correct solution is to write <span class="text-bold">at least one</span> of the numbers involved in the division as a <span class="term text-user">real</span> number (i.e. with a decimal point):</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>double <span class="code text-green">d</span> = <span class="code text-user">5.0</span> / 2;</code></pre>
+</div>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>double <span class="code text-green">d</span> = 5 / <span class="code text-user">2.0</span>;</code></pre>
+</div>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>double <span class="code text-green">d</span> = <span class="code text-user">5.0</span> / <span class="code text-user">2.0</span>;</code></pre>
+</div>
+<p>In each of expressions, <code class="text-green">d</code>&nbsp;will contain <code>2.5</code></p>
+<p>But what if we are working with variables? What if we have code like this?:</p>
+<pre class="language-java"><code>int <span class="code text-yellow">a</span> = 5;
+int <span class="code text-yellow">b</span> = 2;
+double <span class="code text-green">d</span> = <span class="code text-yellow">a</span> / <span class="code text-yellow">b</span>;</code></pre>
+<p>There is a slick (and obvious) solution here — force the Java machine to convert variables to real numbers by multiplying them by one as a real number&nbsp;(<code class="text-user">1.0</code>)</p>
+<pre class="language-java"><code>int <span class="code text-yellow">a</span> = 5;
+int <span class="code text-yellow">b</span> = 2;
+double <span class="code text-green">d</span> = <span class="code text-yellow">a</span> * <span class="code text-user">1.0</span> / <span class="code text-yellow">b</span>;</code></pre>
+<p>Note that multiplication and division have equal precedence, and are performed from left to right. That means that it matters where we multiply the 1.0.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th class="text-center">Order of execution</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-yellow">a</span> = 5;
+int <span class="code text-yellow">b</span> = 2;
+double <span class="code text-green">d</span> = <span class="code text-user">1.0</span> * <span class="code text-yellow">a</span> / <span class="code text-yellow">b</span>;</code></pre>
+        </td>
+        <td class="text-center"><code class="code-raw">(<span class="code text-user">1.0</span> * <span class="code text-yellow">a</span>) / <span class="code text-yellow">b</span>;</code></td>
+        <td class="text-center"><code>2.5</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-yellow">a</span> = 5;
+int <span class="code text-yellow">b</span> = 2;
+double <span class="code text-green">d</span> = <span class="code text-yellow">a</span> * <span class="code text-user">1.0</span> / <span class="code text-yellow">b</span>;</code></pre>
+        </td>
+        <td class="text-center"><code class="code-raw">(<span class="code text-yellow">a</span> * <span class="code text-user">1.0</span>) / <span class="code text-yellow">b</span>;</code></td>
+        <td class="text-center"><code>2.5</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-yellow">a</span> = 5;
+int <span class="code text-yellow">b</span> = 2;
+double <span class="code text-green">d</span> = <span class="code text-yellow">a</span> / <span class="code text-yellow">b</span> * <span class="code text-user">1.0</span>;</code></pre>
+        </td>
+        <td class="text-center"><code class="code-raw">(<span class="code text-yellow">a</span> / <span class="code text-yellow">b</span>) * <span class="code text-user">1.0</span>;</code></td>
+        <td class="text-center"><code>2.0</code></td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0416"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0425.big03"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0425.big04"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="dec51202-1cf4-44ab-b215-41c5ae8e0be0" data-max-width="1024" src="https://cdn.javarush.ru/images/article/dec51202-1cf4-44ab-b215-41c5ae8e0be0/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="d8ce4856-bbab-4325-939b-fece1d357432" data-max-width="512" src="https://cdn.javarush.ru/images/article/d8ce4856-bbab-4325-939b-fece1d357432/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="f02de5bf-a5a9-4e83-96d9-af32a8b619f4" data-max-width="512" src="https://cdn.javarush.ru/images/article/f02de5bf-a5a9-4e83-96d9-af32a8b619f4/original.png" alt="">
+        </div>
+    </div>
+</div>

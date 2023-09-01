@@ -1,0 +1,288 @@
+<h2>1. A set of key-value pairs.</h2>
+<p><img data-max-width="1024" data-id="a01477d3-0874-4374-9303-3e0124b9487d" src="https://cdn.codegym.cc/images/article/a01477d3-0874-4374-9303-3e0124b9487d/1024.jpeg" alt="A set of key-value pairs"></p>
+<p>In Java, another interesting collection (broadly speaking) is <code>Map</code>. Sometimes this data structure is also called a dictionary.</p>
+<p>It is similar to the <code>Set</code> collection, but it stores a set of "pairs" of elements rather than a set of elements, Each pair in a <code>Map</code> consists of two elements: a "key" and a "value".</p>
+<p>Let's say you want your program to store employee names and their salaries, or your coworkers names and their ages. Then you would need a table like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+    </tr>
+    <tr>
+        <td>Elon</td>
+        <td>21</td>
+    </tr>
+    <tr>
+        <td>Jeff</td>
+        <td>22</td>
+    </tr>
+    <tr>
+        <td>Bill</td>
+        <td>48</td>
+    </tr>
+    <tr>
+        <td>Warren</td>
+        <td>?</td>
+    </tr>
+    </tbody>
+</table>
+<p>Each row contains a couple of values. We will refer to the name as the pair's <span class="term">key</span>, and the age as the pair's <span class="term">value</span>.</p>
+<p>The whole set of these pairs is our <span class="term">map</span> (<code>Map</code>).</p>
+<p>A pair's key can be anything except <code>null</code>. Keys must be unique: <span class="text-red">one map cannot contain two identical keys.</span></p>
+<hr>
+<h2>2. <code>HashMap</code> class</h2>
+<p>The <code>HashMap</code> class is the most popular kind of <code>Map</code> collection. On the one hand, it is very similar to HashSet and has all its methods. On the other hand, it is like a list (<code>ArrayList</code>) that can use words (or anything else) as its indices.</p>
+<p>You can create a <code>HashMap</code> using a statement like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">HashMap</span>&lt;<span class="text-viola">KeyType</span>, <span class="text-viola">ValueType</span>&gt; <span class="text-green">name</span> = new <span class="text-neon">HashMap</span>&lt;<span class="text-viola">KeyType</span>, <span class="text-viola">ValueType</span>&gt;();</code></pre>
+</div>
+<p>Where <code><span class="text-viola">KeyType</span></code> is the type of the keys in the stored pairs, and <code><span class="text-viola">ValueType</span></code> is the type of the values in the pairs stored in the <code><span class="text-neon">HashMap</span></code> collection.</p>
+<p>The <code>HashMap</code> class has methods like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>void <span class="text-red">put</span>(<span class="text-viola">KeyType</span> key, <span class="text-viola">ValueType</span> value)</code></pre>
+        </td>
+        <td>Adds the (<code>key</code>, <code>value</code>) pair to the collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">ValueType</span> <span class="text-red">get</span>(<span class="text-viola">KeyType</span> key)</code></pre>
+        </td>
+        <td>Returns the value associated with a key.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-red">containsKey</span>(<span class="text-viola">KeyType</span> key)</code></pre>
+        </td>
+        <td>Checks whether a key exists in the collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean <span class="text-red">containsValue</span>(<span class="text-viola">ValueType</span> value)</code></pre>
+        </td>
+        <td>Checks for the existence of a value in the collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">ValueType</span> <span class="text-red">remove</span>(<span class="text-viola">KeyType</span> key)</code></pre>
+        </td>
+        <td>Removes an element from the collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>void <span class="text-red">clear</span>()</code></pre>
+        </td>
+        <td>Clears the collection, removing all the elements</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">size</span>()</code></pre>
+        </td>
+        <td>Returns the number of key-value pairs in the collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Set&lt;<span class="text-viola">KeyType</span>&gt; <span class="text-red">keySet</span>()</code></pre>
+        </td>
+        <td>Returns the set of keys in the collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Collection&lt;<span class="text-viola">ValueType</span>&gt; <span class="text-red">values</span>()</code></pre>
+        </td>
+        <td>Returns a set containing the elements of the collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Set&lt;<span class="text-neon">Map.Entry</span>&lt;<span class="text-viola">KeyType</span>, <span class="text-viola">ValueType</span>&gt;&gt; <span class="text-red">entrySet</span>()</code></pre>
+        </td>
+        <td>Returns a set (<code>Set</code>) of all pairs (<code>Map.Entry</code>) in the collection.</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Adding elements to a <code>HashMap</code></strong></p>
+<p>Elements are added to a map as pairs using the <code>put()</code> method. The key is passed as the first argument, and the value is passed as the second.</p>
+<pre class="language-java"><code>HashMap&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt; <span class="code text-orange">map</span> = new HashMap&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt;();
+<span class="code text-orange">map</span>.<span class="text-red">put</span>("Elon", 21);
+<span class="code text-orange">map</span>.<span class="text-red">put</span>("Jeff", 22);
+<span class="code text-orange">map</span>.<span class="text-red">put</span>("Bill", 48);
+<span class="code text-orange">map</span>.<span class="text-red">put</span>("Warren", null);</code></pre>
+<p><span class="text-orange">When adding a key-value pair, if the key already exists in the collection, then the old value is replaced by the new value.</span></p>
+<p>This behavior makes a <code>HashMap</code> like an array or a list whose indices are words (<code>String</code>) instead of numbers.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Important:</div>
+        <div class="lesson-note__content">
+            <p>Almost any type can be the KeyType or ValueType. There are some small additional requirements for the KeyType, and you will learn about them when you study collections in greater detail in the Java Collections quest.</p>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1309"></div>
+<hr>
+<h2>3. Subsets of a <code>HashMap</code>: the set of keys</h2>
+<p>Let's say we just want to display all the entries in a <code>HashMap</code> on the screen. How do we do this? To do this, we need to know how to go through all the entries in the <code>HashMap</code>. This can be done in several ways.</p>
+<p><strong>The easiest way is to loop over the keys</strong></p>
+<p><code>HashMap</code> entries are not numbered sequentially, so a loop with a counter won't work here. But we can get a set of keys using the <code><span class="text-red">keySet</span>()</code> method, and you already know how to iterate over a set:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">HashMap</span>&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt; <span class="code text-orange">map</span> = new <span class="text-neon">HashMap</span>&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt;();
+<span class="code text-orange">map</span>.<span class="text-red">put</span>("Elon", 21);
+<span class="code text-orange">map</span>.<span class="text-red">put</span>("Jeff", 22);
+<span class="code text-orange">map</span>.<span class="text-red">put</span>("Bill", 48);
+<span class="code text-orange">map</span>.<span class="text-red">put</span>("Warren", null);
+
+for (String <span class="code"><span class="text-green">key</span></span>: <span class="code text-orange">map</span>.<span class="text-red">keySet</span>())
+{
+   Integer <span class="code"><span class="text-user">value</span></span> = <span class="code text-orange">map</span>.<span class="text-red">get</span>(<span class="code"><span class="text-green">key</span></span>);
+   System.out.println(<span class="code"><span class="text-green">key</span></span> + " --&gt; " + <span class="code"><span class="text-user">value</span></span>);
+}</code></pre>
+        </td>
+        <td><br><br><br><br><br><br>Loop over the keys of the <code>map</code><br><br>
+            Get the value associated with the key
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>keySet()</code> method returns a set of keys. You can use this set in two ways:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Compact notation</th>
+        <th>Long notation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>for (String <span class="code"><span class="text-green">key</span></span>: <span class="code text-orange">map</span>.<span class="text-red">keySet</span>())
+{
+   Integer <span class="code"><span class="text-user">value</span></span> = <span class="code text-orange">map</span>.<span class="text-red">get</span>(<span class="code"><span class="text-green">key</span></span>);
+   System.out.println(<span class="code"><span class="text-green">key</span></span> + " --&gt; " + <span class="code"><span class="text-user">value</span></span>);
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>Set&lt;String&gt; <span class="code text-viola">keys</span> = <span class="code text-orange">map</span>.<span class="text-red">keySet</span>();
+
+for (String <span class="code"><span class="text-green">key</span></span>: <span class="code text-viola">keys</span>)
+{
+   Integer <span class="code"><span class="text-user">value</span></span> = <span class="code text-orange">map</span>.<span class="text-red">get</span>(<span class="code"><span class="text-green">key</span></span>);
+   System.out.println(<span class="code"><span class="text-green">key</span></span> + " --&gt; " + <span class="code"><span class="text-user">value</span></span>);
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1310"></div>
+<hr>
+<h2>4. Looping over key-value pairs</h2>
+<p>There is also a more complicated way: you can transform a <code>Map</code> into a <span class="term">set of key-value pairs</span>, and then loop over the elements of the set, as we have already learned.</p>
+<p>The <code>HashMap</code> collection has a helper class that stores a key-value pair. It looks approximately like this:</p>
+<pre class="language-java"><code>class Entry&lt;<span class="text-green">KeyType</span>, <span class="text-user">ValueType</span>&gt;
+{
+   private <span class="text-green">KeyType</span> <span class="text-red">key</span>;
+   private <span class="text-user">ValueType</span> <span class="text-viola">value</span>;
+
+   public <span class="text-green">KeyType</span> getKey()
+   {
+      return this.<span class="text-red">key</span>;
+   }
+
+   public <span class="text-user">ValueType</span> getValue()
+   {
+      return this.<span class="text-viola">value</span>;
+   }
+}</code></pre>
+<p>The result of calling the <code><span class="text-red">entrySet</span>()</code> method on a <code><span class="text-neon">HashMap</span>&lt;<span class="text-viola">KeyType, ValueType</span>&gt;</code> object will be a <code><span class="text-neon">Set</span>&lt;<span class="text-orange">Entry</span>&lt;<span class="text-viola">KeyType, ValueType</span>&gt;&gt;</code>:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">Set</span>&lt;<span class="text-orange">Entry</span>&lt;<span class="text-viola">KeyType</span>, <span class="text-viola">ValueType</span>&gt;&gt; <span class="text-green">name</span> = <span class="text-user">map</span>.<span class="text-red">entrySet</span>();</code></pre>
+</div>
+<p>Here we have the generic <code><span class="text-neon">Set</span></code> class with a type parameter, which in turn is a generic type (<code><span class="text-orange">Entry</span></code>) with two type parameters.</p>
+<p>It is very easy for a beginner to get confused about this. But once you figure it out, you can write code like:</p>
+<pre class="language-java"><code><span class="text-neon">HashMap</span>&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt; <span class="code text-user">map</span> = new <span class="text-neon">HashMap</span>&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt;();
+<span class="code text-user">map</span>.<span class="text-red">put</span>("Elon", 21);
+<span class="code text-user">map</span>.<span class="text-red">put</span>("Jeff", 22);
+<span class="code text-user">map</span>.<span class="text-red">put</span>("Bill", 48);
+<span class="code text-user">map</span>.<span class="text-red">put</span>("Warren", null);
+
+Set&lt;Map.Entry&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt;&gt; <span class="code text-viola">entries</span> = <span class="code text-user">map</span>.<span class="text-red">entrySet</span>();
+for(Map.Entry&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt; <span class="code text-orange">pair</span>: <span class="code text-viola">entries</span>)
+{
+   String <span class="code"><span class="text-green">key</span></span> = <span class="code text-orange">pair</span>.getKey();
+   Integer <span class="code"><span class="text-user">value</span></span> = <span class="code text-orange">pair</span>.getValue();
+   System.out.println(<span class="code"><span class="text-green">key</span></span> + " --&gt; " + <span class="code"><span class="text-user">value</span></span>);
+}</code></pre>
+<p>That said, this code can be simplified a little:</p>
+<p>First, you can skip creating a separate variable for <code>entries</code> and instead call the <code><span class="text-red">entrySet</span>()</code> method directly inside the <code>for</code> loop:</p>
+<pre class="language-java"><code>for(Map.Entry&lt;<span class="text-green">String</span>, <span class="text-user">Integer</span>&gt; <span class="code text-orange">pair</span>: <span class="code text-user">map</span>.<span class="text-red">entrySet</span>())
+{
+   String <span class="code"><span class="text-green">key</span></span> = <span class="code text-orange">pair</span>.getKey();
+   Integer <span class="code"><span class="text-user">value</span></span> = <span class="code text-orange">pair</span>.getValue();
+   System.out.println(<span class="code"><span class="text-green">key</span></span> + " --&gt; " + <span class="code"><span class="text-user">value</span></span>);
+}</code></pre>
+<p>Second, you can use the recently introduced <code>var</code> operator to automatically infer the type of the <span class="term">key-value pair</span>:</p>
+<pre class="language-java"><code>for(var <span class="code text-orange">pair</span>: <span class="code text-user">map</span>.entrySet())
+{
+   String <span class="code"><span class="text-green">key</span></span> = <span class="code text-orange">pair</span>.getKey();
+   Integer <span class="code"><span class="text-user">value</span></span> = <span class="code text-orange">pair</span>.getValue();
+   System.out.println(<span class="code"><span class="text-green">key</span></span> + " --&gt; " + <span class="code"><span class="text-user">value</span></span>);
+}</code></pre>
+<p>Not bad, eh?</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1311"></div>
+<hr>
+<h2>5. Comparison of <code>ArrayList</code> and <code>HashMap</code></h2>
+<p>A <code>HashMap</code> strongly resembles an <code>ArrayList</code> that allows strings (or other types) to be used as indexes (the keys).</p>
+<p>If you use <code>Integer</code> for the keys in a <code>HashMap</code>, then it becomes even more similar to an <code>ArrayList</code>. Let's compare:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code with ArrayList&lt;String&gt;</th>
+        <th>Code with HashMap&lt;Integer, String&gt;</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">ArrayList</span>&lt;String&gt; <span class="code text-user">list</span> = new <span class="text-neon">ArrayList</span>&lt;String&gt;();
+
+<span class="code text-user">list</span>.<span class="text-red">add</span>("Greetings");
+<span class="code text-user">list</span>.<span class="text-red">add</span>("Hello");
+
+String s = <span class="code text-user">list</span>.<span class="text-red">get</span>(0);
+<span class="code text-user">list</span>.<span class="text-red">set</span>(0, s + "!");
+
+for (String <span class="code text-orange">item</span>: <span class="code text-user">list</span>)
+{
+   System.out.println(<span class="code text-orange">item</span>);
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code><span class="text-neon">HashMap</span>&lt;Integer, String&gt; <span class="code text-user">map</span> = new <span class="text-neon">HashMap</span>&lt;Integer, String&gt;();
+
+<span class="code text-user">map</span>.<span class="text-red">put</span>(0, "Greetings");
+<span class="code text-user">map</span>.<span class="text-red">put</span>(1, "Hello");
+
+String s = <span class="code text-user">map</span>.<span class="text-red">get</span>(0);
+<span class="code text-user">map</span>.<span class="text-red">put</span>(0, s + "!");
+
+for (String <span class="code text-orange">item</span>: <span class="code text-user">map</span>.<span class="text-red">values</span>())
+{
+   System.out.println(<span class="code text-orange">item</span>);
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1312"></div>

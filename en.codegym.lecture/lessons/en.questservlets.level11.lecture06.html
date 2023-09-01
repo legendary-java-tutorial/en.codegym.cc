@@ -1,0 +1,150 @@
+rong>The web.xml file</strong> stores application configuration information. It is not a mandatory part of it, but it is very widely used to configure a web application.</p>
+<p>This file must be located in the <strong>WEB-INF</strong> folder . When Tomcat starts up, it reads its contents and uses the configuration it contains. If the file contains errors, then Tomcat also displays an error.</p>
+<p>Example web.xml:</p>
+<pre class="line-numbers"><code>
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+<span class="text-viola">&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+  http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0"&gt;</span>
+  
+ <span class="text-green"> &lt;servlet&gt;
+       &lt;servlet-name&gt;HelloWorld&lt;/servlet-name&gt;
+       &lt;servlet-class&gt;HelloServlet&lt;/servlet-class&gt;
+   &lt;/servlet&gt;</span>
+    
+<span class="text-user">  &lt;servlet-mapping&gt;
+      &lt;servlet-name&gt;HelloWorld&lt;/servlet-name&gt;
+      &lt;url-pattern&gt;/welcome&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;</span>
+ 
+<span class="text-red">  &lt;welcome-file-list&gt;
+      &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+  &lt;/welcome-file-list&gt;</span>
+  
+<span class="text-viola">&lt;/web-app&gt;</span>
+
+</code></pre>
+<p><span class="text-green"><code>"HelloWorld"</code>The mapping of the servlet name and the servlet class is written here in green<code>"HelloServlet"</code></span> . <span class="text-user">The mapping of the servlet name and the URL chunk </span><span class="text-user">is written in blue<code>"HelloWorld"</code><code>"http://localhost/welcome"</code></span> . Thus, it says here that when accessing the /welcome path, you need to call the servlet <code>HelloServlet.class</code>.</p>
+<p><span class="text-red">The red color indicates the file that needs to be given upon request <code>http://localhost/</code>- this is the so-called welcome page</span> . If the user simply types in the browser the name corresponding to the root of our web application, then the contents of the <code>index.html</code>.</p>
+<h2>7.2 servlet, servlet-mapping</h2>
+<p>One servlet can serve requests at different URLs, so in web-xml, the servlet and its mapping to URLs are written separately. First, we describe the servlets, giving each a unique string name, and then we specify how each servlet maps to which url.</p>
+<p>Example web.xml:</p>
+<pre class="line-numbers"><code>
+
+<span class="text-viola">&lt;web-app&gt;</span>
+  
+  <span class="text-green">&lt;servlet&gt;
+    &lt;servlet-name&gt;remoting&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.codegym.RemotingServlet&lt;/servlet-class&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+ 
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;remoting&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/remoting/*&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;</span>
+ 
+<span class="text-user">  &lt;servlet&gt;
+    &lt;servlet-name&gt;restapi&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.codegym.RestApiServlet&lt;/servlet-class&gt;
+    &lt;load-on-startup&gt;2&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+ 
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;restapi&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/api/*&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;</span>  
+ 
+<span class="text-viola">&lt;/web-app&gt;</span>
+
+</code></pre>
+<p>In this example, two servlets are declared, and each is mapped to a different url template. <span class="text-green">The servlet <code>RemotingServlet</code>serves all requests that go to<code>/remoting/*</code></span> . <span class="text-user">The servlet <code>RestApiServlet</code>serves all requests that go to<code>/api/*</code></span> . Servlets also have the order from loading - the load-on-startup parameter.</p>
+<h2>7.3 Servlet Options</h2>
+<p>With the help of web.xml, parameters can be passed to the servlet during its initialization, they will be available through the interface <code>ServletConfig</code>. You can also set parameters for the entire web application, they will be available through the <code>ServletContext</code>.</p>
+<p>Example web.xml:</p>
+<pre class="line-numbers"><code>
+
+<span class="text-viola">&lt;web-app&gt;</span>
+<span class="text-green">  &lt;context-param&gt;
+     &lt;description&gt;Server production mode&lt;/description&gt;
+     &lt;param-name&gt;productionMode&lt;/param-name&gt;
+     &lt;param-value&gt;false&lt;/param-value&gt;
+  &lt;/context-param&gt;
+ 
+  &lt;context-param&gt;
+     &lt;param-name&gt;appPropertiesConfig&lt;/param-name&gt;
+     &lt;param-value&gt;
+        classpath:local-app.properties
+        classpath:web-app.properties
+     &lt;/param-value&gt;
+  &lt;/context-param&gt;</span>
+ 
+<span class="text-user">  &lt;servlet&gt;
+     &lt;servlet-name&gt;mainservlet&lt;/servlet-name&gt;
+     &lt;servlet-class&gt;com.codegym.ApplicationServlet&lt;/servlet-class&gt;
+     &lt;init-param&gt;
+        &lt;param-name&gt;application&lt;/param-name&gt;
+        &lt;param-value&gt;com.codegym.App&lt;/param-value&gt;
+     &lt;/init-param&gt;
+     &lt;init-param&gt;
+        &lt;param-name&gt;widgetset&lt;/param-name&gt;
+        &lt;param-value&gt;com.codegym.WidgetSet&lt;/param-value&gt;
+     &lt;/init-param&gt;
+     &lt;init-param&gt;
+        &lt;param-name&gt;ui&lt;/param-name&gt;
+        &lt;param-value&gt;com.codegym.AppUI&lt;/param-value&gt;
+     &lt;/init-param&gt;
+  &lt;/servlet&gt;</span>
+<span class="text-viola">&lt;/web-app&gt;</span>
+
+</code></pre>
+<p><span class="text-green">The code highlighted in green is where we set the parameters for<code>ServletContext</code></span> . There are two of them:</p>
+<ul>
+ <li><code>productionMode</code>with value false</li>
+ <li><code>appPropertiesConfig</code>with an array of two strings:</li>
+ <ul>
+  <li><code>classpath:local-app.properties</code></li>
+  <li><code>classpath:web-app.properties</code></li>
+ </ul>
+</ul>
+<p></p>
+<p><span class="text-user">The parameters for the servlet are indicated in blue<code>ApplicationServlet</code></span> , they will be available to it through <code>ServletConfig</code>:</p>
+<ul>
+ <li><code>application</code>with value com.codegym.App</li>
+ <li><code>widgetset</code>with value com.codegym.WidgetSet</li>
+ <li><code>ui</code>with value com.codegym.AppUI</li>
+</ul>
+<h2>7.4 filter, filter-mapping</h2>
+<p>The web application may also contain special <code>utility servlets - filters</code>. They perform various service tasks: redirect calls, check authorization, etc.</p>
+<p>Example web.xml:</p>
+<pre class="line-numbers"><code>
+
+<span class="text-viola">&lt;web-app&gt;</span>
+ 
+<span class="text-green">  &lt;servlet&gt;
+      &lt;servlet-name&gt;remoting&lt;/servlet-name&gt;
+      &lt;servlet-class&gt;RemotingServlet&lt;/servlet-class&gt;
+      &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+ 
+  &lt;servlet-mapping&gt;
+      &lt;servlet-name&gt;remoting &lt;/servlet-name&gt;
+      &lt;url-pattern&gt;/remoting/*&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;</span>
+ 
+<span class="text-red">  &lt;filter&gt;
+      &lt;filter-name&gt;total_filter&lt;/filter-name&gt;
+      &lt;filter-class&gt;com.javrush.TotalFilter&lt;/filter-class&gt;
+  &lt;/filter&gt;
+ 
+  &lt;filter-mapping&gt;
+      &lt;filter-name&gt;total_filter&lt;/filter-name&gt;
+      &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+  &lt;/filter-mapping&gt;</span>
+ 
+<span class="text-viola">&lt;/web-app&gt;</span>
+
+</code></pre>
+<p>Before the request reaches the servlet <code>RemotingServlet</code>, it will be processed by the filter <code>TotalFiler</code>. This filter is configured to <span class="text-red">intercept all requests</span> that go to our web application. This is clearly hinted at by the url template it is mapped to: <code>/*</code>.</p>
+<p>You will read more about servlets and filters in the following lectures.</p>

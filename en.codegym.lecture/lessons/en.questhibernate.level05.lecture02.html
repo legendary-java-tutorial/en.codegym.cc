@@ -1,0 +1,44 @@
+QL so much, I think it's time to install it. To date, the current version is MySQL 8.0.2, and we will install it.</p>
+<p>First, let's go <a href="https://www.mysql.com/downloads/" target="_blank" rel="nofollow">to the page</a> .</p>
+<p>There we see a description of the commercial version of MySQL and a small link below. This is what we need:</p><img data-max-width="800" data-id="d8bfb032-fe61-4308-bac2-2927932d1770" alt="" src="https://cdn.javarush.com/images/article/d8bfb032-fe61-4308-bac2-2927932d1770/800.jpeg" style="width: 800px;">
+<p>Click on the link and go to the page with a list of free products. I choose MySQL Windows Installer:</p><img data-max-width="800" data-id="0fd52743-468f-4df8-a638-5349d9667ec0" alt="" src="https://cdn.javarush.com/images/article/0fd52743-468f-4df8-a638-5349d9667ec0/800.jpeg" style="width: 800px;">
+<p>Then you choose any of the two options (they are the same) and download any.</p>
+<p>If you have Linux, MacOS or something else, you can download <strong>MySQL Community Server</strong> as a zip or dmg file:</p><img data-max-width="800" data-id="beccff0d-15e1-4bb9-8a39-c0bddd634ed4" alt="" src="https://cdn.javarush.com/images/article/beccff0d-15e1-4bb9-8a39-c0bddd634ed4/800.jpeg" style="width: 800px;">
+<p>I seem to be saying obvious things, but it's better to make sure once again. Accidentally install something wrong, otherwise I'll save you time.</p>
+<h2>Installation</h2>
+<p><strong>Step 1.</strong> Let's start the installation - run Windows Installer (or any other of your choice). If everything went well, then you should see this window:</p><img data-max-width="800" data-id="20095d50-83aa-4abd-82bc-c6d7210c84e7" alt="" src="https://cdn.javarush.com/images/article/20095d50-83aa-4abd-82bc-c6d7210c84e7/800.jpeg" style="width: 800px;">
+<p><strong>Step 2.</strong> Click Next, the installer prompts you to select a variety of products that will be installed with MySQL Server.</p><img data-max-width="800" data-id="35c3b427-4010-42be-aeec-9f79abaf36f4" alt="" src="https://cdn.javarush.com/images/article/35c3b427-4010-42be-aeec-9f79abaf36f4/800.jpeg" style="width: 800px;">
+<p>Let's leave everything as it is, so that all students have the same settings.</p>
+<p><strong>Step 3:</strong> I click Next and the installer offers me a list of products to download and install.</p><img data-max-width="800" data-id="a0ea01ab-14ab-456e-b85f-9374eb3031b8" alt="" src="https://cdn.javarush.com/images/article/a0ea01ab-14ab-456e-b85f-9374eb3031b8/800.jpeg" style="width: 800px;">
+<p><strong>Step 4.</strong> Click Execute and start the installation.</p><img data-max-width="800" data-id="912e3c10-7b3a-4985-907b-fb4d6c1b7e78" alt="" src="https://cdn.javarush.com/images/article/912e3c10-7b3a-4985-907b-fb4d6c1b7e78/800.jpeg" style="width: 800px;">
+<p><strong>Step 5.</strong> Installation completed - you should get something like this:</p><img data-max-width="800" data-id="1dfd0cd7-2231-498f-bf1b-cdeeb20d7ab8" alt="" src="https://cdn.javarush.com/images/article/1dfd0cd7-2231-498f-bf1b-cdeeb20d7ab8/800.jpeg" style="width: 800px;">
+<h2>Setting</h2>
+<p><strong>Step 1.</strong> The installer in the next step will prompt you to configure the installed programs:</p><img data-max-width="800" data-id="d4423ad7-53de-4170-a6b2-552dd37fb7df" alt="" src="https://cdn.javarush.com/images/article/d4423ad7-53de-4170-a6b2-552dd37fb7df/800.jpeg" style="width: 800px;">
+<p><strong>Step 2.</strong> Click Next and the installer will offer you a default configuration:</p><img data-max-width="800" data-id="df32b6f0-ee2a-4ef4-bfaa-61df14b3d365" alt="" src="https://cdn.javarush.com/images/article/df32b6f0-ee2a-4ef4-bfaa-61df14b3d365/800.jpeg" style="width: 800px;">
+<p>In the first line you can select the configuration type. A Development Computer is exactly what we need.</p>
+<p>It is also suggested here to specify the port on which it will be possible to access the MySQL server. And also the installer immediately offers to take care of your Firewall so that it does not block this port. We don't need anything else.</p>
+<p><strong>Step 3.</strong> In the next step, the installer will offer to create users who will run queries on this SQL server.</p><img data-max-width="800" data-id="e7df59ef-478f-4fe1-bcfe-e7044f303202" alt="" src="https://cdn.javarush.com/images/article/e7df59ef-478f-4fe1-bcfe-e7044f303202/800.jpeg" style="width: 800px;">
+<p>Since the server is offered only for study and development, we will leave only one root user: enter your password. When the same password is needed somewhere in the future, I will refer to it as <strong>mysql-root-password</strong> .</p>
+<p><strong>Step 4.</strong> Your MySQL Server can work as a regular program (application) or as a service in the future.</p><img data-max-width="800" data-id="5f592f36-e37a-4d0c-a2a0-5d55ae2d5115" alt="" src="https://cdn.javarush.com/images/article/5f592f36-e37a-4d0c-a2a0-5d55ae2d5115/800.jpeg" style="width: 800px;">
+<p>I propose to specify all the settings as I have.</p>
+<p><strong>Step 5.</strong> Run the settings and get the result:</p><img data-max-width="800" data-id="2be532e9-d979-4c05-b7bc-11a23b764737" alt="" src="https://cdn.javarush.com/images/article/2be532e9-d979-4c05-b7bc-11a23b764737/800.jpeg" style="width: 800px;">
+<p>You can start working with the server.</p>
+<p><strong>Step 6.</strong> Finally, the universal installer for all products of the MySQL family unexpectedly started. But since we don't need anything else, we just close it.</p><img data-max-width="800" data-id="d94d14f2-9ece-435e-aa5f-7bbd597d3e76" alt="" src="https://cdn.javarush.com/images/article/d94d14f2-9ece-435e-aa5f-7bbd597d3e76/800.jpeg" style="width: 800px;">
+<p>You can always re-run the installer and deliver or upgrade any MySQL components.</p>
+<h2>Starting and stopping the service</h2>
+<p>Starting and stopping MySQL server is very easy. Since we installed it as a Windows Service, it will always be running for you.</p>
+<p>If you need to stop it, then press Ctrl+Shit+Esc and select the Services tab:</p><img data-max-width="1080" data-id="48dd7232-2d9c-4ed3-84cd-083ff054a4c2" alt="" src="https://cdn.javarush.com/images/article/48dd7232-2d9c-4ed3-84cd-083ff054a4c2/1080.jpeg" style="width: 1080px;">
+<p><span class="text-green">By right-clicking on a service name</span> , you can always start or stop it, as well as view its current running status.</p>
+<h2>MySQL Console</h2>
+<p>And although the MySQL server does not have a graphical interface, you can issue commands to it if you start the MySQL Console.</p>
+<p>You need to go to the folder where MySQL was installed, in my case it is:</p>
+<pre><code>C:\Program Files\MySQL\MySQL Server 8.0\bin
+</code></pre>
+<p>And run the mysql.exe application with the following command:</p>
+<pre><code>mysql.exe -u root -p
+</code></pre>
+<p>The console will then prompt you to enter your root user's password. (mysql-root-password):</p><img data-max-width="800" data-id="2caa6deb-c2e4-4581-b156-f518a03b78de" alt="" src="https://cdn.javarush.com/images/article/2caa6deb-c2e4-4581-b156-f518a03b78de/800.jpeg" style="width: 800px;">
+<p>If the password is correct, you will see the following prompt:</p><img data-max-width="800" data-id="45e06043-26d4-4c23-af8c-f178f7cfa0f5" alt="" src="https://cdn.javarush.com/images/article/45e06043-26d4-4c23-af8c-f178f7cfa0f5/800.jpeg" style="width: 800px;">
+<p>And here you can execute various commands.</p>
+<p>Let's write <span class="text-red"><strong>SELECT VERSION()</strong></span> ; and see the version of our SQL Server:</p><img data-max-width="512" data-id="ab754c11-e7b6-477d-8d8b-c7f8ff04bd3c" alt="" src="https://cdn.javarush.com/images/article/ab754c11-e7b6-477d-8d8b-c7f8ff04bd3c/512.jpeg" style="width: 512px;">
+<p><strong>Important! </strong>Since commands are often multi-line, pressing Enter simply moves the cursor to the next line. To mark the end of a query, you need to put a semicolon at the end of it.</p>

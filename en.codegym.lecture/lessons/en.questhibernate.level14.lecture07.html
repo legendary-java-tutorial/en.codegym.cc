@@ -1,0 +1,98 @@
+to our caching settings in the hibernate.cfg.xml file:</p>
+<pre><code>&lt;property name="hibernate.cache.provider_class" value="net.sf.ehcache.hibernate.SingletEhCacheProvider"/&gt;
+&lt;property name="hibernate.cache.use_second_level_cache" value="true"/&gt;
+&lt;property name="hibernate.cache.use_query_cache" value="true"/&gt;</code></pre>
+<p>Pay attention to the first line - it contains the name of the caching engine class. Hibernate does not actually implement caching internally, instead it provides a set of interfaces with which you can implement your own caching engine.</p>
+<p>Popular implementations include:</p>
+<ul>
+ <li>EHCache</li>
+ <li>OSCache</li>
+ <li>SwarmCache</li>
+ <li>JBoss TreeCache</li>
+</ul>
+<h4>EHCache</h4>
+<p>It can be cached in memory or on disk, as well as in cluster caching, and also supports an optional cache of Hibernate query results.</p>
+<h4>OSCache</h4>
+<p>Supports memory and disk caching in the same JVM with a rich set of expiration policies and query cache support.</p>
+<h4>SwarmCache</h4>
+<p>Cluster cache based on JGroups. It uses clustered invalidation but does not support the Hibernate query cache.</p>
+<h4>JBoss Cache</h4>
+<p>A fully transactional replicated clustered cache, also based on the JGroups multicast library. It supports replication or invalidation, synchronous or asynchronous communication, and optimistic and pessimistic locking. Hibernate query cache is supported.</p>
+<p>These engines do not support all parallel access strategies. The actual situation is described in the table below:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Strategy/Provider</th>
+    <th>Read-only</th>
+    <th>non-strict read-write</th>
+    <th>read-write</th>
+    <th>transactional</th>
+   </tr>
+   <tr>
+    <th>EHCache</th>
+    <td>X</td>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+   </tr>
+   <tr>
+    <th>OSCache</th>
+    <td>X</td>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+   </tr>
+   <tr>
+    <th>SwarmCache</th>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <th>JBoss Cache</th>
+    <td>X</td>
+    <td></td>
+    <td></td>
+    <td>X</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>EHCache configuration example</h2>
+<p><strong>The EHCache</strong> engine has its own configuration file called ehcache.xml. The approximate content of such a file:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token operator">&lt;</span>diskStore path<span class="token operator">=</span><span class="token string">"java.io.tmpdir"</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+
+<span class="token operator">&lt;</span>defaultCache
+    maxElementsInMemory <span class="token operator">=</span> <span class="token string">"1000"</span>
+    eternal <span class="token operator">=</span> <span class="token string">"false"</span>
+    timeToIdleSeconds <span class="token operator">=</span> <span class="token string">"120"</span>
+    timeToLiveSeconds <span class="token operator">=</span> <span class="token string">"120"</span>
+    overflowToDisk <span class="token operator">=</span> <span class="token string">"true"</span>
+<span class="token operator">/</span><span class="token operator">&gt;</span>
+
+<span class="token operator">&lt;</span>cache name <span class="token operator">=</span> <span class="token string">"Employee"</span>
+    maxElementsInMemory <span class="token operator">=</span> <span class="token string">"500"</span>
+    eternal <span class="token operator">=</span> <span class="token string">"true"</span>
+    timeToIdleSeconds <span class="token operator">=</span> <span class="token string">"0"</span>
+    timeToLiveSeconds <span class="token operator">=</span> <span class="token string">"0"</span>
+    overflowToDisk <span class="token operator">=</span> <span class="token string">"false"</span>
+<span class="token operator">/</span><span class="token operator">&gt;</span></code></pre>
+<p>Here you can configure caching settings both in general and for each entity separately. Read more in <a href="https://www.ehcache.org/documentation/3.10/getting-started.html" target="_blank" rel="nofollow">the official documentation</a> .</p>
+<h2>Analysis of caching statistics</h2>
+<p>You may also need to check how well the caching mechanism is configured. Hibernate provides a special Statistics object specifically for this.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Statistics</span> statistics <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">getSessionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getStatistics</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">CacheRegionStatistics</span> cacheStatistics <span class="token operator">=</span> statistics<span class="token punctuation">.</span><span class="token function">getDomainRegionStatistics</span><span class="token punctuation">(</span>“com<span class="token punctuation">.</span>codegym<span class="token punctuation">.</span>employee”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">long</span> hitCount <span class="token operator">=</span> cacheStatistics<span class="token punctuation">.</span><span class="token function">getHitCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">long</span> missCount <span class="token operator">=</span> cacheStatistics<span class="token punctuation">.</span><span class="token function">getMissCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">double</span> hitRatio <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span> hitCount <span class="token operator">/</span> <span class="token punctuation">(</span>hitCount <span class="token operator">+</span> missCount<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We won't go into detail about this, because it will be many more years before you run out of standard caching solutions and need to improve them manually. By the way, this comment may have been extracted from a similar case:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// Dear programmer:</span>
+<span class="token comment">// When you're done "optimizing" this routine</span>
+<span class="token comment">// and realize how big of a mistake it was to do this,</span>
+<span class="token comment">// please increment the counter at the bottom as a warning</span>
+<span class="token comment">// for the next guy:</span>
+<span class="token comment">// number_of_hours_spent_here = 42</span></code></pre>

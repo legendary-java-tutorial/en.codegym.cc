@@ -1,0 +1,48 @@
+Function types in JavaScript
+<p>----------------------------------------</p>
+Different ways to declare functions
+Anonymous functions
+eval() method
+<p>----------------------------------------</p>
+<h2>6.1 Different ways to declare functions</h2>
+<p>Some more useful information about functions in JavaScript. Functions can be declared in several ways, each of which has its own nuances.</p>
+<p>The most standard way is this: keyword <code>function</code>and <code>Name</code>.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="text-red">   function</span> <span class="token function"><span class="text-green">print</span></span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+     console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span></code></pre>
+<p>The second way is to first declare a variable and then assign an anonymous function to it.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java">window<span class="token punctuation">.</span><span class="text-green">print</span> <span class="token operator">=</span> <span class="token function"><span class="text-red">function</span></span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+ <span class="token punctuation">{</span>
+     console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span></code></pre>
+<p>These two methods give <strong>absolutely equivalent results</strong> . When you declare an ordinary function in the first way, a new field is created on the window object with the name of your function and a reference to it is assigned to it.</p>
+<h2>6.2 Anonymous functions</h2>
+<p>It is also possible to create an anonymous function and not assign its value to anything. Why is such a function needed? How to call her?</p>
+<p>And the thing is that you can call it immediately. Let's say we declared a function <code>temp</code>and immediately called it:</p>
+<pre class="line-numbers"><code>
+var <span class="text-green">temp</span> = <span class="text-red">function</span>(data)
+    {
+        console.log(data);
+    }
+ 
+<span class="text-green">temp</span>(<span class="text-user">"some info"</span>);
+</code></pre>
+<p>You can also declare it and immediately call it:</p>
+<pre class="line-numbers"><code>
+<span class="text-yellow">   (</span><span class="text-red">function</span>(data)
+    {
+        console.log(data);
+    }<span class="text-yellow">)</span>(<span class="text-user">"some info"</span>);
+</code></pre>
+<p>Kind of like anonymous inner classes in Java...</p>
+<h2>6.3 eval() method</h2>
+<p>And another interesting way to execute code in JavaScript is to not create functions at all. In JavaScript, you can simply execute code given as a string. There is a special function for this <code>eval()</code>(from evaluation). The general call format looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token function"><span class="text-red">eval</span></span><span class="token punctuation">(</span><span class="token string"><span class="text-green">"code or expression"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Examples:</p>
+<pre class="line-numbers"><code>
+var <span class="text-user">x</span> = <span class="text-red">eval</span>(<span class="text-green">"1/2"</span>);
+<span class="text-red">eval</span>(<span class="text-green">"alert('Hi!')"</span>);
+</code></pre>

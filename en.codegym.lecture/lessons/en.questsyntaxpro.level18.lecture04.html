@@ -1,0 +1,57 @@
+<h2>1. Data conversion</h2>
+<p>The <code>Stream&lt;T&gt;</code> class also has a method that lets you convert data from one type to another. This method is <code><span class="text-red">map</span>()</code>.</p>
+<p>It also returns a stream, but with elements of a different type. The <code><span class="text-red">map</span>()</code> method takes as a method argument a function that converts one data type to another.</p>
+<p>Examples:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-viola">stream</span> = Stream.of(1, 2, 3, 4, 5);
+Stream&lt;String&gt; <span class="text-yellow">stream2</span> = <span class="text-viola">stream</span>.<span class="text-red">map</span>(<span class="code">(<span class="text-neon">x</span>) -&gt; String.valueOf(<span class="text-neon">x</span>)</span>);</code></pre>
+    <div class="lesson-example-caption">Converting an <code>Integer</code> stream to a <code>String</code> stream</div>
+</div>
+<p>The function argument passed to the <code><span class="text-red">map</span>()</code> method takes a number <code class="text-neon">x</code> and returns its string representation. By the way, you can write this code more compactly:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-viola">stream</span> = Stream.of(1, 2, 3, 4, 5);
+Stream&lt;String&gt; <span class="text-yellow">stream2</span> = <span class="text-viola">stream</span>.<span class="text-red">map</span>(<span class="code">String::valueOf</span>);</code></pre>
+    <div class="lesson-example-caption">Converting an <code>Integer</code> stream to a <code>String</code> stream</div>
+</div>
+<p><strong>Converting a string to a number</strong></p>
+<p>Similarly, you can write code to convert a string to a number — this is also not complicated:</p>
+<div class="lesson-example">
+    <pre class="language-java"><code>Stream&lt;Integer&gt; <span class="text-user">stream</span> = Stream.of(1, 2, 3, 4, 5);
+Stream&lt;String&gt; <span class="text-yellow">stream2</span> = <span class="text-user">stream</span>.<span class="text-red">map</span>(<span class="code text-neon">String::valueOf</span>);
+Stream&lt;Integer&gt; <span class="text-viola">stream3</span> = <span class="text-green">stream2</span>.<span class="text-red">map</span>(<span class="code text-neon">Integer::parseInt</span>);</code></pre>
+    <div class="lesson-example-caption">Converting a <code>String</code> stream to an <code>Integer</code> stream</div>
+</div>
+<p><strong>Converting a string to a <code>URI</code></strong></p>
+<p>Data conversion operations can be resource- and time intensive. Let's say we want to convert a collection of strings into URI objects. This is very easy to do, because the URI constructor takes a string as an argument.</p>
+<div class="lesson-example">
+    <pre class="language-java"><code>ArrayList&lt;<span class="text-orange">String</span>&gt; list = new ArrayList&lt;<span class="text-orange">String</span>&gt;();
+list.add("https://google.com");
+list.add("https://linkedin.com");
+list.add("https://yandex.com");
+
+Stream&lt;URI&gt; <span class="text-green">stream</span> = <span class="text-user">list.stream</span>().<span class="text-red">map</span>( <span class="text-orange">URI::new</span> );</code></pre>
+    <div class="lesson-example-caption">Converting a <code>String</code> stream to a <code>URI</code> stream</div>
+</div>
+<p>We created a collection and populated it with 3 web addresses. Then we got a <code>Stream&lt;String&gt;</code> object from the collection, and in turn from that stream we got a <code>Stream&lt;URI&gt;</code> object. We passed the map method a reference to the method that will be used to convert each String to a URI.</p>
+<p>This method (constructor) must take a <code>String</code> as an argument. Everything seems to be perfect...</p>
+<hr>
+<h2>2. Exceptions</h2>
+<p>We might expect that the code above should work, but it won't — the program won't compile. And not because we made a mistake somewhere, but because Java's creators messed up.</p>
+<p>Once upon a time, they had the brilliant idea of adding a checked exception (<code><span class="text-red">URISyntaxException</span></code>) to the <code class="text-user">URI</code> class constructor! And such exceptions must be wrapped in a <code>try-catch</code>.</p>
+<p>So the last line of our code will look like this:</p>
+<pre class="language-java"><code><span class="text-viola">Stream</span>&lt;<span class="code text-user">URI</span>&gt; <span class="text-viola">stream</span> = list.stream().<span class="text-red">map</span>(<span class="text-neon">str</span> -&gt;
+{
+  try
+  {
+     return new <span class="code text-user">URI</span>(<span class="text-neon">str</span>);
+  }
+  catch (<span class="code"><span class="text-red">URISyntaxException</span></span> e)
+  {
+     e.printStackTrace();
+     return null;
+  }
+});</code></pre>
+<p>What can we say? You should think twice before using a <span class="term">checked exception</span>. And think three times before using them in a constructor.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1815"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1816"></div>

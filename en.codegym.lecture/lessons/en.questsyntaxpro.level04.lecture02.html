@@ -1,0 +1,124 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="ae2fe48e-2a94-4ea1-8fa7-b9b54a56e80e" data-max-width="1024" src="https://cdn.javarush.ru/images/article/ae2fe48e-2a94-4ea1-8fa7-b9b54a56e80e/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="e8dabe4f-2896-4914-9ce3-7aca59d52438" data-max-width="1024" src="https://cdn.javarush.ru/images/article/e8dabe4f-2896-4914-9ce3-7aca59d52438/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="addba16b-f0a5-4282-9737-fc587f7c7e21" data-max-width="512" src="https://cdn.javarush.ru/images/article/addba16b-f0a5-4282-9737-fc587f7c7e21/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="ce68e94a-1800-46c0-a338-bd7e957906f4" data-max-width="512" src="https://cdn.javarush.ru/images/article/ce68e94a-1800-46c0-a338-bd7e957906f4/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="2c521485-f5a6-4eb8-9a90-e6d8259cdde7" data-max-width="512" src="https://cdn.javarush.ru/images/article/2c521485-f5a6-4eb8-9a90-e6d8259cdde7/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="af5c9b7d-5967-4bfd-9b31-207e09d6a364" data-max-width="512" src="https://cdn.javarush.ru/images/article/af5c9b7d-5967-4bfd-9b31-207e09d6a364/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Summing numbers using a <code>while</code> loop</h2>
+<p>Let's write a program that reads numbers from the keyboard (as long as the user enters something that looks like a number) and then displays their sum on the screen. Here's how the code of such a program would look (we're only showing the code inside the <code>main</code> method).</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Scanner <span class="code text-viola">console</span> = new Scanner(System.in);
+int <span class="code text-red">sum</span> = 0;
+while (<span class="code text-viola">console</span>.hasNextInt())
+{
+&nbsp; &nbsp;int <span class="code text-green">x</span> = <span class="code text-viola">console</span>.nextInt();
+&nbsp;  <span class="code text-red">sum</span> = <span class="code text-red">sum</span> + <span class="code text-green">x</span>;
+}
+System.out.println(<span class="code text-red">sum</span>);&nbsp;</code></pre>
+        </td>
+        <td>Create a <code class="text-viola">Scanner</code> object to read data from the console.<br>
+            We will store the sum of the numbers in the <code class="text-red">sum</code> variable.<br>
+            As long as numbers are entered from the console<br>
+            <br>
+            read the next number into the <code class="text-green">x</code> variable.<br>
+            Add <code class="text-green">x</code> to the sum of numbers (the <code class="text-red">sum</code> variable).<br><br>
+            Display the calculated sum on the screen.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. Finding the maximum number using a <code>while</code> loop</h2>
+<p>Our second program will also read numbers from the keyboard (as long as the user enters something number-like), but now we want to display the largest of the numbers entered. Here's how the code of such a program would look (we're only showing the code inside the <code>main</code> method).</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Scanner <span class="code text-viola">console</span> = new Scanner(System.in);
+int <span class="code text-red">max</span> = 0;
+while (<span class="code text-viola">console</span>.hasNextInt())
+{
+&nbsp; &nbsp;int <span class="code text-user">x</span> = <span class="code text-viola">console</span>.nextInt();
+&nbsp; &nbsp;if (<span class="code text-user">x</span> &gt; <span class="code text-red">max</span>)
+     <span class="code text-red">max</span> = <span class="code text-user">x</span>;
+}
+System.out.println(<span class="code text-red">max</span>);&nbsp;</code></pre>
+        </td>
+        <td>Create a <code class="text-viola">Scanner</code> object to read data from the console.<br>
+            The <code class="text-red">max</code> variable will store the maximum of the numbers.<br>
+            As long as numbers are entered from the console<br>
+            <br>
+            read the next number into the <code class="text-user">x</code> variable.<br>
+            Compare <code class="text-user">x</code> and <code class="text-red">max</code>. If <code class="text-user">x</code> is greater than <code class="text-red">max</code>,<br>
+            update the maximum.<br><br>
+            Display the maximum number on the screen.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Here's an interesting point: if all the numbers entered from the keyboard are negative, then the program will display <code>0</code>. Which is incorrect.</p>
+<p>As a result, the initial value of the max variable should be as small as possible.</p>
+<p><span class="text-bold">Option 1: </span></p>
+<p>You can set it equal to <code>-2,000,000,000</code> (negative two billion). This isn't a bad start.</p>
+<p><span class="text-bold">Option 2: </span></p>
+<p>Assign the smallest possible <code>int</code> value. There's a special constant for this: <code>Integer.MIN_VALUE</code>;</p>
+<p><span class="text-bold">Option 3:</span></p>
+<p>Better yet, initialize <code>max</code> with the first number entered. This is the best option. But this will only work if the task conditions require the user to enter at least one number.</p>
+
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0409"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0408"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0410"></div>
+
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="e4037090-008b-4434-9a5d-b190f0b1abf0" data-max-width="1024" src="https://cdn.javarush.ru/images/article/e4037090-008b-4434-9a5d-b190f0b1abf0/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="4183a47a-4815-4558-9f1f-d6b0137d2495" data-max-width="512" src="https://cdn.javarush.ru/images/article/4183a47a-4815-4558-9f1f-d6b0137d2495/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="152917ff-fe65-4fa3-83d8-a771427ee8d2" data-max-width="512" src="https://cdn.javarush.ru/images/article/152917ff-fe65-4fa3-83d8-a771427ee8d2/original.png" alt="">
+        </div>
+    </div>
+</div>

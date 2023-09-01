@@ -1,0 +1,40 @@
+Always in the development process, there is a need to comment something out or leave memory for those brave guys who will support our code after it goes into production.</p>
+<p>Commenting out any code inside the JSP is very simple, for this you need to use special "brackets":</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token operator"></span><span class="text-red"><span class="token operator">&lt;</span><span class="token operator">%</span><span class="token operator">--</span></span><span class="token operator"></span> <span class="text-green">a comment</span> <span class="token operator"></span><span class="text-red"><span class="token operator">--</span><span class="token operator">%</span><span class="token operator">&gt;</span></span><span class="token operator"></span></code></pre>
+</div>
+<p>All code inside such brackets will be ignored when converting JSP to Servlet.</p>
+<p>By the way, do not confuse this code with an HTML comment, which, as a reminder, looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token operator"></span><span class="text-red"><span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span></span><span class="token operator"></span> <span class="text-green">HTML <span class="token operator">comment</span> _</span> <span class="token operator"></span><span class="text-red"><span class="token operator">--</span><span class="token operator">&gt;</span></span><span class="token operator"></span></code></pre>
+</div>
+<p>Let's say you messed up and used an HTML comment in your code:</p>
+<pre class="line-numbers"><code>
+    &lt;html&gt; 
+    &lt;body&gt;   <span class="text-yellow">&lt;!--</span>
+<span class="text-red">    &lt;%</span>
+<span class="text-user">        double num = Math.random();
+        if (num &gt; 0.95) {
+            out.print(num);
+        }</span>
+<span class="text-red">    %&gt;</span>  <span class="text-yellow">--&gt;</span>
+    &lt;/body&gt; 
+&lt;/html&gt; 
+
+</code></pre>
+<p>Here is the result:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+    <span class="token class-name">PrintWriter</span> out <span class="token operator">=</span> resp<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;html&gt; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;body&gt; &lt;--"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">double</span> num <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>num <span class="token operator">&gt;</span> <span class="token number">0.95</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+             out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"--&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;/body&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"&lt;/html&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The HTML code will be commented out, but the Java code inside such comments will still be executed.</p>
