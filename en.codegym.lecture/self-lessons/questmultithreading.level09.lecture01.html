@@ -1,0 +1,153 @@
+<p>"Hi, Amigo! Today I'm going to tell you about code styles and the importance of code style."</p>
+<p>"I'll start with what matters most. <span class="text-red"><strong>Java code should be easy to read.</strong></span> The general approach to the code is this: code is written once but read a hundred times."</p>
+<p>"Suppose you and 10 other programmers are writing an application. You work on the application for three years, with intermediate releases every three months."</p>
+<p><span class="text-user">"That long?"</span></p>
+<p>"This is Java, my young grasshopper! "How about an enterprise system running on a dozen servers and written by 100 people over more than 6 years? That happens too sometimes."</p>
+<p><span class="text-user">"Whoa."</span></p>
+<p>"Anyway, the main rule, the main requirement for code is that it must be easy for other developers to read."</p>
+<p>"In other programming languages, people often work as small teams on small tasks, so they may have another main rule, such as 'It works? Excellent'."</p>
+<p>"Over the course of a couple of years, all of your team members will make several changes to code that you've written. And each time they'll have to understand how the code works."</p>
+<p>"And <span class="text-red"><strong>incomprehensible code that works perfectly is difficult to change.</strong></span> <strong>They'll discard it and rewrite it their own way.</strong> So, write code that others can understand. <strong>If you can improve your code, then improve it. If it can be improved, then it needs to be improved!</strong>"</p>
+<p>"If you write code for 15 minutes and then spend two hours improving it, you're doing it right. How much time are you saving the team?"</p>
+<p>"'2 hours to understand your code' x 'the 100 times when people will need to understand it' = 200 hours."</p>
+<p>"I pulled these figures out of thin air, but I want you to understand the problem and its scope. <span class="text-red"><strong>Your code is created to be read by other programmers.</strong></span> Everything else is secondary."</p>
+<p>"Is the code not working correctly? We'll fix it. Not optimized? We'll optimize it. Not documented? We'll add comments."</p>
+<p>"<strong>Is the code hard to read? Throw that crap in the trash and write everything again from scratch!</strong>"</p>
+<p><span class="text-user">"I didn't think it was such a big deal."</span></p>
+<p>"One of the reasons Java is a leading programming language is that all Java code is written to be read by other programmers."</p>
+<p>"Now let's move on to the second question: <strong>how do you make your code as easy to read as possible?</strong>"</p>
+<p>"Anyone can understand when someone speaks familiar words in his or her native language. The same is true here. Code is easy to read when a programmer can easily guess:</p>
+<p><strong>A)</strong> What each method does</p>
+<p><strong>B)</strong> The purpose of each class</p>
+<p><strong>C)</strong> Exactly what each variable stores.</p>
+<p>All of this is communicated in names: class names, method names, and variable names. Additionally, there is style when it comes to naming variables. And there's code style."</p>
+<p><span class="text-user">"I'm ready to listen."</span></p>
+<p>"<span class="text-red"><strong>Programming is based on good English!</strong></span> <strong>A well-written program reads like ordinary technical documentation.</strong>"</p>
+<p>"<strong>Let's start with names.</strong>"</p>
+<p>"A method name should briefly describe what the method does. Then the code can be read like simple prose."</p>
+<div class="code-heading">Program</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public String downloadPhoto(String url)
+{
+ String resultFileName = TempHelper.createTempFileName();
+
+ Downloader downloader = new SingleFileDownloader(new Url(url));
+ downloader.setResultFileName(resultFileName)
+ downloader.start();
+ while(downloader.isDone())
+ {
+  Thread.sleep(1000);
+ }
+
+ if (downloader.hasError())
+  return null;
+
+ return resultFileName;
+}</code></pre>
+<p>"Here's how such a program is read."</p>
+<p><strong>Line 1.</strong></p>
+<p>"The method is called 'downloadPhoto'. It seems that it downloads a photo file from the Internet. Where does it download to? We don't know yet. From where? The method has a parameter named url — that's probably the URL for the download."</p>
+<p><strong>Line 3.</strong></p>
+<p>"The variable resultFileName is declared and assigned a value by TempHelper.createTempFileName();"</p>
+<p>So this must be the local path to the file where we'll save our downloaded file.</p>
+<p>"The name 'TempHelper' doesn't tell us anything. The 'Helper' suffix says that this is a kind of utility class that doesn't contain important business logic, but rather is used to simplify routine tasks that occur frequently."</p>
+<p>"The method name 'createTempFileName' indicates that this method creates and returns the name of a temporary file (temp file). A temp file is a temporary file that is created for a while and then usually deleted by the time the program is closed."</p>
+<p><strong>Line 5.</strong></p>
+<p>"A SingleFileDownloader object is created and assigned to the variable downloader."</p>
+<p>This is the object that will download our file from the Internet.</p>
+<p>"A SingleFileDownloader object is assigned to the variable downloader. From the name, we may assume that the program has several types of downloader classes. One was written for downloading single files, and we can probably expect to encounter other downloaders in the code for groups of files with names like: MultiFileDownloader, FileGroupDownloader, or DirectoryDownloader"</p>
+<p><strong>Line 6.</strong></p>
+<p>"We set the downloader object's resultFileName property equal to the value of the variable resultFileName. In other words, we tell the loader where to save the downloaded file. As you would expect. So, we're basically predicting the code!"</p>
+<p><strong>Line 7.</strong></p>
+<p>"We call the start method. The download starts. That makes sense. I wonder how the download happens: in parts, on a separate thread, or the whole thing right here? If we download the whole thing right here, it could take a long time and have consequences."</p>
+<p><strong>Lines 8-11.</strong></p>
+<p>"Ah. Here we see the standard loop written by someone waiting for a download to finish. The downloder object has a done property, which is returned by the isDone() method. Because the method is called isDone(), rather than getDone(), we conclude that the done variable is a boolean or perhaps a Boolean."</p>
+<p><strong>Lines 13-14.</strong></p>
+<p>"If an error occurs during the download, then the downloadPhoto method returns null. It's good that it handles errors. It's bad that it just returns null—it's not clear what the error is. It would be better to throw an exception with information about the error."</p>
+<p><strong>Line 16.</strong></p>
+<p>"We return the path to the local file that contains the downloaded file."</p>
+<p><span class="text-user">"Whoa!"</span></p>
+<p>"This program's code makes it is absolutely clear what it does. You can even make guesses about how the program is organized and what other classes/methods we'll find."</p>
+<p><span class="text-user">"Now I understand how important names are."</span></p>
+<p>"More about names. You can often guess which methods an object/class has. For example, if an object is a collection, then it will most likely have a size() or count() method to get the number of elements. Also, it will probably have an add() or insert() method. Elements are retrieved from collection classes using get/getItem/getElement methods."</p>
+<p>"If a variable is called i, j, or k, then it is most likely a loop counter."</p>
+<p>"If a variable is called m or n, then it is most likely the size of an array/collection."</p>
+<p>"If a variable is called name, then it is most likely a String containing someone's name."</p>
+<p>"If a class is called FileInputStream, then it is simultaneously a file and an input stream."</p>
+<p>"The more code you see, the easier it is to read others' code."</p>
+<p>"But sometimes there's code that is very difficult to read. In this case, here's a very practical piece of advice:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Tip</th>
+    </tr>
+    <tr>
+        <td><strong>Write code as if it will be <span class="text-red">maintained by a violent psychopath</span> who <span class="text-red">knows where you live</span>.</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That's funny and not funny at the same time."</span></p>
+<p>"Now a little bit about the styles used to name variables."</p>
+<p>"Java developers try to give highly informative names to variables and methods. As a result, names often consist of several words. There are 4 styles for the capitalization of compound names."</p>
+<p><strong>1) Lowercase</strong> – All words are written with lowercase letters. For example:</p>
+<p><span class="text-green"><strong>'Green house'</strong></span> becomes <span class="text-green">'greenhouse'</span></p>
+<p><span class="text-green"><strong>'Hollywood girl'</strong></span> becomes <span class="text-green">'hollywoodgirl'</span></p>
+<p>This style is used for package names.</p>
+<p><strong>2) Uppercase</strong> – All words are written with uppercase letters and separated by an underscore. For example:</p>
+<p><span class="text-green"><strong>'Max value'</strong></span> becomes <span class="text-green">MAX_VALUE</span></p>
+<p><span class="text-green"><strong>'Cat count'</strong></span> becomes <span class="text-green">CAT_COUNT</span></p>
+<p>"This style is used for the names of constants (final static fields)."</p>
+<p><strong>3) CamelCase</strong> – All words are written with lowercase letters, except the first letter of each word is uppercase. For example:</p>
+<p><span class="text-green"><strong>'Green house'</strong></span> becomes <span class="text-green">'GreenHouse'</span></p>
+<p><span class="text-green"><strong>'Hollywood girl'</strong></span> becomes <span class="text-green">'HollywoodGirl'</span></p>
+<p>This style is used for the names of classes and interfaces.</p>
+<p><strong>4) Lower CamelCase (mixed case)</strong> – All words are written using lowercase letters, except the first letter of each word except the first is uppercase. For example:</p>
+<p><span class="text-green"><strong>'Get width'</strong></span> becomes <span class="text-green">'getWidth'</span></p>
+<p><span class="text-green"><strong>'Get Hollywood girl name'</strong></span> becomes <span class="text-green">'getHollywoodGirlName'</span></p>
+<p>"This style is used for the names of variables and methods."</p>
+<p>"So, there aren't too many rules."</p>
+<p><strong>1)</strong> Everything is written in Lower CamelCase.</p>
+<p><strong>2)</strong> Names of classes and interfaces are always capitalized.</p>
+<p><strong>3)</strong> Package names are always lowercase.</p>
+<p><strong>4)</strong> Constants are always uppercase.</p>
+<p>"There are couple of nuances, but in general that's what it is."</p>
+<p>"Now about methods. <span class="text-red"><strong>"Method names almost always start with a verb! 'count' is a bad name for a method.</strong></span> It's better to call it getCount(). A method performs some action on the object: <strong>startDownload</strong>, <strong>interrupt</strong> , <strong>sleep</strong> , <strong>loadPirateMusic</strong>."</p>
+<p>"As you already know, there are getters and setters for working with an object's properties/fields: <strong>getName</strong>/<strong>setName</strong>, <strong>getCount</strong>/<strong>setCount</strong>, etc."</p>
+<p>"The only exception is for booleans. For booleans, getter names use 'is', not 'get', e.g. isDone, isEmpty. This way it's closer to ordinary speech."</p>
+<p>"How about working for two hours a day instead of 8? Tempted?"</p>
+<p><span class="text-user">"Yes!"</span></p>
+<p>"As you should be. For a junior Java developer, the basic requirement is an excellent understanding of the basics of Java, i.e. Java Core."</p>
+<p><span class="text-user">"I have another question. Why do we have these different methods for getting the number of elements?"</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th width="40%">Class</th>
+        <th width="60%">Method/property for getting the number of elements</th>
+    </tr>
+    <tr>
+        <td>String</td>
+        <td><strong>length</strong>()</td>
+    </tr>
+    <tr>
+        <td>Array</td>
+        <td><strong>length</strong></td>
+    </tr>
+    <tr>
+        <td>ArrayList</td>
+        <td><strong>size</strong>()</td>
+    </tr>
+    <tr>
+        <td>ThreadGroup</td>
+        <td>active<strong>Count</strong>()</td>
+    </tr>
+    </tbody>
+</table>
+<p>"First of all, Java was invented more than 20 years ago, before requirements like <strong>setCount</strong>/<strong>getCount</strong> had been established, and there was a common approach taken from the C language to 'make it as short as possible'."</p>
+<p>"Second, semantics plays a role here. When talking about an array, we speak of its length. When talking about a collection, we speak of its size."</p>
+<p><span class="text-user">"What an interesting lesson."</span></p>
+<p>"I'd like to tell you more, but I'm afraid that you won't remember it all at once. It's better to dish it out to you in small servings."</p>
+<p>"But I do want to touch on style regarding the use of curly brackets: {}. There are two approaches:"</p>
+<p><strong>1)</strong> The bracket goes on a new line every time</p>
+<p><strong>2)</strong> The opening bracket goes at the end of the previous line, while the closing bracket goes on a new line. This style is called 'Egyptian braces'.</p>
+<p>"Honestly, you get to choose how to code. Many people use an opening brace on the same line. Many people put it on a new line. It's like the debate over which end of the egg to break: the little end or the big end."</p>
+<p>"The only thing I can recommend is to <strong>stick to whatever style is being used in the project your working on.</strong> Don't change someone else's code to match your preferred style. <strong>People are imperfect. I'm telling you this as Doctor Bilaabo.</strong>"</p>
+<p><span class="text-user">"Thanks for the interesting lesson, Bilaabo. I'll go to reflect on what you've said."</span></p>

@@ -1,0 +1,52 @@
+<p>"How about a little training for your brain? I hope it's still in working order."</p>
+<p>"Earlier, in the table of containers and collections you saw that the same interface can have multiple implementations. I'll now tell you why we need that. And how <strong>ArrayList</strong> differs from <strong>LinkedList</strong>."</p>
+<p>"The thing is, <span class="text-green">collections may be implemented in different ways and no implementation is always ideal.</span> <span class="text-corporate">In one approach, some operations are fast, but others are slow. The opposite can be true for another approach.</span> There is no perfect one-size-fits-all solution."</p>
+<p>"That's why the decision was made to implement several versions of the same collection. <span class="text-red">Each implementation should be optimized for some narrow set of operations.</span> This is how different collections came to be. Let's study two classes as examples: <strong>ArrayList</strong> and <strong>LinkedList</strong>."</p>
+
+<a href='https://cdn.codegym.cc/images/article/100c27ce-9ff8-447d-b92d-7feabee15a16/original.jpeg' alt="" target='_blank'><img data-id="100c27ce-9ff8-447d-b92d-7feabee15a16" data-max-width="851" alt="ArrayList vs. LinkedList - 1" src="https://cdn.codegym.cc/images/article/100c27ce-9ff8-447d-b92d-7feabee15a16/original.jpeg"></a>
+
+<p>"Internally, <strong>ArrayList</strong> is implemented <span class="text-green">as an ordinary array</span>. That's why inserting an element in the middle requires that we first shift all the succeeding elements by one, and then put the new element into the free slot. <span class="text-viola">Getting and setting elements (get, set) is fast</span>, since these operations simply address the relevant array element."</p>
+<p>"<strong>LinkedList</strong> has a different internal structure. It's <span class="text-green">implemented as a list with interconnected elements</span>: a set of distinct elements, each of which stores references to the next and previous elements in the list. To insert an element into the middle of such a list, you only need to change the references of its future neighbors. <span class="text-corporate">However, to get element No. 130, you have to run through each object from 0 to 130.</span> In other words, <span class="text-viola">get and set operations will be slow</span>. Look at the following table:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th style="text-align: center;">Description</th>
+        <th style="text-align: center;">Operation</th>
+        <th style="text-align: center;">ArrayList</th>
+        <th style="text-align: center;">LinkedList</th>
+    </tr>
+    <tr>
+        <td>Get an element</td>
+        <td style="text-align: center;">get</td>
+        <td style="text-align: center;"><span class="text-green">Fast</span></td>
+        <td style="text-align: center;"><span class="text-red">Slow </span></td>
+    </tr>
+    <tr>
+        <td>Set an element</td>
+        <td style="text-align: center;">set</td>
+        <td style="text-align: center;"><span class="text-green">Fast</span></td>
+        <td style="text-align: center;"><span class="text-red">Slow </span></td>
+    </tr>
+    <tr>
+        <td>Add an element (to the end of the list)</td>
+        <td style="text-align: center;">add</td>
+        <td style="text-align: center;"><span class="text-green">Fast</span></td>
+        <td style="text-align: center;"><span class="text-green">Fast</span></td>
+    </tr>
+    <tr>
+        <td>Insert an element (at an arbitrary position)</td>
+        <td style="text-align: center;">add(i, value)</td>
+        <td style="text-align: center;"><span class="text-red">Slow </span></td>
+        <td style="text-align: center;"><span class="text-green">Fast</span></td>
+    </tr>
+    <tr>
+        <td>Remove an element</td>
+        <td style="text-align: center;">remove</td>
+        <td style="text-align: center;"><span class="text-red">Slow </span></td>
+        <td style="text-align: center;"><span class="text-green">Fast</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I see. I'm starting to understand it now. Are there any criteria or rules that would help me know which collection is best in a particular situation?"</span></p>
+<p>"To keep it simple, I'll give you the following rule: if you are going to frequently insert (or remove) elements in the middle of the collection, it's better to use <strong>LinkedList</strong>. In all other cases, <strong>ArrayList</strong> works better."</p>
+<p>"We'll delve into how they are structured in more advanced lessons, but for now we'll just practice using them."</p>

@@ -1,0 +1,64 @@
+<p>"Hello, my young friend. I hope you haven't forgotten that I'm a 16th generation bureaucrat. If I hadn't systematized all my knowledge, I would never have achieved what I have. I'm full of useful information. I'm going to help you with some tasks. For starters, let me tell you about a typical
+    Java program."</p>
+<p><span class="text-user">"I'm listening."</span></p>
+<p>"Fact number one. <span class="text-green">A Java program consists of classes.</span> Each class is stored in an individual file, whose name coincides with the class name. The file extension is <em><strong>java</strong></em>."</p>
+<p><span class="text-user">"So, a program consists of a series of files with the 'java' file extension, and each file contains code for just one class, right?</span>"</p>
+<p>"Absolutely correct, Amigo. If a file is called MyCat.java, it contains the MyCat class."</p>
+<p>"Fact number two. <span class="text-green">When we have many class files, we group them into folders and subfolders. Additionally, classes are grouped into packages and sub-packages.</span> <span class="text-corporate">The names of packages and sub-packages must be indicated in class code, and they must be identical to the folder and subfolder names on the drive.</span>"</p>
+<p>"Thus, on the one hand, we have files stored in folders, and on the other – classes stored in packages. A class name must also coincide with the name of the file describing the class. The package name coincides with the name of the folder where the class is stored."</p>
+<p><span class="text-user">"Can you give me any more details?"</span></p>
+<p>"The names of the nested packages are divided by periods, almost like URLs."</p>
+<p>"In other words, suppose you have a class named Cat, stored in an <strong>animals.pets</strong> package. That means:</p>
+<p>The hard drive has some folder (we'll call it <strong>src</strong>) where all the project files are stored.</p>
+<p>It contains a folder named <strong>animals</strong>, which in turn contains <strong>a pets</strong> subfolder.</p>
+<p><strong>The pets</strong> folder contains a <strong>Cat</strong>.java file, which in turn contains code for the <strong>Cat</strong> class."</p>
+<p><span class="text-user">"I'm not quite sure I understand."</span></p>
+<p>"Look. The structure of the classes and packages mirrors the structure of folders and files on the drive. If we have a file named <span class="text-red">House</span>.java, stored in the src<strong>/com/houses</strong> folder, then there is a class named <span class="text-red">House</span>, stored in the <span class="text-red">com.houses</span> package."</p>
+<p><span class="text-user">"Got it."</span></p>
+<p>"You seem to be picking this up rather quickly. Look at the screen. This is code for a small class. I've labeled all the key parts:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-neon">        PACKAGE NAME</span>
+package com.futujava.lesson2;
+import java.io.IOException;
+/**
+ * User: General
+ * Date: 12/21/12
+ * Time: 11:59
+ */
+             <span class="text-neon">CLASS NAME</span>
+public class Task1
+{
+                                                              <span class="text-neon">⎤</span>
+   private static String TEXT = "Kiss my metal rear actuator";<span class="text-neon">⎥ CLASS VARIABLE</span>
+                                                              <span class="text-neon">⎦</span>
+                                                                <span class="text-neon">⎤</span>
+   public static void main(String[] args) throws IOException    <span class="text-neon">⎥</span>
+   {                                                            <span class="text-neon">⎥</span>
+      <span class="text-neon">SCREEN OUTPUT</span>                    <span class="text-neon">SINGLE-LINE COMMENT</span>      <span class="text-neon">⎥</span>
+      System.out.println(TEXT); //Display a single string  <span class="text-neon">     ⎥</span>
+        <span class="text-neon">MULTILINE COMMENT</span>                                       <span class="text-neon">⎥</span>
+      /*                                                        <span class="text-neon">⎥</span>
+        This is a multiline comment.                            <span class="text-neon">⎥</span>
+        The code below will display three identical strings.    <span class="text-neon">⎥ main() METHOD</span>
+       */                                                       <span class="text-neon">⎥</span>
+      <span class="text-neon">VARIABLE DECLARATION</span>                                      <span class="text-neon">⎥</span>
+      String s = "Ho-ho-ho!";                                   <span class="text-neon">⎥</span>
+      <span class="text-neon">METHOD CALL</span>                                               <span class="text-neon">⎥</span>
+      printTextMoreTimes(s, 3);                                 <span class="text-neon">⎥</span>
+   }                                                            <span class="text-neon">⎥</span>
+                                                                <span class="text-neon">⎦</span>
+                                          <span class="text-neon">METHOD PARAMETERS</span>   <span class="text-neon">⎤</span>
+   public static void printTextMoreTimes(String s, int count) <span class="text-neon">⎥ METHOD SIGNATURE</span>
+                                                            <span class="text-neon">  ⎦</span>
+                                                                <span class="text-neon">⎤</span>
+   {                                                            <span class="text-neon">⎥</span>
+      <span class="text-neon">LOOP</span>                                                      <span class="text-neon">⎥</span>
+      for (int i = 0; i &lt; count; i++)                           <span class="text-neon">⎥</span>
+      <span class="text-neon">LOOP BODY</span>                                                 <span class="text-neon">⎥ METHOD BODY/CODE</span>
+      {                                                         <span class="text-neon">⎥</span>
+         System.out.println(s);                                 <span class="text-neon">⎥</span>
+      }                                                         <span class="text-neon">⎥</span>
+   }                                                            <span class="text-neon">⎥</span>
+<span class="text-neon">                                                                ⎦</span>
+}</code></pre>
+<p><span class="text-user">"Heh, it's as clear as can be after just one explanation."</span></p>
+<p>"Good! That's all we need. Just try to understand at least something. A complete understanding will come with time. Now, I'm going to catch some Z's. Somebody else will continue your training."</p>

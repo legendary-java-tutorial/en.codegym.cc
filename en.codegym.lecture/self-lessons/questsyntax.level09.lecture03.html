@@ -1,0 +1,125 @@
+<p>"Hi, Amigo. We're going to have a very interesting lesson today. I'm going to tell you about exceptions. <span class="text-green"><a href='https://codegym.cc/groups/posts/exceptions-in-java' target='_blank'>Exceptions</a> are a special mechanism that lets us handle errors in the program.</span> Here are some examples of errors that might occur in a program:</p>
+<p>1. The program may try to write a file when the hard drive is completely full.</p>
+<p>2. The program may try to call a method on a variable storing a null reference.</p>
+<p>3. The program may try to divide a number by 0."</p>
+<p><span class="text-red">All these actions result in errors.</span> Usually, <span class="text-red">the result is that the program immediately terminates,</span> since it makes no sense to continue executing code in this case.</p>
+<p><span class="text-user">"Why?"</span></p>
+<p>"Does it make sense to keep turning a wheel if the car has gone off the road and is falling from a cliff?"</p>
+<p><span class="text-user">"Should the program stop running, then?"</span></p>
+<p>"Yes. At least, this is what used to happen. <span class="text-red">Any error caused the program to terminate."</p>
+<p>"That's a very smart approach."</p>
+<p><span class="text-user">"But wouldn't it be better to try and continue running the program?"</span></p>
+<p>"Yes. Suppose you typed a huge amount of text in Word and saved it. What if the save operation fails, but the program leads you to believe that everything is fine? And you go on typing. That would be stupid, wouldn't it?"</p>
+<p><span class="text-user">"Yep."</span></p>
+<p>"Then programmers came up with an interesting solution: <span class="text-corporate">each function would return the status of its work. 0 meant that it worked as expected. Any other value would mean that some error occurred,</span> and the return value was an error code."</p>
+<p>"However, that approach also has its shortcomings. After every (!) function call, you have to check the return code (number). First of all, this is inconvenient: the error-handling code is rarely executed but needs to be included everywhere. Second, functions often return different values – what are you supposed to do with them?"</p>
+<p><span class="text-user">"Right. I thought about that too."</span></p>
+<p>"Then, a bright future arrived in the form of exceptions and an error-handling mechanism. Here's how it works:</p>
+<p>1. <span class="text-green">When an error occurs, the Java Machine creates a special object – an exception – where it saves all the error information.</span> There are different exceptions for different errors.</p>
+<p>2. An exception causes the program to immediately exit the current function, and the next function, and so on – until it exits the main method. Then the program terminates. <span class="text-viola">Programmers may also say that the Java Machine 'unwinds the call stack'."</span></p>
+<p><span class="text-user">"But you said that the program doesn't always terminate."</span></p>
+<p>"Yes, because <span class="text-green">there is a way to catch an exception.</span> We can write special code in the right place to catch the exceptions we care about and to do something with them. This is important stuff."</p>
+<p>"To help us do this, there is a special <strong>try-catch</strong> construct. Here's how it works:"</p>
+<table>
+<thead>
+<tr>
+<th>Example of a program that catches an exception (division by 0) and keeps on working.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class ExceptionExample2
+{
+    public static void main(String[] args)
+    {
+        System.out.println("Program starts");
+
+        try
+        {
+            System.out.println(<span class="text-user">"Before calling method1"</span>);
+            <span class="text-viola">method1</span>();
+            System.out.println(<span class="text-user">"After calling method1. This will never be shown"</span>);
+        }
+        <strong>catch (Exception e)</strong>
+        {
+           System.out.println(<span class="text-red">"Exception has been caught"</span>);
+        }
+
+        System.out.println("Program is still running");
+    }
+
+    <span class="text-viola">public static void method1(</span>)
+    {
+        int a = 100;
+        int b = 0;
+        System.out.println(a / b);
+    }
+}</code></pre>
+</td>
+</tr>
+<tr><th>Screen output:</th></tr>
+<tr>
+<td><pre class="line-numbers language-java data-line="" data-start=""><code>
+<span class="text-green">Program starts</span>
+<span class="text-user">Before method1 calling</span>
+<span class="text-red">Exception has been caught</span>
+<span class="text-green">Program is still running</span>
+</code>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"But why won't 'After calling method1. This will never be shown' be displayed on the screen?"</span></p>
+<p>"I'm glad you asked. In line 25, we divide by 0, which leads to an error – an exception. The Java Machine creates an <em><span class="text-red">ArithmeticException</span></em> object with information about the error. The object is the exception."</p>
+<p>"The exception occurs inside the <code><span class="text-viola">method1</span></code> method. <span class="text-green">This causes the method to terminate immediately.</span> It would cause the <strong>main</strong> method to terminate if not for <strong>the try-catch</strong> block."</p>
+<p>"If an exception occurs inside <strong>a try</strong> block, it is caught in <strong>the catch</strong> block. <span class="text-red">The remainder of the code in the try block won't be executed. Instead, <strong>the catch</strong> block will begin to be executed.</span>"</p>
+<p><span class="text-user">"I don't get it."</span></p>
+<p>"In other words, the code works like this:</p>
+<p>1. If an exception occurs inside <strong>a try</strong> block, the code ceases to be executed where the exception occurred and <strong>the catch</strong> block starts to be executed.</p>
+<p>2. If <span class="text-green">no exception occurs, then the try block is executed to the end</span>, <span class="text-red">and <strong>the catch</strong> block is not executed.</span>"</p>
+<p><span class="text-user">"Huh?"</span></p>
+<p>"Imagine that after each method call we check whether the method returned normally or was abruptly terminated as a result of an exception. <span class="text-corporate">If there is an exception, then we move to execute the catch block (if there is one) to catch the exception.</span> If there is no catch block, then we terminate the current method, and the method that called us performs the same check."</p>
+<p><span class="text-user">"I think I've got it now."</span></p>
+<p>"Excellent."</p>
+<p><span class="text-user">"What does 'Exception' mean inside the catch statement?"</span></p>
+<p>"<span class="text-green">All exceptions are classes that inherit the Exception class.</span> We can catch a particular exception by specifying the exception class in the <strong>catch</strong> block, or we can catch all exceptions by specifying their common parent class – Exception. Then we can get all the necessary error information from the variable e (it stores a reference to the exception object)."</p>
+<p><span class="text-user">"Cool! If different exceptions occur in my method, then can I process them differently?"</span></p>
+<p>"Not only can you, but you should. You can do that like this:"</p>
+<div class="code-heading">Example:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class ExceptionExample2
+{
+    public static void main(String[] args)
+    {
+        System.out.println("Program starts");
+
+        try
+        {
+            System.out.println("Before calling method1");
+            <span class="text-viola">method1()</span>;
+            System.out.println("After calling method1. This will never be shown");
+        }
+        catch (<span class="text-user">NullPointerException</span> <strong>e</strong>)
+        {
+           System.out.println(<span class="text-green">"Null reference. Exception has been caught"</span>);
+        }
+        catch (<span class="text-green">ArithmeticException</span> e)
+        {
+            System.out.println("Division by zero. Exception has been caught");
+        }
+        catch (<span class="text-red">Exception</span> <strong>e</strong>)
+        {
+            System.out.println("Any other errors. Exception has been caught");
+        }
+
+        System.out.println("Program is still running");
+    }
+
+   <span class="text-viola"> public static void method1()</span>
+    {
+        int a = 100;
+        int b = 0;
+        System.out.println(a / b);
+    }
+}</code></pre>
+<p>"The <strong>try</strong> block can be paired with several <strong>catch</strong> blocks, each of which will catch the specified types of exceptions."</p>
+<p><span class="text-user">"I think I understand. I can't write this myself yet, but if I come across it in code, I won't get scared."</span></p>

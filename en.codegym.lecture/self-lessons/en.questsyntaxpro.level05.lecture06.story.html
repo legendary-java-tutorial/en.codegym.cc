@@ -1,0 +1,200 @@
+<p>"Amigo, I hope by now you've realized how useful arrays are in programming?"</p>
+<p><span class="text-user">"Most definitely, Rishi! I've already solved more than one task."</span></p>
+<p>"Did your tasks have repetitive actions? The kind that you have done over and over again."</p>
+<p><span class="text-user">"If I understood you correctly, you mean similar actions in different tasks? For example, everywhere using a loop to display the contents of an array — I'm so tired of doing that!"</span></p>
+<p>"Yes, that's what I mean. Java's creators noticed that Java programmers often write the same code when working with arrays. For example, code to copy part of an array to another array, or code to fill each cell of an array with the same value. Or your example: code to display the contents of an array in a readable form on the screen.</p>
+<p>"And real programmers have one very important rule: don't repeat yourself. You'll agree that it's wrong to do superfluous work — you won't get paid for it. Effective work is well paid, believe me. Incidentally, a newbie's code is immediately recognizable by the large amount of repetitive code.</p>
+<p>"Java's creators pondered this, and created the special <code>Arrays</code> class (its full name is <code>java.util.Arrays</code>), putting the most popular array-related actions into it."</p>
+<p><span class="text-user">"Hmm... Very interesting. So what does it have exactly?</span></p>
+<p>"It has a lot of methods for every occasion, but first we'll consider just 10 of them — the simplest and most often used.</p>
+<h2><code>Arrays.toString()</code></h2>
+<p>"The first method we'll look at is <code>Arrays.toString()</code>. But first, a little background.</p>
+<p>"Each array in Java has a <code>toString()</code> method, which returns a 'textual representation of the array'. You can get a textual representation of an array using the following statement:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>String <span class="text-green">str</span> = <span class="text-red">name</span>.toString();</code></pre>
+</div>
+<p>"Where <code><span class="text-red">name</span></code> is the name of the array variable, and <code>str</code> is the name of the variable that will store the string representation of the array. Amigo, have you tried printing an array to the screen using the <code>System.out.println(<span class="text-red">name</span>)</code> method?</p>
+<p><span class="text-user">I confess, that did happen. I saw some gibberish. I decided stay out of harm's way and to continue using loops.</span></p>
+<p>"Most likely you saw something like:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code class="text-center"><span class="text-red">I</span>@<span class="text-user">37afeb11</span></code></pre>
+</div>
+<p>"The first letter <code><span class="text-red">I</span></code> means that it is an <code>int</code> array, and the <span class="text-user">symbols</span> after <code>@</code> are the address of a single object in memory. You can think of it as the array's address in memory. On the one hand, this is precisely the information stored in the array variable, but on the other, you expected something different, didn't you?"</p>
+<p><span class="text-user">"Exactly! I was planning to see the values in the array. This was the last thing I expected."</span></p>
+<p>"And that's exactly why they came up with the <code>Arrays.toString()</code> method — to display the values of an array. We call it like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.<span class="text-viola">toString</span>(<span class="text-neon">name</span>);</code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[] <span class="text-neon">array</span> = {1, 2, 3};
+String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.<span class="text-viola">toString</span>(<span class="text-neon">array</span>);</code></pre>
+        </td>
+        <td>The <code><span class="text-green">str</span></code> variable will contain the string <code><span class="text-muted">"</span>[1, 2, 3]<span class="text-muted">"</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[] <span class="text-neon">array</span> = {};
+String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.<span class="text-viola">toString</span>(<span class="text-neon">array</span>);</code></pre>
+        </td>
+        <td>The <code><span class="text-green">str</span></code> variable will contain the string <code><span class="text-muted">"</span>[]<span class="text-muted">"</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String[] <span class="text-neon">array</span> = {<span class="text-green">"Hi", "How's", "life?"</span>};
+String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.<span class="text-viola">toString</span>(<span class="text-neon">array</span>);</code></pre>
+        </td>
+        <td>The <code><span class="text-green">str</span></code> variable will contain the string <code><span class="text-muted">"</span>[Hi, How's, life?]<span class="text-muted">"</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task05.task0513"></div>
+<h2><code>Arrays.deepToString()</code></h2>
+<p>"However, the <code>toString()</code> method isn't adequate when it comes to two-dimensional arrays. In other words, if you try to call <code>Arrays.toString()</code>, you will see something familiar:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code>[<span class="text-red">I</span>@<span class="text-user">37afeb11</span>, <span class="text-red">I</span>@<span class="text-user">37afeb21</span>, <span class="text-red">I</span>@<span class="text-user">37afeb31</span>]</code></pre>
+</div>
+<p>"This is all because the cells of a two-dimensional array store references to one-dimensional arrays. And how are one-dimensional arrays converted to a string? Exactly as you see above.</p>
+<p><span class="text-user">"What to do then? How do we correctly display a two-dimensional array?"</span></p>
+<p>"Java's creators anticipated this too. To this end, the <code>Arrays</code> class has another special method — <code>deepToString()</code>. Calling it looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.<span class="text-viola">deepToString</span>(<span class="text-neon">name</span>);</code></pre>
+</div>
+<p>"This method can be passed arrays that are two-dimensional, one-dimensional, three-dimensional or, in general, any dimension, and it will always display the elements of the array.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[] <span class="text-neon">array</span> = {1, 2, 3};
+String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.<span class="text-viola">deepToString</span>(<span class="text-neon">array</span>);</code></pre>
+        </td>
+        <td>The <code><span class="text-green">str</span></code> variable will contain the string <code><span class="text-muted">"</span>[1, 2, 3]<span class="text-muted">"</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[][] <span class="text-neon">array</span> = { {1, 1}, {2, 2}, {3, 3} };
+String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.<span class="text-viola">deepToString</span>(<span class="text-neon">array</span>);</code></pre>
+        </td>
+        <td>The <code><span class="text-green">str</span></code> variable will contain the string <code><span class="text-muted">"</span>[[1, 1], [2, 2], [3, 3]]<span class="text-muted">"</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[][][] <span class="text-neon">array</span> = { {{1, 2, 3}, {1}}, {{}} };
+String <span class="text-green">str</span> = <span class="text-red">Arrays</span>.<span class="text-viola">deepToString</span>(<span class="text-neon">array</span>);
+</code></pre>
+        </td>
+        <td>The <code><span class="text-green">str</span></code> variable will contain the string <code><span class="text-muted">"</span>[[[1, 2, 3], [1]], [[]]]<span class="text-muted">"</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task05.task0514"></div>
+<h2><code>Arrays.equals()</code></h2>
+<p>"We figured out how to display arrays on the screen. What about comparing arrays? Do you remember what methods we can use to compare strings?"</p>
+<p><span class="text-user">"I usually use the <code>equals</code> method!</span></p>
+<p>"Yes, <code>equals</code>, and also <code>equalsIgnoreCase</code> (which compares strings without regard to uppercase and lowercase).</p>
+<p>"Good news: you can also use the <code>equals</code> method for arrays. Bad news: it doesn't compare the contents of arrays. The <code class="token function">equals</code> method of arrays does the same thing as the <code>==</code> operator — it compares references.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[] <span class="text-red">x1</span> = {1, 2, 3};
+int[] <span class="text-red">x2</span> = {1, 2, 3};
+<span class="text-red">x1</span> == <span class="text-red">x2</span>;</code></pre>
+        </td>
+        <td><code><span class="text-red">false</span></code> (the references are not equal)</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[] <span class="text-red">x1</span> = {1, 2, 3};
+int[] <span class="text-red">x2</span> = {1, 2, 3};
+<span class="text-red">x1</span>.equals(<span class="text-red">x2</span>);</code></pre>
+        </td>
+        <td>The <code class="token function">equals</code> method of <code class="token function">arrays</code> simply compares the references of two arrays.<br><br>
+            <code><span class="text-red">false</span></code> (the references are not equal)</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"So what do we do? How do we compare arrays based on their contents?"</span></p>
+<p>"Again the <code>Arrays</code> class comes to our rescue. More specifically, its <code>Arrays.equals()</code> method. This is how we call it:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">Arrays</span>.<span class="text-viola">equals</span>(<span class="text-green">name1</span>, <span class="text-neon">name2</span>)</code></pre>
+</div>
+<p>"The method returns <code>true</code> if the arrays are of equal length and their elements are equal. Otherwise, it returns <code>false</code>.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-green">x1</span> = {1, 2, 3};
+int[] <span class="text-neon">x2</span> = {1, 2, 3};
+<span class="text-green">x1</span>.equals(<span class="text-neon">x2</span>);</code></pre>
+        </td>
+        <td>The <code class="token function">equals</code> method of <code class="token function">arrays</code> simply compares the references of two arrays.<br><br>
+            <code><span class="text-red">false</span></code> (the references are not equal)</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-green">x1</span> = {1, 2, 3};
+int[] <span class="text-neon">x2</span> = {1, 2, 3};
+<span class="text-red">Arrays</span>.<span class="text-viola">equals</span>(<span class="text-green">x1</span>, <span class="text-neon">x2</span>);</code></pre>
+        </td>
+        <td><br><br><code><span class="text-green">true</span></code> (the contents are equal)</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-green">x1</span> = {1, 2, 3};
+int[] <span class="text-neon">x2</span> = {1, 2, 3, 4};
+<span class="text-red">Arrays</span>.<span class="text-viola">equals</span>(<span class="text-green">x1</span>, <span class="text-neon">x2</span>);</code></pre>
+        </td>
+        <td><br><br><code><span class="text-red">false</span></code> (the contents of the arrays are different)</td>
+    </tr>
+    </tbody>
+</table>
+<h2><code>Arrays.deepEquals()</code></h2>
+<p>"And, as you probably already guessed, the <code>Arrays.equals</code> method will not work correctly for two-dimensional arrays: it treats two-dimensional arrays like a one-dimensional array whose elements are addresses of one-dimensional arrays.</p>
+<p>"Thus, to correctly compare multidimensional arrays (<code>n = 1, 2, 3,... </code>), they came up with the <code>Arrays.deepEquals()</code>method. Calling it looks like this:</p>
+<div class="lesson-example">
+    <pre class="lecture-code language-java line-numbers"><code><span class="text-red">Arrays</span>.<span class="text-viola">deepEquals</span>(<span class="text-green">name1</span>, <span class="text-neon">name2</span>)</code></pre>
+</div>
+<p>"The method returns <code><span class="text-green">true</span></code> if the arrays are of equal length and their elements are equal. Otherwise, it returns <code><span class="text-red">false</span></code><span class="text-red"></span>. If the elements inside the array are also arrays, then the <code>Arrays.deepEquals()</code> method is used to compare them, and so on.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+                <pre class="lecture-code language-java line-numbers"><code>int[][] <span class="text-green">x1</span> = {{1, 2, 3}, {4, 5, 6}};
+int[][] <span class="text-neon">x2</span> = {{1, 2, 3}, {4, 5, 6}};
+
+<span class="text-green">x1</span>.equals(<span class="text-neon">x2</span>);</code></pre></td>
+        <td>The <code class="token function">equals</code> method of <code class="token function">arrays </code> simply compares the references of two arrays.<br><br>
+            <code><span class="text-red">false</span></code> (the references are not equal)</td>
+    </tr>
+    <tr>
+        <td>
+                <pre class="lecture-code language-java line-numbers"><code>int[][] <span class="text-green">x1</span> = {{1, 2, 3}, {4, 5, 6}};
+int[][] <span class="text-neon">x2</span> = {{1, 2, 3}, {4, 5, 6}};
+
+<span class="text-red">Arrays</span>.<span class="text-viola">equals</span>(<span class="text-green">x1</span>, <span class="text-neon">x2</span>);</code></pre>
+        </td>
+        <td>The <code>Arrays.equals</code> method will compare <code> <span class="text-green">x1</span></code> and <code><span class="text-neon">x2</span></code> as one-dimensional arrays that store references. They contain different references.<br>
+            <code><span class="text-red">false</span></code> (the contents of the arrays are not equal)</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[][] <span class="text-green">x1</span> = {{1, 2, 3}, {4, 5, 6}};
+int[][] <span class="text-neon">x2</span> = {{1, 2, 3}, {4, 5, 6}};
+
+<span class="text-red">Arrays</span>.<span class="text-viola">deepEquals</span>(<span class="text-green">x1</span>, <span class="text-neon">x2</span>);</code></pre>
+        </td>
+        <td><br><br><br><code><span class="text-green">true</span></code> (the contents are equal)</td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task05.task0515"></div>
+<p><span class="text-user">"Thank you, Rishi! This lesson is just what I needed to make my life easier and happier in the future. Now I will use the Arrays class's methods and write my programs even faster.</span></p>
+<p>"That's what I was counting on, ha-ha. But these aren't all of the interesting methods in the Arrays class. I will tell you about others next time."</p>

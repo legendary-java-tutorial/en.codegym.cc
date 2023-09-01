@@ -1,0 +1,105 @@
+<p>"Hello, Amigo! Today we're going to once again dig into how <strong>InputStream</strong> and <strong>OutputStream</strong> work. The initial explanation was actually a little simplistic. These are not interfaces. They are abstract classes, and they even have a couple of implemented methods. Let's take a look at the methods they have:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>InputStream methods</th>
+        <th>What the method does</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int <span class="text-red">read</span>(<span class="text-green">byte[]</span> <span class="text-user">buff</span>);</code></pre>
+        </td>
+        <td>This method immediately reads a block of bytes into the <span class="text-user">buffer</span> (<span class="text-green">byte array</span>), until the <span class="text-user">buffer</span> is full or until the source doesn't have any more bytes to read.<br />
+            The method returns the number of bytes actually read (which can be less than the length of the array)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int <span class="text-red">read</span>();</code></pre>
+        </td>
+        <td>This method reads one byte and returns it. The result is widened to an int for looks. If there are no more bytes to read, the method returns -1.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int <span class="text-red">available</span>();</code></pre>
+        </td>
+        <td>This method returns the number of unread (available) bytes.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red">close</span>();</code></pre>
+        </td>
+        <td>This method «closes» the stream. You call this when you're done working with the stream.<br />
+            The object then performs the housekeeping operations needed to close the file, etc.<br />
+            At this point, you can't read any more data from the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"So we can read not only single bytes, but also whole blocks?"</span></p>
+<p>"Exactly."</p>
+<p><span class="text-user">"Can we also write whole blocks?"</span></p>
+<p>"Yes, check it out:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>OutputStream methods</th>
+        <th>What the method does</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red">write</span>(int c);</code></pre>
+        </td>
+        <td>This method writes one byte. The int type is narrowed to a byte. The extra part is simply discarded.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red">write</span>(byte[] buff);</code></pre>
+        </td>
+        <td>This method writes a block of bytes.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red">write</span>(byte[] buff, int from, int count);</code></pre>
+        </td>
+        <td>This method writes<em><strong> part</strong></em> of a block of bytes. It is used in cases when the byte array may not have been filled entirely.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red">flush</span>();</code></pre>
+        </td>
+        <td>If the stream is internally storing any data that has not yet been written, this method forces it to be written.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red">close</span>();</code></pre>
+        </td>
+        <td>This method «closes» the stream. You call this when you're done working with the stream.<br />
+            The object then performs the housekeeping operations needed to close the file, etc. You can't write data to the stream any longer, and flush is called automatically.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"What would the file copying code look like if we read whole blocks at a time instead of single bytes?"</span></p>
+<p>"Hmm. Something like this:"</p>
+<div class="code-heading">Copy a file on disk</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+ //Create a stream to read bytes from a file
+ <span class="text-green">FileInputStream<strong> inputStream</strong></span> = new <span class="text-green">FileInputStream</span>("c:/data.txt");
+ //Create a stream to write bytes to a file
+ <span class="text-user">FileOutputStream outputStream</span> = new <span class="text-user">FileOutputStream</span>("c:/result.txt");
+
+  <span class="text-red">byte[] buffer = new byte[1000];</span>
+ while (<span class="text-green">inputStream.<strong>available</strong>() &gt; 0</span>) //as long as there are unread bytes
+ {
+  //Read the next block of bytes into buffer, and store the actual number of bytes read in count.
+  <span class="text-red">int count</span> = <span class="text-green">inputStream.<strong>read</strong></span>(<span class="text-red">buffer</span>);
+  <span class="text-user">outputStream.<strong>write</strong></span>(<span class="text-red">buffer, 0, count</span>); //Write a block (part of a block) to the second stream
+ }
+
+ <span class="text-green">inputStream</span>.close(); //Close both streams. We don't need them any more.
+ <span class="text-user">outputStream</span>.close();
+}</code></pre>
+<p><span class="text-user">"I understand everything about the buffer, but what's this count variable?"</span></p>
+<p>"When we read the latest block of data from a file, we may get, say, 328 bytes instead of 1000. So when we write the data, we need to indicate that we're not writing the entire block—only the first 328 bytes."</p>
+<p>When we read the last block, the <strong>read</strong> method will return the number of bytes actually read. 1000 every time we read a block, except for the last block, when we get 328.</p>
+<p>So when we write a block, we indicate that not all of the bytes in the buffer should be written, just 328 (i.e. the value stored in the count variable).</p>
+<p><span class="text-user">"Now it's all clear. Thanks, Ellie."</span></p>

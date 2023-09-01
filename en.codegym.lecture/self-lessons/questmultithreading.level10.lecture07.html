@@ -1,0 +1,77 @@
+<a href='https://cdn.codegym.cc/images/article/e6be7faf-7335-4926-a064-96ad05fbe84b/original.jpeg' target='_blank'><img data-id="e6be7faf-7335-4926-a064-96ad05fbe84b" data-max-width="850" alt="Bitwise operators (&amp;, XOR, &lt;&lt;, ...) - 1" src="https://cdn.codegym.cc/images/article/e6be7faf-7335-4926-a064-96ad05fbe84b/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"One more little lesson about bitwise operators."</p>
+<p>"You know that in addition to the logical operators AND (&&), OR (||) and NOT (!), there are also bitwise operators AND (&), OR (|), NOT (~), and XOR(^), right?"</p>
+<p><span class="text-user">"Yep. Bilaabo once gave a very good lesson about this."</span></p>
+<p>"Well, about these operators. I've got two things to tell you:"</p>
+<p>"First, except for NOT (~), they can be applied to boolean variables, just like logical operators."</p>
+<p>"Second, lazy evaluation does not apply to them."</p>
+<p>"Look at this example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Equivalent code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>if (<span class="text-green">a != null</span> &amp;&amp; <span class="text-neon">a.getName() != null</span> &amp;&amp; <span class="text-red">c != null</span>)
+{
+ c.setName(a.getName());
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>if (<span class="text-green">a != null</span>)
+{
+ if (<span class="text-neon">a.getName() != null</span>)
+ {
+  if (<span class="text-red">c != null</span>)
+  {
+   c.setName(a.getName());
+  }
+ }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Is the left side more compact than the right?"</p>
+<p><span class="text-user">"Yep."</span></p>
+<p>"And does it have the same meaning?"</p>
+<p><span class="text-user">"Yep."</span></p>
+<p>"Quite right. But now look at the same expression using <a href='https://codegym.cc/groups/posts/10-bitwise-operators' target='_blank'>bitwise operators</a>:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Equivalent code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>if (<span class="text-neon">a != null</span> &amp; <span class="text-green">a.getName() != null</span> &amp; <span class="text-red">c != null</span>)
+{
+ <strong>c.setName(a.getName());</strong>
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>boolean <span class="text-neon">c1 = (a != null)</span>;
+boolean <span class="text-green">c2 = (a.getName() != null);</span>
+boolean <span class="text-red">c3 = (c != null);</span>
+if (<span class="text-neon">c1</span>)
+{
+ if (<span class="text-green">c2</span>)
+ {
+  if (<span class="text-red">c3</span>)
+  {
+   c.setName(a.getName());
+ }
+ }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"In other words, the code is the same, but absolutely every operation will be performed."</p>
+<p>"Note that if a is null, an exception will be thrown when calculating c2!"</p>
+<p><span class="text-user">"Ah. I can see that more clearly now."</span></p>

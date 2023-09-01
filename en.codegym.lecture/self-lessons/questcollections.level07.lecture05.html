@@ -1,0 +1,109 @@
+<p>"And at long last, I'll tell you about Map."</p>
+<p>"Map, as you know, stores a set of key-value pairs. The keys must be unique, but the values can be anything. If you add a key-value pair to a Map, and the collection already contains the key, then the old value will be replaced with the new one. In <span class="text-viola">other words, the key acts like a special index that can be any object</span>."</p>
+<p>Map is a mathematical term that denotes a set of (x, y) pairs, in which each unique x corresponds to some y.</p>
+<p>Programmers are very fond of Map, so here we present 4 different collections that implement the Map interface:</p>
+<p>"Here's its simple inheritance structure:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/661ed4bb-7f89-4377-82e7-92e17ee2434f/original.jpeg' target='_blank'><img data-id="661ed4bb-7f89-4377-82e7-92e17ee2434f" data-max-width="850" alt="Map hierarchy - 1" src="https://cdn.codegym.cc/images/article/661ed4bb-7f89-4377-82e7-92e17ee2434f/original.jpeg"></a>
+
+<p>"The yellow indicates that <strong>Entry</strong> is a nested interface in the <strong>Map</strong> interface."</p>
+<p><span class="text-corporate">"Entry was added to describe an element pair as a single entity."</span></p>
+<p>"Here are the methods of Map&lt;K,V&gt;:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>int size()</code></td>
+        <td>Returns the number of pairs in the map.</td>
+    </tr>
+    <tr>
+        <td><code>boolean isEmpty()</code></td>
+        <td>Checks if the map is empty.</td>
+    </tr>
+    <tr>
+        <td><code>boolean containsKey(Object key)</code></td>
+        <td>Does the map contain the specified key?</td>
+    </tr>
+    <tr>
+        <td><code>boolean containsValue(Object value)</code></td>
+        <td>Does the map contain the specified value?</td>
+    </tr>
+    <tr>
+        <td><code>V get(Object key)</code></td>
+        <td>Returns the value for the specified key.</td>
+    </tr>
+    <tr>
+        <td><code>V put(K key, V value)</code></td>
+        <td>Sets a new value for the key.<br />
+            The method returns the old value or null</td>
+    </tr>
+    <tr>
+        <td><code>putAll(Map&lt;? extends K, ? extends V&gt; m)</code></td>
+        <td>Adds pairs from another map.</td>
+    </tr>
+    <tr>
+        <td><code>void clear()</code></td>
+        <td>Clears the map, i.e. removes all pairs.</td>
+    </tr>
+    <tr>
+        <td><code>Set&lt;K&gt;keySet()</code></td>
+        <td>Returns a Set of keys.</td>
+    </tr>
+    <tr>
+        <td><code>Collection&lt;V&gt;values()</code></td>
+        <td>Returns a collection of values.</td>
+    </tr>
+    <tr>
+        <td><code>Set&lt;Map.Entry&lt;K, V&gt;&gt;entrySet()</code></td>
+        <td>Returns a Set of pairs.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"K and V are the type parameters for the keys and values."</p>
+<p><span class="text-user">"Well, I'm familiar with most of the methods, but I've only worked with some of them."</span></p>
+<p><span class="text-user">"What else can you tell me about the Entry class?"</span></p>
+<p>"This class describes a pair of elements. It has a few methods:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>K <strong>getKey</strong>()</code></td>
+        <td>Returns the key of the key-value pair.</td>
+    </tr>
+    <tr>
+        <td><code>V <strong>getValue</strong>()</code></td>
+        <td>Returns the value of the key-value pair.</td>
+    </tr>
+    <tr>
+        <td><code>V <strong>setValue</strong>(V value)</code></td>
+        <td>Sets a new value in the key-value pair.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Entry is convenient, because you can pass a pair to a method without passing the entire map."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"Now I'll go over Map implementations."</p>
+<p>"First up is <strong>HashMap</strong>. It uses hash tables to store elements. Keys and values can be of any type, as well as null. <span class="text-viola">The order of elements can change when the collection changes</span>."</p>
+<p>"Elements are stored in a HashMap as a set of groups or buckets. An element's hashCode() method determines which bucket it falls into."</p>
+<p>"Very roughly speaking, elements with a hash code from 1 to 100 fall into the first bucket, those with a value from 101 to 200 fall into the second, and so on."</p>
+<p>"The point of storing elements in this way is that we can eliminate all the elements in irrelevant buckets when searching for or removing elements."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"There's a really good article about HashMap. I recommend that you read it: <a href="https://medium.com/@mr.anmolsehgal/java-hashmap-internal-implementation-21597e1efec3" target="_blank">https://medium.com/@mr.anmolsehgal/java-hashmap-internal-implementation-21597e1efec3</a>"</p>
+<p>"The second collection is <strong>LinkedHashMap</strong>. Its main difference from HashMap is that it also stores items as a linked list. In an ordinary HashMap, the order of the elements is undefined and may change over time. And you can get an iterator from a LinkedHashMap and use it to walk through all the elements in the order they were added to the LinkedHashMap. Additionally, LinkedHashMap has an iterator that lets you walk through all pairs in order of last use/activity."</p>
+<p>"There's a really good article about LinkedHashMap. Here you go: <a href="https://medium.com/@mr.anmolsehgal/java-linkedhashmap-internal-implementation-44e2e2893036" target="_blank">https://medium.com/@mr.anmolsehgal/java-linkedhashmap-internal-implementation-44e2e2893036</a>"</p>
+<p>"The third collection I'd like to talk about today is <strong>TreeMap</strong>."</p>
+<p>"<strong>TreeMap</strong> keeps its elements sorted in ascending order. This is achieved due to the fact that TreeMap uses a balanced red-black tree to store elements."</p>
+<p>"As a result, insertion time and search time are very low. This class is a great choice when using very large amounts of data."</p>
+<p>"And, of course, we have an article on TreeMap: <a href="https://medium.com/xebia-engineering/treemap-internals-199e0e0050b5" target="_blank">https://medium.com/xebia-engineering/treemap-internals-199e0e0050b5</a>"</p>
+<p>"What haven't I told you about yet?"</p>
+<p><span class="text-user">"WeakHashMap, but Rishi told me about it a couple of days ago."</span></p>
+<p>"When was that?"</p>
+<p><span class="text-user">"When he talked about SoftReference, WeakReference, and PhantomReference."</span></p>
+<p>"I believe you, considering that you named them all correctly. Then go relax. See you tonight."</p>
+<p><span class="text-user">"Bye, Ellie."</span></p>

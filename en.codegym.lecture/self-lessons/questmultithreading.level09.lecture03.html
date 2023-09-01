@@ -1,0 +1,112 @@
+<a href='https://cdn.codegym.cc/images/article/712445ea-d7c9-4e84-a089-0e2c0118befc/original.jpeg' target='_blank'><img data-id="712445ea-d7c9-4e84-a089-0e2c0118befc" data-max-width="850" alt="Autoboxing (immutables) - 1" src="https://cdn.codegym.cc/images/article/712445ea-d7c9-4e84-a089-0e2c0118befc/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"Today I'll tell about <strong>autoboxing</strong>. <strong>AutoBoxing</strong> means to automatically put something into a box."</p>
+<p>"You'll recall that Java has types that inherit the Object class, as well as primitive types. But it turns out that convenient things as collections and generics only work with types that inherit Object."</p>
+<p>"Then the decision was made to make a non-primitive counterpart of every primitive type."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Primitive type</th>
+        <th>Non-primitive counterpart</th>
+    </tr>
+    <tr>
+        <td>byte</td>
+        <td>Byte</td>
+    </tr>
+    <tr>
+        <td>short</td>
+        <td>Short</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>Integer</td>
+    </tr>
+    <tr>
+        <td>long</td>
+        <td>Long</td>
+    </tr>
+    <tr>
+        <td>float</td>
+        <td>Float</td>
+    </tr>
+    <tr>
+        <td>double</td>
+        <td>Double</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>Boolean</td>
+    </tr>
+    <tr>
+        <td>char</td>
+        <td>Character</td>
+    </tr>
+    <tr>
+        <td>void</td>
+        <td>Void</td>
+    </tr>
+    </tbody>
+</table>
+<p>"But it's super inconvenient to convert between these types all the time:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int x = 3;
+Integer y = new Integer(x + 1);
+int z = y.intValue();</code></pre>
+<p>"Especially when working directly with collections:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int[] numbers = new int[10];
+ArrayList list = new ArrayList();
+for (int i = 0; i &lt; numbers.length; i++)
+{
+ list.add( new Integer(i));
+}</code></pre>
+<p>"That's why Java's creators invented «autoboxing» of primitive types their and 'unboxing' to their non-primitive counterparts."</p>
+<p>"Here's how it works:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>What you see</th>
+        <th>What really happens</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int x = 3;
+Integer y = x + 1;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int x = 3;
+Integer y = Integer.valueOf(x + 1);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int z = y;</code></pre>
+        </td>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int z = y.intValue();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Boolean b = Boolean.FALSE;
+boolean a = b;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Boolean b = Boolean.FALSE;
+boolean a = b.booleanValue();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = null;
+int y = x;</code></pre>
+        </td>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = null; int y = x.intValue(); //Throws an exception</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"It's all simple. You can assign int and Integer types to each other, and the compiler takes care of everything else."</p>
+<p><span class="text-user">"That's very convenient."</span></p>
+<p>"Yep. But there are nuances that I'll talk about later."</p>

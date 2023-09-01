@@ -1,0 +1,155 @@
+<p>"Hello, Amigo! Today I'll tell you a few interesting things about the BufferedInputStream class, but let's start with «<em><strong>wrappers</strong></em>» and a «<em><strong>bag of sugar</strong></em>»."</p>
+<p><span class="text-user">"What do you mean by «wrapper» and «bag of sugar»?"</span></p>
+<p>"These are metaphors. Listen. So…"</p>
+<p>The «wrapper» (or «decorator») design pattern is a fairly simple and convenient mechanism for extending object functionality without using inheritance.</p>
+
+<a href='https://cdn.codegym.cc/images/article/e1893ee6-700d-47e3-b7b5-a4b67851e22f/original.jpeg' target='_blank'><img data-id="e1893ee6-700d-47e3-b7b5-a4b67851e22f" data-max-width="850" alt="BufferedInputStream - 1" src="https://cdn.codegym.cc/images/article/e1893ee6-700d-47e3-b7b5-a4b67851e22f/original.jpeg"></a>
+
+
+<p>Suppose we have a Cat class with two methods: getName and setName:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class <span class="text-user"><strong>Cat</strong></span>
+{
+ private String name;
+ public <span class="text-user">Cat</span>(String name)
+ {
+  this.name = name;
+ }
+ <span class="text-user"><strong>public</strong> String getName()</span>
+ {
+  return this.name;
+ }
+ <span class="text-user"><strong>public</strong> void setName</span>(String name)
+ {
+  this.name = name;
+ }
+}</code></pre>
+        </td>
+        <td>The Cat class has two methods: getName and setName</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ <span class="text-user"><strong>Cat</strong></span> cat = new <span class="text-user"><strong>Cat</strong></span>("Oscar");
+
+ printName(cat);
+}
+
+public static void printName(<span class="text-user"><strong>Cat cat</strong></span>)
+{
+ System.out.println(<span class="text-user"><strong>cat</strong>.getName()</span>);
+}</code></pre>
+        </td>
+        <td>An example of how it might be used.</p>
+            <p>«Oscar» will be displayed on the console.</td>
+    </tr>
+    </tbody>
+</table>
+<p>Suppose we need to intercept a method call on a <strong>cat</strong> object and perhaps make some small changes. For this, we need to <em><strong>wrap</strong></em> it in its own wrapper class.</p>
+<p><strong>If we want to <em>"wrap"</em> our own code around the method calls on some object, then we need to:</strong></p>
+<p><strong>1)</strong> Create our own wrapper class and inherit from the same class/interface as the object to be wrapped.</p>
+<p><strong>2)</strong> Pass the object to be wrapped to our class's constructor.</p>
+<p><strong>3)</strong> Override all methods in our new class. Invoke the wrapped object's methods inside each of the overridden methods.</p>
+<p><strong>4)</strong> Make whatever changes you want: change what the method calls do, change their parameters, and/or do something else.</p>
+<p>In the example below, we intercept calls to a Cat object's getName method and slightly change its return value.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class <span class="text-user"><strong>Cat</strong></span>
+{
+ private String name;
+ public <span class="text-user">Cat</span>(String name)
+ {
+  this.name = name;
+ }
+ <span class="text-user"><strong>public</strong> String getName()</span>
+ {
+  return this.name;
+ }
+ <span class="text-user"><strong>public</strong> void setName</span>(String name)
+ {
+  this.name = name;
+ }
+}</code></pre>
+        </td>
+        <td>The Cat class contains two methods: getName and setName.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class <span class="text-red">CatWrapper</span> extends Cat
+{
+ private <span class="text-green">Cat <strong>original</strong></span>;
+ public <span class="text-red"><strong>CatWrapper</strong></span> (<span class="text-user">Cat cat</span>)
+ {
+  <span class="text-green">super(</span><span class="text-user">cat.getName()</span><span class="text-green">)</span>;
+  <span class="text-green">this.<strong>original</strong></span> = <span class="text-user">cat</span>;
+ }
+
+ <span class="text-user"><strong>public</strong> String getName()</span>
+ {
+  return "A cat named " + <span class="text-green"><strong>original</strong>.getName()</span>;
+ }
+
+ <span class="text-user"><strong>public</strong> void setName</span>(String name)
+ {
+  <span class="text-green"><strong>original</strong>.setName(name);</span>
+ }
+}</code></pre>
+        </td>
+        <td>The wrapper class. The class <span class="text-red">doesn't store any data except a reference to the original object.</span><br />
+            The class is able to "throw" calls to the original object (setName) passed to the constructor. It can also "catch" these calls and <span class="text-viola">modify their parameters and/or results</span>.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-green"> <strong>Cat</strong> cat</span> = new <span class="text-green"><strong>Cat</strong></span>("Oscar");
+ <span class="text-green"><strong>Cat</strong></span> <span class="text-red">catWrap</span> = new <span class="text-red"><strong>CatWrapper</strong></span> (cat);
+ <strong>printName</strong>(catWrap);
+}
+
+<strong>public static</strong> void <strong>printName</strong>(<span class="text-green">Cat</span> <span class="text-user">named</span>)
+{
+ System.out.println(<strong>named</strong>.getName());
+}</code></pre>
+        </td>
+        <td>An example of how it might be used.</p>
+            <p>«A cat named Oscar».<br>
+                will be displayed on the console</td>
+    </tr>
+    </tbody>
+</table>
+<p>In other words, we quietly replace each original object with a wrapper object, which receives a link to the original object. <span class="text-red">All method calls on the wrapper are forwarded to the original object,</span> and everything runs like clockwork.</p>
+<p><span class="text-user">"I like it. The solution is simple and functional."</span></p>
+<p>"I'll also tell you about a «bag of sugar». This is a metaphor rather than a design pattern. A metaphor for the word buffer and buffering. What is buffering and why do we need it?"</p>
+
+<a href='https://cdn.codegym.cc/images/article/e76d67f1-5741-44e3-ad9d-114e7a0ae230/original.jpeg' target='_blank'><img data-id="e76d67f1-5741-44e3-ad9d-114e7a0ae230" data-max-width="850" alt="BufferedInputStream - 2" src="https://cdn.codegym.cc/images/article/e76d67f1-5741-44e3-ad9d-114e7a0ae230/original.jpeg"></a>
+
+
+<p>Let's say that today it's Rishi's turn to cook, and you're helping him. Rishi isn't here yet, but I want to drink tea. I ask you to bring me a spoonful of sugar. You go to the basement and find a bag of sugar. You can bring me the entire bag, but I don't need the bag. I only need one spoonful. Then, like a good robot, you take one spoonful and bring it to me. I add it to the tea, but it still isn't sweet enough. And I ask you to bring me one more. You again go to the basement and bring another spoonful. Then Ellie comes along, and I ask you to bring sugar for her... All this takes too long and is inefficient.</p>
+<p>Rishi comes, sees all this, and asks you to bring him a sugar bowl full of sugar. Then Ellie and I start asking Rishi for sugar. He simply serves it to us from the sugar bowl, and that's all.</p>
+<p>What happened after Rishi showed up is called <span class="text-red"><strong>buffering</strong></span>: the sugar bowl is a buffer. Thanks to buffering, "clients" can read data from a buffer in <span class="text-red">small portions</span>, while the buffer, in order to save time and effort, reads them from the source in <span class="text-red">large portions</span>.</p>
+<p><span class="text-user">"That's a cool example, Kim. I understand perfectly. The request for a spoonful of sugar is like reading one byte from a stream."</span></p>
+<p>"Exactly. The <strong>BufferedInputStream</strong> class is a classical example of a buffered wrapper. It wraps the InputStream class. It reads data from the original InputStream in large blocks into a buffer, and then pulls it out of the buffer piece-by-piece as we read from it."</p>
+<p><span class="text-user">"Very good. It's all clear. Are there buffers for writing?"</span></p>
+<p>"Oh, sure."</p>
+<p><span class="text-user">"Maybe an example?"</span></p>
+<p>"Imagine a trash can. Instead of going outside to put trash into an incinerator every time, you just throw it into the trash can. Then Bubba takes the can outside once every two weeks. A classic buffer."</p>
+
+<a href='https://cdn.codegym.cc/images/article/52ca4a8f-df42-48b0-9bf1-d491604e6858/original.jpeg' target='_blank'><img data-id="52ca4a8f-df42-48b0-9bf1-d491604e6858" data-max-width="850" alt="" src="https://cdn.codegym.cc/images/article/52ca4a8f-df42-48b0-9bf1-d491604e6858/original.jpeg"></a>
+
+<p><span class="text-user">"How interesting! And a lot clearer than a bag of sugar, by the way."</span></p>
+<p>"And the flush() method is like taking out the garbage right away. You can use it before guests arrive."</p>

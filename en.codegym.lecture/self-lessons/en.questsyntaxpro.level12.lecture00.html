@@ -1,0 +1,384 @@
+<h2>1. List of wrapper types</h2>
+<p>You know that Java has 8 primitive types, which are types that are not classes. On the one hand, this is good — they are simple and take up little space. On the other hand, sometimes classes are just what we need. You'll find out exactly why that is in the next lesson.</p>
+<p>So what can be done?</p>
+<p>Starting with the fifth version of Java, each primitive type gained a twin class. Each such class stores a single field with a value of a specific type. These classes are called <span class="term">wrapper types</span>, because they wrap primitive values in classes.</p>
+<p>Here is a list of these types. Do you know any?</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Primitive type</th>
+        <th class="text-center">Wrapper class</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-green">byte</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code><span class="text-green">Byte</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-green">short</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code><span class="text-green">Short</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-green">int</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code><span class="text-green">Integer</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-green">long</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code><span class="text-green">Long</span></code></pre>
+        </td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-user">float</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code><span class="text-user">Float</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-user">double</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code><span class="text-user">Double</span></code></pre>
+        </td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-red">char</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code><span class="text-red">Character</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-orange">boolean</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code><span class="text-orange">Boolean</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The names of primitive types start with a lowercase letter, but the names of the wrapper classes start with an uppercase letter. Some of the class names are also a little longer: <code>Integer</code> instead of <code>int</code> and <code>Character</code> instead of <code>char</code>.</p>
+<p>All objects of the wrapper classes are unchangeable (<span class="term">immutable</span>).</p>
+<p>Simplified code for the <code>Integer</code> class looks something like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="text-neon">Integer</span>
+{
+   private int <span class="text-user">value</span>;
+
+   <span class="text-neon">Integer</span>(int <span class="text-green">x</span>)
+   {
+      this.<span class="text-user">value</span> = <span class="text-green">x</span>;
+   }
+
+   public int <span class="text-red">intValue</span>()
+   {
+      return this.<span class="text-user">value</span>;
+   }
+
+   public static <span class="text-neon">Integer</span> <span class="text-red">valueOf</span>(int <span class="text-green">x</span>)
+   {
+      return new <span class="text-neon">Integer</span>(<span class="text-green">x</span>);
+   }
+}</code></pre>
+        </td>
+        <td><br><br>Variable<br><br>
+            Constructor<br><br><br><br><br>
+            The method returns a value<br><br><br><br><br>
+            The static method creates a new <code><span class="text-neon">Integer</span></code> object for an <code>int</code> variable</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. Converting an <code>int</code> to an <code>Integer</code></h2>
+<p>Wrapper types are considered counterparts to their primitive siblings: you can easily create a wrapper object that corresponds to a primitive type.</p>
+<p>Let's use the int type as an example to analyze how primitive types interact with their corresponding wrapper types. The code for converting from an <code>int</code> to an <code>Integer</code> and vice versa would look like this:</p>
+<p>To convert an <code>int</code> to an <code>Integer</code>, you need to write this code:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">Integer</span> <span class="text-green">name</span> = new <span class="text-neon">Integer</span>(<span class="text-user">value</span>);</code></pre>
+</div>
+<p>Where <code><span class="text-green">name</span></code> is the name of an <code><span class="text-neon">Integer</span></code> variable, and <code><span class="text-user">value</span></code> is the wrapped <code>int</code> value.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Integer</span> <span class="text-green">age</span> = new <span class="text-neon">Integer</span>(<span class="text-user">18</span>);</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Integer</span> <span class="text-green">hundred</span> = new <span class="text-neon">Integer</span>(<span class="text-user">100</span>);</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Integer</span> <span class="text-green">zero</span> = new <span class="text-neon">Integer</span>(<span class="text-user">0</span>);</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<p>And to convert the an <code>Integer</code> to an <code>int</code>, you need to write this code:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">int</span> <span class="text-user">name</span> = <span class="text-green">variable</span>.<span class="text-red">intValue</span>();</code></pre>
+</div>
+<p>Where <code><span class="text-user">name</span></code> is the name of an <code><span class="text-viola">int</span></code> variable, and <code><span class="text-green">variable</span></code> is a reference to an <code><span class="text-neon">Integer</span></code> object.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Integer</span> <span class="text-green">age</span> = new <span class="text-neon">Integer</span>(<span class="text-user">18</span>);
+int <span class="text-user">x</span> = <span class="text-green">age</span>.<span class="text-red">intValue</span>();</code></pre>
+        </td>
+        <td>
+                <pre><code>
+x == 18</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Integer</span> <span class="text-green">hundred</span> = new <span class="text-neon">Integer</span>(<span class="text-user">100</span>);
+int <span class="text-user">y</span> = <span class="text-green">hundred</span>.<span class="text-red">intValue</span>();</code></pre>
+        </td>
+        <td>
+                <pre><code>
+y == 100</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Integer</span> <span class="text-green">zero</span> = new <span class="text-neon">Integer</span>(<span class="text-user">0</span>);
+int <span class="text-user">z</span> = <span class="text-green">zero</span>.<span class="text-red">intValue</span>();</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+z == 0</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="text-orange">i</span> = <span class="text-user">110</span>;
+<span class="text-neon">Integer</span> <span class="text-green">zero</span> = new <span class="text-neon">Integer</span>(<span class="text-orange">i</span>);
+int <span class="text-user">z</span> = <span class="text-green">zero</span>.<span class="text-red">intValue</span>();</code></pre>
+        </td>
+        <td>
+                <pre><code>
+z == 110</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1201"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1202"></div>
+<hr>
+<h2>3. Autoboxing and unboxing</h2>
+<p>But even simple operations with the <code>Integer</code> type are not easy to write.</p>
+<p>As we said previously, the <code>Integer</code> type is unchangeable (<span class="term">immutable</span>). To create an <code>Integer</code> object with a new <code>int</code> value, you need to explicitly create a new <code>Integer</code> object. That said, it's easy to get the value of an <code>int</code> stored inside an <code>Integer</code> object — just call the <code>intValue()</code> method.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Integer</span> <span class="text-user">a</span> = <span class="text-neon">Integer</span>.valueOf(<span class="text-user">5</span>);
+int <span class="text-green">b</span> = <span class="text-user">a</span>.<span class="text-red">intValue</span>();
+<span class="text-neon">Integer</span> <span class="text-orange">c</span> = new <span class="text-neon">Integer</span>(<span class="text-green">b</span> + <span class="text-user">5</span>)</code></pre>
+        </td>
+        <td>Wrap <code>5</code> in an <code>Integer</code> object<br>
+            Get the value from the <code>Integer</code> object<br>
+            Create a new <code>Integer</code> object (equal to 10)</td>
+    </tr>
+    </tbody>
+</table>
+<p>This is rather cumbersome code, don't you think?</p>
+<p>Java's creators thought so, so they taught the compiler how to do these operations automatically. The automatic conversion of an <code>int</code> to an <code>Integer</code> is called <span class="term"><strong>autoboxing</strong></span> (automatically putting the value into a box), and the reverse operation (converting an <code>Integer</code> to an <code>int</code>) is called <span class="term"><strong>unboxing</strong></span>.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Your code</th>
+        <th>What the compiler sees</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Integer</span> <span class="code text-user">a</span> = 10;</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Integer</span> <span class="code text-user">a</span> = <span class="text-neon">Integer</span>.valueOf(10);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">int</span> <span class="code text-green">b</span> = <span class="code text-user">a</span>;</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">int</span> <span class="code text-green">b</span> = <span class="code text-user">a</span>.<span class="text-red">intValue</span>();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Integer</span> <span class="code text-orange">c</span> = <span class="code text-user">a</span> + <span class="code text-green">b</span>;</code></pre>
+        </td>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">Integer</span> <span class="code text-orange">c</span> = <span class="text-neon">Integer</span>.valueOf(<span class="code text-user">a</span>.<span class="text-red">intValue</span>() + <span class="code text-green">b</span>);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Thanks to autoboxing and unboxing, you can safely assign an <code>int</code> to an <code>Integer</code> variable and vice versa. You can write expressions of any complexity without making a distinction between the <code>int</code> and <code>Integer</code> types.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What the compiler will generate</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer a = 5;
+int b = a;
+Integer c = a + b;
+int d = a + b + c;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>Integer a = <span class="text-neon">Integer</span>.valueOf(5);
+int b = a.<span class="text-red">intValue</span>();
+Integer c = <span class="text-neon">Integer</span>.valueOf(a.<span class="text-red">intValue</span>() + b);
+int d = a.<span class="text-red">intValue</span>() + b + c.<span class="text-red">intValue</span>();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer a = 5;
+int b = 5;
+
+if (a == b)
+{
+   ...
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>Integer a = <span class="text-neon">Integer</span>.valueOf (5);
+int b = 5;
+
+if (a.<span class="text-red">intValue</span>() == b)
+{
+   ...
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>4. Comparing wrapper variables</h2>
+<p>Autoboxing and unboxing are simple and transparent processes. We use <code>new Integer()</code> statements as needed, and we call the <code>intValue()</code> method as needed.</p>
+<p>Everything works nice and easy for you, the programmer. Be keep in mind that <span class="text-green">if you compare an <code><span class="text-green">Integer</span></code> and an <code><span class="text-green">Integer</span></code>, then the comparison is based on reference and not values.</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer <span class="code text-user">a</span> = 1000;
+Integer <span class="code text-green">b</span> = 1000;
+
+System.out.println(<span class="code text-user">a</span> == <span class="code text-green">b</span>);</code></pre>
+        </td>
+        <td><pre><code>
+
+
+<span class="text-red">false</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer <span class="code text-user">a</span> = 1000;
+Integer <span class="code text-green">b</span> = 1000;
+
+System.out.println(<span class="code text-user">a</span>.<span class="text-red">equals</span>(<span class="code text-green">b</span>));</code></pre>
+        </td>
+        <td><pre><code>
+
+
+<span class="text-green">true</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code><span class="text-user">a</span></code> and <code><span class="text-green">b</span></code> variables do not store <code>int</code> values. They store references to objects. That means it is important to remember how to compare them correctly:</p>
+<table>
+    <tbody>
+    <tr>
+        <th><span class="text-red">Wrong</span></th>
+        <th><span class="text-green">Right</span></th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Integer <span class="code text-user">a</span> = 1000;
+Integer <span class="code text-green">b</span> = 1000;
+if (<span class="code text-user">a</span> == <span class="code text-green">b</span>)
+{
+   ...
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>Integer <span class="code text-user">a</span> = 1000;
+Integer <span class="code text-green">b</span> = 1000;
+if (<span class="code text-user">a</span>.equals(<span class="code text-green">b</span>))
+{
+   ...
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1203"></div>

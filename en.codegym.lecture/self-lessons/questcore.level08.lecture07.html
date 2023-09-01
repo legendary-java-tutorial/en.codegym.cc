@@ -1,0 +1,40 @@
+<p>"Hello, Amigo! Today we'll explore some super interesting stuff: how to replace <strong>System.in input stream</strong>."</p>
+<p><strong>System.in</strong> is a simple static <strong>InputStream</strong> variable, but you can't simply assign a new value to it. But you can use the <strong>System.setIn() method.</strong></p>
+<p>First, we need to create a buffer, and then put some values into it. Then we'll wrap it in a class that knows how to read data from the buffer using the InputStream protocol.</p>
+<p>This is how it looks:</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+ //Put data into a string
+ <span class="text-green"><strong>StringBuilder sb</strong></span> = new <span class="text-green"><strong>StringBuilder</strong></span>();
+ <span class="text-green">sb</span>.append("Lena").append('\n');
+ <span class="text-green">sb</span>.append("Olya").append('\n');
+ <span class="text-green">sb</span>.append("Anya").append('\n');
+ <span class="text-user">String <strong>data</strong></span> = <span class="text-green"><strong>sb</strong>.toString</span>();
+
+ //Wrap the string in a ByteArrayInputStream
+ <span class="text-red">InputStream is = new ByteArrayInputStream(</span><span class="text-user">data.getBytes()</span><span class="text-red">);</span>
+
+ //Replace in
+<span class="text-red"> System.setIn(is);</span>
+
+ //Call an ordinary method that doesn't know about our changes
+ readAndPrintLine();
+}
+
+public static void <strong>readAndPrintLine()</strong> throws IOException
+{
+ InputStreamReader isr = new InputStreamReader(System.in);
+ BufferedReader reader = new BufferedReader(isr);
+
+ while (true)
+ {
+  String line = reader.readLine();
+  if (line == null) break;
+  System.out.println(line);
+ }
+ reader.close();
+ isr.close();
+}</code></pre>
+<p><span class="text-user">"Bilaabo! This is the most interesting example I've seen. I didn't know you could do that. Thanks."</span></p>
+<p>"You're welcome, Amigo."</p>

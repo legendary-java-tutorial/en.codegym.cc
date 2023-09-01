@@ -1,0 +1,98 @@
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/qRLcw01T1Yo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"I'd like to tell you a bit <span class="text-green">about comparing variables in Java.</span>"</p>
+<p>"You already know the simplest comparison operators – less than (&lt;) and greater than (&gt;)."</p>
+<p><span class="text-user">"Yep."</span></p>
+<p>"There are also operators like equal to (==) and not equal to (!=). As well as, less than or equal to (&lt;=) and greater than or equal to (&gt;=)."</p>
+<p><span class="text-user">"Now this is getting interesting."</span></p>
+<p><span class="text-red">"Note that there are no =&lt; or =&gt; operators in Java!"</span></p>
+<p>"<span class="text-corporate">The = sign is used for assignment operations.</span> <span class="text-viola">That's why two equal signs (==) are used to test equality.</span> To check that variables <span class="text-red">aren't equal</span>, use the <span class="text-red">!=</span> operator."</p>
+<p><span class="text-user">"I see."</span></p>
+<p><span class="text-green">"When comparing two variables in Java using the == operator, we are comparing the contents of the variables."</span></p>
+<p>"Thus, for <span class="text-corporate">primitive variables</span>, their values are <span class="text-corporate">compared</span>."</p>
+<p>"For <span class="text-corporate">reference variables</span>, <span class="text-corporate">the references are compared</span>. Suppose we <span class="text-red">have identical but distinct objects. Because references to them are different</span>, a comparison will show that they are not equal, i.e. the comparison result will be <strong>false</strong>. <span class="text-viola">A comparison of references will be <strong>true</strong> only if both references point to the same object.</span>"</p>
+<p>"To compare objects' internal contents, we use the special <strong><a href='https://codegym.cc/groups/posts/equals-and-string-comparsions' target='_blank'>equals</a></strong> method. This method (and all methods of the Object class) are added to your class by the compiler even if you don't declare them. Let me show you some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int a = 5;
+int b = 5;
+System.out.println(<span class="text-red">a == b</span>);</code></pre>
+        </td>
+        <td>Compare <span class="text-red">primitive</span> types.<br />
+            <strong><span class="text-red">true</span></strong> will be displayed on the screen.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-green">cat1 = new Cat("Oscar");</span>
+Cat <span class="text-green">cat2 = cat1;</span>
+System.out.println(<span class="text-red">cat1 == cat2</span>);</code></pre>
+        </td>
+        <td>Compare <span class="text-red">references</span>.<br />
+            <strong><span class="text-red">true</span></strong> will be displayed on the screen.<br />
+            Both variables store references <span class="text-red">to the same object</span>.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-green">s = new String("Mom");</span>
+String <span class="text-green">s2 = s;</span>
+System.out.println(<span class="text-red">s == s2</span>);</code></pre>
+        </td>
+        <td>Compare <span class="text-red">references</span>.<br />
+            <strong><span class="text-red">true</span></strong> will be displayed on the screen.<br />
+            Both variables store references <span class="text-red">to the same object</span>.</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-green">cat1 = new Cat("Oscar");</span>
+Cat <span class="text-user">cat2 = new Cat("Oscar");</span>
+System.out.println(<span class="text-green">cat1</span> <span class="text-red">==</span> <span class="text-user">cat2</span>);</code></pre>
+        </td>
+        <td>Compare <span class="text-red">references</span>.<br />
+            <strong><span class="text-red">false</span></strong> will be displayed on the screen.<br />
+            The two variables reference identical Cat objects, but not the same one.</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-green">s = new String("Mom");</span>
+String <span class="text-user">s2 = new String("Mom");</span>
+System.out.println(<span class="text-green">s</span> <span class="text-red">==</span> <span class="text-user">s2</span>);</code></pre>
+        </td>
+        <td>Compare <span class="text-red">references</span>.<br />
+            <strong><span class="text-red">false</span></strong> will be displayed on the screen.<br />
+            The two variables reference identical String objects, but not the same one.</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-green">s = new String("Mom");</span>
+String <span class="text-user">s2 = new String("Mom");</span>
+System.out.println(<span class="text-green">s</span>.<span class="text-red">equals</span>(<span class="text-user">s2</span>));</code></pre>
+        </td>
+        <td>Compare <span class="text-red">objects</span>.<br />
+        <strong><span class="text-red">true</span></strong> will be displayed on the screen.<br />
+        The two variables reference identical String objects</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Oh, I almost forgot! Here are some exercises for you:"</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0418"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0419"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0420"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0421"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0422"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0423"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0424"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0425"></div>

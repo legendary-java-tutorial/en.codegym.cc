@@ -1,0 +1,152 @@
+<p>"Here I am."</p>
+<p><span class="text-user">"I've been waiting for you here for a long time."</span></p>
+<p>"I hope so. Let's carry on, then."</p>
+<p>"I'm going to introduce you to present you a super-duper full-featured utility class for collections."</p>
+<p><span class="text-user">"I'm already shaking all over with excitement."</span></p>
+<p>"Great. Then let's get started. Here are the methods of the Collections class:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean addAll(Collection&lt;? super T&gt; c, T... elements)</code></pre>
+        </td>
+        <td>Adds the passed elements to the passed collection.<br>
+            This method can be conveniently called like this: Collections.addList (list, 10,11,12,13,14,15)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Queue&lt;T&gt; asLifoQueue(Deque&lt;T&gt; deque)</code></pre>
+        </td>
+        <td>Returns a «normal queue» made from a deque.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int binarySearch(List&lt;? extends T&gt; list, T key, Comparator&lt;? super T&gt; c)</code></pre>
+        </td>
+        <td>Performs a binary search for the key element in the list.<br>
+            The list must be sorted.<br>
+            You can specify a comparator to compare the elements.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Collection&lt;E&gt; checkedCollection(Collection&lt;E&gt; c, Class&lt;E&gt; type)</code></pre>
+        </td>
+        <td>Checks that all elements of collection c are of a certain type.<br>
+            Similar methods exist for List, Map, Set, and SortedSet.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)</code></pre>
+        </td>
+        <td>Copies the src list to the dest list.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <b>disjoint</b>(Collection&lt;?&gt; c1, Collection&lt;?&gt; c2)</code></pre>
+        </td>
+        <td>Checks that the collections do not contain common elements</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void <b>fill</b>(List&lt;? super T&gt; list, T obj)</code></pre>
+        </td>
+        <td>Fills list with the element obj</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <b>frequency</b>(Collection&lt;?&gt; c, Object o)</code></pre>
+        </td>
+        <td>Counts how many times object o exists in collection c</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <b>indexOfSubList</b>(List&lt;?&gt; source, List&lt;?&gt; target)</code></pre>
+        </td>
+        <td>Determines the index of the first occurrence of the target list within the source list.<br />
+            The principle is similar to String.indexOf("some string")</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <b>lastIndexOfSubList</b>(List&lt;?&gt; source, List&lt;?&gt; target)</code></pre>
+        </td>
+        <td>Determines the index of the last occurrence of the target list within the source list.<br />
+            Similar to String.lastIndexOf("some string")</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>T <b>max</b>(Collection&lt;? extends T&gt; coll)</code></pre>
+        </td>
+        <td>Searches for the maximum number/value in a collection.<br>
+            How do we find the maximum of 6 numbers?<br />
+            <span class="dred_text text-red">Collections.max(Arrays.asList(51, 42, 33, 24, 15, 6));</span></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>T <b>min</b>(Collection&lt;? extends T&gt; coll)</code></pre>
+        </td>
+        <td>Searches for the minimum value in a collection.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>List&lt;T&gt;<b>nCopies</b>(int n, To)</code></pre>
+        </td>
+        <td>Creates a dummy collection in which the o element appears n times.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <b>replaceAll</b>(List&lt;T&gt; list, T oldVal, T newVal)</code></pre>
+        </td>
+        <td>Replaces all oldVal elements in the list with newVal elements</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void <b>reverse</b>(List&lt;?&gt; list)</code></pre>
+        </td>
+        <td>Reverses the list.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void <b>shuffle</b>(List&lt;?&gt; list)</code></pre>
+        </td>
+        <td>Randomly shuffles the elements of the list.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>List&lt;T&gt;<b>singletonList</b>(To)</code></pre>
+        </td>
+        <td>Returns an immutable list consisting of one passed element.<br />
+            Similar methods exist for Map, Set, and SortedSet.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void <b>sort</b>(List&lt;T&gt; list)</code></pre>
+        </td>
+        <td>Sorts the list in ascending order.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>void <b>swap</b>(List&lt;?&gt; list, int i, int j)</code></pre>
+        </td>
+        <td>Swaps the elements of the list</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Collection&lt;T&gt;<b>synchronizedCollection</b>(Collection&lt;T&gt; c)</code></pre>
+        </td>
+        <td>Wraps this collection in a synchronized counterpart.<br />
+            Similar methods exist for List, Map, Set, and SortedSet.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Whoa! Yeah, this is a whole arsenal, and I've hardly used any of it."</span></p>
+<p>"Actually, this is where my lesson ends today."</p>
+<p>"Take a look at these methods, and find the ones you are most likely to use."</p>
+<p>"Or better yet, study them. They will be useful to you."</p>
+<p><span class="text-user">"Thank you, Rishi. I'll go study."</span></p>

@@ -1,0 +1,219 @@
+<p>"There is nothing better than effective coding, Amigo! Trust an old robot."</p>
+<p><span class="text-user">"Are you talking about ciphers used by spies?"</span></p>
+<p>"Of course not. I'm talking about presenting information in a digestible form. About numeral systems. You are aware that in everyday life most people use the <span class="text-bold">decimal system</span>. It uses 10 symbols to represent every number: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. There are 10 numerals, so the system is called decimal."</p>
+<p>"That was convenient for humans with their ten fingers. But programmers are big-time inventors. They immediately came up with encodings that use a different number of digits. For example, 2, 8, 16, or 64 digits. They did this to make it convenient for computers, which rely on 'there is a signal / there is no signal'."</p>
+<p><span class="text-user">"Ah, I see what they have in common... All these systems are based on powers of two.</span></p>
+<h2>Octal encoding</h2>
+<p>"Good observation. Let's start with an encoding that involves 8 digits. Humans may find this the easiest: just drop the numbers 8 and 9 and — boom — you have the <span class="text-bold">octal encoding</span> (numeral system). You were recently told about literals, right?"</p>
+<p>"Yes, I was."</p>
+<p>"Well, surprise! You can set numeric literals encoded using the octal system. If, of course, you really need to. It's easier than it sounds. <span class="text-orange">Just put 0 in front of the whole number.</span></p>
+<p><span class="text-user">"So <span class="text-green">if a numeric literal starts with zero, does that mean it's octal</span>?"</span></p>
+<p>"Yes, Java will treat it as octal.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>int x = 015; </code></pre>
+        </td>
+        <td>x is 13: 1*8+5</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>int x = 025; </code></pre>
+        </td>
+        <td>x is 21: 2*8+5</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>int x = 0123; </code></pre>
+        </td>
+        <td>x is 83: 1*64+2*8+3 == 1*8<sup>2</sup>+2*8<sup>1</sup>+3*8<sup>0</sup></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>int x = 078;</code></pre>
+        </td>
+        <td><span class="text-red">This will not compile: 8 is not one of the symbols used in the octal encoding.</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"It's unlikely that you need to write octal numbers in your code, but you should know what they are. <span class="text-orange">"After all, you will have to read code written by others.</span> And as mentioned above, programmers are big inventors.</p>
+<p>Well, remember that you can't just go and write 0 in front of every number."</p>
+<p><span class="text-user">"But if I intend for it to be octal, then I can?"</span></p>
+<p>"Yes.</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0905"></div>
+<h2>Binary encoding</h2>
+<p>"Even if you don't understand it yet, binary encoding is your native language. Let me remind you about it. If octal has only the digits 0-7, then binary has only 0 and 1."</p>
+<p><span class="text-user">"Why is this encoding necessary?"</span></p>
+<p>"As I mentioned above, this has everything to do with the internal structure of a computer. Everything in a computer runs on electricity, and as it happens, the most efficient way to store and transmit something using electricity is to use two states: either there is no electricity in the wire (zero) and there is electricity (one)."</p>
+<p><span class="text-user">"That's why it is so popular... Hmm, it seems that I am indeed starting to remember this language!"</span></p>
+<p>"All robots understand it perfectly. Although it is not used very often in Java. <span class="text-green">Java is considered a high-level language, completely abstracted from the hardware it runs on.</span> Indeed, do you really care what format is used to store and process data inside a computer?</p>
+<p>"But over the past decades, programmers have come to love the binary encoding (and other encodings based on it). As a result, Java has operators that take binary numbers as inputs. And the accuracy of floating-point numbers depends on their binary representation.</p>
+<p><span class="text-user">"In short, it is better for you to know about this encoding than to not know."</span></p>
+<p>"Right. And as was the case with octal encoding, Java has a way to encode literals using the binary system."</p>
+<p><span class="text-user">"So they will only be made up of 0s and 1s?"</span></p>
+<p>"Exactly. In order for the <span class="term">Java compiler</span> to understand that the code contains a numeric literal encoded in binary rather than simply a decimal number consisting of zeros and ones, it is customary for all binary literals to begin with the prefix <span class="text-red"><span class="text-bold">0b</span></span> (the 'b' comes from the word binary).</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code><span class="text-bold">int x = <span class="text-red">0b</span>100; </span></code></pre>
+        </td>
+        <td>х is 4: 1*4+0*2+0</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code><span class="text-bold">int</span> <span class="text-bold">x = <span class="text-red">0b</span>1111;</span> </code></pre>
+        </td>
+        <td>х is 15: 1*8+1*4+1*2+1</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code><span class="text-bold">int x = <span class="text-red">0b</span>1111000111; </span></code></pre>
+        </td>
+        <td>х is 967: 1*2<sup>9</sup>+1*2<sup>8</sup>+1*2<sup>7</sup>+1*2<sup>6</sup>+0*2<sup>5</sup>+0*2<sup>4</sup>+0*2<sup>3</sup>+1*2<sup>2</sup>+1*2+1;</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code><span class="text-bold">int x = <span class="text-red">0b</span>12000;</span></code></pre>
+        </td>
+        <td><span class="text-red">This will not compile: 2 is not one of the symbols used in the binary encoding.</span></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0906"></div>
+<h2>Hexadecimal encoding</h2>
+<p>"What's two to the fourth power?"</p>
+<p><span class="text-user">"Sixteen. You figured out the right question to ask a robot that has come as far as me!"</span></p>
+<p>"It seems to you that you have come far. Anyway, sixteen. In addition to octal and binary encodings, literals can also be written in hexadecimal. This is a very popular encoding.</p>
+<p>"That is because although binary notation is as close as possible to how numbers are actually stored, it is too difficult for humans to effectively work with such numbers: in binary, the number one million 20 digits, not 7.</p>
+<p>"That's why programmers came up with the hexadecimal system. After all, as you correctly noted, 16 is 2 raised to the 4th power, so exactly 4 bits correspond to one hexadecimal digit.</p>
+<p><span class="text-user">"So every 4 bits can now be written in a single hexadecimal digit."</span></p>
+<p>"Right. The hexadecimal encoding also has its own unique prefix: <span class="text-bold">0x</span>. Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Decimal number</th>
+        <th>Binary notation</th>
+        <th>Hexadecimal notation</th>
+    </tr>
+    <tr>
+        <td><span class="text-bold">17</span></td>
+        <td><span class="text-bold">0b<span class="text-green">0001<span class="text-orange">0001</span></span></span></td>
+        <td><span class="text-bold">0x<span class="text-green">1</span><span class="text-orange">1</span></span></td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">4</span><span class="text-bold">1</span></td>
+        <td><span class="text-bold">0b<span class="text-green">0010<span class="text-orange"><span class="text-bold">1</span><span class="text-bold">00</span><span class="text-bold">1</span></span></span></span></td>
+        <td><span class="text-bold">0x<span class="text-green">2</span><span class="text-orange">9</span></span></td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">85</span></td>
+        <td><span class="text-bold">0b<span class="text-green">0101</span><span class="text-orange">0101</span></span></td>
+        <td><span class="text-bold">0x<span class="text-green">5</span><span class="text-orange">5</span></span></td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">256</span></td>
+        <td><span class="text-bold">0b<span class="text-red">1<span class="text-green">0000</span></span><span class="text-orange">0000</span></span></td>
+        <td><span class="text-bold">0x<span class="text-red">1</span><span class="text-green">0</span><span class="text-orange">0</span></span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Ok, so it's clear enough how we got the octal system: we just threw out the numbers 8 and 9. But where do we get the 6 missing digits for the hexadecimal system? I would like to see them!"</span></p>
+<p>"It's all straightforward. The first 6 letters of the English alphabet were taken as the 6 missing digits: <span class="text-red"><span class="text-bold">A</span></span> (10), <span class="text-red"><span class="text-bold">B</span></span> (11), <span class="text-red"><span class="text-bold">C</span></span> (12), <span class="text-red"><span class="text-bold">D</span></span> (13), <span class="text-red"><span class="text-bold">E</span></span> (14), <span class="text-red"><span class="text-bold">F</span></span> (15).</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Hexadecimal notation</th>
+        <th>Binary notation</th>
+        <th>Decimal number</th>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-orange">1</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0000</span><span class="text-orange">0001</span></span></td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-orange">9</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0000</span><span class="text-orange">1001</span></span></td>
+        <td>9</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-orange">A</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0000</span><span class="text-orange">1010</span></span></td>
+        <td>10</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-neon">b</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0000</span><span class="text-orange">1011</span></span></td>
+        <td>11</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-orange">C</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0000</span><span class="text-orange">1100</span></span></td>
+        <td>12</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-orange">D</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0000</span><span class="text-orange">1101</span></span></td>
+        <td>13</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-orange">E</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0000</span><span class="text-orange">1110</span></span></td>
+        <td>14</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-orange">F</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0000</span><span class="text-orange">1111</span></span></td>
+        <td>15</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-green">1</span><span class="text-orange">F</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">0001</span><span class="text-orange">1111</span></span></td>
+        <td>31</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-green">A</span><span class="text-orange">F</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">1010</span><span class="text-orange">1111</span></span></td>
+        <td>175</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-green">F</span><span class="text-orange">F</span></span></td>
+        <td><span class="text-bold">0b<span class="text-green">1111</span><span class="text-orange">1111</span></span></td>
+        <td>255</td>
+    </tr>
+    <tr>
+        <td><span class="text-bold">0x<span class="text-red">F</span><span class="text-green">F</span><span class="text-orange">F</span></span></td>
+        <td><span class="text-bold">0b<span class="text-red">1111</span><span class="text-green">1111</span><span class="text-orange">1111</span></span></td>
+        <td>4095</td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0907"></div>
+<p><span class="text-user">"How do you convert a hexadecimal number to decimal?"</span></p>
+<p>"It's very simple. Let's say you have the number <span class="text-bold">0</span><span class="text-bold">x<span class="text-viola">A</span><span class="text-user"><span class="text-red">F<span class="text-green">C</span></span></span><span class="text-orange">F</span></span>. How much is that in decimal? First, we have a positional number system, which means the contribution of each digit to the overall number increases by a factor of 16 as we move from right to left:</p>
+<p><span class="text-bold"><span class="text-viola">A</span>*<span class="text-user">16</span><sup><span class="text-viola">3 </span></sup>+ <span class="text-red">F</span>*<span class="text-user">16</span><sup><span class="text-viola">2</span></sup><sup> </sup>+ <span class="text-green">C</span>*<span class="text-user">16</span><sup><span class="text-viola">1</span></sup><sup> </sup>+ <span class="text-orange">F</span></span></p>
+<p>The symbol A corresponds to the number 10, the letter C says we have the number 12, and the letter F represents fifteen. We get:</p>
+<p><span class="text-bold"><span class="text-viola">10</span>*<span class="text-user">16</span><sup><span class="text-viola">3</span></sup><sup> </sup>+ <span class="text-red">15</span>*<span class="text-user">16</span><sup><span class="text-viola">2 </span></sup>+ <span class="text-green">12</span>*<span class="text-user">16</span><sup><span class="text-viola">1</span></sup><sup> </sup>+ <span class="text-orange">15</span></span></p>
+<p>Raising 16 to the various powers that correspond to the digits, we get:</p>
+<p><span class="text-bold"><span class="text-viola">10</span>*<span class="text-user">4096 </span>+ <span class="text-red">15</span>*<span class="text-user">256</span> + <span class="text-green">12</span>*<span class="text-user">16</span> + <span class="text-orange">15</span></span></p>
+<p>We sum everything up and get:</p>
+<p><span class="text-bold"><span class="text-user">45007</span></span></p>
+<p>"Now you know how 45007 is stored in memory."</p>
+<p><span class="text-user">"Yes, I do. It is <span class="text-bold">0x<span class="text-viola">A</span><span class="text-red">F</span><span class="text-green">C</span><span class="text-orange">F</span></span></span>"</p>
+<p>"Now let's convert it to binary. In binary it would be:</p>
+<p><span class="text-bold">0b<span class="text-viola">1010</span><span class="text-red">1111</span><span class="text-green">1100</span><span class="text-orange">1111</span></span></p>
+<p>"Every set of four bits corresponds to exactly one hexadecimal character. That's super convenient. Without any multiplication or exponentiation."</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0908"></div>

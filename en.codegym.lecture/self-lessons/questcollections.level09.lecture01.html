@@ -1,0 +1,271 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hello, Bilaabo! What are we doing today?"</span></p>
+<p>"Today I'm going to tell you how to install a Tomcat web server."</p>
+
+<a href='https://cdn.codegym.cc/images/article/c482ca65-b793-4c0a-a14e-2df942f64dec/original.jpeg' target='_blank'><img data-id="c482ca65-b793-4c0a-a14e-2df942f64dec" data-max-width="850" alt="Install and configure Tomcat - 1" src="https://cdn.codegym.cc/images/article/c482ca65-b793-4c0a-a14e-2df942f64dec/original.jpeg"></a>
+
+<p><span class="text-user">"What's a web server? What's a regular server?"</span></p>
+<p>"There is a way for programs to interact called a client-server relationship. The server serves client requests. Clients send their requests to the server, and the server fulfills them and returns the result."</p>
+<p>"Imagine a salesperson serving customers in a store. In this case, the salesperson is actually the server, the store's customers are the clients, and the product sold by the salesperson is the result of processing the request (the result of the server's work)."</p>
+<p><span class="text-user">"In other words, a server is the one who serves a customer's requests/orders/needs, right?"</span></p>
+<p>"Yes."</p>
+<p><span class="text-user">"Okay, so what's a web server?"</span></p>
+<p>"A web server is a program that serves page requests from users' browsers."</p>
+<p>"When you enter a specific URL into a browser, the request goes to the server, the server processes the request, generates a web page, and sends it back to the browser."</p>
+
+<a href='https://cdn.codegym.cc/images/article/df3d101f-787c-420e-b180-11d5eac06c9b/original.jpeg' target='_blank'><img data-id="df3d101f-787c-420e-b180-11d5eac06c9b" data-max-width="1024" alt="Install and configure Tomcat - 2" src="https://cdn.codegym.cc/images/article/df3d101f-787c-420e-b180-11d5eac06c9b/original.jpeg"></a>
+
+<p>"The web server is the server. The browser is the client. The URL is the request. The webpage is the result of processing the request."</p>
+<p><span class="text-user">"Ah. The situation is slowly becoming clearer. In other words, a web server is a program(?) that generates pages for browsers. Right?"</span></p>
+<p>"Yes."</p>
+<p>"Let's take an ordinary URL:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Parsing URLs</th>
+    </tr>
+    <tr>
+        <td><strong><span class="text-corporate">http</span>://<span class="text-red">codegym.cc</span>/<span class="text-user">alpha/api/contacts</span>?<span class="text-green">userid=13&amp;filter=none&amp;page=3</span></strong></td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Description of parts of a URL</th>
+    </tr>
+    <tr>
+        <td><span class="text-red">codegym.cc</span> is the <strong>domain name</strong> the unique name (address) of a computer on the Internet</td>
+    </tr>
+    <tr>
+        <td><span class="text-corporate">http</span> is the <strong>protocol</strong> for client-server communication</td>
+    </tr>
+    <tr>
+        <td><span class="text-user">alpha/api/contacts</span> is the web server request or request for a webpage on the server</td>
+    </tr>
+    <tr>
+        <td><span class="text-green">userid=13 &amp;filter=none &amp; page=3 </span> is the web server request or request for a webpage on the server</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Check it out. We get a computer and connect it to the Internet."</p>
+<p>"Then we buy a domain name for it."</p>
+<p>"Then we run a web server on it."</p>
+<p>"Now you can send requests to this web server from any browser by entering a URL with its domain name."</p>
+<p><span class="text-user">"I think I understand."</span></p>
+<p>"I'll share an analogy to make everything a little clearer."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Parsing <s>URL</s> conversations</th>
+    </tr>
+    <tr>
+        <td><strong><span class="text-corporate">English</span>://<span class="text-red">Jason</span>/<span class="text-user">pass me folder</span>?<span class="text-green">number=13</span></strong></td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Description of parts of the <s>URL</s></th>
+    </tr>
+    <tr>
+        <td><span class="text-red">Jason</span> is the unique name of a computer on the Internet</td>
+    </tr>
+    <tr>
+        <td><span class="text-corporate">English</span> is the <strong>protocol</strong> for client-server communication</td>
+    </tr>
+    <tr>
+        <td><span class="text-user">pass me folder</span> is the web server request, or the request for a webpage on the server</td>
+    </tr>
+    <tr>
+        <td><span class="text-green">number=13</span> is a string with the request parameters</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Ah. That really is clearer. Thanks."</span></p>
+<p>"That's not all. Sometimes several web servers run on a single computer. To distinguish them, they are assigned numbers."</p>
+<p>"Think of a domain as a building. If one family lives in the building, then you would write something like «5 Third Anti-Martian Uprising St.» when sending them a letter."</p>
+<p>"Now imagine that several families live in the building."</p>
+<p><span class="text-user">"Like an apartment building?"</span></p>
+<p>"Exactly! It's very similar. Thanks for the analogy."</p>
+<p>"Inside the building, there are many apartments. Some apartments are unoccupied. Some are occupied by web servers. And when you send a request to a web server, you must also specify the apartment number. In a URL, this number is called a port."</p>
+<p>"For example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%"></th>
+    </tr>
+    <tr>
+        <td><strong><span class="text-corporate">http</span>://<span class="text-red">codegym.cc:80</span>/<span class="text-user">alpha/api/contacts</span>?<span class="text-green">userid=13&amp;filter=none&amp;page=3</span></strong></td>
+    </tr>
+    <tr>
+        <td><strong><span class="text-corporate">http</span>://<span class="text-red">codegym.cc:8080</span>/<span class="text-user">alpha/api/contacts</span>?<span class="text-green">userid=13&amp;filter=none&amp;page=3</span></strong></td>
+    </tr>
+    <tr>
+        <td><strong><span class="text-corporate">http</span>://<span class="text-red">codegym.cc:443</span>/<span class="text-user">alpha/api/contacts</span>?<span class="text-green">userid=13&amp;filter=none&amp;page=3</span></strong></td>
+    </tr>
+    </tbody>
+</table>
+<p>"In reality, all servers are apartment buildings. And each has 65,000 apartments (ports)."</p>
+<p><span class="text-user">"Why 65,000?"</span></p>
+<p>"Two bytes are used to indicate a port number. 65536 is the largest integer value that is two bytes long."</p>
+<p>"Each protocol (http, https, ftp, ...) has its own default port."</p>
+<p><span class="text-viola">"If the apartment number (port) is not specified, the protocol's default port is used."</span></p>
+<p><span class="text-viola">"If the protocol is http, then the port is 80. If the protocol is https, then the port is 443, etc."</span></p>
+<p>"In other words, the following entries are equivalent:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">URL</th>
+        <th width="50%">What it really means</th>
+    </tr>
+    <tr>
+        <td><span class="text-red">http</span>://www.mail.google.com</td>
+        <td><span class="text-red">http</span>://www.mail.google.com:<span class="text-red">80</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-red">http</span>://codegym.cc</td>
+        <td><span class="text-red">http</span>://codegym.cc:<span class="text-red">80</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-red">http</span>://codegym.cc/alpha</td>
+        <td><span class="text-red">http</span>://codegym.cc:<span class="text-red">80</span>/alpha</td>
+    </tr>
+    <tr>
+        <td><span class="text-red text-user">https</span>://codegym.cc/api?x</td>
+        <td><span class="text-user">https</span>://codegym.cc:<span class="text-user">443</span>/api?x</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"What if the port is 444, but the protocol is https?"</span></p>
+<p>"I already told you. If the port isn't specified, then it is determined based on the protocol. If it is specified, then the specified port is used."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"You know how humans sometimes use pronouns instead of names: I, you, he, …?"</p>
+<p><span class="text-user">"Yeah, but people are inherently strange. I try not to pay attention to that."</span></p>
+<p>"Well, computers also have a domain name that means 'I'. It's 'localhost'."</p>
+<p>"If you enter <strong>localhost</strong> in your browser, the browser will access your computer."</p>
+<p>"And if you have a web server installed, then it will send a webpage to the browser."</p>
+<p><span class="text-user">"Cool! I want to start a web server and open pages in the browser."</span></p>
+<p><span class="text-user">"Tell me how to do that, Bilaabo. Please!!! You're my friend, right?"</span></p>
+<p>"Bilaabo would do anything for a friend."</p>
+<p>"Listen up."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Step 1</th>
+    </tr>
+    <tr>
+        <td><strong>Install the Java Development Kit (JDK)</strong></td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Result</th>
+    </tr>
+    <tr>
+        <td><strong>The JDK is installed</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p class="text-user">"Bilaabo, I'm a Level 30 programmer. I installed the JDK a long time ago!"</p>
+<p>"Great, then let's carry on."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%"><strong>Step 2</strong></th>
+    </tr>
+    <tr>
+        <td><strong>Download Tomcat 9</strong></td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Hint 1:</th>
+    </tr>
+    <tr>
+        <td><a href="https://www.google.co.th/search?q=tomcat+9+download" target="_blank">Use Google</a></td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Hint 2:</th>
+    </tr>
+    <tr>
+        <td><a href="https://tomcat.apache.org/download-90.cgi" target="_blank">Official Apache Tomcat webpage</a></td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Hint 3 (direct link for Windows users):</th>
+    </tr>
+    <tr>
+        <td><a href="https://tomcat.apache.org/whichversion.html" download="">Download Apache Tomcat</a></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Got it."</span></p>
+<p>"Great."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Step 3</th>
+    </tr>
+    <tr>
+        <td><strong>Install Tomcat 9</strong><br />
+            Use the default installation settings.<br />
+            Don't change anything.</td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Screen 3</th>
+    </tr>
+    </tbody>
+</table>
+<a href='https://cdn.codegym.cc/images/article/2321431c-5b57-4c2a-8260-7c01fd41468a/original.jpeg' target='_blank'><img data-id="2321431c-5b57-4c2a-8260-7c01fd41468a" data-max-width="499" alt="Install and configure Tomcat - 3" src="https://cdn.codegym.cc/images/article/2321431c-5b57-4c2a-8260-7c01fd41468a/original.jpeg"></a>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Screen 4</th>
+    </tr>
+    <tr>
+    </tbody>
+</table>
+
+<a href='https://cdn.codegym.cc/images/article/c82a35e5-a6dd-453c-adf8-42c308714874/original.jpeg' target='_blank'><img data-id="c82a35e5-a6dd-453c-adf8-42c308714874" data-max-width="499" alt="Install and configure Tomcat - 4" src="https://cdn.codegym.cc/images/article/c82a35e5-a6dd-453c-adf8-42c308714874/original.jpeg"></a>
+
+<p>"Here you can set the web server's name and port. The default is port 8080.<br />
+    Don't change anything. Leave everything as it is."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Screen 5</th>
+    </tr>
+    </tbody>
+</table>
+
+<a href='https://cdn.codegym.cc/images/article/b7839c92-ead2-4041-982f-ac11b5e6c4f5/original.jpeg' target='_blank'><img data-id="b7839c92-ead2-4041-982f-ac11b5e6c4f5" data-max-width="499" alt="Install and configure Tomcat - 5" src="https://cdn.codegym.cc/images/article/b7839c92-ead2-4041-982f-ac11b5e6c4f5/original.jpeg"></a>
+
+<p>Specify the folder where the JDK is installed</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Screen 6</th>
+    </tr>
+    </tbody>
+</table>
+
+<a href='https://cdn.codegym.cc/images/article/d712cb1b-a2f1-4a1c-abc0-685f56b62325/original.jpeg' target='_blank'><img data-id="d712cb1b-a2f1-4a1c-abc0-685f56b62325" data-max-width="499" alt="Install and configure Tomcat - 6" src="https://cdn.codegym.cc/images/article/d712cb1b-a2f1-4a1c-abc0-685f56b62325/original.jpeg"></a>
+
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Screen 7</th>
+    </tr>
+    </tbody>
+</table>
+
+<a href='https://cdn.codegym.cc/images/article/013ecaef-32d3-4dcd-8580-aac1bcf05717/original.jpeg' target='_blank'><img data-id="013ecaef-32d3-4dcd-8580-aac1bcf05717" data-max-width="499" alt="Install and configure Tomcat - 7" src="https://cdn.codegym.cc/images/article/013ecaef-32d3-4dcd-8580-aac1bcf05717/original.jpeg"></a>
+
+<p><span class="text-user">"Yep. I just clicked Next and that's it."</span></p>
+<p>"Great. Now you have a Tomcat 9 web server installed and running, listening for requests on port 8080. This is the standard port for software development."</p>
+<p><span class="text-user">"Okay, so I have Tomcat, but how can I write a program for it?"</span></p>
+<p><span class="text-user">"I want it to generate something interesting—some sort of cool webpage."</span></p>
+<p>"OK, I'll tell you how to do that after a short break."</p>

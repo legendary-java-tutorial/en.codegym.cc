@@ -1,0 +1,115 @@
+<p>"Let's move on to a new topic. Now, I'd like to discuss static variables and methods."</p>
+<p><span class="text-user">"Ellie, I've already learned about static variables and methods. But I'd like to learn more details."</span></p>
+<p><span class="text-green">"When we declare variables in a class, we define whether these variables will be created just once, or if each instance (object) of the class will have its own copy. By default, a new copy of a variable is created for each object. This is how it looks:"</span></p>
+<div class="code-heading">Class declaration</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-red">Cat</span>                        // Class
+{
+    String <span class="text-user">name</span>;                 // Variable
+
+    <span class="text-red">Cat</span>(String <span class="text-viola">name</span>)             // Constructor
+    {
+        this.<span class="text-user">name</span> = <span class="text-viola">name</span>;        // Variable initialization
+    }
+}</code></pre>
+<div class="code-heading">Code in the <strong>main</strong> method:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Cat <span class="text-user">cat1</span> = new Cat("Oscar"); // Create one object whose name variable contains "Oscar"
+Cat <span class="text-viola">cat2</span> = new Cat("Missy"); // Create one object whose name variable contains "Missy"
+<span class="text-yellow">System.out.println</span>(<span class="text-user">cat1.name</span>);
+<span class="text-yellow">System.out.println</span>(<span class="text-viola">cat2.name</span>);</code></pre>
+<div class="code-heading">Screen output</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Oscar
+Missy</code></pre>
+<p>"Despite being declared in the same class (Cat), the variables <code><span class="text-user">cat1.name</span></code> and <code><span class="text-viola">cat2.name</span></code> contain different values because they reference different objects."<br />
+    <span class="text-user">"That makes sense."</span><br />
+    "However, only one copy of a static variable exists for every instance of a class, and it must be accessed using the class name."</p>
+<div class="code-heading">Class declaration</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat                   // Сlass
+{
+    <span class="text-green">String name</span>;            // Instance (non-static) variable
+    <span class="text-red">static int catCount</span>;    // Static variable
+
+    Cat(String <span class="text-viola">name</span>)
+    {
+        <span class="text-green">this.name</span> = <span class="text-viola">name</span>;
+        <span class="text-red">Cat.catCount</span>++;   // Increment the static variable by 1
+    }
+}</code></pre>
+<div class="code-heading">Code in the main method:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-yellow">System.out.println</span>(<span class="text-red">Cat.catCount</span>);
+Cat <span class="text-viola">cat1</span> = new Cat("Oscar");
+
+<span class="text-yellow">System.out.println</span>(<span class="text-red">Cat.catCount</span>);
+Cat <span class="text-user">cat2</span> = new Cat("Missy");
+
+<span class="text-yellow">System.out.println</span>(<span class="text-viola">cat1.name</span>);
+<span class="text-yellow">System.out.println</span>(<span class="text-user">cat2.name</span>);
+<span class="text-yellow">System.out.println</span>(<span class="text-red">Cat.catCount</span>);</code></pre>
+<div class="code-heading">Screen output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>0
+1
+Oscar
+Missy
+2</code></pre>
+<p><span class="text-user">"OK, that also makes sense."</span></p>
+<p>"Java methods are divided into two categories. <span class="text-green"><strong>Instance methods</strong> are called on an object and have access to that object's data.</span> <span class="text-red"><strong>Static methods</strong> don't have that access,</span> since they simply don't have an object reference. However, they can reference the class's static variables and other static methods.</p>
+<p><span class="text-red">Static methods can't address non-static methods or non-static variables!"</span></p>
+<p><span class="text-user">"Why is that, Ellie?"</span></p>
+<p>"Each instance variable is contained in an object. It can be accessed only if you have a reference to that object. No such reference is available to a static method."</p>
+<p><span class="text-user">"Do instance methods have such a reference?"</span></p>
+<p>"Yes, it is passed to instance methods indirectly. <span class="text-green">A reference to the object on which an instance method is called is indirectly passed to the instance method.</span> The variable that stores this reference is called <strong><span class="text-red">this</span></strong>. This allows the method to always access the object's data or call another non-static method on the same object.</p>
+<p>Instead of an object reference, null is passed to static methods. That's why they can't address non-static variables and methods. They simply don't have a reference to an object associated with these variables and methods."</p>
+<p><span class="text-user">"OK, Ellie, I understand that."</span></p>
+<p>"This is how non-static methods work:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <div class="code-heading">What the code looks like</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">Cat</span> <span class="text-corporate">cat</span> = new<span class="text-red"> Cat</span>();
+String name = <span class="text-corporate">cat</span>.<span class="text-viola">getName</span>();
+<span class="text-corporate">cat</span>.<span class="text-viola">setAge</span>(17);
+<span class="text-corporate">cat</span>.<span class="text-viola">setChildren</span>(cat1, cat2, cat3);</code></pre>
+        </td>
+        <td>
+            <div class="code-heading">What really happens</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">Cat</span> <span class="text-corporate">cat</span> = new <span class="text-red">Cat</span>();
+String name = <span class="text-red">Cat</span>.<span class="text-viola">getName</span>(<span class="text-corporate">cat</span>);
+<span class="text-red">Cat</span>.<span class="text-viola">setAge</span>(<span class="text-corporate">cat</span>, 17);
+<span class="text-red">Cat</span>.<span class="text-viola">setChildren</span>(<span class="text-corporate">cat</span>, cat1, cat2, cat3);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">When you call a method using &lt;object&gt; dot &lt;method name&gt;, you're  actually calling a class method and passing that same object as the first argument. Inside the method, the object is called <span class="text-red">'this'</span>. All operations in the method are performed on this object and its data."</td>
+    </tr>
+    </tbody>
+</table>
+<p>&#34;Here's how static methods work:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <div class="code-heading">What the code looks like</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">Cat</span> cat1 = new <span class="text-user">Cat</span>();
+<span class="text-user">Cat</span> cat2 = new <span class="text-user">Cat</span>();
+int <span class="text-green">catCount</span> = <span class="text-user">Cat</span><strong>.getAllCatsCount</strong>();</code></pre>
+        </td>
+        <td>
+            <div class="code-heading">What really happens</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">Cat</span> cat1 = new <span class="text-user">Cat</span>();
+<span class="text-user">Cat</span> cat2 = new <span class="text-user">Cat</span>();
+int <span class="text-green">catCount</span> = <span class="text-user">Cat</span><strong>.getAllCatsCount</strong>(<span class="text-red">null</span>);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">When you call a static method, no object is passed to it. In other words, <span class="text-red">'this'</span> equals <span class="text-red">null</span>. That's why a static method can't access non-static variables and methods (since it has nothing to implicitly pass to non-static methods)."</td>
+    </tr>
+    </tbody>
+</table>
+<p>"A variable or method is static if it has the keyword static in front of it."</p>
+<p><span class="text-user">"Why are such methods needed if they are so severely limited?"</span></p>
+<p>"Well, such methods do have their benefits."</p>
+<p>"First, <span class="text-green">we don't have to pass an object reference to use static methods and variables.</span>"</p>
+<p>"Second, <span class="text-corporate">it is sometimes necessary to have one and only one copy of a variable.</span> For example, System.out (the static out variable of the System class)."</p>
+<p><span class="text-viola">"Third, sometimes you need to call a method before you are able to create objects."</span></p>
+<p><span class="text-user">"Ellie, can you give me an example of this?"</span></p>
+<p>"Why do you think the <strong>main()</strong> method is static? <span class="text-green">It's static so the programmer can call it immediately after loading a class into memory,</span> before any objects have been created."</p>

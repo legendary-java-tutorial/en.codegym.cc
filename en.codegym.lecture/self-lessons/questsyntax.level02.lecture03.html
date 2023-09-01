@@ -1,0 +1,77 @@
+<a href='https://cdn.codegym.cc/images/article/2e0f91e8-db7d-4ab3-945f-c0a96b5641d8/original.jpeg' target='_blank'><img data-id="2e0f91e8-db7d-4ab3-945f-c0a96b5641d8" data-max-width="850" alt="Creating objects - 1" src="https://cdn.codegym.cc/images/article/2e0f91e8-db7d-4ab3-945f-c0a96b5641d8/original.jpeg"></a>
+
+<p>"Hi, it's your favorite teacher again. Since you're making such great progress, I've decided to tell you about objects and how to work with them."</p>
+<p>"<span class="text-green">To create an object, you need to type the keyword 'new' followed by its type name (class name).</span> For example, suppose we have a class named 'Cat':"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">Cat cat;</span></code></pre>
+        </td>
+        <td><span class="text-green">Declares a Cat reference variable named cat.</span> The variable cat's value is null.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-user">new Cat();</span></code></pre>
+        </td>
+        <td><span class="text-user">Creates a Cat object.</span></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">Cat cat</span> = <span class="text-user">new Cat();</span></code></pre>
+        </td>
+        <td><span class="text-green">Creates a Cat reference variable named cat.</span><br />
+            <span class="text-user">Creates a new Cat object. </span>Assigns a reference to the newly created object to the variable cat.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-corporate">Cat kitty = new Cat();
+Cat smokey = new Cat();</span></code></pre>
+        </td>
+        <td><span class="text-corporate">Two objects are created. References to them are assigned to two different variables.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">Cat kitty = new Cat();
+Cat smokey = new Cat();</span>
+
+<span class="text-user">smokey = kitty;</span></code></pre>
+        </td>
+        <td><span class="text-green">Two objects are created. References to them are assigned to two different variables.</span></p>
+            <p><span class="text-user">Then we set the variable smokey equal to a reference to the object referenced by the variable kitty. </span>Both variables now refer to the first created objects.<br />
+                (Because the second object is no longer referenced anywhere, it is now considered garbage)</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-corporate">Cat kitty = new Cat();
+Cat smokey = null;</span>
+
+<span class="text-user">smokey = kitty;</span>
+
+<span class="text-red">kitty = null;</span></code></pre>
+        </td>
+        <td><span class="text-corporate">One Cat object is created, and a reference to it is assigned to the first variable (kitty). The second variable (smokey) stores an empty (null) reference.</span></p>
+            <p><span class="text-user">Both variables refer to the same object.</span></p>
+            <p><span class="text-red">Now only smokey, but not kitty, refers to an object.</span></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0220"></div>
+<p><span class="text-user">"What would happen if we created an object and didn't save a reference in any variable?"</span></p>
+<p>"If we just create an object without assigning it to a variable, the Java machine will create it and then declare it garbage (an unused object). After a while, the object will be disposed of during <a href='https://codegym.cc/groups/posts/16-more-about-the-garbage-collector-' target='_blank'>garbage collection</a>."</p>
+<p><span class="text-user">"How do I dispose of an object I don't need anymore?"</span></p>
+<p>"You don't. <span class="text-red">As soon as no variables refer to an object, it is labeled as garbage and destroyed by the Java machine the next time it collects garbage.</span>"</p>
+<p><span class="text-green">As long as there is at least one reference to an object, it's considered active and will not be destroyed.</span> If you want to dispose of an object sooner, you can clear all references to it by assigning <strong>null</strong> to all variables that reference it.</p>
+<p><span class="text-user">"I see. Compared to the last few lessons, this looks pretty simple."</span></p>
+<p>"Diego has been up all night thinking up tasks for you. He made this special effort just for you. He has a great sense of humor, you know?"</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0208"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0209"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0210"></div>
+<hr>
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/J3JKEnNCN0s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>

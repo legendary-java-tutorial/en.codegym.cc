@@ -1,0 +1,92 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"I want to tell you about the volatile modifier. Do you know what that is?"</p>
+<p><span class="text-user">"Something to do with threads. I don't remember exactly."</span></p>
+<p>"Then listen up. Here are some technical details for you:"</p>
+<p>"A computer has two types of memory: global (ordinary) memory and memory built into the processor. The built-in processor memory is divided into registers, a first-level cache (L1), second-level cache (L2), and third-level (L3)."</p>
+<p>"These types of memory have different speeds. The fastest and smallest memory is the registers, then the processor cache (L1, L2, L3), and finally the global memory (the slowest)."</p>
+<p>"Global memory and the processor cache operate at wildly different speeds, so the Java machine allows each thread to store the most frequently used variables in local thread memory (in the processor cache)."</p>
+<p><span class="text-user">"Can this process somehow be controlled?"</span></p>
+<p>"Not really. All the work is done by the Java machine. It's very intelligent when it comes to optimizing performance."</p>
+<p>"But here's why I'm telling you this. There's one small problem. When two threads are working with the same variable, each one can store a copy in its own local cache. And then one thread might change the variable, but the second might not see the change, because it's still working with its own copy of the variable."</p>
+<p><span class="text-user">"Well, what can be done then?"</span></p>
+<p>"Java's creators provided a special keyword for this situation: volatile. If a variable is accessed from different threads, you need to mark it with the volatile modifier, so the Java machine doesn't put it into the cache. This is how it usually looks:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public volatile int count = 0;</code></pre>
+<p><span class="text-user">"Oh, I remember. You already mentioned this. I already know this."</span></p>
+<p>"Sure you do. But you remembered it only when I told you."</p>
+<p><span class="text-user">"Er, well, I've forgotten a little."</span></p>
+<p>"Repetition is the mother of learning!"</p>
+<p>"Here are a few new facts about the volatile modifier. The volatile modifier only guarantees that the variable will be read and written safely. It does not guarantee that it will be changed safely."</p>
+<p><span class="text-user">"What's the difference?"</span></p>
+<p>"Look at how a the variable is changed:"</p>
+<table class="table_example">
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What really happens:</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>count++</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">register = count;</span>
+
+<span class="text-red">register = register+1;</span>
+
+<span class="text-neon">count = register;</span></code></pre>
+        </td>
+        <td><span class="text-green">Step 1.</span><br />
+            <span class="text-green">The variable count's value is copied from global memory to a processor register.</span></p>
+            <p><span class="text-red">Step 2.</span><br />
+                <span class="text-red">Inside the processor, the register variable is incremented by 1.</span></p>
+            <p><span class="text-neon">Step 3.</span><br />
+                <span class="text-neon">The value of the variable is copied from the processor to global memory.</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Wow! So, all variables are changed only in the processor?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"And the values are copied back and forth: from memory to the processor and back?"</span></p>
+<p>"Yep."</p>
+<p>"The volatile modifier guarantees that when the variable count is accessed it will be read from memory (step 1). And if a thread wants to assign a new value, it will definitely be in global memory (step 3)."</p>
+<p>"But the Java machine doesn't guarantee that there won't be any thread switching between steps 1 and 3."</p>
+<p><span class="text-user">"So, incrementing the variable by 1 is actually three operations?"</span></p>
+<p>"Yes."</p>
+<p><span class="text-user">"And if two threads simultaneously want to execute count++, then they could interfere with each other?"</span></p>
+<p>"Yes, check it out:"</p>
+<table class="table_example">
+    <tbody>
+    <tr>
+        <th>Thread 1</th>
+        <th>Thread 2</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-neon"><span class="text-user">register1 = count;
+register1++;</span>
+<span class="text-user">count = register1;</span></span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">register2 = count;
+register2++;
+count = register2;</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">register1 = count;</span>
+<span class="text-green">register2 = count;
+register2++;
+count = register2;</span>
+<span class="text-user">register1++;
+count = register1;</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"So, you can access the variable, but changing it is still risky?"</span></p>
+<p>"Well, you can change it, just be careful ☺"</p>
+<p><span class="text-user">"How?"</span></p>
+<p>"<b>synchronized</b> is our best friend."</p>
+<p><span class="text-user">"I see."</span></p>

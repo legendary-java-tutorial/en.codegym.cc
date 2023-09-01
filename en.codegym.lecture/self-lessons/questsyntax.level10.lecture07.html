@@ -1,0 +1,85 @@
+<p>"Here are a couple of interesting things about real (fractional) types. Let's start with this example:"</p>
+<div class="d-flex justify-content-center">
+<div>
+<pre class="lecture-code language-java"><code>float f = 3 / 5;</code></pre>
+</div>
+</div>
+<p>"This computation will result in f being equal to… zero!"</p>
+<p><span class="text-user">"Yeah, Rishi told me something like that."</span></p>
+<p>"Oh, did he? Good. Repetition is super helpful."</p>
+<p>"There is no error here. <span class="text-green">The division involves two integers, so the remainder is simply ignored.</span> To stop this from happening, at least one of the two numbers in the division must be fractional."</p>
+<p>"If one of the numbers is fractional, then the second number will first be converted to a fractional type, and then the division will be performed."</p>
+<p>"You can solve this problem like this:"</p>
+<table>
+<tbody>
+<tr>
+<th>Notation for fractional numbers:</th>
+</tr>
+</tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>float f = <span class="text-viola">3.0f</span> / <span class="text-viola">5.0f</span>;</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>float f = <span class="text-viola">3.0f</span> / <span class="text-green">5</span>;</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>float f = <span class="text-green">3</span> / <span class="text-viola">5.0f</span>;</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"What if the division involves variables?"</span></p>
+<p>"Then we do this:"</p>
+<table>
+<tbody>
+<tr>
+<th>Convert an integer variable to a fractional value:</th>
+</tr>
+</tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start="">
+<code>int <span class="text-green">a</span> = <span class="text-green">3</span>, <span class="text-green">b</span> = <span class="text-green">5</span>;
+float f = (<span class="text-green">a</span> <span class="text-viola">* 1.0f</span>) / <span class="text-green">b</span>;
+</code>
+</pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start="">
+<code>
+int <span class="text-green">a</span> = <span class="text-green">3</span>, <span class="text-green">b</span> = <span class="text-green">5</span>;
+float f = <span class="text-green">a</span> / (<span class="text-green">b</span> <span class="text-viola">* 1.0f</span>);
+</code>
+</pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start="">
+<code>
+int <span class="text-green">a</span> = <span class="text-green">3</span>,<span class="text-green"> b</span> = <span class="text-green">5</span>;
+float f = (<span class="text-green">a</span><span class="text-viola"> * 1.0f</span>) / (<span class="text-green">b</span><span class="text-viola"> * 1.0f</span>);
+</code>
+</pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start="">
+<code>
+ int <span class="text-green">a</span> = <span class="text-green">3</span>, <span class="text-green">b</span> = <span class="text-green">5</span>;
+float f = <span class="text-viola">(float)</span> <span class="text-green">a</span> / <span class="text-green">b</span>; 
+</code>
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"That looks awkward. Isn't there another division operation – something more convenient?"</span></p>
+<p>"Nope. This is all there is."</p>
+<p><span class="text-user">"OK. No problem."</span></p>

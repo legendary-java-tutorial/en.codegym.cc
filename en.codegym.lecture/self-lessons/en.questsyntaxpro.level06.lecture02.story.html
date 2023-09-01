@@ -1,0 +1,168 @@
+<iframe width="1080" height="608" src="https://www.youtube.com/embed/h1OIMzoERBQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"You again, Amigo. Well, hello."</p>
+<p><span class="text-user">"It seems you are not very happy to see me, Diego?"</span></p>
+<p>"I've gotten the impression that you think that you've already learned everything there is to know about methods in Java."</p>
+<p><span class="text-user">"Oh, I don't..."</span></p>
+<p>"I don't think so! You don't even know the half of it."</p>
+<p><span class="text-user">"Sure, I don't disagr...</span></p>
+<p>"Okay, enough talk. It's time to start. And we'll start with something simple. For example, the fact that Java has a <span class="text-bold">return</span> statement. It allows you to instantly terminate a method in which it is called. Here's the statement:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>return;</code></pre>
+</div>
+<p>"It's simple: the solitary word <code>return</code> followed by a semicolon. As soon as the program executes this statement, the current method exits and the calling method continues.</p>
+<p>"If <code>return</code> is called in the <code>main</code> method, then the <code>main</code> method will immediately end, and with it the entire program.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+&nbsp; &nbsp;public static void <span class="text-red">fill</span>(int[] <span class="text-neon">data</span>, int <span class="text-green">from</span>, int <span class="text-green">to</span>, int <span class="text-user">value</span>)
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;if (<span class="text-green">from</span> &lt; 0 || <span class="text-green">to</span> &gt; <span class="text-neon">data</span>.length)
+&nbsp; &nbsp; &nbsp; &nbsp;return;
+
+&nbsp; &nbsp; &nbsp;for (int i = <span class="text-green">from</span>; i &lt; <span class="text-green">to</span>; i++)
+&nbsp; &nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;  <span class="text-neon">data</span>[i] = <span class="text-user">value</span>;
+&nbsp; &nbsp; &nbsp;}
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;<span>public static void main(String[] args)
+</span><span>&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;</span><span>int[] months = {1, 2, 3, 4, 5, 6, 7, 8 ,9, 10, 11, 12};
+&nbsp; &nbsp;  <span class="text-red">fill</span></span><span>(months, 2, 10, 8);
+&nbsp; &nbsp;</span><span>}
+</span><span>}</span></code></pre>
+        </td>
+        <td style="min-width: 300px">The <code><span class="text-red">fill</span></code>&nbsp;method fills part of the passed array with <code><span class="text-user">value</span></code>.<br><br>
+            The part of the array to be filled is defined by the indices <code><span class="text-green">from</span></code>&nbsp;and <code><span class="text-green">to</span></code>.<br><br>
+            If <code><span class="text-green">from</span></code>&nbsp;is less than <code>0</code> or if <code><span class="text-green">to</span></code>&nbsp; is greater than the length of the array, then the method terminates immediately.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"The above program has a <code><span class="text-red">fill</span></code> method that fills the array passed to it with <code><span class="text-user">value</span></code>. It does not fill the entire array, only the part specified by the indices <code><span class="text-green">from</span></code> and <code><span class="text-green">to</span></code>.</p>
+<p>"At the beginning of the <code><span class="text-red">fill</span></code> method, the passed values are checked to ensure that they are valid. If <code><span class="text-green">from</span></code> is less than 0, or if <code><span class="text-green">to</span></code> is greater than the length of the array, then the <code><span class="text-red">fill</span></code> method terminates immediately (executes a <code>return</code> statement)."</p>
+<p><span class="text-user">"Got it. Is that all this statement does?"</span></p>
+<p>"Actually, the <code>return</code> statement is more useful than you think. It is so useful that it is found in almost every method in Java. And now I will lead you to an understanding of why this is so.</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0607"></div>
+<h2>Methods with a result, <code>void</code></h2>
+<p>"You probably remember that there are statements, and there are <span class="text-user">expressions</span>. What's the difference between them?"</p>
+<p><span class="text-user">"If I'm not mistaken, an expression, unlike a statement, has a meaning that can be used somewhere."</span></p>
+<p>"Correct. And, in Java, methods can also have a <span class="text-viola">value</span>. And this is very good news: methods are not only able to do something based on the input parameters, but also, for example, to evaluate something and <span class="text-bold">return the result of the calculation</span>.</p>
+<p>"By the way, you have already encountered such methods:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code><span class="text-viola">double</span> delta = Math.<span class="text-red">abs</span>(d1 - d2);</code></pre>
+        </td>
+        <td>The <code><span class="text-red">abs</span>()</code> method returns a double</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>Scanner <span class="text-neon">console</span> = new Scanner(System.in);
+<span class="text-viola">int</span> x = <span class="text-neon">console</span>.<span class="text-red">nextInt</span>();</code></pre>
+        </td>
+        <td><br>The <code><span class="text-red">nextInt</span>()</code> method returns an <code>int</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String str = "Hello";
+<span class="text-viola">String</span> s2 = str.<span class="text-red">toUpperCase</span>();</code></pre>
+        </td>
+        <td>The <code><span class="text-red">toUpperCase</span>()</code> method returns a <code>String</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[] data = {1, 4, 5, 6, 7, 8, 11};
+<span class="text-viola">int</span>[] array = Arrays.<span class="text-red">copyOf</span>(data, 4);</code></pre>
+        </td>
+        <td><br>The <code><span class="text-red">copyOf</span>()</code> method returns an <code>int[]</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Each method can only return <span class="text-bold">one value of one predetermined type</span>. The return type is determined when the method is declared:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>public static <span class="text-viola">Type</span> <span class="text-red">name</span>(<span class="text-neon">parameters</span>)
+{
+&nbsp; <span class="text-green">method body</span>
+}</code></pre>
+</div>
+<p>Where <code><span class="text-red">name</span></code> is the name of the method, <code><span class="text-neon">parameters</span></code> is the list of method parameters, and <code><span class="text-viola">type</span></code> is the type of the result that the method returns.</p>
+<p>For methods that return nothing, there is a special placeholder type: <code>void</code>.</p>
+<p><span class="text-user">"In other words, if I write my method and don't want to return anything, then I declare the type of the method to be <code>void</code>, and that's that?"</span></p>
+<p>"Yep. And, I must also say that Java has quite a lot of such methods.</p>
+<h2>Returning a result</h2>
+<p><span class="text-user">"I figured out how to declare a method that returns the result of a calculation/work. How do I return the result from the method itself?"</span></p>
+<p>"That's a valid question. The <code>return</code> statement helps us out here once again. Passing a result from a method looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>return <span class="text-user">value</span>;</code></pre>
+</div>
+<p>"The <code>return</code> statement will terminate the method immediately. And <code><span class="text-user">value</span></code> is what the method should return to the calling method when it exits. The type of <code>value</code> must match the <code><span class="text-viola">Type</span></code> specified in the method declaration. Here are some examples to reinforce what you have learned:</p>
+<p>Example 1. The method calculates the minimum of two numbers:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int min(int <span class="text-neon">a</span>, int <span class="text-neon">b</span>)
+{
+&nbsp; &nbsp;if (<span class="text-neon">a</span> &lt; <span class="text-neon">b</span>)
+&nbsp; &nbsp; &nbsp;return <span class="text-neon">a</span>;
+&nbsp; &nbsp;else
+&nbsp; &nbsp; &nbsp;return <span class="text-neon">b</span>;
+}</code></pre>
+        </td>
+        <td>The method returns the minimum of two numbers.<br><br>
+            If <code>a &lt; b</code><br>
+            return <code>a</code><br>
+            Otherwise<br>
+            return <code>b</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>Example 2. The method duplicates the string passed to it <code>n</code> times:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String <span class="text-red">multiple</span>(String <span class="text-neon">str</span>, int <span class="text-user">times</span>)
+{
+&nbsp; &nbsp;String <span class="text-green">result</span> = <span class="text-green">""</span>;
+
+&nbsp; &nbsp;for (int i = 0; i &lt; <span class="text-user">times</span>; i++);
+&nbsp; &nbsp;  <span class="text-green">result</span> = <span class="text-green">result</span> + " "+ <span class="text-neon">str</span>;
+&nbsp; &nbsp;return <span class="text-green">result</span>;
+}</code></pre>
+        </td>
+        <td>The method takes two parameters — a string and the number of times that the string should be repeated.<br>
+            An empty string is created for the future result.<br><br>
+            In a loop with <code><span class="text-user">times</span></code> iterations, a space and the string <code><span class="text-neon">str</span></code> is added to the string <code><span class="text-green">result</span></code>.<br>
+            The string <code><span class="text-green">result</span></code> is returned as the result of the method.</td>
+    </tr>
+    </tbody>
+</table>
+<p>Example 3: The method calculates the maximum of two numbers using the ternary operator:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int max(int <span class="text-neon">a</span>, int <span class="text-neon">b</span>)
+{
+&nbsp; &nbsp;return (<span class="text-neon">a</span> &gt; <span class="text-neon">b</span> ? <span class="text-neon">a</span> : <span class="text-neon">b</span>);
+}</code></pre>
+        </td>
+        <td>
+            The method returns the maximum of two numbers.<br><br>
+            return (if <code>a &gt; b</code>, then <code>a</code>, otherwise <code>b</code>)
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Excellent. Methods are my new superpower!"</span></p>
+<p>"Only if you practice enough in hands-on tasks. Over and out."</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0608"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0609"></div>

@@ -1,0 +1,208 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Today we're going to study I/O streams."</p>
+<p><span class="text-user">"Yes, I already know everything about them. We use the FileInputStream and FileOutputStream classes here."</span></p>
+<p>"Yep, and which of these classes' methods do you know?"</p>
+<p><span class="text-user">"Sure. Here are the methods of FileInputStream:"</span></p>
+<table style="width: 100%;">
+    <tbody>
+    <tr>
+        <th width="50%">Method</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>()</code></td>
+        <td>Reads one byte and returns it.</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>(byte b[])</code></td>
+        <td>Reads a byte array and returns it.</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>(byte b[], int off, int len)</code></td>
+        <td>Reads a byte array from the stream.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>skip</strong>(long n)</code></td>
+        <td>Skips n bytes, used when reading from the stream.</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>available</strong>()</code></td>
+        <td>Returns the number of bytes that can still be read from the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>close</strong>()</code></td>
+        <td>Closes the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Spot on! And the methods of FileOutputStream?"</p>
+<p><span class="text-user">"Take a look:"</span></p>
+<table style="width: 100%;">
+    <tbody>
+    <tr>
+        <th width="50%">Method</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(int b)</code></td>
+        <td>Writes one byte to the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(byte b[])</code></td>
+        <td>Writes an array of bytes to the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(byte b[], int off, int len)</code></td>
+        <td>Writes an array of bytes to the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>close</strong>()</code></td>
+        <td>Closes the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Amigo, you surprise me!"</p>
+<p><span class="text-user">"And then some!"</span></p>
+<p>"Fine, then I'll give you two new classes: ZipInputStream and ZipOutputStream."</p>
+
+<a href='https://cdn.codegym.cc/images/article/0558e113-88ab-4b48-899d-ef47375d129b/original.jpeg' target='_blank'><img data-id="0558e113-88ab-4b48-899d-ef47375d129b" data-max-width="850" alt="FileInputStream, FileOutputStream, ZipOutputStream, ZipInputStream - 1" src="https://cdn.codegym.cc/images/article/0558e113-88ab-4b48-899d-ef47375d129b/original.jpeg"></a>
+
+<p><span class="text-user">"<strong>Zip</strong>? Is that like a zip file?"</span></p>
+<p>"Exactly. These streams are designed to work with zip files. You can use them to read or write straight to a zip file!"</p>
+<p><span class="text-user">"Holy moly! How interesting.  But a zip file can have not one file, but several. How do they work?"</span></p>
+<p>"For that, there's another special class: <strong>ZipEntry</strong>. It presents a file stored in the archive. You can only read <strong>ZipEntry</strong> objects from a <strong>ZipInputStream</strong>, and you can only write <strong>ZipEntry</strong> objects to a <strong>ZipOutputStream</strong>. But it turns out that you can read and write to a <strong>ZipEntry</strong> just like a regular file."</p>
+<p><span class="text-user">"Could you give me an example of how it works?"</span></p>
+<p>"Of course. Here's an example where we create an archive and put a file in it:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Create an archive
+FileOutputStream zipFile = new FileOutputStream("c:/archive.zip");
+ZipOutputStream zip = new ZipOutputStream(zipFile);
+
+//Put a ZipEntry into it
+zip.putNextEntry(new ZipEntry("document.txt"));
+
+//Copy the file «document-for-archive.txt» to the archive under the name «document.txt»
+File file = new File("c:/document-for-archive.txt");
+Files.copy(file.toPath(), zip);
+
+// Close the archive
+zip.close();</code></pre>
+<p><span class="text-user">"How interesting! And unzipping files is just as easy?"</span></p>
+<p>"Yep. Here is a brief description of the methods of the <strong>ZipEntry</strong>, <strong>ZipInputStream</strong>  and <strong>ZipOutputStream</strong> classes"</p>
+<p>"<strong>ZipInputStream</strong> is a stream, so all the <strong>ZipEntry</strong> can only be read sequentially. Here are its methods:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Method</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>ZipEntry <strong>getNextEntry</strong>()</code></td>
+        <td>Returns an object describing the next ZipEntry (skips all bytes in the current entry).</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>closeEntry</strong>()</code></td>
+        <td>Closes input stream on the current ZipEntry (skips all bytes in the current entry).</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>available</strong>()</code></td>
+        <td>Returns 1 there are ZipEntries available, otherwise 0.</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>(byte[] b, int off, int len)</code></td>
+        <td>Reads bytes from the current ZipEntry.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>skip</strong>(long n)</code></td>
+        <td>Skips n bytes when reading from the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>close</strong>()</code></td>
+        <td>Closes the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I don't really understand."</span></p>
+<p>"The best thing to do is imagine that you're reading a text file, and ZipEntries are like lines in the file. You can read data from the current line (the current <strong>ZipEntry</strong>) or jump from line to line (<strong>getNextEntry</strong>, <strong>closeEntry</strong>)."</p>
+<p><span class="text-user">"I think I understand, but I'm not sure."</span></p>
+<p>"Here's ZipOutputStream and its methods:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Method</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>void <strong>setComment</strong>(String comment)</code></td>
+        <td>Sets a comment on the archive.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>setMethod</strong>(int method)</code></td>
+        <td>Sets the compression method (type).</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>setLevel</strong>(int level)</code></td>
+        <td>Sets the compression level. The higher the compression, the slower it goes.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>putNextEntry</strong>(ZipEntry e)</code></td>
+        <td>Adds a new ZipEntry.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>closeEntry</strong>()</code></td>
+        <td>Closes the current ZipEntry</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(byte[] b, int off, int len)</code></td>
+        <td>Writes a set of bytes to the current ZipEntry.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>close</strong>()</code></td>
+        <td>Closes the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"But in the example above we used almost none of this."</span></p>
+<p>"These are optional methods. You don't have to specify the compression level and method—the default settings will be used."</p>
+<p><span class="text-user">"Hmm. That's not so bad. And ZipEntry?"</span></p>
+<p>"Sure. The only other information in a ZipEntry is housekeeping information:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Method</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>String <strong>getName</strong>(), <strong>setName</strong>(String)</code></td>
+        <td>Internal name file.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>getTime</strong>(), <strong>setTime</strong>(long)</code></td>
+        <td>Last time the entry was modified.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>getCRC</strong>(), <strong>setCRC</strong>(long)</code></td>
+        <td>Checksum.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>getSize</strong>(), <strong>setSize</strong>(long)</code></td>
+        <td>Size before compression.</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>getMethod</strong>(), <strong>setMethod</strong>(int)</code></td>
+        <td>Compression method.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>get</strong>/<strong>setCompressedSize</strong>()</code></td>
+        <td>Size after zipping.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>isDirectory</strong>()</code></td>
+        <td>Is the entry a directory?</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That doesn't look very hard. What isn't there to love!"</span></p>
+<p>"Excellent, then Diego will give you tasks on this topic as well."</p>
+<p><span class="text-user">"I should have kept my mouth shut."</span></p>

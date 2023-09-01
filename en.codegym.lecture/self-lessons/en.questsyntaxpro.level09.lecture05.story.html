@@ -1,0 +1,325 @@
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/zhWRmoAWNlg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Hi, Amigo! Today we'll analyze a few more common scenarios involving working with strings. For example, do you know how to split a string into several parts?"</p>
+<p><span class="text-user">"I'm not going to tell you right away, Ellie. But you're going to tell me, right?"</span></p>
+<p><span class="text-bold"><code>split()</code> method</span></p>
+<p>"There are several ways to do this. The first way to split a string into multiple parts is to use the <code>split()</code> method. A regular expression that defines a special delimiting string must be passed as a parameter. You will learn what a regular expression is in the <span class="term">Java Collections</span> quest.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-user">str</span> = <span class="text-green">"Good </span><span class="text-viola">ne</span><span class="text-green">ws everyo</span><span class="text-viola">ne</span><span class="text-green">!"</span>;
+String[] <span class="text-orange">strings</span> = <span class="text-user">str</span>.<span class="text-red">split</span>("ne");
+System.out.println(<span class="text-viola">Arrays.toString</span>(<span class="text-orange">strings</span>));</code></pre>
+        </td>
+        <td>The result will be an array of three strings:
+            <pre><code>["Good ", "ws everyo", "!"]</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Simple, but sometimes this approach is excessive. If there are a lot of delimiters (for example, spaces, newline characters, tabs, periods), then you have to construct a rather complex regular expression."</p>
+<p><span class="text-user">"Well, sure. And if it's hard to read, then it's hard to make changes.</span></p>
+<p><span class="text-bold"><code>StringTokenizer</code> class</span></p>
+<iframe width="1080" height="608" src="https://www.youtube.com/embed/dB4CqeUfzG0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Java has a special class whose whole job is to split a string into substrings.</p>
+<p>"This class doesn't use regular expressions: instead, you simply pass in a string consisting of delimiters. The advantage of this approach is that it does not break the entire string into pieces all at once, but instead moves from beginning to end one step at a time.</p>
+<p>The class has a constructor and two methods. We pass the constructor a string that we split into parts, and a string comprised of a set of delimiting characters.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String nextToken()</code></pre>
+        </td>
+        <td>Returns the next substring</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>boolean hasMoreTokens()</code></pre>
+        </td>
+        <td>Checks whether there are more substrings.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"This class somehow reminds me of the Scanner class, which also has <code>nextLine()</code> and <code>hashNextLine()</code> methods.</span></p>
+<p>"That's good observation you've made. You can create a <code>StringTokenizer</code> object with this command:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-viola">StringTokenizer</span> <span class="text-user">name</span> = new <span class="text-viola">StringTokenizer</span>(<span class="text-green">string</span>, <span class="text-orange">delimiters</span>);</code></pre>
+</div>
+<p>Where string is the string to be divided into parts. And <span class="text-bold"><span class="text-orange">delimiters</span></span> is a string, and each character in it is treated as a delimiter. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String str = <span class="text-green">"Good news everyone!"</span>;
+
+<span class="text-viola">StringTokenizer</span> <span class="text-user">tokenizer</span> = new <span class="text-viola">StringTokenizer</span>(str,<span class="text-green">"ne"</span>);
+while (<span class="text-user">tokenizer</span>.<span class="text-red">hasMoreTokens</span>())
+{
+   String <span class="text-orange">token</span> = <span class="text-user">tokenizer</span>.<span class="text-red">nextToken</span>();
+   System.out.println(<span class="text-orange">token</span>);
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>Good&nbsp;
+ws&nbsp;
+v
+ryo
+!</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Note that each character in the string passed in the second string to the <code><span class="text-viola">StringTokenizer</span></code> constructor is considered a separator.</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0915"></div>
+<h2><code>String.format()</code> method and <code>StringFormatter</code> class</h2>
+<p>"Another interesting method of the String class is <code>format()</code>.</p>
+<p>"Let's say you have various variables storing data. How do you display them on the screen in one line? For example, we have some data (left column) and desired output (right column):</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String name = "Amigo";
+int age = 12;
+String friend = "Diego";
+int weight = 200;</code></pre>
+        </td>
+        <td><pre><code>User = {name: Amigo, age: 12 years, friend: Diego, weight: 200 kg.}</code></pre></td>
+    </tr>
+    </tbody>
+</table>
+<p>The code for such a program will look something like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Program code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String name = "Amigo";
+int age = 12;
+String friend = "Diego";
+int weight = 200;
+
+System.out.println("User = {name: " + name + ", age:" + age + " years, friend: " + friend+", weight: " + weight + " kg.}");</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"You'll agree with me that the code is not very readable. And if the variable names were longer, then the code would become even more difficult:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Program code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String name = "Amigo";
+int age = 12;
+String friend = "Diego";
+int weight = 200;
+
+System.out.println("User = {name: " + user.getName() + ", age:" + user.getAge() + " years, friend: " + user.getFriends().get(0) + ", weight: " + user.getExtraInformation().getWeight() + " kg.}");</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Yes, it's a hard read!"</span></p>
+<p>"Don't worry. This is a common situation in real-world programs, so I want to tell you about a way to write this code more simply and more concisely.</p>
+<p><code><span class="text-bold">String.format</span></code></p>
+<p>"The <code>String</code> class has a static <code>format()</code> method: it lets you specify a pattern for assembling a string with data. The general appearance of the command is as follows:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>String <span class="text-user">name</span> = String.<span class="text-red">format</span>(<span class="text-green">pattern</span>, <span class="text-orange">parameters</span>);</code></pre>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String.<span class="text-red">format</span>(<span class="text-green">"Age=%d, Name=%s"</span>, <span class="text-orange">age</span>, <span class="text-orange">name</span>);</code></pre>
+        </td>
+        <td><pre><code>Age=12, Name=Amigo</code></pre></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String.<span class="text-red">format</span>(<span class="text-green">"Width=%d, Height=%d"</span>, <span class="text-orange">width</span>, <span class="text-orange">height</span>);</code></pre>
+        </td>
+        <td><pre><code>Width=20, Height=10</code></pre></td>
+    </tr>
+    <tr>
+        <td><pre><code>String.<span class="text-red">format</span>(<span class="text-green">"Fullname=%s"</span>, <span class="text-orange">name</span>);</code></pre></td>
+        <td><pre><code>Fullname=Diego</code></pre></td>
+    </tr>
+    </tbody>
+</table>
+<p>"The <code>format()</code> method's first parameter is a format string that contains all the desired text along with special characters called format specifiers (such as <code><span class="text-green">%d</span></code> and <code><span class="text-green">%s</span></code>) in the places where you need to insert data.</p>
+<p>"The <code><span class="text-green">format()</span></code> method replaces these <code><span class="text-green">%s</span></code> and <code><span class="text-green">%d</span></code> format specifiers with the parameters that follow the format string in the parameter list. If we want to insert a string, then we write <code><span class="text-green">%s</span></code>. If we want to insert a number, then the format specifier is <code><span class="text-green">%d</span></code>. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String s = String.<span class="text-red">format</span>(<span class="text-green">"a=%d, b=%d, c=%d"</span>, 1, 4, 3);</code></pre>
+        </td>
+        <td><code>s</code> is equal to <code><span class="text-green">"a=1, b=4, c=3"</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Here is a short list of format specifiers that can be used inside the format string:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Specifier</th>
+        <th>Meaning</th>
+    </tr>
+    <tr>
+        <td><pre class="text-center"><code>%s</code></pre></td>
+        <td><code>String</code></td>
+    </tr>
+    <tr>
+        <td><pre class="text-center"><code>%d</code></pre></td>
+        <td>interger: <code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code></td>
+    </tr>
+    <tr>
+        <td><pre class="text-center"><code>%f</code></pre></td>
+        <td>real number: <code>float</code>, <code>double</code></td>
+    </tr>
+    <tr>
+        <td><pre class="text-center"><code>%b</code></pre></td>
+        <td><code>boolean</code></td>
+    </tr>
+    <tr>
+        <td><pre class="text-center"><code>%c</code></pre></td>
+        <td><code>char</code></td>
+    </tr>
+    <tr>
+        <td><pre class="text-center"><code>%t</code></pre></td>
+        <td><code>Date</code></td>
+    </tr>
+    <tr>
+        <td><pre class="text-center"><code>%%</code></pre></td>
+        <td><code>%</code> character</td>
+    </tr>
+    </tbody>
+</table>
+<p>"These specifiers indicate the type of data, but there are also specifiers that indicate the order of the data. To get an argument by its number (the numbering starts from one), you need to write "<span class="text-green">%</span><span class="text-red">1$</span><span class="text-green">d</span>" instead of "<span class="text-green">%d</span>". Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String s = String.format(<span class="text-green">"a=%3$d, b=%2$d, c=%d"</span>, 11, 12, 13);</code></pre>
+        </td>
+        <td><code>s</code> is equal to <code><span class="text-green">"a=13, b=12, c=11"</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p><code><span class="text-green">%3$d</span></code> will get the 3rd argument, <code><span class="text-green">%2$d</span></code> will get the second argument, and <code><span class="text-green">%d</span></code> will get the very first argument. The <code><span class="text-green">%s</span></code> and <code><span class="text-green">%d</span></code> format specifiers refer to arguments regardless of specifiers like <code><span class="text-green">%3$d</span></code> or <code><span class="text-green">%2$s</span></code></p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0916"></div>
+<h2>String Pool</h2>
+<p>"Every string specified in code as a string literal is stored in an area of memory called the <code>StringPool</code> while the program is running. <code><span class="text-bold">StringPool</span></code> is a special array for storing strings. Its purpose is to optimize string storage:</p>
+<p>"First, the strings specified in code must be stored somewhere, right? Code consists of commands, but data (especially, large strings) must be stored in memory separately from the code. Only references to string objects appear in code.</p>
+<p>"Second, all identical string literals must be stored in memory only once. And that's just how it works. When your class code is loaded by the Java machine, all string literals are added to the <code>StringPool</code> if they are not already there. If they are already there, then we simply use a string reference from the <code>StringPool</code>.</p>
+<p>Accordingly, if you assign the same literal to several String variables in your code, then these variables will contain the same reference. A literal will be added to the <code>StringPool</code> only once. In all other cases, the code will get a reference to the string already loaded in the <code>StringPool</code>.</p>
+<p>Here's roughly how it works:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Working with StringPoll</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-green">a</span> = "Hello";
+String <span class="text-user">b</span> = "Hello";
+String <span class="text-orange">c</span> = "Bye";</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code><span class="text-viola">String</span>[] <span class="text-red">pool</span> = {<span class="text-green">"Hello"</span>, <span class="text-green">"Bye"</span>};
+<span class="text-green">a</span> = <span class="text-red">pool</span>[<span class="text-user">0</span>];
+<span class="text-user">b</span> = <span class="text-red">pool</span>[<span class="text-user">0</span>];
+<span class="text-orange">c</span> = <span class="text-red">pool</span>[<span class="text-user">1</span>];</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"That is why the <code><span class="text-green">a</span></code> and <code><span class="text-user">b</span></code> variables will store the same references."</p>
+<p><span class="text-user">"I hope I understood it all correctly.</span></p>
+<p><span class="text-bold"><code>intern()</code> method.</span></p>
+<p>"And the best part is that you can programmatically add any string to the <code>StringPool</code>. To do this, you just need to call the <code>String</code> variable's <code>intern()</code> method.</p>
+<p>"The <code>intern()</code> method will add the string to the <code>StringPool</code> if it is not already there, and will return a reference to the string in the <code>StringPool</code>.</p>
+<p><span class="text-user">"And what will happen if two identical strings are added to the <code>StringPool</code> using the <code>intern()</code>method?"</span></p>
+<p>"The method will return the same references. This can be used to compare strings by reference. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-green">a</span> = new String("Hello");
+String <span class="text-user">b</span> = new String("Hello");
+System.out.println(<span class="text-green">a</span> == <span class="text-user">b</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+<span class="text-red">false</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-green">a</span> = new String("Hello");
+String <span class="text-user">b</span> = new String("Hello");
+
+String <span class="text-green">t1</span> = <span class="text-green">a</span>.intern();
+String <span class="text-user">t2</span> = <span class="text-user">b</span>.intern();
+System.out.println(<span class="text-green">a</span> == <span class="text-user">b</span>);
+System.out.println(<span class="text-green">t1</span> == <span class="text-user">t2</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+
+
+
+<span class="text-red">false</span>
+<span class="text-green">true</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>You are unlikely to use this method often. <span class="text-orange">That said, people like to ask about it in job interviews.</span></p>
+<p><span class="text-user">"So, it's better to know about it than to not know. Thanks, Ellie!"</span></p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0917"></div>

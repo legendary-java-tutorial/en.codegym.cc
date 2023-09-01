@@ -1,0 +1,94 @@
+<p>"Hi, Amigo!"</p>
+<p>"How was your morning lesson?"</p>
+<p><span class="text-user">"Well, it was decent. I'll tell you about it."</span></p>
+<p><span class="text-user">"Bilaabo gave me a bunch of design patterns, and Ellie showed me a whole bunch of collections. Not an easy day after all."</span></p>
+<p>"Don't you worry — I won't burden you with very much."</p>
+<p>"I want to tell you about the two utility classes that you've already encountered."</p>
+<p>"The <b>Arrays</b> and <b>Collections</b> classes. All their methods are static and designed to work with collections and arrays."</p>
+<p>"I'll start with the simpler one: <b>Arrays</b>. Here are its methods:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>List&lt;T&gt; asList(T... a)</code></pre>
+        </td>
+        <td>Returns an immutable list filled with the passed elements.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>int binarySearch(int[] a, int fromIndex, int toIndex, int key)</code></pre>
+        </td>
+        <td>Searches for an element (key) in array a or the subarray from fromIndex to toIndex.<br />
+            The array must be sorted!<br />
+            Returns the element index, or fromIndex-1 if the element is not found.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>int[] copyOf(int[] original, int newLength)</code></pre>
+        </td>
+        <td>Returns a copy of the original array, starting from the zeroth index and consisting of newLength elements.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>int[] copyOfRange(int[] original, int from, int to)</code></pre>
+        </td>
+        <td>Returns a copy of the original array, from 'from' to 'to'.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>boolean deepEquals(Object[] a1, Object[] a2)</code></pre>
+        </td>
+        <td>Performs a deep comparison of two arrays. Arrays are considered equal if their elements are equal. If the elements themselves are arrays, then a deep comparison is also performed on them.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>int deepHashCode(Object a[])</code></pre>
+        </td>
+        <td>Returns a deep hashcode based on all of the elements. If an element is an array, then deepHashCode is also called on the element.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>String deepToString(Object[] a)</code></pre>
+        </td>
+        <td>Performs a deep conversion of an array to a string. Calls toString() on every element. If an element is an array, then it is also converted to a string based on its deep contents.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>boolean equals(int[] a, int[] a2)</code></pre>
+        </td>
+        <td>Compares two arrays element by element.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>void fill(int[] a, int fromIndex, int toIndex, int val)</code></pre>
+        </td>
+        <td>Fills an array (or subarray) with the specified value.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>int hashCode(int a[])</code></pre>
+        </td>
+        <td>Computes the total hash code of all elements of an array.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>void sort(int[] a, int fromIndex, int toIndex)</code></pre>
+        </td>
+        <td>Sorts an array (or subarray) in ascending order.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java block-inline"><code>String toString(int[] a)</code></pre>
+        </td>
+        <td>Converts an array to a string. Calls toString() on every element;</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Well, these are very useful methods. Many would be helpful to me."</span></p>
+<p>I'd also like to mention that I haven't presented all of the methods here. Almost all of the methods in the table have identical counterparts for all the primitive types. For example, the table has a String toString(<b>int</b>[] a) method, and the class also has String toString(<b>boolean</b>[] a), String toString(<b>byte</b>[] a), String toString(<b>long</b>[] a), String toString(<b>float</b>[] a), String toString(<b>double</b>[] a), and String toString(<b>char</b>[] a) methods."</p>
+<p><span class="text-user">"Well, that changes things. That makes it a simply indispensable class."</span></p>
+<p>"I'm glad you liked it. Well, we'll continue after a break."</p>

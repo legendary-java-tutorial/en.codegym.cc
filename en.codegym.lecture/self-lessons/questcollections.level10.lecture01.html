@@ -1,0 +1,190 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p><span class="text-user">"What new thing will you tell me about today?"</span></p>
+<p>"Many things. But to start, I think we'll discuss working with a network and the Internet. Interested?"</p>
+<p><span class="text-user">"Yep. The Galactic Internet is super cool."</span></p>
+<p>"Okay, but let's start with some history. At the beginning of the 21st century, the situation was this…"</p>
+<p><span class="text-viola">"Every computer connected to the Internet had a unique number. This was an ordinary 4-byte number. It is called the IP address."</span></p>
+<p>"But humans have poor memory and struggle to remember something like 2108458776, so they often write each byte separately."</p>
+<p>"If we split the four-byte number 2108458776 into separate bytes, we get 125.172.135.24. <span class="text-corporate">As you will recall, each byte consists of 8 bits and can contain numbers from 0 to 255."</span></p>
+<p><span class="text-user">"So, that's how we're writing the number?"</span></p>
+<p>"Yes. It's just easier (for humans) to remember four-byte numbers when they are written this way."</p>
+<p>"As it happened, the choice to use only 4 bytes soon played a cruel trick on them. The number of devices connected to the Internet grew so quickly that they soon ran out of numbers."</p>
+<p><span class="text-user">"How did they get around that?"</span></p>
+<p>"They did what humans typically do."</p>
+<p><span class="text-viola">"They came up with a new standard for IP addresses and proudly named it IPv6."</span></p>
+<p>"Unlike a normal IP address (called IPv4) that uses 4 bytes to form a unique number, the new standard uses 16."</p>
+<p>"Just think of it, humans couldn't <span class="text-corporate">remember 10 digits in an ordinary number (like 2108458776), so they had to divide them into 4 parts, but then they thought to use numbers consisting of 16 bytes."</span></p>
+<p><span class="text-user">"Yeah, sometimes humans are weird."</span></p>
+<p>"Yep. Humans are humans."</p>
+<p>"That said, they did get out of their predicament."</p>
+<p>"They got tired of remembering the numbers and decided to replace them with words."</p>
+<p><span class="text-user">"How's that? Could you give me an example?"</span></p>
+<p>"Of course, <span class="text-red">web.mail.com</span>, <span class="text-green">google.com</span>, <span class="text-viola">new.books.amazon.com</span>, …"</p>
+<p><strong>"This sort of name is called a domain."</strong></p>
+<p>"In order for this Internet to work properly, they created a special table called the Domain Name System (DNS) that stores the IP address of each domain name."</p>
+<p>"Here's how it works."</p>
+<p><strong>1)</strong> A user enters an address in a browser, for example, <span class="text-red">web.mail.com</span>.</p>
+<p><strong>2)</strong> The browser accesses the DNS and uses the domain name to get the IP address.</p>
+<p><strong>3)</strong> A request with the required URL is sent to this IP address.</p>
+<p><span class="text-user">"That doesn't look very simple."</span></p>
+<p>"But this approach does have several benefits:"</p>
+<p>"<span class="text-viola">1) Humans find it easy to remember names that can be verbalized."</span></p>
+<p>"<span class="text-viola">2) Domain names can be built hierarchically by adding subdomains to the beginning of a name. Exactly like a package name in Java."</span></p>
+<p>"<span class="text-viola">3) If you need to change the IP address of the web server, you only need to change the DNS record, and everything will work as it did before — users don't have to remember a new address."</span></p>
+<p>"The DNS looks something like this:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Domain name</th>
+        <th width="50%">IP address</th>
+    </tr>
+    <tr>
+        <td>mail.com</td>
+        <td>128.35.36.189</td>
+    </tr>
+    <tr>
+        <td>web.mail.com</td>
+        <td>145.12.17.13</td>
+    </tr>
+    <tr>
+        <td>new.mail.com</td>
+        <td>192.155.15.3</td>
+    </tr>
+    <tr>
+        <td>google.com</td>
+        <td>92.117.151.100</td>
+    </tr>
+    <tr>
+        <td>google.com</td>
+        <td>193.168.0.1</td>
+    </tr>
+    <tr>
+        <td>docs.google.com</td>
+        <td>217.12.222.1</td>
+    </tr>
+    <tr>
+        <td>&#8230;</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Makes sense."</span></p>
+<p>"Anyway, a domain is the name of a computer, but we don't need the computer — we need what's on the computer. This is what URLs are for."</p>
+<p>"Initially, a URL was actually a link to a file on another computer. For example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Example</th>
+    </tr>
+    <tr>
+        <td><strong><span class="text-user">http</span>://<span class="text-green">info.codegym.cc</span>/<span class="text-red">user/info/profile.html</span></strong></td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Description</th>
+    </tr>
+    <tr>
+        <td><span class="text-user">http</span> is the protocol for client-server communication<br />
+            <span class="text-green">info.codegym.cc </span> is the computer's domain name<br />
+            <span class="text-red">user/info/profile.html</span> is the path to the file on the computer</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-viola">"At the very beginning of the network development, a web server was only able to use a URL to serve files that it was storing somewhere. The URL was actually a global path to the file: computer name + path."</span></p>
+<p>"Later, when web servers started generating files themselves, URLs changed a bit and became a request to the web server. Request parameters were also added."</p>
+<p><span class="text-green">"Today it's rare to see a file extension at the end of a URL. "A modern URL is just a unique link with parameters. More like a method call rather than a global file path."</span></p>
+<p>"A classic modern URL looks like this:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%">Parsing the URL</th>
+    </tr>
+    <tr>
+        <td><strong><span class="text-corporate">http</span>://<span class="text-red">codegym.cc</span>/<span class="text-user">alpha/api/contacts</span>?<span class="text-green">userid=13&filter=none&page=3</span></strong></td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+        <th width="100%">Description of parts of the URL</th>
+    </tr>
+    <tr>
+        <td><span class="text-red">codegym.cc</span> is the domain name — the unique name (address) of a computer on the Internet</td>
+    </tr>
+    <tr>
+        <td><span class="text-corporate">http</span> is the protocol for client-server communication</td>
+    </tr>
+    <tr>
+        <td><span class="text-user">alpha/api/contacts</span> is the web server request or request for a webpage on the server</td>
+    </tr>
+    <tr>
+        <td><span class="text-green">userid=13 &amp; filter=none &amp; page=3</span> is a string with the request parameters</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Yeah, I remember. You told me about URLs recently."</span></p>
+<p><span class="text-user">"And about ports too. You used the example of an apartment building."</span></p>
+<p><span class="text-user">"It'd be better to tell me what 'http' is. I see 'protocol' written everywhere, but I'm not clear on what that is."</span></p>
+<p>"OK. I'll tell you without further ado."</p>
+
+<a href='https://cdn.codegym.cc/images/article/00984384-4697-47d8-ab09-522cfee6dea3/original.jpeg' target='_blank'><img data-id="00984384-4697-47d8-ab09-522cfee6dea3" data-max-width="1024" alt="IP-address, domain, URL - 1" src="https://cdn.codegym.cc/images/article/00984384-4697-47d8-ab09-522cfee6dea3/original.jpeg"></a>
+
+<p><span class="text-red">"<strong>HTTP</strong></span> stands for <strong><span class="text-red">H</span>yper<span class="text-red">T</span>ext<span class="text-red">T</span>ransport<span class="text-red">P</span>rotocol</strong> and is for transferring hypertext."</p>
+<p><span class="text-user">"What's hypertext?"</span></p>
+<p>"It's HTML."</p>
+<p><strong>"Roughly speaking, a protocol is a set of rules for communication. It describes the requests that can be sent to a web server, and in what format, as well as how the web server should respond."</strong></p>
+<p>"In short, the situation is this. <span class="text-viola">Ordinary text files or, if you like, large chunks of text are sent between the client and server.</span>"</p>
+<p>"A <strong>request</strong> comes to the server, and server provides a <strong>response</strong> to each request."</p>
+<p>"Here are examples of such a request and response:"</p>
+<div class="code-heading">Request</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">GET</span> <span class="text-red">alpha/api/contacts</span> HTTP/1.1
+Host: <span class="text-red">codegym.cc</span>
+<span class="text-green">User-Agent: Mozilla/5.0 (X11; U; Linux i686; en; rv:1.9b5) Gecko/2008050509 Firefox/3.0b5</span>
+<span class="text-viola">Accept: text/html</span>
+Connection: close</code></pre>
+<div class="code-heading">Description</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">GET</span> – request subtype
+<span class="text-red">alpha/api/contacts</span> – request to the web server
+HTTP/1.1 – protocol version – HTTP/1.1
+Host: <span class="text-red">codegym.cc</span> – domain name
+<span class="text-green">User-Agent: Mozilla/5…</span> – unique browser name
+<span class="text-viola">Accept: text/html</span> – requested document type: HTML
+Connection: close – close the server connection after processing the request.</code></pre>
+<p>"The first line is the actual request. What follows are additional request parameters, also known as 'header fields'."</p>
+<p>"And here's an example of a response:"</p>
+<div class="code-heading">Response</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">HTTP/1.1 200 OK</span>
+Date: Wed, 11 Feb 2009 11:20:59 GMT
+<span class="text-red">Server: Apache
+X-Powered-By: PHP/5.2.4-2ubuntu5wm1</span>
+Last-Modified: Wed, 11 Feb 2009 11:20:59 GMT
+<span class="text-user">Content-Language: en
+Content-Type: text/html; charset=utf-8
+Content-Length: 1234</span>
+Connection: close
+<span class="text-red">&lt;html&gt;&lt;body&gt;&lt;a href="http://ample.com/about.html#contacts"&gt;Click here&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</span>
+</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">HTTP/1.1 200 OK</span> - «200 OK» means everything is okay.
+Date: Wed, 11 Feb 2009 - Date on which the request was processed
+<span class="text-red">Server: Apache</span> - Name of the web server
+<span class="text-red">X-Powered-By: PHP</span> - The server uses PHP
+Last-Modified: Wed, 11 Feb 2009 - The time of the last update of the requested file
+<span class="text-user">Content-Language: en</span> - The language of the file
+<span class="text-user">Content-Type: text/html; charset=utf-8</span> – This is an HTML-file with UTF-8 encoding
+<span class="text-user">Content-Length: 1234</span> - The response is 1234 bytes long
+Connection: close - The connection will be closed after the request is handled
+<span class="text-red"><span class="red_text">&lt;html&gt;&lt;body&gt;&lt;a href="http://ample</span> </span>- The HTML file itself.
+</code></pre>
+<p>"I want to draw your attention to two things:"</p>
+<p>"First, no matter what you request, it looks like a file request to the server. It doesn't matter whether the file is on the server or the server generates it in response to the request."</p>
+<p>"Second, the <span class="text-red"><strong>file</strong></span> itself is <strong>sent as part of the HTTP response</strong>. In other words, <span class="text-green">we see some additional data at the beginning of the server's response, and then the body of the file being served.</span>"</p>
+<p><span class="text-user">"How interesting! I'm not sure I understood everything. I'll read this again later."</span></p>
+<p>"Oh, I do want to tell you about one other small, but interesting, thing: cookies."</p>
+<p><span class="text-user">"What are those?"</span></p>
+<p>"According to the HTTP protocol, <span class="text-viola">cookies are small pieces of information that the server sends to the client for storage on the client. And they are sent back to the server as part of subsequent requests.</span>"</p>
+<p><span class="text-user">"And what's the point of that?"</span></p>
+<p>"Suppose a user signs in on the home page of a website. The server creates a session object on the server for this user, and a unique session number is sent to the client as a cookie. During the next request from the client to the server, this session number, together with other cookies, will be sent back to the server. This means the server can recognize the user who sent the new request."</p>
+<p><span class="text-user">"How interesting!"</span></p>
+<p>"Yep. When you write your own servlets, we'll take a closer look at this topic. But for now, let's take a break."</p>
+<p><span class="text-user">"Whatever you say."</span></p>

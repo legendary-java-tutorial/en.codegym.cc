@@ -1,0 +1,43 @@
+<a href='https://cdn.codegym.cc/images/article/41fa33b3-e62a-4695-b862-9c26847bc86c/original.jpeg' target='_blank'><img data-id="41fa33b3-e62a-4695-b862-9c26847bc86c" data-max-width="850" alt="ThreadPoolExecutor - 1" src="https://cdn.codegym.cc/images/article/41fa33b3-e62a-4695-b862-9c26847bc86c/original.jpeg"></a>
+
+<p>"Ordinary programmers sooner or later come to grips with the fact that they have many small tasks that need to be performed from time to time."</p>
+<p>"If you're writing a game, then it's the actions that individual characters perform."</p>
+<p>"If you're writing a web server, then it's different commands coming in from users: upload a photo, transcode it into the desired format, apply the desired template, etc."</p>
+<p>"Sooner or later, all big tasks are broken up into a set of small, manageable tasks."</p>
+<p>"So, given this context, a subtle question arises: how are you supposed to manage them all? What if you need to perform several hundred tasks in a minute? Creating a thread for each task wouldn't make much sense. The Java machine allocates quite a lot of resources for each thread."</p>
+<p>"In other words, creating and destroying a thread may take more time and resources than the task itself."</p>
+<p>"Java's creators came up with an elegant solution to this problem: <strong>ThreadPoolExecutor</strong>.</p>
+<p>"<strong>ThreadPoolExecutor</strong> is a class with two things inside:"</p>
+<p><strong>A)</strong> A task queue, which you can add task to as they arise in the program.</p>
+<p><strong>B)</strong> A thread pool, which is a group of threads that perform these tasks.</p>
+<p>"What's more, the threads aren't destroyed once a task is finished. Instead, they fall asleep in order to be ready to start a new task as soon as it appears."</p>
+<p>"When you create a <strong>ThreadPoolExecutor</strong>, you can set the maximum number of threads to be created and the maximum number of tasks that can be queued. In other words, you can limit the number of threads to 10, for example, and the number of queued tasks to 100."</p>
+<p>"This is how <strong>ThreadPoolExecutor</strong> works:"</p>
+<p><strong>1)</strong> When you add a new task, it is placed at the end of the queue.</p>
+<p><strong>2)</strong> If the queue is full, an exception is thrown.</p>
+<p><strong>3)</strong> Upon completing a task, each thread takes the next task from the queue and starts executing it.</p>
+<p><strong>4)</strong> If there are no tasks in the queue, a thread goes to sleep until new tasks are added.</p>
+<p>"The approach, where we limit the number of worker threads, is advantageous in that the more threads we have, the more they interfere with each other. It is much more effective to have 5-10 worker threads and a long queue of tasks than to create 100 threads for a surge of tasks, which will compete with each other for resources: memory, processor time, database access, etc."</p>
+<p>"Here's an example of <strong>ThreadPoolExecutor</strong> in action:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>ExecutorService <span class="text-red">service</span> = Executors.newFixedThreadPool(2);
+
+<strong>for(int i = 0; i &lt; 10; i++)
+{</strong>
+ <span class="text-red">service.submit</span><strong>(new Runnable() {
+    public void run()</strong>
+    {
+     // Here we download something big from the Internet.
+    }
+ });
+}</code></pre>
+<p><span class="text-user">"Uh, I don't see it…"</span></p>
+<p>"A <strong>ThreadPoolExecutor</strong> object is created when the newFixedThreadPool method is called."</p>
+<p>So, it's very easy to use. As soon as you add a task to it with the submit method, it:</p>
+<p><strong>A)</strong> Wakes a sleeping thread, if there is one, to execute the task.</p>
+<p><strong>B)</strong> If there's no waiting thread, then it creates a new one for the task.</p>
+<p><strong>C)</strong> If the maximum number of threads is reached, then it simply puts the task at the end of the queue.</p>
+<p>"I deliberately included «here we download something big from the Internet» in the example. If we have 100 tasks «download something big from the Internet», then it makes no sense to run a lot of them at the same time—we'll be held back by the bandwidth limit of our Internet connection. In this case, a couple of threads should be enough. This is what you see in the example above:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>ExecutorService <span class="text-red">service</span></strong> = <strong>Executors</strong>.<strong><span class="text-red">newFixedThreadPool</span>(2)</strong>;</code></pre>
+<p><span class="text-user">"It turns out that working with a bunch of tasks isn't so difficult."</span></p>
+<p>"Yes. Even easier than you might imagine. But Kim will tell you about that."</p>

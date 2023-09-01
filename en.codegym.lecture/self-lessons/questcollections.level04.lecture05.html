@@ -1,0 +1,63 @@
+<p>"Hello again!"</p>
+<p>"Now I'm going to tell you about one more wonderful thing: <span class="text-red">WeakReference</span>."</p>
+<p>"It looks almost the same as SoftReference:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Create a Cat object
+<span class="text-green">Cat cat</span> = new <span class="text-green">Cat</span>();
+
+// Create a weak reference to a Cat object
+<span class="text-red">WeakReference&lt;<span class="text-green">Cat</span>&gt;</span> <span class="text-red">catRef</span> = new <span class="text-red">WeakReference&lt;<span class="text-green">Cat</span>&gt;</span>(cat);
+
+// Now only the <span class="text-red">catRef</span> weak reference points at the object
+<span class="text-green">cat</span> = null;
+
+// Now the ordinary cat variable also references the object
+<span class="text-green">cat</span> = <span class="text-red">catRef</span>.get();
+
+// Clear the weak reference
+<span class="text-red">catRef</span>.clear();</code></pre>
+<p>"A weak reference has another special feature."</p>
+<p>"If an object doesn't have ordinary references or soft references, but only weak references, then the object is alive, but it will be destroyed at the next garbage collection."</p>
+<p><span class="text-user">"Can you say that again? What's the difference between these references?"</span></p>
+<p>"An object kept from death only by a <span class="text-red">SoftReference</span> can survive as many <a href='https://codegym.cc/groups/posts/16-more-about-the-garbage-collector-' target='_blank'>garbage collections</a> as you like and will probably be destroyed if there is insufficient memory."</p>
+<p>"An object kept from death only by a <span class="text-red">WeakReference</span> won't survive the next garbage collection. But until that happens, you can get the object by calling the get() method on the <span class="text-red">WeakReference</span> and then call its methods or doing something else with it."</p>
+<p><span class="text-user">"What if the object is referenced by both a SoftReference and a WeakReference?"</span></p>
+<p>"That's simple. If at least one regular reference points to an object, it is considered alive. By the way, such a reference is called a StrongReference."</p>
+<p>"If no regular references point to an object, but a SoftReference does, then it is softly reachable."</p>
+<p>"If no regular references or SoftReferences point to an object, but a WeakReference does, then it is weakly reachable."</p>
+<p>"Think about it. A SoftReference protects the object from being deleted and ensures that the object will be deleted only if there is insufficient memory. A WeakReference holds the object until the next garbage collection. A SoftReference offers greater resistance to deletion."</p>
+<p><span class="text-user">"Ah. I think I understand."</span></p>
+<p>"Great, then I'll tell you about another interesting thing involving WeakReferences — the WeakHashMap."</p>
+<p><span class="text-user">"Sounds serious!"</span></p>
+<p>"And then some! A WeakHashMap is a HashMap whose keys are weak references (WeakReferences)."</p>
+<p>"That is, you add objects to such a HashMap and work with them. Business as usual."</p>
+<p>"As long as the objects that you store in a WeakHashMap have regular (strong or soft) references as keys, these objects will be alive."</p>
+<p>"But suppose there are no more references to these objects in the entire application. All that keeps them from dying is a few WeakReferences inside the WeakHashMap. After the next garbage collection, such objects will disappear from the WeakHashMap. By themselves. As if they were never there."</p>
+<p><span class="text-user">"I'm not sure I understood."</span></p>
+<p>"You store pairs of objects in a WeakHashMap: a key and a value. But the WeakHashMap doesn't reference the keys directly, but rather through WeakReferences. Therefore, when the objects used as keys become weakly reachable, they are destroyed at the next garbage collection. And as a result, their values are also automatically removed from the WeakHashMap."</p>
+<p>"It's very convenient to use a WeakHashMap to store additional information about certain objects."</p>
+<p>"First of all, accessing the information is very easy if you use the object itself as the key."</p>
+<p>"Second, if the object is destroyed, it disappears from the HashMap along with all the associated data."</p>
+<p>"For example:</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Create an object to store additional information about the user
+<span class="text-red">WeakHashMap</span>&lt;<span class="text-green">User</span>, <span class="text-user">StatisticInfo</span>&gt; <span class="text-red">userStatistics</span> = new <span class="text-red">WeakHashMap</span>&lt;<span class="text-green">User</span>, <span class="text-user">StatisticInfo</span>&gt;();
+
+// Put information about the user into userStatistics
+<span class="text-green">User user</span> = <span class="text-viola">session</span>.getUser();
+<span class="text-red">userStatistics</span>.put(<span class="text-green">user</span>, new <span class="text-user">StatisticInfo</span> (…));
+
+// Get information about the user from userStatistics
+<span class="text-green">User user</span> = <span class="text-viola">session</span>.getUser();
+StatisticInfo statistics = <span class="text-red">userStatistics</span>.get(<span class="text-green">user</span>);
+
+// Remove any information about the user from userStatistics
+<span class="text-green">User user</span> = <span class="text-viola">session</span>.getUser();
+<span class="text-red">userStatistics</span>.remove(<span class="text-green">user</span>);</code></pre>
+<ol>
+    <li>"Inside a WeakHashMap, keys are stored as WeakReferences."</li>
+    <li>"As soon as the user object is destroyed by the garbage collector, the remove(user) method is implicitly called inside the WeakHashMap and any information associated with the user object is removed from the WeakHashMap automatically."</li>
+</ol>
+<p><span class="text-user">"This looks like a powerful tool. Where can I use it?"</span></p>
+<p>"That depends on the circumstances. Let's say you have a thread in the program that tracks the work of some tasks, represented by objects, and writes information about them to a log. This thread could store the monitored objects in a WeakHashMap. As soon as the objects are not needed, the garbage collector deletes them, and the references to them are also automatically removed from the WeakHashMap."</p>
+<p><span class="text-user">"Sounds interesting. I already feel like I haven't yet written any serious Java programs that take advantage of such powerful mechanisms. But I'll work toward that. Thanks a lot, Ellie, for such an interesting lesson."</span></p>

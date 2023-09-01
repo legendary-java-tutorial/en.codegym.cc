@@ -1,0 +1,64 @@
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/KZB_vjmzmwA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"It's me again. I forgot to explain something. I'll now tell you about <span class="text-green">variables and memory addressing</span>. We won't delve too deeply, but it’ll be good if you remember at least something."</p>
+<p><span class="text-user">"I like your approach to lessons: If you understand something — great. If you don't understand anything — that's okay."</span></p>
+<p>"Love can't be forced. That's obvious. Isn't that so on your planet?"</p>
+<p><span class="text-user">"No. We have a different approach. If you want to, you study; if you don't want to, you study, though unwillingly."</span></p>
+<p>"What a backward approach to learning! That wastes a lot of energy and time and produces poor results."</p>
+<p><span class="text-user">"We waste it all right. But let's not talk about sad stuff."</span></p>
+<p>"OK. Imagine Excel. Everybody knows Excel. An Excel sheet consists of cells. Each cell has its own unique identifier (A1, A2,…B1, B2). <span class="text-corporate">If you know a cell's identifier, you can always write some value into it or get whatever value is stored there.</span> Computer memory is organized in a very similar way."</p>
+
+<a href='https://cdn.codegym.cc/images/article/a8476ab7-5ee0-42fb-a928-75e68eeb2880/original.jpeg' target='_blank'><img data-id="a8476ab7-5ee0-42fb-a928-75e68eeb2880" data-max-width="538" alt="Memory addressing and variables - 1" src="https://cdn.codegym.cc/images/article/a8476ab7-5ee0-42fb-a928-75e68eeb2880/original.jpeg"></a>
+
+<p><span class="text-user">"I'm following you so far."</span></p>
+<p>"The program and program data are stored in memory when the program is running. All computer memory is divided into small cells, or bytes. Each cell has a unique identifier, or number, associated with it: 0,1,2,3,… (the numbers start with 0). <span class="text-green">If you know a cell's number, you can save data in it.</span> <span class="text-corporate">Or get data from it.</span> Some cells store the program's code, i.e. the set of commands for the processor. Others store the data used by the program. Each cell's number is called its address."</p>
+<p><span class="text-user">"The Professor already told me about the processor and commands, but not in detail."</span></p>
+<p>"The processor knows how to execute commands that have been loaded into memory. Almost all processor commands are something like 'take data from some cells, do something with them, send the result to other cells'. We combine hundreds of simple commands to get complex and useful commands."</p>
+<p><span class="text-user">"But why do I need all this?"</span></p>
+<p><span class="text-red">"When a variable is declared in code, a bit of memory that isn't already being used is assigned to it. </span>This is usually a few bytes. Declaring a variable requires that you indicate the type of information the program will store in it: numbers, text or other data. For convenience, <span class="text-red">a unique name</span> is assigned to each variable."</p>
+<p><span class="text-user">"Does that mean that a variable is a name, type, part of memory, and a value too?"</span></p>
+<p>"It's all of those things rolled into one. Look at some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">String</span> s;</code></pre>
+        </td>
+        <td>This line creates a variable named <code><span class="text-user">s</span></code>. We declare its type as <code><span class="text-red">String</span></code>, because it will be used to store text.<br />
+            We can't declare another variable with the same name in the same function or class.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s2</span> = <span class="text-green">"I'm Diego"</span>;</code></pre>
+        </td>
+        <td>This line creates a String variable named <code><span class="text-user">s2</span></code> and immediately assigns the value <code><span class="text-green">"I'm Diego"</span></code>.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">int</span> <span class="text-user">a</span>;</code></pre>
+        </td>
+        <td>Here we create a variable named <code><span class="text-user">a</span></code>. Its data type matches what will be stored in it. The <code><span class="text-red">int</span></code> data type is short for <span class="text-red">integer</span>.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">int</span> <span class="text-user">b</span> = <span class="text-green">4</span>;</code></pre>
+        </td>
+        <td>We create a variable named <code><span class="text-user">b</span></code>. Its data type (<code><span class="text-red">int</span></code>) is for storing integers. The value <code><span class="text-green">4</span></code> is immediately assigned to the variable. </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Here are some tasks from Diego. Work on them a little at a time."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0109"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0110"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0111"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0140"></div>

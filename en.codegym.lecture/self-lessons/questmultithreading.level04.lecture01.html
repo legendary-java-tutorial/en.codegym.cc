@@ -1,0 +1,43 @@
+<a href='https://cdn.codegym.cc/images/article/69760d41-4d70-4ea4-9a29-9fd1eb7444fc/original.jpeg' target='_blank'><img data-id="69760d41-4d70-4ea4-9a29-9fd1eb7444fc" data-max-width="850" alt="Marker interfaces and deep copies - 1" src="https://cdn.codegym.cc/images/article/69760d41-4d70-4ea4-9a29-9fd1eb7444fc/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"Today I'll tell you about <strong>marker interfaces</strong>."</p>
+<p>"Marker interfaces are interfaces without methods. When a class implements such an interface, we say that it is marked by it."</p>
+<p>"Examples of these interfaces include: <strong>Cloneable, Serializable, Remote</strong>."</p>
+<p>"The <strong>Serializable</strong> interface is used to mark classes that support serialization, indicating that instances of these classes can be automatically serialized and deserialized."</p>
+<p>"The <strong>Remote</strong> interface is used to identify objects that support remote execution, i.e. methods that can be invoked from another Java virtual machine and/or different computer."</p>
+<p>"The <strong>Cloneable</strong> interface is used to mark classes that support cloning."</p>
+<p>"Oh, about cloning, or copying."</p>
+<p>"There are two types of copying: shallow and deep."</p>
+<p>"<strong>Shallow copying</strong> is creating a copy of an object, without making duplicates of any of the objects it references."</p>
+<p>"<strong>Deep copying</strong> involves duplicating an object, including objects it references, and the objects that those objects reference, etc."</p>
+<p>"There is a really good way to reliably create a deep clone."</p>
+<p>"This method works even if developers have forgotten to mark a class as Cloneable. "The only requirement is that the objects must be serializable."</p>
+<p>"Here is how you do it:"</p>
+<p><strong>1)</strong> Create a buffer (byte array) in memory.</p>
+<p><strong>2)</strong> Serialize the object and subobjects into the buffer.</p>
+<p><strong>3)</strong> Deserialize the object hierarchy saved in the buffer.</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">BigObject</span> <strong><span class="text-red">objectOriginal</span></strong> = new <span class="text-red">BigObject</span>();
+
+<span class="text-green">ByteArrayOutputStream writeBuffer</span> = new <span class="text-green">ByteArrayOutputStream</span>();
+<span class="text-green">ObjectOutputStream outputStream</span> = new <span class="text-green">ObjectOutputStream</span>(<span class="text-green">writeBuffer</span>);
+<span class="text-green">outputStream</span>.writeObject(<span class="text-red">objectOriginal</span>);
+<span class="text-green">outputStream</span>.close();
+
+<span class="text-viola">byte[] <strong>buffer</strong></span> = <span class="text-green">writeBuffer</span>.toByteArray();
+<span class="text-neon">ByteArrayInputStream readBuffer</span> = new <span class="text-neon">ByteArrayInputStream</span>(<span class="text-viola">buffer</span>);
+<span class="text-user">ObjectInputStream inputStream</span> = new <span class="text-user">ObjectInputStream</span>(<span class="text-neon">readBuffer</span>);
+<span class="text-red">BigObject <strong>objectCopy</strong></span> = (<span class="text-red">BigObject</span>)<span class="text-neon">inputStream</span>.readObject();</code></pre>
+<p>"In the first line, we create <strong><span class="text-red">objectOriginal</span></strong>, which we will clone. The object and all of its subobjects must support serialization."</p>
+<p>"In the third line, we create a <span class="text-green">ByteArrayOutputStream</span>, which will expand dynamically as new data is added (like an ArrayList)."</p>
+<p>"In line 4, we create an <span class="text-green">ObjectOutputStream</span>, which is used for serialization."</p>
+<p>"In line 5, we serialize <strong><span class="text-red">objectOriginal</span></strong> into a byte array using <span class="text-green">outputStream</span>  and save it to <span class="text-green">writeBuffer</span>."</p>
+<p>"In line 8, we convert <span class="text-green">writeBuffer</span> into an ordinary byte array. Later we will 'read' our new object from this array."</p>
+<p>"In line 9, we transform <strong><span class="text-viola">buffer</span></strong> into a <span class="text-neon">ByteArrayInputStream</span> in order to read from it like an InputStream."</p>
+<p>"In line 10, we pass <span class="text-neon">readBuffer</span> to the <span class="text-user">ObjectInputStream</span> constructor to read (deserialize) the object."</p>
+<p>"In line 11, we read our object and convert it to a <span class="text-red">BigObject</span>."</p>
+<p>"What do you think?"</p>
+<p><span class="text-user">"It's beautiful."</span></p>
+<p><span class="text-user">"And by the way, when the code is highlighted in different colors, it's much easier to understand."</span></p>

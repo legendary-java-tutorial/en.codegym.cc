@@ -1,0 +1,124 @@
+<p>"Hello again."</p>
+<p><span class="text-user">"Hi!"</span></p>
+<p>"Today I'm going to tell you about refactoring. Refactoring is changing the code in a project without changing its functionality."</p>
+<p><span class="text-user">"But how is that possible?"</span></p>
+<p>"Well, in the simplest cases, we could rename variables and/or methods. After all, changing the name of a variable won't make the program work differently, will it?"</p>
+<p><span class="text-user">"Of course not."</span></p>
+<p>"You <span class="text-corporate">can also break large methods into several smaller ones.</span>"</p>
+<p>"You can <span class="text-corporate">pull repeated code snippets into a separate method.</span>"</p>
+<p><span class="text-corporate">"Some functions can be declared static and then moved into utility classes."</span></p>
+<p>"But this is a narrow interpretation of refactoring."</p>
+<p>"Refactoring sometimes means rewriting (improving) a project's architecture without adding new functionality. This is refactoring in the broad sense of the term."</p>
+<p>"IntelliJ IDEA became the most popular integrated development environment (IDE) specifically because it was the first to introduce very powerful refactoring tools."</p>
+<p><span class="text-user">"What are these magical tools?"</span></p>
+<h3>Magic trick #1: Change a method's name.</h3>
+<p>"Imagine that your code has a method that's called from 100-500 different places. You've decided to change its name into something more understandable. Let's say it is run(), and you want it to be runDownloadTaskAsync(). How quickly can you do that?"</p>
+<p><span class="text-user">"Well, first you need to change the method's name, then find all the places in the program where that method is called, and change the name there too."</span></p>
+<p>"And how would you find those places?"</p>
+<p><span class="text-user">"I'd just run the program and IntelliJ IDEA would show me all of the places where a non-existent method is called."</span></p>
+<p>"Okay. But now suppose that every method has an explanatory comment (JavaDoc) that explains what the method does — and the old method name is written there."</p>
+<p><span class="text-user">"I'd change the comments too."</span></p>
+<p>"But there may also be variables whose names are associated with the method's name. It would be good to change those too:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Before</th>
+        <th>After</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>Task <span class="text-green">task</span> = <span class="text-red">manager.run</span>();</code></pre>
+        </td>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>Task <span class="text-green">asyncTask</span> = <span class="text-red">manager.runDownloadTaskAsync</span>();</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Yeah, it would be good to change the names of those variables too. It wouldn't hurt."</span></p>
+<p>"Well, all of this can be done in just a few seconds using IntelliJ IDEA!"</p>
+<p>"You place the cursor on the name of the method (or click it with the mouse), and then press <span class="text-red"><strong>Shift+F6</strong></span> and simply start typing the desired method name."</p>
+<p>"Here's an example of editing a method name."</p>
+<p><strong>"Start editing:"</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/679babb9-ff1f-4877-866e-6899a8949943/original.jpeg' target='_blank'><img data-id="679babb9-ff1f-4877-866e-6899a8949943" data-max-width="1024" alt="IDEA: refactoring - 1" src="https://cdn.codegym.cc/images/article/679babb9-ff1f-4877-866e-6899a8949943/original.jpeg"></a>
+
+<p><strong>"Specify a new name:"</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/af1d86bf-b1ab-4b5a-baf6-1b5897b4874e/original.jpeg' target='_blank'><img data-id="af1d86bf-b1ab-4b5a-baf6-1b5897b4874e" data-max-width="1024" alt="IDEA: refactoring - 2" src="https://cdn.codegym.cc/images/article/af1d86bf-b1ab-4b5a-baf6-1b5897b4874e/original.jpeg"></a>
+
+<p>"Simply enter a new name, press enter, and that's it. This method will be renamed everywhere it is called in the project."</p>
+<p>"IntelliJ IDEA also usually asks if you want to rename variable names and method names in comments. Just click 'Yes' and it will change everything."</p>
+<p>"What's more, if the project compiled before this refactoring operation, then it is guaranteed to compile after the refactoring."</p>
+<p><span class="text-user">"Sounds very promising."</span></p>
+<p>"By the way, <strong>you can change variable names the same way. After clicking a name, simply press <span class="text-red">Shift+F6</span> — You can then enter a new name, and IntelliJ will change the variable name wherever it's used.</strong>"</p>
+<p><span class="text-viola">"If the variable is a field in a class and has a getter and a setter, then the names of the getter and setter will also be changed to match the variable's new name."</span></p>
+<p><span class="text-user">"I tried it using variables. Everything works just like you said, Ellie. Refactoring is awesome!"</span></p>
+<p>"Do you think that's all there is to refactoring? Refractoring is such a broad topic — we haven't even scratched the surface."</p>
+<p><span class="text-user">"Wow. What else is there?"</span></p>
+<h3>Magic trick #2: Extract a variable.</h3>
+<p>"Sometimes certain expressions are repeated so often in code that you'll want to move them into a separate variable. For example:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public void printInfo(User user)
+{
+ System.out.println(<span class="text-red">user.getProfile</span>().getName());
+ System.out.println(<span class="text-red">user.getProfile</span>().<span class="text-red">getAddress</span>().getState());
+ System.out.println(<span class="text-red">user.getProfile</span>().<span class="text-red">getAddress</span>().getCity());
+ System.out.println(<span class="text-red">user.getProfile</span>().<span class="text-red">getAddress</span>().getStreet());
+ System.out.println(<span class="text-red">user.getProfile</span>().<span class="text-red">getAddress</span>().getHomeNumber());
+}</code></pre>
+<div class="code-heading">How you want it to look:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public void printInfo(User user)
+{
+ Address <span class="text-red">address = user.getProfile().getAddress();</span>
+
+ System.out.println(<span class="text-red">user.getProfile</span>().getName());
+ System.out.println(<span class="text-red">address</span>.getState());
+ System.out.println(<span class="text-red">address</span>.getCity());
+ System.out.println(<span class="text-red">address</span>.getStreet());
+ System.out.println(<span class="text-red">address</span>.getHomeNumber());
+}</code></pre>
+<p><span class="text-user">"Ah."</span></p>
+<p>"And code can be much more complicated, with a lot of repeated parts."</p>
+<p>"Programmers don't write it that way intentionally. But you'll often need to add something to a method, then something else — and over time the number of repetitions goes through the roof."</p>
+<p>"By creating a separate variable, we can give it a proper name and improve the readability of the code."</p>
+<p>"For example, in the example above, perhaps we aren't talking about a home address. Maybe we're talking about the address of an emergency contact. Then you could call this variable emergencyContactAddress, instead of just address. Then, a programmer seeing this code for the first time will understand what's going on here."</p>
+<p><span class="text-user">"Yes, I agree. Adding such variables makes sense."</span></p>
+<p><span class="text-user">"So, how do you do it?"</span></p>
+<p>"Moving an expression into a separate variable is very simple."</p>
+<p><strong>Step 1: Use the mouse to select the expression.</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/c530b2c4-1074-4a06-8dc3-d07dd1949bd9/original.jpeg' target='_blank'><img data-id="c530b2c4-1074-4a06-8dc3-d07dd1949bd9" data-max-width="1024" alt="IDEA: refactoring - 3" src="https://cdn.codegym.cc/images/article/c530b2c4-1074-4a06-8dc3-d07dd1949bd9/original.jpeg"></a>
+
+<p><strong>Step 2: Press Ctrl+Alt+V</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/380cb71b-74f8-44e7-9c0f-4dbc0a7ac900/original.jpeg' target='_blank'><img data-id="380cb71b-74f8-44e7-9c0f-4dbc0a7ac900" data-max-width="1024" alt="IDEA: refactoring - 4" src="https://cdn.codegym.cc/images/article/380cb71b-74f8-44e7-9c0f-4dbc0a7ac900/original.jpeg"></a>
+
+<p>"A window opens where IntelliJ IDEA asks us whether we want to replace only the selected expression or all instances of the expression (4 occurrences)?"</p>
+<p>"Select the second option to replace all occurrences (Replace all 4 occurrences)"</p>
+<p><strong>Step 3: Press Enter.</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/cb949747-5925-45bf-9735-16cf6e9503a0/original.jpeg' target='_blank'><img data-id="cb949747-5925-45bf-9735-16cf6e9503a0" data-max-width="1024" alt="IDEA: refactoring - 5" src="https://cdn.codegym.cc/images/article/cb949747-5925-45bf-9735-16cf6e9503a0/original.jpeg"></a>
+
+<p>"IntelliJ IDEA will prompt you to enter a variable name. It will also make its own suggestion for the name. Not bad, eh?"</p>
+<p><span class="text-user">"Uh-huh. Right on. We were also planning on naming the variable 'address'. How did it know?"</span></p>
+<p>"By using the name of the last method in the expression, which returns an address. Thus, it is likely that the variable will be used to store an address."</p>
+<p><span class="text-user">"That worked out really well. Great stuff, Ellie."</span></p>
+<h3>Magic trick #3: Extract code into a separate method.</h3>
+<p>"But we could have done something else. We could have declared a new method, e.g. <strong>printAddress</strong>(), and moved all of this code into it."</p>
+<p>"Let's try doing that."</p>
+<p><strong>Step 1: Select the 4 lines of code that use the address variable:</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/62fa63af-18a9-43b4-a48e-6c8b75e1bebc/original.jpeg' target='_blank'><img data-id="62fa63af-18a9-43b4-a48e-6c8b75e1bebc" data-max-width="1024" alt="IDEA: refactoring - 6" src="https://cdn.codegym.cc/images/article/62fa63af-18a9-43b4-a48e-6c8b75e1bebc/original.jpeg"></a>
+
+<p><strong>Step 2: press Ctrl+Alt+M</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/c1178b9f-77fc-4faa-b7aa-e630edae9000/original.jpeg' target='_blank'><img data-id="c1178b9f-77fc-4faa-b7aa-e630edae9000" data-max-width="657" alt="IDEA: refactoring - 7" src="https://cdn.codegym.cc/images/article/c1178b9f-77fc-4faa-b7aa-e630edae9000/original.jpeg"></a>
+
+<p>"IntelliJ IDEA determines which variables the method will need, and suggests what it should look like. "The only thing left is to enter a name for the method."</p>
+<p><strong>Step 3: Enter printAddress as the method name and press Enter.</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/d9c12d52-d627-430b-aac7-f90a5cd2fb4b/original.jpeg' target='_blank'><img data-id="d9c12d52-d627-430b-aac7-f90a5cd2fb4b" data-max-width="1024" alt="IDEA: refactoring - 8" src="https://cdn.codegym.cc/images/article/d9c12d52-d627-430b-aac7-f90a5cd2fb4b/original.jpeg"></a>
+
+<p>"How do you like that?"</p>
+<p><span class="text-user">"It's awesome. Not only did IntelliJ IDEA extract the code into a separate method, it also added all the required variables. What's more, it guessed all of the names correctly."</span></p>

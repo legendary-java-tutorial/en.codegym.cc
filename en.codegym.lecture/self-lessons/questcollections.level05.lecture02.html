@@ -1,0 +1,66 @@
+<p>"Today I'm going to tell you about the two most popular version control programs: SVN and Git."</p>
+<p>"SVN works approximately the way I described in the last lesson. Git is a little more complicated, and I plan to discuss it in more detail."</p>
+<p><span class="text-user">"Can you give me links to the documentation for SVN and Git?"</span></p>
+<p>"Of course, just a second."</p>
+<p><a href="http://svnbook.red-bean.com/en/1.7/svn-book.html" target="_blank">http://svnbook.red-bean.com/en/1.7/svn-book.html</a></p>
+<p><a href="https://githowto.com" target="_blank">https://githowto.com</a> (this is simply a masterpiece)</p>
+<p>"So, <strong>Git</strong>."</p>
+<p>"It's a bit more complicated than SVN. <span class="text-green">With Git, each user has his or her own local repository in addition to the server repository.</span>"</p>
+<p>"So where do you commit to?"</p>
+<p>"Users always commit to their local repository."</p>
+<p>"But what about the server repository?"</p>
+<p>"To synchronize the local and server repositories, <strong>there are special Pull and Push commands</strong>.</p>
+<p>"There's a reason for this. Sometimes a programmer needs to do a lot of work on his own part, which may involve several hundreds of commits before it can be added to the shared repository."</p>
+<p>"To do this in SVN, you would have to start a separate branch, and then merge it with the trunk."</p>
+<p>"With Git, you simply always commit to the local repository, and then send all the changes as a batch to the central repository on the server when you're done."</p>
+<p>"This method may seem a little excessive when you're only writing a little code. But when your tasks are so big that they stretch across weeks, then you understand that you can't just write that whole time without committing."</p>
+<p><span class="text-user">"Why can't you just work for two weeks, and then commit your changes to the server once?"</span></p>
+<p>"Well, a version control program offers a lot of conveniences."</p>
+<p>"Imagine that you commit every day, and on the 10th day you discover that the changes you made over the last two days won't work as planned. And you want to revert to the code you had on the 8th day and approach the task differently."</p>
+<p>"You simply roll back the changes made to the local repository in the last two days and return to the desired state. This is known as a <span class="text-red"><strong>rollback</strong></span> operation."</p>
+<p><span class="text-user">"You're telling me you can do that?"</span></p>
+<p>"Yep. In addition, because the commit history is stored, you can find out when and why something was committed, and by whom, the relevant features/bugs, and which ten files were simultaneously modified as part of this work."</p>
+<p>"Suppose someone's bug fix breaks someone else's code. You can just roll back (<strong>rollback</strong>) the code and proceed as if the change never happened."</p>
+<p><span class="text-user">"OK, that's cool. I'm convinced. Could you show me a couple of examples illustrating how all of this works?"</span></p>
+<p>"Sure."</p>
+<p>"Here's how you <strong>clone</strong> the central repository to your local computer:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/7ee03896-1741-46e1-8d4f-285721e6317d/original.jpeg' target='_blank'><img data-id="7ee03896-1741-46e1-8d4f-285721e6317d" data-max-width="850" alt="Commits and branches - 1" src="https://cdn.codegym.cc/images/article/7ee03896-1741-46e1-8d4f-285721e6317d/original.jpeg"></a>
+
+<p><span class="text-user">"So, the Checkout operation is no longer needed."</span></p>
+<p>"Yep. And here are examples of <strong>Push</strong> operations:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/b1714dd1-2e4a-4048-85a7-b8cbc9ac09b5/original.jpeg' target='_blank'><img data-id="b1714dd1-2e4a-4048-85a7-b8cbc9ac09b5" data-max-width="850" alt="Commits and branches - 2" src="https://cdn.codegym.cc/images/article/b1714dd1-2e4a-4048-85a7-b8cbc9ac09b5/original.jpeg"></a>
+
+<p>"And <strong>Pull</strong> operations:</p>
+
+<a href='https://cdn.codegym.cc/images/article/12b7ee22-876c-4a53-b8f9-eff5a7638f19/original.jpeg' target='_blank'><img data-id="12b7ee22-876c-4a53-b8f9-eff5a7638f19" data-max-width="850" alt="Commits and branches - 3" src="https://cdn.codegym.cc/images/article/12b7ee22-876c-4a53-b8f9-eff5a7638f19/original.jpeg"></a>
+
+<p><span class="text-user">"Ah. That more or less makes sense."</span></p>
+<p>"By the way, there's a cool service called GitHub."</p>
+<p>"Any programmer can register there and create their own Git repositories. I suggest you get more familiar with it."</p>
+<p>"Here are a few useful links:"</p>
+<p><a href="https://githowto.com" target="_blank">https://githowto.com</a></p>
+<p><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" target="_blank">https://git-scm.com/book/en/v2/Getting-Started-Installing-Git</a></p>
+<p><a href="https://articles.assembla.com/using-git/getting-started/set-up-git-on-windows-with-tortoisegit" target="_blank">https://articles.assembla.com/using-git/getting-started/set-up-git-on-windows-with-tortoisegit</a></p>
+<p>"Note that there are quite a few Git clients."</p>
+<p><span class="text-green">"First, there's  <strong>GitBash</strong>, which lets you enter text commands."</span></p>
+<p><span class="text-corporate">"Then there's <strong>TortoiseGit</strong>, which is a good program built into Windows Explorer. It lets you work with files in a Git repository directly in Explorer."</span></p>
+<p><span class="text-viola">"IntelliJ IDEA supports Git and lets you execute all sorts of complex commands with just a couple of clicks directly from within the environment."</span></p>
+<p><span class="text-user">"So, which one should I learn?"</span></p>
+<p>"I recommend that you get to know all of them."</p>
+<p>"You'll pass your interview and arrive at work. You'll get a link to Git, a login and password — and that's it. Then you're on your own."</p>
+<p><span class="text-user">"What do you mean, «on your own»?"</span></p>
+<p><span class="text-viola">"I mean you'll set up Git by yourself, pull a copy of the repository by yourself,…"</span></p>
+<p>"And then you'll need to build and try to run the project."</p>
+<p>"The build instructions will also most likely be in the Git repository, along with the project documentation."</p>
+<p>"Your team lead will come up to you in the evening and say, <span class="text-red">«Well, what have you figured out so far?»</span>"</p>
+<p>"And you'll say, 'I'm trying to set up Git here, but haven't had any success yet. <span class="text-red">«You aren't going to fire me, right?»</span>"</p>
+<p>"Or, while it's still midday, you can go to the team lead and say, <span class="text-green">«I installed Git, pulled the project, and browsed through the documentation, but there are hundreds of files and I haven't sorted everything out yet. Where are the current build instructions?'»</span>"</span></p>
+<p>"Can you feel the difference?"</p>
+<p><span class="text-user">"Yes. In the second case, I'm a super rock-star programmer, but in the first, I'm some robo-doofus who doesn't even know how to pull a project from Git. In other words, I screwed up before I even got to start programming. I suppose that after that they wouldn't even let me write code."</span></p>
+<p>"See, you answered your own questions. So study and figure it out. Nobody will do it for you."</p>
+<p><span class="text-user">"You aren't going to help me?"</span></p>
+<p>"I've already helped. We're teaching Java here, in case you've forgotten. For everything else, you're on your own. Or is your head just for drinking?"</p>
+<p><span class="text-user">"Okay, I get it. Thank you, Bilaabo!"</span></p>
+<div class="section_footer"></div>

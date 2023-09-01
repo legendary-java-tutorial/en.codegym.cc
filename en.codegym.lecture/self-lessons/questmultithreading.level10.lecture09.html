@@ -1,0 +1,107 @@
+<a href='https://cdn.codegym.cc/images/article/e754c750-4786-419a-8ee3-b24a31e6cc5e/original.jpeg' target='_blank'><img data-id="e754c750-4786-419a-8ee3-b24a31e6cc5e" data-max-width="850" alt="NaN, Infinity - 1" src="https://cdn.codegym.cc/images/article/e754c750-4786-419a-8ee3-b24a31e6cc5e/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"Today I'm going to tell you about some interesting things in Java."</p>
+<p>"<strong>Infinity</strong>."</p>
+<p>In Java, the <strong>double</strong> type has special values for <strong>positive infinity</strong> and <strong>negative infinity</strong>. A positive number divided by 0.0 yields <strong>positive infinity</strong>, and a negative number — <strong>negative infinity</strong>.</p>
+<p>These concepts are represented by special Double constants:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public static final double <strong><span class="text-green">POSITIVE_INFINITY</span></strong> = 1.0 / 0.0;</code></pre>
+        </td>
+        <td>Positive infinity</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public static final double <span class="text-red"><strong>NEGATIVE_INFINITY</strong></span> = -1.0 / 0.0;</code></pre>
+        </td>
+        <td>Negative infinity</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"And that really works?"</span></p>
+<p>"Yes. Look at this:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>double inf = Double.<span class="text-green"><strong>POSITIVE_INFINITY</strong></span>;
+System.out.println(inf); // Infinity
+System.out.println(inf + 1); // Infinity+1 == Infinity
+System.out.println(inf + 10); // Infinity+10 == Infinity
+System.out.println(inf * -1); // Equal to negative infinity
+Double.<span class="text-red"><strong>NEGATIVE_INFINITY</strong></span></code></pre>
+<div class="code-heading">Screen output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><strong><code>Infinity
+Infinity
+Infinity
+-Infinity</code></strong></pre>
+<p><span class="text-user">"It really works. And if we have ambiguity? For example, if we subtract infinity from infinity?"</span></p>
+<p>"For this, Java has another concept: Not-a-Number (<strong>NaN</strong>)."</p>
+<p>"It's used in various situations:"</p>
+<p><strong>1)</strong> The string is being converted to a number, but it contains letters. The result is NaN.</p>
+<p><strong>2)</strong> Infinity minus infinity. The result is NaN.</p>
+<p><strong>3)</strong> Many other situations where we expect a number, but we end up with something undefined.</p>
+<p><span class="text-user">"So, what operations can you perform with Infinity and NaN?"</span></p>
+<p>"With NaN, it's very simple. Any operation involving NaN results in NaN."</p>
+<p>"And with infinity, you can do the following:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Expression</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>n ÷ ±Infinity</code></pre>
+        </td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>±Infinity × ±Infinity</code></pre>
+        </td>
+        <td>±Infinity</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>±(something other than zero) ÷ 0</code></pre>
+        </td>
+        <td>±Infinity</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Infinity + Infinity</code></pre>
+        </td>
+        <td>Infinity</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>±0 ÷ ±0</code></pre>
+        </td>
+        <td>NaN</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Infinity - Infinity</code></pre>
+        </td>
+        <td>NaN</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>±Infinity ÷ ±Infinity</code></pre>
+        </td>
+        <td>NaN</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>±Infinity × 0</code></pre>
+        </td>
+        <td>NaN</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That makes sense. Thank you, Rishi."</span></p>

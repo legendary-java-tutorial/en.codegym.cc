@@ -1,0 +1,76 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hello, Rishi!"</span></p>
+<p>"I found my old notes over there and prepared some interesting material for you. I think you'll be interested in hearing it."</p>
+<p><span class="text-user">"Let's hear it. You always find something interesting that later proves to be very useful."</span></p>
+<p>"OK. Today I want to tell you about <strong>trees</strong>, so I will begin with <strong>graphs</strong>."</p>
+<p>"<strong>A graph</strong> is a system of points and lines that connect them. The points are called the vertices of the graph, and the lines are called the edges of the graph. For example:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/e561d1bc-d108-481c-bc99-dfdc42efebe0/original.jpeg' target='_blank'><img data-id="e561d1bc-d108-481c-bc99-dfdc42efebe0" data-max-width="850" alt="Trees, red-and-black trees - 1" src="https://cdn.codegym.cc/images/article/e561d1bc-d108-481c-bc99-dfdc42efebe0/original.jpeg"></a>
+<p>"A graph is very convenient to use as a mathematical model for various real-world processes and tasks. Many different tasks and algorithms have been invented for graphs, so they are used fairly often."</p>
+<p>"For example, suppose vertices are cities, and edges are roads. Then searching for the shortest road between cities becomes: <span class="text-viola">«given a graph, find the shortest path between two vertices».</span>"</p>
+<p>"But the path from A to B isn't always the same as the path from B to A. So, sometimes having two different lines is preferred. To do this, the lines (edges of the graph) are replaced with arrows. In other words, the graph can have two arrows: one from A to B, and another from B to A."</p>
+<p>"If the graph uses arrows, then it is called a <strong>directed graph</strong>; if it just has lines, then it is called an <strong>undirected graph</strong>."</p>
+<p>"Each vertex can have its own number of edges. A vertex can also have no edges at all. Conversely, a vertex can be connected by edges to every other vertex. <span class="text-viola">If each pair of vertices in a graph is connected by an edge, then it is called a complete graph.</span>"</p>
+<p>"If you can use edges to reach every vertex in a graph, then it is called a <strong>connected</strong> graph. A graph that has three separate vertices and no edges is still a graph, but we call it a <strong>disconnected</strong> graph."</p>
+
+<a href='https://cdn.codegym.cc/images/article/b92c30c5-9959-4822-ab09-b2daa36bd16b/original.jpeg' target='_blank'><img data-id="b92c30c5-9959-4822-ab09-b2daa36bd16b" data-max-width="1024" alt="Trees, red-and-black trees - 2" src="https://cdn.codegym.cc/images/article/b92c30c5-9959-4822-ab09-b2daa36bd16b/original.jpeg"></a>
+
+<p><span class="text-red">"To form a connected graph from N vertices, you need at least N-1 edges. This type of graph is called a tree."</span></p>
+<p>"Moreover, usually one vertex is chosen to be the tree's <span class="text-corporate">root</span>, and the rest are declared to be branches. Tree branches that do not have their own branches are called <span class="text-green">leaves</span>. For example:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/35c3e15f-a18f-4fe5-b146-db32ec317cc7/original.jpeg' target='_blank'><img data-id="35c3e15f-a18f-4fe5-b146-db32ec317cc7" data-max-width="850" alt="Trees, red-and-black trees - 3" src="https://cdn.codegym.cc/images/article/35c3e15f-a18f-4fe5-b146-db32ec317cc7/original.jpeg"></a>
+
+<p>"If each element of the tree has two children, then it is <strong>called a binary tree</strong>. In other words, there can be either 0 or 2 branches. <strong>You can see a binary</strong> tree in the upper right."</p>
+<p>"<strong>A tree is called a complete binary tree</strong> when each branch has 2 children, and all the leaves (vertices without children) are on the same row."</p>
+<p>"For example:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/2c97e7d1-fb53-49e1-a865-3ac487cbf5f6/original.jpeg' target='_blank'><img data-id="2c97e7d1-fb53-49e1-a865-3ac487cbf5f6" data-max-width="850" alt="Trees, red-and-black trees - 4" src="https://cdn.codegym.cc/images/article/2c97e7d1-fb53-49e1-a865-3ac487cbf5f6/original.jpeg"></a>
+
+<p><span class="text-user">"Why are these trees needed?"</span></p>
+<p>"Oh, trees are used in lots of places. In general, binary trees are sorted structured data."</p>
+<p><span class="text-user">"What's that?"</span></p>
+<p>"Yes, it's very simple. We store a certain value in each vertex. And <span class="text-green">each element follows a rule: the value stored in the right child must be greater than the value stored in the vertex, and the value stored in the left child must be less than the value stored in the vertex.</span> This ordering makes it possible to quickly find the elements of the tree that you need."</p>
+<p><span class="text-user">"Can you clarify what that means?"</span></p>
+<p>"Tree elements are usually sorted by adding. Suppose we have 7 elements: 13, 5, 4, 16, 8, 11, 10"</p>
+<p>"Here is how the elements are added to the tree."</p>
+
+<a href='https://cdn.codegym.cc/images/article/18cd8255-043e-4d5f-ac79-98e854965259/original.jpeg' target='_blank'><img data-id="18cd8255-043e-4d5f-ac79-98e854965259" data-max-width="850" alt="Trees, red-and-black trees - 5" src="https://cdn.codegym.cc/images/article/18cd8255-043e-4d5f-ac79-98e854965259/original.jpeg"></a>
+
+<p>"If we are looking for the number 7 in this tree, then this is how the search will go"</p>
+<p>"0) Start at the root."</p>
+<p>"1a) Is 7 equal to 13? No"</p>
+<p>"1b) Is 7 greater than 13? No, so we move to the left subtree."</p>
+<p>"2a) Is 7 equal to 5? No."</p>
+<p>"2b) Is 7 greater than 5? Yes, so we move to the right subtree."</p>
+<p>"3a) Is 7 equal to 8? No"</p>
+<p>"3b) Is 7 greater than 8? No, so we move to the left subtree."</p>
+<p>"4a) There is no left subtree, which means the number 7 is not in the tree."</p>
+<p><span class="text-user">"Ah. In other words, we only need to check the vertices on the path from the root to the would-be location of the desired number. Yeah, that really is fast."</span></p>
+<p>"What's more, if the tree is balanced, then you will only need to pass through about 20 vertices to search a million elements."</p>
+<p><span class="text-user">"I agree — that's not very many."</span></p>
+<p><span class="text-user">"What do you mean by balanced tree?"</span></p>
+<p>"A tree that isn't distorted, i.e. that doesn't have long branches. For example, <span class="text-viola">if the elements were already sorted when we built the tree, then we would have made a very long tree consisting of one branch.</span>"</p>
+<p><span class="text-user">"Hmm. You're right. So what do we do?"</span></p>
+<p>"As you have probably already guessed, the most efficient tree has branches that are approximately the same length. Then each comparison discards the largest part of the remaining subtree."</p>
+<p><span class="text-user">"So, we need to rebuild the tree?"</span></p>
+<p>"Yep. It needs to be «balanced» — to be made as close as possible to a complete binary tree."</p>
+<p>"To solve this problem, self-balancing trees were invented. <span class="text-viola">If the tree becomes distorted after adding an element, then it reorders the elements slightly to make everything OK.</span> Here's an example of balancing:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/ff3a5fcd-0e52-44b2-af76-b7ed316f193b/original.jpeg' target='_blank'><img data-id="ff3a5fcd-0e52-44b2-af76-b7ed316f193b" data-max-width="850" alt="Trees, red-and-black trees - 6" src="https://cdn.codegym.cc/images/article/ff3a5fcd-0e52-44b2-af76-b7ed316f193b/original.jpeg"></a>
+
+<p>"Some of these trees are known as <strong><span class="text-red">red</span>-black</strong> trees."</p>
+<p><span class="text-user">"Why are they called red-black?"</span></p>
+<p>"Their inventor drew all the vertices using two colors. One color was red, and the other was black. The different vertices obey different rules. This forms the entire basis for the balancing procedure."</p>
+<p>"For example:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/ac827141-8ebe-49e1-b484-ef4001469b08/original.jpeg' target='_blank'><img data-id="ac827141-8ebe-49e1-b484-ef4001469b08" data-max-width="1024" alt="Trees, red-and-black trees - 7" src="https://cdn.codegym.cc/images/article/ac827141-8ebe-49e1-b484-ef4001469b08/original.jpeg"></a>
+
+<p><span class="text-user">"So what are these rules?"</span></p>
+<p>"1) A red vertex cannot be the child of a red vertex."</p>
+<p>"2) The black depth of every leaf is the same (black depth refers to the number of black vertices on the path from the root)."</p>
+<p>"3) The root of the tree is black."</p>
+<p>"I won't explain how this works — you're head is probably already exploding."</p>
+<p><span class="text-user">"Yes. My processor is giving off a little smoke."</span></p>
+<p>"Here's a link for you. If you want, you can read more about it here."</p>
+<p><a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree" target="_blank">Link to additional material</a></p>
+<p>"And now, go take a break."</p>

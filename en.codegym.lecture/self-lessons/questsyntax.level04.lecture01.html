@@ -1,0 +1,154 @@
+<p>"The Professor just can't get out of his rut. Old teachers who  are used to lecturing are always like this. There's nothing he can tell you that you can't find in books. <span class="text-corporate">You don't learn how to swim by listening to swimming lectures.</span> Lectures are only useful when you're familiar with the subject and know almost as much as your professor."</p>
+<p><span class="text-user">"Still, his lessons are useful."</span></p>
+<p>"Yep. I mean, we hope they are. The more perspectives on the subject you hear, the closer you'll get to the truth. When you hear just one, all you can do is believe it or disbelieve it. OK, let's get back to business."</p>
+<p>"Let's look at a picture I've shown you before."</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-viola">┏</span>
+<span class="text-viola">┃</span>public class Variables
+<span class="text-viola">┃</span><span class="text-green">┏</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span>{
+<span class="text-viola">┃</span><span class="text-green">┃</span>   private static String TEXT = "The end.";
+<span class="text-viola">┃</span><span class="text-green">┃</span>  <span class="text-viola">┗━━━━━━━━━━━━━━━━━━━┛</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span>   public static void main (String[] args)
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┏</span>                         <span class="text-user">┗━━━━━━━┛</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span> {
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>    System.out.println("Hi");
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>    String s = "Hi!";
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┏┗━━━━┛</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> System.out.println(s);
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> if (args != NULL)
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> {
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span>    String s2 = s;
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span>   <span class="text-corporate">┗━━━━┛
+</span><span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span><span class="text-corporate">  ┏</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span>  <span class="text-corporate">┃</span> System.out.println(s2);
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span>  <span class="text-corporate">┗</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> }
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> Variables variables = new Variables();
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> System.out.println(variables.instanceVariable);
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> System.out.println(TEXT);
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┗</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span> }
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┗</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span>   public String instanceVariable;
+<span class="text-viola">┃</span><span class="text-green">┃</span>  <span class="text-green">┗━━━━━━━━━━━━━━━┛</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span>   public Variables()
+<span class="text-viola">┃</span><span class="text-green">┃</span>   {
+<span class="text-viola">┃</span><span class="text-green">┃</span>      instanceVariable = "Instance variable test.";
+<span class="text-viola">┃</span><span class="text-green">┃</span>   }
+<span class="text-viola">┃</span><span class="text-green">┃</span>}
+<span class="text-viola">┃</span><span class="text-green">┗</span>
+<span class="text-viola">┗
+</span></code></pre>
+<p><span class="text-red">1. A variable declared in a method exists (is visible) from the start of its declaration to the end of the method.</span></p>
+<p><span class="text-corporate">2. A variable declared in a code block exists until the end of the code block.</span></p>
+<p><span class="text-user">3. A method's parameters exist until the method returns.</span></p>
+<p><span class="text-green">4. Variables in an object exist during the entire lifespan of the object that contains them. Their visibility is also governed by special access modifiers.</span></p>
+<p><span class="text-viola">5. Static (class) variables exist the whole time the program is running. Their visibility is also defined by access modifiers."</span></p>
+<p><span class="text-user">"Right. I remember this picture."</span></p>
+<p>"Great. Let me remind you about some key points."</p>
+<p>"All variables declared inside methods exist (are visible) from the point where they are declared until the end of the method (Example 1)."</p>
+<p>"If a variable is declared in a code block, it exists until the end of the code block (Example 2)."</p>
+<p>"If a variable is a method parameter, it exists (is visible) in the entire body of the method (Example 3)."</p>
+<p>"If a variable is an instance variable (Example 4), it is linked to a certain object and exists as long as the object exists. <strong>If no object exists, then there are no instances of the variable.</strong> <span class="text-corporate">You can access the variable (i.e. the variable is visible) from all methods of the class, regardless of whether they were declared before or after it. A new variable is created for each object.</span> <span class="text-green">It is independent of other objects.</span> <span class="text-red">You can't access an instance variable from static methods.</span>"</p>
+<p>"If a variable is declared static, i.e. marked with the keyword <strong>static</strong>, it exists as long as its class exists. The JVM usually loads a class into memory at its first use. That's also when static variables are initialized."</p>
+<a href='https://cdn.codegym.cc/images/article/237d3615-a622-48c3-a882-e759d077ac92/original.jpeg' alt="" target='_blank'><img data-id="237d3615-a622-48c3-a882-e759d077ac92" data-max-width="850" alt="More about variable scope - 1" src="https://cdn.codegym.cc/images/article/237d3615-a622-48c3-a882-e759d077ac92/original.jpeg"></a>
+<p>"The example above declares the Cat class, which has four variables: a, b, s (non-static variables), and count (a static variable). <span class="text-corporate">If we create several objects of this class (say, three), each of them will contain its own instances of the class's non-static variables.</span> <span class="text-green">A static variable is shared by all objects of a class.</span> Technically speaking, it isn't even inside these objects, since it existed even before any Cat objects were created."</p>
+<p>"Here's what happens if we declare variable <code><span class="text-red">s</span></code> static:"</p>
+<a href='https://cdn.codegym.cc/images/article/2434d002-accd-4eea-8eac-38d9a2f0367e/original.jpeg'alt=""  target='_blank'><img data-id="2434d002-accd-4eea-8eac-38d9a2f0367e" data-max-width="850" alt="More about variable scope - 2" src="https://cdn.codegym.cc/images/article/2434d002-accd-4eea-8eac-38d9a2f0367e/original.jpeg"></a>
+<p><span class="text-user">"OK. I think I get it."</span></p>
+<p><span class="text-user">"Can you declare variables with the same name?"</span></p>
+<p>"Not inside a method. <span class="text-green">All variables declared inside a method must have unique names.</span> A method's arguments are also considered local variables."</p>
+<p><span class="text-user">"What about member variables?"</span></p>
+<p>"Member variables must also be unique for each class."</p>
+<p>&#34;But there is an exception: <span class="text-corporate">the names of local variables and member variables can be identical.</span>&#34</p>
+<p><span class="text-user">"If we change such a variable, which one of the two identically named variables will be changed?"</span></p>
+<p>"If there are several visible (accessible) variables in our code – say, an instance variable and a local variable – the local variable will be accessed."</p>
+<div class="code-heading">Example with two count variables</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Main
+{
+    public int <span class="text-red">count</span> = 0;     // Declare an instance variable
+
+    public void run()
+    {
+        <span class="text-red">count</span> = 15;           // Access the instance variable
+        int <span class="text-green">count</span> = 10;       // Declare a local method variable
+        <span class="text-green">count</span>++;             // Access the method variable
+    }
+}</code></pre>
+<p>"This code declares two count variables. Line 3 declares <span class="text-red">an instance variable</span>, and line 8 – <span class="text-user"> a local variable</span>."</p>
+<p>"Here's what happens when the run method is executed:"</p>
+<p>"In line 7, we access <span class="text-red">the instance variable</span> and assign the value 15 to it"</p>
+<p>"In line 8, we declare (create) a new <span class="text-user">local variable</span>: <code><span class="text-user">count</span></code>. It masks the instance variable. The local variable is what all subsequent code in the method will see (access)."</p>
+<p><span class="text-user">"Got it."</span></p>
+<p><span class="text-red">"The local variable masks the instance variable.</span> In other words, the local variable is the one to be accessed. However, you can access the instance variable, too. It's just a little more complicated to do so."</p>
+<table class="compare-code">
+    <tbody>
+    <tr>
+        <td>
+            <div class="code-heading">Static (class) variable</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">ClassName</span>.<span class="text-green">variableName</span>
+
+<u><em>// Here are some examples:</em></u>
+<span class="text-user">Cat</span>.<span class="text-green">catsCount</span></code></pre>
+        </td>
+        <td>
+            <div class="code-heading">Non-static (instance) variable</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">this</span>.<span class="text-green">variableName</span>
+
+<u><em>// Here are some examples:</em></u>
+<span class="text-red">this</span>.<span class="text-green">catsCount</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"What else can you tell me about static methods and static variables?"</span></p>
+<p>"Static methods and variables are not linked to objects of the class; they are linked to the class itself. If we create ten <span class="text-viola"><strong>Variables</strong></span> objects (see the example at the beginning of this level), we will have ten <span class="text-viola">instanceVariable</span> variables (one for each object) and only one shared (static) variable <strong><span class="text-viola">TEXT</span></strong>."</p>
+<p><span class="text-user">"I have a question."</span></p>
+<p><span class="text-user">"What's the difference between static and non-static methods?"</span></p>
+<p>"Let's take a look at how a non-static method works:"</p>
+<table class="compare-code">
+    <tbody>
+    <tr>
+        <td>
+            <div class="code-heading">What the code looks like</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-corporate">Cat</span> <span class="text-red">cat</span> = new <span class="text-corporate">Cat</span>();
+String name = <span class="text-red">cat</span>.getName();
+<span class="text-red">cat</span>.setAge(17);
+<span class="text-red">cat</span>.setChildren(cat1, cat2, cat3);</code></pre>
+        </td>
+        <td>
+            <div class="code-heading">What really happens</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-corporate">Cat</span> <span class="text-red">cat</span> = new <span class="text-corporate">Cat</span>();
+String name = <span class="text-corporate">Cat</span>.getName(<span class="text-red">cat</span>);
+<span class="text-corporate">Cat</span>.setAge(<span class="text-red">cat</span>,17);
+<span class="text-corporate">Cat</span>.setChildren(<span class="text-red">cat</span>, cat1, cat2, cat3);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"When you call a method using <span class="text-red"><strong>&lt;object&gt;</strong> dot &lt;method name&gt;</span>, you're actually calling a class method and passing <strong><span class="text-red">that same object</span></strong> as the first argument. Inside the method, the object is called <strong><span class="text-red">'this'</span></strong>. All operations in the method are performed on this object and its data."</p>
+<p><span class="text-user">"Wow! So that's how it all works!"</span></p>
+<p>"And this is how a static method works."</p>
+<table class="compare-code">
+    <tbody>
+    <tr>
+        <td>
+            <div class="code-heading">What the code looks like</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-corporate">Cat</span> cat1 = new <span class="text-corporate">Cat</span>();
+<span class="text-corporate">Cat</span> cat2 = new <span class="text-corporate">Cat</span>();
+int catCount = <span class="text-corporate">Cat</span><strong>.getAllCatsCount</strong>();</code></pre>
+        </td>
+        <td>
+            <div class="code-heading">What really happens</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-corporate">Cat</span> cat1 = new <span class="text-corporate">Cat</span>();
+<span class="text-corporate">Cat</span> cat2 = new <span class="text-corporate">Cat</span>();
+int catCount = <span class="text-corporate">Cat</span><strong>.getAllCatsCount</strong>(<span class="text-red"><strong>null</strong></span>);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"When you call a static method, no object is passed to it. In other words, <span class="text-red">'this'</span> equals <span class="text-red">null</span>. That's why a static method can't access non-static variables and methods (since it has no <span class="text-red">'this'</span> to pass to these methods)."</p>
+<p><span class="text-user">"Hmmm. I think I get it. At least a little bit."</span></p>
+<p>"And here comes Uncle Diego... and his tasks."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0401"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0402"></div>

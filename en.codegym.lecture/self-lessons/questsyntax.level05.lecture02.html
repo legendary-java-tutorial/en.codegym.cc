@@ -1,0 +1,78 @@
+<p>"Hi, Amigo! Today we'll talk about packages."</p>
+<p>"Files on a computer are grouped into folders. Classes in Java (every class is stored in a separate file) are grouped <span class="text-green">into packages, which correspond to folders on the hard drive.</span> So, there's nothing new here. There are two things I'd like to point out, though."</p>
+<p>"<strong>First</strong>, <span class="text-green">a class's full unique name consists of its package name plus the class name</span>. Here are some examples:"</p>
+<table class="table table--striped">
+    <tbody>
+    <tr>
+        <th width="33%">Full unique name</th>
+        <th width="33%">Package name</th>
+        <th>Class name</th>
+    </tr>
+    <tr>
+        <td>java.io.FileInputStream</td>
+        <td>java.io</td>
+        <td>FileInputStream</td>
+    </tr>
+    <tr>
+        <td>java.lang.String</td>
+        <td>java.lang</td>
+        <td>String</td>
+    </tr>
+    <tr>
+        <td>java.util.ArrayList</td>
+        <td>java.util</td>
+        <td>ArrayList</td>
+    </tr>
+    <tr>
+        <td>org.apache.tomcat.Servlet</td>
+        <td>org.apache.tomcat</td>
+        <td>Servlet</td>
+    </tr>
+    <tr>
+        <td>Cat</td>
+        <td>Not specified</td>
+        <td>Cat</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-red">"A full class name is always unique."</span></p>
+<p>"It would be a pain if we had to write the long name, i.e. <strong>java.util.ArrayList</strong>, every time. That's why Java lets you import classes. You can use other classes' short names in your code, but at the beginning of your class you must explicitly indicate which classes you will use."</p>
+<p><span class="text-user">"How do you do that?"</span></p>
+<p>"With a line that looks like this: <code><span class="text-viola">import java.util.ArrayList;</span></code>"</p>
+<p>"At the beginning of a class, immediately after declaring the package, you can indicate which class you are referring to when you use <strong>ArrayList</strong> in your code."</p>
+<p><span class="text-user">"Why overcomplicate things? Can classes have identical names?"</span></p>
+<p>"Yes. There can be classes with the same name in different packages. <span class="text-red">We can't import two classes with identical names</span>, so we would have to call one of them by its full name."</p>
+<p>"Here is an analogy for you. You have a colleague named Jim. No problem with that: everybody knows who he is. But if there were three Jims in your office, you'd have to call them by their full unique names to avoid confusion."</p>
+<p>"<strong>Second</strong>, <span class="text-green">it's always better to place classes into packages, not the root src folder</span>. When you don't have many classes, this isn't a problem, but when there are many, it's easy to mix them up. Always create classes inside packages."</p>
+<p>In Java, the common practice is to give classes and packages meaningful names. Many companies release their libraries (sets of classes) and name them after their company or website to avoid confusion:"</p>
+<table class="table table--striped">
+    <tbody>
+    <tr>
+        <th width="50%">Package name</th>
+        <th>Company/project name</th>
+    </tr>
+    <tr>
+        <td>org.<strong>apache</strong>.common<br />
+            org.<strong>apache</strong>.tomcat<br />
+            org.<strong>apache</strong>.util</td>
+        <td>Apache</td>
+    </tr>
+    <tr>
+        <td>com.<strong>oracle</strong>.jdbc</td>
+        <td>Oracle</td>
+    </tr>
+    <tr>
+        <td><strong>java</strong>.io<br />
+            <strong>java</strong>x.servlet</td>
+        <td>Sun, Java</td>
+    </tr>
+    <tr>
+        <td>com.<strong>ibm.websphere</strong></td>
+        <td>IBM, WebSphere</td>
+    </tr>
+    <tr>
+        <td>com.<strong>jboss</strong></td>
+        <td>JBoss</td>
+    </tr>
+    </tbody>
+</table>

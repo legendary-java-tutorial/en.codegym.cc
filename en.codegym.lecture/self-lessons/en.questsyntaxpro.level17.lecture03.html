@@ -1,0 +1,181 @@
+<h2>1. Typecasting</h2>
+<p>Variables that store reference types (classes) can also be converted to different types. But this only works within a single type hierarchy. Let's look at a simple example. Suppose we have the following class hierarchy, in which the classes below inherit the classes above.</p>
+<img data-max-width="1024" data-id="4da79e8b-3e2d-4827-b5fd-0e056944d602" src="https://cdn.codegym.cc/images/article/4da79e8b-3e2d-4827-b5fd-0e056944d602/1024.jpeg" alt="Typecasting">
+<p>Typecasting of reference types as well as primitive ones is also categorized as either widening and narrowing.</p>
+<p>We see that the Cat class inherits the Pet class, and the Pet class, in turn, inherits the Animal class.</p>
+<p>If we write code like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-orange">Animal</span> <span class="text-red">kitten</span> = new <span class="text-green">Cat</span>();</code></pre>
+</div>
+<p>This is a <strong>widening type conversion</strong>. It is also called an implicit cast. We've widened the <span class="text-red">cat</span> reference so that it now refers to a <span class="text-green">Cat</span> object. With a type conversion like this, we will not be able to use the <span class="text-red">kitten</span> reference to call methods that are present in the <span class="text-green">Cat</span> class but absent in the <span class="text-orange">Animal</span> class.</p>
+<p>A narrowing conversion (or explicit cast) happens in the opposite direction:</p>
+<div class="lesson-example">
+    <pre class="language-java"><code><span class="text-green">Cat</span> <span class="text-red">cat</span> = (<span class="text-green">Cat</span>) <span class="text-red">kitten</span>;</code></pre>
+</div>
+<p>We explicitly indicated that we want to cast the reference stored in the <span class="text-red">kitten</span> variable (whose type is <span class="text-orange">Animal</span>) to the <span class="text-green">Cat</span> type.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1703"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1704"></div>
+<hr>
+<h2>2. Checking the type of an object</h2>
+<p>But you need to be very careful here. If you do this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="text-orange">Animal</span> <span class="text-red">beast</span> = new <span class="text-green">Cat</span>();
+<span class="text-user">Wolf</span> grayWolf = (Wolf) <span class="text-red">beast</span>;</code></pre>
+</div>
+<p>The compiler will allow this code, but <strong>there will be an error</strong> when the program runs! The JVM will throw an exception:</p>
+<pre><code>Exception in thread "main" java.lang.ClassCastException: <strong><span class="text-green">Cat</span></strong> cannot be cast to a <strong><span class="text-user">Wolf</span></strong></code></pre>
+<p>References to a <span class="text-green">Cat</span> object can only be stored in variables whose type is an ancestor of the Cat class: Pet, Animal, or Object.</p>
+<p><strong>Why is that?</strong></p>
+<p>The relevant point here is that <span class="text-orange">an object reference is used to refer to the methods and variables of that object</span>. And there won't be any problems if we use an Animal variable to store a reference to a Cat object: <span class="text-green">the Cat type always has a variables and methods of the Animal type</span> — it inherited them!</p>
+<p>But if the JVM allowed us to store a reference to a Cat object in a Wolf variable, then we might have a situation where we might try to use the <strong>grayWolf</strong> variable to call a method that does not exist in the Cat object stored in that variable. That's why this arrangement is not allowed.</p>
+<p>Java has a special <code>instanceof</code> operator that lets you check if an object is of a certain type and therefore can be stored into a variable of a certain type. It looks quite simple:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">variable</span> instanceof <span class="text-green">Type</span></code></pre>
+</div>
+<p>Example:</p>
+<div class="lesson-example">
+        <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-orange">Animal</span> <span class="text-red">beast</span> = new <span class="text-green">Cat</span>();
+if (<span class="text-red">beast</span> instanceof <span class="text-user">Wolf</span>)
+{
+   <span class="text-user">Wolf</span> grayWolf = (<span class="text-user">Wolf</span>) <span class="text-red">beast</span>;
+}</code></pre>
+</div>
+<p>This code won't cause errors — even at runtime.</p>
+<p>Here are some more examples that illustrate the situation:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Widening type conversion</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Cow <span class="text-viola">cow</span> = new Whale();</code></pre>
+        </td>
+        <td><p><span class="text-green">This is a classic widening conversion — no type conversion operator is required. </span> Now only the methods defined in the <code>Cow</code> class can be called on the <code>Whale</code> object.</p>
+            <p>On the <span class="text-viola"><code><span class="text-viola">cow</span></code> variable</span>, the compiler will only let you call methods that its type (the <code>Cow</code> class) has.</td>
+    </tr>
+    <tr>
+        <th>Narrowing type conversion</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Cow <span class="text-viola">cow</span> = new Whale();
+<span>if (cow <span class="text-green">instanceof</span> Whale)
+</span>{
+   Whale whale = (<span class="text-red">Whale</span>) cow;
+}</code></pre>
+        </td>
+        <td>
+            <span class="text-red">Classic narrowing conversion:</span> You need to add a type check and a cast operator.
+            <br>The <code>Cow</code> <code>cow</code> variable stores a reference to a <code>Whale</code> object.
+            <br><span class="text-green">We verify that this is the case</span>, and then perform a (narrowing) type conversion. Or as it is also called:
+            <div class="term">a <span class="text-red">type cast</span></div>
+            .</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Cow cow = new Cow();
+Whale whale = (<span class="text-red">Whale</span>) cow; // Exception</code></pre>
+        </td>
+        <td>
+            You can narrow a reference type without checking the type of the object.
+            <br>If the <code>cow</code> variable refers to an object that is not a <code><span class="text-red">Whale</span></code>, then an <code>InvalidClassCastException</code> will be generated.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1705"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1706"></div>
+<hr>
+<h2>3. Calling the original method: the <code>super</code> keyword</h2>
+<p>When overriding a parent class's method, sometimes rather than replacing it with our own, we only want to supplement it slightly.</p>
+<p>It would be cool if we could the parent class's method in our method, and then execute some of our own code. Or perhaps first execute our own code, and then call the parent class's method.</p>
+<p>And Java lets us to just that. To call a method of the parent class, do this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code><span class="text-red">super</span>.<span class="text-user">method</span>(<span class="text-orange">arguments</span>);</code></pre>
+</div>
+<p>Examples:</p>
+<div class="lesson-example">
+<pre class="language-java"><code>class <span class="text-green">PeaceTime</span>
+{
+   public double <span class="text-orange">getPi</span>()
+   {
+      return <span class="text-user">3.14</span>;
+   }
+}
+
+class <span class="text-user">WarTime</span> extends <span class="text-green">PeaceTime</span>
+{
+   public double <span class="text-orange">getPi</span>()
+   {
+      return <span class="text-red">super</span>.<span class="text-orange">getPi</span>()*<span class="text-user">2</span>;  // 3.14*2
+   }
+}</code></pre>
+</div>
+<p><span class="text-viola">In wartime, the value of <code>Pi</code> can be greater than 6! Of course, we're joking, but this example demonstrates how this all can work.</span></p>
+<p>Here are a couple more examples to clarify things a bit:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Cow
+{
+   public void printAll()
+   {
+      printColor();
+      <span class="text-orange">printName</span>();
+   }
+
+   public void printColor()
+   {
+      System.out.println("<span class="text-green">I'm a white whale</span>");
+   }
+
+   public void <span class="text-orange">printName</span>()
+   {
+      System.out.println("<span class="text-green">I'm a cow</span>");
+   }
+}
+
+class Whale extends Cow
+{
+   public void <span class="text-orange">printName</span>()
+   {
+      System.out.print("<span class="text-green">This is incorrect: </span>");
+      super.printName();
+      System.out.println("<span class="text-green">I'm a whale</span>");
+   }
+}</code></pre>
+        </td>
+        <td>
+            <code>Cow</code> and <code>Whale</code> classes
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   <span class="text-viola">Whale</span> whale = new <span class="text-viola">Whale</span>();
+   whale.printAll();
+}</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>I'm a white whale
+This is incorrect: I'm a cow
+I'm a whale</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>This is hard stuff. Honestly, it's one of the hardest things in <span class="term">OOP</span>. That said, you do need to know and understand it.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1707"></div>

@@ -1,0 +1,318 @@
+<h2>1. <code>OutputStream</code> class</h2>
+<p>We just recently explored input streams. It's time to talk about output streams.</p>
+<p>The <code>OutputStream</code> class is the parent class for all classes that support byte output. This is an abstract class that does nothing on its own, but it has descendant classes for every occasion.</p>
+<p>It sounds extremely complicated. To put it more simply, this class operates on bytes, and not, for example, characters or other data types. And the fact that it is abstract means that we usually do not use it, but rather one of its descendant classes. For example, <code>FileOutputStream</code> and the like.</p>
+<p>But back to the <code>OutputStream</code> class. This class has methods that all its descendant classes must implement. Here are the main ones:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">write</span>(int b)</code></pre>
+        </td>
+        <td>Writes one byte (not an <code>int</code>) to the stream.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">write</span>(byte[] buffer)</code></pre>
+        </td>
+        <td>Writes an array of bytes to the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">write</span>(byte[] buffer, off, len)</code></pre>
+        </td>
+        <td>Writes part of an array of bytes to the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">flush</span>()</code></pre>
+        </td>
+        <td>Writes all the data stored in the buffer to the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">close</span>()</code></pre>
+        </td>
+        <td>Closes the stream</td>
+    </tr>
+    </tbody>
+</table>
+<p>When you create an object of a class that inherits <code>InputStream</code>, you usually specify a source object that the <code>InputStream</code> reads data from. When you create an object of a class that inherits <code>OutputStream</code>, you also usually specify the target object or stream that data will be written to.</p>
+<p>Let's briefly go through all the methods of the <code>OutputStream</code> class:</p>
+<p><strong><code>write(int b)</code> method</strong></p>
+<p>This method writes one byte (not an <code>int</code>) to the output stream. The passed value is cast to a byte, and the int's first three bytes are discarded.</p>
+<p><strong><code>write(byte[] buffer)</code> method</strong></p>
+<p>Writes the given array of bytes to the output stream. That's it.</p>
+<p><strong><code>write(byte[] buffer, int offset, int length)</code> method</strong></p>
+<p>Writes a portion of the passed array of bytes to the output stream. The offset variable indicates the index of the first element of the array, and <code>length</code> is the length of the subset to be written.</p>
+<p><strong><code>flush()</code> method</strong></p>
+<p>The <code>flush()</code> method is used to force any data potentially buffered in the current stream to be written to the target stream. This is relevant when using buffering and/or multiple stream objects arranged in a chain.</p>
+<p><strong><code>close()</code> method</strong></p>
+<p>Writes any unwritten data to the target object. The <code>close()</code> method need not be called if you use a <code>try-with-resources</code> block.</p>
+<p>Example of copying a file</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">src</span> = "c:\\projects\\log.txt";
+String <span class="code text-user">dest</span> = "c:\\projects\\copy.txt";
+
+try(<span class="text-viola">FileInputStream</span> <span class="text-green">input</span> = new <span class="text-viola">FileInputStream</span>(<span class="code text-green">src</span>);
+<span class="text-viola">FileOutputStream</span> <span class="text-user">output</span> = new <span class="text-viola">FileOutputStream</span>(<span class="code text-user">dest</span>))
+{
+   byte[] <span class="code text-orange">buffer</span> = new byte[65536]; // 64Kb
+   while (<span class="text-green">input</span>.<span class="text-red">available</span>() &gt; 0)
+   {
+      int <span class="code text-neon">real</span> = <span class="text-green">input</span>.<span class="text-red">read</span>(<span class="code text-orange">buffer</span>);
+      <span class="text-user">output</span>.<span class="text-red">write</span>(<span class="code text-orange">buffer</span>, 0, <span class="code text-neon">real</span>);
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><code>InputStream</code> for reading from a file<br>
+            <code>OutputStream</code> for write to a file<br><br>
+            Buffer into which we will read the data<br>
+            As long as there is data in the stream<br><br>
+            Read data into the buffer<br>
+            Write the data from the buffer to the second stream
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. <code>Writer</code> class</h2>
+<p>The <code>Writer</code> class is exactly the same as the <code>OutputStream</code> class, but just one difference once again: it works with characters (<code>char</code>) instead of bytes.</p>
+<p>This is an abstract class: you cannot create objects of the <code>Writer</code> class. Its main goal is to be a common parent class for hundreds of descendant classes and to give them common methods for working with character streams.</p>
+<p>Methods of the <code>Writer</code> class (and all its descendant classes):</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">write</span>(int b)</code></pre>
+        </td>
+        <td>Writes one character (not an <code>int</code>) to the stream.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">write</span>(char[] buffer)</code></pre>
+        </td>
+        <td>Writes an array of characters to the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">write</span>(char[] buffer, off, len)</code></pre>
+        </td>
+        <td>Writes part of an array of characters to the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">write</span>(String str)</code></pre>
+        </td>
+        <td>Writes a string to the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">write</span>(String str, off, len)</code></pre>
+        </td>
+        <td>Writes part of a string to the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">flush</span>()</code></pre>
+        </td>
+        <td>Writes all the data stored in the buffer to the stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">close</span>()</code></pre>
+        </td>
+        <td>Closes the stream</td>
+    </tr>
+    </tbody>
+</table>
+<p>The methods are very similar to the methods of the <code>OutputStream</code> class, but they work with characters instead of bytes.</p>
+<p>Description of methods:</p>
+<p><strong><code>write(int b)</code> method</strong></p>
+<p>This method writes a single character (<code>char</code> — not an <code>int</code>) to the output stream. The passed value is cast to a <code>char</code>, and the first two bytes are discarded.</p>
+<p><strong><code>write(char[] buffer)</code> method</strong></p>
+<p>Writes the given array of characters to the output stream.</p>
+<p><strong><code>write(char[] buffer, int offset, int length)</code> method</strong></p>
+<p>Writes a portion of the passed array of characters to the output stream. The <code>offset</code> variable indicates the index of the first element of the array, and <code>length</code> is the length of the subset to be written.</p>
+<p><strong><code>write(String str)</code> method</strong></p>
+<p>Writes the given string to the output stream.</p>
+<p><strong><code>write(String str, int offset, int length)</code> method</strong></p>
+<p>Writes a portion of the given string to the output stream: the string is converted to an array of characters. The <code>offset</code> variable indicates the index of the first element of the array, and <code>length</code> is the length of the subset to be written.</p>
+<p><strong><code>flush()</code> method</strong></p>
+<p>The <code>flush()</code> method is used to force any data potentially buffered in the current stream to be written to the target stream. This is relevant when using buffering and/or multiple stream objects arranged in a chain.</p>
+<p><strong><code>close()</code> method</strong></p>
+<p>Writes any unwritten data to the target object. The <code>close()</code> method need not be called if you use a <code>try-with-resources</code> block.</p>
+<p>Example of a program that copies a text file:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">src</span> = "c:\\projects\\log.txt";
+String <span class="code text-user">dest</span> = "c:\\projects\\copy.txt";
+
+try(<span class="text-viola">FileReader</span> <span class="text-green">reader</span> = new <span class="text-viola">FileReader</span>(<span class="code text-green">src</span>);
+<span class="text-viola">FileWriter</span> <span class="text-user">writer</span> = new <span class="text-viola">FileWriter</span>(<span class="code text-user">dest</span>))
+{
+   char[] <span class="code text-orange">buffer</span> = new char[65536]; // 128Kb
+   while (<span class="text-green">reader</span>.<span class="text-red">ready</span>())
+   {
+      int <span class="code text-neon">real</span> = <span class="text-green">reader</span>.<span class="text-red">read</span>(<span class="code text-orange">buffer</span>);
+      <span class="text-user">writer</span>.write(<span class="code text-orange">buffer</span>, 0, <span class="code text-neon">real</span>);
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><code>Reader</code> for reading from a file<br>
+            <code>Writer</code> for writing to a file<br><br>
+            Buffer into which we will read the data<br>
+            As long as there is data in the stream<br><br>
+            Read data into a buffer<br>
+            Write the data from the buffer to the second stream
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>StringWriter</code> class</strong></p>
+<p>There is another interesting class that inherits the <code>Writer</code> class: it is called <code>StringWriter</code>. It contains a mutable string — a <code>StringBuffer</code> object. And every time you "write" something to the <code>StringWriter</code> object, the text is simply added to its internal buffer.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>StringWriter writer = new StringWriter();
+writer.write("Hello");
+writer.write(String.valueOf(123));
+
+String result = writer.toString();</code></pre>
+        </td>
+        <td>A target character stream (<code>StringWriter</code>) is created<br>
+            A string is written to the buffer inside the <code>StringWriter</code><br>
+            A string is written to the buffer inside the <code>StringWriter</code><br><br>
+            Converting the contents of an object into a string
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>In this case, the <code>StringWriter</code> class is essentially a wrapper over the <code>StringBuffer</code> class, but the <code>StringWriter</code> class is a descendant of the <code>Writer</code> stream class, and it can be used in chains of stream objects. This is a pretty useful property in practice.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1510"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1511"></div>
+<hr>
+<h2>3. <code>PrintStream</code> class</h2>
+<p>Output stream classes can also be put into a chain with intermediary streams that write data to the target stream passed to them. The general view of the interaction of these streams looks like this:</p>
+<p><img data-max-width="1024" data-id="52bd7527-da93-4dbe-93dc-1cf988c5121f" src="https://cdn.codegym.cc/images/article/52bd7527-da93-4dbe-93dc-1cf988c5121f/1024.jpeg" alt="PrintStream class"></p>
+<p>The most interesting and versatile of all intermediate output streams is <code>PrintStream</code>. It has tens of methods and as many as 12 constructors.</p>
+<p>The <code>PrintStream</code> class inherits the <code>FilterOutputStream</code> class, which inherits <code>OutputStream</code>. That means that the <code>PrintStream</code> class has <span class="text-green">all the methods of the parent classes</span> in addition to <span class="text-red">its own methods</span>. Here are the most interesting ones:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="41%">Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">print</span>(obj)</code></pre>
+        </td>
+        <td>Converts the passed object to a string and outputs it to the target stream.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">println</span>(obj)</code></pre>
+        </td>
+        <td>Converts the passed object to a string and outputs it to the target stream. Adds a line break at the end</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>void <span class="text-red">println</span>()</code></pre>
+        </td>
+        <td>Outputs a line break character to the target stream</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>PrintStream <span class="text-red">format</span>(String format, args...)</code></pre>
+        </td>
+        <td>Constructs and outputs a string based on the format string and the passed arguments; similar to the <code>String.format()</code> method</td>
+    </tr>
+    </tbody>
+</table>
+<p>And where are these tens of methods, you ask?</p>
+<p>Well, it has many variants of the <code>print()</code> and <code>println()</code> methods with different parameters. They can be summarized in this table.</p>
+<p>We won't dive into these methods, because you already know them well. Can you guess what I'm getting at?</p>
+<p>Remember <code>System.out.println()</code>? But it can be written in two lines:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-viola">PrintStream</span> <span class="text-user">stream</span> = System.out;
+<span class="text-user">stream</span>.<span class="text-red">println</span>("Hello!");</code></pre>
+        </td>
+        <td>
+            <pre><code>Hello!</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Our favorite command <code><span class="text-viola">System</span>.out.<span class="text-red">println</span>()</code> is a call to the <code><span class="text-red">println</span>()</code> method on the static <code><span class="text-green">out</span></code> variable of the <code><span class="text-viola">System</span></code> class. And this variable's type is <code><span class="text-viola">PrintStream</span></code>.</p>
+<p>In lots of CodeGym levels, and in almost every task, you have been calling methods of the <code><span class="text-viola">PrintStream</span></code> class without even knowing it!</p>
+<p><strong>Practical use</strong></p>
+<p>Java has this interesting class called <code>ByteArrayOutputStream</code>, which is a dynamically growing byte array that inherits <code>OutputStream</code>.</p>
+<p>A <code>ByteArrayOutputStream</code> object and <code>PrintStream</code> object can be chained like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-viola">ByteArrayOutputStream</span> <span class="code text-user">baos</span> = new <span class="text-viola">ByteArrayOutputStream</span>();
+
+try(<span class="text-neon">PrintStream</span> <span class="code text-orange">stream</span> = new <span class="text-neon">PrintStream</span>(<span class="code text-user">baos</span>))
+{
+   <span class="code text-orange">stream</span>.<span class="text-red">println</span>("Hello");
+   <span class="code text-orange">stream</span>.<span class="text-red">println</span>(123);
+}
+
+String <span class="code text-green">result</span> = <span class="code text-user">baos</span>.toString();
+
+System.out.println(<span class="code text-green">result</span>);</code></pre>
+        </td>
+        <td>Create a write buffer in memory<br><br>
+            Wrap the buffer in a <code>PrintStream</code> object<br><br>
+            Write data to the console<br><br><br><br>
+            Convert the array to a string!<br><br>
+            Console output:<br>
+            <pre><code>Hello!
+123</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1512"></div>

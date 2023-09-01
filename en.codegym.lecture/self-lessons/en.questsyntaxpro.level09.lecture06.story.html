@@ -1,0 +1,215 @@
+<p>"Greetings, Amigo!"</p>
+<p><span class="text-user">"Hello, Rishi!"</span></p>
+<p>"You now know enough about strings to learn something interesting. More specifically, a new class that similar to, but not exactly the same as, the String class."</p>
+<p><span class="text-user">"Sounds intriguing, though it's not entirely clear to me how ordinary strings fall short and why other string-like classes are needed."</span></p>
+<p>"Let's start with the fact that strings are immutable objects in Java."</p>
+<p><span class="text-user">"How's that? I forgot... Or I never knew to begin with..."</span></p>
+<p>"Let me remind you that immutable objects are those whose states cannot be changed after they are created."</p>
+<p><span class="text-user">"Ahhh... Why are strings immutable in Java?"</span></p>
+<p>"This was done to make the String class highly optimized and to allow it to be used everywhere. For example, <a href="https://codegym.cc/groups/posts/hashmap-java" target="_blank">only immutable types are recommended for use as keys in the HashMap collection</a>.</p>
+<p>"However, situations often arise when programmers would find it more convenient for the String class to be mutable. They want a class that doesn't create a new substring every time one of its methods is called."</p>
+<p><span class="text-user">"But what is it good for?"</span></p>
+<p>"Well, suppose we have a very large string and we need to frequently add something to the end of it. In this case, even a collection of characters (<code>ArrayList&lt;Character&gt;</code>) can be more efficient than constantly recreating and concatenating String objects."</p>
+<p><span class="text-user">"And that's why we need strings that aren't quite the String class?"</span></p>
+<p>"Exactly. The Java language has added a String-like type that can be changed. It is called <code>StringBuilder</code>".</p>
+<p><span class="text-bold">Creating an object</span></p>
+<p>"To create a <code>StringBuilder</code> object based on an existing string, you need to execute a statement like:</p>
+<div class="lesson-example">
+    <pre class="lecture-code language-java line-numbers"><code><span class="text-red">StringBuilder</span> <span class="text-user">name</span> = new <span class="text-red">StringBuilder</span>(<span class="text-green">string</span>);</code></pre>
+</div>
+<p>"To create an empty mutable string, you need to use a statement like this:</p>
+<div class="lesson-example">
+    <pre class="lecture-code language-java line-numbers"><code><span class="text-red">StringBuilder</span> <span class="text-user">name</span> = new <span class="text-red">StringBuilder</span>();</code></pre>
+</div>
+<p><span class="text-bold">List of methods</span></p>
+<p>"The <code>StringBuilder</code> class has two dozen helpful methods. Here are the most important ones:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>StringBuilder <span class="text-red">append</span>(obj)</code></pre>
+        </td>
+        <td>Converts the passed object to a string and appends it to the current string</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>StringBuilder <span class="text-red">insert</span>(int index, obj)</code></pre>
+        </td>
+        <td>Converts the passed object to a string and inserts at the middle of the current string</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>StringBuilder <span class="text-red">replace</span>(int start, int end, String str)</code></pre>
+        </td>
+        <td>Replaces the part of the string specified by the start..end interval with the passed string</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>StringBuilder <span class="text-red">deleteCharAt</span>(int index)</code></pre>
+        </td>
+        <td>Removes the character with the specified index from the string</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>StringBuilder <span class="text-red">delete</span>(int start, int end)</code></pre>
+        </td>
+        <td>Removes characters within the specified interval from the string</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>int <span class="text-red">indexOf</span>(String str, int index)</code></pre>
+        </td>
+        <td>Searches for a substring in the current string</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>int <span class="text-red">lastIndexOf</span>(String str, int index)</code></pre>
+        </td>
+        <td>Searches for a substring in the current string, starting from the end</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>char <span class="text-red">charAt</span>(int index)</code></pre>
+        </td>
+        <td>Returns the character in the string at the passed index</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>String <span class="text-red">substring</span>(int start, int end)</code></pre>
+        </td>
+        <td>Returns the substring defined by the specified interval</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>StringBuilder <span class="text-red">reverse</span>()</code></pre>
+        </td>
+        <td>Reverses the current string.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>void <span class="text-red">setCharAt</span>(int index, char)</code></pre>
+        </td>
+        <td>Changes the character at the specified index to the passed character</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>int <span class="text-red">length</span>()</code></pre>
+        </td>
+        <td>Returns the length of the string in characters</td>
+    </tr>
+    </tbody>
+</table>
+<p>"And now I will briefly describe each of these methods to you.</p>
+<p><span class="text-bold">Appending to a string</span></p>
+<p>"To add something to a mutable string (<code>StringBuilder</code>), use the <code>append()</code> method. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><span class="text-viola">StringBuilder</span> builder = new <span class="text-viola">StringBuilder</span>("Hi");
+<span class="text-user">builder</span>.<span class="text-red">append</span>("Bye");
+<span class="text-user">builder</span>.<span class="text-red">append</span>(123);</code></pre>
+        </td>
+        <td><code class="terminal">Hi<br>
+            HiBye<br>
+            HiBye123</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>Converting to a standard string</p>
+<p>"To convert a <code>StringBuilder</code> object to a String object, you just need to call its <code>toString()</code> method. Example</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><span class="text-viola">StringBuilder</span> <span class="text-user">builder</span> = new <span class="text-viola">StringBuilder</span>("Hi");
+<span class="text-user">builder.<span class="text-red">append</span></span>(123);
+String <span class="text-green">result</span> = <span class="text-user">builder</span>.<span class="text-red">toString</span>();
+System.out.println(<span class="text-green">result</span>);</code></pre>
+        </td>
+        <td><code class="terminal">Hi123</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-bold">How do I delete a character?</span></p>
+<p>"To delete a character in a mutable string, you need to use the <code>deleteCharAt()</code> method. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><span class="text-viola">StringBuilder</span> <span class="text-user">builder</span> = new <span class="text-viola">StringBuilder</span>("Hello");
+<span class="text-user">builder</span>.<span class="text-red">deleteCharAt</span>(2);
+String <span class="text-green">result</span> = <span class="text-user">builder</span>.<span class="text-red">toString</span>();
+System.out.println(<span class="text-green">result</span>);</code></pre>
+        </td>
+        <td><code class="terminal">Helo</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-bold">How do I replace part of a string with another string?</span></p>
+<p>"For this there is the <code>replace(int begin, int end, String str)</code> method. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><span class="text-viola">StringBuilder</span> builder = new <span class="text-viola">StringBuilder</span>("Mellow");
+<span class="text-user">builder</span>.<span class="text-red">replace</span>(2, 5, "Hello!");
+String <span class="text-green">result</span> = <span class="text-user">builder</span>.<span class="text-red">toString</span>();
+System.out.println(<span class="text-green">result</span>);
+</code></pre>
+        </td>
+        <td><code class="terminal">MeHello</code></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0918"></div>
+<p><span class="text-user">"Sounds convenient. Thank you, Rishi."</span></p>
+<p>"Don't mention it. How about this, can you flip a string backwards? How would you do it?"</p>
+<p><span class="text-user">"Well... I would create a <code>StringBuilder</code>, put a string in it... Then create a new string, and in a loop from the last character to the first... Or maybe a bitwise shift...</span></p>
+<p>"Not bad. But it could be faster. There is a special method for doing this — <code>reverse();</code> Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String <span class="text-orange">str</span> = <span class="text-green">"Hello"</span>;
+<span class="text-viola">StringBuilder</span> <span class="text-user">builder</span> = new <span class="text-viola">StringBuilder</span>(<span class="text-orange">str</span>);
+<span class="text-user">builder</span>.<span class="text-red">reverse</span>();
+String <span class="text-green">result</span> = <span class="text-user">builder</span>.<span class="text-red">toString</span>();
+System.out.println(<span class="text-green">result</span>);
+</code></pre>
+        </td>
+        <td><code class="terminal">olleH</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Besides the <code>StringBuilder</code>class, Java has another string-like class called <code>StringBuffer</code>. It is an analogue of the <code>StringBuilder</code>class, but its methods are marked with the <code>synchronized</code> modifier."</p>
+<p><span class="text-user">"What does that mean?"</span></p>
+<p>"It means that the <code>StringBuffer</code> object can be accessed simultaneously from multiple threads."</p>
+<p><span class="text-user">"I'm not very familiar with threads yet. But 'can be accessed from multiple threads' is clearly better than 'can't be accessed from multiple threads'... Why not always use <code>StringBuffer</code> then?"</span></p>
+<p>"Because it is much slower than <code>StringBuilder</code>. You may need such a class when you start to actively explore multithreading in the <span class="term">Java Multithreading</span> quest.</p>
+<p><span class="text-user">"I'll write that to my memory so as not to forget. Marked 'for the future'.</span></p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0919"></div>

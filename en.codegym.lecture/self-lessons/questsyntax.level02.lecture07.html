@@ -1,0 +1,92 @@
+<p>"OK, let's try another approach. I'll show you how calling methods works, and then you try to go through the previous lesson again, OK?"</p>
+<p><span class="text-user">"Let's do it."</span></p>
+<p>"Great. I'll tell you about calling functions/methods and the values they return (return values)."</p>
+<p>"Commands, or statements, are grouped into methods so they can be executed as a single block, like a single complex command. To do this, you need to write the method (function) name and then list the method's arguments inside parentheses."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>package com.codegym.lesson2;
+public class MethodCall
+{
+    public static void main(String[] args)
+    {
+         <span class="text-red">print4</span>(<span class="text-green">"I like to move it, move it."</span>);
+    }
+
+    public static void <span class="text-red">print4</span>(String s)
+    {
+        System.out.println(s);
+        System.out.println(s);
+        System.out.println(s);
+        System.out.println(s);
+    }
+}</code></pre>
+<p>"In the example above, we wrote a function that will display the passed string on the screen four times. Then we called the <code><span class="text-red">print4</span></code> function in line 6."</p>
+<p>"When the program reaches line 6, it will jump to line 9, assigning the value <code><span class="text-green">'I like to move it, move it'</span></code> to the variable s."</p>
+<p>"Then lines 11-14 will be executed. The function will finish, and the program will resume on line 7."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"Not only can you pass arguments (values) to a function—a function can return the result of its work (return value). This is done with the keyword return. This is how it looks:"</p>
+<table class="compare-code">
+    <tbody>
+    <tr>
+        <td>
+            <div class="code-heading">Example 1.<br />
+                Determine the minimum of two numbers.</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public class MethodCall
+{
+   public static void main(String[] args)
+   {
+      <span class="text-red">int a = 5, b = 7;</span>
+      <span class="text-user">int m = min(a, b);</span>
+      System.out.println(<span class="text-corporate">"The minimum is "</span>+ m);
+   }
+
+   <span class="text-user">public static int min(int c, int d)</span>
+   {
+      <span class="text-green">int m2;
+      if (c &lt; d)
+           m2 = c;
+      else
+           m2 = d;</span>
+
+      <strong><span class="text-user">return m2;</span></strong>
+   }
+}</code></pre>
+        </td>
+        <td>
+            <div class="code-heading">Here's how it works:</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public class MethodCall
+{
+   public static void main(String[] args)
+   {
+      <span class="text-red">int a = 5, b = 7;</span>
+      <span class="text-user">int c = a, d = b;</span>
+      <span class="text-green">int m2;</span>
+      <span class="text-green">if (c &lt; d)</span>
+           <span class="text-green">m2 = c;</span>
+      <span class="text-green">else</span>
+           <span class="text-green">m2 = d;</span>
+
+      <span class="text-user">int m = m2;</span>
+      System.out.println(<span class="text-corporate">"The minimum is "</span>+ m);
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0221"></div>
+<p><span class="text-user">"I think it's starting to make sense! The code in the left and right columns is actually the same. It's just that the code on the left has a standalone function."</span></p>
+<p><span class="text-user">"The function computes a certain value and uses the return statement to pass that value to whatever called it. At least, that's how I see it."</span></p>
+<p>"And you're right!"</p>
+<p><span class="text-user">"But what is this void type?"</span></p>
+<p>"Some functions just do something without computing or returning any value, like our <strong>main()</strong> method. A special return type–<strong>void</strong>–was created for such functions."</p>
+<p><span class="text-user">"Why not just declare nothing if a function doesn't return anything?"</span></p>
+<p>"Remember how we declare any variable? Type and name. For functions, we declare a type, name, and parentheses. A function name followed by parentheses is how you call the function."</p>
+<p><span class="text-user">"So, it was easier to invent a 'void type' than to divide functions into two categories – those that return values and those that do not?"</span></p>
+<p>"Exactly! You're really smart, my boy."</p>
+<p><span class="text-user">"How do we return a void type?"</span></p>
+<p>"We don't. It works like this. <span class="text-corporate">When executing the return statement, the Java machine computes the value of the expression to the right of the word 'return', stores this value in a special part of the memory, <strong>and immediately ends the function</strong>.</span> The stored value is used where the function was called, as the result of calling the function. You can see it in the example I gave earlier."</p>
+<p><span class="text-user">"You mean the part where int m = min(a, b) is transformed into m = m2?"</span></p>
+<p>"Yes. After the function is finished, everything works as if the function's return value was written in its place. <span class="text-red">Repeat this phrase in your mind and look at the code in the last example.</span>"</p>
+<p><span class="text-user">"I think this only seems easy. It's actually difficult. I've only understood parts of it."</span></p>
+<p>"That's OK. <span class="text-green">On the first try, you can only understand things you already know.</span> The more things you don't understand, the deeper you are plunging into something new, and the better your results will be. It will become clearer with time."</p>
+<p><span class="text-user">"Well, if you say so. Let's keep going."</span></p>

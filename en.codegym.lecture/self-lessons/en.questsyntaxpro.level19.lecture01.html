@@ -1,0 +1,93 @@
+<h2>1. Writing your first game on a game engine</h2>
+<img data-id="7e7f4914-7343-4837-b3a0-00516cbaefa6" src="https://cdn.javarush.ru/images/article/7e7f4914-7343-4837-b3a0-00516cbaefa6/original.png" alt="">
+<p>When implementing any computer game, there are three stages:</p>
+<ol>
+    <li><strong>Initializing the game.</strong> This includes various preparatory actions: setting the size of the playing field and drawing it, creating and setting up game objects in their initial position, as well as any other actions that need to be performed at the beginning of the game.</li>
+    <li><strong>Playing the game.</strong> This may include moving game objects, player actions, tallying points earned, as well as any other actions that must be performed at regular intervals or in response to button clicks and key presses.</li>
+    <li><strong>Ending the game.</strong> This could include stopping animations, a win/lose message, and any other actions that need to be performed at the end of the game.</li>
+</ol>
+<p>We'll now walk through all three stages in order and see how the CodeGym game engine can help make this process easier.</p>
+<hr>
+<h2>2. Initializing the game</h2>
+<p>When you use the CodeGym game engine, game initialization consists of only two steps:</p>
+<p><strong>Step 1: Create the game's main class</strong></p>
+<p>To create your own game based on the CodeGym game engine, <strong>you need to create a class and make it extend the Game class</strong> (com.javarush.engine.cell.Game). This will give your class <span class="text-green">the ability to call methods on the game engine</span>, and the engine will be able to <strong>call methods of your class</strong>. Example:</p>
+<pre class="language-java"><code>import com.javarush.engine.cell.Game;
+
+public class MySuperGame extends Game {
+  ...
+}</code></pre>
+<p><strong>Step 2: Override the <code>initialize()</code> method</strong></p>
+<p>In the <code>initialize()</code> method, you perform all the actions necessary to start the game: create the playing field, create all game objects, etc. You just need to declare this method in the class that inherits the Game class. Example:</p>
+<pre class="language-java"><code>import com.javarush.engine.cell.Game;
+
+public class MySuperGame extends Game {
+  @Override
+  public void initialize() {
+     // Here we perform all the actions to initialize the game and its objects
+  }
+}</code></pre>
+<p>The <strong><code>initialize()</code></strong> method is analogous to the <code>main()</code> method. It is the entry point from which all your game code begins to be executed.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini01"></div>
+<hr>
+<h2>3. Creating the playing field</h2>
+<p>Creating the playing field is also a two-step process:</p>
+<p><strong>Step 1: Divide the playing field into cells</strong></p>
+<p>The game engine divides the entire playing field into cells. The minimum size is 3×3, and the maximum is 100×100.</p>
+<p>The size of the playing field is constant once created. The horizontal and vertical dimensions do not have to be the same. For example, a width of 7 and a height of 9:</p>
+<p><img src="https://cdn.javarush.ru/images/lectures/syntaxpro/19-12.png" alt="" width="360" height="406"/></p>
+<p>Please note that cell numbering starts from the upper left corner.</p>
+<p>To set the size of the playing field, use the <code><span class="text-user">void setScreenSize(int width, int height)</span></code> method. It sets the size of the playing field. Its parameters are the number of cells in the horizontal (<code>width</code>) and vertical (<code>height</code>) dimensions. It is usually called once when the game starts. Example:</p>
+<pre class="language-java"><code>import com.javarush.engine.cell.Game;
+
+public class MySuperGame extends Game {
+   @Override    public void initialize()
+   {
+      // Set the field size to 7x9 cells
+      setScreenSize(7, 9);
+      ...
+   }
+}</code></pre>
+<p>When writing a game, you may need to get the current width and height of the playing field. The corresponding methods are <code><span class="text-user">int getScreenWidth()</span></code> and <code><span class="text-user"><span class="text-user">int getScreenHeight()</span></span></code>.</p>
+<p><strong>Step 2: Turn the grid on/off (optional)</strong></p>
+<p>If you don't like having a black grid separating the cells of your playing field, then you can turn it off.</p>
+<p>The <code>void showGrid(boolean isShow)</code> method enables/disables the grid that separates the cells. The grid is displayed by default. To turn it off, call this method and pass in <code>false</code> as the argument:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>showGrid(<span class="text-user">false</span>);</code></pre>
+</div>
+<p>Result:</p>
+<p><img src="https://cdn.javarush.ru/images/lectures/syntaxpro/19-13.png" alt="" width="360" height="398"/></p>
+<p>To turn the grid back on, call the method like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>showGrid(true);</code></pre>
+</div>
+<p>Result:</p>
+<p><img src="https://cdn.javarush.ru/images/lectures/syntaxpro/19-14.png" alt="" width="358" height="402"/></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini02"></div>
+<hr>
+<h2>4. Primitive program</h2>
+<p>Let's write a very primitive game that uses the CodeGym game engine. It will do 3 things:</p>
+<ol>
+    <li>It will divide the playing field into 9 cells: 3×3</li>
+    <li>It will disable the grid (the lines between cells)</li>
+    <li>The central cell will be painted blue and the letter <code>X</code> will be written in it.</li>
+</ol>
+<p>The final code looks like this:</p>
+<pre class="language-java"><code>public class MySuperGame extends Game
+{
+   @Override
+   public void initialize()
+   {
+      // Create a 3x3 playing field
+      setScreenSize(3, 3);
+      // Disable displaying the grid
+      showGrid(false);
+      // Change the background of the central cell to blue and display "X" in it
+      setCellValueEx(1, 1, Color.<span class="text-user">BLUE</span>, "Х", Color.<span class="text-orange">ORANGE</span>, 50);
+   }
+}</code></pre>
+<p>In this example, the playing field is set to 3x3, the grid is turned off, and an <span class="text-orange">orange</span> letter <code><span class="text-green">X</span></code> at half of the cell height is put in the center cell with a <span class="text-user">blue</span> background. This will be the first thing the player sees when the game starts.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini03"></div>

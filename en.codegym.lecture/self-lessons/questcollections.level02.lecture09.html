@@ -1,0 +1,95 @@
+<p>"Hi! And one more happy topic: <span class="text-red"><strong>RMI. RMI</strong></span> stands for <span class="text-red">Remote Method Invocation</span>. In other words, <span class="text-red">RMI is a mechanism that allows an object from one Java machine to call methods on objects from another Java machine</span>, even if they are on different computers, in different countries, or on different sides of the globe."</p>
+
+<a href='https://cdn.codegym.cc/images/article/3512817d-b14c-4b93-9029-f9e1c14f4ce8/original.jpeg' target='_blank'><img data-id="3512817d-b14c-4b93-9029-f9e1c14f4ce8" data-max-width="850" alt="RMI - 1" src="https://cdn.codegym.cc/images/article/3512817d-b14c-4b93-9029-f9e1c14f4ce8/original.jpeg"></a>
+
+<p><span class="text-user">"Whoa! That sounds awesome."</span></p>
+<p>"Yep. But I'll only try to give you an overview. With this, if you dig too deep, you can get confused by the nuances of how it works."</p>
+<p>"But if you don’t go to extremes, then RMI is not only very simple, but it also greatly simplifies a programmer's life. For which, we pay it our deepest respects."</p>
+<p>"So, we want one object in a Java program to call a method on an object that is in another Java program. Regardless of where these programs are running."</p>
+<p>"Let's consider the simplest example: when both programs are running on the same computer. <strong>To allow programs to interact over the Internet, you need to configure the JVM's permissions</strong>, but we won't cover that today."</p>
+<p>"In Java, you can remotely call only the methods of interfaces, not classes."</p>
+<p>"So, we have two programs. How can they call each other's methods?"</p>
+<p>"Let's consider the situation <span class="text-green">where one program contains an object, and a second program wants to call methods on that object. Let's call the first program the server, and the second — the client</span>."</p>
+<p>"First, I'll provide some sample code, and then we'll analyze it."</p>
+<p><span class="text-user">"So what will our program do?"</span></p>
+<p>"Hmm. Well, for simplicity, the program will have one method that reverses a string that is passed to it."</p>
+<p><span class="text-user">"Simple enough."</span></p>
+<p>"Good, then let's start:"</p>
+<p>"First, we need an interface that will satisfy our requirements:"</p>
+<div class="code-heading">Interface for communication between programs</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>interface</strong> <span class="text-green">Reverse</span> <span class="text-red">extends Remote</span>
+{
+ <strong>public</strong> String <span class="text-green">reverse</span>(String str) <span class="text-red">throws RemoteException</span>;
+}</code></pre>
+<p>"I created a Reverse interface and added a Remote marker interface to it, as well as a RemoteException. Unexpected errors could occur when the method is called. If any do, then this exception will be thrown."</p>
+<p>"Now we need to write a server class that implements this interface:"</p>
+<div class="code-heading">Class for the server</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> ReverseImpl <strong>implements</strong> <span class="text-green">Reverse</span>
+{
+ <strong>public</strong> String <span class="text-green">reverse</span>(String str) <span class="text-red">throws RemoteException</span>
+ {
+  <strong>return</strong> new <span class="text-corporate">StringBuffer</span>(str).<span class="text-corporate">reverse</span>().toString();
+ }
+}</code></pre>
+<p><span class="text-user">"I see. We reverse the string in this method."</span></p>
+<p>"Yep."</p>
+<p>"Now we need to make this object callable from another program. Here's how you do that:"</p>
+<div class="code-heading">Object sharing</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static final</strong> String <span class="text-corporate">UNIC_BINDING_NAME</span> = "<span class="text-green">server.reverse</span>";
+
+<strong>public static void</strong> main(String[] args) <strong>throws</strong> Exception
+{
+ // Create an object to be accessible remotely.
+ <strong>final</strong> ReverseImpl <strong><span class="text-green">service</span></strong> = new <span class="text-green">ReverseImpl</span>();
+
+ // Create a registry of shared objects.
+ <strong>final</strong> Registry <span class="text-red">registry</span> = <strong>LocateRegistry.createRegistry</strong>(2099);
+ // Create a stub for receiving remote calls.
+ Remote stub = <strong>UnicastRemoteObject.exportObject</strong>(service, 0);
+ // Register the stub in the registry.
+ <span class="text-red">registry</span>.bind(<span class="text-corporate">UNIC_BINDING_NAME</span>, <span class="text-user">stub</span>);
+
+ // Put the main thread to sleep, or else the program will exit.
+ Thread.<strong>sleep</strong>(Integer.MAX_VALUE);
+}</code></pre>
+<p>"I'll explain this line by line."</p>
+<p>"<strong>In line 1</strong>, we store a unique name (which we made up) for our remote object (object that is remotely accessible) in the <span class="text-corporate">UNIC_BINDING_NAME</span> variable. <span class="text-green">If the program makes several objects accessible, each must have its own unique name. The our object's unique name is 'server.reverse'."</span></p>
+<p>"<strong>On line 6</strong> we create a <span class="text-green">ReverseImpl</span> object that will be accessible remotely. Its methods will be invoked."</p>
+<p>"<strong>On line 9</strong> we create a special object called a registry. We need to use it to register the objects that we share. The JVM will interact with them later. 2099 is a port (a unique number that another program can use to access our object registry)."</p>
+<p>"In other words, to access an object, you need to know the object registry's unique number (port) and the object's unique name, and have the same interface as the one implemented by the remote object."</p>
+<p><span class="text-user">"I see. Something like: call by phone (need a number) and ask for Bill (the name of an object)?"</span></p>
+<p>"Yes. Now, let's keep going."</p>
+<p>"<strong>On line 11</strong> , we create a stub. A stub is a special object that receives information about the remote call, unpacks it, deserializes the method arguments, and calls the required method. Then it serializes the result or exception, if there was one, and sends it all back to the caller."</p>
+<p><span class="text-user">"I see. Almost. You said that it 'deserializes the method arguments'. So, that means the remote methods' arguments must be serializable?"</span></p>
+<p>"Yes. How else would you send them over the network? True, there are exceptions, i.e. objects that are passed by reference, but we won't talk about them today."</p>
+<p>"We'll put it like this: you can't pass non-serializable objects, but if you really want to, then you can. But it's a pain, you know."</p>
+<p><span class="text-user">"OK."</span></p>
+<p>"Then let's keep going."</p>
+<p>"<strong>On line 13</strong>, we register our object's stub under a unique name in the registry."</p>
+<p>"<strong>On line 16</strong>, we put the main thread to sleep. All remote calls are processed on separate threads. The important thing is that the program is running. So we simply put the main thread to sleep here. That's it."</p>
+<p><span class="text-user">"OK."</span></p>
+<p>"Great, then here's an example of a client:"</p>
+<div class="code-heading">Working with a remote object</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static final</strong> String <span class="text-corporate">UNIC_BINDING_NAME</span> = "<span class="text-green">server.reverse</span>";
+
+<strong>public static void</strong> main(String[] args) <strong>throws</strong> Exception
+{
+ // Create a registry of shared objects
+ <strong>final</strong> Registry <span class="text-red">registry</span> = <strong>LocateRegistry.createRegistry</strong>(2099);
+
+ // Get the object (actually, this is a proxy object)
+ Reverse <span class="text-green">service</span> = (<span class="text-green">Reverse</span>) <span class="text-red">registry</span>.lookup(<span class="text-corporate">UNIC_BINDING_NAME</span>);
+
+ // Call the remote method
+ String result = <span class="text-green">service</span>.<strong>reverse</strong>("<span class="text-green">Home sweet home.</span>");
+}</code></pre>
+<p>"I'll explain this code line by line:"</p>
+<p>"<strong>Line 1</strong> is the remote object's <span class="text-green">unique name</span>. This must be the same on both the client and the server."</p>
+<p>"<strong>In line 6</strong> , we create a «<span class="text-red">registry of remote objects</span>». Its port (2099) must be the same as the port of the registry for the server application."</p>
+<p>"<strong>On line 9</strong>, we get the <span class="text-green">object</span> from the registry. The returned object is a proxy object and is converted to an interface. The interface must inherit the Remote marker interface."</p>
+<p>"<strong>On line 12</strong>, we call the interface's methods as if the object was created within the same program. There's no difference."</p>
+<p><span class="text-user">"Cool! Now I can write distributed applications. Or games like Battleship for Android."</span></p>
+<p>"Don't you dare, Amigo! The Android operating system was banned in the 27th century after its third attempt to take over the world. Robots have no access to it whatsoever. There wouldn't be any way to pull you away from it. You would start running around shouting, «Kill all the humans!»"</p>
+<p><span class="text-user">"Hmm. OK. But I'll still have to ask Diego. You never know, maybe he'll have something interesting to say about it."</span></p>
+<p>"Then go ask him. Okay, well, until tomorrow."</p>
+<p><span class="text-user">"Bye, Rishi. Thanks for the interesting lesson."</span></p>

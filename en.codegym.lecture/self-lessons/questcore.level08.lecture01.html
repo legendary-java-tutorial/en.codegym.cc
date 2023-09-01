@@ -1,0 +1,89 @@
+<p>"Hello, Amigo! Today we'll get acquainted with <span class="text-red"><strong>input/output streams</strong></span>. We picked at this topic a couple of days ago, but today we will explore it thoroughly. Input/output streams are divided into 4 categories:"</p>
+<p>1) Streams are divided according to their direction: <strong>input streams</strong> and <strong>output streams</strong></p>
+<p>2) Streams are divided according to their data type: those that work with <strong>bytes</strong> and those that work with <strong>characters</strong>.</p>
+<p>Here these divisions are represented in a table:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="33%"></th>
+        <th width="33%">Input stream</th>
+        <th width="33%">Output stream</th>
+    </tr>
+    <tr>
+        <td><strong>Works with bytes</strong></td>
+        <td>InputStream</td>
+        <td>OutputStream</td>
+    </tr>
+    <tr>
+        <td><strong>Works with characters</strong></td>
+        <td>Reader</td>
+        <td>Writer</td>
+    </tr>
+    </tbody>
+</table>
+<p>If an object implements the <strong>InputStream</strong> interface, then it supports the ability to sequentially read bytes from it.</p>
+<p>If an object implements the <strong>OutputStream</strong> interface, then it supports the ability to sequentially write bytes to it.</p>
+<p>If an object implements the <strong>Reader</strong> interface, then it supports the ability to sequentially read characters (chars) from it.</p>
+<p>If an object implements the <strong>Writer</strong> interface, then it supports the ability to sequentially write characters (chars) to it.</p>
+
+<a href='https://cdn.codegym.cc/images/article/ad1b2ea8-590a-4baa-ab90-404e3d8e3e2a/original.jpeg' target='_blank'><img data-id="ad1b2ea8-590a-4baa-ab90-404e3d8e3e2a" data-max-width="850" alt="Input/Output streams - 1" src="https://cdn.codegym.cc/images/article/ad1b2ea8-590a-4baa-ab90-404e3d8e3e2a/original.jpeg"></a>
+
+<p>An output stream is like a printer. We can output documents to the printer. We can output data to an output stream.</p>
+<p>For its part, an input stream can be compared to a scanner, or perhaps an electrical outlet. With a scanner, we can bring documents onto our computer. Or we can plug into an electrical outlet and receive electricity from it. We can receive data from an input stream.</p>
+<p><span class="text-user">"Where are they used?"</span></p>
+<p>"These classes are used everywhere in Java. Our familiar friend <strong>System.in</strong> is a static <strong>InputStream</strong> variable named <strong>in</strong> in the <strong>System</strong> class."</p>
+<p><span class="text-user">"Seriously?! So all this time I've been using an InputStream and didn't even realize it. Is System.out also a stream?"</span></p>
+<p>"Yes, <strong>System.out</strong> is a static <strong>PrintStream</strong> (a descendant of <strong>OutputStream</strong>) variable in the System class."</p>
+<p><span class="text-user">"You mean to tell me that I've always been using streams and didn't even know it?"</span></p>
+<p>"Yes, and that just tells us how convenient these streams are. You just grab one and use it."</p>
+<p><span class="text-user">"But you can't say that about System.in. We constantly had to add BufferedReader or InputStreamReader to it."</span></p>
+<p>"That's true. But there were also reasons for that."</p>
+<p>There are a lot of data types, and many ways to work with them. So the number of standard I/O classes grew very quickly, though they did everything in almost the same way. To avoid this complexity, Java developers used the principle of abstraction and divided classes into many small parts.</p>
+<p>But you can connect these parts in a coherent way and get very complex functionality, if you need it. Look at this example:</p>
+<table>
+<tr class="table__sub-head">
+<td>Output a string to the console
+</td>
+<tr>
+<td><pre class="line-numbers language-java" data-line="" data-start=""><code>System.out.println("Hello");</code></pre>
+</td>
+</tr>
+<tr class="table__sub-head">
+<td>Store the console output stream in a separate variable.<br />
+    Output a string to the stream.
+</td>
+</tr>
+<tr>
+<td><pre class="line-numbers language-java" data-line="" data-start=""><code>PrintStream console = System.out;
+console.println("Hello");</code></pre>
+</td>
+</tr>
+<tr class="table__sub-head">
+<td>Create a dynamic (expanding) byte array in memory.<br />
+    Connect it to a new output stream (PrintStream object).<br />
+    Output a string to the stream.
+</td>
+</tr>
+<tr>
+<td><pre class="line-numbers language-java" data-line="" data-start=""><code>ByteArrayOutputStream stream = new ByteArrayOutputStream();
+PrintStream console = new PrintStream(stream);
+console.println("Hello");</code></pre>
+</td>
+</tr>
+</table>
+<!--<div class="code-heading">Output a string to the console</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>System.out.println("Hello");</code></pre>
+<div class="code-heading">Store the console output stream in a separate variable.<br />
+    Output a string to the stream.</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>PrintStream console = System.out;
+console.println("Hello");</code></pre>
+<div class="code-heading">Create a dynamic (expanding) byte array in memory.<br />
+    Connect it to a new output stream (PrintStream object).<br />
+    Output a string to the stream.</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>ByteArrayOutputStream stream = new ByteArrayOutputStream();
+PrintStream console = new PrintStream(stream);
+console.println("Hello");</code></pre>-->
+<p><span class="text-user">"Honestly, this is like a Lego set. Only it's not clear to me what any of this code is doing."</span></p>
+<p>"Don't worry about that for now. Everything in its own due time."</p>
+<p>This is what I want you to remember: If a class implements the OutputStream interface, you can write bytes to it. Almost exactly like you output data to the console. What it does with it is its business. With our "Lego kit", we don't care about the purpose of each individual part. We care about the fact that the large selection of parts lets us build such cool things.</p>
+<p><span class="text-user">"Okay. Then where do we start?"</span></p>

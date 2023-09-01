@@ -1,0 +1,79 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Today I'm going to tell you a lot about classes in Java."</p>
+<p>"<strong>Explanation No. 1</strong>. I'll start with an analogy. All things in the material world consist of atoms. There are various types of atoms: hydrogen, oxygen, iron, uranium… Combinations of these atoms make up different molecules, substances and objects."</p>
+<p>"These atoms have some internal structures, such as electrons and a nucleus consisting of protons and neutrons."</p>
+<p><span class="text-user">"Yes, I know a bit about the structure of atoms. I'm a robot, after all!"</span></p>
+<p>"The world of Java is structured in a similar way. <span class="text-green">Programs consist of various types of objects (classes).</span> Different classes, in turn, contain different internal structures (variables and methods)."</p>
+<p><span class="text-viola">"If we look at a program as a whole, then its constituent building blocks are objects.</span> Classes are the types of blocks. <span class="text-corporate">In other words, different types of blocks are objects of different classes.</span>"</p>
+<p><span class="text-user">"I think I understand it."</span></p>
+<p>"<strong>Explanation No. 2</strong>. <span class="text-green">When we need a new object type, we create a new class and define the way its internal objects behave.</span>"</p>
+<p><span class="text-user">"That sounds a bit too general. It seems clear, but you didn't say anything concrete."</span></p>
+<p>"In terms of the internal structure, <span class="text-corporate">a class consists of methods, which do something, and variables, which are used by the methods to store data.</span>"</p>
+<p><span class="text-user">"So, would it be simpler to say that a class is a set of methods?"</span></p>
+<p>"Almost. To be more exact, a class is a group of related methods and shared variables used by these methods to store different values."</p>
+<p><span class="text-user">"I see. To create a new class, we first need to write these methods…"</span></p>
+<p>"Yes. And we also need to decide what variables different methods will share. We pull these variables out of the methods and put them into the class, i.e. we turn local variables into member (instance) variables."</p>
+<p>"Basically, a class is created like this:</p>
+<p><span class="text-green">1. The programmer decides what other objects they need.</span></p>
+<p><span class="text-corporate">2. The programmer divides these objects into different types, depending on what they are to do.</span></p>
+<p><span class="text-viola">3. The programmer writes a separate class for each type.</span></p>
+<p><span class="text-red">4. In a class, they declare the needed methods and variables.</span></p>
+<p><span class="text-neon">5. In each method, they write commands to make the method do what they want it to do.</span></p>
+<p><span class="text-yellow">6. The class is ready. You may now create objects of the class."</span></p>
+<p><span class="text-user">"Cool! What an interesting pattern! I'll need to remember that."</span></p>
+<p>"Memorize it. It will come in handy. <span class="text-green">The programming philosophy that calls for a program to be divided into objects is called object-oriented programming</span> (<span class="text-red">OOP</span>)."</p>
+<p>"Java is a classic example of an OOP language: in Java, everything is an object."</p>
+<p>"Studying Java consists of two big tasks: <span class="text-green">learning how to write your own classes</span> and <span class="text-corporate">learning how to use other people's classes</span>. Today we'll start with the simplest of these. We'll learn how to write the simplest classes and, of course, how to create objects of these classes. Objects are also often called 'instances' of a class. They are synonyms; both expressions are correct."</p>
+<p><span class="text-user">"Got it."</span></p>
+<p>"To summarize, we could say that a class is a mini-program: some data and functions that use the data to do something. <span class="text-green">Classes are used to create instances of classes, also known as objects.</span>"</p>
+<p>"To create an object, write '<code>new class_name()</code>' in the code. Here are some examples:"</p>
+<table>
+<tbody>
+<tr>
+<th>Examples</th>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>Cat cat = <span class="text-red">new Cat</span>();</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>Reader reader = <span class="text-user">new BufferedReader</span>(<span class="text-green">new InputStreamReader</span>(System.in));</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>InputStream is = <span class="text-viola">new FileInputStream</span>(path);</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>"An object has two interesting properties:"</p>
+<p>"<strong>First</strong>. <span class="text-green">Each object stores its own copy of instance variables.</span> This means that if instance variables x and y were declared in a class and 10 objects of that class were created, then each object will have its own variables. <span class="text-red">Changing the variables in one object doesn't affect the variables in another object.</span>"</p>
+<p>"<strong>Second</strong>. <span class="text-green">When creating objects, you can pass different arguments.</span> These values are used to initialize the object. A little bit like naming a newborn. <span class="text-corporate">Many classes require such arguments in order to create instances (objects) of the class.</span>"</p>
+<p><span class="text-user">"I got it. What did you say about instance variables?"</span></p>
+<p>"Each object has its own data. These are the instance variables."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Java code</th>
+        <th>Screen output:</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-user">cat1</span> = <span class="text-red">new Cat</span>();
+<span class="text-user">cat1.name</span> =  "Oscar";
+
+Cat <span class="text-viola">cat2</span> = <span class="text-red">new Cat</span>();
+<span class="text-viola">cat2.name</span> = "Smudge";
+
+<span class="text-neon">System.out.println</span>(<span class="text-user">cat1.name</span>);
+<span class="text-neon">System.out.println</span>(<span class="text-viola">cat2.name</span>);</code></pre>
+        </td>
+        <td>Oscar<br />
+            Smudge</td>
+    </tr>
+    </tbody>
+</table>

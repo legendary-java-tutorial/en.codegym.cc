@@ -1,0 +1,133 @@
+<p>"Check out some other things you can do with substrings:"</p>
+<p><strong>8) How do I find a substring?</strong></p>
+<p>The <strong>indexOf</strong> and <strong>lastIndexOf</strong> methods let you search for strings within strings. There are 4 versions of these methods:</p>
+<p>The <strong>indexOf</strong> method looks for a string in a specified String. The method can search for the string from the beginning of the specified String, or starting from some index (the second method). If the string is found, then the method returns the index of its first character; if it is not found, then it returns -1.</p>
+<table>
+    <tbody>
+    <tr style="height: 24px;">
+        <th style="height: 24px;">Method(s)</th>
+        <th style="height: 24px;">Example(s)</th>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 205px;" rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>int</strong> indexOf(<strong>String str</strong>)</code></pre>
+        </td>
+        <td style="height: 90px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "<span class="text-green">Good news, everyone!</span>";
+int index = s.<strong>indexOf ("ne");</strong></code></pre>
+        </td>
+    </tr>
+    <tr style="height: 115px;">
+        <td style="height: 115px;"><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>index == 5</code></pre>
+        </td>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 205px;" rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int indexOf(<strong>String str</strong>, int from)</code></pre>
+        </td>
+        <td style="height: 90px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good ne<span class="text-green">ws, everyo<strong>ne!</strong></span>";
+int index = s.<strong>indexOf ("ne", 7);</strong></code></pre>
+        </td>
+    </tr>
+    <tr style="height: 115px;">
+        <td style="height: 115px;"><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>index == 16</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"The <strong>lastIndexOf</strong> method searches for the specified string backwards from the end of our String! This method can search for a string from the very end of our String, or starting from some index (the second method). If the string is found, then the method returns the index of its first character; if it is not found, then it returns -1."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>int</strong> lastIndexOf(<strong>String str</strong>)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "<span class="text-green">Good news, everyo<strong>ne!</strong></span>";
+int index = s.<strong>lastIndexOf("ne");</strong></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>index == 17</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int lastIndexOf(<strong>String str</strong>, int from)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "<span class="text-green">Good <strong>ne</strong>ws, every</span>one!";
+int index = s.lastIndexOf("ne", 15);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>index == 5</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>9) How do I replace part of a String with another String?</strong></p>
+<p>"There are three methods for this."</p>
+<p>The <strong>replace</strong> method replaces all occurrences of a particular character with another character.</p>
+<p>The <strong>replaceAll</strong> method replaces all occurrences of a substring with another string.</p>
+<p>The <strong>replaceFirst</strong> method replaces the first occurrence of a passed substring with a specified string.</p>
+<table>
+    <tbody>
+    <tr style="height: 24px;">
+        <th style="height: 24px;">Method(s)</th>
+        <th style="height: 24px;">Example(s)</th>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 205px;" rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String <strong>replace</strong>(char oldChar, char newChar)</code></pre>
+        </td>
+        <td style="height: 90px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "G<strong>oo</strong>d news, every<strong>o</strong>ne!";
+String s2 = s.<strong>replace</strong>&gt;('o', 'a');</code></pre>
+        </td>
+    </tr>
+    <tr style="height: 115px;">
+        <td style="height: 115px;"><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s2 == "G<strong>aa</strong>d news, every<strong>a</strong>ne!";</code></pre>
+        </td>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 205px;" rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String <strong>replaceAll</strong>(String regex, String replacement)</code></pre>
+        </td>
+        <td style="height: 90px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good <strong>ne</strong>ws, everyone!";
+String s2 = s.<strong>replaceAll</strong> ("<strong>ne</strong>", "_");</code></pre>
+        </td>
+    </tr>
+    <tr style="height: 115px;">
+        <td style="height: 115px;"><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s2 == "Good _ws, everyo_!";</code></pre>
+        </td>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 205px;" rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String <strong>replaceFirst</strong>(String regex, String replacement)</code></pre>
+        </td>
+        <td style="height: 90px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good <strong>ne</strong>ws, everyone!";
+String s2 = s.<strong>replaceFirst</strong> ("<strong>ne</strong>", "_");</code></pre>
+        </td>
+    </tr>
+    <tr style="height: 115px;">
+        <td style="height: 115px;"><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s2 == "Good _ws everyone!";</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"But you need to be careful with these. In the last two methods (<strong>replaceAll and replaceFirst</strong>), the string we are looking for is passed as a regular expression, not a simple string. But I'll talk about that later."</p>

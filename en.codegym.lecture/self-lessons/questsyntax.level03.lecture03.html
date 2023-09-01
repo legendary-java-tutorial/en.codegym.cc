@@ -1,0 +1,110 @@
+<p>"Long ago, computers could only display text. Programs displayed data on the screen after receiving input from the keyboard. This is called a 'console user interface' or simply the 'console'. A window interface is an alternative to the console. With this type of interface, the user interacts with the program through one or more windows. Since we're just learning how to program, we'll start by working with the console."</p>
+<p><span class="text-user">"All right."</span></p>
+<p>"Text is displayed on the console (screen) consecutively, line by line. The text is entered using the keyboard. To avoid mistakes, the keyboard input is displayed on the screen. Sometimes <span class="text-corporate">it looks like the human user and the program are taking turns writing things on the screen.</span>"</p>
+<p>"You can use the <strong>System.out.print</strong>() method to display text on the screen. This method simply displays the text, while <strong>System.out.println</strong>() displays the text and moves the cursor to the next line."</p>
+<table>
+    <tbody>
+    <tr>
+        <th style="width: 40%;">Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong><span class="text-yellow">print</span></strong>("Rain");
+System.out.<strong><span class="text-yellow">print</span></strong>("In");
+System.out.<strong><span class="text-yellow">print</span></strong>("Spain");</code></pre>
+        </td>
+        <td>RainInSpain</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong><span class="text-yellow">print</span></strong>("Rain");
+System.out.<strong>println</strong>("In");
+System.out.<strong><span class="text-yellow">print</span></strong>("Spain");</code></pre>
+        </td>
+        <td>RainIn<br />
+            Spain</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong>println</strong>("Rain");
+System.out.<strong>println</strong>("In");
+System.out.<strong>println</strong>("Spain");</code></pre>
+        </td>
+        <td>Rain<br />
+            In<br />
+            Spain</td>
+    </tr>
+    </tbody>
+</table>
+<p>&#34;To keep bits of text separate, we need to add a space. For example:&#34;</p>
+<table>
+    <tbody>
+    <tr>
+        <th style="width: 40%;">Code</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-user">a</span> = <span class="text-user">5</span>, <span class="text-red">b</span> = <span class="text-red">6</span>;
+System.out.print(<span class="text-user">a</span>);
+System.out.print(<span class="text-red">b</span>);</code></pre>
+        </td>
+        <td><code><span class="text-user">5</span><span class="text-red">6</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-user">a</span> = <span class="text-user">5</span>, <span class="text-red">b</span> = <span class="text-red">6</span>;
+System.out.print(" " + <span class="text-user">a</span> + " " + <span class="text-red">b</span>);</code></pre>
+        </td>
+        <td><code>&#160;<span class="text-user">5</span> <span class="text-red">6</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-user">a</span> = <span class="text-user">5</span>, <span class="text-red">b</span> = <span class="text-red">6</span>;
+System.out.print(<span class="text-green">"The sum is "</span> + (<span class="text-user">a</span> + <span class="text-red">b</span>));</code></pre>
+        </td>
+        <td><code><span class="text-green">The sum is 11</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">&#34;Got it&#34;</span></p>
+<p>&#34;This lets you <span class="text-green">display anything on the screen:</span> <span class="text-viola">all Java objects can be transformed into a string.</span> All Java classes derive from the Object class, which has the toString() method. This method is called when you want to transform an object into a string.&#34;</p>
+<table>
+    <tbody>
+    <tr>
+        <th style="width: 40%;">Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-corporate">cat</span> = new Cat("Oscar");
+System.out.<strong>println</strong>("The cat is " + <span class="text-corporate">cat</span>);</code></pre>
+        </td>
+        <td rowspan="3">These three examples are equivalent.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-corporate">cat</span> = new Cat("Oscar");
+System.out.<strong>println</strong>("The cat is " + <span class="text-corporate">cat</span>.<span class="text-red">toString</span>());</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-corporate">cat</span> = new Cat("Oscar");
+String <span class="text-red">catText</span> = <span class="text-corporate">cat</span>.<span class="text-red">toString</span>();
+System.out.<strong>println</strong>("The cat is " + catText);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task03.task0326"></div>
+<p><span class="text-user">&#34;But my program displayed '<strong>The cat is <span style="text-decoration: underline;">com.codegym.lesson3.Cat@1fb8ee3</span></strong>'. What in the world is that supposed to mean?&#34;</span></p>
+<p>"The Object class's standard toString() method returns a string consisting of <span class="text-red">the class name</span> and <span class="text-red">the object's memory address</span> (in hexadecimal form)."</p>
+<p><span class="text-user">"Uh-huh. And what good could possibly come from such a method?"</span></p>
+<p>"You can write your own implementation of toString() in your class. Then that is the method that will be called."</p>
+<p><span class="text-user">"Really? All right."</span></p>
+<p>"Here are some tasks from Diego."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task03.task0302"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task03.task0303"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task03.task0304"></div>

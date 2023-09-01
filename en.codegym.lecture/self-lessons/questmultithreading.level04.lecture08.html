@@ -1,0 +1,62 @@
+<p>"Hi, Amigo!"</p>
+<p>"As you already know, anonymous inner classes can't have a constructor."</p>
+<p><span class="text-user">"Yeah. It's not very convenient. Constructors are really important."</span></p>
+<p>"As the saying goes, nothing's impossible if you want it bad enough."</p>
+<p>"Remember, static variables don't have static constructors, but there is a static initializer – the static block."</p>
+<p><span class="text-user">"Yeah, I remember."</span></p>
+<p>"Anonymous inner classes have the exact same initializer, except it's not static."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">class Car
+{</span>
+<span class="text-user"> public ArrayListcreatePoliceCars(int count)
+ {
+  ArrayList result = new ArrayList();
+
+  for(int i = 0; i &lt; count; i++)
+  {
+    <span class="text-viola">final int number = i;</span>
+    result.add(new <span class="text-red">Car()
+    {
+      int policeNumber;
+      <span class="text-viola">{
+        policeNumber = number;
+      }</span>
+    }</span>);
+  }
+  return result;
+ }</span>
+<span class="text-green">}</span></code></pre>
+<p>"This time I highlighted the anonymous inner class code in red, and its initializer (in effect, its constructor) in purple. The 'constructor' has a body, but there's no method signature:"</p>
+<table class="table_example">
+    <tbody>
+    <tr>
+        <th>Expectation</th>
+        <th>Reality</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">class Car
+{
+int policeNumber;</span>
+<span class="text-viola"><s> Car()</s>{
+  policeNumber = number;
+ }</span>
+<span class="text-red">}</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">class Car
+{
+int policeNumber;</span>
+<span class="text-viola">{
+policeNumber = number;
+}</span>
+<span class="text-red">}</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"You can declare variables inside such a class and initialize them in the initializer."</p>
+<p class="amigo"><span class="text-user">"Excellent, now their are far fewer restrictions."</span></p>
+<p>"With that, we're getting to know inner classes. I hope you liked it."</p>
+<p><span class="text-user">"A lot. The lessons from Kim, Rishi, and especially you, Ellie, have been simply top notch."</span></p>
+<p class="amigo">"What a sweet talker! Keep going…"</p>

@@ -1,0 +1,287 @@
+<h2>Local variables</h2>
+<p>"Greetings, my beloved student! It's time to get a little more serious about variables. But this time we won't discuss their internal structure. Instead, we'll focus on how variables interact with the code where they are located.</p>
+<p>"All variables that are declared inside methods are called <span class="term">local variables</span>. <span class="text-orange">A local variable exists only in the block of code in which it is declared.</span> Or, to be more precise, it exists from the moment it is declared until the end of the block of code in which it is declared."</p>
+<p><span class="text-user">"Clearly, I need an example."</span></p>
+<p>"No problem. Here you go:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable availability</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   int <span class="text-red">a</span> = 5;
+   if (<span class="text-red">a</span> &lt; 10)
+   {
+     int <span class="text-neon">b</span> = 10;
+     while (true)
+     {
+       int <span class="text-green">x</span> = <span class="text-red">a </span>+ <span class="text-neon">b</span>;
+       System.out.println(<span class="text-green">x</span>);
+     }
+     System.out.println(<span class="text-neon">b</span>);
+   }
+
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>, <span class="text-green">x</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>, <span class="text-green">x</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Let's go over the rules for accessing local variables one more time. Here is a block of code. What marks its beginning and end?"</p>
+<p><span class="text-user">"Curly braces?"</span></p></p>
+<p>"Correct. This could be a method body, the body of a loop, or just a block of code for a conditional statement. A variable declared in a block of code exists until the end of that block of code. Tell me, where will a variable exist if it is declared in the body of a loop?"</p>
+<p><span class="text-user">"It will exist only in the body of the loop."</span></p>
+<p>"That's right. What's more, it will be created and destroyed at each iteration of the loop."</p>
+<p><span class="text-user">"That means that <span class="text-bold">you cannot declare two local variables with the same name in one method — the program will not compile. But you can do this if the blocks of code where the variables are declared do not overlap</span>."</span></p>
+<p>"There's a reason why you're my favorite, Amigo. Take one more example to solidify this in your brain.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   int <span class="text-red">a</span> = 5;
+   if (<span class="text-red">a</span> &lt; 10)
+   {
+     int <span class="text-green">b</span> = 10;
+     System.out.println(<span class="text-green">b</span>);
+   }
+
+   if (<span class="text-red">a</span> &lt; 20)
+   {
+     int <span class="text-neon">b</span> = 20;
+     System.out.println(<span class="text-neon">b</span>);
+   }
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>, <span class="text-green">b</span>
+<span class="text-red">a</span>, <span class="text-green">b</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>
+<span class="text-red">a</span>, <span class="text-neon">b</span>
+<span class="text-red">a</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"We were able to declare a second local variable named <code><span class="text-neon">b</span></code> only because the first <code><span class="text-green">b</span></code> variable is not visible in the code block where the second <code><span class="text-neon">b</span></code> variable is declared.</p>
+<h2>Parameters</h2>
+<p>"As we said before, each method can have variables that we call parameters. What about their visibility and lifetime?"</p>
+<p><span class="text-user">"Hmm... I'm stumped..."</span></p>
+<p>"Everything is quite simple here. Parameters are created when execution steps into the method (i.e. when the code of the method starts executing). They are eliminated when the method ends."</p>
+<p><span class="text-user">"In other words, they are visible in the entire body of the method and only there?"</span></p>
+<p>"Yes. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] <span class="text-neon">args</span>)
+{
+   int <span class="text-red">a</span> = 5;
+   if (<span class="text-red">a</span> &lt; 10)
+   {
+     int <span class="text-viola">b</span> = 10;
+     while (true)
+     {
+       int <span class="text-green">x</span> = <span class="text-red">a </span>+ <span class="text-viola">b</span>;
+       System.out.println(<span class="text-green">x</span>);
+     }
+     System.out.println(<span class="text-viola">b</span>);
+   }
+
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>
+<span class="text-neon">args</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>, <span class="text-viola">b</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>, <span class="text-viola">b</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>, <span class="text-viola">b</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>, <span class="text-viola">b</span>, <span class="text-green">x</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>, <span class="text-viola">b</span>, <span class="text-green">x</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>, <span class="text-viola">b</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>, <span class="text-viola">b</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>
+<span class="text-neon">args</span>, <span class="text-red">a</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"As we said earlier, <code><span class="text-neon">args</span></code> is just a variable whose type is an array of strings. And like all parameters, it is available everywhere within the body of the method. That said, we usually ignore it in our our examples.</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0612"></div>
+<h2>Variables in a class</h2>
+<p>"Remember the lessons in Level 1, where we said that a class can have methods and variables. Methods are sometimes called instance methods, and variables — instance variables or fields. </p>
+<p>"What are the variables (or fields) of a <span class="text-bold">class</span>?</p>
+<p>They are variables that are declared not in a method, but in a class."</p>
+<p><span class="text-user">"And what are they there for?"</span></p>
+<p>"For starters, they can be accessed from any (non-static) method of a class. Roughly speaking, <span class="term">instance variables</span> are variables that are shared by all the methods of a class.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+   public int <span class="text-user">count</span> = 0;
+   public int <span class="text-green">sum</span> = 0;
+
+   public void add(int <span class="text-neon">data</span>)
+   {
+     <span class="text-green">sum</span> = <span class="text-green">sum</span> + <span class="text-neon">data</span>;
+     <span class="text-user">count</span>++;
+   }
+
+   public void remove(int <span class="text-red">data</span>)
+   {
+     <span class="text-green">sum</span> = <span class="text-green">sum</span> - <span class="text-red">data</span>;
+     <span class="text-user">count</span>--;
+   }
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+<span class="text-user">count</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>, <span class="text-neon">data</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>, <span class="text-neon">data</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>, <span class="text-neon">data</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>, <span class="text-red">data</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>, <span class="text-red">data</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>, <span class="text-red">data</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>
+<span class="text-user">count</span>, <span class="text-green">sum</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"In this example, we have two methods — <code>add()</code> and <code>remove()</code>. The <code>add()</code> method increments the <code><span class="text-green">sum</span></code> and <code><span class="text-user">count</span></code> instance variables, and the <code>remove()</code> method decreases the <code><span class="text-green">sum</span></code> and <code><span class="text-user">count</span></code> variables. Both methods work on shared instance variables."</p>
+<p><span class="text-user">"I understand all of it! Local variables exist while a method is executing. The <span class="text-bold">instance variables</span> of a <span class="text-bold">class</span> exist within an object of a class as long as that object exists."</span></p>
+<p>"Well done, Amigo. We've laid some groundwork, and you'll learn details about objects of a class in the next level.</p>
+<h2>Static variables</h2>
+<p>"Like methods, the variables in a class can be static or non-static. <span class="text-bold">Static methods can only access static variables.</span></p>
+<p><span class="text-user">"I don't have a clear understanding of static variables yet."</span></p>
+<p>"Oh, I know, but don't worry. For now, just get comfortable with them. Get familiar with them. In Level 11, we'll analyze the structure of static variables and methods and you'll understand the reasons for these restrictions.</p>
+<p>"To make a static variable (class variable), you must write the <code>static</code> keyword in its declaration.</p>
+<p>"Static variables are not bound to an object or instance of the class in which they are declared. Instead, they belong to the class itself. That's why they exist <span class="text-bold">even if not a single object of the class has been created</span>. You can refer to them from other classes using a construct like:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-orange">ClassName</span>.<span class="text-red">variableName</span></code></pre>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+   public void add(int <span class="text-neon">data</span>)
+   {
+     <span class="text-viola">Storage</span>.<span class="text-green">sum</span> = <span class="text-viola">Storage</span>.<span class="text-green">sum</span> + <span class="text-neon">data</span>;
+     <span class="text-viola">Storage</span>.<span class="text-user">count</span>++;
+   }
+
+   public void remove(int <span class="text-red">data</span>)
+   {
+     <span class="text-viola">Storage</span>.<span class="text-green">sum</span> = <span class="text-viola">Storage</span>.<span class="text-green">sum</span> - <span class="text-red">data</span>;
+     <span class="text-viola">Storage</span>.<span class="text-user">count</span>--;
+   }
+}
+
+public class <span class="text-viola">Storage</span>
+{
+   public static int <span class="text-user">count</span> = 0;
+   public static int <span class="text-green">sum</span> = 0;
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>, <span class="text-neon">data</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>, <span class="text-neon">data</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>, <span class="text-neon">data</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>, <span class="text-red">data</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>, <span class="text-red">data</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>, <span class="text-red">data</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+
+
+
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+<span class="text-viola">Storage</span>.<span class="text-user">count</span>, <span class="text-viola">Storage</span>.<span class="text-green">sum</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"In the above example, we created a separate <code><span class="text-viola">Storage</span></code> class, moved the <code><span class="text-user">count</span></code> and <code><span class="text-green">sum</span></code> variables into it, and declared them <span class="term">static</span>. Public static variables can be accessed from any method in a program (and not only from a method)."</p>
+<p><span class="text-user">"I don't fully understand, but this seems convenient to me."</span></p>
+<p>"So it is. And sometimes it is necessary. Without static variables and methods we would be stuck."</p>
+<p><span class="text-user">"Hopefully, I'll slowly be able to figure it out."</span></p>
+<p>"Yes, of course you will."</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0613"></div>

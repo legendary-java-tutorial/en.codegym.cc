@@ -1,0 +1,86 @@
+<p>"Today we are exploring another new and interesting topic: <strong>properties.</strong>"</p>
+
+<a href='https://cdn.codegym.cc/images/article/eedcbd3f-3063-42a1-aa33-72e687ba42a1/original.jpeg' target='_blank'><img data-id="eedcbd3f-3063-42a1-aa33-72e687ba42a1" data-max-width="850" alt="" src="https://cdn.codegym.cc/images/article/eedcbd3f-3063-42a1-aa33-72e687ba42a1/original.jpeg"></a>
+
+<p>"In Java, it's customary to make programs flexible and easily customizable, i.e. easily configurable."</p>
+<p>"For example, once per hour your program copies files from a certain directory, zips them, and sends them to you in email. To do this, the program needs to know the directory where the files will be taken from, and the email address where they should be sent. Such data is usually stored not in application code, but in a separate <strong>properties</strong> files."</p>
+<p>The data in this file is stored as key-value pairs, separated by an equal sign.</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>data.properties file
+directory = c:/text/downloads
+email = zapp@codegym.cc</code></pre>
+<p>"To the left of the sign is the name (key), to the right is the value."</p>
+<p><span class="text-user">"So this is a kind of textual representation of a HashMap?"</span></p>
+<p>"In general, yes."</p>
+<p>"For convenience in working with such files, Java has a special Properties class. The Properties class inherits Hashtable&lt;Object,Object&gt;. It can even be thought of as a Hashtable that can load itself from a file."</p>
+<p>"Here are its methods:"</p>
+<table style="width: 100%;">
+    <tbody>
+    <tr>
+        <th width="65%">Method</th>
+        <th width="35%">Description</th>
+    </tr>
+    <tr>
+        <td><code>void <strong>load</strong>(Reader reader)</code></td>
+        <td>Loads properties from the file represented by a Reader object</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>load</strong>(InputStream inStream)</code></td>
+        <td>Loads properties from the file represented by an InputStream object</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>loadFromXML</strong>(InputStream in)</code></td>
+        <td>Load properties from an XML file</td>
+    </tr>
+    <tr>
+        <td><code>Object <strong>get</strong>(Object key)</code></td>
+        <td>Returns the value for the specified key. This method is inherited from Hashtable</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>getProperty</strong>(String key)</code></td>
+        <td>Returns a property value (string) by key.</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>getProperty</strong>(String key, String defaultValue)</code></td>
+        <td>Returns a property value by key or defaultValue if there is no such key.</td>
+    </tr>
+    <tr>
+        <td><code>Set&lt;String&gt; <strong>stringPropertyNames</strong>()</code></td>
+        <td>Returns a list of all keys</td>
+    </tr>
+    </tbody>
+</table>
+<p>"In other words, you actually need to perform only two operations— load data from some file into a <strong>Properties</strong> object and then get these properties using the <strong>getProperty</strong>() method. Well, and don't forget that you can use the <strong>Properties</strong> object like a <strong>HashMap</strong>."</p>
+<p>"Here's another example:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// The file that stores our project's properties
+File <span class="text-viola">file</span> = new File("<span class="text-green">c:/data.properties</span>");
+
+// Create a Properties object and load data from the file into it.
+<span class="text-red"><strong>Properties</strong> properties</span> = <span class="text-red">new Properties();</span>
+<span class="text-red">properties</span>.<span class="text-corporate">load</span>(new FileReader(<span class="text-viola">file</span>));
+
+// Get property values from the Properties object
+String email = <span class="text-red">properties</span>.<span class="text-corporate">getProperty</span>("<span class="text-green">email</span>");
+String directory = <span class="text-red">properties</span>.<span class="text-corporate">getProperty</span>("<span class="text-green">directory</span>");
+
+// Get a numeric value from the Properties object
+int maxFileSize = <span class="text-user">Integer<span class="blue_text">.parseInt</span></span>(<span class="dred_text text-red">properties</span>.<span class="text-corporate">getProperty</span>(<span class="green_text">"<span class="text-green">max.size", "10000"</span></span>));</code></pre>
+<p><span class="text-user">"Ah. So we create a Properties object, and then pass a file to it. To the load method. And then we just call getProperty. Right?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"And you also said that it can be used as a HashMap? What did you mean?"</span></p>
+<p>"The Properties class inherits Hashtable, which is the same as HashMap, but all its methods are synchronized. You can simply display all the values ​​from the properties file on the screen like this:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Get the file with the properties
+File <span class="text-viola">file</span> = new File("<span class="text-green">c:/data.properties</span>");
+
+// Create a Properties object and load data from the file into it.
+<span class="text-red"><strong>Properties</strong> properties</span> = new <span class="text-red">Properties</span>();
+properties.load(new FileReader(file));
+
+// Run through all the keys and display their values on the console
+for (String <span class="text-user">key</span> : <span class="text-red">properties</span>.<span class="text-corporate">stringPropertyNames</span>())
+{
+ System.out.println(<span class="text-red">properties</span>.<span class="text-green">get</span>(key));
+}</code></pre>
+<p><span class="text-user">"Ah. Everything seems to have fallen into place. Thank you, Rishi. I'm going to use this cool thing."</span></p>

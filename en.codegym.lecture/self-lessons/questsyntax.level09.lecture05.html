@@ -1,0 +1,109 @@
+<p></p>
+<p>"I'd like to tell you a bit about how <a href='https://codegym.cc/groups/posts/exceptions-in-java' target='_blank'>exceptions</a> work. The example below should give you a rough idea of what happens:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Code that uses exceptions:</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>class ExceptionExampleOriginal
+{
+
+
+    public static void main(String[] args)
+    {
+        System.out.println("main begin");
+        <span class="text-red">try</span>
+        {
+            System.out.println("main before call");
+
+            <span class="text-user">method1</span>();
+
+
+
+            System.out.println("main after call");
+        }
+   <span class="text-red">     catch (RuntimeException e)</span>
+        {
+
+
+            <span class="text-user">String s</span> = <span class="text-red">e</span>.<span class="text-user">getMessage()</span>;
+            System.out.println(s);
+        }
+        System.out.println("main end");
+    }
+
+    public static void <span class="text-user">method1</span>()
+    {
+        System.out.println("method1 begin");
+        <span class="text-user">method2</span>();
+
+        System.out.println("method1 end");
+    }
+
+    public static void <span class="text-user">method2</span>()
+    {
+      System.out.println("method2");
+      String s = "Message: Unknown Exception";
+    <span class="text-red">  throw new RuntimeException(s);</span>
+
+    }
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Approximate representation of what happens</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public class ExceptionExample
+{
+<span class="text-red">    private static Exception exception = null;</span>
+
+   public static void main(String[] args)
+    {
+        System.out.println("main begin");
+
+       
+        System.out.println("main before call");
+
+        <span class="text-user">method1</span>();
+
+       <span class="text-red"> if (exception == null)</span>
+        {
+            System.out.println("main after call");
+        }
+        <span class="text-red">else if (exception instanceof RuntimeException)</span>
+        {
+            <span class="text-red">RuntimeException e = (RuntimeException) exception;
+            exception = null;</span>
+            <span class="text-user">String s</span> = <span class="text-red">e</span>.<span class="text-user">getMessage()</span>;
+            System.out.println(s);
+        }
+        System.out.println("main end");
+    }
+
+    public static void <span class="text-user">method1</span>()
+    {
+        System.out.println("method1 begin");
+        <span class="text-user">method2</span>();
+       <span class="text-red"> if (exception != null) return;</span>
+        System.out.println("method1 end");
+    }
+
+    public static void <span class="text-user">method2</span>()
+    {
+        System.out.println("method2");
+        String s = "Message: Unknown Exception";
+        <span class="text-red">exception = new RuntimeException(s);
+        return;</span>
+    }
+}</code></pre>
+    </div>
+</div>
+<p><span class="text-user">"I'm totally lost."</span></p>
+<p>"All right. Let me explain what's going on."</p>
+<p>"In the example on the left, we call a few methods in succession. In <code><span class="text-user">method2</span></code>, we deliberately create and throw an exception (we create an error)."</p>
+<p>"The example on the right shows what is happening."</p>
+<p>"Look at <code><span class="text-user">method2</span></code>. Instead of creating an exception, we create a <code><span class="text-red">RuntimeException</span></code> object, save it to the static variable <code><span class="text-red">exception</span></code>, and then immediately exit the method using a <code><span class="text-red">return</span></code> statement."</p>
+<p>"In <code><span class="text-user">method1</span></code>, after calling <code><span class="text-user">method2</span></code>, we check <span class="text-red">whether there is an exception. If there is an exception, then <code>method1</code> ends at once.</span> A check like this is performed indirectly after every (!) method call in Java."</p>
+<p><span class="text-user">"Wow!"</span></p>
+<p>"Wow is right."</p>
+<p>"In the right column, I've used the main method to show approximately what happens when an exception is caught using a try-catch construct. If there is no exception, then everything continues running as expected. If there is an exception and it is the same type specified in the catch statement, then we handle it."</p>
+<p><span class="text-user">"What do</span> <code><span class="text-red">throw</span></code> <span class="text-user">and</span> <code><span class="text-red">instanceof</span></code> <span class="text-user">mean ?</span>"</p>
+<p>"Look at the last line: <code><span class="text-red">throw new RuntimeException(s);</span></code>. This is how you create and throw an exception. We won't work on that yet. It was just an example."</p>
+<p>"We use <code><span class="text-red">a instanceof B</span></code> to check whether object <code><span class="text-red">a</span></code> is of type <code><span class="text-red">B</span></code>, i.e. <span class="text-viola">whether the object referenced by the variable exception is a RuntimeException.</span> This is a boolean expression."</p>
+<p><span class="text-user">"I think I got it. Almost."</span></p>

@@ -1,0 +1,110 @@
+<p>"Hello, my very smartest student!"</p>
+<p><span class="text-user">"Hello, Rishi!"</span></p>
+<p>"Are you pining for a new discussion about arrays? Well, today we have one for you! Today I'm going to tell you about jagged and multidimensional arrays."</p>
+<p><span class="text-user">"Sounds bloodthirsty and frightening."</span></p>
+<p>"Don't worry, a real programmer can always handle an array, even when it bares its teeth. Jokes aside, an array's jaggedness reflects the ability not only to swap the rows of a two-dimensional array, but also to construct an array however it needs to be.</p>
+<p>"Let's say you want the first row of a two-dimensional array to have a length of 10, and the second to be 50."</p>
+<p><span class="text-user">"Can you really do that?"</span></p>
+<p>"Absolutely! First, we create a 'container of containers' — this is the first array, which will store references to arrays of rows. This is how it's done:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-orange">int[][]</span> <span class="text-red">name</span> = new <span class="text-viola">int</span>[<span class="text-user">height</span>][];</code></pre>
+</div>
+<p>"You simply <span class="text-bold">omit the second dimension</span>, and the Java machine creates a container of containers. This is what will be in memory after executing this code:</p>
+<img data-max-width="1024" data-id="11ec99ad-135e-482a-a1d4-f1e9fee1d578" src="https://cdn.codegym.cc/images/article/11ec99ad-135e-482a-a1d4-f1e9fee1d578/1024.jpeg" alt="">
+<p>"And, well, you already know how to create one-dimensional arrays 🙂</p>
+<p>This is what the resulting code will look like:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>// Matrix of important data
+int[][] <span class="text-red">matrix</span> = new int[2][];
+<span class="text-red">matrix</span>[0] = new int[10];
+<span class="text-red">matrix</span>[1] = new int[50]</code></pre>
+        </td>
+        <td>Two-dimensional array<br><br>
+            The zeroth row is an array of <code>10</code> elements<br>
+            The first row is an array of <code>50</code> elements</td>
+    </tr>
+    </tbody>
+</table>
+<p>"We have just created a so-called <span class="text-bold">"jagged"</span> array. Its edges are rough and irregular.</p>
+<p>"And if we now want to display all the elements of this array on the screen, then the array's <code>length</code> array will come in handy: after all, the lengths of the array's rows are different.</p>
+<p>"By the way, can you tell me how to find the length of a 'container of containers' in our example? It is also an array object, which means that it has a length."</p>
+<p><span class="text-user">"Probably <code>matrix.length</code>?"</span></p>
+<p>"Quite right! And for the arrays that form the rows, we would use <code>matrix[0].length</code> for the zeroth row."</p>
+<p><span class="text-user">"And for the first, that means we would use <code>matrix[1].length</code>?"</span></p>
+<p>"Quite right. In the first case, the executing the command will yield 10, and in the second case, the result will be 50.</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task05.task0510"></div>
+<h2>Working with a two-dimensional array</h2>
+<p>"Now let's try to display a two-dimensional array:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int[][] <span class="text-red">matrix</span> = new int[3][];
+<span class="text-red">matrix</span>[0] = {1, 2, 3, 4, 5, 6};
+<span class="text-red">matrix</span>[1] = {1, 2, 3};
+<span class="text-red">matrix</span>[2] = {1};
+for (int <span class="text-green">i</span> = 0; <span class="text-green">i</span> &lt; <span class="text-red">matrix</span>.length; <span class="text-green">i</span>++)
+{
+   for (int <span class="text-neon">j</span> = 0; <span class="text-neon">j</span> &lt; <span class="text-red">matrix</span>[<span class="text-green">i</span>].length; <span class="text-neon">j</span>++)
+      <span class="text-viola">System.out.print</span>( <span class="text-red">matrix</span>[<span class="text-green">i</span>][<span class="text-neon">j</span>] + " " );
+   <span class="text-viola">System.out.println</span>();
+}</code></pre>
+        </td>
+        <td>Create an array<br>
+            Fill the array with values<br><br><br>
+            Outer loop that iterates over the rows of the array.<br>
+            Inner loop that iterates over the cells of a single row.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"As you can see, we need two nested loops. The first we call outer, and the second — <span class="text-neon">inner</span>.</p>
+<p>"In the outer loop (the <code>i</code> variable), we sequentially go through all the rows (arrays) that make up our two-dimensional array. Each value of <code>i</code> corresponds to a row with that index.</p>
+<p>"In the inner loop (the <code><span class="text-neon">j</span></code> variable), we iterate over all the cells in the rows. Thanks to the inner loop, a row, which consists of the values of one one-dimensional array, will be displayed on the screen.</p>
+<p>"This is what will be displayed:</p>
+<table>
+    <tbody>
+    <tr>
+        <td> One line of the array is processed</td>
+        <td><code class="terminal">1 2 3 4 5 6</code></td>
+    </tr>
+    <tr>
+        <td>Two lines of the array are processed</td>
+        <td><code class="terminal">1 2 3 4 5 6<br>
+            1 2 3</code></td>
+    </tr>
+    <tr>
+        <td>Three lines of the array are processed</td>
+        <td><code class="terminal">1 2 3 4 5 6<br>
+            1 2 3<br>
+            1</code></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task05.task0511"></div>
+<h2>Multidimensional arrays</h2>
+<p>"Amigo! Did you guess that if there are two-dimensional arrays, then there can also be three-dimensional ones?</p>
+<p><span class="text-user">"I was just thinking about that, but was embarrassed to ask.</span></p>
+<p>"Yes, you can create a three-dimensional array, and in general, an array of any dimension. Such arrays are called 'multidimensional'. Just for fun, let's create a multidimensional array that has 4 dimensions.</p>
+<pre class="lecture-code language-java line-numbers"><code> int[][][][] <span class="text-red">matrix</span> = new int[2][3][4][5];</code></pre>
+<p><span class="text-user">"That doesn't seem very difficult!"</span></p>
+<p>"You haven't tried to create one manually yet! Here, feast your eyes on this:</p>
+<pre class="lecture-code language-java line-numbers"><code>int[][][][] <span class="text-red">matrix</span>;
+<span class="text-red">matrix</span> = new int[2][][][];                   // Create a 2-element array of references to references to references
+for (int <span class="text-green">i</span> = 0; <span class="text-green">i</span> &lt; <span class="text-red">matrix</span>.length; <span class="text-green">i</span>++)
+{
+  <span class="text-red">matrix</span>[<span class="text-green">i</span>] = new int[3][][];                // Create a 3-element array of references to references
+  for (<span class="text-neon">j</span> = 0; <span class="text-neon">j</span> &lt; <span class="text-red">matrix</span>[<span class="text-green">i</span>].length; <span class="text-neon">j</span>++)
+  {
+    <span class="text-red">matrix</span>[<span class="text-green">i</span>][<span class="text-neon">j</span>] = new int[4][];             // Create a 4-element array of references
+    for (<span class="text-orange">k</span> = 0; <span class="text-orange">k</span> &lt; <span class="text-red">matrix</span>[<span class="text-green">i</span>][<span class="text-neon">j</span>].length; <span class="text-orange">k</span>++)
+      <span class="text-red">matrix</span>[<span class="text-green">i</span>][<span class="text-neon">j</span>][<span class="text-orange">k</span>] = new int[5];          // Create 5-element arrays of integers
+  }
+}</code></pre>
+<p>"And that's just creating an array! Then you also need to work with it somehow."</p>
+<p><span class="text-user">"I take back what I said. It's not so easy to work with them. But it is possible."</span></p>
+<p>"Since it's possible, here's a bonus task. Write code that displays all the values in a three-dimensional array. You know enough to do this. The main thing is to be patient and attentive. Or maybe being resourceful (there's a secret bit of knowledge that will help you solve this task in a single line). But no matter how you solve it, solve it."</p>
+<p><span class="text-user">"Thank you, Rishi. I'll try."</span></p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task05.task0512"></div>

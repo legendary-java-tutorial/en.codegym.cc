@@ -1,0 +1,210 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="51935fb5-dc95-41f4-afea-e88bd11e4542" src="https://cdn.javarush.ru/images/article/51935fb5-dc95-41f4-afea-e88bd11e4542/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="a7365896-a9ca-4c7d-9e77-b14453b88bb7" src="https://cdn.javarush.ru/images/article/a7365896-a9ca-4c7d-9e77-b14453b88bb7/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="a0e4f8cd-36bc-482d-9f65-744870cd331b" src="https://cdn.javarush.ru/images/article/a0e4f8cd-36bc-482d-9f65-744870cd331b/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Boolean operations</h2>
+<p>The <code>|</code> and <code>&amp;</code> operators can be applied not only to numbers, but also to boolean expressions.</p>
+<p>But, as you already know, there are <code>&amp;&amp;</code> and <code>||</code> operators. Why would we use <code>|</code> instead of <code>||</code>, and <code>&amp;</code> instead of <code>&amp;&amp;</code>? Is there any point to this? It seems that there is. Sometimes.</p>
+<p>The <code>||</code> and <code>&amp;&amp;</code> logical operators are executed from left to right following a so-called <span class="term">lazy principle</span>.</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>(<span class="text-red">expression1</span>) || (<span class="text-green">expression2</span>) || (<span class="text-user">expression3</span>)</code></pre>
+</div>
+<p>If <code><span class="text-red">expression1</span></code>&nbsp;is equal to <code>true</code>, there is no point in evaluating <code><span class="text-green">expression2</span></code>&nbsp;and <code><span class="text-user">expression3</span></code>: the result will be <code>true</code> regardless.</p>
+<p>Accordingly, when evaluating expressions (they are evaluated from left to right), as soon as we get <code>true</code>, <span class="text-orange">the evaluation of the rest of the expressions is skipped</span>. &nbsp;And if <code><span class="text-green">expression2</span></code>&nbsp;and <code><span class="text-user">expression3</span></code> include method calls, <span class="text-orange">these methods won't be called</span>!</p>
+<p>The same goes for the <code>&amp;&amp;</code> logical operator:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>(<span class="text-red">expression1</span>) &amp;&amp; (<span class="text-green">expression2</span>) &amp;&amp; (<span class="text-user">expression3</span>)</code></pre>
+</div>
+<p>If <code><span class="text-red">expression1</span></code> is equal to <code>false</code>, there is no point in evaluating <code><span class="text-green">expression2</span></code> and <code><span class="text-user">expression3</span></code>: the result will be <code>false</code> regardless.</p>
+<p>This is an important fact that lets you write things like:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present language-java"><code>String s = null;
+if (<span class="code">s != null</span> <span class="text-red">&amp;&amp;</span> <span class="code">s.length() &gt; 0</span>) {</code></pre>
+</div>
+<p>The example above will never get you a <span class="term">NullPointerException</span>, because <code>s.length()</code> will only be executed if the first part <code>s! = null</code> is <code>true</code>.</p>
+<p>If <code>s</code> is equal to <code>null</code>, the part to the left of the <code>&amp;&amp;</code> operator is <code>false</code>, then the result of the whole boolean expression is <code>false</code>, so the part to the right (<code>s.length() &gt; 0</code>) is not evaluated.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">All that to say:</div>
+        <div class="lesson-note__content">
+            <p>If you use the <code>|</code> operator or the <code>&amp;</code> operator, then <span class="term">there is no lazy evaluation</span>: each subexpression will always be evaluated.</p>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0815"></div>
+<hr>
+<h2>2. Operation precedence in Java</h2>
+<p>As you probably remember from your high school math class, the multiplication operator has higher precedence than the addition operator. Parentheses have an even higher precedence: expressions in parentheses are evaluated first, then multiplication and division, and then addition and subtraction.</p>
+<p>Operators in Java also have a order of precedence. The difference is that a) there are slightly more of them, b) for some operators, the operands are evaluated from left to right, while for others — from right to left.</p>
+<p>Here is a table with all the Java operators:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Category</th>
+        <th>Operator</th>
+        <th>Associative</th>
+    </tr>
+    <tr>
+        <td><strong>Postfix</strong></td>
+        <td><code>()</code> <code>[]</code> <code>.</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Unary</strong></td>
+        <td><code>++</code> <code>--</code>&nbsp;<code>!</code>&nbsp;<code>~</code></td>
+        <td><span class="text-red">Right to left</span></td>
+    </tr>
+    <tr>
+        <td><strong>Multiplicative</strong></td>
+        <td><code>*</code> <code>/</code> <code>%</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Additive</strong></td>
+        <td><code>+</code> <code>-</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Shifting</strong></td>
+        <td><code>&gt;&gt;</code> <code>&gt;&gt;&gt;</code> <code>&lt;&lt;</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Relational</strong></td>
+        <td><code>&gt;</code> <code>&gt;=</code> <code>&lt;</code>&nbsp;<code>&lt;=</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Equality</strong></td>
+        <td><code>==</code> <code>!=</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Bitwise <code>AND</code></strong></td>
+        <td><code>&amp;</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong><code>Exclusive OR</code> (XOR)</strong></td>
+        <td><code>^</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Bitwise <code>OR</code></strong></td>
+        <td><code>|</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Logical <code>AND</code></strong></td>
+        <td><code>&amp;&amp;</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Logical <code>OR</code></strong></td>
+        <td><code>||</code></td>
+        <td>From left to right</td>
+    </tr>
+    <tr>
+        <td><strong>Conditional</strong></td>
+        <td><code>?:</code></td>
+        <td><span class="text-red">Right to left</span></td>
+    </tr>
+    <tr>
+        <td><strong>Assignment</strong></td>
+        <td><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code> <code>&gt;&gt;=</code> <code>&lt;&lt;=</code> <code>&amp;=</code> <code>^=</code> <code>|=</code></td>
+        <td><span class="text-red">Right to left</span></td>
+    </tr>
+    <tr>
+        <td><strong>Comma</strong></td>
+        <td><code>,</code></td>
+        <td>From left to right</td>
+    </tr>
+    </tbody>
+</table>
+<p>The top line contains the operators with the highest precedence. Parentheses <code>()</code> are used to explicitly set the priority. Square brackets <code>[]</code> are used to access an element at a specific index of an array variable. The dot operator (<code>.</code>) is used to access fields and methods using a reference to an object or class.</p>
+<p>The lower the operators are in the table, the lower their precedence.</p>
+<p>If you use multiple operators in an expression, don't be lazy: add parentheses.</p>
+<p>In Java, you can write something like <code>if (a &amp; 1&lt;&lt; b &gt; ~c)</code>, but you shouldn't. <span class="text-green">You're writing code not only for the compiler, but also for other programmers.</span> The more readable the code, the better.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0816"></div>
+<hr>
+<h2>3. Prefix and postfix increment</h2>
+<p>As you already know, Java has an increment operator (<code>++</code>) and a decrement operator (<code>--</code>). Respectively, they increase and decrease the value of a variable by <code>1</code>.</p>
+<p>What you probably don't know is that there are two types of these operators: <span class="text-orange">prefix (the operator is placed before the variable) and postfix (the operator is placed after the variable).</span> And two kinds of operators work a little differently.</p>
+<p>In Java, you can write an expression like this:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present-sm language-java"><code>int <span class="text-red">a</span> = 5;
+int <span class="text-green">b</span> = <span class="text-red">a</span>++;</code></pre>
+</div>
+<p>If the <code>++</code> operator appears after a variable and the variable is part of some expression (as in the example above), then the expression will use the current value of the variable, and only afterward will the variable be increased by <code>1</code>.</p>
+<p>In other words, something like this will happen:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present-sm language-java"><code>int <span class="text-red">a</span> = 5;
+int <span class="text-green">b</span> = <span class="text-red">a</span>;
+<span class="text-red">a</span> = <span class="text-red">a</span> + 1;</code></pre>
+</div>
+<p>That is, <code><span class="text-green">b</span></code> will be <code>5</code>, not <code>6</code> as you might think at first glance.</p>
+<p>If the <code>++</code> operator is before the variable and the variable is part of some expression, it will first be increased by <code>1</code> and only afterward will its value be used in the expression.</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present-sm language-java"><code>int <span class="text-red">a</span> = 5;
+int <span class="text-green">b</span> = ++<span class="text-red">a</span>;</code></pre>
+    <p>The example above is equivalent to the following example:</p>
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>int <span class="text-red">a</span> = 5;
+<span class="text-red">a</span> = <span class="text-red">a</span> + 1;
+int <span class="text-green">b</span> = <span class="text-red">a</span>;</code></pre>
+</div>
+<p>Here, <code><span class="text-green">b</span></code> will be equal to <code>6</code>.</p>
+<p>There's even an example used by Java programmers to determine whether someone else is also a Java programmer:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present-sm language-java"><code>int <span class="text-red">a</span> = 5;
+int <span class="text-green">b</span> = <span class="code">++<span class="text-red">a</span></span> +&nbsp;<span class="code">++<span class="text-red">a</span></span>;</code></pre>
+</div>
+<p>Yep, you can write that too.</p>
+<p>This example will compile just fine and turn into something like this:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present-sm language-java"><code>int <span class="text-red">a</span> = 5;
+
+<span class="text-red">a</span> = <span class="text-red">a</span> + 1;
+int <span class="text-viola">v1</span> = <span class="text-red">a</span>;
+
+<span class="text-red">a</span> = <span class="text-red">a</span> + 1;
+int <span class="text-viola">v2</span> = <span class="text-red">a</span>;
+
+int <span class="text-green">b</span> = <span class="text-viola">v1</span> + <span class="text-viola">v2</span>;</code></pre>
+</div>
+<p>For the <code>--</code> operator, everything is exactly the same.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0817"></div>
+<hr>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="b65a432b-0403-4395-82dc-729a9ec73d69" src="https://cdn.javarush.ru/images/article/b65a432b-0403-4395-82dc-729a9ec73d69/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="30abc4ea-282d-483d-9fc2-f3e6cc369107" src="https://cdn.javarush.ru/images/article/30abc4ea-282d-483d-9fc2-f3e6cc369107/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="5400ed63-d551-4ea5-ab93-2bdb0deb7aa4" src="https://cdn.javarush.ru/images/article/5400ed63-d551-4ea5-ab93-2bdb0deb7aa4/original.png" alt="">
+        </div>
+    </div>
+</div>

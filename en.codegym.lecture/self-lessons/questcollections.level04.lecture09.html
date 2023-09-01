@@ -1,0 +1,204 @@
+<p>"Oh, there you are! Did you remember that we have another lesson today?"</p>
+<p><span class="text-user">"No, I was just looking for you. Almost…"</span></p>
+<p>"Excellent, then let's start. Today I want to tell you about logging."</p>
+<p>"The log is a list of the events that have occurred. Almost like a ship's log or a diary. Or Twitter — maybe you can relate better to that. Unsurprisingly, a logger is an object that you use for logging."</p>
+<p>"In programming, it's customary to log almost everything. And in Java, we log everything and even a little more."</p>
+<p>"The fact is that Java programs are very often large server applications without a UI, console, etc. They process thousands of user requests at the same time, and there are often various errors. Especially when different threads start interfering with each other."</p>
+<p>"In fact, the only way to search for rarely reproducible bugs and failures in these circumstances is to log everything that happens on each thread."</p>
+<p>"Most often, the log contains information about method arguments, any caught errors, and a lot of intermediate information."</p>
+<p>"The more complete the log, the easier it is to reproduce a sequence of events and track the causes of failures or bugs."</p>
+<p>"Sometimes logs reach several gigabytes per day. This is normal."</p>
+<p><span class="text-user">"A few gigabytes? O_o"</span></p>
+<p>"Yep. Most often, log files are automatically archived, with an indication of the relevant date."</p>
+<p><span class="text-user">"Whoa."</span></p>
+<p>"Uh-huh. Initially, Java didn't have its own logger. As a result, several independent loggers were written. The most common of these was log4j."</p>
+<p>"A few years later, Java got a logger of its own, but its functionality was far inferior and it wasn't widely used."</p>
+<p>"It's a fact that <span class="text-corporate">Java has an official logger, but the entire community of Java programmers prefers to use other loggers.</span>"</p>
+
+<p>"Later, several more loggers were written based on log4j."</p>
+<p>"Then the special universal logger slf4j, which is now widely used, was written for all of them. It is very similar to log4j, so I'll use it as an example when explaining logging."</p>
+<p>"The entire logging process consists of three parts."</p>
+<p>"<strong>First</strong>, collect information."</p>
+<p>"<strong>Second</strong>, filter the collected information."</p>
+<p>"<strong>Third</strong>, record the selected information."</p>
+<p>"Let's start with collection. Here is a typical example of a class that logs:"</p>
+<div class="code-heading">Class with logging</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-user">Manager</span>
+{
+ private static final <span class="text-red">Logger logger = LoggerFactory.getLogger</span>(<span class="text-viola">Manager</span>.class);
+
+ public boolean processTask(<span class="text-green">Task task</span>)
+ {
+  <span class="text-red">logger</span>.debug("processTask id = " + <span class="text-green">task</span>.getId());
+  try
+  {
+<span class="text-green">   task</span>.start();
+<span class="text-green">   task</span>.progress();
+<span class="text-green">   task</span>.complete();
+   return true;
+  }
+  catch(Exception e)
+  {
+  <span class="text-red"> logger</span>.error("Unknown error", e);
+   return false;
+  }
+ }
+}</code></pre>
+<p>"Pay attention to the words highlighted in red."</p>
+<p>"<strong>Line 3</strong> – Create the <span class="text-red">logger</span> object. Such a static object is created in almost every class! Well, except for classes that don't do anything other than store data."</p>
+<p>"<strong>LoggerFactory</strong> is a special class for creating loggers, and getLogger is one of its static methods. The current object is usually passed, but various options are possible."</p>
+<p>"<strong>Line 7</strong> – Information about the method call is written to the logger. Note that this is the first line of the method. As soon as the method is called, we immediately write information to the log."</p>
+<p>"We call the debug method, which means the information's importance is DEBUG level. This is used for filtering. I'll tell you about that in a couple of minutes."</p>
+<p>"<strong>Line 17</strong> – We catch an exception and... immediately write it to the log! This is exactly what needs to be done."</p>
+<p>"This time we call the error method, which immediately indicates that the information is ERROR level"</p>
+
+<a href='https://cdn.codegym.cc/images/article/012a03a3-cb36-4776-86cd-b1acb2c1f3a7/original.jpeg' target='_blank'><img data-id="012a03a3-cb36-4776-86cd-b1acb2c1f3a7" data-max-width="850" alt="Logger - 1" src="https://cdn.codegym.cc/images/article/012a03a3-cb36-4776-86cd-b1acb2c1f3a7/original.jpeg"></a>
+
+<p><span class="text-user">"Everything seems clear for now. Well, as far as it can be clear in the middle of our conversation."</span></p>
+<p>"Great, then let's move on to message filtering."</p>
+<p>"Usually, each log message has its own importance level, which you can use to discard some of the messages. Here are importance levels I mentioned:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Importance level</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>ALL</td>
+        <td>All messages</td>
+    </tr>
+    <tr>
+        <td>TRACE</td>
+        <td>Fine-grained debug messages</td>
+    </tr>
+    <tr>
+        <td><strong>DEBUG</strong></td>
+        <td><strong>Important debug messages</strong></td>
+    </tr>
+    <tr>
+        <td><strong>INFO</strong></td>
+        <td><strong>Informational messages</strong></td>
+    </tr>
+    <tr>
+        <td><strong>WARN</strong></td>
+        <td><strong>Warnings</strong></td>
+    </tr>
+    <tr>
+        <td><strong>ERROR</strong></td>
+        <td><strong>Errors</strong></td>
+    </tr>
+    <tr>
+        <td><strong>FATAL</strong></td>
+        <td><strong>Fatal errors</strong></td>
+    </tr>
+    <tr>
+        <td>OFF</td>
+        <td>No messages</td>
+    </tr>
+    </tbody>
+</table>
+<p>These levels are also used when filtering messages.</p>
+<p>Suppose you set the logging level to WARN. Then all messages that are less important than WARN will be discarded: TRACE, DEBUG, INFO.</p>
+<p>If you set the filtering level to FATAL, then even ERROR messages will be discarded.</p>
+<p>"There are two more importance levels used when filtering: OFF, which discards all messages; and ALL, which shows all messages (nothing is discarded)."</p>
+<p><span class="text-user">"How and where do I set up filtering?"</span></p>
+<p>"I'll tell you without further ado."</p>
+<p>"Usually, log4j logger settings are specified in the log4j.properties file."</p>
+<p>You can specify multiple appender objects in this file. Data is written to these objects. There are data sources, and there are appenders — objects that have opposite purposes. Objects that data flows into like water.</p>
+<p>"Here are some examples:"</p>
+<div class="code-heading">Logging to the console</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code># Root logger option
+log4j.rootLogger = <span class="text-user">INFO</span>, <span class="text-red">stdout</span>
+
+# Direct log messages to stdout
+log4j.appender.<span class="text-red">stdout</span> = org.apache.log4j.<span class="text-green">ConsoleAppender</span>
+log4j.appender.<span class="text-red">stdout</span>.Target = <span class="text-green">System.out</span>
+log4j.appender.<span class="text-red">stdout</span>.layout = org.apache.log4j.PatternLayout
+log4j.appender.<span class="text-red">stdout</span>.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss}</code></pre>
+<p>Lines 1 and 4 – These are comments</p>
+<p>Line 2 – We indicate the logging level we want. All less important levels (DEBUG, TRACE) will be discarded.</p>
+<p>In the same place, we add a comma and then indicate the name of the object (which we come up with ourselves) that the log will be written to. Lines 5-9 contain its settings.</p>
+<p>Line 5 – We specify the type of appender (<span class="text-green">ConsoleAppender</span>).</p>
+<p>Line 6 – We indicate exactly where we are writing (<span class="text-green">System.out.</span>).</p>
+<p>Line 7 – We set the class that will manager conversion patterns (PatternLayout).</p>
+<p>Line 8 – We set the conversion pattern that will be used for writing. In the example above, it's the date and time.</p>
+<p>"And here's what writing to a file looks like:"</p>
+<div class="code-heading">Logging to a file</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code># Root logger option
+log4j.rootLogger = <span class="text-user">INFO</span>, <span class="text-red">file</span>
+
+# Direct log messages to a log file
+log4j.appender.<span class="text-red">file</span> = org.apache.log4j.<span class="text-green">RollingFileAppender</span>
+log4j.appender.<span class="text-red">file</span>.File = C:\\loging.log
+log4j.appender.<span class="text-red">file</span>.MaxFileSize = 1MB
+log4j.appender.<span class="text-red">file</span>.MaxBackupIndex = 1
+log4j.appender.<span class="text-red">file</span>.layout = org.apache.log4j.PatternLayout
+log4j.appender.<span class="text-red">file</span>.layout.ConversionPattern = %-5p %c{1}:%L - %m%n</code></pre>
+<p>"Line 2 sets the message filtering level and the name of the appender object (sink)."</p>
+<p>"Line 5 – We specify the file appender type (<span class="text-green">RollingFileAppender</span>)."</p>
+<p>"Line 6 – We specify the name of the file that the log will be written to."</p>
+<p>"Line 7 – We specify the maximum log size. When this size limit is exceeded, a new file is created."</p>
+<p>"Line 8 – We specify the number of old log files to be stored."</p>
+<p>"Lines 9-10 – Set the conversion pattern."</p>
+<p><span class="text-user">"I don't know what's happening here, but I can guess. That's encouraging."</span></p>
+<p>"That's great. Then here's an example of how to write a log to a file and the console:"</p>
+<div class="code-heading">Logging to the console and a file</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code># Root logger option
+log4j.rootLogger = <span class="text-user">INFO</span>, <span class="text-red">file</span>, <span class="text-viola">stdout</span>
+
+# Direct log messages to a log file
+log4j.appender.<span class="text-red">file</span> = org.apache.log4j.<span class="text-green">RollingFileAppender</span>
+log4j.appender.<span class="text-red">file</span>.File = C:\\loging.log
+log4j.appender.<span class="text-red">file</span>.MaxFileSize = 1MB
+log4j.appender.<span class="text-red">file</span>.MaxBackupIndex = 1
+log4j.appender.<span class="text-red">file</span>.layout = org.apache.log4j.PatternLayout
+log4j.appender.<span class="text-red">file</span>.layout.ConversionPattern = %-5p %c{1}:%L - %m%n
+
+# Direct log messages to stdout
+log4j.appender.<span class="text-viola">stdout</span> = org.apache.log4j.<span class="text-user">ConsoleAppender</span>
+log4j.appender.<span class="text-viola">stdout</span>.Target = System.out
+log4j.appender.<span class="text-viola">stdout</span>.layout = org.apache.log4j.PatternLayout
+log4j.appender.<span class="text-viola">stdout</span>.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss}</code></pre>
+<p><span class="text-user">"Ah, so you can do that? That's great!"</span></p>
+<p>"Yep. You can declare as many appenders as you want and customize each one."</p>
+<p>Furthermore, each appender can have very flexible settings for message filtering. Not only can we assign an individual message filtering level to each appender, but we can also filter messages by package! That's why you need to specify a class when creating a logger (I'm talking about <strong>LoggerFactory.getLogger</strong>).</p>
+<p>"For example:"</p>
+<div class="code-heading">Logging to the console and a file</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code># Root logger option
+log4j.rootLogger = <span class="text-user">INFO</span>, file, <span class="text-viola">stdout</span>
+
+# Direct log messages to a log file
+log4j.appender.<span class="text-red">file</span> = org.apache.log4j.<span class="text-green">RollingFileAppender</span>
+log4j.appender.<span class="text-red">file</span>.threshold = <strong>DEBUG</strong>
+log4j.appender.<span class="text-red">file</span>.File = C:\\loging.log
+log4j.appender.<span class="text-red">file</span>.MaxFileSize = 1MB
+log4j.appender.<span class="text-red">file</span>.MaxBackupIndex = 1
+log4j.appender.<span class="text-red">file</span>.layout=org.apache.log4j.PatternLayout
+log4j.appender.<span class="text-red">file</span>.layout.ConversionPattern = %-5p %c{1}:%L - %m%n
+
+# Direct log messages to stdout
+log4j.appender<span class="text-viola">.stdout</span>=org.apache.log4j.<span class="text-user">ConsoleAppender</span>
+log4j.appender.<span class="text-viola">stdout</span>.threshold = <span class="text-red"><strong>ERROR</strong></span>
+log4j.appender.<span class="text-viola">stdout</span>.Target = System.out
+log4j.appender.<span class="text-viola">stdout</span>.layout = org.apache.log4j.PatternLayout
+log4j.appender.<span class="text-viola">stdout</span>.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss}
+
+log4j.logger.<span class="text-corporate">org.springframework</span> = ERROR
+log4j.logger.<span class="text-corporate">org.hibernate</span> = ERROR
+log4j.logger.<span class="text-corporate">com.javarush</span> = DEBUG
+log4j.logger.<span class="text-corporate">org.apache.cxf</span> = ERROR</code></pre>
+<p>"Lines 6 and 15 – We set our own filtering level for each appender."</p>
+<p>"Lines 20-23 – We specify the package name and the filtering level for its messages. Log4j.logger is a prefix: the package name is highlighted in orange."</p>
+<p><span class="text-user">"Really? You can even do that. Well, cool!"</span></p>
+<p>"By the way, neither log4j nor slf4j are included in the JDK. You'll need to download them separately. You can do that <a href="http://www.slf4j.org/download.html" target="_blank">here</a>. But there's another way:"</p>
+<p>"<strong>Step 1</strong>.Add imports to the class:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>import</strong> org.<span class="text-red">slf4j</span>.Logger;
+<strong>import</strong> org.<span class="text-red">slf4j</span>.LoggerFactory;</code></pre>
+<p>"<strong>Step 2</strong>. Put the cursor on these lines and press Alt+Enter in IntelliJ IDEA"</p>
+<p>"<strong>Step 3</strong>. Choose the 'File jar on web» menu item.'</p>
+<p>"<strong>Step 4</strong>. Choose 'slf4j-log4j13.jar'"</p>
+<p>"<strong>Step 5</strong>. Specify where to download the library (jar)"</p>
+<p>"<strong>Step 6</strong>. Use the classes you need."</p>
+<p><span class="text-user">"Whoa! What a day this has been. So much that is new and so much that is cool!"</span></p>
+<p>"Here's another good article on logging: <a href="https://docs.oracle.com/javase/10/core/java-logging-overview.htm#JSCOR-GUID-48004124-2C00-49F7-A640-0C0DDA271DBC" target="_blank">https://docs.oracle.com/javase/10/core/java-logging-overview.htm#JSCOR-GUID-48004124-2C00-49F7-A640-0C0DDA271DBC</a>"</p>
+<p>"Alright, that's enough. Go relax, programmer."</p>

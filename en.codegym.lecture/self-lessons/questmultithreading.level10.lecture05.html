@@ -1,0 +1,56 @@
+<a href='https://cdn.codegym.cc/images/article/e1173e01-4dd6-4058-a8ed-cbe1351f9699/original.jpeg' target='_blank'><img data-id="e1173e01-4dd6-4058-a8ed-cbe1351f9699" data-max-width="850" alt="Logical operators - 1" src="https://cdn.codegym.cc/images/article/e1173e01-4dd6-4058-a8ed-cbe1351f9699/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"Now we'll have a small lesson on logical operators."</p>
+<p>"What logical operators do you know?"</p>
+<p><span class="text-user">&#8212; OR (||), AND (&amp;&amp;), NOT(!)</span></p>
+<p>"Yep. Good job. And do you remember how they work?"</p>
+<p><span class="text-user">"Yes."</span></p>
+<p><span class="text-user">"OR yields true when at least one operand is true."</span></p>
+<p><span class="text-user">"AND yields true when both operands are true."</span></p>
+<p><span class="text-user">"NOT changes true to false, and false to true."</span></p>
+<p>"That's right. And in what order are the operators evaluated in this expression?"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>boolean a = true;
+boolean b = false;
+boolean c = true;
+
+boolean result = a &amp;&amp; b || !c &amp;&amp; b || !a;</code></pre>
+<p><span class="text-user">"This is all very simple."</span></p>
+<p><span class="text-user">"First, NOT (!), then AND (&&), and then OR (||) at the very end."</span></p>
+<p><span class="text-user">If we added parentheses, then we would get:</span></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>boolean a = true;
+boolean b = false;
+boolean c = true;
+
+boolean result = (a &amp;&amp; b) || ((!c) &amp;&amp; b) || (!a);</code></pre>
+<p>"That's all correct, well done. And what is the result?"</p>
+<p><span class="text-user">&#8212; 1) (a &amp;&amp; b) == (true &amp;&amp; false) == false</span></p>
+<p><span class="text-user">2) ((!c) &amp;&amp; b) == (false &amp;&amp; false) == false</span></p>
+<p><span class="text-user">3) (!a) == false</span></p>
+<p><span class="text-user">4) false || false || false == false</span></p>
+<p><span class="text-user">"The result is false."</span></p>
+<p>"It seems you know the topic perfectly. Then I'll tell you a couple of little secrets."</p>
+<p>"First, logical expressions are evaluated from left to right."</p>
+<p>"Second, short-circuit evaluation is used here (calculations are performed only if necessary). If the final result is already known from evaluating part of the expression, then the rest of the expression is not evaluated."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>boolean result = <span class="text-green">(true &amp;&amp; false)</span> || <span class="text-user">(true &amp;&amp; true)</span> || <span class="text-red">(true &amp;&amp; false);</span></code></pre>
+<p>"This expression is divided into three parts separated by the OR (||) operator."</p>
+<p>"If at least one part is true, then the answer is true and nothing else needs to be considered. Accordingly, the expression is evaluated like this:"</p>
+<p><strong>1)</strong> Evaluate the first part: <span class="text-green"> (true &amp;&amp; false) == false</span></p>
+<p><strong>2)</strong> Evaluate the second part: <span class="text-user">(true &amp;&amp; true) == true</span></p>
+<p><strong>3)</strong> We don't evaluate the third part, since it is already clear that the answer will be <strong>true</strong>.</p>
+<p>"This approach is also called lazy evaluation."</p>
+<p><span class="text-user">"OK. And what's so special about it?"</span></p>
+<p>"Nothing—until you start calling methods inside the expression. If part of the expression is skipped, then the methods in the skipped part will not be called."</p>
+<p>"But this approach has become very common. Here's why:"</p>
+<div class="code-heading">Example:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Job job = null;</strong>
+
+<strong>if</strong> (job != null &amp;&amp; job.isDone())
+{
+…
+}</code></pre>
+<p>"If job is null when the expression is evaluated, then the job.isDone() call won't happen!"</p>
+<p><span class="text-user">"Indeed, the first part of the expression is false, which is followed by AND (&&). So, the entire expression will be known to be false, and the second part won't be necessary."</span></p>
+<p>"Exactly. It's a good technique, right?"</p>
+<p><span class="text-user">"Yep."</span></p>

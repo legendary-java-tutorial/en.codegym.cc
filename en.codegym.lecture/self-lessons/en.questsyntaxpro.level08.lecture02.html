@@ -1,0 +1,292 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="36059396-dccf-471a-b281-49a060c5ed82" src="https://cdn.javarush.ru/images/article/36059396-dccf-471a-b281-49a060c5ed82/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="4e1995e6-c971-465e-a38e-0465ea430a60" src="https://cdn.javarush.ru/images/article/4e1995e6-c971-465e-a38e-0465ea430a60/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="9cbada5a-907a-499c-a12b-a211a37586e6" src="https://cdn.javarush.ru/images/article/9cbada5a-907a-499c-a12b-a211a37586e6/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Packages</h2>
+<p>Ordinary Java programs involve an enormous number of classes. How many? Thousands, tens of thousands. And if you also account for the fact that the program uses various libraries containing classes written by other programmers, then the number of classes can easily be measured in the millions!</p>
+<p>It would be all but impossible to come up with unique names for all of these millions, or even just thousands, of classes.</p>
+<p>Of course, we can imagine names like <code>A123</code> and <code>B345</code>, but if we are talking about choosing a good class name, one that makes it easier to understand the class (like <code>String</code> for strings, for example), then even generating a thousand unique names is a lot of work.</p>
+<p><strong>That's why in Java it is customary to group classes into packages using the package keyword.</strong></p>
+<p>Java classes and their packages are very similar to files and folders on a computer.</p>
+<p>For example, if you need to store 10 documents on your computer, you would probably just keep them in one folder. But what if you have thousands of documents (for example, a repository of all a company's documents)?</p>
+<p>With thousands of documents to be stored, one solution is to create multiple levels of folders with good descriptive names. And then in a folder at the very last level, store the documents that relate to that particular folder. Good descriptive names for the documents don't hurt either.</p>
+<p>In fact, we do all of this for classes in Java.</p>
+<p>The files containing the classes are stored in different directories (folders), and the full name of the class's folder with all its subfolders is the name of the package. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Path to the file</th>
+        <th>Package name</th>
+        <th>Class name</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>\<span class="text-user">com</span>\<span class="text-user">codegym</span>\<span class="text-user">tasks</span>\<span class="text-green">Solution</span>.java</code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-user">com.codegym.tasks</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-green">Solution</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>\<span class="text-user">com</span>\<span class="text-user">io</span>\<span class="text-green">FileInputStream</span>.java</code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-user">com.io</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-green">FileInputStream</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>\<span class="text-user">java</span>\<span class="text-user">util</span>\<span class="text-green">ArrayList</span>.java</code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-user">java.util</span></code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-green">ArrayList</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Unlike folder names, package names use a dot as a delimiter. In other words, the folder <code>\com\codegym\tasks\</code> corresponds to the <code>com.codegym.tasks</code> package.</p>
+<hr>
+<h2>2. <code>src</code> folder</h2>
+<p>In Java, it is customary to store all the classes for a program in a single folder (and subfolders). This folder is usually called <code>src</code> (short for <span class="term">source</span>).</p>
+<p>This folder is called the project root (or <span class="term">source root</span>), and all package paths are relative to it. Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Folders</th>
+        <th>Package name</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">c:\projects\data</span>\<span class="text-orange">my</span>\<strong>src</strong><span class="text-green">\</span><span class="text-green">com\codegym\tasks\</span></code></pre>
+        </td>
+        <td>
+            <pre><code>com.codegym.tasks</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="text-viola">d:\files\git\data</span>\<span class="text-orange">project</span>\<strong>src</strong><span class="text-green">\com\codegym\tasks\</span></code></pre>
+        </td>
+        <td>
+            <pre><code>com.codegym.tasks</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>In this situation, programmers say something like "we have a project named <code><span class="text-orange">my</span></code>, which is located in the <code><span class="text-viola">c:\projects\data</span></code> folder" or "we have a project named <code><span class="text-orange">project</span></code>, which is located in the <code><span class="text-viola">d:\files\git\data</span></code> folder"</p>
+<p><span class="text-green">It is best to always put classes in packages and not directly in the root folder (<code><span class="text-green">src</span></code>.</span> If you have just a few classes, this doesn't present a problem. But when there are many classes, it is very easy to get confused. So, always create your classes only in packages.</p>
+<p>In Java, it is customary to give meaningful names to classes and packages. Many companies release their own libraries (a set of classes) and, to avoid confusion, they incorporate the name of the company/website/project into the name of the package:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Package name</th>
+        <th>Company/project name</th>
+    </tr>
+    <tr>
+        <td>
+                <pre><code>org.<strong>apache</strong>.common
+org.<strong>apache</strong>.tomcat
+org.<strong>apache</strong>.util</code></pre>
+        </td>
+        <td>Apache project</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>com.<strong>oracle</strong>.jdbc</code></pre>
+        </td>
+        <td>Oracle company</td>
+    </tr>
+    <tr>
+        <td>
+                <pre><code><strong>java</strong>.io
+<strong>javax</strong>.servlet</code></pre>
+        </td>
+        <td>Oracle company, Java project</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>com.<strong>ibm</strong>.websphere</code></pre>
+        </td>
+        <td>IBM company, WebSphere project</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>com.<strong>jboss</strong></code></pre>
+        </td>
+        <td>JBoss project</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>3. File contents</h2>
+<p>According to the Java language standard, information about a class name and the name of its package must be included in the file with the code. The general form is shown below:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>package <span class="text-green">package-name</span>;
+
+public class <span class="text-red">ClassName</span>
+{
+
+}</code></pre>
+</div>
+<p>The package name must match the folder name, and the file name must match the public class name.</p>
+<p>If you have a <code>...\src\<span class="text-green">com\project</span>\<span class="text-red">Service</span>.java</code> file, then it should contain this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>package <span class="text-green">com.project</span>;
+
+public class <span class="text-red">Service</span>
+{
+
+}</code></pre>
+</div>
+<hr>
+<h2>4. Importing classes</h2>
+<p>The <span class="term">class name</span> and <span class="term">package name</span> form what is called the <span class="term">fully qualified name of the class</span>.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Fully qualified name</th>
+        <th>Package name</th>
+        <th>Class name</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>java.io.FileInputStream</code></pre>
+        </td>
+        <td>
+            <pre><code>java.io</code></pre>
+        </td>
+        <td>
+            <pre><code>FileInputStream</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>java.lang.String</code></pre>
+        </td>
+        <td>
+            <pre><code>java.lang</code></pre>
+        </td>
+        <td>
+            <pre><code>String</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>java.util.ArrayList</code></pre>
+        </td>
+        <td>
+            <pre><code>java.util</code></pre>
+        </td>
+        <td>
+            <pre><code>ArrayList</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>org.apache.tomcat.Servlet</code></pre>
+        </td>
+        <td>
+            <pre><code>org.apache.tomcat</code></pre>
+        </td>
+        <td>
+            <pre><code>Servlet</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Cat</code></pre>
+        </td>
+        <td>none</td>
+        <td>
+            <pre><code>Cat</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>The good news:</strong></p>
+<p><span class="text-orange">The fully qualified class name is always unique within a project.</span> After all, you can't create two files with the same name in a single folder.</p>
+<p><strong>The bad news:</strong></p>
+<p>Fully qualified class names are usually either long or very long. And writing out a long name (for example java.util.ArrayList) every time in code is super inconvenient.</p>
+<p>That's why Java added the ability to <strong>import classes</strong>.</p>
+<p>You can use a <span class="text-orange">class's short name</span> in your code, but you must first let the compiler know <span class="text-viola">which fully qualified class name corresponds to the short name</span>. What if you now multiple classes with the same name in your project? Or you originally has one, but then 15 more were added...</p>
+<p>To use a short class name in your code, you need to add the following construct:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>import <span class="text-green">fully-qualified-class-name</span>;</code></pre>
+</div>
+<p>This declaration must be added at the very beginning of the class, right after the <code>package</code> declaration.</p>
+<p>Example:</p>
+<pre class="language-java"><code>package <span class="text-green">com.codegym.tasks.task01</span>;
+
+import <span class="text-green">java.util.Scanner</span>;
+import <span class="text-green">com.test.helper.special.ArrayList</span>;
+
+public class Solution
+{
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp;  <span class="text-green">Scanner</span> console = new <span class="text-green">Scanner</span>(<span class="text-viola">System.in</span>);
+&nbsp; &nbsp;  <span class="text-green">ArrayList</span> list = new <span class="text-green">ArrayList</span>();
+&nbsp; &nbsp;}
+}</code></pre>
+<p>We <strong>imported</strong> two classes (<code>java.util.Scanner</code> and <code>com.test.helper.special.ArrayList</code>), so we can use their short names in our code. And the compiler will know which classes to use.</p>
+<p>And here's what the same code would look like if we hadn't used <code>import</code>:</p>
+<pre class="language-java"><code>package <span class="text-green">com.codegym.tasks.task01</span>;
+
+public class Solution
+{
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp;  <span class="text-green">java.util.Scanner</span> console = new <span class="text-green">java.util.Scanner</span>(<span class="text-viola">System.in</span>);
+&nbsp; &nbsp;  <span class="text-green">com.test.helper.special.ArrayList</span> list = new <span class="text-green">com.test.helper.special.ArrayList</span>();
+&nbsp; &nbsp;}
+}</code></pre>
+<p>By the way, if your project has two classes named <code>Scanner</code>, you will not be able to import both of them into the same file: <span class="text-red">you will have to use the</span> <span class="term">long name</span> for one of them.</p>
+<p>Let's say you have a Jen on your team. There are no communication problems, since everyone knows who she is. But if there were three Jens, then fully qualified names would have to be used to distinguish them.</p>
+<div class="lesson-note lesson-note--useful">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Note 1</div>
+        <div class="lesson-note__content">
+            <p>By the way, if you're too lazy to add lots of import statements to your class, you can use its lazy version: instead of a specific class name, put an asterisk:</p>
+            <div class="lesson-example lesson-example--center">
+                <pre class="lecture-code lecture-code--present language-java"><code>import <span class="text-green">package-name</span>.*;</code></pre>
+            </div>
+            <p>That will allow you to use the short names of <strong>all the classes</strong> in the package.</p>
+        </div>
+    </div>
+</div>
+<div class="lesson-note lesson-note--useful">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Note 2</div>
+        <div class="lesson-note__content">
+            <p>All classes in the <code>java.lang</code> package are imported automatically, so you don't need to write an <code>import</code> statement for them. You're sure to already know one of these classes: <code>java.lang.String</code>. Yes, that's right. This is the <code>String</code> class that we have used for working with strings.</p>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0806"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0807"></div>

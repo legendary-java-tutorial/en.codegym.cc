@@ -1,0 +1,363 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="4ab18f54-c0df-400a-8a18-d0e34ea424ac" data-max-width="1024" src="https://cdn.javarush.ru/images/article/4ab18f54-c0df-400a-8a18-d0e34ea424ac/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="b5e63ab3-1aa6-41ff-9cf2-cad8565c89a5" data-max-width="1024" src="https://cdn.javarush.ru/images/article/b5e63ab3-1aa6-41ff-9cf2-cad8565c89a5/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="be898644-a1fc-4bdc-8abf-f5cd1ef2504d" data-max-width="512" src="https://cdn.javarush.ru/images/article/be898644-a1fc-4bdc-8abf-f5cd1ef2504d/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="2b92896a-8c6a-4a50-aaef-35e52e60c7c4" data-max-width="512" src="https://cdn.javarush.ru/images/article/2b92896a-8c6a-4a50-aaef-35e52e60c7c4/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="d138e1a6-a476-4f8a-a607-77c943c527f7" data-max-width="512" src="https://cdn.javarush.ru/images/article/d138e1a6-a476-4f8a-a607-77c943c527f7/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="ba6c2cd0-d3de-457e-a729-05b289183a74" data-max-width="512" src="https://cdn.javarush.ru/images/article/ba6c2cd0-d3de-457e-a729-05b289183a74/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Concatenation (merging strings)</h2>
+<p>There's this slick and simple thing that you can do with strings in Java: you can glue them together. This operation is called <span class="term text-viola">concatenation</span>. Here's how we remember it: Con-Cat-en-Nation. It is often called "joining strings" or "combining strings".</p>
+<p>To concatenate two lines, you use the <code class="text-viola">+</code> sign. It's very easy:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code>"<span class="code text-user">value1</span>" <span class="code text-viola">+</span> "<span class="code text-user">value2</span>"</code></pre>
+    <div class="lesson-example-caption">Concatenating two strings</div>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="code text-green">name</span> = "<span class="code text-user">Steve</span>" <span class="code text-viola">+</span> "<span class="code text-user">Steve</span>";</code></pre>
+        </td>
+        <td><code class="text-green">name</code> contains the string <code class="text-user">SteveSteve</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="code text-brown">city</span> = "<span class="code text-user">New York</span>" <span class="code text-viola">+</span> "<span class="code text-user">Steve</span>";</code></pre>
+        </td>
+        <td><code class="text-brown">city</code> contains the string <code class="text-user">New YorkSteve</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="code text-yellow">message</span> = "<span class="code text-user">Hello! </span>" <span class="code text-viola">+</span> "<span class="code text-user">Steve</span>";</code></pre>
+        </td>
+        <td><code class="text-yellow">message</code> contains the string <code class="text-user">Hello! Steve</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>And, of course, you can join lots of strings at the same time, and you can also join strings and variables.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">name</span> = "<span class="code text-user">Steve</span>";
+String <span class="code text-brown">city</span> = "<span class="code text-user">New York</span>";
+String <span class="code text-yellow">message</span> = "<span class="code text-user">Hello!</span>" + <span class="code text-brown">city</span> + <span class="code text-green">name</span> + <span class="code text-brown">city</span>;</code></pre>
+        </td>
+        <td>
+            <code class="text-green">name</code> contains the string <code class="text-user">Steve</code><br>
+            <code class="text-brown">city</code> contains the string <code class="text-user">New York</code><br>
+            <code class="text-yellow">message</code> contains the string<br><code class="text-user">Hello!New YorkSteveNew York</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>In the last example, you can see that the text in the <code class="text-yellow">message</code>&nbsp;is difficult to read, because it is missing spaces. To indicate one or more spaces, you just need to write them in code and then wrap them in double quotes. It's easier than it sounds:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code><span class="text-green">" "</span></code></pre>
+    <div class="lesson-example-caption">A string containing one space</div>
+</div>
+<p>By the way, if you don't put any spaces between the quotes (i.e. you write two double quotes in a row), you get the so-called "empty string":</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code><span class="text-green">""</span></code></pre>
+    <div class="lesson-example-caption">Empty string</div>
+</div>
+<p>On the one hand, it seems we have a string. But on the other hand, when we display this string, nothing is displayed. And when we join it with other strings, nothing happens. It's kind of like a zero in addition, only for strings.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0207"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0208"></div>
+<hr>
+<h2>2. Converting to a string</h2>
+<p>As mentioned above, Java developers have made sure that absolutely every variable, object, and expression in Java can be converted to the <code class="text-green">String</code> type.</p>
+<p>What's more, this happens automatically when we concatenate a <code class="text-green">String</code> with some <span class="term text-red">other type</span>. Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-red">a</span> = <span class="code text-user">5</span>;
+String <span class="code text-green">name</span> = "<span class="code text-user">Steve</span>" + <span class="code text-red">a</span>;</code></pre>
+        </td>
+        <td><code class="text-green">name</code> contains the string <code class="text-user">Steve5</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-red">a</span>&nbsp;= <span class="code text-user">5</span>;
+String <span class="code text-green">city</span>&nbsp;= <span class="code text-red">a</span>&nbsp;+ "<span class="code text-user">New York</span>"&nbsp;+ <span class="code text-red">a</span>;</code></pre>
+        </td>
+        <td><code class="text-green">city</code> contains the string <code class="text-user">5New York5</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-red">number</span>&nbsp;= <span class="code text-user">10</span>;
+String <span class="code text-green">code</span>&nbsp;= "<span class="code text-user">Yo</span>";
+String <span class="code text-green">message</span>&nbsp;= "<span class="code text-user">Hello! </span>"&nbsp;+ <span class="code text-red">number</span>&nbsp;+ <span class="code text-green">code</span>;</code></pre>
+        </td>
+        <td><code class="text-green">message</code> contains the string <code class="text-user">Hello! 10Yo</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>In all three instances, we calmly combined <code class="text-red">int</code> and <code class="text-green">String</code> variables, and the result is always a <code class="text-green">String</code>.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__content">
+            <p>You can't perform arithmetic operations with the <code class="text-green">String</code> type. Even if the entire string consists of&nbsp;digits.</p>
+        </div>
+    </div>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="54%">Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-red">a</span> = <span class="code text-user">5</span>;
+String <span class="code text-green">name</span> = "<span class="code text-user">1</span>" + <span class="code text-red">a</span>;</code></pre>
+        </td>
+        <td><code class="text-green">name</code> contains the string <code class="text-user">15</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-red">a</span> = <span class="code text-user">5</span>;
+String <span class="code text-green">city</span> = <span class="code text-red">a</span> + "<span class="code text-user">9</span>" + <span class="code text-red">a</span>;</code></pre>
+        </td>
+        <td><code class="text-green">city</code> contains the string <code class="text-user">595</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-red">number</span> = <span class="code text-user">10</span>;
+String <span class="code text-green">code</span> = "<span class="code text-user">10</span>";
+String <span class="code text-green">message</span> = "" + <span class="code text-red">number</span> + <span class="code text-green">code</span>;</code></pre>
+        </td>
+        <td><code class="text-green">message</code> contains the string <code class="text-user">1010</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>The plus operations are executed from left to right, so the result may be somewhat unexpected. Example:</p>
+<div class="lesson-example">
+    <table>
+        <tbody>
+        <tr>
+            <th width="51%">Statement</th>
+            <th>Note</th>
+        </tr>
+        <tr>
+            <td>
+    <pre class="language-java"><code>int <span class="code text-red">a</span> = <span class="code text-user">5</span>;
+String <span class="code text-green">name</span> = <span class="code text-red">a</span> + <span class="code text-red">a</span> + "<span class="code text-user">1</span>" + <span class="code text-red">a</span>;</code></pre>
+            </td>
+            <td>
+                <code class="text-green">name</code> contains the string <code class="text-user">1015</code>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="lesson-example-caption">
+        Order of operations: <code class="code-raw">((<span class="code text-red">a</span>&nbsp;+ <span class="code text-red">a</span>) + "<span class="code text-user">1</span>") + <span class="code text-red">a</span></code>
+    </div>
+</div>
+<hr>
+<h2>3. Converting a string to a number</h2>
+<p>Converting a number to a string in Java is as easy as concatenating it to an empty string:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>String <span class="code text-green">str</span> =&nbsp;<span class="text-green">""</span> + <span class="code text-red">number</span>;</code></pre>
+    <div class="lesson-example-caption">Converting a number to a string</div>
+</div>
+<p>But what if you need to convert a string to a number? Well, not every string can be converted to a number. But if the string consists only of numbers, then you can. There is a special <span class="term text-viola">method</span> for this in the <code class="text-brown">Integer</code> class.</p>
+<p>The corresponding statement looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>int <span class="code text-red">x</span> = <span class="code text-brown">Integer</span>.<span class="code text-viola">parseInt</span>(<span class="code text-green">string</span>);</code></pre>
+</div>
+<p>Where <code class="code-raw">int <span class="code text-red">x</span></code>&nbsp;is the declaration of an <code class="text-red">x</code> integer variable, and <code class="text-green">string</code>&nbsp;is a string that represents a number (i.e. a string consisting of digits).</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">str</span> = "<span class="code text-user">123</span>";
+int <span class="code text-red">number</span> = <span class="code text-brown">Integer</span>.<span class="code text-viola">parseInt</span>(<span class="code text-green">str</span>);</code></pre>
+        </td>
+        <td><code class="text-red">number</code> contains the number <code>123</code>;</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="code text-red">number</span> = <span class="code text-brown">Integer</span>.<span class="code text-viola">parseInt</span>("<span class="code text-user">321</span>");</code></pre>
+        </td>
+        <td><code class="text-red">number</code> contains the number <code>321</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="code text-red">number</span> = <span class="code text-brown">Integer</span>.<span class="code text-viola">parseInt</span>("<span class="code text-user">321</span>" + 0);</code></pre>
+        </td>
+        <td><code class="text-red">number</code> contains the number <code>3210</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="code text-red">number</span> = "<span class="code text-user">321</span>";</code></pre>
+        </td>
+        <td><span class="text-red">This won't compile:</span> the variable is an <code>int</code>, but the value is a <code>String</code></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0209"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0210"></div>
+<hr>
+<h2>4. Some methods for working with strings</h2>
+<p>And finally, I would like to talk about several methods of the <code>String</code> class.</p>
+<p><strong><code>length()</code> method</strong></p>
+<p>The <code class="text-red">length()</code>&nbsp;method lets you get the <span class="text-red">length of a string</span>, i.e. how many characters it contains.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">name</span> = "<span class="code text-user">Rome</span>";
+int <span class="code text-viola">count</span> = <span class="code text-green">name</span>.<span class="code text-red">length()</span>;</code></pre>
+        </td>
+        <td><code class="text-viola">count</code> contains the value <code>4</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="code text-viola">count</span> = "".<span class="code text-red">length()</span>;</code></pre>
+        </td>
+        <td><code class="text-viola">count</code> contains the value <code>0</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">name</span> = "<span class="code text-user">Rom</span>";
+int <span class="code text-viola">count</span> = (<span class="code text-green">name</span> + <span class="code text-neon">12</span>).<span class="code text-red">length()</span>;</code></pre>
+        </td>
+        <td><code class="text-viola">count</code> contains the value <code>5</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>You can call these methods on anything whose type is <code class="text-green">String</code>, even an expression:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present"><code>(<span class="code text-green">name</span> + <span class="code text-neon">12</span>).<span class="code text-red">length()</span></code></pre>
+    <div class="lesson-example-caption">Calling the <code>length()</code> method on an expression whose type is <code>String</code></div>
+</div>
+<p><strong><code>toLowerCase()</code> method</strong></p>
+<p>The <code class="text-red">toLowerCase()</code>&nbsp;method lets you convert all characters in a string to <span class="text-red">lowercase</span>:</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">name</span> = "<span class="code text-user">Rom</span>";
+String <span class="code text-green">name2</span> = <span class="code text-green">name</span>.<span class="code text-red">toLowerCase()</span>;</code></pre>
+        </td>
+        <td><code class="text-green">name2</code> contains the string <code class="text-user">rom</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="code text-green">name</span> = "".<span class="code text-red">toLowerCase()</span>;</code></pre>
+        </td>
+        <td><code class="text-green">name</code> contains an empty string</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">name</span> = "<span class="code text-user">ROM123</span>";
+String <span class="code text-green">name2</span> = <span class="code text-green">name</span>.<span class="code text-red">toLowerCase()</span>;</code></pre>
+        </td>
+        <td><code class="text-green">name2</code> contains the string <code class="text-user">rom123</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>toUpperCase()</code> method</strong></p>
+<p>The <code class="text-red">toUpperCase()</code>&nbsp;method lets you convert all characters in a string to <span class="text-red">uppercase</span>:</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Statement</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">name</span> = "<span class="code text-user">Rom</span>";
+String <span class="code text-green">name2</span> = <span class="code text-green">name</span>.<span class="code text-red">toUpperCase</span>();</code></pre>
+        </td>
+        <td><code class="text-green">name2</code> contains the string <code class="text-user">ROM</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-green">name</span> = <span class="text-green">"rom123"</span>;
+String <span class="code text-green">name2</span> = <span class="text-green">name</span>.<span class="code text-red">toUpperCase</span>();</code></pre>
+        </td>
+        <td><code class="text-green">name2</code> contains the string <code class="text-user">ROM123</code></td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0211"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0212"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0213"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="6308d2d5-9a61-46ca-93f8-6e7c0fd1b3e8" data-max-width="1024" src="https://cdn.javarush.ru/images/article/6308d2d5-9a61-46ca-93f8-6e7c0fd1b3e8/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="4672907a-9d55-4f8c-9b3f-04cc5a6aa80b" data-max-width="512" src="https://cdn.javarush.ru/images/article/4672907a-9d55-4f8c-9b3f-04cc5a6aa80b/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="9a9d69ec-f9b2-4140-be62-82fe8ec84183" data-max-width="512" src="https://cdn.javarush.ru/images/article/9a9d69ec-f9b2-4140-be62-82fe8ec84183/original.png" alt="">
+        </div>
+    </div>
+</div>

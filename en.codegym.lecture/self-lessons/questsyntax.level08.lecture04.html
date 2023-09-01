@@ -1,0 +1,77 @@
+<a href='https://cdn.codegym.cc/images/article/32f1385c-cdd0-43b6-a953-8410dec4af6e/original.jpeg' alt="" target='_blank'><img data-id="32f1385c-cdd0-43b6-a953-8410dec4af6e" data-max-width="850" alt="Introducing the Date type - 1" src="https://cdn.codegym.cc/images/article/32f1385c-cdd0-43b6-a953-8410dec4af6e/original.jpeg"></a>
+<p>"Hi, Amigo. I want to tell you about an interesting type called Date. This type stores the date and time, and can also measure time intervals."</p>
+<p><span class="text-user">"Sounds interesting. Please go on."</span></p>
+<p><span class="text-red">"Every Date object stores a time in a rather interesting form: the number of milliseconds since January 1, 1970, GMT."</span></p>
+<p><span class="text-user">"Whoa!"</span></p>
+<p>"Yeah. This number is so big there's not enough room for it in an <strong>int</strong>, so it has to be stored in a <strong>long</strong>. But <span class="text-green">it's really handy for calculating the difference between any two dates. You just do subtraction to find the difference with accuracy to the millisecond.</span> It also solves the problem of the date line and daylight saving time."</p>
+<p><span class="text-corporate">"The most interesting part is that each object is initialized with the current time at its creation. To know the current time, you just need to create a Date object."</span></p>
+<p><span class="text-user">"How do you work with it?"</span></p>
+<p>"Here are some examples:"</p>
+<div class="code-heading">Get the current date:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+    <strong> Date</strong> <span class="text-user">today</span> = new <strong>Date</strong>();
+     <span class="text-neon">System.out.println</span>("Current date: " + <span class="text-user">today</span>);
+}</code></pre>
+<div class="code-heading">Calculate the difference between the two dates</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+    <strong>Date</strong> <span class="text-user">currentTime</span> = new <strong>Date</strong>();           // Get the current date and time
+    <strong>Thread</strong>.sleep(3000);                      // Wait 3 seconds (3000 milliseconds)
+    <strong>Date</strong> <span class="text-user">newTime</span> = new <strong>Date</strong>();               // Get the new current time
+
+    long <span class="text-red">msDelay</span> = <span class="text-user">newTime</span>.<span class="text-green">getTime</span>() - <span class="text-user">currentTime</span>.<span class="text-green">getTime</span>(); // Calculate the difference
+    <span class="text-neon">System.out.println</span>("Time difference is: " + <span class="text-red">msDelay</span> + " in ms");
+}</code></pre>
+<div class="code-heading">Check whether a certain amount of time has passed:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+    <strong>Date</strong> <span class="text-user">startTime</span> = new <strong>Date</strong>();
+
+    long <span class="text-corporate">endTime</span> = <span class="text-user">startTime</span>.<span class="text-green">getTime</span>() + 5000;  //    +5 seconds
+    <strong>Date</strong> <span class="text-user">endDate</span> = new <strong>Date</strong>(<span class="text-corporate">endTime</span>);
+
+    Thread<strong>.sleep</strong>(3000);              // Wait 3 seconds
+
+    <strong>Date</strong> <span class="text-user">currentTime</span> = new <strong>Date</strong>();
+    <strong>if</strong>(<span class="text-user">currentTime</span>.<span class="text-red">after</span>(<span class="text-user">endDate</span>))// Check whether currentTime is after endDate
+    {
+        <span class="text-neon">System.out.println</span>("End time!");
+    }
+}</code></pre>
+<div class="code-heading">Determine how much time has passed since the beginning of the day:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+    <strong>Date</strong> <span class="text-user">currentTime</span> = <strong>new</strong> <strong>Date</strong>();
+    <strong>int</strong> hours = <span class="text-user">currentTime</span>.<span class="text-red">getHours</span>();
+    <strong>int</strong> mins = <span class="text-user">currentTime</span>.<span class="text-red">getMinutes</span>();
+    <strong>int</strong> secs = <span class="text-user">currentTime</span>.<span class="text-red">getSeconds</span>();
+
+    <span class="text-neon">System.out.println</span>("Time since midnight " + hours + ":" + mins + ":" + secs);
+}</code></pre>
+<div class="code-heading">Determine how many days have passed since the beginning of the year:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+    <strong>Date</strong> <span class="text-user">yearStartTime</span> = new <strong>Date</strong>();
+    <span class="text-user">yearStartTime</span>.<span class="text-red">setHours</span>(0);
+    <span class="text-user">yearStartTime</span>.<span class="text-red">setMinutes</span>(0);
+    <span class="text-user">yearStartTime</span>.<span class="text-red">setSeconds</span>(0);
+
+    <span class="text-user">yearStartTime</span>.<span class="text-red">setDate</span>(1);      // First day of the month
+    <span class="text-user">yearStartTime</span>.<span class="text-red">setMonth</span>(0);     // January (the months are indexed from 0 to 11)
+
+    <strong>Date</strong> <span class="text-user">currentTime</span> = new Date();
+    <strong>long</strong> <span class="text-viola">msTimeDifference</span> = <span class="text-user">currentTime</span>.<span class="text-red">getTime</span>() - <span class="text-user">yearStartTime</span>.<span class="text-green">getTime</span>();
+    <strong>long</strong> msDay = 24 * 60 * 60 * 1000;  // The number of milliseconds in 24 hours
+
+    int <span class="text-corporate">dayCount</span> = (int) (<span class="text-viola">msTimeDifference</span>/msDay); // The number of full days
+    <span class="text-neon">System.out.println</span>("Days since the start of the year: " + <span class="text-corporate">dayCount</span>);
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task08.task0832"></div>
+<p>"The <code><span class="text-green">getTime()</span></code> method returns the number of milliseconds stored in a Date object."</p>
+<p>"The <code><span class="text-red">after()</span></code> method checks whether the date we called the method on comes <strong>after</strong> the date passed to the method."</p>
+<p>"The <code><span class="text-red">getHours(), getMinutes(), getSeconds()</span></code> methods return the number of hours, minutes, and seconds, respectively, for the object on which they were called."</p>
+<p>"Moreover, in the last example you can see that you can change the date/time stored in a <strong>Date</strong> object. We get the current time and date and then reset the hours, minutes, and seconds to 0. We also set January as the month and 1 as the day of the month. Thus, the <code><span class="text-user">yearStartTime</span></code> object stores the date January 1 of the current year and the time 00:00:00."</p>
+<p>"After that, we again get the current date (<code><span class="text-user">currentTime</span></code>), calculate the difference between the two dates in milliseconds, and store it in <code><span class="text-viola">msTimeDifference</span></code>."</p>
+<p>"Then we divide <code><span class="text-viola">msTimeDifference</span></code> by the number of milliseconds in 24 hours to get the number of full days from the beginning of the current year until today."</p>
+<p><span class="text-user">"Wow! This is so cool!"</span></p>

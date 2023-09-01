@@ -1,0 +1,430 @@
+<p>"Hey, young recruit, who makes a bunch of mistakes every day, even in the simplest programs!</p>
+<p><span class="text-user">"Um... Hi, Diego. Boy, you really know how to cheer people up!"</span></p>
+<p>"Of course, I do! Learn how to say what needs to be said. Like I said, 'every day'. Putting it more politely, my greeting means "future successful programmer, if, of course, you doesn't blow it."</p>
+<p><span class="text-user">"Oooh, well then thank you, my most metallic teacher!</span>.</p>
+<p>"You'll thank me after this lesson. Here I'm going to list the most popular errors noted by the compiler. And your job is to remember. Forewarned is forearmed.</p>
+<h2>Forgetting a semicolon</h2>
+<p>"The most common mistake aspiring Java programmers make involves the semicolon. Or rather, its absence where it should be."</p>
+<p><span class="text-user">"The truth is... I've committed this offense repeatedly."</span></p>
+<p>"Every statement inside a method must end with a semicolon. The semicolon is what separates statements or commands: this is how we tell the Java compiler where one command ends and the next begins.</p>
+<p>Examples of errors:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Incorrect code</th>
+        <th>Correct code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int a
+int b = 5
+int c = a + b</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int a<span class="text-red">;</span>
+int b = 5<span class="text-red">;</span>
+int c = a + b<span class="text-red">;</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("Hello")</code></pre>
+        </td>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("Hello")<span class="text-red">;</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>if (2 &gt; 3)
+   System.out.println("Are we in Australia?")</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>if (2 &gt; 3)
+   System.out.println("Are we in Australia?")<span class="text-red">;</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1110"></div>
+<h2>Forgetting to close quotes</h2>
+<p>"The second most common mistake for newcomers to Java is writing a string in the code and then forgetting to close the quote.</p>
+<p>Every string literal in the code must be enclosed on both sides with double quotation marks ("). Beginner programmers very often put quotation marks at the beginning of text, but they forget to close them at the end.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Incorrect code</th>
+        <th>Correct code</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>String s = "Hello;</code></pre>
+        </td>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>String s = "Hello<span class="text-red">"</span>;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("Hello);</code></pre>
+        </td>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("Hello<span class="text-red">"</span>);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String s = "Hello";
+String message = s + " and by. ;</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String s = "Hello";
+String message = s + " and bye.<span class="text-red">"</span>;</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1111"></div>
+<h2>Forgetting to include a plus sign when gluing together strings</h2>
+<p>"Another common mistake when working with strings is forgetting to write a plus sign when gluing strings together. This error is especially prevalent when text and variables are concatenated in a long expression in code.</p>
+<p>Here are some examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Incorrect code</th>
+        <th>Correct code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String s = "Hello";
+String message = s  " and bye.";</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String s = "Hello";
+String message = s <span class="text-red">+</span> " and bye.";</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int age = 35;
+System.out.println("Age=" age);</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int age = 35;
+System.out.println("Age=" <span class="text-red">+</span> age);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int age = 35;
+System.out.println("Age=", age);</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int age = 35;
+System.out.println("Age=" <span class="text-red">+</span> age);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1112"></div>
+<h2>Forgetting to close curly braces</h2>
+<p>"This is a very common mistake. There are two situations where this is typical:</p>
+<ol>
+    <li><span class="text-orange">You decided to copy code from somewhere and accidentally missed some curly braces.</span></li>
+    <li><span class="text-green">You simply aren't troubling yourself to make sure that every open parenthesis is matched by a closing parenthesis."</span></li>
+</ol>
+<p><span class="text-user">"The second option is what I do. Sometimes I get so carried away that I forget!"</span>.</p>
+<p>"To avoid these errors, it is usually recommended for beginner programmers to write the closing curly brace underneath the opening one.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Incorrect code</th>
+        <th>Correct code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>if (2 &lt; 3)
+{
+   if (3 &lt; 4)
+   {
+      System.out.println("Mathematics!");
+   }</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>if (2 &lt; 3)
+{
+   if (3 &lt; 4)
+   {
+      System.out.println("Mathematics!");
+   }
+<span class="text-red">}</span>
+</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>{
+   if (2 &lt; 3)
+   {
+      if (3 &lt; 4)
+      {
+         System.out.println("Mathematics!");
+      }
+   }</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>{
+   if (2 &lt; 3)
+   {
+      if (3 &lt; 4)
+      {
+         System.out.println("Mathematics!");
+      }
+   }
+<span class="text-red">}</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1113"></div>
+<h2>Forgetting to add parentheses</h2>
+<p>"Most often this mistake is made by developers who know programming languages that don't require parentheses in similar situations.</p>
+<p>One possibility is that they simply forget to put parentheses at the end of a method call:</p>
+<p>Another possibility is that they forget to wrap the condition of an <code>if-else</code> statement in parentheses.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Incorrect code</th>
+        <th>Correct code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>System.out.println("Hello!");
+System.out.println;
+System.out.println("And bye!");</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>System.out.println("Hello!");
+System.out.println<span class="text-red">()</span>;
+System.out.println("And bye!");</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>if 2 &lt; 3
+{
+   if 3 &lt; 4
+   {
+      System.out.println("Mathematics!");
+   }
+}</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>if <span class="text-red">(</span>2 &lt; 3<span class="text-red">)</span>
+{
+   if <span class="text-red">(</span>3 &lt; 4<span class="text-red">)</span>
+   {
+      System.out.println("Mathematics!");
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1114"></div>
+<h2>Writing the <code>main</code> method declaration incorrectly</h2>
+<p>"As soon as they declare the bloody <code>main</code> method! There is probably nothing that trips up newbies as much as this poor method. Importantly, then they are always surprised and wonder why their program won't start? And, of course, the programmer isn't to blame, but the program, the compiler, the code validator, the Java machine, etc. The list of scapegoats is endless.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Incorrect code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>static void main(String[] args)</code></pre>
+        </td>
+        <td><strong><code>public</code> is missing</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>public void main(String[] args)</code></pre>
+        </td>
+        <td><strong><code>static</code> is missing</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>public main(String[] args)</code></pre>
+        </td>
+        <td><strong><code>void</code> is missing</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>void main(String[] args)</code></pre>
+        </td>
+        <td><strong><code>public</code> and <code>static</code> are missing</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>public static void main(String args)</code></pre>
+        </td>
+        <td><strong><code>[]</code> is missing</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>public static void main()</code></pre>
+        </td>
+        <td><strong><code>String[] args</code> is missing</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>public static int main(String args)</code></pre>
+        </td>
+        <td><strong>We have <code>int</code> instead of <code>void</code></strong></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1115"></div>
+<h2>The file name is different from the class name</h2>
+<p>"According to the Java standard, all Java classes must be stored in a file with the same name as the class name. And as mentioned earlier, the case of the letters matters here:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>File name</th>
+        <th>Class name</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td><strong>Solution.java</strong></td>
+        <td><strong>Solution</strong></td>
+        <td><strong>Everything is fine</strong></td>
+    </tr>
+    <tr>
+        <td><strong>Solution<span class="text-red">s</span>.java</strong></td>
+        <td><strong>Solution</strong></td>
+        <td><strong><span class="text-red">The file name as a superfluous letter 's'</span></strong></td>
+    </tr>
+    <tr>
+        <td><strong><span class="text-red">s</span>olution.java</strong></td>
+        <td><strong>Solution</strong></td>
+        <td><strong><span class="text-red">The file name starts with a lowercase letter</span></strong></td>
+    </tr>
+    <tr>
+        <td><strong>Solution.<span class="text-red">txt</span></strong></td>
+        <td><strong>Solution</strong></td>
+        <td><strong><span class="text-red">The file extension is .txt instead of .java</span></strong></td>
+    </tr>
+    <tr>
+        <td><strong>Solution.java</strong></td>
+        <td><strong>solution</strong></td>
+        <td><strong>The class name starts with a lowercase letter</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-orange">"Actually, several classes can be declared in a file with the .java extension, but only one of them can have the word <code><span class="text-bold">public</span></code> before the class name.</span> And this is the name that must match the file name.</p>
+<p>"A .java file must always have a class whose name is the same as the file name, and that class needs to have the <code>public</code> modifier. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Solution.java</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><strong>public class</strong> Solution
+{
+}
+
+<strong>class</strong> Apple
+{
+}
+
+<strong>class</strong> Pineapple
+{
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Additionally, the Java language lets you write classes within classes. This is another way to get around the above limitation. If a public class (a class with the <code>public</code> modifier) is declared in a file and has the same name as the file name, then you can declare as many classes as you like inside this public class. That said, these will no longer be ordinary classes. Instead, they will be internal or nested classes. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Solution.java</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><strong>public class</strong> Solution
+{
+   <strong>public</strong> <strong>class</strong> Apple
+   {
+   }
+
+   <strong>public</strong> <strong>static</strong> <strong>class</strong> Pineapple
+   {
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1116"></div>
+<h2>Forgetting to write <code>package</code></h2>
+<p>"Since programs usually have thousands of classes, it can be difficult to find simple, understandable, and unique names for all of them. That's why in Java it is customary to group classes into packages using the <code>package</code> keyword. Exactly the way the files are grouped into folders."</p>
+<p><span class="text-user">"Ah-ha, so that's why each class should begin with an indication of the package that it belongs to."</span></p>
+<p>"Exactly. Here's an example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code without package</th>
+        <th>Corrected example</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><strong>public</strong> <strong>class</strong> Solution
+{
+}</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><strong>package</strong> en.javarush.tasks.task0001;
+
+<strong>public class</strong> Solution
+<strong>{</strong>
+<strong>}</strong></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1117"></div>
+<h2>Forgetting to add <code>import</code></h2>
+<p>"If we want to use somebody else's class in our program, we have two options: everywhere in our code we must also write its package name before the name of the class. Alternatively, we can write the fully qualified class name with the <code>import</code> keyword once. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Without using import</th>
+        <th>Using import</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Solution
+{
+   <span class="text-red">java.util.Scanner</span> scanner = new <span class="text-red">java.util.Scanner</span>();
+}</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code><strong>import</strong> <span class="text-red">java.util.Scanner</span>;
+
+public class Solution
+{
+<span class="text-red">   Scanner</span> console = new <span class="text-red">Scanner</span>();
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Both options work, but if you simply write <code><span class="text-red">Scanner</span></code> in your code without adding <code>import</code>, then the compiler will not be able to understand which package it needs to take the <code><span class="text-red">Scanner</span></code> class from, and your program won't compile."</p>
+<p><span class="text-user">"Thank you, Diego. This lesson will make me pay more attention."</span></p>
+<p>"That's what I was counting on. Good luck!"</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1118"></div>

@@ -1,0 +1,93 @@
+<p>"I also want to tell you about the <strong>String.format</strong> method."</p>
+<p>"It's a static method of the <strong>String</strong> class, but it is very useful. Let me take a roundabout approach."</p>
+<p>"If you need to display several variables on one line of text, how would you do it?"</p>
+<p><span class="text-user">"What text?"</span></p>
+<p>"This, for example:"</p>
+<div class="code-heading">Given the following variables:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String name = "Bender";
+int age = 12;
+String friend = "Fry";
+int weight = 200;</code></pre>
+<div class="code-heading">Required output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>User = {name: Bender, age: 12 years, friend: Fry, weight: 200 kg.}</code></pre>
+<p><span class="text-user">"I'd do it something like this:"</span></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String name = "Bender";
+int age = 12;
+String friend = "Fry";
+int weight = 200;
+
+System.out.println("User = {name: " + name + ", age: " + age + " years, friend: " + friend + ", weight: " + weight + " kg.}");</code></pre>
+<p>"Not very readable, is it?"</p>
+<p><span class="text-user">"I think it's okay."</span></p>
+<p>"But if you have long variable names or you need to call methods to get data, then it wouldn't be very readable:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>System.out.println("User = {name: " + user.getName() + ", age: " + user.getAge() + " years, friend: " + user.getFriends().get(0) + ", weight: " + user.getExtraInformation().getWeight() + " kg.}"</span>);</code></pre>
+<p><span class="text-user">"Well, if that were the case, then, yes, it wouldn't be very readable."</span></p>
+<p>"The fact is this happens all the time in real programs, so I want to show you how you can simplify your life with the String.format method."</p>
+<p><span class="text-user">"Please tell me quickly, what kind of magical method is this?"</span></p>
+<p>"You can write the code above like this:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String text = String.format("User = {name: %s, age: %d years, friend: %s, weight: %d kg.}",
+user.getName(), user.getAge(), user.getFriends().get(0), user.getExtraInformation().getWeight())
+
+System.out.println(text);</code></pre>
+<p>"The <strong>String.format</strong> method's first parameter is a format string that contains special characters (%s, %d) wherever we want to put values."</p>
+<p>"After the format string, we pass the values that will replace the %s and %d characters."</p>
+<p>"If we need to insert a string, then we write %s; if we need a number, then we use %d."</p>
+<p>"It will be easier to see this in an example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = String.format("a = %d, b = %d, c = %d", 1, 4, 3);</code></pre>
+<div class="code-heading">Result:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><strong>s will be equal to «a = 1, b = 4, c = 3»</strong></pre>
+<p><span class="text-user">"Yeah, that's very convenient."</span></p>
+<p>"And you can also do it like this:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int a = -1, b = 4, c = 3;
+String template;
+ if (a &lt; 0)
+  template = "Warning! a = %d, b = %d, c = %d";
+ else
+  template = "a = %d, b = %d, c = %d";
+
+System.out.println(String.format(template, a, b, c) );</code></pre>
+<div class="code-heading">Output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Warning! a = -1, b = 4, c = 3</code></pre>
+<p><span class="text-user">"Hmm. That is a really useful method. Thanks, Ellie."</span></p>
+<p>"If you want to use other data types with the format method, here's a table that will help:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Symbol</th>
+        <th>Type</th>
+    </tr>
+    <tr>
+        <td>%s</td>
+        <td>String</td>
+    </tr>
+    <tr>
+        <td>%d</td>
+        <td>integers:   int, long, etc.</td>
+    </tr>
+    <tr>
+        <td>%f</td>
+        <td>real numbers: float, double</td>
+    </tr>
+    <tr>
+        <td>%b</td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <td>%c</td>
+        <td>char</td>
+    </tr>
+    <tr>
+        <td>%t</td>
+        <td>Date</td>
+    </tr>
+    <tr>
+        <td>%%</td>
+        <td>Percent sign %</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Actually, these format specifiers also have their own settings and subsettings."</p>
+<p>"But this is enough to get you started. If not, here's a link to the official documentation:"</p>
+<p><a href="http://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html" target="_blank">Link to additional material</a></p>

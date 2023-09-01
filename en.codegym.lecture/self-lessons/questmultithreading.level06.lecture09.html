@@ -1,0 +1,138 @@
+<a href='https://cdn.codegym.cc/images/article/c3107a10-1875-4ed5-9c38-353707f20a15/original.jpeg' target='_blank'><img data-id="c3107a10-1875-4ed5-9c38-353707f20a15" data-max-width="850" alt="Concurrency, BlockingQueues (Java 7) - 1" src="https://cdn.codegym.cc/images/article/c3107a10-1875-4ed5-9c38-353707f20a15/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Kim!"</span></p>
+<p>"Today, I'm going to tell you about concurrency."</p>
+<p>"<strong>Concurrency</strong> is a Java class library that includes special classes that have been optimized for work from multiple threads. This is a very interesting and extensive topic. But today we're just going to get an introduction. The package is called java.util.concurrent package. I'll tell you about a couple of interesting classes."</p>
+<p>"<strong>Atomic types.</strong>"</p>
+<p>"You already know that even count++ is not a thread-safe operation. When a variable is incremented by 1, three operations actually take place. As a result, there may be a conflict when the variable is changed."</p>
+<p><span class="text-user">"Yeah, Ellie told me not long ago:"</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Thread 1</th>
+        <th>Thread 2</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">register1 = count;
+register1++;</span>
+<span class="text-user">count = register1;</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">register2 = count;
+register2++;</span>
+<span class="text-green">count = register2;</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">register1 = count;</span>
+<span class="text-green">register2 = count;
+register2++;
+count = register2;</span>
+<span class="text-green">register1++;
+count = register1;</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Exactly. Then Java added data types to perform these operations as one, i.e. atomically (an atom is indivisible)."</p>
+<p>"For example, Java has <strong>AtomicInteger, AtomicBoolean, AtomicDouble</strong>, etc."</p>
+<p>"Suppose we need to make a «counter» class:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> <strong>Counter</strong>
+{
+ <strong>private</strong> int c = 0;
+
+ <strong>public</strong> void <strong>increment</strong>()
+ {
+  c++;
+ }
+
+ <strong>public</strong> void <strong>decrement</strong>()
+ {
+  c--;
+ }
+
+ <strong>public</strong> int <strong>value</strong>()
+ {
+  return c;
+ }
+}</code></pre>
+<p>"How would you make objects of this class thread-safe?"</p>
+<p><span class="text-user">"Well, I would make all the methods synchronized and be done with it:"</span></p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> <strong>synchronized</strong> Counter
+{
+ private int c = 0;
+
+ <strong>public</strong> <strong>synchronized</strong> void increment()
+ {
+  c++;
+ }
+
+ <strong>public</strong> <strong>synchronized</strong> void decrement()
+ {
+  c--;
+ }
+
+ <strong>public</strong> <strong>synchronized</strong> int value()
+ {
+  return c;
+ }
+}</code></pre>
+<p>"Good work. But, what would it look like if we used atomic types:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> <strong>AtomicCounter</strong>
+{
+ <strong>private</strong> <strong>AtomicInteger</strong> c = new <strong>AtomicInteger</strong>(0);
+
+ <strong>public</strong> void <strong>increment</strong>()
+ {
+  c.<strong>incrementAndGet</strong>();
+ }
+
+ <strong>public</strong> void <strong>decrement</strong>()
+ {
+  c.<strong>decrementAndGet</strong>();
+ }
+
+ <strong>public</strong> int <strong>value</strong>()
+ {
+  return c.<strong>get</strong>();
+ }
+}</code></pre>
+<p>"Your class and my class both work the same way, but the class with an AtomicInteger works faster."</p>
+<p><span class="text-user">"Well, is it a small difference?"</span></p>
+<p>"Yes. Based on my experience, I always recommend leading with synchronized. Only when all the application code has been written and the optimization process has begun should you start rewriting the code to use the atomic types. But in any case, I wanted you to know that such types exist. Even if you don't actively use them, there's always a chance you'll run into code where they are used."</p>
+<p><span class="text-user">"I agree. That makes sense."</span></p>
+<p>"By the way, did you notice that the atomic types are not <strong>immutable</strong>? In contrast to the standard <strong>Integer</strong> class, <strong>AtomicInteger</strong> contains methods for changing its internal state."</p>
+<p><span class="text-user">"Got it. Just like <strong>String</strong> and <strong>StringBuffer</strong>."</span></p>
+<p>"Yes, something like that."</p>
+<p>"<strong>Thread-safe collections.</strong>"</p>
+<p>"As as example of such a collection, may I present ConcurrentHashMap. How would you make HashMap thread-safe?"</p>
+<p><span class="text-user">"Make all of its methods synchronized?"</span></p>
+<p>"Sure, but now imagine that you have one such SynchronizedHashMap, and dozens of threads accessing it. And a hundred times a second a new entry is added to the map, and in the process the entire object is locked for reading and writing."</p>
+<p><span class="text-user">"Well, this is the standard approach. What can you do?"</span></p>
+<p>"Java's creators came up with a few cool things."</p>
+<p>"First, they store data in a ConcurrentHashMap in a single block, but divide it into parts called 'buckets'. And when someone changes data in a ConcurrentHashMap, then we only lock the bucket being accessed, rather than the entire object. In other words, many threads can change the object simultaneously."</p>
+<p>"Second, do you remember that you can't iterate over the elements of the list/map and change the list at the same time? Such code will throw an exception:"</p>
+<div class="code-heading">Don't iterate over the elements of a collection in a loop and simultaneously change it</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>HashMap&lt;String, Integer&gt; <strong>map</strong> = new HashMap&lt;String, Integer&gt;();
+
+<strong>for</strong> (String key: <strong>map.keySet</strong>())
+{
+ <strong>if </strong>(<strong>map.get</strong>(key) == 0)
+  <strong>map.remove</strong>(key);
+}</code></pre>
+<p>"But in ConcurrentHashMap, you can:"</p>
+<div class="code-heading">Don't iterate over the elements of a collection in a loop and simultaneously change it"</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>ConcurrentHashMap&lt;String, Integer&gt; map = new ConcurrentHashMap&lt;String, Integer&gt;();
+
+<strong>for</strong> (String key: <strong>map.keySet</strong>())
+{
+ <strong>if</strong> (<strong>map.get</strong>(key) == 0)
+  <strong>map.remove</strong>(key);
+}</code></pre>
+<p>"The concurrent package has many advantages. We just need to understand these classes very well in order to use them."</p>
+<p><span class="text-user">"I see. Thanks, Kim. These are truly interesting classes. I hope that someday I will master them like a virtuoso."</span></p>

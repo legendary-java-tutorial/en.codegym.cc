@@ -1,0 +1,176 @@
+<iframe width=" 1080 " height=" 608 " src="https://www.youtube.com/embed/B-X8bjFltMA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Hi, Amigo."</p>
+<p><span class="text-user">"Hello, Eleanor Carrey."</span></p>
+<p>"Just call me Ellie. There's no need to be so formal."</p>
+<p><span class="text-user">"OK, Ellie."</span></p>
+<p>"I believe with my help you'll soon be one of the best. I have a lot of experience training rookies. Stick with me, and everything will be just fine. Well, let's get started."</p>
+<p>"There are two major types in <strong>Java</strong>: <a href='https://codegym.cc/groups/posts/int-to-string-java' target='_blank'>String and int</a>. <span class="text-corporate">We store strings/text in String, and integers (whole numbers) in int.</span> <span class="text-green">To declare a new variable, you need to specify its type and name.</span> The name cannot be the same as the names of any other variables and/or functions."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example 1, code:</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s</span>;</code></pre>
+        </td>
+        <td>A new variable <code><span class="text-user">s</span></code> is declared. It can store text.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-red">i</span>;</code></pre>
+        </td>
+        <td>A new variable <code><span class="text-red">i</span></code>, is declared. It can store integers.</td>
+    </tr>
+    </tbody>
+</table>
+<p>&#34;You can assign values to variables when you declare them.&#34;</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example 2, code:</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s</span> = <span class="text-green">"Ellie"</span>;</code></pre>
+        </td>
+        <td>Variable <code><span class="text-user">s</span></code> stores the string <code><span class="text-green">"Ellie"</span></code>.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-red">i</span> = 5;</code></pre>
+        </td>
+        <td>Variable <code><span class="text-red">i</span></code> stores the number 5.</td>
+    </tr>
+    </tbody>
+</table>
+<p>&#34;To assign a new value to a variable, we use the <code>=</code> sign. It is also called the <strong>'assignment operator'</strong>. <span class="text-red">Assignment means to place into a variable a value from another variable or one computed from several variables.</span>&#34;</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example 3, code:</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-user">a</span> = 5;</code></pre>
+        </td>
+        <td>Variable <code><span class="text-user">a</span></code> stores the value 5.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-corporate">b</span> = 6;</code></pre>
+        </td>
+        <td>Variable <code><span class="text-corporate">b</span></code> stores the value 6.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-green">c</span> = <span class="text-user">a</span> + <span class="text-corporate">b</span>;</code></pre>
+        </td>
+        <td>Variable <code><span class="text-green">c</span></code> stores the value 11.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-red">&#34;A variable's value can be used to compute a new value that will replace the old one.&#34;</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example 4, code:</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-user">a</span> = 2;</code></pre>
+        </td>
+        <td>Now <code><span class="text-user">a</span></code> equals 2</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-green">b</span> = 3;</code></pre>
+        </td>
+        <td>Now <code><span class="text-green">b</span></code> equals 3</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-user">a</span> = <span class="text-user">a</span> + <span class="text-green">b</span>;</code></pre>
+        </td>
+        <td>Now <code><span class="text-user">a</span></code> equals 5</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">b</span> = <span class="text-green">b</span> + 1;</code></pre>
+        </td>
+        <td>Now <code><span class="text-green">b</span></code> equals 4</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-red">&#34;You can merge strings with the <code>+</code> sign:&#34;</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example 5, code:</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s1</span> = <span class="text-green">"Rain"</span>;
+String <span class="text-user">s2</span> = <span class="text-green">"In"</span>;
+String <span class="text-corporate">s3</span> = <span class="text-user">s1</span> + <span class="text-user">s2</span> + <span class="text-green">"Spain"</span>;</code></pre>
+        </td>
+        <td>Variable <code><span class="text-corporate">s3</span></code> stores the string <code><span class="text-green">"RainInSpain"</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p>&#34;Sometimes, strings consisting of one or more spaces can come in handy:&#34;</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example 6, code:</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s1</span> = <span class="text-green">"My favorite movie is"</span>;
+String <span class="text-user">s2</span> = <span class="text-green">"Route"</span>;
+int <span class="text-corporate">roadNumber</span> = <span class="text-corporate">66</span>;
+String <span class="text-red">text</span> = <span class="text-user">s1</span> + " " + <span class="text-user">s2</span> + " " + <span class="text-corporate">roadNumber</span>;</code></pre>
+        </td>
+        <td><code><span class="text-red">text</span></code> stores <code><span class="text-green">"My favorite movie is Route 66"</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Let's take a look at how we display text and variables on the screen:"</p>
+<a href='https://cdn.codegym.cc/images/article/194de86e-9f67-418f-abab-7dddff357fb1/original.jpeg' target='_blank'><img data-id="194de86e-9f67-418f-abab-7dddff357fb1" data-max-width="850" alt="Introducing ints and Strings - 1" src="https://cdn.codegym.cc/images/article/194de86e-9f67-418f-abab-7dddff357fb1/original.jpeg"></a>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Example 7, code:</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.println("A man's gotta do what a man's gotta do");</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String s = "A man's gotta do what a man's gotta do";
+System.out.println(s);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"By the way, Diego asked me to give you a couple of exercises:"</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0137"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0114"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0115"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0116"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0117"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0118"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0119"></div>

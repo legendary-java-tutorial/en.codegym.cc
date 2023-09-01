@@ -1,0 +1,79 @@
+<a href='https://cdn.codegym.cc/images/article/8cd0d7d3-c98a-45f3-989c-703ff6561d3f/original.jpeg' alt ="" target='_blank'><img data-id="8cd0d7d3-c98a-45f3-989c-703ff6561d3f" data-max-width="850" alt="Reference type conversions - 1" src="https://cdn.codegym.cc/images/article/8cd0d7d3-c98a-45f3-989c-703ff6561d3f/original.jpeg"></a>
+<p>"And now, a short lesson from Diego. Brief and to the point. About reference type conversions."</p>
+<p>"Let's start with Object variables. You can assign any reference type to such a variable (<strong>widening conversion</strong>). However, to make the assignment in the other direction (<strong>narrowing conversion</strong>), you must explicitly indicate a cast operation:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>String</strong> s = "mom";
+<span class="text-user">Object o = s;</span> // o stores a String</code></pre>
+        </td>
+        <td>A typical  <span class="text-green">widening reference conversion</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>Object</strong> o = "mom"; // o stores a String
+<span class="text-corporate">String s2 = (String) o</span>;</code></pre>
+        </td>
+        <td>A typical <span class="text-red">narrowing reference conversion</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>Integer</strong> i = 123; // o stores an Integer
+<span class="text-user">Object o = i;</code></pre>
+        </td>
+        <td><span class="text-green">Widening conversion.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>Object</strong> o = 123; // o stores an Integer
+<span class="text-red">String s2 = (String) o;</span></code></pre>
+        </td>
+        <td><span class="text-red">Runtime error!<br />
+</span>You cannot cast an Integer reference to a String reference.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>Object</strong> o = 123; // o stores an Integer
+<span class="text-red">Float s2 = (Float) o;</span></code></pre>
+        </td>
+        <td><span class="text-red">Runtime error!</span><br />
+            You cannot cast an Integer reference to a Float reference.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>Object </strong>o = 123f; // o stores a Float
+<span class="text-corporate">Float s2 = (Float) o;</span></code></pre>
+        </td>
+        <td>Conversion to the same type. <span class="text-red">A narrowing reference conversion.</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"<span class="text-green">A widening or narrowing reference conversion doesn't change the object in any way.</span> The narrowing (or widening) part specifically refers to the fact that the assignment operation includes (does not include) type-checking of the variable and its new value."</p>
+<p><span class="text-user">"This is the rare example where everything is clear."</span></p>
+<p>"To avoid <span class="text-red">the errors in these examples</span>, <span class="text-green">we have a way to find out what type is referenced by the Object variable:</span>"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>int</strong> i = 5;
+<strong>float</strong> f = 444.23f;
+<strong>String</strong> s = "17";
+<strong>Object</strong> o = f;                       // o stores a Float
+
+<strong>if</strong> (o <span class="text-corporate">instanceof</span>  Integer)
+{
+    Integer i2 = (<span class="text-green">Integer</span>) o;
+}
+<strong>else</strong> <strong>if</strong> (o <span class="text-corporate">instanceof</span>  Float)
+{
+    Float f2 = (<span class="text-green">Float</span>) o;            // This if block will be executed
+}
+<strong>else</strong> <strong>if</strong> (o <span class="text-corporate">instanceof</span>  String)
+{
+    String s2 = (<span class="text-green">String</span>) o;
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task10.task1022"></div>
+<p>"You should perform this check before every widening conversion unless you are 100% sure of the object's type."</p>
+<p><span class="text-user">"Got it."</span></p>

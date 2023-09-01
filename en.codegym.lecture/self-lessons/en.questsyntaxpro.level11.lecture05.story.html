@@ -1,0 +1,406 @@
+<p>"Hi, Amigo! Let's continue to talk about mistakes. This time, we'll explore mistakes that the compiler will not always help you with. Pay attention and you'll learn something about yourself."</p>
+<p><span class="text-user">"I'm ready to listen, Diego. I hope this won't be too embarrassing for me."</span></p>
+<h2>Comparing objects with <code>==</code></h2>
+<p>"Our list of top favorite newbie programmer mistakes begins with comparing objects (especially strings) using the <code>==</code> operator"</p>
+<p>Example:</p>
+<pre class="lecture-code language-java line-numbers"><code>Scanner console = new Scanner(System.in);
+String s1 = console.nextLine();
+String s2 = console.nextLine();
+if (s1 == s2)
+{
+   System.out.println("The strings are equal");
+}</code></pre>
+<p><span class="text-user">"I've done that quite often. Now I can clearly see that this code will never display "The strings are equal", because the <code>if</code> statement compares references to two different string objects."</span></p>
+<p>"Yes. That's why the correct option would be:</p>
+<pre class="lecture-code language-java line-numbers"><code>Scanner console = new Scanner(System.in);
+String s1 = console.nextLine();
+String s2 = console.nextLine();
+if (s1.<span class="text-red">equals</span>(s2))
+{
+   System.out.println("The strings are equal");
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1119"></div>
+<h2>Changing a <code>String</code> object</h2>
+<p>"Newbie programmers often forget that all objects of the class are <span class="term">immutable</span>, and that every method of the <code>String</code> class returns a new object — the current object never changes."</p>
+<p><span class="text-user">"It wasn't that long ago that I learned what <span class="term">immutable</span> means, but I think I've done this.</span></p>
+<p>"I'm fairly certain of it. Example:</p></p>
+<pre class="lecture-code language-java line-numbers"><code>String s = "Hello";
+s.toUpperCase (); // Convert to uppercase</code></pre>
+<p>"This code is very similar to correct code, but it won't work as expected. The <code>toUpperCase()</code> method does not change the object on which it is called. The correct code would look like this:</p>
+<pre class="lecture-code language-java line-numbers"><code>String s = "Hello";
+<span class="text-red">String result</span> = s.toUpperCase(); // Convert to uppercase</code></pre>
+<p><span class="text-user">"Exactly. I've done that, but I didn't even really understand what was wrong. Thank you for the clarification!"</span></p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1120"></div>
+<h2>Forgetting to initialize objects that are elements of an array</h2>
+<p>"Another common mistake is to forget to initialize an array variable. Example:</p>
+<pre class="lecture-code language-java line-numbers"><code>int[] array;
+array[0] = 1;
+array[0] = 2;</code></pre>
+<p>"This code won't work: you need to explicitly set the array variable equal to a reference to the container object that will store the elements of the array. Correct version:</p>
+<pre class="lecture-code language-java line-numbers"><code>int[] array <span class="text-red">= new int[10];</span>
+array[0] = 1;
+array[0] = 2;</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1128"></div>
+<h2>Using a local variable instead of an instance variable.</h2>
+<p>"Newbies don't like to come up with long and meaningful names for variables."</p>
+<p><span class="text-user">"That's so true. For get things done quickly, I sometimes give variables names like <code>a</code>, <code>b</code>, and <code>i</code>."</span></p>
+<p>"Don't do that. That's a cruel thing to do when the code has several variables like that:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Put the number 99 into 100 cells of an array</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+  public static <span class="text-viola">int a</span> = 99;
+  public static <span class="text-green">int i</span> = 100;
+
+  public static void main(String[] args)
+  {
+    <span class="text-orange">int[] a </span>= new int[i];
+    for (<span class="text-user">int i</span> = 0; i &lt; 10; i++)
+    {
+      a[i] = a;
+    }
+  }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"It's much more difficult to make mistakes in code with proper names. The correct version looks like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Put the number 99 into 100 cells of an array</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+   public static int <span class="text-red">value</span> = 99;
+   public static int <span class="text-green">count</span> = 100;
+
+   public static void main(String[] args)
+   {
+      int[] a = new int[<span class="text-green">count</span>];
+      for (int i = 0; i &lt; 10; i++)
+      {
+         a[i] = <span class="text-red">value</span>;
+      }
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1121"></div>
+<h2>Removing a collection item</h2>
+<p>"Have you already looked into collections?"</p>
+<p><span class="text-user">"Literally with just one eye."</span></p>
+<p>"If you don't know what I'm talking about, then make a note to yourself to take a look in the future. Very often there are situations when a certain element needs to be removed from a collection. The code looks roughly like this:</p>
+<pre class="lecture-code language-java line-numbers"><code>ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+Collections.addAll(list, 0, -5, -7, -12, 5, 15);
+
+for (Integer value: list)
+   if (value &lt; 0)
+      list.remove(value);</code></pre>
+<p>"This code will not work, because you cannot use a <code>for-each</code> loop to simultaneously traverse the elements of a collection and modify that collection.</p>
+<p>"There are several solutions. First, you can go traverse one collection and change another:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Solution 1</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+Collections.addAll(list, 0, -5, -7, -12, 5, 15);
+
+<span class="text-red">ArrayList&lt;Integer&gt; copy = new ArrayList&lt;Integer&gt;(list);</span>
+for (Integer value: <span class="text-red">copy</span>)
+   if (value &lt; 0)
+      list.remove(value);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Second, since Java 8, collections have a <code>removeIf()</code> method, to which you can pass a rule (lambda function) that indicates which elements to remove. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Solution 2</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+Collections.addAll(list, 0, -5, -7, -12, 5, 15);
+
+<span class="text-red">list.removeIf( x-&gt; x&lt;0 );</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1122"></div>
+<h2>Placing several classes with the <code>public</code> modifier into a single file</h2>
+<p>"There can be only one public class in a file. More classes can be declared in a file, but they must either be inner classes of a public class, or not have the <code>public</code> modifier. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Contents of the Solution.java file</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Solution
+{
+}
+public class Main
+{
+}</code></pre>
+        </td>
+        <td><span class="text-red">This is not allowed: two public classes in a single file.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Solution
+{
+}
+class Main
+{
+}</code></pre>
+        </td>
+        <td><span class="text-green">But you can do this. The Main class is not public</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Solution
+{
+  public static class Main
+  {
+  }
+}</code></pre>
+        </td>
+        <td><span class="text-green">And you can do this. The Main class is a nested class</span></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1123"></div>
+<h2>Calling ordinary (non-static) methods of a class from the static <code>main()</code> method</h2>
+<p>"Sometimes newbie programmers try to access non-static variables and methods from the <code>main()</code> method or other static methods. Such code will not work, of course.</p>
+<pre class="lecture-code language-java line-numbers"><code>public class Solution
+{
+   public int n = 100;
+   public int[] createArray()
+   {
+      return new int[n];
+   }
+
+   public static void main(String[]args)
+   {
+      int[] array = createArray();
+   }
+}</code></pre>
+<p>"The <code>main</code> method can only refer to static methods/variables. Well, or it must first create an instance of the <code>Solution</code> class, and only then call non-static methods of that object. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Solution 1</th>
+        <th>Solution 2</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Solution
+{
+  public <span class="text-red">static</span> int n = 100;
+
+  public <span class="text-red">static</span> int[] createArray()
+  {
+    return new int[n];
+  }
+
+  public static void main(String[]args)
+  {
+    int[] array = createArray();
+  }
+}</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Solution
+{
+  public int n = 100;
+
+  public int[] createArray()
+  {
+    return new int[n];
+  }
+
+  public static void main(String[]args)
+  {
+    <span class="text-red">Solution sol = new Solution();</span>
+    int[] array = <span class="text-red">sol</span>.createArray();
+  }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1124"></div>
+<h2>Declaring a constructor like a method</h2>
+<p>"Another common mistake is incorrectly declaring a class constructor. The name of a constructor must be the same as the name of the class, and a constructor has no result type. The most common mistakes look like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Person
+{
+   private String value;
+
+   <span class="text-red">void</span> Person(String value)
+   {
+      this.value = value;
+   }
+}</code></pre>
+        </td>
+        <td>There shouldn't be a return type here</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Person
+{
+   private String value;
+
+   <span class="text-red">constructor</span>(String value)
+   {
+      this.value = value;
+   }
+}</code></pre>
+        </td>
+        <td>The constructor name is invalid. It must match the class name</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Person
+{
+   private String <span class="text-user">value</span>;
+
+   Person(String <span class="text-green">value</span>)
+   {
+      <span class="text-green">value</span> = <span class="text-green">value</span>;
+   }
+}</code></pre>
+        </td>
+        <td><code>this </code> is missing. The <code><span class="text-green">value</span></code> variable will be assigned to itself</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>public class Person
+{
+   private String value;
+
+   Person(String value)
+   {
+      this.value = value;
+   }
+}</code></pre>
+        </td>
+        <td>That is all correct.</td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1125"></div>
+<h2>Incorrect inheritance of interfaces</h2>
+<p>"Java's creators tried to make it very close to English, so they chose different keywords for certain related concepts.</p>
+<p>When a class inherits a class, you have to use the <code><span class="text-red">extends</span></code> keyword:</p>
+<pre class="lecture-code language-java line-numbers"><code>class Pet
+{
+}
+
+class Cat <span class="text-red">extends</span> Pet
+{
+}</code></pre>
+<p>"When a class inherits an interface, or, more precisely, implements it, you need to use the <code><span class="text-red">implements</span></code> keyword:</p>
+<pre class="lecture-code language-java line-numbers"><code>interface Meow
+{
+}
+
+class Cat <span class="text-red">implements</span> Meow
+{
+}</code></pre>
+<p>"When an interface inherits an interface, use the <code><span class="text-red">extends</span></code> keyword:</p>
+<pre class="lecture-code language-java line-numbers"><code>interface Meow
+{
+}
+
+interface Voice <span class="text-red">extends</span> Meov
+{
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1126"></div>
+<h2>Omitting <code>break</code> in a <code>switch</code> statement</h2>
+<p>"And the last mistake for today, but not the last one for beginners, is failing to include a <code>break</code> statement in a <code>switch</code> statement. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Wrong</th>
+        <th>Right</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>LocalDate date = LocalDate.now();
+DayOfWeek day = date.getDayOfWeek();
+switch (day)
+{
+   case MONDAY:
+      System.out.println("Monday");
+   case TUESDAY:
+      System.out.println("Tuesday");
+   case WEDNESDAY:
+      System.out.println("Wednesday");
+   case THURSDAY:
+      System.out.println("Thursday");
+   case FRIDAY:
+      System.out.println("Friday");
+   case SATURDAY:
+      System.out.println("Saturday");
+   case SUNDAY:
+      System.out.println("Sunday");
+}</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>LocalDate date = LocalDate.now();
+DayOfWeek day = date.getDayOfWeek();
+switch (day)
+{
+   case MONDAY:
+      System.out.println("Monday");
+      <span class="text-red">break</span>;
+   case TUESDAY:
+      System.out.println("Tuesday");
+      <span class="text-red">break</span>;
+   case WEDNESDAY:
+      System.out.println("Wednesday");
+      <span class="text-red">break</span>;
+   case THURSDAY:
+      System.out.println("Thursday");
+      <span class="text-red">break</span>;
+   case FRIDAY:
+      System.out.println("Friday");
+      <span class="text-red">break</span>;
+   case SATURDAY:
+      System.out.println("Saturday");
+      <span class="text-red">break</span>;
+   case SUNDAY:
+      System.out.println("Sunday");
+      <span class="text-red">break</span>;
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"You know, Diego... Judging by the set of errors you presented here, it feels like you've been reading my personal journal... Or you've been watching me solve tasks."</span></p>
+<p>"Ha! Have no doubt about it. I have read, tracked, and continue to do so. So be on the alert!"</p>
+<p><span class="text-user">"???"</span></p>
+<p>"Don't you worry. I'm just kidding. Be vigilant and make fewer stupid mistakes."</p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task11.task1127"></div>

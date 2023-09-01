@@ -1,0 +1,247 @@
+<p>"Hi, buddy!"</p>
+<p><span class="text-user">"Hey, Diego."</span></p>
+<p>"I see here you've learned the basics of JSON serialization?"</p>
+<p><span class="text-user">"What do you mean 'basics'? I know a lot!"</span></p>
+<p>"So naive. You don't know the half of it. Ten percent at best."</p>
+<p><span class="text-user">"You're kidding. What else is there?"</span></p>
+<p>"Deserialization of an object hierarchy (polymorphic deserialization), deserialization of collections, and a whole lot more! The Jackson framework is large and powerful. Honestly, you've only begun to scratch the surface."</p>
+<p><span class="text-user">"Okay, then tell me about it – I'm all ears."</span></p>
+<p><span class="text-user">"I'm really enjoying getting smarter with each lesson!"</span></p>
+<p>"Well, it's my pleasure to help, my robot friend!"</p>
+<p>"Are you ready? Then listen up."</p>
+<p>"As you've already learned, annotations are used for both serialization and deserialization. In practice, serialization requires far less information than deserialization. For example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java class</th>
+        <th>JSON</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public String <span class="text-green">name</span> = "missy";
+ public Cat[] <span class="text-red">cats = new Cat[0]</span>;
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>{
+ "<span class="text-green">name</span>": "missy",
+ <span class="text-red">"cats": []</span>
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public String <span class="text-green">name</span> = "missy";
+ public List <span class="text-red">cats = new ArrayList&lt;Cat&gt;</span>();
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>{
+ "<span class="text-green">name</span>": "missy",
+ <span class="text-red">"cats": []</span>
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public String <span class="text-green">name</span> = "missy";
+ public List <span class="text-red">cats = new LinkedList&lt;Cat&gt;</span>();
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>{
+ "<span class="text-green">name</span>": "missy",
+<span class="text-red"> "cats": []</span>
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Instances of Array, ArrayList, LinkedList, and other classes are turned into JSON arrays."</p>
+<p>"But when you deserialize a JSON array, what object should you create: an ArrayList or a LinkedList?"</p>
+<p><span class="text-user">"Right. If a class member is an interface (e.g. <span class="text-red">public List&lt;Cat&gt; cats</span>), what object should be attributed to it?"</span></p>
+<p>"We can add additional annotations to the field or explicitly indicate the target classes during deserialization. Look at this example:"</p>
+<div class="code-heading">Convert an object from JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+ String jsonString = "<span class="text-viola">"{\"name\":\"Missy\",\"cats\":[{\"name\":\"Timmy\"},{\"name\":\"Killer\"}]}"</span>";
+ StringReader <span class="text-viola">reader</span> = new StringReader(jsonString);
+ ObjectMapper <span class="text-user">mapper</span> = new ObjectMapper();
+ <span class="text-green">Cat cat</span> = <span class="text-user">mapper</span>.readValue(<span class="text-viola">reader</span>, <span class="text-corporate">TypeFactory.collectionType</span>(<span class="text-red">ArrayList.class</span>, <span class="text-corporate text-green">Cat.class</span>));
+}</code></pre>
+<div class="code-heading">A class whose objects are deserialized from JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>@JsonAutoDetect
+class Cat {
+ public String name;
+ public List&ltCat&gt cats = new ArrayList&lt&gt();
+ Cat() {
+ }
+}</code></pre>
+<p>"In other words, we can use the second parameter of the <span class="text-user">mapper</span>.<strong>readValue</strong> method to pass the list of classes to use during deserialization."</p>
+<p><span class="text-user">"I like it. That's convenient. So you can deserialize a JSON array into whatever you need, an ArrayList or a LinkedList.</span></p>
+<p><span class="text-user">"You also mentioned using annotations. How do you do that?"</span></p>
+<p>"It's easy. For example:"</p>
+<div class="code-heading">Convert an object from JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void</strong> main(String[] args) throws IOException
+{
+ String jsonString = "<span class="text-viola">"{\"name\":\"Missy\",\"cats\":[{\"name\":\"Timmy\"},{\"name\":\"Killer\"}]}"</span>";
+ <strong>StringReader</strong> reader = new <strong>StringReader</strong>(jsonString);
+
+ <span class="text-red">ObjectMapper</span> <span class="text-red">mapper</span> = new <span class="text-red">ObjectMapper</span>();
+
+ <span class="text-green">Cat cat</span> = <span class="text-red">mapper</span>.<strong>readValue</strong>(<span class="text-user">reader</span>, <span class="text-green">Cat.class</span>);
+}</code></pre>
+<div class="code-heading">A class whose objects are deserialized from JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>@JsonAutoDetect
+class Cat
+{
+ public String name;
+ <span class="text-red">@JsonDeserialize(as = ArrayList.class, contentAs = Cat.class)</span>
+ public List&ltCat&gt cats = new ArrayList&lt&gt();
+ Cat() {
+ }
+}</code></pre>
+<p>"We simply add the annotation <span class="text-red">@JsonDeserialize(as = ArrayList.class, contentAs = Cat.class)</span> to line 5 to indicate which implementation of the List interface to use."</p>
+<p><span class="text-user">"Ah. I see. That really is quite simple."</span></p>
+<p>"But there's more. Suppose the data type in a List is also an interface! What would you do?"</p>
+<p><span class="text-user">"Do we use an annotation here too?"</span></p>
+<p>"Yes, the same one. You can also use it to indicate the parameter type. Like this:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Collection type</th>
+        <th>How to set the data type</th>
+    </tr>
+    <tr>
+        <td><strong>List</strong></td>
+        <td><span class="text-red">@JsonDeserialize(contentAs = ValueTypeImpl.class)</span></td>
+    </tr>
+    <tr>
+        <td><strong>Map</strong></td>
+        <td><span class="text-red">@JsonDeserialize(keyAs = KeyTypeImpl.class)</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Cool! There really are a lot of annotations needed for various situations we can't anticipate."</span></p>
+<p>"That's not all. And that brings us to the main course: in real projects, classes quite often inherit the same base class or interface, which is used virtually everywhere. And now imagine that you need to deserialize a data structure containing such classes. For example:"</p>
+<div class="code-heading">Convert an object to JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+ <span class="text-green">Cat cat</span> = new <span class="text-green">Cat</span>();
+ <span class="text-green">cat</span>.name = "Missy";
+ <span class="text-green">cat</span>.age = 5;
+
+ <span class="text-green">Dog dog</span> = new <span class="text-green">Dog</span>();
+ <span class="text-green">dog</span>.name = "Killer";
+ <span class="text-red text-green">dog</span>.age = 8;
+ <span class="text-green">dog</span>.owner = "Bill Jefferson";
+
+ ArrayList&lt;<span class="text-green">Pet</span>&gt; <span class="text-green">pets</span> = new ArrayList&lt;<span class="text-green">Pet</span>&gt;();
+ <span class="text-green">pets</span>.add(cat);
+ <span class="text-green">pets</span>.add(dog);
+
+ StringWriter <span class="text-user">writer</span> = new StringWriter();
+ <span class="text-red">ObjectMapper mapper</span> = new <span class="text-red">ObjectMapper</span>();
+ <span class="text-red">mapper</span>.<strong>writeValue</strong>(<span class="text-user">writer</span>, <span class="text-green">pets</span>);
+ <strong>System.out.println</strong>(<span class="text-user">writer</span>.<strong>toString</strong>());
+}</code></pre>
+<div class="code-heading">A class whose objects convert to JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">@JsonAutoDetect</span>
+<strong>class</strong> Pet
+{
+ <strong>public</strong> String name;
+}
+
+<span class="text-green">@JsonAutoDetect</span>
+<strong>class</strong> Cat extends Pet
+{
+ <strong>public</strong> int age;
+}
+
+<span class="text-green">@JsonAutoDetect</span>
+<strong>class</strong> Dog extends Pet
+{
+ <strong>public</strong> int age;
+ <strong>public</strong> String owner;
+}</code></pre>
+<div class="code-heading">Serialization result and screen output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>[
+ { "name" : "Missy", "age" : 5},
+ { "name" : "Killer", "age" : 8 , "owner" : "Bill Jeferson"}
+]</code></pre>
+<p>"Pay attention to the result of serialization."</p>
+<p>"We can't deserialize this data into a Java object, since it is essentially indistinguishable from data for other classes."</p>
+<p><span class="text-user">"There are some distinguishing features: Dog has an owner field."</span></p>
+<p>"Yes, but this field could be null or it could be entirely skipped during serialization."</p>
+<p><span class="text-user">"Well, can't we specify the data type using annotations that we do know?"</span></p>
+<p>"No. After deserialization, a single collection should have various Cat and Dog objects, as well as a dozen other classes that could inherit from Pet."</p>
+<p><span class="text-user">"What in the world can you do here?"</span></p>
+<p>"Two things are used here."</p>
+<p>"First, <span class="text-viola">a certain field is chosen to distinguish one type from another.</span> If there isn't one, then it is created."</p>
+<p>"Second, there are special annotations that let you control the process of «polymorphic deserialization». Here's what you can do:"</p>
+<div class="code-heading">Convert an object to JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void</strong> main(String[] args) throws IOException
+{
+ <span class="text-green">Cat cat</span> = new <span class="text-green">Cat</span>();
+ <span class="text-green">cat</span>.name = "Missy";
+ <span class="text-green">cat</span>.age = 5;
+
+ <span class="text-green">Dog dog</span> = new <span class="text-green">Dog</span>();
+ <span class="text-green">dog</span>.name = "Killer";
+ <span class="text-green">dog</span>.age = 8;
+ <span class="text-green">dog</span>.owner = "Bill Jeferson";
+
+ <span class="text-green">House house</span> = new <span class="text-green">House</span>();
+ <span class="text-green">house</span>.pets.add(dog);
+ <span class="text-green">house</span>.pets.add(cat);
+
+ StringWriter <span class="text-user">writer</span> = new StringWriter();
+ <span class="text-red">ObjectMapper mapper</span> = new <span class="text-red">ObjectMapper</span>();
+ <span class="text-red">mapper</span>.<strong>writeValue</strong>(<span class="text-user">writer</span>, <span class="text-green">house</span>);
+ <strong>System.out.println</strong>(<span class="text-user">writer</span>.<strong>toString</strong>());
+}</code></pre>
+<div class="code-heading">A class whose objects convert to JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">@<span class="text-red">JsonTypeInfo</span>(use = JsonTypeInfo.Id.NAME, property = "type")</span>
+<span class="text-green">@<span class="text-red">JsonSubTypes</span>({
+@<span class="text-red">JsonSubTypes</span>.Type(value = <span class="text-user">Cat.class</span>, name = "<span class="text-user">cat</span>"),
+@<span class="text-red">JsonSubTypes</span>.Type(value = <span class="text-user">Dog.class</span>, name = "<span class="text-user">dog</span>")</span>
+})
+<strong>class</strong> Pet
+{
+ <strong>public</strong> String name;
+}
+
+<strong>class</strong> Cat extends Pet
+{
+ <strong>public</strong> int age;
+}
+
+<strong>class</strong> Dog extends Pet
+{
+ <strong>public</strong> int age;
+ <strong>public</strong> String owner;
+}
+
+<strong>class</strong> House
+{
+ <strong>public</strong> List&ltPet&gt pets = new ArrayList&lt&gt();
+}</code></pre>
+<div class="code-heading">Serialization result and screen output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>{
+ "pets" : [
+ {"type" : "dog", "name" : "Killer", "age" : 8, "owner" : "Bill Jeferson"},
+ {"type" : "cat", "name" : "Missy", "age" : 5}
+]
+}</code></pre>
+<p>Using annotations, we indicate that the JSON representation will contain a special field called <span class="text-green">type</span> that will hold the value <span class="text-user">cat</span> for the <span class="text-user">Cat</span> class, and the value <span class="text-user">dog</span> for the <span class="text-user">Dog</span> class. This information is enough to properly deserialize an object: during deserialization, the <span class="text-green">type</span> of the object to be created will be determined by the value of the type field.</p>
+<p>"Sometimes the class name is used as the value of the type field (e.g. &#171;com.example.entity.Cat.class&#187;), but this isn't a good practice. How would an external application receiving our JSON know the names of our classes? Worse, classes are sometimes renamed. It is better to use some unique name to identify a specific class."</p>
+<p><span class="text-user">"Cool! Sigh. I didn't realize deserialization was so complicated. And that there is so much you can fine-tune."</span></p>
+<p>"Yep. These are new concepts for you, but this is the kind of practical knowledge that will make you a genius programmer."</p>
+<p><span class="text-user">"Amigo is a cool programmer. Cool!"</span></p>
+<p>"OK. Go and take a break."</p>

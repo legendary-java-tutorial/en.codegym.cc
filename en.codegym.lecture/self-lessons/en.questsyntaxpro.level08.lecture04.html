@@ -1,0 +1,263 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="f9a4aac8-554e-4f8b-b2f8-460514b54a14" src="https://cdn.javarush.ru/images/article/f9a4aac8-554e-4f8b-b2f8-460514b54a14/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="e966b615-5a89-406e-9db1-11831ac902a9" src="https://cdn.javarush.ru/images/article/e966b615-5a89-406e-9db1-11831ac902a9/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="396679f7-090e-4547-9d58-0999038415ca" src="https://cdn.javarush.ru/images/article/396679f7-090e-4547-9d58-0999038415ca/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Bitwise <code>&amp;</code> operator</h2>
+<p>We previously said that all data is stored in memory in a binary representation. So quite a long time ago, programmers came up with a lot of interesting ways to work with binary numbers. <span class="text-orange">For example, Java has logical operators that operate on the bits of a number's binary representation: <code><span class="text-orange">&amp;</span></code> (AND), <code><span class="text-orange">|</span> (OR)</code>, <code><span class="text-orange">~</span></code> (NOT or complement) and <code><span class="text-orange">^</span></code> (XOR - exclusive or).</span></p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>a <span class="text-red">&amp;</span> b</code></pre>
+    <div class="lesson-example-caption">Bitwise <code>&amp;</code> (AND) operator</div>
+</div>
+<p>This operator is very similar to the logical <code>&amp;</code> (AND) operator, only it is denoted by a single ampersand, not two:</p>
+<p>And it is applied to individual bits. Each operand is treated as an array of bits, and the <code>i</code>th bit of the result is calculated using the <code>i</code>th bit of each of the two operands.</p>
+<p>The first bit of the result will be calculated based on the first bit of the number <code><span class="text-red">a</span></code>&nbsp;and the first bit of the number <code><span class="text-red">b</span></code>, the second bit — based on the second bit of the number <code><span class="text-red">a</span></code>&nbsp;and the second bit of the number <code><span class="text-red">b</span></code>, etc.</p>
+<p>The <code>&amp;</code> (AND) operator means "the resulting bit is equal to one only if the corresponding bit of the number <code>a</code> is equal to one <code><span class="text-red">AND</span></code> the corresponding bit of the number <code>b</code> is equal to one":</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">1</span> &amp; <span class="text-green">1</span> = <span class="text-green">1</span>
+<span class="text-green">1</span> &amp; <span class="text-red">0</span> = <span class="text-red">0</span>
+<span class="text-red">0</span> &amp; <span class="text-green">1</span> = <span class="text-red">0</span>
+<span class="text-red">0</span> &amp; <span class="text-red">0</span> = <span class="text-red">0</span></code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center" width="50%">Example</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b00<span class="text-green">1</span>1 &amp; 0b10<span class="text-green">1</span>0</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b00<span class="text-green">1</span>0</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b1111 &amp; 0b0000</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b0000</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b1010 &amp; 0b0101</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b0000</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-green">1</span>1<span class="text-green">1</span>1 &amp; 0b<span class="text-green">1</span>0<span class="text-green">1</span>0</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-green">1</span>0<span class="text-green">1</span>0</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. Bitwise <code>|</code> operator</h2>
+<p>This operator is very similar to the logical <code>|</code> (OR) operator, only it is denoted by a single vertical line, not two:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>a <span class="text-red">|</span> b</code></pre>
+</div>
+<p>And it is applied to individual bits. Each operand is treated as an array of bits, and the ith bit of the result is calculated using the ith bit of each of the two operands.</p>
+<p>The bitwise <code>|</code> (OR) operator means "the resulting bit is equal to one if the corresponding bit of the number <code>a</code> is equal to one <code><span class="text-red">OR</span></code> the corresponding bit of the number <code>b</code> is equal to one":</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">1</span> | <span class="text-green">1</span> = <span class="text-green">1</span>
+<span class="text-green">1</span> | <span class="text-red">0</span> = <span class="text-green">1</span>
+<span class="text-red">0</span> | <span class="text-green">1</span> = <span class="text-green">1</span>
+<span class="text-red">0</span> | <span class="text-red">0</span> = <span class="text-red">0</span></code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center" width="50%">Example</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b0<span class="text-red">0</span>11 | 0b1<span class="text-red">0</span>10</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b1<span class="text-red">0</span>11</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b111<span class="text-red">0</span> | 0b000<span class="text-red">0</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b111<span class="text-red">0</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b1010 | 0b0101</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b1111</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b1111 | 0b1010</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b1111</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Only when the corresponding bits (the bits at the same position) of both numbers are zero is the result's corresponding bit equal to zero.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0811"></div>
+<hr>
+<h2>3. Bitwise <code>^</code> (XOR or "exclusive or") operator</h2>
+<p>The <code>XOR</code> operator, also pronounced <span class="term">exclusive or</span>, is denoted by the <code>^</code> symbol. To enter it on the keyboard, press <span class="term">shift</span> + <span class="term">6</span> (on a English keyboard layout).</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>a <span class="text-red">^</span> b</code></pre>
+</div>
+<p>This operator is somewhat similar to the <code>OR</code> operator, including in that it has a similar name: <code>XOR</code></p>
+<p>The bitwise <code>^</code> (XOR) operator means "the resulting bit is equal to one if the corresponding bit of the number <code>a</code> is equal to one <code><span class="text-red">OR</span></code> the corresponding bit of the number <code>b</code> is equal to one but not both at the same time":</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">1</span> ^ <span class="text-green">1</span> = <span class="text-red">0</span>
+<span class="text-green">1</span> ^ <span class="text-red">0</span> = <span class="text-green">1</span>
+<span class="text-red">0</span> ^ <span class="text-green">1</span> = <span class="text-green">1</span>
+<span class="text-red">0</span> ^ <span class="text-red">0</span> = <span class="text-red">0</span></code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center" width="50%">Example</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b0<span class="text-green">0</span>1<span class="text-green">1</span> ^ 0b<span class="text-green">1</span>01<span class="text-green">0</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-green">1</span>00<span class="text-green">1</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b111<span class="text-red">0</span> ^ 0b000<span class="text-red">0</span></code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b111<span class="text-red">0</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b1010 ^ 0b0101</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b1111</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-red">1</span>1<span class="text-red">1</span>1 ^ 0b<span class="text-red">1</span>0<span class="text-red">1</span>0</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-red">0</span>1<span class="text-red">0</span>1</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Only when the corresponding bits (the bits at the same position) of both numbers are <strong>different</strong> is the result's corresponding bit <strong>equal to one</strong>. If the bits are the <strong>same</strong>, the resulting bit is <strong>equal to zero</strong>.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0812"></div>
+<hr>
+<h2>4. Bitwise <code>~</code> (NOT, COMPLEMENT) operator</h2>
+<p>I think you can already guess what it does. This operator is very similar to the logical <code>!</code> (NOT) operator, but it is denoted by a <span class="term"><span class="text-red">tilde</span></span>, not an exclamation point:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code><span class="text-viola">~</span>a</code></pre>
+</div>
+<p>This is a <span class="term">unary</span> operator, which means it applies to a single number, not two. It appears before this single operand.</p>
+<p>The bitwise <code>~</code> operator means "the resulting bit is one if the corresponding bit of the number <code>a</code> is zero, and it is zero if the corresponding bit of the number <code>a</code> is one":</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java text-center"><code><span class="text-viola">~</span><span class="text-green">1</span> = <span class="text-red">0</span>
+<span class="text-viola">~</span><span class="text-red">0</span> = <span class="text-green">1</span></code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center" width="50%">Example</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-viola">~</span>0b0011</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b1100</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-viola">~</span>0b0000</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b1111</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-viola">~</span>0b0101</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b1010</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code><span class="text-viola">~</span>0b1111</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b0000</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>This operator simply changes the bit that are <code>1</code> to <code>0</code> and bits that are <code>0</code> to <code>1</code>.</p>
+<hr>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="eb0a88f4-1c48-48d1-92bc-ea6b8d6b174f" src="https://cdn.javarush.ru/images/article/eb0a88f4-1c48-48d1-92bc-ea6b8d6b174f/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="c1f5cc5f-0c98-480f-a386-c9eb817f0a49" src="https://cdn.javarush.ru/images/article/c1f5cc5f-0c98-480f-a386-c9eb817f0a49/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="b3451797-d84d-4d17-8a09-672047f5dc05" src="https://cdn.javarush.ru/images/article/b3451797-d84d-4d17-8a09-672047f5dc05/original.png" alt="">
+        </div>
+    </div>
+</div>

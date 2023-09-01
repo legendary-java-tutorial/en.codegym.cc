@@ -1,0 +1,106 @@
+<h2>1. Whales and cows</h2>
+<p>Here's an interesting zoological fact: a cow is much closer to a whale than, for example, to a hippopotamus. It turns out that cows and whales are relatively close relatives.</p>
+<img width="800" src="https://cdn.codegym.cc/images/article/6cea91f8-acd3-46f7-b3e0-5f70ab825b9c/original.jpeg" alt="">
+<p>Look here. Let's tell you about <span class="term text-viola">polymorphism</span> — another very powerful tool of <span class="term">OOP</span>. It has four features.</p>
+<hr>
+<h2>2. Inheritance is not a panacea</h2>
+<p>Imagine that you have written a <code>Cow</code> class for a game. It has many fields and methods. Objects of this class can do various things: walk, eat, and sleep. Cows also wear a bell that rings when they walk. Suppose you have implemented everything in the class to the smallest detail.</p>
+<p>And then your client comes and says she wants to release a new game level, in which all the action takes place at sea, and the main character is a whale.</p>
+<p>You start designing a <code>Whale</code> class and realize that it is only slightly different from the <code>Cow</code> class. The logic of both classes is very similar and you decide to use inheritance.</p>
+<img data-max-width="1024" data-id="5c0cc5b5-bd4f-474c-8acd-a9258e1802f9" src="https://cdn.codegym.cc/images/article/5c0cc5b5-bd4f-474c-8acd-a9258e1802f9/1024.jpeg" alt="Polymorphism in Java">
+<p>The <code>Cow</code> class is ideal for taking on the role of the parent class: it has all the necessary variables and methods. All we need to do is give the whale the ability to swim. But there's a problem: your whale has legs, horns, and a bell. After all, this functionality is implemented inside the <code>Cow</code> class. What can be done here?</p>
+<img data-max-width="1024" data-id="ec849d92-b871-4f15-9f23-2c02c3681898" src="https://cdn.codegym.cc/images/article/ec849d92-b871-4f15-9f23-2c02c3681898/1024.jpeg" alt="Polymorphism in Java. Inheritance">
+<hr>
+<h2>3. Method overriding</h2>
+<p><strong>Method overriding</strong> comes to our rescue. If we inherited a method that doesn't quite do what we want in our new class, we can replace that method with another one.</p>
+<img data-max-width="1024" data-id="c635e4bd-ab07-4e14-ad6b-738e1406cecc" src="https://cdn.codegym.cc/images/article/c635e4bd-ab07-4e14-ad6b-738e1406cecc/1024.jpeg" alt="Method overriding">
+<p>How is this done? <span class="text-red">In our descendant class, we declare <strong>the same method as the method of the parent class that we want to override.</strong></span> We write our new code in it. <span class="text-green">And that's it — it's as if the old method in the parent class simply doesn't exist.</span></p>
+<p>This is how it works:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Cow
+{
+   public void printColor ()
+   {
+      System.out.println("<span class="code text-green">I'm a white whale</span>");
+   }
+
+   public void <span class="text-red">printName</span>()
+   {
+      System.out.println("<span class="code text-green">I'm a cow</span>");
+   }
+}
+
+class Whale extends Cow
+{
+   public void <span class="text-red">printName</span>()
+   {
+      System.out.println("<span class="code text-green">I'm a whale</span>");
+   }
+}</code></pre>
+        </td>
+        <td>
+            <ul>
+                <li>Two classes are defined here — <code>Cow</code> and <code>Whale</code></li>
+                <li><code>Whale</code> inherits <code>Cow</code></li>
+                <li>The <code>Whale</code> class overrides the <code><span class="text-red">printName</span>()</code> method</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   Cow cow = new Cow();
+   cow.<span class="text-red">printName</span>();
+}</code></pre>
+        </td>
+        <td>This code displays the following text on the screen:
+            <pre><code>I'm a cow</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+<span>{
+</span>   Whale whale = new Whale();
+   whale.<span class="text-red">printName</span>();
+}</code></pre>
+        </td>
+        <td>This code displays the following on the screen:
+            <pre><code>I'm a whale</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>After inheriting the <code>Cow</code> class and overriding the <code><span class="text-red">printName</span></code> method, the <code>Whale</code> class actually contains the following data and methods:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Whale
+{
+   public void printColor()
+   {
+      System.out.println("<span class="code text-green">I'm a white whale</span>");
+   }
+
+   public void printName()
+   {
+      System.out.println("<span class="code text-green">I'm a whale</span>");
+   }
+}</code></pre>
+        </td>
+        <td>We don't know about any old method.</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1701"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1702"></div>

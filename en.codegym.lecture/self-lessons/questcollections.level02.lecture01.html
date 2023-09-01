@@ -1,0 +1,213 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo! How's life?"</span></p>
+<p>"Great. Yesterday, I tried getting rid of some parasites, but so far I haven't had much success. And then I had to spend the night in the garbage can again."</p>
+<p><span class="text-user">"So... is everything still great?"</span></p>
+<p>"You could say that."</p>
+<p><span class="text-user">"Good. So what do you have for me today?"</span></p>
+<p>"Today I will tell you about the <strong>RandomAccessFile</strong> class."</p>
+
+<a href='https://cdn.codegym.cc/images/article/578ccc38-b267-48a5-9fa5-e378afbc1d83/original.jpeg' target='_blank'><img data-id="578ccc38-b267-48a5-9fa5-e378afbc1d83" data-max-width="850" alt="RandomAccessFile, etc. - 1" src="https://cdn.codegym.cc/images/article/578ccc38-b267-48a5-9fa5-e378afbc1d83/original.jpeg"></a>
+
+<p>"The thing is, FileInputStream and FileOutputStream represent files as streams: you can only read and write to them sequentially."</p>
+<p>"That's not always super convenient. Sometimes you need to write a couple of lines in the middle of a file, or read a couple of pages of text from the end of a multi-megabyte file. It wouldn't be very efficient to read the whole file for these tasks."</p>
+<p>"The <strong>RandomAccessFile</strong> class was created to solve this problem. You can use it to write anywhere in the file, read from it, as well as read and write to the file at the same time."</p>
+<p class="amigo"><span class="text-user">"How interesting!"</span></p>
+<p>"Yep. It's actually quite convenient."</p>
+<p class="amigo"><span class="text-user">"But how do you read from an arbitrary location?"</span></p>
+<p>"It's all pretty simple. Imagine that you have a text editor, such as Notepad, open. It has a cursor. When you type something, the text is added to wherever the cursor is. Reading a file is the same. Reading starts from wherever the 'cursor' is. When reading/writing, the cursor moves automatically."</p>
+<p>"Here, it'll be better to show you an example:"</p>
+<div class="code-heading">Reading a file:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// r - read, the file is opened only for reading.
+RandomAccessFile <span class="text-red">raf</span> = <strong>new</strong> RandomAccessFile("<span class="text-green">input.txt</span>", "<span class="text-green">r</span>");
+
+// Move the «cursor» to the 100th character.
+<span class="text-red">raf</span>.<span class="text-green">seek</span>(100);
+
+// Read the line starting from the current cursor position until the end of the line.
+<strong>String text</strong> = <span class="text-red">raf</span>.readLine();
+
+// Close the file.
+<span class="text-red">raf</span>.close();</code></pre>
+<p>"In this example, I'd like to draw your attention to two things:"</p>
+<p>"First, the creation of the <strong>RandomAccessFile</strong> object. The second argument is the letter r. This means that the file is opened for reading (<span class="text-green">r - read</span>). If you want to open a file for reading and writing, you must pass «<span class="text-green">rw</span>» to the constructor, instead of just «<span class="text-green">r</span>»."</p>
+<p>"Second, look at the seek method. You can use this method to jump around the file and change the cursor position for the current read/write operation. When a file is first opened, the cursor is set to the 0th byte. Or, more accurately, before the zeroth byte."</p>
+<p><span class="text-user">"Did I understand correctly? We open the file, and the cursor is at the very beginning — at position 0. Then we call <span class="text-green">seek</span> and move the cursor to the 100th byte. And when we call <span class="text-green">readLine</span>, it starts reading from the hundredth byte. Right?"</span></p>
+<p>"Yes. But I want to draw your attention to the fact that the seek method allows you to jump arbitrarily around the file. For example:"</p>
+<div class="code-heading">Reading a file:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// r - read, the file is opened only for reading.
+RandomAccessFile <span class="text-red">raf</span> = new RandomAccessFile("<span class="text-green">input.txt</span>", "<span class="text-green">r</span>");
+
+// The "cursor" is at the 0th character.
+<strong>String text1</strong> = <span class="text-red">raf</span>.<span class="text-green">readLine</span>();
+
+// Move the "cursor" to the 100th character.
+<span class="text-red">raf</span>.<span class="text-user">seek</span>(100);
+<strong>String text2</strong> = <span class="text-red">raf</span>.<span class="text-green">readLine</span>();
+
+// Move the "cursor" to the 0th character.
+<span class="text-red">raf</span>.<span class="text-user">seek</span>(0);
+<strong>String text3</strong> = <span class="text-red">raf</span>.<span class="text-green">readLine</span>();
+
+// Close the file
+<span class="text-red">raf</span>.close();</code></pre>
+<p>"In this example, we first read a line starting at the 0th byte. Then we jump to the hundredth byte and read a line there. Then we jumped to the 0th byte again and read a line. That means that text1 and text3 are identical strings."</p>
+<p><span class="text-user">"Ah. That makes things clearer."</span></p>
+<p>"Great. Then here's another example:"</p>
+<div class="code-heading">Reading a file:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// rw - read/write, the file is opened for reading and writing.
+RandomAccessFile <span class="text-red">raf</span> = new RandomAccessFile("<span class="text-green">seek.txt</span>", "<span class="text-green">rw</span>");
+
+// Write to the file, starting from the 0th byte.
+<span class="text-red">raf</span>.writeBytes("<span class="text-corporate">It is a string</span>");
+
+// Move the "cursor" to the 8th character.
+<span class="text-red">raf</span>.<span class="text-user">seek</span>(8);
+
+// Write "surprise!" to the file.
+<span class="text-red">raf</span>.<span class="text-green">writeBytes</span>("<span class="text-corporate">surprise!</span>");
+
+// Close the file.
+<span class="text-red">raf</span>.close();</code></pre>
+<p>"Here we open the file for reading and writing by passing «<span class="text-green">rw</span>» (<span class="text-green">read/write</span>) to the constructor."</p>
+<p>"Then we write «<span class="text-corporate">It is a string</span>» to the file.</p>
+<p>"Then we move the cursor to the 8th byte (which happens to be the beginning of the word 'string')"</p>
+<p>"Then we write «<span class="text-corporate">surprise</span>!»"</p>
+<p>"As a result, the file contains «<span class="text-corporate">It is a surprise</span>!»"</p>
+<p><span class="text-user">"So, bytes are not inserted into the middle of the file, but rather they replace the ones that were there?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"What if we move the cursor to the very end of the file?"</span></p>
+<p>"Then the bytes will be written to the end, and the file will get larger. So it would be almost like writing text into a text editor."</p>
+<p><span class="text-user">"Hmm. I think I understand everything. Could you provide a complete list of the <strong>RandomAccessFile</strong> class's methods?"</span></p>
+<p>"Sure. Here you go:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>()</code></td>
+        <td>Reads one byte and returns it</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>(byte b[], int off, int len)</code></td>
+        <td>Reads an array of bytes</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>(byte b[])</code></td>
+        <td>Reads an array of bytes</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>readFully</strong>(byte b[])</code></td>
+        <td>Reads an array of bytes, and waits for new bytes to be added if there are not enough of them to fill the array</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>skipBytes</strong>(int n)</code></td>
+        <td>Skip n bytes. In other words, this moves the cursor forward n bytes.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(int b)</code></td>
+        <td>Writes one byte to the cursor's location</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(byte b[])</code></td>
+        <td>Writes an array of bytes to the cursor's location</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(byte b[], int off, int len)</code></td>
+        <td>Writes an array of bytes to the cursor's location</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>getFilePointer</strong>()</code></td>
+        <td>Returns the number of the byte that the cursor is pointing to. It can range from 0 to the file length</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>seek</strong>(long pos)</code></td>
+        <td>Moves the «cursor» used for reading/writing to the specified location</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>length</strong>()</code></td>
+        <td>Returns the file length</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>setLength</strong>(long newLength)</code></td>
+        <td>Sets a new file length. If the file was larger, it gets truncated; if it was smaller, then it expands the file and fills in the new space with zeros</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>close</strong>()</code></td>
+        <td>Closes the file</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>readBoolean</strong>()</code></td>
+        <td>Reads a boolean from the cursor's current position in the file</td>
+    </tr>
+    <tr>
+        <td><code>byte <strong>readByte</strong>()</code></td>
+        <td>Reads a byte from the cursor's current position in the file</td>
+    </tr>
+    <tr>
+        <td><code>char <strong>readChar</strong>()</code></td>
+        <td>Reads a char from the cursor's current position in the file</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>readInt</strong>()</code></td>
+        <td>Reads an int from the cursor's current position in the file</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>readLong</strong>()</code></td>
+        <td>Reads a long from the cursor's current position in the file</td>
+    </tr>
+    <tr>
+        <td><code>float <strong>readFloat</strong>()</code></td>
+        <td>Reads a float from the cursor's current position in the file</td>
+    </tr>
+    <tr>
+        <td><code>double <strong>readDouble</strong>()</code></td>
+        <td>Reads a double from the cursor's current position in the file</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>readLine</strong>()</code></td>
+        <td>Reads a line from the file and returns it</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeBoolean</strong>(boolean v)</code></td>
+        <td>Writes a boolean to the file (starting from the cursor's position)</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeByte</strong>(int v) t</code></td>
+        <td>Writes a byte to the file (starting from the cursor's position)</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeChar</strong>(int v)</code></td>
+        <td>Writes a char to the file (starting from the cursor's position)</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeInt</strong>(int v)</code></td>
+        <td>Writes an int to the file (starting from the cursor's position)</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeLong</strong>(long v)</code></td>
+        <td>Writes a long to the file (starting from the cursor's position)</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeFloat</strong>(float v)</code></td>
+        <td>Writes a float to the file (starting from the cursor's position)</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeDouble</strong>(double v)</code></td>
+        <td>Writes a double to the file (starting from the cursor's position)</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeBytes</strong>(String s)</code></td>
+        <td>Writes a String to the file (starting from the cursor's position)</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>writeChars</strong>(String s)</code></td>
+        <td>Writes a String to the file (starting from the cursor's position)</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Hmm. So, there's nothing new here. Except maybe the seek()/getFilePointer() and length()/setLength() method pairs."</span></p>
+<p>"Yes, Amigo. Everything is about the same. But isn't that convenient?"</p>
+<p><span class="text-user">"It is convenient. Thank you, Bilaabo, for an interesting lesson and for the examples you gave me."</span></p>
+<p>"Glad to help, Amigo, my friend!"</p>

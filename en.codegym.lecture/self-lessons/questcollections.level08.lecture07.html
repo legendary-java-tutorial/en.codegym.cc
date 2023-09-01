@@ -1,0 +1,82 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hello, Rishi."</span></p>
+<p>"Today I'll give you a deeper introduction to annotations."</p>
+<p>"As you probably already know, annotations are special words that can be put next to classes, fields, methods, and variables."</p>
+<p><span class="text-user">"Yes. I encounter them very frequently."</span></p>
+<p>"Sometimes they're also called <em><strong>metadata</strong></em>. Their primary purpose is to store specific additional information about methods, fields, and classes."</p>
+<p><span class="text-user">"Who do they store it for?"</span></p>
+<p>"That's a very good question."</p>
+<p>"People write annotations, which means that someone must need them."</p>
+<p><span class="text-green">"Annotations let you store additional information about the code and program elements, but, formally, they are not part of the code."</span></p>
+<p>"Annotations can be used to generate XML, determine whether a method is deprecated, track bugs, etc."</p>
+<p>"Here's an example of annotations in code:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>@CatInfo(manager=Catmanager.class, unique=true)
+class Cat
+{
+<span class="text-green"> @Name("Missy")</span>
+ private String name;
+
+<span class="text-viola"> @SuppressWarnings(value = "unchecked")</span>
+ void getUniqueCatName()
+ {
+
+ }
+}</code></pre>
+<p>"As you can see, data can be stored in annotations."</p>
+<p>"If an annotation has only one field called <span class="text-viola"><strong>value</strong></span>, then the field name can be omitted:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">@SuppressWarnings("unchecked")</span>
+void getUniqueCatName()
+{
+
+}</code></pre>
+<p>"If there are no parameters inside the parentheses, then they can also be omitted:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">@Override</span>
+void getUniqueCatName()
+{
+
+}</code></pre>
+<p>"It's super easy to create your own annotation. Declaring an annotation is almost identical to declaring an interface."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>@interface <span class="text-viola">CatManager</span>
+{
+ Class manager();
+ boolean unique();
+ String name() default "Unknown Cat";
+}</code></pre>
+<p>"There are only a couple of differences."</p>
+<p>"First, you put an «@» sign before the word <strong>interface</strong>."</p>
+<p>"Second, an annotation can have default values. You use the word default to set <strong>default</strong> values. See the example above. These parameters are optional and can be omitted when adding annotations."</p>
+<p><span class="text-user">"Ah. It's all easier than I thought. And I've been avoiding them like the Robo-Devil avoids holy water. It's not very pleasant when code has a lot of things you don't entirely understand."</span></p>
+<p>"Oh, it's good that you reminded me — I want to tell you more about annotations used by the compiler."</p>
+<p>"There are only 3 such annotations. Well, three so far."</p>
+<h3>@Deprecated.</h3>
+<p><span class="text-corporate">"You can annotate a class or a method with @Deprecated. This will cause the compiler to issue a warning (a warning is not an error), and IntelliJ IDEA will display this method as strikethrough text.</span> Something like this:</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Date date = new Date();
+int year = date.getYear();</code></pre>
+<h3>@Override.</h3>
+<p><span class="text-viola">"It's considered a best practice to add the @Override annotation to methods that you override."</span></p>
+<p><span class="text-user">"What's that for? Doesn't IDEA already show whether or not a method is overridden?"</span></p>
+<p>"First off, there's IDEA and then there's Java syntax."</p>
+<p>"And second, hypothetically, you could have a situation where a base class's method gets renamed without a corresponding change to the method name in the subclass. The program won't work as expected, but no one will notice. This annotation was invented to prevent these situations from happening:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">@Override</span>
+void getUniqueCatName()
+{
+
+}</code></pre>
+<h3>@SuppressWarnings.</h3>
+<p>"Sometimes the compiler displays a lot of warnings. And sometimes we know about the «problems» and are deliberately choosing to use the corresponding code that creates them. You can use this annotation to hide some of these warnings."</p>
+<p>"A programmer can use the <span class="text-red">@SuppressWarnings</span> annotation to tell the compiler, «Don't show a warning for this error — it's intentional.» For example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">@SuppressWarnings("unchecked")</span>
+void getUniqueCatName()
+{
+
+}</code></pre>
+<p><span class="text-user">"Got it."</span></p>
+<p>"I'm getting a little tired. I'm gonna go wet my parched throat. Let's continue after a break, OK?"</p>
+<p><span class="text-user">"Sure."</span></p>

@@ -1,0 +1,141 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Rishi!"</span></p>
+<p>"Well, how was your day?"</p>
+<p><span class="text-user">"Brilliant! Today Bilaabo told me about recursion, and Ellie told me about weak and soft references."</span></p>
+<p>"Did she tell you about phantom references?"</p>
+<p><span class="text-user">"Are you talking about PhantomReference? She mentioned it, but didn't explain it in detail."</span></p>
+<p>"Great, then I hope you won't mind if I fill this gap."</p>
+<p><span class="text-user">"Of course! I'll listen to you with pleasure, Rishi!"</span></p>
+<p>"Great. Then I'll begin."</p>
+<p>"Phantom references are the weakest references of all. They have effect only if an object doesn't have any references at all other than phantom references."</p>
+
+<a href='https://cdn.codegym.cc/images/article/78ad6628-b52b-4648-a64e-406b92f37ac1/original.jpeg' target='_blank'><img data-id="78ad6628-b52b-4648-a64e-406b92f37ac1" data-max-width="850" alt="PhantomReference - 1" src="https://cdn.codegym.cc/images/article/78ad6628-b52b-4648-a64e-406b92f37ac1/original.jpeg"></a>
+
+<p><span class="text-viola">"A PhantomReference is used in a complex object deletion procedure.</span> This may be necessary when an object does something outside of the Java machine, e.g. it calls low-level OS functions or writes its state to a file or does something else very important."</p>
+<p>"Here's an example of how you might use it:"</p>
+<div class="code-heading">Example of creating phantom references</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Special queue for phantom objects
+<span class="text-user">ReferenceQueue&lt;<span class="text-green">Integer</span>&gt; queue</span> = new <span class="text-user">ReferenceQueue&lt;Integer&gt;</span>();
+
+// List of phantom references
+<span class="text-viola">ArrayList</span>&lt;<span class="text-red">PhantomReference&lt;<span class="text-green">Integer</span>&gt;</span>&gt; <span class="text-viola">list</span> = new <span class="text-viola">ArrayList</span>&lt;<span class="text-red">PhantomReference</span>&lt;<span class="text-green">Integer</span>&gt;&gt;();
+
+// Create 10 objects and add them to the list using phantom references
+for ( int i = 0; i &lt; 10; i++)
+{
+ Integer x = new Integer(i);
+<span class="text-viola"> list</span>.add(new <span class="text-red">PhantomReference&lt;<span class="text-green">Integer</span>&gt;</span>(x, queue));
+}</code></pre>
+<p>"I want to draw attention to the last line again. Not only is object x passed to the <span class="text-red">PhantomReference</span> — a special queue of phantom references is as well."</p>
+<p><span class="text-user">"Why do we need this queue?"</span></p>
+<p>"That's what I'm going to tell you now."</p>
+<p>"When you destroy an object held by a phantom reference, it gets destroyed, but it isn't deleted from memory! What do you think about that?!"</p>
+<p><span class="text-user">"So, how does that work?"</span></p>
+<p>"There are quite a few nuances here, so I'll start with the simplest."</p>
+<p>"If only phantom references to an object remain, then this is what will happen to it:"</p>
+<p>"<strong>Step 1</strong>. During the next garbage collection, the finalize() method will be called on the object. But, if the finalize() method hasn't been overridden, then this step is skipped, and step 2 is executed immediately."</p>
+<p>"<strong>Step 2</strong>. During the next garbage collection, the object is placed in a special queue of phantom objects. It will be deleted from this queue when the clear() method is called on the PhantomReference."</p>
+<p><span class="text-user">"Who calls it? The object was deleted, right?"</span></p>
+<p>"Well, the object did indeed die in our world (the Java world), but it hasn't disappeared. It remains as a phantom — the queue of phantom objects still holds a reference to it. The same <span class="text-user">ReferenceQueue</span> whose reference we so carefully passed to the <span class="text-red">PhantomReference</span> constructor."</p>
+<p><span class="text-user">"So this ReferenceQueue is like the afterlife?"</span></p>
+<p>"More like a phantom world."</p>
+<p>"And a phantom object can only be deleted by calling clear() on its phantom reference."</p>
+<p>"Here's how to continue the previous example:"</p>
+<div class="code-heading">Example of creating phantom references</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Special queue for phantom objects
+ReferenceQueue&lt;<span class="text-green">Integer</span>&gt; queue = new ReferenceQueue&lt;<span class="text-green">Integer</span>&gt;();
+
+// List of phantom references
+<span class="text-viola">ArrayList</span>&lt;<span class="text-red">PhantomReference</span>&lt;<span class="text-green">Integer</span>&gt;&gt; <span class="text-viola">list</span> = new <span class="text-viola">ArrayList</span>&lt;<span class="text-red">PhantomReference</span>&lt;<span class="text-green">Integer</span>&gt;&gt;();
+
+// Create 10 objects and add them to the list using phantom references
+for ( int i = 0; i &lt; 10; i++)
+{
+ <span class="text-green">Integer</span> x = new <span class="text-green">Integer</span>(i);
+<span class="text-green"> list</span>.add(new <span class="text-red">PhantomReference</span>&lt;<span class="text-green">Integer</span>&gt;(x, queue));
+}
+
+// Call the garbage collector and hope it will listen to us :)
+// It should destroy all phantom reachable objects and put them in the queue
+// of phantoms
+System.gc();
+
+// Get all objects from the queue
+<span class="text-red">Reference</span>&lt;? extends Integer&gt;<span class="text-red">referenceFromQueue</span>;
+while ((<span class="text-red">referenceFromQueue</span> = queue.poll()) != null)
+{
+ // Display the object on the screen
+ System.out.println(<span class="text-red">referenceFromQueue</span>.get());
+
+ // Clear the reference
+ <span class="text-red">referenceFromQueue</span>.clear();
+}</code></pre>
+<p><span class="text-user">"I understand that something is happening here. I almost even understand exactly what is happening."</span></p>
+<p><span class="text-user">"But how do you use this in practice?"</span></p>
+<p>"Here's a better example:"</p>
+<div class="code-heading">Example of creating phantom references</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Special queue for phantom objects
+<span class="text-user">ReferenceQueue</span>&lt;<span class="text-green">Integer</span>&gt; queue = new <span class="text-user">ReferenceQueue</span>&lt;<span class="text-green">Integer</span>&gt;();
+
+// List of phantom references
+<span class="text-viola">ArrayList</span>&lt;<span class="text-green">PhantomInteger</span>&gt; list = new <span class="text-viola">ArrayList</span>&lt;<span class="text-green">PhantomInteger</span>&gt;();
+
+// Create 10 objects and add them to the list using phantom references
+for ( int i = 0; i &lt; 10; i++)
+{
+ <span class="text-green">Integer</span> x = new <span class="text-green">Integer</span>(i);
+<span class="text-viola"> list</span>.add(new <span class="text-green">PhantomInteger</span> (x, <span class="text-user">queue</span>));
+}</code></pre>
+<div class="code-heading">This thread will monitor the phantom queue and remove objects from it</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">Thread referenceThread</span> = new <span class="text-user">Thread</span>()
+{
+ public void run()
+ {
+  while (true)
+  {
+   try
+   {
+    // Get the new object from the queue. If there is no object, then we wait!
+   <span class="text-green"> PhantomInteger ref = (PhantomInteger)<span class="text-user">queue</span>.</span><strong>remove</strong>();
+    // Call the close method on it
+   <span class="text-green"> ref</span>.close();
+    <span class="text-green">ref</span>.clear();
+   }
+   catch (Exception ex)
+   {
+    // Write errors to a log
+   }
+  }
+ }
+};
+// Run the thread as a daemon
+<span class="text-user">referenceThread</span>.setDaemon(true);
+<span class="text-user">referenceThread</span>.start();</code></pre>
+<div class="code-heading">This is a class that inherits PhantomReference and has a close() method</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>static class <span class="text-green">PhantomInteger</span> extends <span class="text-red">PhantomReference</span>&lt;<span class="text-green">Integer</span>&gt;
+{
+ <span class="text-green">PhantomInteger</span>(<span class="text-green">Integer</span> referent, <span class="text-user">ReferenceQueue</span>&lt;? super <span class="text-green">Integer</span>&gt; queue)
+ {
+  super(referent, queue);
+ }
+
+ private void <span class="text-corporate">close</span>()
+ {
+  System.out.println("<span class="text-viola">Bad Integer totally destroyed!</span>");
+ }
+}</code></pre>
+<p>"We did three things here."</p>
+<p>"First, we created the <span class="text-green">PhantomInteger</span> class, which inherits <span class="text-red">PhantomReference</span>&lt;<span class="text-green">Integer</span>&gt;."</p>
+<p>"Second, this class has a special <span class="text-corporate">close</span>() method. The need to call this method is what got all this started.</p>
+<p>"Third, we declared a special thread: <span class="text-user">referenceThread</span>. It waits in a loop until another object appears in the phantom queue. As soon as this happens, the thread removes the object from the phantom queue and calls its <span class="text-corporate">close</span>() method. And then the clear() method. And that's it. The phantom can move on to a better world. It will no longer trouble us in ours."</p>
+<p><span class="text-user">"So interesting, but it all worked out."</span></p>
+<p>"We're actually tracking a queue of dying objects, and then we can call a special method for each of them."</p>
+<p>"But remember, you can't call the method on the object itself. <span class="text-red">You can't get a reference to it! The PhantomReference's get() method always returns null.</span>"</p>
+<p><span class="text-user">"But we inherit PhantomReference!"</span></p>
+<p>"Even inside a subclass of PhantomReference, the get() method returns null."</p>
+<p><span class="text-user">"So I just save a reference to the object in the constructor"</span></p>
+<p>"Ah. But such a reference would be a StrongReference, and the object will never end up in the phantom queue!"</p>
+<p><span class="text-user">"Dang. Okay, give up. If it's impossible, then it's impossible."</span></p>
+<p>"Okay, good. I hope you've learned something valuable from today's lesson."</p>
+<p><span class="text-user">"Yes, there was so much new material. And I thought I already knew everything. Thank you for the lesson, Rishi."</span></p>
+<p>"You're welcome. That's it, go relax. But don't forget — we have another lesson this evening."</p>

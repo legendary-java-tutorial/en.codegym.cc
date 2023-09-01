@@ -1,0 +1,78 @@
+<h2>1. Common base class</h2>
+<p><span class="text-orange">Today we'll enjoy a smorgasbord of interesting topics. </span>Remember when <span class="text-viola">we introduced the <code>ChessItem</code> base class to simplify all of the classes representing chess pieces? I hope so 🙂</span></p>
+<p>Now imagine that each piece has a <code><span class="text-red">draw()</span></code> method that handles drawing it on the screen. You call the <code><span class="text-red">draw()</span></code> method, and the piece draws itself at its current coordinates. It would be convenient to move this method to the base class.</p>
+<p>If the <code><span class="text-red">draw()</span></code> method was in the ChessItem base class, then we could override it in the piece classes and write elegant code like this:</p>
+<pre class="language-java"><code>class ChessBoard
+{
+   public void drawAllChessItems()
+   {
+      // Add the pieces to the list
+      ArrayList&lt;<span class="text-red">ChessItem</span>&gt; items = new ArrayList&lt;<span class="text-red">ChessItem</span>&gt;();
+      <span class="text-user">items</span>.add(new <span class="text-green">King</span>());
+      <span class="text-user">items</span>.add(new <span class="text-green">Queen</span>());
+      <span class="text-user">items.</span>add(new <span class="text-green">Bishop</span>());
+
+      // Draw them regardless of their type
+      for(<span class="text-red">ChessItem</span> <span class="text-orange">item</span>: <span class="text-user">items</span>)
+<span>      {
+</span>         <span class="text-orange">item</span>.<span class="text-red">draw</span>();
+      }
+   }
+}</code></pre>
+<p>By introducing the <code><span class="text-red">ChessItem</span></code> base class, we were able to greatly simplify the code: there is no need to call the methods of each class separately, we can easily store all the objects in a single collection, etc.</p>
+<p>But here's an interesting question: what should the <code>draw()</code> method declared directly in the <code><span class="text-red">ChessItem</span></code> class draw on the screen? After all, there is no such piece in chess, so there is nothing to draw.</p>
+<p>That's exactly right. What's more, it makes no sense to create <code>ChessItem</code> objects directly. It is not a chess piece, but rather just an <span class="term text-red">abstraction</span> — a class that we created for our convenience. This is how abstraction works in <span class="term">OOP</span>: we move important data and methods (those shared by all pieces) to a base class, and keep their differences in separate descendant classes.</p>
+<hr>
+<h2>2. Abstract classes</h2>
+<img data-max-width="1024" data-id="38095a8a-c3db-442c-aa86-66a3f2edee12" src="https://cdn.codegym.cc/images/article/38095a8a-c3db-442c-aa86-66a3f2edee12/1024.jpeg" alt="Abstract classes">
+<p>For such situations, Java has a special kind of class: <span class="term text-red">the abstract class</span>. They are designed to make it easier for programmers to work with similar classes and reduce the amount of duplicated code in them.</p>
+<p>Here are three things to know about abstract classes.</p>
+<p><strong>Method with no implementation</strong></p>
+<p><span class="text-green">An abstract class can have a method declaration without an implementation.</span> This is exactly what makes the method abstract. The method body is simply replaced with a semicolon. And before the name of the method, we write the <code><span class="text-red">abstract</span></code> keyword. Example:</p>
+<pre class="language-java"><code>public <span class="text-red">abstract</span> class ChessItem
+{
+   public int x, y; // Coordinates
+   private int value; // The piece's value
+   public int getValue() // Ordinary method that returns value field
+   {
+      return value;
+   }
+
+   <span class="text-red">public abstract void draw();</span> // Abstract method. The implementation is missing.
+}</code></pre>
+<p><strong>Abstract class</strong></p>
+<p>Each method without an implementation is <span class="text-green">marked with the abstract keyword. </span>If a class has even one abstract method, the class is also marked with the <code><span class="text-red">abstract</span></code> keyword.</p>
+<p>Prohibiting the creation of objects</p>
+<p>You cannot created objects of an <span class="term text-red">abstract class</span>. Such code simply won't compile.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ChessItem item = <span class="text-red">new ChessItem();</span>
+item.draw();</code></pre>
+        </td>
+        <td>This code <span class="text-red">does not compile</span>:</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ChessItem item = <span class="text-green">new Queen();</span>
+item.draw();</code></pre>
+        </td>
+        <td>But <span class="text-green">you can do this</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Inheriting an abstract class</strong></p>
+<p>If your class inherits an abstract class, then you need to override all the inherited abstract methods, i.e. you need to write an implementation for them. Otherwise, your class itself will also have to be declared abstract.</p>
+<p>If a class has even one unimplemented method <span class="text-red">declared directly in it or inherited from a parent class, then the class is considered abstract.</span></p>
+<p><span class="text-green">And why is all this necessary? Why are abstract classes needed? Isn't it possible to use ordinary ones instead? And instead of abstract methods, couldn't we just write two empty curly brackets as the method body?</span></p>
+<p>We could. But these restrictions are akin to the <code>private</code> modifier. We use the private keyword to deliberately prevent other programmers from directly accessing data and to force them to use only our public methods when writing their classes.</p>
+<p>It's the same with abstract classes. <span class="text-orange">The author of an abstract class does not want objects of the class to be created.</span> Instead, the author expects abstract methods to be inherited from the abstract class and then overridden.</p>
+<p>The advantage of this approach is readily apparent in large projects. The more classes you have, the more clearly you need to delineate their roles. You will see the benefit of this approach in the near future. Every thing goes through this.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1709"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1710"></div>

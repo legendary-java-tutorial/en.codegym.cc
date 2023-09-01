@@ -1,0 +1,33 @@
+<p>"Hi, Amigo!</p>
+<p>"I want to tell you about something small, but interesting."</p>
+<p><span class="text-user">"I'm listening. I love things that are small and interesting."</span></p>
+<p>"Well, you know that every Thread object has a run() method. And that you can execute it on a separate thread using the start() method."</p>
+<p><span class="text-user">"Yes, of course."</span></p>
+<p>"But now imagine this situation: you start a thread to perform some work, but an exception is thrown and the thread stops running because it doesn't know what to do. Wouldn't you need to know about this error somehow?"</p>
+<p><span class="text-user">"I agree. I'd need to somehow catch the exception that occurred on the other running thread. Does Java even support that?"</span></p>
+<p>"You insult me. Of course it does."</p>
+<p>"Java's creators invented a special interface called UncaughtExceptionHandler. Here's how to catch and handle an exception that occurs on another thread, if that thread does not catch it:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class DownloadManager
+{
+ public static void main(String[] args)
+ {
+   <span class="text-green">Thread thread</span> = new <strong><span class="text-green">DownloadThread</span></strong>();
+   <span class="text-green">thread</span>.setUncaughtExceptionHandler(<span class="text-red">new Thread.UncaughtExceptionHandler()
+   {
+    @Override
+    public void uncaughtException(Thread t, Throwable e)
+    {
+
+    }
+ });</span>
+
+<span class="text-green"> thread</span>.start();
+}</code></pre>
+<p>"The Thread object has a special <strong>setUncaughtExceptionHandler</strong> method. You need to pass it an object that implements the <strong><span class="text-red">Thread.UncaughtExceptionHandler</span></strong> interface. This interface has only one method: <strong><span class="text-red">uncaughtException(Thread t, Throwable e)</span></strong>. This is the method that will be called on the passed object if an uncaught exception occurs in the run method."</p>
+<p>"In my example above, I simply declare an anonymous inner class (highlighted in red) that implements the Thread.<strong><span class="text-red">Thread.UncaughtExceptionHandler</span></strong> interface. And I override its <strong><span class="text-red">uncaughtException(Thread t, Throwable e)</span></strong> method."</p>
+<p>"As you can see from the method's parameter list, two arguments will be passed: a reference to the Thread object where the exception occurred, and the exception itself, passed as Throwable e."</p>
+<p><span class="text-user">"Well, why do I need the Thread variable t? Don't we already know which Thread we're putting a <strong>Thread.UncaughtExceptionHandler</strong> object in?"</span></p>
+<p>"They did this so that you can write a universal handler for these situations. i.e. you can create a single object and pass it to dozens of different threads. Then the <strong><span class="text-red">uncaughtException(Thread t, Throwable e)</span></strong> method always gives you a reference to the Thread object where the exception occurred."</p>
+<p>"What's more, you can create dozens of threads, for example, in a loop to perform specific tasks. In general, this reference to the Thread object won't be superfluous. I promise you that."</p>
+<p><span class="text-user">"I believe you. You've never been wrong."</span></p>

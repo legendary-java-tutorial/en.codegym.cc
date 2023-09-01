@@ -1,0 +1,169 @@
+<p>"Here I am."</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Today we'll talk about an interesting topic. I'm  going to tell you about the <strong><span class="text-red">ArrayList</span></strong> class."</p>
+<p><span class="text-user">"A new class? Cool! What can it do?"</span></p>
+<p>"Let me start with the back story. The only thing programmers dislike about arrays is that you can't change their size. <span class="text-corporate">What do you do if you need to add three more elements to an array that only has one free slot?</span>"</p>
+<p>"The only solution to this problem is to create very big arrays, in order to guarantee you have enough room for all the elements. However, this often means wasted memory. If an array usually contains three elements, but there is even the smallest chance that it might need to accommodate 100 elements, you have to create a 100-element array."</p>
+<p><span class="text-user">"So, what did programmers come up with?"</span></p>
+<p>"They wrote the <strong><span class="text-red">ArrayList</span></strong> class, which does the same thing as an Array, but it can change its size."</p>
+<p><span class="text-user">"Interesting move. How did they do that?"</span></p>
+<p>"Every <strong><span class="text-red">ArrayList</span></strong> object stores a regular array of elements. When you read elements from an <strong><span class="text-red">ArrayList</span></strong>, it reads them from its inner array. When you write them to the <strong><span class="text-red">ArrayList</span></strong>, it writes them to its inner array. Here, compare these columns:"</p>
+    <table style="width: 754px;">
+<tbody>
+<tr>
+<th style="text-align: center; width: 343px;">Array</th>
+<th style="text-align: center; width: 364px;">ArrayList</th>
+</tr>
+<tr class="table__sub-head">
+<td style="text-align: center; width: 707px;" colspan="2">Create a container for elements</td>
+</tr>
+<tr>
+<td style="width: 343px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-corporate">String</span>[] <span class="text-green">list</span> = new <span class="text-corporate">String</span>[10];</code></pre>
+</td>
+<td style="width: 364px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>ArrayList&lt<span class="text-corporate">String</span>&gt <span class="text-green">list</span> = new ArrayList&lt<span class="text-corporate">String</span>&gt();</code></pre>
+</td>
+</tr>
+<tr class="table__sub-head">
+<td style="text-align: center; width: 707px;" colspan="2">Get the number of elements</td>
+</tr>
+<tr>
+<td style="width: 343px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int n = <span class="text-green">list</span><strong>.length;</strong></code></pre>
+</td>
+<td style="width: 364px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int n = <span class="text-green">list</span><strong>.size</strong>();</code></pre>
+</td>
+</tr>
+<tr class="table__sub-head">
+<td style="width: 707px; text-align: center;" colspan="2">Get an element from an array/collection</td>
+</tr>
+<tr>
+<td style="width: 343px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-corporate">String</span> s = <span class="text-green">list</span>[<span class="text-red">3</span>];</code></pre>
+</td>
+<td style="width: 364px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-corporate">String</span> s = <span class="text-green">list</span><strong>.get</strong>(<span class="text-red">3</span>);</code></pre>
+</td>
+</tr>
+<tr class="table__sub-head">
+<td style="width: 707px; text-align: center;" colspan="2">Write an element into an array</td>
+</tr>
+<tr>
+<td style="width: 343px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">list</span>[<span class="text-red">3</span>] = s;</code></pre>
+</td>
+<td style="width: 364px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">list</span><strong>.set</strong>(<span class="text-red">3</span>, s);</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"So, why is the ArrayList better? As far as I can tell, the code is now longer."</span></p>
+<p>"First, the <em><strong>ArrayList</strong></em> supports several additional operations that programmers have to perform all the time. An ordinary array doesn't support these operations. For example, <span class="text-green">inserting or deleting elements from the middle of an array without leaving holes.</span>"</p>
+<p>"Second, <span class="text-green">the ability to change the size of the array.</span> When you need to add one more element but the internal array doesn't have any free slots, here is what happens inside the <em><strong>ArrayList</strong></em>:</p>
+<p>a) <span class="text-green">Another array is created that is 50% bigger than current inner array, plus one element.</span></p>
+<p>b) <span class="text-corporate">All elements from the old array are copied into the new one.</span></p>
+<p>c) <span class="text-viola">The new array is saved as the ArrayList object's inner array. The old array is declared garbage</span> (we simply stop storing a reference to it)."</p>
+<table>
+<tbody>
+<tr>
+<th style="text-align: center;">Array</th>
+<th style="text-align: center;">ArrayList</th>
+</tr>
+<tr class="table__sub-head">
+<td style="text-align: center;" colspan="2">Add an element at the end of the array</td>
+</tr>
+<tr>
+<td  style="width: 50% !important;"><span class="text-red">This action is not supported</span></td>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">list</span><strong>.add</strong>(s);</code></pre>
+</td>
+</tr>
+<tr class="table__sub-head">
+<td style="text-align: center;" colspan="2">Add an element in the middle of the array</td>
+</tr>
+<tr>
+<td 
+style="width: 50% !important;"><span class="text-red">This action is not supported</span></td>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">list</span><strong>.add</strong>(15, s);</code></pre>
+</td>
+</tr>
+<tr class="table__sub-head">
+<td style="text-align: center;" colspan="2">Add an element at the beginning of the array</td>
+</tr>
+<tr>
+<td style="width: 50% !important;"><span class="text-red">This action is not supported</span></td>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">list</span><strong>.add</strong>(0, s);</code></pre>
+</td>
+</tr>
+<tr class="table__sub-head">
+<td style="text-align: center;" colspan="2">Delete an element from the array</td>
+</tr>
+<tr>
+<td>We could delete an element with <code><span class="text-green">list</span>[3] = null</code>. But this would leave a 'hole' in the array.</td>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">list</span><strong>.remove</strong>(3);</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task07.task0729"></div>
+<p><span class="text-user">"How do we work with this ArrayList?"</span></p>
+<p>"Actually, just as we do with an ordinary array. Look. Let's compare working with an ArrayList to working with an array. Suppose we need to '<span class="text-green">read in 10 strings and display them on the screen in reversed order</span>'."</p>
+<p>"Look at this:</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">With an array</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-green">Reader</span> r = new <span class="text-green">InputStreamReader</span>(System.in);
+<span class="text-user">BufferedReader</span> <span class="text-yellow">reader</span> = new <span class="text-user">BufferedReader</span>(r);
+
+// Read strings from the keyboard
+<span class="text-red">String[] list = new String[10];</span>
+for (int i = 0; i &lt; list.length; i++)
+{
+  String s = <span class="text-yellow">reader</span>.<strong>readLine</strong>();
+  <span class="text-viola">list[i] = s;</span>
+}
+
+// Display the contents of the array
+for (int i = 0; i &lt; <span class="text-green">list.length</span>; i++)
+{
+  int j = <span class="text-green">list.length</span> - i - 1;
+  <span class="text-red">System.out.println</span>( <span class="text-viola">list[j]</span> );
+}
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">With an ArrayList</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-green">Reader</span> r = new <span class="text-green">InputStreamReader</span>(System.in);
+<span class="text-user">BufferedReader</span> <span class="text-yellow">reader</span> = new <span class="text-user">BufferedReader</span>(r);
+
+// Read strings from the keyboard
+<span class="text-red">ArrayList&ltString&gt list = new ArrayList&ltString&gt();</span>
+for (int i = 0; i &lt; 10; i++)
+{
+  String s = <span class="text-yellow">reader</span>.<strong>readLine</strong>();
+  <span class="text-viola">list.add(s);</span>
+}
+
+// Display the contents of the collection
+for (int i = 0; i &lt; <span class="text-green">list.size</span>(); i++)
+{
+  int j = <span class="text-green">list.size</span>() - i - 1;
+  <span class="text-red">System.out.println</span>( <span class="text-viola">list.get(j)</span> );
+}
+}</code></pre>
+    </div>
+</div>
+<p>I've used the same color to highlight similar actions in each column."</p>
+<p><span class="text-user">"On the one hand, everything is different. On the other, it's still the same."</span></p>
+<p>"Right. Except that we don't use square brackets when working with an <em><strong>ArrayList</strong></em>. Instead, we use <strong>get</strong>, <strong>set</strong> and <strong>add</strong> methods."</p>
+<p><span class="text-user">"Yes, I gathered that much. Still, it looks very much the same."</span></p>

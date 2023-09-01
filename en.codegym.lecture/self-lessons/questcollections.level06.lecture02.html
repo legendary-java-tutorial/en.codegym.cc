@@ -1,0 +1,37 @@
+<p>"There you are."</p>
+<p>"I thought about it and decided to teach you one more small lesson that will be very helpful for you. Until you work as a programmer, you likely never encounter some special terminology, so I want to introduce you to several common concepts now."</p>
+<p>"About 10 years ago, <strong><span class="text-red">E</span>nterprise<span class="text-red"> J</span>ava <span class="text-red">B</span>eans</strong> (<strong><span class="text-red">EJB</span></strong>) became widely used."</p>
+<p><span class="text-user">"What does JavaBeans mean?"</span></p>
+<p>"JavaBeans basically means coffee beans (Java is a kind of coffee). It's IT humor."</p>
+<p>"A program's business logic took the form of a group of high-level objects, or beans, which could exchange messages, save themselves, find each other by name, and a whole lot more. Usually, this was achieved through a special super-fancy parent class though there were other approaches. The behavior of such objects was highly regulated."</p>
+<p>"The three most famous types of EJB beans are:"</p>
+<p>"An <strong>Entity Bean</strong> is a bean whose purpose is to store certain data. This type of bean has a built-in mechanism for saving itself and its fields into a database. This type of object can be destroyed and then recreated later from the database. But aside from storing data, it doesn't have any logic."</p>
+<p>"A <strong>Session Bean</strong> is a functional bean. Each session bean has its own function. One does one thing, and another does something else. Such beans work with other objects and beans, not with their own data."</p>
+<p>"<strong>Session Beans</strong> are divided into two categories."</p>
+<p>"A <strong>Stateless Session Bean</strong> is a bean whose internal variables do not store important data that it needs to function. This type of bean can be destroyed and then recreated, and it will perform its function just as before."</p>
+<p>"A <strong>Statefull Session Bean</strong> is a bean that internally stores the data that it uses when working. If we call methods on such a bean, then each subsequent call can use some of the data passed to the bean in previous calls. Still, this bean is not the same as a regular object."</p>
+<p>"But using beans wasn't all that great either, so soon the pendulum swung in the opposite direction. And developers began using ordinary objects more frequently. They even came up with a special name."</p>
+<p>"A <strong><span class="text-red">POJO</span></strong> is a <strong><span class="text-red">P</span>lain <span class="text-red">O</span>ld <span class="text-red">J</span>ava <span class="text-red">O</span>bject</strong>. These objects didn't have any super-functions and didn't inherit super-objects. They were just regular Java objects."</p>
+<p>"When you get to know EJB in practice, you'll understand the difference. Roughly speaking, a POJO is a knife, and an EJB is a Swiss Army knife that you can also use to make phone calls."</p>
+<p><span class="text-user">"Interesting comparison."</span></p>
+<p>"Yes, and here's one more thing."</p>
+<p>"Over time, objects and classes began to be specialized. As a result, developers identified certain roles and gave new names to the corresponding objects."</p>
+<p>"A data transfer object (<strong>DTO</strong>) is an object created to transport data. These objects usually have two requirements. They must: a) be able to store data, b) be serializable. In other words, they are used only for transferring data."</p>
+<p>"You create an object, write the required data from the business logic into it, serialize it into JSON or XML, and send it where it needs to go. Or the other way around: a message arrives, you deserialize it into a DTO object, and extract data from it."</p>
+<p>"An <strong>Entity</strong> is an object that is stored in a database. But they don't contain any business logic. You could say that this the business model's data."</p>
+<p>"We also have the data access object (<strong>DAO</strong>). A DAO is used to save objects to and retrieve them from a database. The entity doesn't do this, since it doesn't have any logic, so it can't save anything anywhere."</p>
+<p>Example:</p>
+<div class="code-heading">Relationship between a DAO and an entity</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">UserEntity user</span> = <span class="text-red">UserDAO</span>.<strong>getUserById</strong>("1535");
+if (<span class="text-green">user</span>.getAge() &gt; 18)
+{
+ <span class="text-green">user</span>.setMobilization(true);
+ <span class="text-red">UserDAO</span>.save(<span class="text-green">user</span>);
+}</code></pre>
+<div class="code-heading">Comments</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>UserEntity is a class that stores user data
+UserDAO is a class that retrieves data (UserEntity objects) from the database and stores it there again after modifying it.</code></pre>
+<p>"That's all for now."</p>
+<p>"Even though this is a small introductory lesson, you still won't be able to understand more right now. We could spend days talking about each of these topics, and we could spend years covering EJB."</p>
+<p>"But I want you at least to be able to imagine what is being said if you come across these things in conversations and messages, on forums, or in an interview."</p>
+<p><span class="text-user">"Hmm. Thank you, Bilaabo. Yeah, I think I don't know enough technical terms. Again, thank you so much."</span></p>

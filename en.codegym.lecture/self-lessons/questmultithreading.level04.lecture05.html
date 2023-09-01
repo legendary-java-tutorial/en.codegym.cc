@@ -1,0 +1,55 @@
+<a href='https://cdn.codegym.cc/images/article/1a50a5fd-cd3d-45f5-b371-9dda12db26fb/original.jpeg' target='_blank'><img data-id="1a50a5fd-cd3d-45f5-b371-9dda12db26fb" data-max-width="850" alt="Local classes: classes inside methods - 1" src="https://cdn.codegym.cc/images/article/1a50a5fd-cd3d-45f5-b371-9dda12db26fb/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"Another little tiny topic is <strong>local classes</strong>."</p>
+<p>"As you have seen, you can create classes not only in separate files, but also inside other classes. But that's not all. Classes can also be created within methods. These classes are called local classes. They work like ordinary inner classes, but they can be used within the methods they are declared in."</p>
+<p>"Look at the screen:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">class Car</span>
+<span class="text-green">{</span>
+<span class="text-user"> public ArrayListcreatePoliceCars(int count)
+ {
+  ArrayList result = new ArrayList();</span>
+
+  <span class="text-red">class PoliceCar extends Car
+  {
+   int policeNumber;
+   PoliceCar(int policeNumber)
+  {
+   this.policeNumber = policeNumber;
+  }
+ }</span>
+
+ <span class="text-user">for(int i = 0; i &lt; count; i++)
+     result.add(new </span><span class="text-red">PoliceCar</span><span class="text-user">(i));
+  return result;
+ }</span>
+<span class="text-green">}</span></code></pre>
+<p><span class="text-user">"And why do we need such classes?"</span></p>
+<p><span class="text-user">"Putting a class, with all of its constructors and methods, inside a method doesn't make for very readable code, don't you think?"</span></p>
+<p>"Exactly. You're absolutely right."</p>
+<p>"You can also use anonymous inner classes inside methods. But these classes do have one small advantage, and consequently, they are used inside methods quite often."</p>
+<p>"A class declared within a method can use that method's local variables:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">class Car
+{</span>
+ <span class="text-user">public ArrayListcreatePoliceCars(int count)
+ {
+  ArrayList result = new ArrayList();
+
+  for(int i = 0; i &lt; count; i++)
+  {</span>
+  <span class="text-viola"> final int number</span> <span class="text-user">= i;
+   result.add</span>(<span class="text-user">new</span> <span class="text-red">Car()
+  {
+   int policeNumber = number;
+  }</span><span class="text-user">);
+ }
+  return result;
+ }</span>
+<span class="text-green">}</span></code></pre>
+<p>"But there is one limitation: the variables are «read-only»—they can't be changed."</p>
+<p>"Here is why that restriction exists:"</p>
+<p>"Classes declared within a method can only access a method's variables that are declared using the keyword final. In the example above, you can see that I can't immediately assign the value of i to policeNumber. Instead, I first save it to the final variable number."</p>
+<p><span class="text-user">"Being able to use a method's variables is super cool. I hope properly appreciate it. It's too bad you can't change variables though."</span></p>
+<p>"Ellie will explain to you today why you can't change them. Meanwhile, I'm going to go take a nap for about an hour."</p>
+<p><span class="text-user">"Good night, Kim. Thanks for the interesting lesson."</span></p>

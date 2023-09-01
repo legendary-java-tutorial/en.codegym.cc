@@ -1,0 +1,180 @@
+<h2>1. <code>URL</code> class</h2>
+<p>We've studied working with I/O streams. We've studied working with files. What should we study next? What about working with the network, including the Internet? Sounds promising, doesn't it?</p>
+<p>In Java, working with the Internet is no more difficult than working with files. Well, perhaps just a little bit.</p>
+<p>To work with Internet resources, Java has a special class — <code>URL</code>. It's as simple as a stool, as you will now see.</p>
+<p><strong>Getting a web page</strong></p>
+<p>How many lines of code do you think you need to write to download some text file from the Internet and display its contents on the screen? 10? 100? 1000? Or maybe 5?</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">URL</span> <span class="code text-red">url</span> = new <span class="text-neon">URL</span>(<span class="text-green">"https://codegym.cc"</span>);
+<span class="text-viola">InputStream</span> <span class="code text-user">input</span> = <span class="code text-red">url</span>.<span class="text-red">openStream</span>();
+byte[] <span class="code text-orange">buffer</span> = <span class="code text-user">input</span>.readAllBytes();
+String <span class="code text-green">str</span> = new String(<span class="code text-orange">buffer</span>);
+System.out.println(<span class="code text-green">str</span>);</code></pre>
+        </td>
+        <td>Creates a URL object with the path to the page<br>
+            Gets an <code>InputStream</code> from the URL object<br>
+            Reads all the bytes and returns an array of bytes<br>
+            Convert the array to a string<br>
+            Display the string
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The contents of an HTML file will be displayed on the screen:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td><pre><code>&lt;!DOCTYPE html&gt;&lt;html lang="ru" class="light"&gt;&lt;head&gt;
+    &lt;meta charset="utf-8″&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1″&gt;
+    ...</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Comparing working with <code>File</code> and <code>URL</code></strong></p>
+<p><code>URL</code> is similar to <code>File</code> or <code>Path</code>, but <code>Path</code> stores the path to a resource in the file system, and <code>URL</code> stores the path to a resource on the Internet.</p>
+<p>All the magic happens when we get an <code>InputStream</code> object thanks to a single call to the <code>openStream()</code> method. This is an ordinary object, and we have already studied it inside and out. Everything becomes obvious after we get the <code>InputStream</code> object. After all, we already know how to get data from it.</p>
+<p>Take a look: only the first two lines are different, and only slightly. And now you can see it — the advantage of standardization and working with chains of data streams:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Working with the Internet</th>
+        <th>Working with a file</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">URL</span> <span class="code text-red">url</span> = new <span class="text-neon">URL</span>(<span class="text-green">"https://codegym.cc"</span>);
+<span><span class="text-viola">InputStream</span> <span class="code text-user">input</span> = <span class="code text-red">url</span>.<span class="text-red">openStream</span>();
+</span>
+byte[] <span class="code text-orange">buffer</span> = <span><span class="code text-user">input</span></span>.readAllBytes();
+String <span class="code text-green">str</span> = new String(<span class="code text-orange">buffer</span>);
+System.out.println(<span class="code text-green">str</span>);</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code><span class="text-neon">File</span> <span class="code text-red">file</span> = new <span class="text-neon">File</span>(<span class="text-green">"c:\\readme.txt"</span>);
+<span><span class="text-viola">InputStream</span> <span class="code text-user">input</span></span> = new <span class="text-neon">FileInputStream</span>(<span class="code text-red">file</span>);
+
+byte[] <span class="code text-orange">buffer</span> = <span class="code text-user">input</span>.readAllBytes();
+String <span class="code text-green">str</span> = new String(<span class="code text-orange">buffer</span>);
+System.out.println(<span class="code text-green">str</span>);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1521"></div>
+<hr>
+<h2>2. <code>URLConnection</code> class</h2>
+<p>In addition to simply reading data from the Internet, we can also upload data. Uploading data is a much more complicated than reading it. You're going to need a few more methods. For example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">URL</span> <span class="code text-viola">url</span> = new <span class="text-neon">URL</span>(<span class="text-green">"https://codegym.cc"</span>);
+<span class="text-neon">URLConnection</span> <span class="code text-orange">connection</span> = <span class="code text-viola">url</span>.<span class="text-red">openConnection</span>();
+
+// Get a stream for sending data
+<span class="text-green">OutputStream</span> <span class="code text-green">output</span> = <span class="code text-orange">connection</span>.<span class="text-red">getOutputStream</span>();
+<span class="code text-green">output</span>.write(1); // Send data
+
+// Get a stream for reading data
+<span class="text-user">InputStream</span> <span class="code text-user">input</span> = <span class="code text-orange">connection</span>.<span class="text-red">getInputStream</span>();
+int data = <span class="code text-user">input</span>.read(); // Read data</code></pre>
+        </td>
+        <td>Create a URL object with the path to the page<br>
+            Create a two-way connection<br><br><br>
+            Get an output stream<br>
+            Put data in it<br><br><br>
+            Get an input stream<br>
+            Read data from it
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Note that we no longer call the <code>url.openStream()</code> method here. Instead, we take a longer route:</p>
+<ul>
+    <li>We first establish a stable two-way connection using the <code>URLConnection.openConnection()</code> method</li>
+    <li>Then we get a stream to send data using the <code>connection.getOutputStream()</code> method and send data to the server</li>
+    <li>Then we get a stream for reading data using the <code>connection.getInputStream()</code> method and start reading data from it.</li>
+</ul>
+<p><strong>Resource management</strong></p>
+<p>Strictly speaking, we should wrap all streams in a <code>try-with-resources</code> block for safe handling. And it wouldn't hurt to wrap the bare <code>InputStream</code> and <code>OutputStream</code> in something more convenient. For example, in <code>PrintStream</code> and <code>BufferedReader</code>.</p>
+<p>If we do all that, then our code will look something like this:</p>
+<pre class="language-java"><code><span class="text-neon">URL</span> <span class="code text-viola">url</span> = new <span class="text-neon">URL</span>(<span class="text-green">"https://codegym.cc"</span>);
+<span><span class="text-neon">URLConnection</span> <span class="code text-orange">connection</span> = <span class="code text-viola">url</span>.<span class="text-red">openConnection</span>();
+
+</span>// Send data
+try (<span class="text-green">OutputStream</span> <span class="code text-green">output</span> = <span><span class="code text-orange">connection</span></span>.<span class="text-red">getOutputStream</span>();
+   <span class="text-viola">PrintStream</span> <span class="code text-user">sender</span> = new PrintStream(<span class="code text-green">output</span>))
+{
+   <span class="code text-user">sender</span>.println("Hello");
+}
+
+// Read data
+try(<span class="text-user">InputStream</span> <span class="code text-user">input</span> = <span><span class="code text-orange">connection</span></span>.<span class="text-red">getInputStream</span>();
+   <span class="text-viola">BufferedReader</span> <span class="code text-green">reader</span> = new <span class="text-viola">BufferedReader</span>(new <span class="text-viola">InputStreamReader</span>(<span class="code text-user">input</span>)))
+{
+   while (<span class="code text-green">reader</span>.ready())
+      System.out.println(<span class="code text-green">reader</span>.readLine());
+}</code></pre>
+<hr>
+<h2>3. Examples of working with the network</h2>
+<p>Let's download something from the Internet. And not just download it, but save it to disk.</p>
+<p>For example, let's write a program that saves an image from the Google homepage to disk.</p>
+<p>In principle, there's nothing complicated here. In its simplest form, this code would look like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Saving a file to disk</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="code text-user">image</span> = <span class="text-green">"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"</span>;
+<span class="text-neon">URL</span> <span class="code text-orange">url</span> = new <span class="text-neon">URL</span>(<span class="code text-user">image</span>);
+InputStream <span class="code text-green">input</span> = <span class="code text-orange">url</span>.<span class="text-red">openStream</span>();
+
+<span class="text-viola">Path</span> <span class="code text-user">path</span> = Path.of(<span class="text-green">"c:\\GoogleLogo.png"</span>);
+<span class="text-neon">Files</span>.<span class="text-red">copy</span>(<span class="code text-green">input</span>, <span class="code text-user">path</span>);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>With the help of the first three lines, we receive a data stream from an Internet resource — from a picture.</p>
+<p>In the fourth line, we create the name of the file to which we will save the image. The name can be anything, but the file extension must match the extension of the picture on the Internet. That will allow local image viewers to open it correctly.</p>
+<p>And finally, the last line is one of the <code>Files</code> class's <code>copy</code> methods. The <code>Files</code> class has several of them. This method, which we used, takes a byte stream (<code>InputStream</code>) as its first parameter, and as the second parameter — the name of the file where the data should be written.</p>
+<p>Theoretically, if the <code>URL</code> of the image were short, then this code could even be written in a single line:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Copying data from a stream to a file</th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code><span class="text-neon">Files</span>.<span class="text-red">copy</span>(
+   <span class="code text-green">new URL("https://www.google.com/logo.png").openStream()</span>,
+   <span class="code text-user">Path.of("c:\\GoogleLogo.png")</span>
+);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Of course, you <span class="text-red">don't have to</span> write it like this, but this example demonstrates how convenient and powerful I/O streams are in Java.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1522"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task15.task1523"></div>

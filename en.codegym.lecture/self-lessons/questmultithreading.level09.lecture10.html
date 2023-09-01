@@ -1,0 +1,43 @@
+<p>"Hi, Amigo! I've got another small and interesting topic for you. The Void type."</p>
+<p><span class="text-user">"And why would you need such a type? I mean, I understand void: it's to bring functions and procedures into alignment. We don't have procedures, but we have functions that return void (nothing)."</span></p>
+<p>"Yep, but do you remember that Ellie recently told you about the Callable interface?"</p>
+<p><span class="text-user">"Yes."</span></p>
+<p>"And do you also remember what you need to pass as a type argument?"</p>
+<p><span class="text-user">"Yes, the type of the return value:"</span></p>
+<div class="code-heading">Example of a task that does nothing:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class EmptyJob</strong> implements Callable
+{
+ <strong>public String</strong> call() <strong>throws Exception</strong>
+ {
+ <strong> return null;</strong>
+ }
+}</code></pre>
+<p>"Right. And what if you want the call method to return an int? What then?"</p>
+<p><span class="text-user">"Now I know that there's autoboxing for this. I would just pass an Integer, and everything will go like clockwork:"</span></p>
+<div class="code-heading">Example of a task that does nothing:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class EmptyJob</strong> implements Callable
+{
+ <strong>public Integer</strong> call() <strong>throws Exception</strong>
+ {
+  <strong>return null;</strong>
+ }
+}</code></pre>
+<p>"Excellent. And what if the method should return nothing?"</p>
+<p><span class="text-user">"I get your point. Then we use Void as the counterpart of void?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"Wouldn't it be easier to just make the return value an Object and then return null?"</span></p>
+<p>"Sometimes, but not always."</p>
+<p>"You know you really meant to return void here when you wrote Object, but another programmer might not know this and will think why you're returning null."</p>
+<p>"Or the code calling the method will expect a return value."</p>
+<p>"But when you write Void, everyone immediately understands that this is a wrapper for void, even though you still have to return null."</p>
+<div class="code-heading">Example of a task that does nothing:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class EmptyJob</strong> implements Callable
+{
+ <strong>public Void</strong> call() <strong>throws Exception</strong>
+ {
+ <strong> return null;</strong>
+ }
+}</code></pre>
+<p><span class="text-user">"Hmm. You're right. A method that always returns null raises questions. But the method declared as Void can do this without requiring further explanation."</span></p>
+<p><span class="text-user">"Code readability comes first. I like Java!"</span></p>
+<p>"Great. I'm glad you like it. We're done for today."</p>

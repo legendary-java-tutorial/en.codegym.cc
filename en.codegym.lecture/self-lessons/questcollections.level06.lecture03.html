@@ -1,0 +1,185 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Today we're going to wrap our heads around the structure of collections once and for all."</p>
+<p><span class="text-user">"I've waited a long time for this."</span></p>
+<p>"You already know what collections are, and you know how to work with them. It's time to organize your knowledge into a strict system. Then many 'why' and 'how' questions will go away, and most things will become obvious."</p>
+<p>"<strong>Collection interfaces</strong>. The inheritance structure of collection <span class="text-viola">interfaces</span> looks something like this:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/a2fdbb30-9379-4a9d-9e6f-ad48f6e72a9c/original.jpeg' target='_blank'><img data-id="a2fdbb30-9379-4a9d-9e6f-ad48f6e72a9c" data-max-width="850" alt="Collection interfaces - 1" src="https://cdn.codegym.cc/images/article/a2fdbb30-9379-4a9d-9e6f-ad48f6e72a9c/original.jpeg"></a>
+
+<p>Notice two things.</p>
+<p>First, <span class="text-viola">everything you see here is an interface.</span></p>
+<p>Second, <span class="text-red">the arrows mean «inherits».</span></p>
+<p><span class="text-user">"In other words, List, Set, and Queue inherit Collection, but Map doesn't?"</span></p>
+<p>"Yep. Abstract classes then inherit these interfaces and, in turn, the implementations you know about inherit those abstract classes: <strong>ArrayList, Hashtable, TreeSet,…</strong>"</p>
+<p><span class="text-user">"Right you are."</span></p>
+<p>"Now let's see what these interfaces' methods are for:"</p>
+<p>Methods of the <strong>Iterable&lt;E&gt;:</strong> interface:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>Iterator&lt;T&gt; <strong>iterator</strong>();</code></td>
+        <td>Returns an iterator object.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That doesn't seem like enough."</span></p>
+<p>"Well, that's how many there are. That's all for iterators. We won't cover them right now, but we will cover them in detail soon."</p>
+<p>Methods of the <strong>Collection&lt;E&gt;:</strong> interface:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>add</strong>(E e);</code></td>
+        <td>Adds an element to the collection</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>addAll</strong>(Collection&lt;? extends E&gt; c);</code></td>
+        <td>Adds elements to the collection</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>clear</strong>();</code></td>
+        <td>Removes all elements from the collection</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>contains</strong>(Object o);</code></td>
+        <td>Checks to see if the collection contains the element.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>containsAll</strong>(Collection&lt;?&gt; c);</code></td>
+        <td>Checks to see if the collection contains the elements.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>equals</strong>(Object o);</code></td>
+        <td>Checks to see if collections are equivalent</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>hashCode</strong>();</code></td>
+        <td>Returns the hash code</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>isEmpty</strong>();</code></td>
+        <td>Checks to see if the collection is empty.</td>
+    </tr>
+    <tr>
+        <td><code>Iterator&lt;E&gt; <strong>iterator</strong>();</code></td>
+        <td>Returns an iterator object</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>remove</strong>(Object o);</code></td>
+        <td>Removes an element from the collection</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>removeAll</strong>(Collection&lt;?&gt; c);</code></td>
+        <td>Removes elements from the collection</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>retainAll</strong>(Collection&lt;?&gt; c);</code></td>
+        <td>Removes all elements not in c</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>size</strong>();</code></td>
+        <td>Returns the collection's size</td>
+    </tr>
+    <tr>
+        <td><code>Object[] <strong>toArray</strong>();</code></td>
+        <td>Converts the collection to an array</td>
+    </tr>
+    <tr>
+        <td><code>&lt;T&gt; T[] <strong>toArray</strong>(T[] a);</code></td>
+        <td>Converts the collection to an array</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I'm already solid on everything here. I've used half of these methods, and I've encountered the other half."</span></p>
+<p>"Great, let's carry on then."</p>
+<p>Methods of the <strong> List&lt;E&gt;:</strong> interface:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="62%">Methods</th>
+        <th width="38%">Description</th>
+    </tr>
+    <tr>
+        <td><code>void add(int index, E element);</code></td>
+        <td>Adds elements to the middle of the collection</td>
+    </tr>
+    <tr>
+        <td><code>boolean addAll(int index, Collection&lt;? extends E&gt; c);</code></td>
+        <td>Adds elements to the collection</td>
+    </tr>
+    <tr>
+        <td><code>E get(int index);</code></td>
+        <td>Returns an element by index</td>
+    </tr>
+    <tr>
+        <td><code>int indexOf(Object o);</code></td>
+        <td>Returns the index (number) of an element</td>
+    </tr>
+    <tr>
+        <td><code>int lastIndexOf(Object o);</code></td>
+        <td>Returns the index of the last element.</td>
+    </tr>
+    <tr>
+        <td><code>ListIterator&lt;E&gt; listIterator();</code></td>
+        <td>Returns an iterator for the list</td>
+    </tr>
+    <tr>
+        <td><code>ListIterator&lt;E&gt; listIterator(int index);</code></td>
+        <td>Returns an iterator for the list</td>
+    </tr>
+    <tr>
+        <td><code>E remove(int index);</code></td>
+        <td>Removes an element by its index</td>
+    </tr>
+    <tr>
+        <td><code>E set(int index, E element);</code></td>
+        <td>Sets a new value by index</td>
+    </tr>
+    <tr>
+        <td><code>List&lt;E&gt; subList(int fromIndex, int toIndex);</code></td>
+        <td>Returns a subcollection</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Nothing radically new here either. I already know almost everything about collections, which I can't help but be happy about."</span></p>
+<p>"Well, I think I can find something that will surprise you. But let's continue examining interfaces:"</p>
+<p>Methods of the <strong>Set&lt;E&gt;:</strong> interface:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Methods</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td colspan="2"><center>No methods</center></td>
+    </tr>
+    </tbody>
+</table>
+<p>"The Set interface doesn't have any new methods — only those it inherits."</p>
+<p><span class="text-user">"Yeah, I saw that the Interable interface also didn't have anything.</span></p>
+<p><span class="text-user">"On the other hand, fewer methods means less to remember!"</span></p>
+<p>"Your life-affirming optimism makes me happy."</p>
+<p>"The Set interface is inherited by two interfaces with methods: SortedSet and NavigableSet. But I won't go over them, or we'll never finish."</p>
+<p>"Instead, let me give you a general picture of the classes and interfaces that describe collections in Java."</p>
+<p><span class="text-user">"Bring it on."</span></p>
+<p>"Then hold on tight:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/3a5d4b4d-eb0f-41c6-829b-8e8d28d7d1ab/original.jpeg' target='_blank'><img data-id="3a5d4b4d-eb0f-41c6-829b-8e8d28d7d1ab" data-max-width="850" alt="Collection interfaces - 2" src="https://cdn.codegym.cc/images/article/3a5d4b4d-eb0f-41c6-829b-8e8d28d7d1ab/original.jpeg"></a>
+
+<p><span class="text-user">"Wow, that's huge!"</span></p>
+<p>"Well, it's not that big. Also, remember that abstract classes are entirely optional. But it is good to remember which class implements which interfaces. That can come in handy quite frequently."</p>
+<p>"Oh, I would also like to note that some collections are considered obsolete."</p>
+<p><span class="text-user">"Which are those?"</span></p>
+<p>"I'm talking about the Vector, Stack, Dictionary, and Hashtable classes. These are synchronized (thread-safe) versions of ordinary collections."</p>
+<p>"But Java has added a special <span class="text-corporate"><strong>concurrency</strong></span> library with a lot of collections that not only can be accessed from other threads, but also have a much more efficient implementation. <strong>ConcurrentHashMap</strong> is much more efficient than <strong>Hashtable</strong>."</p>
+<p>"You can use the Vector, Stack, Dictionary, and Hashtable collections, but it isn't recommended."</p>
+<p><span class="text-user">"Got it, I'll keep that in mind."</span></p>
+<p><span class="text-user">"Thanks, Ellie!"</span></p>

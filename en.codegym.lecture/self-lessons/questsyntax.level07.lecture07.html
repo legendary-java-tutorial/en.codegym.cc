@@ -1,0 +1,118 @@
+<p>"Another cool topic."</p>
+<p><span class="text-user">"The surprises just keep coming! Is it my birthday?"</span></p>
+<p>"Today, I'll tell you about generics. Generics are types that have a parameter. In Java, <span class="text-green">container classes let you indicate the type of their inner objects."</span></p>
+<p><span class="text-green">"When we declare a generic variable, we indicate two types instead of one: the variable type and the type of the data it stores."</span></p>
+<p>"ArrayList is a good example. <span class="text-corporate">When we create a new ArrayList object, it's convenient to indicate the type of the values that will be stored inside this list."</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>ArrayList&lt;<span class="text-corporate">String</span>&gt; <span class="text-corporate">list</span> = new ArrayList&lt;<span class="text-corporate">String</span>&gt;();</code></pre>
+        </td>
+        <td>Create an ArrayList variable called <code><span class="text-corporate">list</span></code>.<br />
+            Assign an ArrayList object to it.<br />
+            This list can only store <span class="text-corporate">String</span> objects.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>ArrayList <span class="text-corporate">list</span> = new ArrayList();</code></pre>
+        </td>
+        <td>Create an ArrayList variable called <code><span class="text-corporate">list</span></code>.<br />
+            Assign an ArrayList object to it. This list can store <span class="text-red">any values</span>.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>ArrayList&lt;<span class="text-corporate">Integer</span>&gt; <span class="text-corporate">list</span> = new ArrayList&lt;<span class="text-corporate">Integer</span>&gt;();</code></pre>
+        </td>
+        <td>Create an ArrayList variable called <code><span class="text-corporate">list</span></code>.<br />
+            Assign an ArrayList object to it.<br />
+            This list can only store <code><span class="text-corporate">Integer</span></code> and <code><span class="text-corporate">int</span></code> values.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Sounds super interesting. Especially the part about</span> <span class="text-red">storing values of any type</span>."</p>
+<p>"It only seems like that's a good thing. In reality, if we put strings into an ArrayList in one method and then expect it to contain numbers in another method, the program will crash (terminate with an error)."</p>
+<p><span class="text-user">"I see."</span></p>
+<p><span class="text-red">"For now, we won't create <strong>our</strong> own classes with type parameters. We'll just use the existing ones."</span></p>
+<p><span class="text-user">"Can any class be a type parameter, even one that I write?"</span></p>
+<p>"Yes. Any type except for primitive types. All type parameters must inherit from the Object class."</p>
+<p>"<span class="text-user">You mean I can't write</span> <span class="text-viola">ArrayList&ltint&gt?</span>"</p>
+<p>"Indeed, you can't. But Java developers have written wrapper classes for each of the primitive types. These classes inherit <strong>Object</strong>. This is how it looks:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Primitive type</th>
+        <th>Class</th>
+        <th>List</th>
+    </tr>
+    <tr>
+        <td><span class="text-green">int</span></td>
+        <td><span class="text-green">Integer</span></td>
+        <td>ArrayList&lt;<span class="text-green">Integer</span>&gt;</td>
+    </tr>
+    <tr>
+        <td><span class="text-viola">double</span></td>
+        <td><span class="text-viola">Double</span></td>
+        <td>ArrayList&lt;<span class="text-viola">Double</span>&gt;</td>
+    </tr>
+    <tr>
+        <td><span class="text-corporate">boolean</span></td>
+        <td><span class="text-corporate">Boolean</span></td>
+        <td>ArrayList&lt;<span class="text-corporate">Boolean</span>&gt;</td>
+    </tr>
+    <tr>
+        <td><span class="text-user">char</span></td>
+        <td><span class="text-user">Character</span></td>
+        <td>ArrayList&lt;<span class="text-user">Character</span>&gt;</td>
+    </tr>
+    <tr>
+        <td><span class="text-red">byte</span></td>
+        <td><span class="text-red">Byte</span></td>
+        <td>ArrayList&lt;<span class="text-red">Byte</span>&gt;</td>
+    </tr>
+    </tbody>
+</table>
+<p>"You can easily assign primitive classes and their analogs (wrapper classes) to each other:"</p>
+<table>
+<tbody>
+<tr>
+<th>Examples</th>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code><span class="text-green">int</span> a = 5;
+<span class="text-green">Integer</span> b = a;
+<span class="text-green">int</span> c = b;
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>
+<span class="text-user">Character c</span> = 'c';  //the literal c is a char
+<span class="text-user">char</span> d = c;
+</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code><span class="text-red">Byte</span> b = (<span class="text-red">byte</span>) 77;  // The literal 77 is an int</code></pre>
+</td>
+</tr>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code><span class="text-corporate">Boolean</span> isOk = true;  // the literal true is a boolean</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code><span class="text-viola">Double</span> d = 1.0d;  // The literal 1.0d is a double</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"Great. I think I'll try to use ArrayList more often."</span></p>

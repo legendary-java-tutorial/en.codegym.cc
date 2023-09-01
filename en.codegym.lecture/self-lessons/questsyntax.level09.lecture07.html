@@ -1,0 +1,68 @@
+<a href='https://cdn.codegym.cc/images/article/41e0c263-38e3-4be2-a11b-c7a0ffc69bb3/original.jpeg' target='_blank'><img data-id="41e0c263-38e3-4be2-a11b-c7a0ffc69bb3" data-max-width="850" alt="How multi-catch works - 1" src="https://cdn.codegym.cc/images/article/41e0c263-38e3-4be2-a11b-c7a0ffc69bb3/original.jpeg"></a>
+
+<p>"A few more interesting lessons. Oh, how I love teaching!"</p>
+<p>"I'd like to tell you about how multiple <strong>catch</strong> blocks work. It's very simple: when exceptions occur in a <strong>try</strong> block, execution moves to the first <strong>catch</strong> block."</p>
+<p><span class="text-green">"If a type indicated in the parentheses of the catch block matches the type of the thrown exception, then execution starts inside that block.</span> Otherwise, we move to the next <strong>catch</strong> block, where the same check is performed."</p>
+<p>"If we run out of <strong>catch</strong> blocks and the exception hasn't been caught, it will be rethrown, and the current method will terminate abnormally."</p>
+<p><span class="text-user">"I see. The catch block that coincides with the exception type will be the one executed."</span></p>
+<p>"Yes, right. However, in reality it's a bit more complicated. Classes can inherit other classes. If a Cow class inherits an Animal class, the Cow object may be referenced not only by a Cow variable, but also by an Animal variable."</p>
+<p><span class="text-user">"And?"</span></p>
+<p><span class="text-green">"Because all exceptions inherit <strong>Exception</strong> or <strong>RuntimeException</strong> (which also inherits <strong>Exception</strong>), they can still be caught using 'catch (<strong>Exception</strong> e)' or '<strong>catch (RuntimeException e)</strong>'."</span></p>
+<p><span class="text-user">"And?"</span></p>
+<p>"We can make two conclusions. <span class="text-corporate">First, you can use 'catch (Exception e)' to catch any exception.</span> <span class="text-viola">Second, the order of catch blocks matters.</span>"</p>
+<p>"Here are some examples:"</p>
+<p>"The <code><span class="text-user">ArithmeticException</span></code> that occurs after we divide by 0 will be caught in the second catch block."</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>try
+{
+    System.out.println("Before calling method1.");
+    int a = 1 / 0;
+    System.out.println("After calling method1. This will never be shown.");
+}
+catch (NullPointerException e)
+{
+    System.out.println("Null reference. Exception has been caught.");
+}
+catch (<span class="text-user">ArithmeticException</span> e)
+{
+    <span class="text-user">System.out.println("Division by zero. Exception has been caught.");</span>
+}
+catch (Exception e)
+{
+    System.out.println("Any other errors. Exception has been caught.");
+}</code></pre>
+<p>"In the example below, the <code><span class="text-user">ArithmeticException</span></code> will be caught in the first catch block, because all exceptions inherit Exception, i.e. <span class="text-green"><code>Exception</code> covers all exceptions.</span>"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>try
+{
+    System.out.println("Before calling method1.");
+    int a = 1/0;
+    System.out.println("After calling method1. This will never be shown.");
+}
+catch (<span class="text-user">Exception</span> e)
+{
+    <span class="text-user">System.out.println("Any other errors. Exception has been caught.");</span>
+}
+catch (NullPointerException e)
+{
+    System.out.println("Null reference. Exception has been caught.");
+}
+catch (ArithmeticException e)
+{
+    System.out.println("Divided by zero. Exception has been caught.");
+}</code></pre>
+<p>"In the example below, <code><span class="text-user">ArithmeticException</span></code> won't be caught. It will be rethrown to the calling method."</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>try
+{
+    System.out.println("Before calling method1.");
+    int a = 1/0;
+    System.out.println("After calling method1. This will never be shown.");
+}
+catch (NullPointerException e)
+{
+    System.out.println("Null reference. Exception has been caught.");
+}</code></pre>
+<p><span class="text-user">"That cleared things up a bit. These exceptions are not the easiest topic."</span></p>
+<p>"It only seems that way. They actually are one of the simplest things in Java."</p>
+<p><span class="text-user">"I don't know whether to be happy or sad about that…"</span></p>

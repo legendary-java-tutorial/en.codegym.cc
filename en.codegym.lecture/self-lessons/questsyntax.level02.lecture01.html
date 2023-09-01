@@ -1,0 +1,48 @@
+<p>"Hi, Amigo. Today I'll tell you about a typical Java program. The big news is that <span class="text-green">every program written in Java consists of classes and objects."</span></p>
+<p><span class="text-user">"I already know what classes are. What are objects?"</span></p>
+<p>"Let's start with an analogy. Suppose you want to build a small ship. You work on a design and then send the blueprint to a factory, where a ship will be assembled according to your design. Or a dozen ships, or as many ships as you want. My point is that dozens of identical ships can be made based on one blueprint."</p>
+<p>"That's exactly how it works with Java."</p>
+<p>"<span class="text-green">Java programmers are like design engineers, except instead of creating blueprints, they write classes.</span> <span class="text-viola">Ship parts are made based on blueprints, while objects are created based on classes.</span>"</p>
+<p>"First, we write classes (make blueprints). Then, when the program is run, the Java machine creates objects based on these classes. It's exactly like how ships are built from a blueprint. One blueprint – many ships. The ships are different. They have different names and carry different cargo. But they are still similar. They all have an identical design, and are able to perform similar tasks."</p>
+<p><span class="text-user">"OK, I get your ship analogy. Could you give me a couple more to help me be sure I understand what you're saying?"</span></p>
+<p>"Take, for example, bees..."</p>
+<img data-max-width="800" data-id="a494d880-651a-40a8-9f1d-92692905656e" src="https://cdn.codegym.cc/images/article/a494d880-651a-40a8-9f1d-92692905656e/800.jpeg" alt="">
+<p>"No, scratch that. I've had a bad experience with bees. Let's take ants."</p>
+<p><span class="text-corporate">"An ant colony is a good example of how objects interact. Any ant colony consists of three classes: the queen, soldiers, and worker ants. The number of ants in each class varies. Usually a colony only has one queen, dozens of soldiers, and hundreds of workers. Three classes, hundreds of objects. The ants follow strict rules as they interact with ants in their own class and ants that belong to other classes."</span></p>
+<p>"This is the perfect example. A typical program works exactly like that. There is a main object that creates objects in all the classes. The objects interact with each other and with the external world. The objects' behavior is hardwired (programmed) internally."</p>
+<p><span class="text-user">"I don't quite get it. I mean, I don't get it at all."</span></p>
+<p>"These two explanations are two sides of the same coin. The truth is somewhere in between. The first example (about blueprints and ships) shows us the connection between a class and its objects. It's a powerful analogy. The ant colony analogy demonstrates the relationship between objects, which are described by classes and exist only while a program is running."</p>
+<p><span class="text-user">"You mean we need to write classes for all objects used in a program, and then describe their interactions?"</span></p>
+<p>"Yes, but it's easier than it sounds. In Java, while a program is running, all entities are objects. Writing a program amounts to describing the various ways that objects can interact. The objects simply call each other's methods and pass the required data to them."</p>
+<p><span class="text-user">"It's a little fuzzy, but I think I almost get it."</span></p>
+<p><span class="text-user">"How do we know which methods to call and which data to pass?"</span></p>
+<p>"Each class has a declaration, which indicates its intended use. Similarly, every method has a declaration that indicates what it can do and what data we need to pass to it. To use a class, you need to have a general understanding of what it does. You need to know exactly what each method does, <span class="text-red">but not exactly how it does it</span>. It's like a magic wand."</p>
+<p><span class="text-user">"Huh! Sounds nice."</span></p>
+<p>"Here. Have a look at the code of a class that copies files:"</p>
+<div class="code-heading">Copy c:\data.txt to c:\result.txt</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>package com.codegym.lesson2;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class FileCopy
+{
+    public static void main(String[] args) throws IOException
+    {
+        <span class="text-yellow">FileInputStream<strong> fileInputStream</strong></span> = new FileInputStream("c:\data.txt");
+        <span class="text-user">FileOutputStream<strong> fileOutputStream</strong></span> = new <span class="text-user">FileOutputStream</span>("c:\result.txt");
+
+        while (<span class="text-yellow">fileInputStream</span><strong>.available</strong>() &gt; 0)
+        {
+            int <span class="text-red">data</span> = <span class="text-yellow">fileInputStream</span><strong>.read</strong>();
+            <span class="text-user">fileOutputStream</span><strong>.write</strong>(<span class="text-red">data</span>);
+        }
+
+        <span class="text-yellow">fileInputStream</span><strong>.close</strong>();
+        <span class="text-user">fileOutputStream</span><strong>.close</strong>();
+    }
+}</code></pre>
+<p><span class="text-user">"I can't say I get it all, but I think I got the essence of it."</span></p>
+<p>"Great. See you next time then."</p>
+<p>"I almost forgot. Here's your task from Diego."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0201"></div>

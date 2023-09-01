@@ -1,0 +1,36 @@
+<p>"Hello, Amigo! I'd like to add a little to what Ellie told you."</p>
+<p>Sometimes you need to control the serialization process. Here are some of reasons why:</p>
+<p><strong>1) An object is not ready for serialization</strong>: its current internal state is in the process of changing.</p>
+<p><strong>2) An object contains non-serializable objects, but can convert them into a form that can be easily serialized</strong>, e.g. save them as a byte array or something else.</p>
+<p><strong>3) An object wants to deserialize all its data as one unit and/or to encrypt it before serialization.</strong></p>
+<p>There are many reasons why you might want to perform serialization manually. But we don't want to lose all the advantages that standard serialization offers. After all, our object might use other objects. But they can't be serialized if our object doesn't support serialization.</p>
+<p>This situation also has a solution: the <span class="text-red"><strong>Externalizable</strong></span> interface. We must thank Java's visionary creators. <span class="text-red">Simply replace the <strong>Serializable</strong> interface with the <strong>Externalizable</strong> interface, and your class can manage the serialization process manually.</span></p>
+<p>The <strong>Externalizable</strong> interface has two methods, which the <strong>Serializable</strong> interface does not, that are called by the Java machine when an object is serialized. This is how it looks:</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat <span class="text-red"><strong>implements Externalizable</strong></span>
+{
+ public String name;
+ public int age;
+ public int weight;
+
+ <span class="text-red"><strong>public void writeExternal(ObjectOutput out)</strong></span>
+ {
+  <span class="text-red"><strong>out</strong>.writeObject</span>(name);
+  <span class="text-red"><strong>out</strong>.writeInt</span>(age);
+  <span class="text-red"><strong>out</strong>.writeInt</span>(weight);
+}
+
+ <span class="text-red"><strong>public void readExternal(ObjectInput in)</strong></span>
+ {
+  name = (String) <span class="text-red">in.readObject();</span>
+  age = <span class="text-red">in.readInt();</span>
+  weight = <span class="text-red">in.readInt();</span>
+ }
+}</code></pre>
+<p>Remind you of anything?</p>
+<p><span class="text-user">"Holy moly! This is exactly how we tried to save objects before we considered serialization."</span></p>
+<p>"This makes everything simple: if standard serialization is adequate, we just inherit the <strong>Serializable</strong> interface. If it's not adequate, then we inherit <strong>Externalizable</strong> and write our own code to save/load our object."</p>
+<p><span class="text-user">"But is a class marked <strong>Externalizable</strong> considered serializable? Can we use such a class to "safely" store references to our serializable classes?"</span></p>
+<p>"Yes. If a class implements <strong>Serializable</strong> or <strong>Externalizable</strong>, it is considered serializable."</p>
+<p><span class="text-user">"It's the perfect solution. I like it."</span></p>
+<p>"I'm happy to hear that. But there's more to it... You should ask Professor Hans about all the nuances. They certainly exist. He wanted to give you something to read."</p>

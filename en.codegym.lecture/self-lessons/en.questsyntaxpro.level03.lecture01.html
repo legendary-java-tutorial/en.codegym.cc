@@ -1,0 +1,160 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="4627a407-84a1-466b-9713-c04c2e806dfa" data-max-width="1024" src="https://cdn.javarush.ru/images/article/4627a407-84a1-466b-9713-c04c2e806dfa/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="4a804278-ac7a-47f2-8504-bb8265a5026c" data-max-width="512" src="https://cdn.javarush.ru/images/article/4a804278-ac7a-47f2-8504-bb8265a5026c/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="0af8584e-55e0-48f5-8bdd-8c91495d584c" data-max-width="512" src="https://cdn.javarush.ru/images/article/0af8584e-55e0-48f5-8bdd-8c91495d584c/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Sequence of <code>if</code> statements</h2>
+<p>Sometimes a program needs to perform many different actions depending on the value of a variable or the value of an expression.</p>
+<p>Let's say our task is something like this:</p>
+<ul>
+    <li>If the temperature is greater than <code>20</code> degrees, then put on a shirt</li>
+    <li>If the temperature is greater than <code>10</code> degrees and less than (or equal to) <code>20</code>, then put on a sweater</li>
+    <li>If the temperature is greater than <code>0</code> degrees and less than (or equal to) <code>10</code>, then put on a raincoat</li>
+    <li>If the temperature is less than <code>0</code> degrees, then put on a coat.</li>
+</ul>
+<p>Here's how this can be represented in code:</p>
+<pre class="language-java"><code>int <span class="code text-orange">temperature</span> = <span class="code text-user">9</span>;
+
+if (<span class="code text-orange">temperature</span> &gt; <span class="code text-user">20</span>)
+   System.out.println(<span class="text-green">"put on a shirt"</span>);
+else // Here the temperature is less than (or equal to) 20
+{
+   if (<span class="code text-orange">temperature</span> &gt; <span class="code text-user">10</span>)
+      System.out.println(<span class="text-green">"put on a sweater"</span>);
+   else // Here the temperature is less than (or equal to) 10
+   {
+      if (<span class="code text-orange">temperature</span> &gt; <span class="code text-user">0</span>)
+         System.out.println(<span class="text-green">"put on a raincoat"</span>);
+      else // Here the temperature is less than 0
+         System.out.println(<span class="text-green">"put on a coat"</span>);
+   }
+}</code></pre>
+<p><code>If-else</code> statements can be nested within one another. This makes it possible to implement rather complex logic in a program.</p>
+<p>But the above example is also interesting in that we can make the code a little simpler by omitting the curly braces:</p>
+<pre class="language-java"><code>int <span class="code text-orange">temperature</span> = <span class="code text-user">9</span>;
+
+if (<span class="code text-orange">temperature</span> &gt; <span class="code text-user">20</span>)
+   System.out.println(<span class="text-green">"put on a shirt"</span>);
+else // Here the temperature is less than (or equal to) 20
+   if (<span class="code text-orange">temperature</span> &gt; <span class="code text-user">10</span>)
+      System.out.println(<span class="text-green">"put on a sweater"</span>);
+   else // Here the temperature is less than (or equal to) 10
+      if (<span class="code text-orange">temperature</span> &gt; <span class="code text-user">0</span>)
+         System.out.println(<span class="text-green">"put on a raincoat"</span>);
+      else // Here the temperature is less than 0
+         System.out.println(<span class="text-green">"put on a coat"</span>);</code></pre>
+<p>However, programmers usually write this construct a little differently:</p>
+<pre class="language-java"><code>int <span class="code text-orange">temperature</span> = <span class="code text-user">9</span>;
+
+if (<span class="code text-orange">temperature</span> &gt; <span class="code text-user">20</span>)
+   System.out.println(<span class="text-green">"put on a shirt"</span>);
+<span class="code text-red">else if</span> (<span class="code text-orange">temperature</span> &gt; <span class="code text-user">10</span>) // Here the temperature is less than (or equal to) 20
+   System.out.println(<span class="text-green">"put on a sweater"</span>);
+<span class="code text-red">else if</span> (temperature &gt; <span class="code text-user">0</span>) // Here the temperature is less than (or equal to) 10
+   System.out.println(<span class="text-green">"put on a raincoat"</span>);
+else // Here the temperature is less than 0
+   System.out.println(<span class="text-green">"put on a coat"</span>);</code></pre>
+<p>All three of these examples are equivalent.</p>
+<hr>
+<h2>2. Nuances of the <code>else</code> block</h2>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">
+            An important point:
+        </div>
+        <div class="lesson-note__content">
+            <p>If don't use curly braces in an <code>if-else</code> construct, then the <code>else</code> refers to the closest previous <code>if</code>.</p>
+        </div>
+    </div>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Our code</th>
+        <th>How will it work</th>
+    </tr>
+    <tr>
+        <td class="vertical-baseline">
+<pre class="language-java"><code>int <span class="code text-orange">age</span> = <span class="code text-user">65</span>;
+
+if (<span class="code text-orange">age</span> &lt; <span class="code text-user">60</span>)
+   if (<span class="code text-orange">age</span> &gt; <span class="code text-user">20</span>)
+      System.out.println(<span class="text-green">"You must work"</span>);
+else
+   System.out.println(<span class="text-green">"You don't have to work"</span>);</code></pre>
+        </td>
+        <td class="vertical-baseline">
+<pre class="language-java"><code>int <span class="code text-orange">age</span> = <span class="code text-user">65</span>;
+
+if (<span class="code text-orange">age</span> &lt; <span class="code text-user">60</span>)
+{
+   <span class="code text-red">if</span> (<span class="code text-orange">age</span> &gt; <span class="code text-user">20</span>)
+     System.out.println(<span class="text-green">"You must work"</span>);
+   <span class="code text-red">else</span>
+     System.out.println(<span class="text-green">"You don't have to work"</span>);
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If you look at the code on the left, it seems that the screen output will be "You don't have to work". But that isn't the case. In reality, the <code>else</code> block and the "You don't have to work" statement are associated with the second (the closer) <code>if</code> statement.</p>
+<p>In the code on the right, the associated <code class="text-red">if</code> and <code class="text-red">else</code> are highlighted in red. Additionally, the curly braces are placed unambiguously, clearly showing what actions will be performed. Is the string <span class="code"><span class="text-green">You don't have to work</span></span> never displayed when <code class="text-orange">age</code> is greater than <code class="text-user">60</code>?</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0303"></div>
+<hr>
+<h2>3. Example of using an <span class="text-nowrap"><code>if-else</code></span> statement</h2>
+<p>Since we explored the <code>if-else</code> statement so well, let's give an example:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>import java.util.Scanner;
+public class Solution {
+   public static void main(String[] args)
+   {
+     Scanner <span class="code text-orange">console</span> = new Scanner(<span class="text-viola">System.in</span>); // Create a Scanner object
+     int <span class="text-green">a</span> = <span class="code text-orange">console</span>.<span class="text-red">nextInt</span>(); // Read the first number from the keyboard
+     int <span class="text-green">b</span> = <span class="code text-orange">console</span>.<span class="text-red">nextInt</span>(); // Read the second number from the keyboard
+     if (<span class="text-green">a</span> &lt; <span class="text-green">b</span>)                   // If a is less than b
+       System.out.println(<span class="text-green">a</span>);     // we display a
+     else                         // otherwise
+       System.out.println(<span class="text-green">b</span>);     // we display b
+   }
+}</code></pre>
+    <div class="lesson-example-caption">Displaying the minimum of two numbers</div>
+</div>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0316"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="0494ff8e-0d1b-4270-b974-665e549f00c5" data-max-width="1024" src="https://cdn.javarush.ru/images/article/0494ff8e-0d1b-4270-b974-665e549f00c5/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="8fd86fd6-dba5-430f-9204-5a8b80802b0a" data-max-width="512" src="https://cdn.javarush.ru/images/article/8fd86fd6-dba5-430f-9204-5a8b80802b0a/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="f4bd6a98-7fcc-4ca3-9837-2eb3d6eda07b" data-max-width="512" src="https://cdn.javarush.ru/images/article/f4bd6a98-7fcc-4ca3-9837-2eb3d6eda07b/original.png" alt="">
+        </div>
+    </div>
+</div>

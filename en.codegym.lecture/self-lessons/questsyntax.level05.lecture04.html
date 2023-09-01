@@ -1,0 +1,116 @@
+<p>"OK. Last time we dealt with classes. Today, I'd like to tell you how to create objects. It's very easy. You write the keyword new and then the name of the class that you want to create an object of."</p>
+<table>
+<tbody>
+<tr>
+<th>Example</th>
+</tr>
+<tr>
+<td>
+<pre class="language-java"><code>Cat cat = <span class="text-red">new Cat</span>();</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="language-java"><code>Reader reader = <span class="text-user">new BufferedReader</span>(<span class="text-green">new InputStreamReader</span>(System.in));</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="language-java"><code>InputStream is = <span class="text-viola">new FileInputStream</span>(path);</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">&#34;I already know this.&#34;</span></p>
+<p>&#34;I know you do. Keep listening.&#34;</p>
+<p>&#34;When creating an object, you can pass various arguments inside parentheses. More about that later today. For now, let's take a look at the Cat class:&#34;</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr >
+        <td>
+<pre class="language-java"><code>class Cat {
+    public String <span class="text-green"><strong>name</strong></span>;
+
+    public String <span class="text-user">getName</span>() {
+        return <span class="text-green"><strong>name</strong></span>;
+    }
+
+    public void <span class="text-viola">setName</span>(String <span class="text-corporate">name</span>) {
+        this.<span class="text-green"><strong>name</strong></span> = <span class="text-corporate">name</span>;
+    }
+}
+</code></pre>
+        </td>
+        <td>
+          <span class="text-green"><strong>name</strong></span> is an instance variable. It has a public access modifier, making it visible anywhere in the project.
+
+          <br><br>The <span class="text-user">getName</span> method is a getter. It returns the value of the instance variable <span class="text-green"><strong>name</strong></span>. The method's name was derived from the word 'get' plus the variable's name with an uppercase first letter.
+
+          <br><br>The <span class="text-viola">setName</span> method is a setter. It is used to assign a new value to instance variable <span class="text-green"><strong>name</strong></span>. The method's name was derived from the word 'set' plus the variable's name with an uppercase first letter. In this method, <span class="text-corporate">the parameter</span> has the same <span class="text-green">name</span> as the instance variable, so we precede <span class="text-green">the name of the instance variable</span> with <strong>this</strong>.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"What are these <a href='https://codegym.cc/groups/posts/13-getters-and-setters' target='_blank'>getters and setters</a>?"</span></p>
+<p>"In Java, it's common practice to hide variables from other classes. Usually, <span class="text-green">variables declared inside classes have the private modifier.</span>"</p>
+<p>"To allow other classes to change the value of these variables, a pair of methods is created for each of them: <strong>get</strong> and <strong>set</strong>. <span class="text-corporate">The <strong>get</strong> method returns the current value of the variable.</span> <span class="text-viola">The <strong>set</strong> method sets a new value for the variable.</span>"</p>
+<p><span class="text-user">"And what's the point?"</span></p>
+<p><span class="text-red">&#34;If we don't want anyone to change the value of an instance variable, we can just not create a <strong>set</strong> method for it or we can make it <strong>private</strong>.</span> We can also add additional data checks to the method. If the passed new value is invalid, nothing will be changed.&#34;</p>
+<p><span class="text-user">&#34;I see.&#34;</span></p>
+<p>"Because a class can have a lot of variables, the names of get and set methods usually include the names of the variable they deal with."</p>
+<p>"If <span class="text-green">a variable is called 'name', then the methods will be called <strong>setName</strong> and <strong>getName</strong>,</span> etc."</p>
+<p><span class="text-user">&#34;I see. That seems quite reasonable."</span></p>
+<p>"Here are more examples of working with a newly created object:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px">Step</th>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <pre class="language-java"><code><span class="text-red">new Cat();</span></code></pre>
+        </td>
+        <td>Create a <code><span class="text-red">Cat</span></code> object</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+            <pre class="language-java"><code>Cat <span class="text-user">catOscar = new Cat()</span>;</code></pre>
+        </td>
+        <td>Store a <code><span class="text-user">Cat</span></code> object in the variable <code><span class="text-user">catOscar</span></code></td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="language-java"><code>catOscar.<span class="text-green">name</span> = "Oscar";
+catOscar.<span class="text-green">age</span> = 6;
+catOscar.<span class="text-green">weight</span> = 4;</code></pre>
+        </td>
+        <td>Fill the object with data: <span class="text-green">name, age, weight</span></td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>
+            <pre class="language-java"><code>catOscar.<span class="text-viola">sleep</span>();</code></pre>
+        </td>
+        <td>Call a method on the object</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>
+            <pre class="language-java"><code><span class="text-red">catOscar</span>.fight(<span class="text-red">catSmudge</span>);</code></pre>
+        </td>
+        <td>Make the objects interact.</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/62hg0ceAsV8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>

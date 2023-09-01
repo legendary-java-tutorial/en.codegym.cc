@@ -1,0 +1,116 @@
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/Tg6NrgN9uZQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Now it's high time that I tell you about constructors. <span class="text-green">This is really simple concept. Programmers have invented a shorthand way to create and initialize objects.</span>"</p>
+<table>
+<tbody>
+<tr>
+<th width="50%">Without a constructor</th>
+<th>With a constructor</th>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>MyFile file = <span class="text-red">new MyFile()</span>;
+<span class="text-red">file.initialize</span>("c:\data\a.txt");
+<span class="text-user">String text = file.readText()</span>;</code></pre>
+</td>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>MyFile file = <span class="text-red">new MyFile</span>("c:\data\a.txt");
+String text = file.readText();</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>MyFile file = <span class="text-red">new MyFile()</span>;
+<span class="text-red">file.initialize</span>("c:\data\", "a.txt");
+<span class="text-user">String text = file.readText()</span>;</code></pre>
+</td>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>MyFile file = <span class="text-red">new MyFile</span>("c:\data\", "a.txt");
+<span class="text-user">String text = file.readText()</span>;</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>MyFile file = <span class="text-red">new MyFile()</span>;
+<span class="text-red">file.initialize</span>("c:\data\a.txt");
+
+MyFile file2 = <span class="text-red">new MyFile()</span>;
+<span class="text-red">file2.initialize</span>( MyFile file, "a.txt");
+<span class="text-user">String text = file2.readText()</span>;</code></pre>
+</td>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>MyFile file = <span class="text-red">new MyFile</span>("c:\data\a.txt");
+
+
+MyFile file2 = <span class="text-red">new MyFile</span>(file, "a.txt");
+<span class="text-user">String text = file2.readText()</span>;</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"I just finished learning about the initialize method…"</span></p>
+<p>"Look harder. With constructors, the code is more convenient and compact."</p>
+<p><span class="text-user">"So it is. Here's a question. I know how to write an <strong>initialize</strong> method inside a class, but how do I write a constructor?"</span></p>
+<p>"First, look at this example:"</p>
+<table>
+<tbody>
+<tr>
+<th width="50%">Without a constructor</th>
+<th>With a constructor</th>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <strong>MyFile</strong>
+{
+  private String filename = null;
+
+  public <span class="text-green">void initialize</span>(String name)
+  {
+    this.filename = name;
+  }
+
+  public <span class="text-red">void initialize</span>(String folder, String name)
+  {
+    this.filename = folder + name;
+  }
+
+  public <span class="text-viola">void initialize</span>(MyFile file, String name)
+  {
+    this.filename = file.getFolder() + name;
+  }
+
+…
+}</code></pre>
+</td>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <strong>MyFile</strong>
+{
+  private String filename = null;
+
+  public <span class="text-green">MyFile</span>(String name)
+  {
+    this.filename = name;
+  }
+
+  public <span class="text-red">MyFile</span>(String folder, String name)
+  {
+    this.filename = folder + name;
+  }
+
+  public <span class="text-viola">MyFile</span>(MyFile file, String name)
+  {
+    this.filename = file.getFolder() + name;
+  }
+
+…
+}</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task05.task0534"></div>
+<p>"It's easy to declare a constructor inside a class. A constructor is similar to the <strong>initialize</strong> method, with just two differences:</p>
+<p>1. <span class="text-green">The name of a constructor is the same as the class name</span> (instead of initialize).</p>
+<p>2. <span class="text-red">A constructor has no type</span> (no type is indicated)."</p>
+<p><span class="text-user">"OK, so it's like <strong>initialize</strong>, but with a few differences. I think I get it."</span></p>

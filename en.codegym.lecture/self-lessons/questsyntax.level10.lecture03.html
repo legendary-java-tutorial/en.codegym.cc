@@ -1,0 +1,84 @@
+<p>"And now for the most interesting part. I'll tell you about type conversions. Variables can't change their types, but there is a place where you can convert types. <strong>That place is an assignment operation.</strong>"</p>
+<p><span class="text-viola">"You can assign variables of different types to each other. In doing so, the value of one variable (of a particular type) is converted into a value of the other type and assigned to the other variable.</span>"</p>
+<p>"We can point out two types of conversions: widening primitive conversions and narrowing primitive conversions. <span class="text-green">Widening is like moving things from a small basket to a big one. The procedure is unremarkable and painless. </span><span class="text-red"><strong>Narrowing</strong> is analogous to taking things out of a big basket and putting them in a smaller one. When you do this you may not have enough space; you may have to throw something out.</span>"</p>
+<p>"Here are the types sorted according their 'basket' size:"</p>
+<img data-max-width="1024" data-id="cd26625b-54e0-4321-9614-5fa2ed20e2e8" src="https://cdn.javarush.ru/images/article/cd26625b-54e0-4321-9614-5fa2ed20e2e8/1024.jpeg" alt="Type conversion">
+<p>"Just a couple of comments:</p>
+<p><span class="text-red">1. <strong>char</strong>'s basket is the same size as short's, but you can't move things freely from one to the other. When you move values from <strong>short</strong> to <strong>char</strong>, values that are less than 0 will always be lost. When you move values from char to short, values greater than 32,000 will be lost.</span></p>
+<p><span class="text-green">2. When you transform integers into fractional numbers, the least significant digits of the number may be thrown out. However, this is acceptable, since the purpose of a fractional number is to store an approximate value."</span></p>
+<p>"<span class="text-corporate">When performing narrowing conversions, we must explicitly tell the compiler that we haven't made an error: we are discarding part of the number on purpose.</span> <span class="text-red">We use a cast operator</span> (<strong>i.e. the type name in parentheses</strong>) to do this."</p>
+<p>"This is how you should assign variables of different types:"</p>
+<table style="width: 754px;">
+    <tbody>
+    <tr>
+        <th style="width: 217px;">Java code</th>
+        <th style="width: 490px;">Description</th>
+    </tr>
+    <tr>
+        <td style="width: 217px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-user">byte</span> a = 115;
+<span class="text-green">int</span> b = a;</code></pre>
+        </td>
+        <td style="width: 490px;"><span class="text-green">Widening primitive conversion.</span>  Everything's great.</td>
+    </tr>
+    <tr>
+        <td style="width: 217px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">int</span> c = 10000;
+<span class="text-user">byte</span> d = <span class="text-red">(byte)</span> c;</code></pre>
+        </td>
+        <td style="width: 490px;"><span class="text-red"><span class="dred_text">Narrowing primitive conversion</span>.</span> We must explicitly state that the extra bytes should be discarded. </td>
+    </tr>
+    <tr>
+        <td style="width: 217px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">int</span> c = 10;
+<span class="text-user">byte</span> d = <span class="text-red">(byte)</span> c;</code></pre>
+        </td>
+        <td style="width: 490px;"><span class="text-red">Narrowing primitive conversion.</span> We must explicitly state that the extra bytes should be discarded, even if they equal 0. </td>
+    </tr>
+    <tr>
+        <td style="width: 217px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-viola">float</span> f = 10000;
+<span class="text-green">long</span> l = <span class="text-red">(long)</span> (f * f);
+<span class="text-viola">float</span> f2 = l;
+<span class="text-green">long</span> l2 = <span class="text-red">(long)</span> f2;</code></pre>
+        </td>
+        <td style="width: 490px;"><span class="text-green">When assigning to a float, a widening primitive conversion takes place.</span> <span class="text-red">When assigning a float to a long, a narrowing primitive conversion takes place. A cast operator is required.</span></td>
+    </tr>
+    <tr>
+        <td style="width: 217px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-viola">double</span> d = 1;
+<span class="text-viola">float</span> f = <span class="text-red">(float)</span> d;
+<span class="text-green">long</span> l = <span class="text-red">(long)</span> f;
+<span class="text-green">int</span> i = <span class="text-red">(int)</span> l;
+<span class="text-user">short</span> s = <span class="text-red">(short)</span> i;
+<span class="text-user">byte</span> b = <span class="text-red">(byte)</span> s;</code></pre>
+        </td>
+        <td style="width: 490px;"><span class="text-red">Narrowing conversions in all assignment operations except for the first line. These conversions require that we explicitly indicate the type conversion.</span></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task10.task1021"></div>
+<p>"<strong>A cast operator</strong> must be put before a number/variable anytime part of the number will be discarded or when a narrowing primitive conversion occurs. The cast operator only affects the number/variable that directly follows it."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-viola">float</span> f = 10000;
+<span class="text-green">long</span> l = <span class="text-red">(long) f</span> * f;</code></pre>
+        </td>
+        <td>Only one of the two variables is cast to a long: multiplication of a long and a float equals a float.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-viola">float</span> f = 10000;
+<span class="text-green">long</span> l = <span class="text-red">(long) (f * f)</span>;</code></pre>
+        </td>
+        <td>The entire expression is cast to a long.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I see."</span></p>

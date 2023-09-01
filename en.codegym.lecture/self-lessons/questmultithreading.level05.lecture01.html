@@ -1,0 +1,85 @@
+<a href='https://cdn.codegym.cc/images/article/5348d1d0-2932-4bb7-a84f-65ed9fb91e0d/original.jpeg' target='_blank'><img data-id="5348d1d0-2932-4bb7-a84f-65ed9fb91e0d" data-max-width="850" alt="Enum and all its features - 1" src="https://cdn.codegym.cc/images/article/5348d1d0-2932-4bb7-a84f-65ed9fb91e0d/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Amigo!"</span></p>
+<p>"I'm going to tell you about something very interesting. It's pretty simple, but that makes it even more interesting. It's called an enum. An enum is a type that defines the specific set of values that a variable can have. Let's look at an example right off:"</p>
+<div class="code-heading">Definition of an enum class</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public enum <span class="text-green">Direction</span>
+{
+<strong><span class="text-green"> UP,
+ DOWN,
+ LEFT,
+ RIGHT,</span></strong>
+}</code></pre>
+<div class="code-heading">Using an enum</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">Direction</span> direction = <span class="text-green">Direction.<strong>LEFT</strong></span>;
+
+if (direction == <span class="text-green">Direction.<strong>LEFT</strong></span>)
+ direction = <span class="text-green">Direction.<strong>RIGHT</strong></span>;
+else
+ direction = <span class="text-green">Direction.<strong>DOWN</strong></span>;</code></pre>
+<p><span class="text-user">"So we just list a set of values and that's it?"</span></p>
+<p>"Yes, we declare an enum and list all its possible values inside, separated by a comma."</p>
+<p>"It's also quite easy to use."</p>
+<p><span class="text-user">"Can you set it to null?"</span></p>
+<p>"Yes, an enum is a regular class, or rather it's kind of like a class, similar to how interfaces are like classes."</p>
+<p><span class="text-user">"So wherever I can use classes, can I use enum?"</span></p>
+<p>"Yes."</p>
+<p><span class="text-user">"Can I declare an enum inside a class?"</span></p>
+<p>"Yes."</p>
+<p><span class="text-user">"And inherit an enum?"</span></p>
+<p>"No, you can't inherit an enum and an enum can't inherit other classes."</p>
+<p><span class="text-user">"Why is that?"</span></p>
+<p>"Because the Java compiler converts enums to approximately this:</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public final class <strong><span class="text-green">Direction</span></strong> extends Enum
+{
+ public static final <span class="text-green"><strong>Direction</strong> UP</span> = new <span class="text-green">Direction()</span>;
+ public static final <span class="text-green"><strong>Direction</strong> DOWN</span> = new <span class="text-green">Direction()</span>;
+ public static final <span class="text-green"><strong>Direction</strong> LEFT</span> = new Direction();
+ public static final <span class="text-green"><strong>Direction</strong> RIGHT</span> = new <span class="text-green">Direction()</span>;
+
+ private Direction() {} // Private constructor
+}</code></pre>
+<p>"As you can see from this example:"</p>
+<p><strong>1)</strong> The Direction class absolutely inherits the Enum class, so it can't inherit anything else.</p>
+<p><strong>2)</strong> The Direction class is declared as final, so nothing else can inherit it.</p>
+<p><strong>3)</strong> The Direction class's variables are actually public static final Direction variables. This is evident in code that uses them:</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><strong><span class="text-green">Direction</span></strong> direction = <span class="text-green"><strong>Direction</strong>.LEFT</span>;<code></code></pre>
+<p><strong>4)</strong> The Direction class contains only one constructor and it is private. That means that Direction objects can only be created using code inside the class. Other than the declared objects, no objects can be created.</p>
+<p><strong>5)</strong> Direction variables can be assigned a reference to any of the existing Direction objects. They are all set within the enum. There are no other objects of this type, and there won't be any others in the future.</p>
+<p><strong>6)</strong> Direction objects can be compared using «==», which will just perform a simple reference comparison."</p>
+<p><span class="text-user">"I wouldn't say it's super clear, but it's much clearer after your example."</span></p>
+<p>"Great. Then here's a little more information for you:"</p>
+<p><strong>1)</strong> Each Direction object has its own unique number. The first (UP) is 0, the second (DOWN) is 1, the third (LEFT) is 2, etc. You can get this number using the ordinal() method. "Look at the screen:</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong><span class="text-green">Direction</span></strong> direction = <span class="text-green"><strong>Direction</strong>.LEFT</span>;
+int index = direction.<strong>ordinal</strong>();
+int index2 = Direction.RIGHT.<strong>ordinal</strong>();</code></pre>
+<p><strong>2)</strong> Each enum has a <strong>values</strong>() method that returns an array of the enum's values.</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int <span class="text-red">leftIndex</span> = <span class="text-green"><strong>Direction</strong>.LEFT</span>.ordinal();
+
+<strong><span class="text-green">Direction</span></strong>[] array = <strong><span class="text-green">Direction</span>.values</strong>();
+<strong><span class="text-green">Direction</span></strong> left = array[<span class="text-red">leftIndex</span>];</code></pre>
+<p>"This means we can get the index of any enum element, and then get the element again using that index."</p>
+<p>"We can also use an enum in a <strong>foreach</strong> loop:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>for (<strong><span class="text-green">Direction</span></strong> <span class="text-red">direction</span> : <strong><span class="text-green">Direction</span></strong>.values())
+{
+ System.out.println(<span class="text-red">direction</span>);
+}</code></pre>
+<div class="code-heading">Screen output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>UP
+DOWN
+LEFT
+RIGHT</strong></code></pre>
+<p><span class="text-user">"Does that mean that enum overrides the toString method? After all, it doesn't display anything like:"</span><br />
+    <span class="text-user"> «com.codegym.Direction@123fd4»?</span></p>
+<p>"Yes. Moreover, each enum, and therefore Direction, can be converted to a String and vice versa."</p>
+<div class="code-heading">Convert to a String:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String left = <strong><span class="text-green">Direction.LEFT</span></strong>.toString(); // left == "LEFT";</code></pre>
+<div class="code-heading">Convert a String to an enum:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">Direction</span> <strong>direction</strong> = <span class="text-green">Direction</span>.valueOf("LEFT");</code></pre>
+<p><span class="text-user">"Oh, got it."</span></p>
+<p><span class="text-user">"What happens if you pass a String to the valueOf function that isn't in Direction? For example, «AMIGO»?"</span></p>
+<p>"What do you think?"</p>
+<p><span class="text-user">"An exception?"</span></p>
+<p>"Yep. An IllegalArgumentException."</p>
+<p>"Well, that wraps up our introduction to the world of enums."</p>

@@ -1,0 +1,150 @@
+<p>"It's me again."</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Today I'd like to tell you all about <b>BufferedReader</b> and <b>BufferedWriter</b>."</p>
+<p><span class="text-user">"You already told me about them. They really aren't that complicated."</span></p>
+<p>"OK. Then tell me how <b>BufferedReader</b> works."</p>
+<p><span class="text-user">"<strong>BufferedReader</strong> is like a 110/220V converter."</span></p>
+<p><span class="text-user">"You have to pass to the <b>BufferedReader</b> constructor the <b>Reader</b> object that data will be read from. A <b>BufferedReader</b> object reads big chunks of data from the <b>Reader</b> and stores them internally in a buffer. That's why using a <b>BufferedReader</b> to read from a <b>Reader</b> is faster than reading directly from a <b>Reader</b>."</span></p>
+<p>"That's right. And what about <b>BufferedWriter</b>?"</p>
+<p class="amigo"><span class="text-user">"It's a piece of cake. Suppose we write to a <b>FileWriter</b>. The data is written to disk immediately. If we write little bits of data frequently, then we'll hit the disk a lot, which will slow down the program a lot. But if we use a <b>BufferedWriter</b> as a 'converter', then the write operation is much faster. When you write to a <b>BufferedWriter</b>, it saves the data in an internal buffer. When the buffer is full, it writes the data to the <b>Writer</b> as a single large chunk. This is much faster."</span></p>
+<p>"Hmm. Spot on. But what have you forgotten?"</p>
+<p class="amigo"><span class="text-user">"After you're done writing, you need to call the <b>flush()</b> method on the <b>BufferedWriter</b> object to force it to send any data still in the buffer to the <b>Writer</b>."</span></p>
+<p>"And what else?"</p>
+<p class="amigo"><span class="text-user">"What else? Oh! As long as the buffer hasn't been written to the <b>Writer</b>, the data can be deleted and/or replaced."</span></p>
+<p>"Amigo! I'm impressed! You're an expert! Well, then I'll tell you about some new classes: <b>ByteArrayStream</b> and <b>PrintStream</b>."</p>
+<p>"For example, <b>ByteArrayInputStream</b> and <b>ByteArrayOutputStream</b>."</p>
+<p>"These classes are a bit like <b>StringReader</b> and <b>StringWriter</b>. Except <b>StringReader</b> reads characters (<b>char</b>) from a string (<b>String</b>), but <b>InputStream</b> reads bytes from a byte array (<b>ByteArray</b>)."</p>
+<p><b>StringWriter</b> writes characters (<b>char</b>) to a string, while <b>ByteArrayOutputStream</b> writes bytes to an internal byte array.   When you write to a <b>StringWriter</b>, its internal string grows longer, and when you write to a <b>ByteArrayOutputStream</b> its internal byte array also expands dynamically.</p>
+<p>"Remember the example you were given in the last lesson:"</p>
+<div class="code-heading">Reading from the reader object and writing to the writer object:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void main (String[] args) throws Exception</strong>
+{
+ String <span class="text-user">test</span> = "<span class="text-green">Hi!\n My name is Richard\n I'm a photographer\n</span>";
+ StringReader <span class="text-red">reader</span> = new StringReader(<span class="text-user">test</span>);
+
+ StringWriter <span class="text-green">writer</span> = new StringWriter();
+
+ <strong>executor</strong>(<span class="text-red">reader</span>, <span class="text-green">writer</span>);
+
+ <strong>String</strong> result = <span class="text-green">writer</span>.toString();
+
+ <strong>System.out.println</strong>("Result: "+ result);
+}
+
+<strong>public static void</strong> <span class="text-viola"><strong>executor</strong></span>(Reader <span class="text-red">reader</span>, Writer <span class="text-red text-green">writer</span>) <strong>throws Exception</strong>
+{
+ <strong>BufferedReader <span class="text-corporate">br</span> = new BufferedReader(reader);
+ String <span class="text-corporate">line</span>;
+ while ((<span class="text-corporate">line</span> = <span class="text-corporate">br</span>.readLine()) != null) {
+ StringBuilder sb = new StringBuilder(line);
+ String newLine = sb.reverse().toString();</strong>
+
+ <span class="text-green">writer</span>.write(newLine);
+ }
+}</code></pre>
+<p>"Here is how it would look if it worked using bytes instead of characters:"</p>
+<div class="code-heading">Reading from an InputStream object and writing to an OutputStream object:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static</strong> void main (String[] args) throws Exception
+{
+ String test = "<span class="text-green">Hi!\n My name is Richard\n I'm a photographer\n</span>";
+ InputStream <span class="text-red">inputStream</span> = new <strong>ByteArrayInputStream</strong>(test.<strong>getBytes</strong>());
+
+ <strong>ByteArrayOutputStream</strong> <span class="text-green">outputStream</span> = new <strong>ByteArrayOutputStream</strong>();
+
+ <span class="text-viola">executor</span>(<span class="text-red">inputStream</span>, <span class="text-green">outputStream</span>);
+
+ String result = <strong>new String</strong>(<span class="text-green">outputStream</span>.<span class="text-corporate">toByteArray</span>());
+ System.out.println("Result: "+ result);
+}
+
+<strong>public static</strong> void <span class="text-viola">executor</span>(InputStream <span class="text-red">inputStream</span>, OutputStream <span class="text-green">outputStream</span>) throws Exception
+{
+ <strong>BufferedInputStream</strong> <span class="text-corporate">bis</span> = new <strong>BufferedInputStream</strong>(<span class="text-red">inputStream</span>);
+ <strong>while</strong> (<span class="text-corporate">bis</span>.<strong>available</strong>() &gt; 0)
+ {
+  int data = <span class="text-corporate">bis</span>.<strong>read</strong>();
+  <span class="text-green">outputStream</span>.<strong>write</strong>(data);
+ }
+}</code></pre>
+<p>"Everything is the same as in the example above. Except, we replaced String with ByteArray, Reader with InputStream, and Writer with OutputStream."</p>
+<p>"The only two other steps are converting the String into a ByteArray and back again. As you can see, this is done quite easily:"</p>
+<div class="code-heading">Converting a String into a ByteArray and back again</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void</strong> main (String[] args) <strong>throws</strong> Exception
+{
+ String <span class="text-user">test</span> = "<span class="text-green">Hi!\n My name is Richard\n I'm a photographer\n</span>";
+ byte[] <span class="text-red"><strong>array</strong></span> = <strong><span class="text-user">test</span></strong>.<strong><span class="text-green">getBytes</span></strong>();
+
+ String result = <strong><span class="text-green">new String</span></strong>(<strong><span class="text-red">array</span></strong>);
+ System.out.<strong>println</strong>("<span class="text-green">Result:</span> "+ result);
+}</code></pre>
+<p>"To get the bytes that have already been added to a ByteArrayOutputStream, call the <strong><span class="text-corporate">toByteArray</span></strong>() method."</p>
+<p><span class="text-user">"Ah. The similarities to StringReader/StringWriter are pretty strong, especially after you pointed them out to me. Thank you, Ellie, for a really interesting lesson."</span></p>
+<p>"Where are you off to in such a hurry? I still have a small gift for you. I want to tell you about the PrintStream class."</p>
+<p><span class="text-user">"PrintStream? That's the first time I've heard of that class."</span></p>
+<p>"Yep. Especially, if you don't count the fact that you've been using it since day one of your Java studies. Do you remember <strong>System.out</strong>? Well, <strong>System.out</strong> is a static (class) variable of the <strong>System</strong> class, and its type is... <strong>PrintStream</strong>! This is where all of these print, println, etc. methods stem from."</p>
+<p><span class="text-user">"Wow. How interesting. I somehow never even considered that. Tell me more."</span></p>
+<p>"Good. Okay, listen up. The PrintStream class was invented for readable output. It consists almost entirely of print and println methods. Look at this table:"</p>
+<table class="table_example">
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Methods</th>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(boolean b)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(boolean b)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(char c)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(char c)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(int c)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(int c)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(long c)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(long c)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(float c)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(float c)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(double c)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(double c)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(char[] c)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(char[] c)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(String c)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(String c)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"><code>void <b>print</b>(Object obj)</code></td>
+        <td class="monospace_text"><code>void <b>println</b>(Object obj)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text wide-text"></td>
+        <td class="monospace_text"><code>void <b>println</b>()</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text" colspan="2"><code>PrintStream <b>format</b> (String format, Object ... args)</code></td>
+    </tr>
+    <tr>
+        <td class="monospace_text" colspan="2"><code>PrintStream <b>format</b> (Locale l, String format, Object ... args)</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"There are also several format methods so you can output data using a format string. For example:"</p>
+<div class="code-heading">Converting a String into a ByteArray and back again</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String name = "Kolan";
+int age = 25;
+<strong>System.out.<span class="text-red">format</span></strong>("<span class="text-green">My name is %s. My age is %d</span>.", name, age);</code></pre>
+<div class="code-heading">Screen output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">My name is Kolan. My age is 25.</span></code></pre>
+<p><span class="text-user">"Yeah, I remember. We already studied the String class's format method."</span></p>
+<p>"That's all for now."</p>
+<p><span class="text-user">"Thanks, Ellie."</span></p>

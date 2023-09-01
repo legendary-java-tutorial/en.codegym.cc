@@ -1,0 +1,206 @@
+<p>"Not so fast, young man! I have two more lessons for you!"</p>
+<p><span class="text-user">"Two? Wow. Well, okay. What wouldn't you do to enhance your own coolness! I'm all ears."</span></p>
+<p>"XML, like JSON, is often used when passing data between different programs and computers. And there are several frameworks that greatly simplify the lives of Java programmers when working with XML. Today I will introduce you to one of them."</p>
+<p><strong>"JAXB is an excellent multipurpose framework for working with XML."</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/c64770ac-b838-4f55-a6f5-62ef022752f1/original.jpeg' target='_blank'><img data-id="c64770ac-b838-4f55-a6f5-62ef022752f1" data-max-width="850" alt="JAXB - 1" src="https://cdn.codegym.cc/images/article/c64770ac-b838-4f55-a6f5-62ef022752f1/original.jpeg"></a>
+
+<p>"JAXB is part of the JDK, so you don't need to download it separately."</p>
+<p>"Let me first show you an example of how to use it, and then we'll analyze it. For example:"</p>
+<div class="code-heading">Convert an object to XML</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void</strong> main(String[] args) throws JAXBException
+{
+ // Create an object to be serialized into XML
+ <span class="text-green">Cat cat</span> = new <span class="text-green">Cat</span>();
+ <span class="text-green">cat</span>.name = "Missy";
+ <span class="text-green">cat</span>.age = 5;
+ <span class="text-green">cat</span>.weight = 4;
+
+ // Write the result of the serialization to a StringWriter
+ StringWriter <span class="text-user">writer</span> = new StringWriter();
+
+ // Create a Marshaller object that will perform the serialization
+ JAXBContext <span class="text-red">context</span> = JAXBContext.newInstance(<span class="text-green">Cat.class</span>);
+ Marshaller <span class="text-red">marshaller</span> = <span class="text-red">context</span>.createMarshaller();
+<span class="text-red"> marshaller</span>.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+ // And here's the serialization itself:
+ <span class="text-red">marshaller</span>.marshal(<span class="text-green">cat</span>, <span class="text-user">writer</span>);
+
+ // Convert everything written to the StringWriter
+ String <span class="text-viola">result</span> = <span class="text-user">writer</span>.toString();
+ System.out.println(<span class="text-viola">result</span>);
+}</code></pre>
+<div class="code-heading">A class whose objects convert to XML</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">@XmlType(name = "cat")
+@XmlRootElement
+public class Cat
+{
+ public String name;
+ public int age;
+ public int weight;
+
+ public Cat()
+ {
+ }
+}</span></code></pre>
+<div class="code-heading">Serialization result and screen output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><span class="grey_text">&lt;cat&gt;</span>
+<span class="green_text text-green">&lt;name&gt;<b>Missy</b>&lt;/name&gt;</span>
+<span class="orange_text text-corporate">&lt;age&gt;<b>5</b>&lt;/age&gt;</span>
+<span class="dblue_text text-user">&lt;weight&gt;<b>4</b>&lt;/weight&gt;</span>
+<span class="grey_text">&lt;/cat&gt;</span></pre>
+<p><span class="text-user">"For some reason, line for line, this code reminds me of JSON serialization. The same annotations, but JSON used an ObjectMapper, and this uses Context and Marshaller."</span></p>
+<p>"Yep. They really are very similar. Jackson was modeled after JAXB. But JAXB was also copied from somewhere. You can't invent something genius from scratch."</p>
+<p><span class="text-user">"It seems that way."</span></p>
+<p>"OK, here's what happening:"</p>
+<p>"In lines 4-7, we create a <span class="text-green">Cat</span> object and populate it with data."</p>
+<p>"In line 10, we create a Writer object to write the result."</p>
+<p>"In line 13, we create the 'context'. This is similar to ObjectMapper, but then two additional child objects are created from it. <span class="text-red">Marshaller</span> is for serialization, and <span class="text-red">Unmarshaller</span> is for deserialization. There are small differences from Jackson, but it isn't fundamentally different."</p>
+<p>"In line 14, we create a <span class="text-red">Marshaller</span> object. Marshalling is a synonym for serialization."</p>
+<p>"In line 15, we set the FORMATTED_OUTPUT property to TRUE. This will add line breaks and spaces to the result, so that the code is human-readable, and doesn't just have all of the text on one line."</p>
+<p>"In line 17, we serialize the object."</p>
+<p>"In lines 20-21, we display the result of the serialization on the screen."</p>
+<p><span class="text-user">"What are the @XmlType(name = 'cat&') and @XmlRootElement annotations?"</span></p>
+<p>"<strong>@XmlRootElement</strong> indicates that this object can be the 'root of a tree' of XML elements. In other words, it can be the highest level element, and can contain all other elements."</p>
+<p>"<strong>@XmlType(name = 'cat')</strong> indicates that the class is involved in JAXB serialization, and also specifies the name of the XML tag for this class."</p>
+<p>"All right, now I'll show you an example of XML deserialization:"</p>
+<div class="code-heading">Convert an object from XML</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void</strong> main(String[] args) throws JAXBException
+{
+ String <span class="text-viola">xmldata</span> = "<span class="grey_text">&lt;cat&gt;</span><span class="green_text text-green">&lt;name&gt;<b>Missy</b>&lt;/name&gt;</span><span class="orange_text text-corporate">&lt;age&gt;<b>5</b>&lt;/age&gt;</span><span class="dblue_text text-user">&lt;weight&gt;<b>4</b>&lt;/weight&gt;</span><span class="grey_text">&lt;/cat&gt;</span>";
+ <strong>StringReader</strong> reader = new <strong>StringReader</strong>(<span class="text-viola">xmldata</span>);
+
+ JAXBContext <span class="text-red">context</span> = <strong>JAXBContext.newInstance</strong>(Cat.class);
+ Unmarshaller <span class="text-red">unmarshaller</span> = <span class="text-red">context</span>.<strong>createUnmarshaller</strong>();
+
+ <span class="text-green">Cat cat</span> = (<span class="text-green">Cat</span>) <span class="text-red">unmarshaller</span>.<strong>unmarshal</strong>(<span class="text-user">reader</span>);
+}</code></pre>
+<div class="code-heading">A class whose objects are deserialized from XML</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">@XmlType(name = "cat")
+@XmlRootElement
+public class Cat
+{
+ public String name;
+ public int age;
+ public int weight;
+
+ public Cat()
+ {
+ }
+}</span></code></pre>
+<p>"Everything is almost the same as with Jackson. But just in case, I'll explain everything that's going on here."</p>
+<p>"In line 3, we pass a <span class="text-viola">string</span> that stores the XML to be deserialized."</p>
+<p>"In line 4, we wrap the XML-string in a <strong>StringReader</strong>."</p>
+<p>"In line 6, we create a <span class="text-red">JAXB context</span>, to which we pass the list of classes."</p>
+<p>"In line 7, we create an <span class="text-red">Unmarshaller</span>—the object that will perform the deserialization."</p>
+<p>"In line 9, we deserialize XML from the reader object and get a Cat object."</p>
+<p><span class="text-user">"Now it all seems almost obvious. But a couple of hours ago, I was racking my brain to figure out how it works."</span></p>
+<p>"That always happens when you get smarter. Complex things become simple."</p>
+<p><span class="text-user">"I'm getting smarter? I can't help but be happy about that."</span></p>
+<p>"Great. Then here's a list of annotations you can use to control the result of JAXB serialization:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">JAXB annotations</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>@XmlElement(name)</td>
+        <td>Placed near a field.<br />
+            The field will be stored in an XML element.<br />
+            Lets you set the tag's name.</td>
+    </tr>
+    <tr>
+        <td>@XmlAttribute(name)</td>
+        <td>Placed near a field.<br />
+            The field will be stored as an XML attribute!<br />
+            Lets you set the attribute's name.</td>
+    </tr>
+    <tr>
+        <td>@XmlElementWrapper(nillable = true)</td>
+        <td>Placed near a field.<br />
+            Lets you set a 'wrapper tag' for a group of elements.</td>
+    </tr>
+    <tr>
+        <td>@XmlType</td>
+        <td>Placed near a class.<br />
+            Lets you specify a method for creating an object if the default constructor is private.</td>
+    </tr>
+    <tr>
+        <td>@XmlJavaTypeAdapter</td>
+        <td>Placed near a field.<br />
+            Lets you specify the class that will convert the field to a string.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"How interesting! But can you provide me with an example that uses these annotations? An explanation is one thing, but a working example is something else."</span></p>
+<p>"OK. I'll show you an example. I just wanted to add that JAXB lets you annotate getter/setter methods instead of fields."</p>
+<p>"Here's that example I promised:"</p>
+<div class="code-heading">Convert an object to XML</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void</strong> main(String[] args) throws JAXBException
+{
+ // Create Cat and Zoo objects to be serialized into XML
+ <span class="text-green">Cat cat</span> = new <span class="text-green">Cat</span>();
+ <span class="text-green">cat</span>.name = "Missy";
+ <span class="text-green">cat</span>.age = 5;
+ <span class="text-green">cat</span>.weight = 4;
+
+ <span class="text-user">Zoo zoo</span> = new <span class="text-user">Zoo</span>();
+ <span class="text-user">zoo</span>.animals.add(cat);
+ <span class="text-user">zoo</span>.animals.add(cat);
+
+ // Write the result of the serialization to a StringWriter
+ StringWriter <span class="text-viola">writer</span> = new StringWriter();
+
+ // Create a Marshaller object that will perform the serialization
+ JAXBContext <span class="text-red">context</span> = <strong>JAXBContext.newInstance</strong>(<span class="text-green">Cat.class</span>, <span class="text-user">Zoo.class</span>);
+ Marshaller <span class="text-red">marshaller</span> = <span class="text-red">context</span>.<strong>createMarshaller</strong>();
+<span class="text-red"> marshaller</span>.<strong>setProperty</strong>(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+ // Here's the serialization itself
+ <span class="text-red">marshaller</span>.<strong>marshal</strong>(<span class="text-user">zoo</span>, <span class="text-viola">writer</span>);
+
+ // Convert everything written to the StringWriter into a String
+ <strong>System.out.println</strong>(<span class="text-viola">writer</span>.<strong>toString</strong>());
+}</code></pre>
+<div class="code-heading">A class whose objects convert to XML</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">@XmlType(name = "<strong>zoo</strong>")
+@XmlRootElement
+<strong>public class</strong> Zoo
+{
+ @XmlElementWrapper(name = "<strong>wild-animals</strong>", nillable = true)
+ @XmlElement(name = "<strong>tiger</strong>")
+ <strong>public</strong> List&lt;Cat&gt; animals = new ArrayList&lt;&gt;();
+}</span>
+
+<span class="text-green">public class Cat
+{</span>
+ <span class="text-red">@XmlElement(name = "catname")</span>
+ <span class="text-green">public String name;</span>
+ <span class="text-red">@XmlAttribute(name = "age")</span>
+<span class="text-green"> public int age;</span>
+ <span class="text-red">@XmlAttribute(name = "w")</span>
+ <span class="text-green">public int weight;</span>
+
+<span class="text-green"> public Cat()
+ {
+ }
+}</span></code></pre>
+<div class="code-heading">Serialization result and screen output:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><span class="grey_text">&lt;zoo&gt;</span>
+<span class="dblue_text text-user">&lt;wild-animals&gt;</span>
+<span class="dred_text text-red">&lt;tiger age = "5" w = "4"&gt;</span>
+<span class="red_text text-corporate">&lt;catname&gt;Missy&lt;/catname&gt;</span>
+<span class="dred_text text-red">&lt;/tiger&gt;</span>
+<span class="dred_text text-red">&lt;tiger age = "5" w = "4"&gt;</span>
+<span class="red_text text-corporate">&lt;catname&gt;Missy&lt;/catname&gt;</span>
+<span class="dred_text text-red">&lt;/tiger&gt;</span>
+<span class="dblue_text text-user">&lt;/wild-animals&gt;</span>
+<span class="grey_text">&lt;/zoo&gt;</span></pre>
+<p>"Notice that this time we aren't serializing a Cat object, but a Zoo object that stores a collection of Cat objects."</p>
+<p>"The cat object was added to the collection twice, so it is in the XML twice."</p>
+<p>"The collection has its own '<span class="text-user">wild-animals</span>' tag that wraps all of the collection's elements."</p>
+<p>"The <span class="text-red">age &amp; weight</span> elements have become the <span class="text-red">age &amp;w</span> w attributes."</p>
+<p>"Using an <span class="text-red">@XmlElement</span> attribute, we changed the <span class="text-red">cat tag to a tiger tag</span>."</p>
+<p>"Pay attention to line 17. Here we pass two classes (<span class="text-user">Zoo</span> and <span class="text-green">Cat</span>) to the JAXB context, since they are both involved in the serialization."</p>
+<p><span class="text-user">"Today was a very interesting day. So much new information."</span></p>
+<p>"Yes. I'm happy for you. Now, take a short break and we'll continue."</p>

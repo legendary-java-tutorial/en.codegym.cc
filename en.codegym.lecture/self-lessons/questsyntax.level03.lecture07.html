@@ -1,0 +1,36 @@
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/l-gKIoqbGOU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Amigo, your time has come. I'm now going to tell you about keyboard input."</p>
+<p>"We've used <b>System.out</b> to display data on the screen. To receive input, we'll use <b>System.in</b>."</p>
+<p><span class="text-user">"Sounds easy."</span></p>
+<p>"But <strong>System.in</strong> has one shortcoming – it only lets us read character codes from the keyboard. To get around this problem and read big chunks of data all at once, we'll use a more complex construct:"</p>
+<div class="code-heading">Example 1<br />
+    Input a string and number from the keyboard</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>InputStream <span class="text-user">inputStream</span> = <span class="text-user">System.in</span>;
+Reader <span class="text-green">inputStreamReader</span> = new <span class="text-green">InputStreamReader</span>(inputStream);
+BufferedReader <span class="text-corporate"><strong>bufferedReader</strong></span> = new <span class="text-corporate">BufferedReader</span>(inputStreamReader);
+
+String name = <span class="text-corporate"><strong>bufferedReader</strong></span>.<span class="text-red">readLine</span>(); //Read a string from the keyboard
+String sAge = <span class="text-corporate"><strong>bufferedReader</strong></span>.<span class="text-red">readLine</span>(); //Read a string from the keyboard
+int nAge = Integer.<span class="text-green">parseInt</span>(sAge); //Convert the string to a number.</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task03.task0327"></div>
+<div class="code-heading">Example 2<br />
+    A more compact version of the previous example:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>BufferedReader <span class="text-corporate"><strong>reader</strong></span> = <span class="text-user">new BufferedReader</span>(<span class="text-user">new InputStreamReader</span>(<span class="text-user">System.in</span>));
+
+String name = <span class="text-corporate"><strong>reader</strong></span>.<span class="text-red">readLine</span>();
+String sAge = <span class="text-corporate"><strong>reader</strong></span>.<span class="text-red">readLine</span>();
+int nAge = Integer.<span class="text-green">parseInt</span>(sAge);</code></pre>
+<div class="code-heading">Example 3<br />
+    Even more compact</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Scanner <span class="text-corporate">scanner</span> = <span class="text-user">new Scanner</span>(<span class="text-user">System.in</span>);
+String name = <span class="text-corporate">scanner</span>.<span class="text-red">nextLine</span>();
+int age = <span class="text-corporate">scanner</span>.<span class="text-red">nextInt</span>();</code></pre>
+<p>&#34;Any questions?&#34;</p>
+<p><span class="text-user">"Uh...I didn't understand anything."</span></p>
+<p><span class="text-green">"To read a string from the keyboard, it's most convenient to use a</span> <strong>BufferedReader</strong> <span class="text-green">object</span>. But to do that you have to pass in the object you're going to read data from. In this case, <strong>System.in</strong>."</p>
+<p>"But <strong>System.in</strong> and <strong>BufferedReader</strong> are incompatible, so we use another adapter – another <span class="text-user"><strong>InputStreamReader</strong></span> object."</p>
+<p><span class="text-user">"I think I get it now. What is this <a href='https://codegym.cc/groups/posts/5-scanner-class' target='_blank'>Scanner class</a>?"</span></p>
+<p>"Scanner can be convenient, but it's not very useful. The thing is, <span class="text-corporate">as you proceed (both in studying and working), you'll use BufferedReader and InputStreamReader often</span>, but Scanner – very rarely. It's convenient in our example, but in the future it won't be useful very often. So <span class="text-red">we won't use it much</span>."</p>
+<p><span class="text-user">"That seems clear, but I'm not sure I understood everything."</span></p>

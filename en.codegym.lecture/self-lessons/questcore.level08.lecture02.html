@@ -1,0 +1,112 @@
+<p>"We'll start with streams for file input/output. But first things first."</p>
+<p>There are two classes for reading and writing files:  <span class="text-red"><strong>FileInputStream</strong></span> and <span class="text-red"><strong>FileOutputStream</strong></span>. As you probably already guessed, <strong>FileInputStream</strong> can sequentially read bytes from a file, and <strong>FileOutputStream</strong> can sequentially write bytes to a file. Here are the methods that these classes have:</p>
+<table class="table_example">
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>What the method does</th>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java"><code><span class="text-red">FileInputStream</span>(String fileName);</code></pre>
+        </td>
+        <td>&#8212; This is the constructor. It lets you specify the name of a file on disk, from which the created object will read data.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java"><code>int <span class="text-red">read</span>();</code></pre>
+        </td>
+        <td>&#8212; This method reads one byte from the file and returns it. The return value is widened to an int.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java"><code>int <span class="text-red">available</span>();</code></pre>
+        </td>
+        <td>&#8212; This method returns the number of unread (available) bytes.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java"><code>void <span class="text-red">close</span>();</code></pre>
+        </td>
+        <td>&#8212; This method «closes» the stream. You call this when you're done working with the stream.<br />
+            The object then performs the housekeeping operations needed to close the file, etc.<br />
+            At this point, you can't read any more data from the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p>Just for the fun of it, let's calculate the sum of all the bytes in a file. Here's what the code looks like:</p>
+<div class="code-heading">Sum up all the bytes in a file</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+ //Create a FileInputStream object bound to «c:/data.txt».
+ <strong>FileInputStream</strong> <span class="text-red">inputStream</span> = new <strong>FileInputStream</strong>("c:/data.txt");
+ long <span class="text-green">sum</span> = 0;
+
+ while (<span class="text-red">inputStream.<strong>available</strong></span>() &gt; 0) //as long as there are unread bytes
+ {
+  int <span class="text-green">data</span> = <span class="text-red">inputStream.<strong>read</strong></span>(); //Read the next byte
+  <span class="text-green">sum</span> +=  <span class="text-green">data</span>; //Add it to the running total
+ }
+<span class="text-red"> inputStream.<span class="text-red"><strong>close</strong></span></span>(); // Close the stream
+
+ System.out.println(<span class="text-green">sum</span>); // Display the sum on the screen.
+}</code></pre>
+<p><span class="text-user">"We've already looked into something like this. How is FileOutputStream organized?"</span></p>
+<p>"OK. Look at this:"</p>
+<table class="table_example">
+    <tbody>
+    <tr>
+        <th >Method</th>
+        <th >What the method does</th>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java"><code><span class="text-red">FileOutputStream</span> (String fileName);</code></pre>
+        </td>
+        <td>"This is the constructor. It lets you specify the name of a file on disk, to which the created object will write data."</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java"><code>void <span class="text-red">write</span>(int data);</code></pre>
+        </td>
+        <td>"This method writes the next byte, truncating data to one byte."</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java"><code>void <span class="text-red">flush</span>();</code></pre>
+        </td>
+        <td>"The data to be written is often first collected in large blocks in memory, and then only written to disk."</p>
+            <p>The flush command forces all unsaved information to be written to disk.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre data-line="" data-start="" class="line-numbers language-java"><code>void <span class="text-red">close</span>();</code></pre>
+        </td>
+        <td>"This method «closes» the stream. You call this when you're done working with the stream."<br />
+            The object then performs the housekeeping operations needed to close the file, etc.</td>
+    </tr>
+    </tbody>
+</table>
+<p>You can't write data to the stream any longer, and flush is called automatically.</p>
+<p class="amigo"><span class="text-user">"That's it?"</span></p>
+<p>"Yep, there's actually only one method for writing: write(). It writes only one byte at a time. But it lets you write as much information as you want to the file."</p>
+<p>Programming is a process of dividing one large and complex task into many small ones. Essentially the same process is happening here: reading and writing large blocks of data is broken into reading and writing in bite-sized pieces—one byte at a time.</p>
+<p>Here's how you can use these classes to copy a file on disk:</p>
+<div class="code-heading">Copy a file on disk</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+ //Create a stream to read bytes from a file
+ <span class="text-green">FileInputStream <strong>inputStream</strong></span> = new <span class="text-green">FileInputStream</span>("c:/data.txt");
+ //Create a stream to write bytes to a file
+ <span class="text-user">FileOutputStream <strong>outputStream</strong></span> = new <span class="text-user">FileOutputStream</span>("c:/result.txt");
+
+ while (<span class="text-green">inputStream.<strong>available</strong></span>() &gt; 0) //as long as there are unread bytes
+ {
+  int data = <span class="text-green">inputStream.<strong>read</strong></span>(); // Read the next byte into the data variable
+  <span class="text-user">outputStream.<strong>write</strong></span>(data); // and write it to the second stream
+ }
+
+ <span class="text-green">inputStream</span>.close(); //Close both streams. We don't need them any more.
+ <span class="text-user">outputStream</span>.close();
+}</code></pre>
+<p><span class="text-user">"Thanks, Rishi. I finally understand how this code actually works."</span></p>

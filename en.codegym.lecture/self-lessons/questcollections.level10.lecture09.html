@@ -1,0 +1,185 @@
+<p>"I remembered that I wanted to tell you a little about working with dates."</p>
+<p><span class="text-user">"You already told me that Java has the Date class, and I can use that class to work with dates."</span></p>
+<p><span class="text-red">"Hmm. Well, the Date class has been outdated for a while."</span></p>
+<p><span class="text-green">"Now it's recommended to instead use the Calendar class,</span> which has a getTime() method that returns the current date."</p>
+<p>"This is a Calendar object is usually created:"</p>
+<div class="code-heading">Create a Calendar object</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Calendar cal = Calendar.getInstance();</code></pre>
+<p>"When you call this method, the correct calendar is created based on your computer settings."</p>
+<p><span class="text-user">"The 'correct' calendar? Does that mean there are several?"</span></p>
+<p>"Yep. Well, it would be more accurate to say 'relevant'. The fact is that Earth has not one, but many calendars. Almost every one of them is associated with some religion or country."</p>
+<p>"The year may be different depending on what country you are in."</p>
+<p>"Here are examples of the most common calendars."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Calendar class</th>
+        <th width="50%">Calendar name</th>
+    </tr>
+    <tr>
+        <td>GregorianCalendar</td>
+        <td>Christian Gregorian calendar</td>
+    </tr>
+    <tr>
+        <td>BuddhistCalendar</td>
+        <td>Buddhist calendar</td>
+    </tr>
+    <tr>
+        <td>JapaneseImperialCalendar</td>
+        <td>Japanese Imperial Calendar</td>
+    </tr>
+    </tbody>
+</table>
+<p>"There is also the Chinese calendar, Islamic calendar, and many more."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"To get the current date, you need to write code like this:"</p>
+<div class="code-heading">Get the current time</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Calendar <span class="text-user">cal</span> = Calendar.getInstance();
+Date date = <span class="text-user">cal</span>.getTime();</code></pre>
+<p>"The Calendar class has many methods that let you quickly get any information about a date and time."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Comments</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Calendar calendar = Calendar.getInstance();
+
+<span class="text-red">int era = calendar.get(Calendar.ERA);</span>
+<span class="text-user">int year = calendar.get(Calendar.YEAR);</span>
+<span class="text-green">int month = calendar.get(Calendar.MONTH);</span>
+<span class="text-neon">int day = calendar.get(Calendar.DAY_OF_MONTH);</span>
+
+int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+<span class="text-corporate">int hour = calendar.get(Calendar.HOUR);</span>
+<span class="text-green">int minute = calendar.get(Calendar.MINUTE);</span>
+<span class="text-red">int second = calendar.get(Calendar.SECOND);</span></code>
+</pre>
+        </td>
+        <td>
+<pre style="padding-left:5%;">
+
+
+<span class="text-red">era</span>
+<span class="text-user">year</span>
+<span class="text-green">month</span>
+<span class="text-neon">day of the month</span>
+
+day of the week (Mon, Tue, Wed, …)
+<span class="text-corporate">hour</span>
+<span class="text-green">minute</span>
+<span class="text-red">second</span>
+
+</pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Sometimes you really only need to get a piece of the available information. For example, the current year or day of the week."</p>
+<p>"But sometimes you simply need to display the date in the right format."</p>
+<p>"For example, in the log file or somewhere else."</p>
+<p>"Or make a format that the user can customize. What do you do then?"</p>
+<p>"There are special classes for this, too. The <span class="text-red"><strong>SimpleDateFormat</strong></span> class is perfectly suited for the task you described:"</p>
+<div class="code-heading">How to display a date in the desired format</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">Calendar calendar</span> = <span class="text-user">Calendar</span>.getInstance();
+
+<span class="text-red">DateFormat <strong>formatter</strong></span> = new <span class="text-red">SimpleDateFormat</span>("<span class="text-corporate">MM-DD-YY</span>");
+
+String message = <span class="text-red">formatter</span>.format(<span class="text-user">calendar</span>.getTime());</code></pre>
+<p><span class="text-user">"Ah. I remember. You already explained some about <span class="text-red"><strong>SimpleDateFormat</strong></span> to me, but I honestly don't remember much."</span></p>
+<p>"It's all very simple. You create a <span class="text-red">SimpleDateFormat</span> object and pass it the date pattern you want to get. Then you call the format method, and it gives you the passed date in the desired form."</p>
+<p><span class="text-user">"Sounds interesting. I'd like more details."</span></p>
+<p>"Here you go. The details. Here are some of the letters that can be used in the date pattern:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Letter</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>G</td>
+        <td>Replaced by the era (AD or BC)</td>
+    </tr>
+    <tr>
+        <td>y</td>
+        <td>Replaced by the year</td>
+    </tr>
+    <tr>
+        <td>M</td>
+        <td>Replaced by the month</td>
+    </tr>
+    <tr>
+        <td>w</td>
+        <td>Number of week in the year</td>
+    </tr>
+    <tr>
+        <td>W</td>
+        <td>Number of week in the month</td>
+    </tr>
+    <tr>
+        <td>D</td>
+        <td>Number of day in the year</td>
+    </tr>
+    <tr>
+        <td>d</td>
+        <td>Day of the month</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>Day of the week in the month</td>
+    </tr>
+    <tr>
+        <td>E</td>
+        <td>Day of the week</td>
+    </tr>
+    <tr>
+        <td>a</td>
+        <td>AM/PM (before or after noon)</td>
+    </tr>
+    <tr>
+        <td>H</td>
+        <td>Hour in 24-hour format (0-23)</td>
+    </tr>
+    <tr>
+        <td>k</td>
+        <td>Hour in 24-hour format (1-24)</td>
+    </tr>
+    <tr>
+        <td>K</td>
+        <td>Hour in 12-hour format (0-11)</td>
+    </tr>
+    <tr>
+        <td>h</td>
+        <td>Hour in 12-hour format (1-12)</td>
+    </tr>
+    <tr>
+        <td>m</td>
+        <td>Minutes</td>
+    </tr>
+    <tr>
+        <td>s</td>
+        <td>Seconds</td>
+    </tr>
+    <tr>
+        <td>S</td>
+        <td>Milliseconds</td>
+    </tr>
+    <tr>
+        <td>z</td>
+        <td>Time zone, formatted like this: Pacific Standard Time, PST</td>
+    </tr>
+    <tr>
+        <td>Z</td>
+        <td>Time zone, formatted like this: -0800/td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Cool! That's just about everything you need."</span></p>
+<p>"There are still some nuances related to repeating these letters."</p>
+<p><span class="text-viola">"If you write YY, you'll get the last two digits of the year. If you write YYYY, you get all four digits of the year."</span></p>
+<p>"There is also some complexity with months. <span class="text-green">MM is the number of the month. MMM is a three-letter abbreviation of the month, i.e. Jan, Feb, Mar, Apr, May, etc. MMMM stands for the full name of the month</span>."</p>
+<p><span class="text-corporate">"You can also display the full day of the week (using EEEE) or just the first two letters (using EE)."</span></p>
+<p><span class="text-user">"Thanks, Rishi. This SimpleDateFormat class really is useful. Now I know."</span></p>
+<p>"Enjoy using it! And good luck!"</p>

@@ -1,0 +1,188 @@
+<p><span class="text-user">"Oh, Rishi! Hi!"</span></p>
+<p>"Hi, Amigo! How's life?"</p>
+<p><span class="text-user">"Great. Bilaabo has just been telling me a bunch of interesting things about File, and how to work with it."</span></p>
+<p>"As it happens, I think I have something to add on this topic."</p>
+<p><span class="text-user">"Really? Then I'm all ears."</span></p>
+<p>"Okay, listen up. Java is constantly evolving. Its developers are constantly looking for new ways to do different things more efficiently. In Java 7, they added an alternative to the File class."</p>
+
+<a href='https://cdn.codegym.cc/images/article/717bf622-d051-421f-b191-a14b73923b8a/original.jpeg' target='_blank'><img data-id="717bf622-d051-421f-b191-a14b73923b8a" data-max-width="850" alt="Files, Path - 1" src="https://cdn.codegym.cc/images/article/717bf622-d051-421f-b191-a14b73923b8a/original.jpeg"></a>
+
+<p><span class="text-user">"Alternative?"</span></p>
+<p>"Yep. They took the <strong>File</strong> class as the basis, added some new stuff, renamed the methods, and then also split it into two. So now there are two new class: <strong><span class="text-user">Path</span></strong> and <strong><span class="text-red">Files</span></strong>. <strong><span class="text-user">Path</span></strong> is actually the new analogue of the File class, and <strong>File</strong> is a utility class (analogous to the Arrays and Collections classes). All the static methods of the File class go there. Doing it this way is 'more correct' in terms of OOP."</p>
+<p><span class="text-user">"Well, if it's in terms of OOP, then okay. So what changed?"</span></p>
+<p>"First, they decided not to reproduce the methods that returned <strong>String</strong> and <strong>File</strong> objects. In the <span class="text-user">Path</span> class, all methods return a <span class="text-user">Path</span>.</p>
+<p>"Second, they moved a lot of static utility methods into the <span class="text-red">Files</span> class."</p>
+<p>"Third, it became more convenient to work with relative paths."</p>
+<p>"Here is a list of the methods:"</p>
+<table style="width: 100%;">
+    <tbody>
+    <tr>
+        <th width="50%">Methods of the Path class</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>isAbsolute</strong>()</code></td>
+        <td>Returns true if the path is absolute.</td>
+    </tr>
+    <tr>
+        <td><code>Path <strong>getRoot</strong>()</code></td>
+        <td>Returns the root of the current path, i.e. the topmost directory.</td>
+    </tr>
+    <tr>
+        <td><code>Path <strong>getFileName</strong>()</code></td>
+        <td>Returns the file name from the current path.</td>
+    </tr>
+    <tr>
+        <td><code>Path <strong>getParent</strong>()</code></td>
+        <td>Returns the directory from the current path.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>startsWith</strong>(Path other)</code></td>
+        <td>Checks whether the current path begins with the passed path.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>endsWith</strong>(Path other)</code></td>
+        <td>Checks whether the current path ends with the passed path.</td>
+    </tr>
+    <tr>
+        <td><code>Path <strong>normalize</strong>()</code></td>
+        <td>Normalizes the current path. For example, converts «c:/dir/dir2/../a.txt» to «c:/dir/a.txt»</td>
+    </tr>
+    <tr>
+        <td><code>Path <strong>relativize</strong>(Path other)</code></td>
+        <td>Calculates the relative path of two paths, i.e. «the difference between the paths»</td>
+    </tr>
+    <tr>
+        <td><code>Path <strong>resolve</strong>(String other)</code></td>
+        <td>Resolves an absolute path using the current and relative paths.</td>
+    </tr>
+    <tr>
+        <td><code>URI <strong>toUri</strong>()</code></td>
+        <td>Returns the URI if the current path/file.</td>
+    </tr>
+    <tr>
+        <td><code>Path <strong>toAbsolutePath</strong>()</code></td>
+        <td>Converts the path to an absolute path if it is relative.</td>
+    </tr>
+    <tr>
+        <td><code>File <strong>toFile</strong>()</code></td>
+        <td>Returns a File object that corresponds to the current Path object.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"And the current path—what's that?"</span></p>
+<p>"This is the path that was passed to the constructor of the Path object whose methods are being called."</p>
+<p><span class="text-user">"OK. So what methods does the <span class="text-red">Files</span> class have?"</span></p>
+<p>"Are you in a hurry to get somewhere? I'll tell you right now. Here are the most important methods:"</p>
+<table style="width: 100%;">
+    <tbody>
+    <tr style="height: 24px;">
+        <th style="height: 24px;" width="50%">Methods of the Files class</th>
+        <th style="height: 24px;" width="50%">Description</th>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>Path <strong>createFile</strong>(…)</code></td>
+        <td style="height: 25px;">Creates a file on disk.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>Path <strong>createDirectory</strong>(…)</code></td>
+        <td style="height: 25px;">Creates a directory.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>Path <strong>createDirectories</strong>(…)</code></td>
+        <td style="height: 25px;">Creates a directory and all its subdirectories.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>Path <strong>createTempFile</strong>(…)</code></td>
+        <td style="height: 25px;">Creates a temporary file.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>Path <strong>createTempDirectory</strong>(…)</code></td>
+        <td style="height: 25px;">Creates a temporary directory.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>void <strong>delete</strong>(Path path)</code></td>
+        <td style="height: 25px;">Deletes a file.</td>
+    </tr>
+    <tr style="height: 50px;">
+        <td style="height: 50px;"><code>Path <strong>copy</strong>(Path source, Path target,…)</code></td>
+        <td style="height: 50px;">Copies a file.</td>
+    </tr>
+    <tr style="height: 50px;">
+        <td style="height: 50px;"><code>Path <strong>move</strong>(Path source, Path target,…)</code></td>
+        <td style="height: 50px;">Moves a file.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>boolean <strong>isSameFile</strong>(Path, Path)</code></td>
+        <td style="height: 25px;">Compares two files.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>boolean <strong>isDirectory</strong>(Path)</code></td>
+        <td style="height: 25px;">Is the Path a directory?</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>boolean <strong>isRegularFile</strong>(Path)</code></td>
+        <td style="height: 25px;">Is the Path a file?</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>long <strong>size</strong>(Path)</code></td>
+        <td style="height: 25px;">Returns the file size.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>boolean <strong>exists</strong>(Path)</code></td>
+        <td style="height: 25px;">Does an object with the same name exist?</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>boolean <strong>notExists</strong>(Path)</code></td>
+        <td style="height: 25px;">Does an object with the same name not exist?</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>long <strong>copy</strong>(InputStream, OutputStream)</code></td>
+        <td style="height: 25px;">Copies bytes from the InputStream to the OutputStream.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>long <strong>copy</strong>(Path, OutputStream)</code></td>
+        <td style="height: 25px;">Copies all bytes from the Path to the OutputStream.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>long <strong>copy</strong>(InputStream, Path)</code></td>
+        <td style="height: 25px;">Copies all bytes from the InputStream to the Path.</td>
+    </tr>
+    <tr style="height: 50px;">
+        <td style="height: 50px;"><code>byte[] <strong>read</strong>(InputStream, int initialSize)</code></td>
+        <td style="height: 50px;">Reads an array of bytes from the InputStream.</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="height: 25px;"><code>byte[] <strong>readAllBytes</strong>(Path path)</code></td>
+        <td style="height: 25px;">Reads all bytes from the InputStream.</td>
+    </tr>
+    <tr style="height: 50px;">
+        <td style="height: 50px;"><code>List&lt;String&gt; <strong>readAllLines</strong>(Path path,..)</code></td>
+        <td style="height: 50px;">Reads the text file and returns a list of strings.</td>
+    </tr>
+    <tr style="height: 50px;">
+        <td style="height: 50px;"><code>Path <strong>write</strong>(Path path, byte[] bytes,…)</code></td>
+        <td style="height: 50px;">Writes an array of bytes to a file.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"How interesting! So many cool functions, and all in the same place."</span></p>
+<p>"Well look. Suppose you want to download a file from the Internet, and then send it to someone. To do this, it's very convenient to create a temporary file on disk and save the read data to it."</p>
+<p><span class="text-user">"Is it difficult to download a file from the Internet?"</span></p>
+<p>"It's very simple. Look at this example:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>URL</strong> url = new <strong>URL</strong>("<span class="text-green">https://www.google.com.ua/images/srpr/logo11w.png</span>");
+InputStream inputStream = url.openStream();
+
+Path <span class="text-corporate">tempFile</span> = <span class="text-red">Files</span>.<span class="text-viola">createTempFile</span>("temp-",".tmp");
+<span class="text-red">Files</span>.<strong>copy</strong>(<span class="text-user">inputStream</span>, <span class="text-corporate">tempFile</span>);</code></pre>
+<p><span class="text-user">"And that's it?"</span></p>
+<p>"Yes, what did you expect to see? There are only 4 lines."</p>
+<p>"<strong>Line 1.</strong> Creates a URL object, to which the URL of the image file is passed.</p>
+<p>"<strong>Line 2.</strong> A stream for reading a file (InputStream) is opened on the url object.</p>
+<p>"<strong>Line 3.</strong> The <code><span class="text-viola">createTempFile</span></code> method is used to create a temporary file.</p>
+<p>"<strong>Line 4.</strong> The Files.copy method copies data from <code><span class="text-user">inputStream</span></code> to <code><span class="text-corporate">tempFile</span></code>. That's it."</p>
+<p><span class="text-user">"Ingenious!"</span></p>
+<p>"Great. I'm glad you like it. I think you can figure out the rest of the methods yourself. And I'll ask Diego to give you several tasks about them."</p>
+<p>"By the way, here's a good <a href='https://docs.oracle.com/javase/tutorial/essential/io/legacy.html' target='_blank'>link</a> on this material"</p>

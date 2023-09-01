@@ -1,0 +1,81 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Today I want to tell you about the <strong>StringReader</strong> and <strong>StringWriter</strong> classes. In principle, there won't be much that will be new to you, but sometimes these classes are very useful. But, at the very least, I want you to know that they exist."</p>
+<p>"These classes are the simplest implementations of the abstract Reader and Writer classes. And they are basically similar to FileReader and FileWriter. However, unlike those, these don't work with data in a file on disk. Instead, they work with a String in the JVM's memory."</p>
+<p><span class="text-user">"Why would we need such classes?"</span></p>
+<p>"Sometimes they are needed. Essentially, <strong>StringReader</strong> is an adapter between the <strong>String</strong> and <strong>Reader</strong> classes. And <strong>StringWriter</strong> is a String that inherits <strong>Writer</strong>. Yeah... I can tell that's not the best explanation. It will be better to look at a couple of examples first."</p>
+<p>"For example, suppose you want to test your method, which reads data from the Reader object passed to it. We could do it like this:"</p>
+<div class="code-heading">Reading from a Reader object:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static</strong> void <strong>main</strong> (<strong>String[] args</strong>) throws <strong>Exception</strong>
+{
+ String <span class="text-user">test</span> = "<span class="text-green">Hi!\n My name is Richard\n I'm a photographer\n</span>";
+
+ // This line is key: we "convert" the String into a Reader.
+ StringReader <span class="text-red">reader</span> = <strong>new</strong> StringReader(<span class="text-user">test</span>);
+
+ <span class="text-viola">executor</span>(<span class="text-red">reader</span>);
+}
+
+public static void <span class="text-viola">executor</span>(Reader <span class="text-red">reader</span>) throws <strong>Exception</strong>
+{
+ <span class="text-viola">BufferedReader</span> br = new <span class="text-viola">BufferedReader</span>(reader);
+ String <span class="text-user">line</span>;
+ <strong>while</strong> (line = br.readLine() != null)
+ {
+ <strong>System.out</strong>.println(line);
+ }
+}</code></pre>
+<p><span class="text-user">"In other words, we simply took a String, wrapped it in a StringReader, and then passed that instead of a Reader object? And everything will be read from it like we need?"</span></p>
+<p>"Yep. Hmm. And there's a point to this. Now let's test the methods of StringWriter. To do this, we'll make the example more complicated. Now it won't simply read the lines and display them on the screen, instead it will reverse them and output them to the writer object. For example:"</p>
+<div class="code-heading">Reading from the reader object and writing to the writer object:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void main (String[] args) throws Exception</strong>
+{
+ // The Reader must read this String.
+ String <span class="text-user">test</span> = "<span class="text-green">Hi!\n My name is Richard\n I'm a photographer\</span>n";
+
+ // Wrap the String in a StringReader.
+ StringReader <span class="text-red">reader</span> = new StringReader(<span class="text-user">test</span>);
+
+ // Create a StringWriter object.
+ StringWriter <span class="text-green">writer</span> = new StringWriter();
+
+ // Copy strings from the Reader to the Writer, after first reversing them.
+ <span class="text-viola">executor</span>(<span class="text-red">reader</span>, <span class="text-green">writer</span>);
+
+ // Get the text that was written to the Writer.
+ <strong>String</strong> result = <span class="text-green">writer</span>.<span class="text-red">toString</span>();
+
+ // Display the text from the Writer on the screen.
+ <strong>System.out.println</strong>("Result: "+ result);
+}
+
+<strong>public static void</strong> <span class="text-viola">executor</span>(Reader <span class="text-red">reader</span>, Writer <span class="text-green">writer</span>) <strong>throws Exception</strong>
+{
+ <span class="text-viola">BufferedReader</span> br = <strong>new</strong> <span class="text-viola">BufferedReader</span>(<span class="text-red">reader</span>);
+<strong>String <span class="text-corporate">line</span></strong>;
+
+ // Read a string from the Reader.
+<strong>while</strong> (<span class="text-corporate">line</span> = <span class="text-corporate">br</span>.readLine()) != null)
+ {
+
+ // Reverse the string.
+  <span class="text-viola">StringBuilder</span> sb = new <span class="text-viola">StringBuilder</span>(<span class="text-corporate">line</span>);
+  String <strong><span class="text-corporate">newLine</span></strong> = <span class="text-viola">sb.reverse</span>().toString();
+
+ // Write the string to the Writer.
+  <span class="text-green">writer</span>.write(<strong><span class="text-corporate">newLine</span></strong>);
+ }
+}</code></pre>
+<p>"We created a <strong>StringWriter</strong> object that contains a string that stores everything written to this <strong>writer</strong>. And to get it, you just need to call the <strong><span class="text-red">toString</span></strong>() method."</p>
+<p><span class="text-user">"Hmm. Somehow it all seems too easy. The executor method works with the <strong><span class="text-red">reader</span></strong> and <strong><span class="text-green">writer</span></strong> stream objects, but we're working with strings in the main method.</span></p>
+<p><span class="text-user">"Is it all really that simple?"</span></p>
+<p>"Yep. To convert a String to a <strong>Reader</strong>, just write this:"</p>
+<div class="code-heading">Creating a Reader from a String</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String <span class="text-red">s</span> = "<span class="text-green">data</span>";
+Reader <span class="text-viola">reader</span> = new StringReader(<span class="text-red">s</span>);</code></pre>
+<p>"And converting a StringWriter to a String is even easier:"</p>
+<div class="code-heading">Getting a String from a Writer</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Writer <strong><span class="text-red">writer</span></strong> = new StringWriter();
+/* Here we write a bunch of data to the writer */
+String <span class="text-corporate">result</span> = <span class="text-red"><strong>writer</strong></span>.<span class="text-red">toString</span>();</code></pre>
+<p><span class="text-user">"These are excellent classes, in my opinion. Thanks for telling me about them, Ellie."</span></p>

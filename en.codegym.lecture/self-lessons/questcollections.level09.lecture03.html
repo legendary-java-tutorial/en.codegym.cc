@@ -1,0 +1,98 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie! Did you do your hair differently? It looks good on you!"</span></p>
+<p>"Really? Thanks!"</p>
+<p>"Today I'm going to tell you about working in IntelliJ IDEA."</p>
+<p><span class="text-user">"But I've been using it for quite a while now."</span></p>
+<p>"Yes, I know. That's why I want to tell you about a few things that make life much simpler."</p>
+<p>"The first and most important thing that every developer must be able to do is debug programs.  'Bug' is programmer slang for errors in a program."</p>
+<p>There are two modes for running your application within IntelliJ IDEA.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Button</th>
+        <th>Mode</th>
+    </tr>
+    <tr>
+        <td><img data-max-width="19" alt="IDEA: debug, breakpoints - 1" src="https://cdn.codegym.cc/images/article/d00a8b4e-cb2b-4dcf-af00-684d39451c20/original.png"></td>
+        <td>Run the program normally</td>
+    </tr>
+    <tr>
+        <td><img data-max-width="18" alt="IDEA: debug, breakpoints - 2" src="https://cdn.codegym.cc/images/article/0011862f-e2e6-46c5-b17e-a48d406f924e/original.png"></td>
+        <td>Run the program in debug mode</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Ah. The button shaped like a bug is for debugging. That's awesome."</span></p>
+<p>"<strong>Here's the most important thing!</strong> When running in debug mode, you can execute the application one step at a time. One line at a time."</p>
+<p>"And the most important part of debugging is <strong>breakpoints</strong>."</p>
+<p>"You can put a <strong>BreakPoint</strong> on any line of code. <span class="text-green">A program running in debug mode will reach this point and stop. To add a breakpoint, place your cursor on the desired line and press Ctrl+F8. To remove it, press Ctrl+F8 again.</span>"</p>
+<p>"To continue executing the program until the next breakpoint, press F5."</p>
+<p>"To continue stepping through the program, press F7 or F8."</p>
+<p><span class="text-corporate">"If you press F7, the debugger will step into methods when they are called."</span></p>
+<p><span class="text-corporate">"If you press F8, a method call will be treated as a single step. The debugger won't step into methods."</span></p>
+<p><span class="text-user">"Can you explain that last part in a little more detail?"</span></p>
+<p>"Sure. Here, copy this code and I'll use it as an example as I explain what to do:"</p>
+<div class="code-heading"> Code </div>
+<pre data-line="" data-start="" class="line-numbers language-java"><code>package com.javarush.test;
+
+public class MainClass
+{
+ public static void main(String[] args)
+ {
+  int n = 100;
+  int sum = 0;
+
+  for (int i = 0; i< n; i++)
+  {
+   sum += i;
+  }
+
+  System.out.println(sum);
+ }
+}</code></pre>
+<p>"In this example, we're simply calculating the sum of numbers from 0 to n."</p>
+<h3>How to place a breakpoint</h3>
+<p><span class="text-corporate">"Option 1: Put the cursor on the desired line and press Ctrl+F8"</span></p>
+<p><span class="text-corporate">"Option 2: Left-click the desired line."</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>How to place a breakpoint</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+<td>
+<img data-id="8f9f4778-25a0-4a7e-818e-e9ab5d84cc33" data-max-width="475" alt="IDEA: debug, breakpoints - 3" src="https://cdn.codegym.cc/images/article/8f9f4778-25a0-4a7e-818e-e9ab5d84cc33/original.jpeg"></td>
+       <td><img data-id="84503c39-1c93-4f5d-b2ce-9b42fafe45ef" data-max-width="475" alt="IDEA: debug, breakpoints - 4" src="https://cdn.codegym.cc/images/article/84503c39-1c93-4f5d-b2ce-9b42fafe45ef/original.jpeg"></td>
+    </tr>
+    </tbody>
+</table>
+<p>"To remove a breakpoint, <span class="text-corporate">click the red circle or press Ctrl+F8.</span>"</p>
+<p>"Now we start the program by clicking the debug button."</p>
+<p>"You should get something like this:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/4853c980-d2e1-42f0-b82e-ede69cd6667b/original.jpeg' target='_blank'><img data-id="4853c980-d2e1-42f0-b82e-ede69cd6667b" data-max-width="475" alt="IDEA: debug, breakpoints - 5" src="https://cdn.codegym.cc/images/article/4853c980-d2e1-42f0-b82e-ede69cd6667b/original.jpeg"></a>
+
+<p><span class="text-corporate">"All of the code has been executed up to the blue line.</span> The line highlighted in blue hasn't been executed yet."</p>
+<p><span class="text-corporate">"Press F8 to execute it.</span> There you should end up with something like the picture below:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/772b63c4-8073-4f22-9110-57df4cbcb193/original.jpeg' target='_blank'><img data-id="772b63c4-8073-4f22-9110-57df4cbcb193" data-max-width="475" alt="IDEA: debug, breakpoints - 6" src="https://cdn.codegym.cc/images/article/772b63c4-8073-4f22-9110-57df4cbcb193/original.jpeg"></a>
+
+<p><strong><span class="text-red">"Red</span></strong> indicates a breakpoint<br />
+    <strong><span class="text-user">"Blue </span></strong> indicates the current debug line"</p>
+<p>"Let's replace the number 100 in the code with a 5, and try running the entire program one line at a time. Here's the sequence of steps:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/9a11f093-dc05-41b3-ab0c-a31b165ad264/original.jpeg' target='_blank'><img data-id="9a11f093-dc05-41b3-ab0c-a31b165ad264" data-max-width="850" alt="IDEA: debug, breakpoints - 7" src="https://cdn.codegym.cc/images/article/9a11f093-dc05-41b3-ab0c-a31b165ad264/original.jpeg"></a>
+
+<p><span class="text-corporate">"The first step is the line highlighted in red."</span></p>
+<p><span class="text-corporate">"Blank lines as well</span> as curly braces <span class="text-corporate">are skipped</span>, since there's no <span class="text-corporate">code</span> there."</p>
+<p>"Now make the program a little more complicated, and I'll show you the difference between F7 and F8."</p>
+
+<a href='https://cdn.codegym.cc/images/article/64483e99-49af-4f72-8d57-a5da7ad7047e/original.jpeg' target='_blank'><img data-id="64483e99-49af-4f72-8d57-a5da7ad7047e" data-max-width="1024" alt="IDEA: debug, breakpoints - 8" src="https://cdn.codegym.cc/images/article/64483e99-49af-4f72-8d57-a5da7ad7047e/original.jpeg"></a>
+
+<p><span class="text-corporate">"If you press F8, then you execute the current line in a single step."</span></p>
+<p><span class="text-corporate">"If you press F7 and the current line is a method call, then you'll 'step into' it and can execute it one line at a time."</span></p>
+<p><span class="text-user">"So, the difference is whether we step into the method."</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"Can I use F7 and F8? In other words, can I skip some methods that aren't of interest to me, but step into others?"</span></p>
+<p>"Yes."</p>

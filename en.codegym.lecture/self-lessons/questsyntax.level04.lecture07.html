@@ -1,0 +1,226 @@
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/I0KJO9O06Dk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Hi, Amigo. Let me tell you about a new data type. The <span class="text-red">boolean</span>. Variables of this type can take only two values: <span class="text-green"><strong>true</strong></span> and <span class="text-red"><strong>false</strong>.</span>"</p>
+<p><span class="text-user">"How do we use it?"</span></p>
+<p>"This type is implicitly used in many places. <span class="text-viola">Just as any addition operation produces a number, the result of any comparison is a <strong>boolean</strong></span>. Here are some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">boolean</span> m;</code></pre>
+        </td>
+        <td rowspan="2">These two expressions are equivalent. The default value of a <span class="text-red">boolean</span> variable is <strong>false</strong>.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">boolean</span> m = <strong>false</strong>;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>if (a &gt; b)
+    System.out.println(a);</code></pre>
+        </td>
+        <td rowspan="2">The result of the comparison (either <strong>true</strong> or <strong>false</strong>) will be assigned to the variable <code><span class="text-green">m</span></code>. The condition is satisfied if the expression evaluates to <strong>true</strong>.</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong><span class="text-red">boolean</span></strong> <span class="text-green">m</span> = (a &gt; b);
+if (<span class="text-green">m</span>)
+    System.out.println(a);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong><span class="text-red">boolean</span></strong> m = (a &gt; b);
+<strong>if</strong> (m == <strong>true</strong>)
+    System.out.println(a);</code></pre>
+        </td>
+        <td rowspan="2">There is no need to compare a logical (<span class="text-red">boolean</span>) variable with <strong>true</strong> or <strong>false</strong>. The result of the comparison will be a <span class="text-red">boolean</span> that matches the other variable. For example, <span class="text-green">true == true evaluates to true;</span> <span class="text-red">true == false evaluates to false</span>.</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong><span class="text-red">boolean</span></strong> m = (a &gt; b);
+if (m)
+    System.out.println(a);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>&#34;More examples:&#34;</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public <strong><span class="text-red">boolean</span></strong> isALessThanB (int a, int b)
+{
+    if (a &lt; b)
+        return true;
+    else
+        return false;
+}</code></pre>
+        </td>
+        <td rowspan="4">This method verifies that number a is less than number b.</p>
+            <p>Here are four equivalent comparisons. The last one is the most compact and correct. Always try to use <span class="text-red">compact</span> notation.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public <strong><span class="text-red">boolean</span></strong> isALessThanB (int a, int b)
+{
+   <strong><span class="text-red">boolean</span></strong> <span class="text-green">m</span> = (a &lt; b);
+    if (<span class="text-green">m</span>)
+        return true;
+    else
+        return false;
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public <strong><span class="text-red">boolean</span></strong> isALessThanB (int a, int b)
+{
+    <strong><span class="text-red">boolean</span> <span class="text-green">m</span></strong> = (a &lt; b);
+    return <span class="text-green">m</span>;
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public <span class="text-red">boolean</span> <span class="text-yellow">isALessThanB</span> (int a, int b)</span>
+{
+    return a &lt; b;
+}</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0444"></div>
+<p><span class="text-user">"What if I want to write 0&lt;a&lt;b?"</span></p>
+<p>"Java doesn't have a comparison operator that takes three operands. So, you would need to do it like this: <span class="text-green">(0&lt;a) AND (a&lt;b)</span>."</p>
+<p><span class="text-user">"Do I write the word AND?"</span></p>
+<p>"Wait. I'll explain that. Java has three logical operators: <span class="text-corporate">AND</span>, <span class="text-corporate">OR</span> and <span class="text-corporate">NOT</span>. You can use them to construct conditions of varying complexity. You can use these operators only with <span class="text-red">boolean</span> expressions. So, you can't write <span class="text-viola">(a+1)</span> <span class="text-viola">AND (3)</span>, but <span class="text-viola">(a&gt;1)AND (a&lt;3)</span> is OK."</p>
+<p>"The <span class="text-corporate">NOT</span> operator is unary: it affects only the expression to the right. It's more like a minus sign before a negative number rather than a multiplication sign between two numbers."</p>
+<p>"You can perform various operations on <span class="text-red">boolean</span> (logical) variables."</p>
+<p><span class="text-user">"Like what?"</span></p>
+<p>"Let's take a look:"</p>
+<table class="table table--striped">
+    <tbody>
+    <tr>
+        <th style="width: 20% !important;">Logical operator</th>
+        <th style="width: 20% !important;">Java notation</th>
+        <th>Expression</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td style="text-align: center;" rowspan="4">AND</td>
+        <td style="text-align: center;" rowspan="4">&amp;&amp;</td>
+        <td style="text-align: center;"><span class="text-green">true</span> &amp;&amp; <span class="text-green">true</span></td>
+        <td style="text-align: center;"><span class="text-green">true</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;"><span class="text-green">true</span> &amp;&amp; <span class="text-red">false</span></td>
+        <td style="text-align: center;"><span class="text-red">false</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;"><span class="text-red">false</span> &amp;&amp; <span class="text-green">true</span></td>
+        <td style="text-align: center;"><span class="text-red">false</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;"><span class="text-red">false</span> &amp;&amp; <span class="text-red">false</span></td>
+        <td style="text-align: center;"><span class="text-red">false</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;" rowspan="4">OR</td>
+        <td style="text-align: center;" rowspan="4">||</td>
+        <td style="text-align: center;"><span class="text-green">true</span> || <span class="text-green">true</span></td>
+        <td style="text-align: center;"><span class="text-green">true</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;"><span class="text-green">true</span> || <span class="text-red">false</span></td>
+        <td style="text-align: center;"><span class="text-green">true</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;"><span class="text-red">false</span> || <span class="text-green">true</span></td>
+        <td style="text-align: center;"><span class="text-green">true</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;"><span class="text-red">false</span> || <span class="text-red">false</span></td>
+        <td style="text-align: center;"><span class="text-red">false</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;" rowspan="2">NOT</td>
+        <td style="text-align: center;" rowspan="2">!</td>
+        <td style="text-align: center;">! <span class="text-green">true</span></td>
+        <td style="text-align: center;"><span class="text-red">false</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">! <span class="text-red">false</span></td>
+        <td style="text-align: center;"><span class="text-green">true</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;" colspan="2" rowspan="6">Common combinations and expressions</td>
+        <td style="text-align: center;">m &amp;&amp; !m</td>
+        <td style="text-align: center;"><span class="text-red">false</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">m || !m</td>
+        <td style="text-align: center;"><span class="text-green">true</span></td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">! (a &amp;&amp; b)</td>
+        <td style="text-align: center;">!a || !b</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">! (a || b)</td>
+        <td style="text-align: center;">!a &amp;&amp; !b</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Could you give me more examples?"</span></p>
+<p>"Sure:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Java notation</th>
+        <th>Logical notation</th>
+    </tr>
+    <tr>
+        <td style="text-align: center;">(a&lt;3) &amp;&amp; (a&gt;0)</td>
+        <td style="text-align: center;">(a &lt; 3) AND (a&gt;0)</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">(a&gt;10) || (a&lt;100)</td>
+        <td style="text-align: center;">(a&gt;10) OR (a&lt;100)</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">(a&lt;b) &amp;&amp; (!(c&lt;=d))</td>
+        <td style="text-align: center;">(a&lt;b) AND (NOT (c&lt;=d))</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Now, do some tasks."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0426"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0427"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0428"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0429"></div>

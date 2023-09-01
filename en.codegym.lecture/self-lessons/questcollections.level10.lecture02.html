@@ -1,0 +1,60 @@
+<p>"The HTTP protocol was designed for exchanging files, so it has several built-in <strong>commands for this, which are <span class="text-red">often called methods.</span></strong>"</p>
+<p>"Here they are: <span class="text-green">GET, POST, PUT, DELETE</span><span class="text-neon">, OPTIONS, HEAD, PATCH, TRACE, LINK, UNLINK, CONNECT</span>."</p>
+<p>"I'll tell you about the 4 main methods."</p>
+<p><span class="text-corporate">"The GET method is designed for receiving a file based on a request (URL). A file request assumes that nothing but the request itself is sent to the server. It is also considered normal to cache the results (responses) of such requests. A vivid example of this caching is the loading of images by browsers."</span></p>
+<p><span class="text-corporate">"The PUT method is designed for adding files to the server. The file path is expected to be the path specified in the URL. The body of the request must contain the file."</span></p>
+<p><span class="text-corporate">"The POST method is designed for updating files on the server. Both data and files are sent in requests and in responses."</span></p>
+<p><span class="text-corporate">"The DELETE method is designed for deleting files based on their URLs."</span></p>
+<p><span class="text-user">"Can you summarize this information in a single table?"</span></p>
+<p>"Sure:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/d816903a-346e-420a-9ca6-bf29427814e2/original.jpeg' target='_blank'><img data-id="d816903a-346e-420a-9ca6-bf29427814e2" data-max-width="850" alt="HTTP, port, request, response, REST - 1" src="https://cdn.codegym.cc/images/article/d816903a-346e-420a-9ca6-bf29427814e2/original.jpeg"></a>
+
+<p><span class="text-viola">"Actually, the web stopped thinking of the URL as a file path and started treating it as a request. As a result, the GET and POST methods became the most common."</span></p>
+<p><span class="text-red">"The POST method is the most universal: it supports both a full-fledged request and a full-fledged response."</span></p>
+<p><span class="text-green">"That said, the GET method is often regarded as a simplified version of POST. It doesn't require a full-fledged request, only the URL as the request."</span></p>
+<p><span class="text-user">"What kind of request is sent to the server when I open a link in a browser?"</span></p>
+<p>"Every time you enter a new URL in your browser, the browser sends a GET request. After all, you don't send any data other than the URL."</p>
+<p><span class="text-user">"By the way, I see you made a Status column in the table. What's that?"</span></p>
+<p>"Any server response using the HTTP protocol must begin with the status of the request."</p>
+<p>"Here are the status codes:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="33%">Status code</th>
+        <th width="33%">Description</th>
+        <th width="33%">Example</th>
+    </tr>
+    <tr>
+        <td>1xx</td>
+        <td>Informational response</td>
+        <td>101</td>
+    </tr>
+    <tr>
+        <td>2xx-</td>
+        <td>Success</td>
+        <td>200</td>
+    </tr>
+    <tr>
+        <td>3xx</td>
+        <td>Redirection</td>
+        <td>301,302,303,305</td>
+    </tr>
+    <tr>
+        <td>4xx</td>
+        <td>Client error</td>
+        <td>404</td>
+    </tr>
+    <tr>
+        <td>5xx</td>
+        <td>Server error</td>
+        <td>501</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-corporate">"When everything is okay, the status code 200 is usually returned."</span></p>
+<p><span class="text-corporate">"If the server wants to redirect the user to another page, it returns the new URL and the status code 302."</span></p>
+<p><span class="text-corporate">"If the requested page isn't found, it returns 404."</span></p>
+<p><span class="text-corporate">"If there is a server error, it returns status codes 501-503."</span></p>
+<p>"Somehow I don't feel well, Amigo."</p>
+<p>"I'm going to remove something from myself. You, on the other hand, can read more <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol" target="blank">here</a>."</p>

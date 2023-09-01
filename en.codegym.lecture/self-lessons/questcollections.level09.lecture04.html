@@ -1,0 +1,33 @@
+<p>"But that's not all. "Why do you think debug mode was invented?"</p>
+<p>"That was a rhetorical question."</p>
+<p>"The most interesting thing is that, while debugging, you can watch the value of every variable at every step! This includes local method variables, arguments, and almost anything really."</p>
+<p>"When you reach a breakpoint in debug mode, a special panel appears at the bottom:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/6e2dc667-1ef9-4b4a-bf46-c10407d7f96c/original.jpeg' target='_blank'><img data-id="6e2dc667-1ef9-4b4a-bf46-c10407d7f96c" data-max-width="1024" alt="IDEA: watch, quick watch - 1" src="https://cdn.codegym.cc/images/article/6e2dc667-1ef9-4b4a-bf46-c10407d7f96c/original.jpeg"></a>
+<p><strong>All of the local variables are visible in the variables section, which is <span class="text-green">highlighted in green</span></strong><br />
+    <strong>In the part of the watch window that's <span class="text-red">highlighted red</span>, you can add variables yourself</strong><br />
+    <strong>The list of threads is <span class="text-corporate">highlighted in orange</span>. And directly below that is the current thread's stack trace</strong></p>
+<p>"Now I'll press F8 three times, and the values for two new variables (sum5 and sum7) will appear in the middle window."</p>
+<p>"In the window on the bottom-right, I'll click the plus sign and add the expression 'sum5+sum7'."</p>
+<p>"Take a look at what I got:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/098154a7-c541-40bf-a5eb-07d2db03b30a/original.jpeg' target='_blank'><img data-id="098154a7-c541-40bf-a5eb-07d2db03b30a" data-max-width="1024" alt="IDEA: watch, quick watch - 2" src="https://cdn.codegym.cc/images/article/098154a7-c541-40bf-a5eb-07d2db03b30a/original.jpeg"></a>
+<p><strong>"In the bottom center, we see the value of the variables"</strong><br />
+    <strong>"On the bottom right, we see the current value of the expression sum5+sum7"</strong></p>
+<p>"The Watches window is convenient to use when variables have long and complex names, for example:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>this</strong>.connection.<strong>getProvider</strong>().getRights()<strong>.get</strong>("super")</code></pre>
+<p><span class="text-user">"Cool! Nifty stuff."</span></p>
+<p>"In addition to Watches, there is also Quick Watches. You can learn the value of any variable by simply hovering over it with the mouse. Hold the mouse over the variable for a couple of seconds and a pop-up window will show its value."</p>
+
+<a href='https://cdn.codegym.cc/images/article/ddcfa68b-850d-49e2-96ac-f3c0163a14d2/original.jpeg' target='_blank'><img data-id="ddcfa68b-850d-49e2-96ac-f3c0163a14d2" data-max-width="1024" alt="IDEA: watch, quick watch - 3" src="https://cdn.codegym.cc/images/article/ddcfa68b-850d-49e2-96ac-f3c0163a14d2/original.jpeg"></a>
+
+<p><strong>"The mouse cursor isn't visible in the screenshot, but it was in the center of the red circle (right above the variable name)."</strong></p>
+<p>"Here's the best part. You can change the value of variables!"</p>
+<p>"Just right-click a variable in the Watches or Variables windows, select the set value option, and enter a new value. Or just press F2."</p>
+<p>"Here's how it looks for me:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/bbcb4e89-29af-4370-9d18-e8658e1b4740/original.jpeg' target='_blank'><img data-id="bbcb4e89-29af-4370-9d18-e8658e1b4740" data-max-width="1024" alt="IDEA: watch, quick watch - 4" src="https://cdn.codegym.cc/images/article/bbcb4e89-29af-4370-9d18-e8658e1b4740/original.jpeg"></a>
+
+<p><strong>"You can set the variable to any value, a reference can be set to null, …"</strong></p>
+<p>"Then press Enter and that's it. The variable now has a new value."</p>
+<p><span class="text-user">"Wow, I didn't know half of this stuff. What a useful lesson."</span></p>

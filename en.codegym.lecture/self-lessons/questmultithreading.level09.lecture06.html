@@ -1,0 +1,79 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Kim."</span></p>
+<p>"I'm going to tell you about the Boolean type. It's a wrapper for the boolean type, and it's as easy as pie. Here's some simplified code from the Boolean class:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Boolean
+{
+ public static final Boolean TRUE = new Boolean(true);
+ public static final Boolean FALSE = new Boolean(false);
+
+ private final boolean <span class="text-red">value</span>;
+
+ public Boolean(boolean value)
+ {
+  <span class="text-red">this.value</span> = value;
+ }
+
+ public boolean booleanValue()
+ {
+  return <span class="text-red">value</span>;
+ }
+
+ public static Boolean valueOf(boolean b)
+ {
+  return (b ? TRUE : FALSE);
+ }
+}</code></pre>
+<p><span class="text-user">"In other words, the class is simply a wrapper for the boolean type."</span></p>
+<p>"Yep. And it has two constants (TRUE and FALSE), which are counterparts of the primitive values true and false."</p>
+<p>"It also handles autoboxing like a champ:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What really happens</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Boolean a = true;
+Boolean b = true;
+Boolean c = false;
+boolean d = a;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Boolean a = Boolean.valueOf(true);
+Boolean b = Boolean.valueOf(true);
+Boolean c = Boolean.valueOf(false);
+boolean d = a.booleanValue();</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"And here's how comparisons between boolean and Boolean types work:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>boolean a = true;
+Boolean b = true; //Will be equal to Boolean.TRUE
+Boolean c = true; //Will be equal to Boolean.TRUE
+
+a == b; //true (comparison based on primitive value)
+a == c; //true (comparison based on primitive value)
+b == c; //true (comparison based on references, but they point to the same object)</code></pre>
+<p>"If you really need to create an independent Boolean object, you must create it explicitly:</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>boolean a = true;
+Boolean <span class="text-red">b = new Boolean(true);</span> //A new Boolean object
+Boolean c = true; //Will be equal to Boolean.TRUE
+
+a == b; //true (comparison based on primitive value)
+a == c; //true (comparison based on primitive value)
+b == c; //false (comparison based on references; they point to different objects)</code></pre>
+<p>"I think that's all for now."</p>
+<p><span class="text-user">"Yeah, your lessons are shorter than Bilaabo's."</span></p>
+<p><span class="text-user">"So, can I use Boolean inside an if condition?"</span></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Boolean less = (2 &lt; 3);
+if (less)
+{
+….
+}</code></pre>
+<p>"Yes, just don't forget that if less is null, then a NullPointerException will be thrown."</p>
+<p><span class="text-user">"Yep, I already get that. I just don't keep it all in my head all the time."</span></p>

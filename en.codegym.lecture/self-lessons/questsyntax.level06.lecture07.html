@@ -1,0 +1,32 @@
+<p>"<span class="text-green">In addition to static methods, there are static classes.</span> We'll discuss these in more detail later. For now, let me just show you an example:"</p>
+<div class="code-heading">Example:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class StaticClassExample
+{
+    <span class="text-user">private static int catCount = 0;</span>
+
+    public static void main(String[] args) throws Exception
+    {
+        Cat bella = new Cat("Bella");
+        Cat tiger = new Cat("Tiger");
+
+        <span class="text-yellow">System.out.println</span>("Cat count " + <span class="text-user">catCount</span>);
+    }
+
+     <span class="text-red">public static class Cat</span>
+    <span class="text-red">{</span>
+        <span class="text-red">private String name;</span>
+
+        <span class="text-red">public Cat(String name)</span>
+         <span class="text-red">{</span>
+            <span class="text-red">this.name = name;</span>
+            <span class="text-red">StaticClassExample.</span><span class="text-user">catCount</span><span class="text-red">++;</span>
+         <span class="text-red">}</span>
+     <span class="text-red">}</span>
+
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task06.task0624"></div>
+<p>"<span class="text-green">You can create as many Cat objects as you want.</span> But this isn't the case with a static variable. Only one copy of a static variable exists."</p>
+<p>"The main purpose of using the <strong>static</strong> modifier in the class declaration is to control the relationship between the <strong>Cat</strong> and <strong>StaticClassExample</strong> classes. The idea is roughly this: <span class="text-red">the Cat class is not linked to StaticClassExample objects</span> and can't access the instance (non-static) variables of the StaticClassExample class."</p>
+<p><span class="text-user">"So I can create classes inside classes?"</span></p>
+<p>"Yes. Java allows that, but don't give it too much thought right now. It will become clearer when I explain some more things to you in the future."</p>
+<p><span class="text-user">"I hope so, Rishi."</span></p>

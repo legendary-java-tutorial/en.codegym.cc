@@ -1,0 +1,189 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"But, Bilaabo, you've already said hello."</span></p>
+<p>"Really? Well, I still like starting each lesson with that phrase."</p>
+<p>"Today we're going to study the String class in depth."</p>
+<p><span class="text-user">"But, I already know everything about it. I even know that the String class is immutable."</span></p>
+<p>"The String class has 46 methods. How many of them do you know?"</p>
+<p><span class="text-user">"No more than ten. Actually, probably about 5 max."</span></p>
+<p>"Then listen up."</p>
+<p>"Java's creators noticed that most strings in programs aren't intended to be modified, but sometimes they get modified anyway. It's very annoying when you create a String, save something important in it, pass it to someone else's method, and it gets changed. To keep this from happening, they decided to create both mutable and immutable Strings."</p>
+<p>"The String class is for immutable strings, and the <strong>StringBuilder</strong> class is for mutable ones. Objects of these classes are easily converted to the other type. In most cases, Java developers simply need String, which proves that Java's creators were right."</p>
+<p><span class="text-user">"So if I need a String, I use the String class. And if I need a mutable String, then I use the <strong>StringBuilder</strong> class?"</span></p>
+<p>"Yes. Actually, there is another class called StringBuffer. It's a copy of StringBuilder, except all of its methods are declared as <strong>synchronized</strong>, so that the object can be accessed from different threads of the program."</p>
+<p><span class="text-user">"And what about this example? Doesn't the string get changed here?"</span></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "cat";
+s = s + "-" + s;</code></pre>
+<p>"No. There are two String objects here: «cat» and «cat-cat». The second is created using the first, but the first object doesn't change. In reality, things are far more interesting here. Here's the code the compiler generates when it compiles your example:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "cat";
+StrinsBuilder s2 = new StringBuilder(s);
+s2.append("-");
+s2.append(s);
+s = s2.toString();</code></pre>
+<p>"So, StringBuilder is almost always used to create new Strings, but sometimes the compiler simply does all of the work for you. But your version is simpler, don't you think?"</p>
+<p><span class="text-user">"Yeah, it's awesome that Java has such an advanced compiler."</span></p>
+<p>"Well, now let's walk through the String class's methods:"</p>
+<p><strong>1) How do I find a String's length?</strong></p>
+<p>"The <strong>length</strong> method returns a String's length (the number of characters in it)."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>int</strong> length();</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+int n = s.<strong>length</strong>();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int n = "Good news, everyone!".<strong>length</strong>();</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>2) How do I get a character from a String?</strong></p>
+<p>"The <strong>charAt</strong> method returns a character from a String by its index. The character indices start at 0.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>char</strong> charAt(<strong>int index</strong>)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+char n = s.<strong>charAt</strong>(5);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>char n = "Good news, everyone!".<strong>charAt</strong>(5);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>3) How do I get characters from a String?</strong></p>
+<p>How do I get characters from a String?</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>char[]</strong>toCharArray ()</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+<strong>for</strong>(char c: s.<strong>toCharArray</strong>())
+{
+System.out.println(c);
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>4) How do I compare Strings?</strong></p>
+<p>"The equals method checks if the Strings match, and the <strong>equalsIgnoreCase</strong> method checks to see if the Strings match when case is ignored.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Method(s)</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>boolean</strong> equals<strong>(Object o)</strong></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "cat";
+boolean test1 = s.<strong>equals</strong>("cat");//true
+boolean test2 = s.<strong>equals</strong>("Cat");//false
+boolean test3 = s.<strong>equals</strong>("c"+"a"+"t");//true</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>boolean</strong> equalsIgnoreCase<strong>(String str)</strong></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "cat";
+boolean test1 = s.<strong>equalsIgnoreCase</strong>("cat");//true
+boolean test2 = s.<strong>equalsIgnoreCase</strong>("Cat");//true
+boolean test3 = s.<strong>equalsIgnoreCase</strong>("cAT");//true</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>5) How do I make all of the letters in a String uppercase or lowercase?</strong></p>
+<p>"The <strong>toUpperCase</strong> method returns a copy of the String with all uppercase letters."</p>
+<p>"The <strong>toLowerCase</strong> method returns a copy of the String with all lowercase letters."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>String</strong> toUpperCase()</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = " Good news, everyone!  ";
+s = s.toUpperCase();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><p><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s == "GOOD NEWS, EVERYONE!";</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>String</strong> toLowerCase()</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+s = s.toLowerCase();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><p><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s == "good news, everyone!";</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>6) How do I remove spaces at the beginning and end of a String?</strong></p>
+<p>"The trim method returns a copy of a String with no whitespace characters at the beginning and end."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>String</strong> trim()</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "   Good news, everyone!   ";
+s = s.trim();</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><p><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s == "Good news, everyone!";</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>

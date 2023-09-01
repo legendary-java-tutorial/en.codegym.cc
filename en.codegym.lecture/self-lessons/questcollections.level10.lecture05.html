@@ -1,0 +1,103 @@
+<p>"It's me—again. And again, I have a little surprise for you."</p>
+<p>"Today I'm going to teach you <span class="text-red">how to send email using Java.</span>"</p>
+<p>"Let's start with the good news: <span class="text-green">Java has a native library for working with email.</span>"</p>
+<p>"The bad news is that this library is part of <strong>Java EE</strong>, not <strong>Java SE</strong>."</p>
+<p>"<strong>Java EE</strong> is an extended version of <strong>JavaSE</strong>, which includes classes needed for niftier applications. For example, an application for working with email."</p>
+<p><span class="text-user">"Got it, so what can be done then?"</span></p>
+<p>"Well, I suggest you just download this library and that's it."</p>
+<p>"Use IntelliJ IDEA wisely."</p>
+<p>"Create a class and add the <strong>javax.mail.*</strong> and <strong>javax.mail.internet.*</strong> libraries to the import section.</p>
+<p>"Then press <span class="text-red">Alt+Enter</span> and let <strong>IDEA</strong> do everything for you:</p>
+<p><strong>"Here's what the offer to download the missing libraries looks like:"</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/2287f03e-c8b1-4829-ac45-56f7aa97c38d/original.jpeg' target='_blank'><img data-id="2287f03e-c8b1-4829-ac45-56f7aa97c38d" data-max-width="850" alt="Send email - 1" src="https://cdn.codegym.cc/images/article/2287f03e-c8b1-4829-ac45-56f7aa97c38d/original.jpeg"></a>
+
+<p><strong>"Here's what the download window looks like:"</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/43760246-0a2f-431e-813c-4cca33c5376e/original.jpeg' target='_blank'><img data-id="43760246-0a2f-431e-813c-4cca33c5376e" data-max-width="700" alt="Send email - 2" src="https://cdn.codegym.cc/images/article/43760246-0a2f-431e-813c-4cca33c5376e/original.jpeg"></a>
+
+<p>"Or you can download it <a href="http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-eeplat-419426.html#javamail-1.4.7-oth-JPR" target="_blank">here</a>"</p>
+<p><span class="text-user">"Downloaded. What's next?"</span></p>
+<p>"You need to go to the project settings (Open Module Settings) to the Libraries section and add JAR files from the downloaded archive."</p>
+
+<a href='https://cdn.codegym.cc/images/article/89375b1f-42a5-4102-a568-964f436ca134/original.jpeg' target='_blank'><img data-id="89375b1f-42a5-4102-a568-964f436ca134" data-max-width="1024" alt="Send email - 3" src="https://cdn.codegym.cc/images/article/89375b1f-42a5-4102-a568-964f436ca134/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p>"Are the following lines no longer red?"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>import</strong> javax.mail.internet.MimeMessage;
+<strong>import</strong> javax.mail.internet.*;</code></pre>
+<p><span class="text-user">"Yep."</span></p>
+<p>"Great, let's carry on then."</p>
+<p>"There are three steps to sending an email."</p>
+<p><span class="text-viola">1) Establish a connection with the mail server that will be used to send the email</span></p>
+<p><span class="text-viola">2) Create the email and, if necessary, add attachments</span></p>
+<p><span class="text-viola">3) Send the email.</span></p>
+<p>"Let's start from the beginning."</p>
+<p>"To send an email in Java, you first need to establish a connection with the mail server."</p>
+<p>"It's best if you already have an email account on the server. <span class="text-red">Concerned about spam, modern mail servers don't want to send messages from anonymous users.</span>"</p>
+<p>"You can connect to the server with a single call to the javax.mail.Session.getDefaultInstance method:"</p>
+<div class="code-heading">Create a connection with the mail server</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">Properties props</span> = new <span class="text-green">Properties</span>();
+
+// Here we need to load data into the props object
+
+<span class="text-red">Session session</span> = <span class="text-red">Session.getDefaultInstance</span>(props);
+</code></pre>
+<p>"But you need to pass the mail server settings to this method."</p>
+<p>"For example, you can create a Mail.properties file and fill it with the desired settings, for example, something like this:"</p>
+<div class="code-heading">Mail.properties</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>mail.transport.protocol=<span class="text-red">smtp</span>
+mail.<span class="text-red">host</span>=<span class="text-red">smtp.gmail.com</span>
+mail.smtp.auth=true
+mail.<span class="text-user">user=arnold@gmail.com</span>
+mail.<span class="text-user">password=strong</span></code></pre>
+<p><span class="text-green">"The most important thing is to specify the protocol and host, but you may need additional settings, depending on how the mail server works."</span></p>
+<p>"You can simply add this data to a Properties object right in your Java code."</p>
+<p>"For example:"</p>
+<div class="code-heading">Create a connection with the mail server"</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">Properties props</span> = new <span class="text-green">Properties</span>();
+<span class="text-green">props</span>.put("mail.transport.protocol", "smtps");
+<span class="text-green">props</span>.put("mail.smtps.host", “smtp.gmail.com”);
+<span class="text-green">props</span>.put("mail.smtps.auth", "true");
+<span class="text-green">props</span>.put("mail.smtp.sendpartial", "true");
+
+<span class="text-red">Session session</span> = <span class="text-red">Session.getDefaultInstance</span>(<span class="text-green">props</span>);</code></pre>
+<p>"Great, we've got a session. Now let's create an email."</p>
+<p>"This is easier to do than it seems at first glance. For example:"</p>
+<div class="code-heading">Create a mail message</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Create a message
+<span class="text-user">MimeMessage message</span> = new <span class="text-user">MimeMessage</span>(session);
+
+// Set the message subject
+<span class="text-user">message</span>.setSubject("Test email!");
+
+// Add the message text
+<span class="text-user">message</span>.setText("Asta la vista, baby!");
+
+// Specify the recipient
+<span class="text-user">message</span>.addRecipient(Message.RecipientType.TO, new InternetAddress("stalone@gmail.com"));
+
+// Specify the delivery date
+<span class="text-user">message</span>.setSentDate(new Date());</code></pre>
+<p><span class="text-user">"I can specify any email address as a recipient?"</span></p>
+<p>"Yep. What's more, <span class="text-red">you can also specify any email address as the sender."</span></p>
+<p><span class="text-user">"Cool! I'll take that into account."</span></p>
+<p>"Now we just need to send this message."</p>
+<p>"First, we sign in to the server, and then we send our message. Just two lines of code:"</p>
+<div class="code-heading">Send a message</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Username and password for a Gmail account
+String <span class="text-corporate">userLogin</span> = “arnold@gmail.com”;
+String <span class="text-corporate">userPassword</span> = “strong”;
+
+// Sign in on the server:
+<span class="text-green">Transport transport</span> = <span class="text-red">session</span>.getTransport();
+<span class="text-green">transport</span>.connect("smtp.gmail.com", 465, <span class="text-corporate">userLogin, userPassword</span>);
+
+// Send a message:
+<span class="text-green">transport</span>.sendMessage(<span class="text-user">message</span>, <span class="text-user">message</span>.getRecipients(<span class="text-user text-viola">Message.RecipientType.TO</span>));</code></pre>
+<p><span class="text-user">"How interesting! I'll have to try it."</span></p>
+<p>"If you're wondering how to send a message with attachments, you can read about that <a href="https://en.wikipedia.org/wiki/Jakarta_Mail" target="_blank">here</a>."</p>
+<p>"If you also want to find out how to receive mail, kindly look <a href="http://www.tutorialspoint.com/javamail_api/javamail_api_gmail_smtp_server.htm" target="_blank">here</a>."</p>
+<p><span class="text-user">"Holy moly. What useful links!"</span></p>
+<p><span class="text-user">"Yeah, I'm going to make my own email client now. Cool!"</span></p>
+<p><span class="text-user">"Thanks, Ellie!"</span></p>

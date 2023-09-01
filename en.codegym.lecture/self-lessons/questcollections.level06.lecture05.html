@@ -1,0 +1,114 @@
+<p>"If you think that we're all done with the List interface, then you're mistaken. We're just getting started. Let me tell you about the <strong>LinkedList</strong> and <strong>ArrayList</strong> collections."</p>
+<h3>"I'll start with the ArrayList collection."</h3>
+<p>"Here is how this collection's inheritance diagram looks:"</p>
+
+<img src='https://cdn.codegym.cc/images/article/82ee539a-4b4d-441c-a23d-db9629ffec0d/original.png' class='img-fluid' alt=''>
+
+<p><span class="text-green">"Interfaces are green."</span></p>
+<p><span class="text-viola">"Abstract classes are purple."</span></p>
+<p><span class="text-red">"Ordinary classes are red."</span></p>
+<p>"Solid lines represent inheritance, and dashed lines represent interface implementations."</p>
+<p>"This is the simplest collection. Inside an <strong>ArrayList</strong>, elements are stored in a simple array."</p>
+<p>"This collection's primary advantage over an array is its ability to expand, i.e. its ability to increase its length as needed."</p>
+<p>"If the array runs out of space, then a second larger array is created and all of the elements from the first array are copied to it. Then the second array takes the place of the first, and the first is discarded (it will be destroyed by the garbage collector)."</p>
+<p><span class="text-user">"How much larger does the array get?"</span></p>
+<p>"The new array's length is calculated as (3*n)/2+1, where n is the old array's length. In other words, if the old array was 100 elements long, then the new one will be 300/2+1 = 151."</p>
+<p>"When adding an element to the middle of an ArrayList, all elements to the right of where the new element will be inserted are copied 1 position to the right, and then the new element is added to the empty cell."</p>
+<p>"When removing an element from the middle, all elements to the right of that element are copied 1 position to the left."</p>
+<p><span class="text-user">"Are you saying that the ArrayList makes itself longer when you add elements to it, and that it makes itself shorter when you remove elements?"</span></p>
+<p>"No, the array inside of an ArrayList never makes itself shorter by itself; however, you can force an ArrayList to shrink its internal array to the smallest possible size by calling the <strong>trimToSize</strong>() method."</p>
+<h3>"And, of course, I'll tell you about LinkedList."</h3>
+<p>"Here's what its inheritance diagram looks like:"</p>
+
+<img  src='https://cdn.codegym.cc/images/article/961bf5b6-d59f-4d76-a319-beee5ae3ba82/original.png' class='img-fluid' alt=''>
+
+<p><span class="text-green">"Interfaces are green."</span></p>
+<p><span class="text-viola">"Abstract classes are purple."</span></p>
+<p><span class="text-red">"Ordinary classes are red."</span></p>
+<p>"Solid lines represent inheritance, and dashed lines represent interface implementations."</p>
+<p>"As you already know, <strong>LinkedList</strong> stores elements as a linked list."</p>
+<p><span class="text-user">"I hear that all of the time, but could you tell me what it is?"</span></p>
+<p>"Sure. "It's simple."</p>
+<p>"A linked list <span class="text-viola">consists of elements</span> that a) store data and b) store references to the next and previous elements."</p>
+<p>"This is how the class for <span class="text-viola">such an element</span> would look if it stored Strings:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-viola">LinkedListElement</span>
+{
+String <span class="text-red">data</span>;
+<span class="text-viola">LinkedListElement</span> <span class="text-green">next</span>;
+<span class="text-viola">LinkedListElement</span> <span class="text-user">previous</span>;
+}</code></pre>
+        </td>
+        <td>The <span class="text-red">data</span> field stores the element's String value.<br />
+            The <span class="text-green">next</span> field stores a reference to the next element in the list.<br />
+            The previous field stores a reference to the <span class="text-user">previous</span> element in the list.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"And if we use a generic type declaration, then it would look something like this:"</p>
+<div class="code-heading">A class for a linked list element with a generic type declaration</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-viola">LinkedListElement&lt;<span class="text-red">T</span>&gt;</span>
+{
+ <span class="text-red">T data</span>;
+<span class="text-viola"> LinkedListElement&lt;<span class="text-red">T</span>&gt;</span> <span class="text-green">next</span>;
+<span class="text-viola"> LinkedListElement&lt;<span class="text-red">T</span>&gt;</span> <span class="text-user">previous</span>;
+}</code></pre>
+<p><span class="text-user">"Makes sense."</span></p>
+<p>"To understand it better, let's write code where we add 10 elements to a doubly-linked list:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ <span class="text-red">LinkedListElement&lt;Integer&gt;</span> <span class="text-user">tail</span>; // The tail (very last element) of the list
+
+ for(int i = 0; i &lt; 10; i++)
+ {
+ <span class="text-red"> LinkedListElement&lt;Integer&gt;</span> <span class="text-green">element</span> = new <span class="text-red">LinkedListElement&lt;Integer&gt;</span>();
+  <span class="text-green">element</span>.data = i;
+
+  if (<span class="text-user">tail</span> == null) // If the tail doesn't exist, then make our element the last element
+  {
+   <span class="text-user">tail</span> = <span class="text-green">element</span>;
+  }
+  else // if there is a tail, add the element
+  {
+   <span class="text-user">tail</span>.next = <span class="text-green">element</span>; // Set the next field on the tail element
+<span class="text-green">   element</span>.previous = <span class="text-user">tail</span>; // Add a reference to the tail to the new element
+   <span class="text-user">tail</span> = <span class="text-green">element</span>; // Make the new element the tail
+  }
+ }
+}</code></pre>
+<p>"Imagine that we have 10 elements in the list. Here's how to insert an element into the middle:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/56e1d356-7286-4c45-a996-ed16d428e6e4/original.jpeg' target='_blank'><img data-id="56e1d356-7286-4c45-a996-ed16d428e6e4" data-max-width="850" alt="Implementations of the List interface - 3" src="https://cdn.codegym.cc/images/article/56e1d356-7286-4c45-a996-ed16d428e6e4/original.jpeg"></a>
+
+<p>"The links that have changed are highlighted <strong><span class="text-red">bright red</span></strong>. They now point to the new element."</p>
+<p>"New links are <strong><span class="text-viola">highlighted bright purple</span></strong>. They are the new element's links to its neighbors."</p>
+<p>"And now as code:"</p>
+<div class="code-heading">Insert an element into the middle of a linked list</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// This field stores the element that is the head of the list
+<span class="text-red">LinkedListElement&lt;Integer&gt;</span> head = …
+
+// Get the 4th element (counting from zero)
+<span class="text-red">LinkedListElement&lt;Integer&gt;</span> <span class="text-green">element4</span> = head.next.next.next.next;
+// Get the 5th element
+<span class="text-red">LinkedListElement&lt;Integer&gt;</span> <span class="text-user">element5</span> = <span class="text-green">element4</span>.next;
+
+// Create the new element that we will insert
+<span class="text-red">LinkedListElement&lt;Integer&gt;</span> <span class="text-red">newElement</span> = new <span class="text-red">LinkedListElement&lt;Integer&gt;</span>();
+<span class="text-red">newElement</span>.data = -18;
+
+// Replace the references in the element on the left
+<span class="text-red">newElement</span>.previous = <span class="text-green">element4</span>;
+<span class="text-green">element4</span>.next = newElement;
+
+// Replace the references in the element on the right
+<span class="text-red">newElement</span>.next = <span class="text-user">element5</span>;
+<span class="text-user">element5</span>.previous = newElement;</code></pre>
+<p><span class="text-user">"Thank you, Ellie. I definitely learned a lot of new things about lists."</span></p>

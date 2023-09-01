@@ -1,0 +1,240 @@
+<img data-max-width="1024" data-id="c4e2a97e-8407-445d-9c86-e59f752c4870" src="https://cdn.javarush.ru/images/article/c4e2a97e-8407-445d-9c86-e59f752c4870/1024.jpeg" alt="">
+<p>"Hi, Amigo."</p>
+<p><span class="text-user">"Hey, Rishi."</span></p>
+<p>"Ellie told me you wanted more examples of collections. I'll give you a few. Here is a list of collections and interfaces:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Interface</th>
+        <th>Class/implementation</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td rowspan="4"><span class="text-user">List</span></td>
+        <td><span class="text-user"> ArrayList</span></td>
+        <td><span class="text-user"> List</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-user"> LinkedList</span></td>
+        <td><span class="text-user"> List</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-user"> Vector</span></td>
+        <td><span class="text-user"> Vector</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-user"> Stack</span></td>
+        <td><span class="text-user"> Stack</span></td>
+    </tr>
+    <tr>
+        <td rowspan="3"><span class="text-green"> Set  </span></td>
+        <td><span class="text-green"> HashSet</span></td>
+        <td><span class="text-green"> Set</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-green"> TreeSet</span></td>
+        <td><span class="text-green"> Set</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-green"> SortedSet</span></td>
+        <td><span class="text-green"> Sorted set</span></td>
+    </tr>
+    <tr>
+        <td rowspan="4"><span class="text-corporate">Map</span></td>
+        <td><span class="text-corporate"> HashMap</span></td>
+        <td><span class="text-corporate"> Map/dictionary</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-corporate"> TreeMap</span></td>
+        <td><span class="text-corporate"> Map/dictionary</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-corporate"> SortedMap</span></td>
+        <td><span class="text-corporate"> Sorted dictionary</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-corporate"> Hashtable</span></td>
+        <td><span class="text-corporate"> Hash-table</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">&#34;Hmm. That's quite a lot. Four lists, three sets, and four maps.&#34;</span></p>
+<p>&#34;Yes, they are all different implementations of the List, Set and Map interfaces.&#34;</p>
+<p><span class="text-user">&#34; What's the difference between these implementations?&#34;</span></p>
+<p>&#34;That's exactly what we're going to talk about today. Just be patient.&#34;</p>
+<p>&#34;Do you have any other questions?&#34;</p>
+<p><span class="text-user">&#34; I know how to display a list on the screen. How do I display a Set or Map?&#34;</span></p>
+<p>&#34;The elements of a List have a set order, so you can just use an index to display them. For a Set or Map, there is no specific order. In fact, the order of their elements can change as items are deleted or new items are added.&#34;</p>
+<p><span class="text-user">&#34;Amazing.&#34;</span></p>
+<p>&#34;This is why special objects, called <strong>iterators</strong>, were invented to work with collection elements. They let you to go through all the elements in a collection, even if they have only names instead of indices (Map), or neither names nor indices (Set).&#34;</p>
+<p><strong>"Here are some examples:"</strong></p>
+<div class="code-heading">Display elements of a Set</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code> public static void main(String[] args)
+{
+    <strong>Set</strong>&ltString&gt <span class="text-user">set</span> = new <strong>HashSet</strong>&ltString&gt();
+    <span class="text-user">set</span>.add("Rain");
+    <span class="text-user">set</span>.add("In");
+    <span class="text-user">set</span>.add("Spain");
+
+     // Get an iterator for the set
+     <strong>Iterator</strong>&ltString&gt <span class="text-green">iterator</span> = <span class="text-user">set</span>.iterator();
+
+    <strong>while</strong> (<span class="text-green">iterator</span>.<span class="text-red">hasNext</span>())        // Check if there is another element
+    {
+       // Get the current element and move to the next one
+       String <span class="text-corporate">text</span> = <span class="text-green">iterator</span>.<span class="text-red">next</span>();
+
+        System.out.println(<span class="text-corporate">text</span>);
+    }
+}
+ </code></pre>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task08.task0831"></div>
+<div class="code-heading">Display elements of a List</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <strong>main</strong>(String[] args)
+{
+    <strong>List</strong>&ltString&gt <span class="text-user">list</span> = new <strong>ArrayList</strong>&ltString&gt();
+    <span class="text-user">list</span>.add("Rain");
+    <span class="text-user">list</span>.add("In");
+    <span class="text-user">list</span>.add("Spain");
+
+    <strong>Iterator</strong>&ltString&gt <span class="text-green">iterator</span> = <span class="text-user">list</span>.iterator();// Get an iterator for the list
+
+    while (<span class="text-green">iterator</span>.<span class="text-red">hasNext</span>())      // Check if there is another element   
+    {
+        // Get the current element and move to the next one
+        String <span class="text-corporate">text</span> = <span class="text-green">iterator</span>.<span class="text-red">next</span>();
+
+        System.out.println(<span class="text-corporate">text</span>);
+    }
+}</code></pre>
+<div class="code-heading">Display elements of a Map</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+    // All elements are stored in pairs
+    <strong>Map</strong>&lt;String, String&gt; <span class="text-user">map</span> = new <strong>HashMap</strong>&lt;String, String&gt;();
+    <span class="text-user">map</span>.put("first", "Rain");
+    <span class="text-user">map</span>.put("second", "In");
+    <span class="text-user">map</span>.put("third", "Spain");
+
+    <strong>Iterator</strong>&lt;<span class="text-viola">Map.Entry&lt;String, String&gt;</span>&gt; <span class="text-green">iterator</span> = <span class="text-user">map</span>.entrySet().iterator();
+
+   <strong>while</strong> (<span class="text-green">iterator</span>.<span class="text-red">hasNext</span>())
+    {
+        // Get a key-value pair
+        <span class="text-viola">Map.Entry&lt;String, String&gt;</span> <span class="text-corporate">pair</span> = <span class="text-green">iterator</span>.<span class="text-red">next</span>();
+        String <strong>key</strong> = <span class="text-corporate">pair</span>.getKey();            // Key
+        String <strong>value</strong> = <span class="text-corporate">pair</span>.getValue();        // Value
+        System.out.println(<strong>key</strong> + ":" + <strong>value</strong>);
+    }
+}</code></pre>
+<p><span class="text-user">"Wow. I wonder what all that means."</span></p>
+<p>"It's actually quite simple. First, we get a special object, an iterator, from the collection. The iterator has only two methods.</p>
+<p><span class="text-green">1. The next() method returns the next element in the collection.</span></p>
+<p><span class="text-corporate">2. The hasNext() method checks whether there are still elements that have not been returned by next()."</span></p>
+<p><span class="text-user">"OK. I think it's getting clearer now. Let me try to repeat back to you what I understood."</span></p>
+<p><span class="text-user">"So... First, we need to call the iterator() method on a collection to get this magic iterator object."</span></p>
+<p><span class="text-user">"Then we get elements one by one as long as there are any left to get. We get the next element in the collection by calling next(), and we check whether there are still elements in the collection by calling hasNext() on the iterator. Is that correct?"</span></p>
+<p>"Yes, more or less. But wait for the good part."</p>
+<p>"Java has shorthand notation for working with iterators. Following the pattern of <strong>while</strong> and <strong>for</strong>, one more special statement has been added: <strong>for each</strong>. It is also indicated using the keyword <strong>for</strong>."</p>
+<p><span class="text-green">"The for-each statement is only used for working with collections and containers. It uses an iterator  implicitly, but we only see the returned element."</span></p>
+<p>"Let me show you the longhand and shorthand ways to work with an iterator:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Longhand</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+  <strong>Set</strong>&ltString&gt <span class="text-user">set</span> = new <strong>HashSet</strong>&ltString&gt();
+    <span class="text-user">set</span>.add("Rain");
+    <span class="text-user">set</span>.add("In");
+    <span class="text-user">set</span>.add("Spain");
+
+    <strong>Iterator</strong>&ltString&gt <span class="text-green">iterator</span> = <span class="text-user">set</span>.iterator();
+  <strong>while</strong> (<span class="text-green">iterator</span>.<span class="text-red">hasNext</span>())
+  {
+    <span class="text-corporate">String text</span> = <span class="text-green">iterator</span>.<span class="text-red">next</span>();
+    System.out.println(<span class="text-corporate">text</span>);
+  }
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Shorthand</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+    <strong>Set</strong>&ltString&gt <span class="text-user">set</span> = new <strong>HashSet</strong>&ltString&gt();
+    <span class="text-user">set</span>.add("Rain");
+    <span class="text-user">set</span>.add("In");
+    <span class="text-user">set</span>.add("Spain");
+
+   <strong>for</strong> (<span class="text-corporate">String text</span> : <span class="text-user">set</span>)   
+    {
+        System.out.println(<span class="text-corporate">text</span>);
+    }
+}
+
+
+</code></pre>
+    </div>
+</div>
+<p>"Note that the words highlighted in red or green are absent in the right part. In fact, three lines are replaced by one:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Longhand</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Iterator</strong>&ltString&gt <span class="text-green">iterator</span> = <span class="text-user">set</span>.iterator();
+<strong>while</strong> (<span class="text-green">iterator</span>.<span class="text-red">hasNext</span>())
+{
+    <span class="text-corporate">String text</span> = <span class="text-green">iterator</span>.<span class="text-red">next</span>();</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Shorthand</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>
+<strong>for</strong> (<span class="text-corporate">String text</span> : <span class="text-user">set</span>)
+
+
+</code></pre>
+    </div>
+</div>
+<p><span class="text-user">"This looks gorgeous. I like it much better this way."</span></p>
+<p>"Let's look at the shorthand version of the examples above:"</p>
+<div class="code-heading">Display elements of a Set</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+    <strong>Set</strong>&ltString&gt <span class="text-green">set</span> = new <strong>HashSet</strong>&ltString&gt();
+    <span class="text-green">set</span>.add("Rain");
+    <span class="text-green">set</span>.add("In");
+    <span class="text-green">set</span>.add("Spain");
+
+    <strong>for</strong> (String <span class="text-corporate">text</span> : <span class="text-green">set</span>)   
+    {
+        <span class="text-viola">System.out.println</span>(<span class="text-corporate">text</span>);
+    }
+}</code></pre>
+<div class="code-heading">Display elements of a List</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+    <strong>List</strong>&ltString&gt <span class="text-green">list</span> = new <strong>ArrayList</strong>&ltString&gt();
+    <span class="text-green">list</span>.add("Rain");
+    <span class="text-green">list</span>.add("In");
+    <span class="text-green">list</span>.add("Spain");
+
+     <strong>for</strong> (String <span class="text-corporate">text</span> : <span class="text-green">list</span>)        
+    {
+        <span class="text-viola">System.out.println</span>(<span class="text-corporate">text</span>);
+    }
+}</code></pre>
+<div class="code-heading">Display elements of a Map</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+    <strong>Map</strong>&lt;String, String&gt; <span class="text-green">map</span> = new <strong>HashMap</strong>&lt;String, String&gt;(); 
+    <span class="text-green">map</span>.put("first", "Rain");
+    <span class="text-green">map</span>.put("second", "In");
+    <span class="text-green">map</span>.put("third", "Spain");
+
+    <strong>for</strong> (<span class="text-viola">Map.Entry&lt;String, String&gt;</span> <span class="text-corporate">pair</span> : <span class="text-green">map</span>.<span class="text-viola">entrySet</span>())
+    {
+        String <strong>key</strong> = <span class="text-corporate">pair</span>.getKey();                      // Key
+        String <strong>value</strong> = <span class="text-corporate">pair</span>.getValue();                  // Value
+        <span class="text-viola">System.out.println</span>(<strong>key</strong> + ":" + <strong>value</strong>);
+    }
+}</code></pre>
+<p><span class="text-user">"Now you're talking!"</span></p>
+<p>"I'm glad you liked it."</p>

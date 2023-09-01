@@ -1,0 +1,227 @@
+<p>"Hello, friend!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"We still have some time left, so I'll tell you about three more patterns."</p>
+<p><span class="text-user">"Three more? How many are there in all?"</span></p>
+<p>"There are currently dozens of popular patterns, but the number of «successful solutions» is unlimited."</p>
+<p><span class="text-user">"I see. So I have to learn several dozen patterns?"</span></p>
+<p>"Until you have real programming experience, they won't give you much."</p>
+<p>"You better get a little more experience, and then, in a year, return to this topic and try to understand them more deeply. At least a couple dozen of the most popular design patterns."</p>
+<p>"It's a sin not to use someone else's experience and instead invent something for the 110th time."</p>
+<p><span class="text-user">"I agree."</span></p>
+<p>"Then let's begin."</p>
+<h3>Adapter (or wrapper) pattern</h3>
+
+<a href='https://cdn.codegym.cc/images/article/cb8048c4-ee23-491a-aaea-174f17fa1dc5/original.jpeg' target='_blank'><img data-id="cb8048c4-ee23-491a-aaea-174f17fa1dc5" data-max-width="1024" alt="Patterns: Adapter, Proxy, Bridge - 1" src="https://cdn.codegym.cc/images/article/cb8048c4-ee23-491a-aaea-174f17fa1dc5/original.jpeg"></a>
+
+<p>"Imagine that you come to China and find that the electrical outlets follow a different standard. The holes are not round, but flat. In this case, you'll need an adapter."</p>
+<p>"Something similar can also happen in programming. Classes operate on similar but different interfaces. So we need to make an adapter between them."</p>
+<p>"This is how it looks:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface <span class="text-user">Time</span>
+{
+ int <span class="text-user">getSeconds</span>();
+ int <span class="text-user">getMinutes</span>();
+ int <span class="text-user">getHours</span>();
+}
+
+interface <span class="text-green">TotalTime</span>
+{
+ int <span class="text-green">getTotalSeconds</span>();
+}</code></pre>
+<p>"Suppose we have two interfaces: <span class="text-user">Time</span> and <span class="text-green">TotalTime</span>."</p>
+<p>"The Time interface lets you get the current time using the <span class="text-user">getSeconds</span>(), <span class="text-user">getMinutes</span>() and <span class="text-user">getHours</span>() methods."</p>
+<p>"The <span class="text-green">TotalTime</span> interface lets you get the number of seconds that have passed from midnight to the current moment."</p>
+<p>"What should we do if we have a <span class="text-green">TotalTime</span> object, but we need a <span class="text-user">Time</span> object or vice versa?"</p>
+<p>"We can write adapter classes for this. For example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code> class <span class="text-viola">TotalTimeAdapter</span> implements <span class="text-user">Time</span>
+{
+ private <span class="text-green">TotalTime totalTime;</span>
+ public <span class="text-viola">TotalTimeAdapter</span>(<span class="text-green">TotalTime totalTime</span>)
+ {
+  this.<span class="text-green">totalTime = totalTime;</span>
+ }
+
+ int <span class="text-user">getSeconds</span>()
+ {
+  return <span class="text-green">totalTime.getTotalSeconds</span>() % 60; // seconds
+ }
+
+ int <span class="text-user">getMinutes</span>()
+ {
+  return <span class="text-green">totalTime.getTotalSeconds</span>() / 60; // minutes
+ }
+
+ int <span class="text-user">getHours</span>()
+ {
+  return <span class="text-green">totalTime.getTotalSeconds</span>() / (60 * 60); // hours
+ }
+}
+ </code></pre>
+<div class="code-heading">Usage</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">TotalTime totalTime</span> = <span class="text-neon">TimeManager.getCurrentTime</span>();
+<span class="text-user">Time time</span> = new <span class="text-viola">TotalTimeAdapter</span>(<span class="text-green">totalTime</span>);
+<span class="text-neon">System.out.println</span>(<span class="text-user">time.getHours</span>() + " : " + <span class="text-user">time.getMinutes</span> () + " : " +<span class="text-user">time.getSeconds</span>());</code></pre>
+<p>"And an adapter in the other direction:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-corporate">TimeAdapter</span> implements <span class="text-green">TotalTime</span>
+{
+ private <span class="text-user">Time time</span>;
+ public <span class="text-corporate">TimeAdapter</span>(<span class="text-user">Time time</span>)
+ {
+  this.<span class="text-user">time = time</span>;
+ }
+
+ int <span class="text-green">getTotalSeconds</span>()
+ {
+  return <span class="text-user">time.getHours</span>() * 60 * 60 + <span class="text-user">time.getMinutes</span>() * 60 + <span class="text-user">time.getSeconds</span>();
+ }
+}</code></pre>
+<div class="code-heading">Usage</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">Time time</span> = <span class="text-neon">new Time</span>();
+<span class="text-green">TotalTime totalTime</span> = new <span class="text-corporate">TimeAdapter</span>(<span class="text-user">time</span>);
+<span class="text-neon">System.out.println</span>(<span class="text-green">time.getTotalSeconds</span>());</code></pre>
+<p><span class="text-user">"Ah. I like it. But are there any examples?"</span></p>
+<p>"Of course! As an example, InputStreamReader is a classic adapter. It converts an InputStream to a Reader."</p>
+<p>"Sometimes this pattern is also called a wrapper, because the new class 'wraps' another object."</p>
+<p>"You can read some other interesting things <a href="https://en.wikipedia.org/wiki/Adapter_pattern" target="_blank">here</a>."</p>
+<h3>Proxy pattern</h3>
+<p>"The proxy pattern is somewhat similar to the wrapper pattern. But its purpose is not to convert interfaces, but to control access to the original object stored inside the proxy class. Moreover, both the original class and the proxy usually have the same interface, which makes it easier to replace an object of the original class with a proxy object."</p>
+<p>"For example:"</p>
+<div class="code-heading">Interface of the real class</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface <span class="text-user">Bank</span>
+{
+ public void <span class="text-user">setUserMoney</span>(User user, <strong>double</strong> money);
+ public int <span class="text-user">getUserMoney</span>(User user);
+}</code></pre>
+<div class="code-heading">Implementation of the original class</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-red">CitiBank</span> implements Bank
+{
+ public void <span class="text-user">setUserMoney</span>(User user, double money)
+ {
+  UserDAO.updateMoney(user, money);
+ }
+
+ public int <span class="text-user">getUserMoney</span>(User user)
+ {
+  return UserDAO.getMoney(user);
+ }
+}</code></pre>
+<div class="code-heading">Implementation of the proxy class</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-green">BankSecurityProxy</span> implements <span class="text-user">Bank</span>
+{
+ private<span class="text-user"> Bank bank</span>;
+ public <span class="text-green">BankSecurityProxy</span>(<span class="text-user">Bank bank</span>)
+ {
+  this.bank = bank;
+ }
+ public void <span class="text-user">setUserMoney</span>(User user, double money)
+ {
+ <span class="text-viola"> if (!SecurityManager.authorize(user, BankAccounts.Manager))
+  throw new SecurityException("User can’t change money value");</span>
+
+  <span class="text-user">bank.setUserMoney</span>(user, money);
+ }
+
+ public int <span class="text-user">getUserMoney</span>(User user)
+ {
+  <span class="text-viola">if (!SecurityManager.authorize(user, BankAccounts.Manager))
+  throw new SecurityException("User can’t get money value");</span>
+
+  return <span class="text-user">bank.getUserMoney</span>(user);
+ }
+}</code></pre>
+<p>"In the example above, we described the <span class="text-user">Bank</span> interface and the <span class="text-red">CitiBank</span> class, an implementation of this interface."</p>
+<p>"The interface lets you get or change a user's account balance."</p>
+<p>And then we created <strong><span class="text-green">BankSecurityProxy</span></strong>, which also implements the <span class="text-user">Bank</span> interface and stores a reference to a different Bank interface. The methods of this class check whether the user is the account owner or a bank manager. If it is not, then a SecurityException is thrown."</p>
+<p>"Here's how it works in practice:"</p>
+<div class="code-heading">Code <strong><span class="text-red">without</span></strong> security checks:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>User user = <strong>AuthManager</strong>.authorize(login, password);
+Bank bank =<strong> BankFactory</strong>.createUserBank(user);
+bank.setUserMoney(user, 1000000);</code></pre>
+<div class="code-heading">Code <strong><span class="text-red">with</span></strong> security checks:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>User user = <strong>AuthManager</strong>.authorize(login, password);
+Bank bank = <strong>BankFactory</strong>.createUserBank(user);
+bank = new <span class="text-green">BankSecurityProxy</span>(bank);
+bank.setUserMoney(user, 1000000);</code></pre>
+<p>"In the first example, we create a bank object and call its <strong>setUserMoney</strong> method.</p>
+<p>"In the second example, we wrap the original bank object in a <span class="text-green"><strong>BankSecurityProxy</strong></span> object. The have the same interface, so subsequent code continues to work as it did. But now a security check will be performed each time a method is called."</p>
+<p><span class="text-user">"Cool!"</span></p>
+<p>"Yep. You can have many such proxies. For example, you could add another proxy that checks whether the account balance is too large. The bank manager might decide to put a lot of money in his own account and abscond to Cuba with the funds."</p>
+<p>"What's more... The creation of all these chains of objects can be put into a <strong>BankFactory</strong> class, where you can enable/disable the ones you need."</p>
+<p>"<strong>BufferedReader</strong> works using a similar principle. It's a <strong>Reader</strong>, but it does additional work."</p>
+<p>"This approach lets you «assemble» an object with the needed functionality from various «pieces»."</p>
+<p>"Oh, I almost forgot. Proxies are used much more widely than what I just showed you. You can read about other uses <a href="https://ru.wikipedia.org/wiki/Proxy_(%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)" target="_blank">here</a>."</p>
+<h3>Bridge pattern</h3>
+
+<a href='https://cdn.codegym.cc/images/article/858d7e37-a7ed-4064-8869-52b640a15701/original.jpeg' target='_blank'><img data-id="858d7e37-a7ed-4064-8869-52b640a15701" data-max-width="850" alt="Patterns: Adapter, Proxy, Bridge - 2" src="https://cdn.codegym.cc/images/article/858d7e37-a7ed-4064-8869-52b640a15701/original.jpeg"></a>
+
+<p>"Sometimes as a program runs it is necessary to significantly change an object's functionality. For example, suppose you have a game with a donkey character who is later turned into a dragon by a mage. The dragon has completely different behavior and properties, but it's the same object!"</p>
+<p><span class="text-user">"Can't we just create a new object and be done with it?"</span></p>
+<p>"Not always. Suppose your donkey is friends with a bunch of characters, or perhaps it was under the influence of several spells, or it was involved in certain quests. In other words, the object may already be in use in lots of places — and linked to lots of other objects. So in this case, it's not an option to simply create a new object."</p>
+<p><span class="text-user">"Well, what can be done then?"</span></p>
+<p>"The Bridge pattern is one of the most successful solutions."</p>
+<p>"This pattern entails splitting an object into two objects: an «interface object» and an «implementation object»."</p>
+<p><span class="text-user">"What's the difference between the interface and the class that implements it?"</span></p>
+<p>"With an interface and a class, we end up with one object. But here — we have two. Look at this example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-green">User</span>
+{
+ private UserImpl realUser;
+
+ public <span class="text-green">User</span>(UserImpl impl)
+ {
+  realUser = impl;
+ }
+
+ public void <span class="text-green">run</span>() //Run
+ {
+  realUser.run();
+ }
+
+ public void <span class="text-green">fly</span>() //Fly
+ {
+  realUser.fly();
+ }
+}
+
+class UserImpl
+{
+ public void run()
+ {
+ }
+
+ public void fly()
+ {
+ }
+}</code></pre>
+<p>"And then you can declare several subclasses of UserImpl, for example <span class="text-neon">UserDonkey</span>(donkey) and <span class="text-green">UserDragon</span>(dragon)."</p>
+<p><span class="text-user">"All the same, I don't really understand how this will work."</span></p>
+<p>"Well, something like this:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-green">User</span>
+{
+ private UserImpl realUser;
+
+ public <span class="text-green">User</span>(UserImpl impl)
+ {
+  realUser = impl;
+ }
+
+ public void <span class="text-red">transformToDonkey</span>()
+ {
+  realUser = new <span class="text-red">UserDonkeyImpl</span>();
+ }
+
+ public void <span class="text-red">transformToDragon</span>()
+ {
+  realUser = new <span class="text-red">UserDragonImpl</span>();
+ }
+}</code></pre>
+<div class="code-heading">How it works</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">User user</span> = new <span class="text-green">User</span>(<span class="text-red">new UserDonkey</span>()); // Internally, we're a donkey
+<span class="text-green">user</span>.<span class="text-red">transformToDragon</span>(); // Now we're a dragon internally</code></pre>
+<p><span class="text-user">"So it's something like a proxy."</span></p>
+<p>"Yeah, but in a proxy the main object could be stored somewhere separately, and the code works with proxies instead. Here we're saying that everybody works with the main object, but its parts change internally."</p>
+<p><span class="text-user">"Ah. Thanks. Will you give me a link to read more about it?"</span></p>
+<p>"Of course, Amigo, my friend. Here you go: <a href="https://en.wikipedia.org/wiki/Bridge_pattern" target="_blank">Bridge pattern</a>."</p>

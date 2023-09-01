@@ -1,0 +1,343 @@
+<h2>1. Inheritance</h2>
+<p>To work with the CodeGym game engine, you will need to use <span class="term text-red">inheritance</span>. But what if you don't know what that is? On the one hand, you do need to understand and study this topic. On the other hand, the engine is specially designed to be very simple, so you can get by with a superficial knowledge of inheritance.</p>
+<p>So what is inheritance? In simple terms, <span class="term text-red">inheritance</span> is a relationship between two classes. One of them acts as the parent class, and the other becomes the child (descendant) class. What's more, a parent class may not even know that it has descendant classes. In other words, the parent doesn't get much benefit from having descendant classes.</p>
+<p>But inheritance gives many advantages to the child class. The most important of them is that all variables and methods of the parent class appear in the child class, <span class="text-orange">as if the code of the parent class was copied directly into the child class. </span>This is not entirely accurate, but it will suffice for a basic understanding of inheritance.</p>
+<p>Here are some examples to help you better understand inheritance.</p>
+<p><strong>Example 1</strong> — here's the simplest example</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-user">Parent</span>
+{
+}</code></pre>
+        </td>
+        <td rowspan="2">The <code><span class="text-green">Child</span></code> class inherits the <code><span class="text-user">Parent</span></code> class with the help of the <code><span class="text-red">extends</span></code> keyword.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-green">Child</span> <span class="code text-red">extends</span> <span class="code text-user">Parent</span>
+{
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Example 2 — using the variables of the parent class</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-user">Parent</span>
+{
+  public int <span class="code text-orange">age</span>;
+  public String <span class="code text-viola">name</span>;
+}</code></pre>
+        </td>
+        <td rowspan="2">The <code><span class="text-green">Child</span></code> class can use the <code><span class="text-orange">age</span></code> and <code><span class="text-viola">name</span></code> fields of the <code><span class="text-user">Parent</span></code> class as if they were declared in the <code><span class="text-green">Child</span></code> class itself.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-green">Child</span> <span class="text-red">extends</span> <span class="code text-user">Parent</span>
+{
+  public void printInfo()
+  {
+    System.out.println(<span class="code text-viola">name</span> + " " + <span class="code text-orange">age</span>);
+  }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Example 3 — using methods of the parent class</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="text-user">Parent</span>
+{
+   public int <span class="text-orange">age</span>;
+   public String <strong><span class="text-viola">name</span></strong>;
+   public <span class="code text-viola">getName()</span> {
+      return <span class="text-viola"><strong>name</strong></span>;
+   }
+}</code></pre>
+        </td>
+        <td rowspan="2">The <code><span class="text-green">Child</span></code> class can use the variables and methods of the Parent class as if they were declared in the <code><span class="text-green">Child</span></code> class. In this example, we use the <code><span class="text-viola">getName()</span></code> method.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-green">Child</span> <span class="text-red">extends</span> <span class="text-user">Parent</span>
+{
+   public void printInfo()
+   {
+      System.out.println(<span class="code text-viola">getName</span>() + " " + <span class="text-orange">age</span>);
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Omitting some details, we can say that from the Java compiler's perspective, we simply copied the code of the parent class into the code of the child class:</p>
+<div class="lesson-example">
+<pre class="language-java"><code>public class <span class="text-green">Child</span> <span class="text-red">extends</span> <span class="text-user">Parent</span>
+{
+   <span class="text-invisible">public int age;        // An inherited variable
+   public String name;    // An inherited variable
+   public getName() {     // An inherited method
+      return name;
+   }
+</span>
+   public void printInfo()
+   {
+      System.out.println(<span class="text-viola">getName</span>() + " " + age);
+   }
+}</code></pre>
+    <div class="lesson-example-caption">Here's how the <code>Child</code> class appears from the compiler's point of view</div>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini10"></div>
+<hr>
+<h2>2. Method overriding</h2>
+<p>Sometimes there are situations where we make our <code><span class="text-green">Child</span></code> class inherit a very useful <code><span class="text-user">Parent</span></code> class, causing the child to inherit all the parent's variables and methods. But some of those methods may not work quite the way we want them to or not at all the way we want them to.</p>
+<p>What do you do in this case? We can <span class="text-red">override a method whose implementation we don't like</span>. This is a simple thing to do: in our <code><span class="text-green">Child</span></code> class we simply declare a method with the same signature as the method in the <code><span class="text-user">Parent</span></code> class and then write our own code in it.</p>
+<p><strong>Example 1</strong> — method overriding</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-user">Parent</span>
+{
+   public String <span class="code text-viola">name</span>;
+   public void <span class="text-viola">setName</span>(String nameNew) {
+      <span class="code text-viola">name</span> = nameNew;
+   }
+
+   public <span class="text-viola">getName</span>() {
+      return name;
+   }
+}</code></pre>
+        </td>
+        <td rowspan="2">
+            The <code>printInfo()</code> method will display the following phrase:<br>
+            <pre><code>Luke, No!!!</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="code text-green">Child</span> <span class="text-red">extends</span> <span class="code text-user">Parent</span>
+{
+   public void <span class="text-viola">setName</span>(String nameNew) {
+      <span class="code text-viola">name</span> = nameNew + <span class="text-green">", No!!!"</span>;
+   }
+
+   public void printInfo()
+   {
+      <span class="text-viola">setName</span>(<span class="text-green">"Luke"</span>);
+      System.out.println(<span class="text-viola">getName</span>());
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Oversimplifying the situation somewhat, inheritance causes the code of the parent class to be copied into the child class. But if a descendant class already a method that exists in an ancestor class, then that method is not copied from the ancestor class. Here we say that the method in the child class overrides the method in the parent class. Look at the example below. Maybe it will help make things a little clearer:</p>
+<table>
+    <tr>
+        <th>
+            Here's how the Child class appears from the compiler's point of view:
+        </th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code>public class <span class="text-green">Child</span> <span class="text-red">extends</span> <span class="text-user">Parent</span>
+{
+   <span class="text-invisible">public String name;    // An inherited variable</span>
+
+   public void <span class="text-viola">setName</span>(String nameNew)  // The overridden method replaces the inherited one
+   {
+      name = nameNew + <span class="text-green">", No!!!"</span>;
+   }
+
+   <span class="text-invisible">public <span class="text-viola">getName</span>()    // An inherited method
+   {
+      return name;
+   }</span>
+
+   public void printInfo()
+   {
+      <span class="text-viola">setName</span>(<span class="text-green">"Luke"</span>);
+      System.out.println(<span class="text-viola">getName</span>());
+   }
+}</code></pre>
+
+        </td>
+    </tr>
+</table>
+<p>Example 2 - a little inheritance magic (and method overriding)</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>public class <span class="text-user">Parent</span>
+{
+   public <span class="text-viola">getName</span>() {
+      return "Luke";
+   }
+
+   public void printInfo()
+   {
+      System.out.println( <span class="text-viola">getName</span>() );
+   }
+}</code></pre>
+</div>
+<div class="lesson-example">
+        <pre class="language-java"><code>public class <span class="text-green">Child</span> <span class="text-red">extends</span> <span class="text-user">Parent</span>
+{
+   public <span class="text-viola">getName</span>() {
+      return <span class="text-green">"Luke, I am your father"</span>;
+   }
+}</code></pre>
+</div>
+<p>If the <code>printInfo()</code> method is called on a <code>Parent</code> type, it in turn calls the <code>getName()</code> method of the <code>Parent</code> class.</p>
+<p>If the <code>printInfo()</code> method is called on a <code>Child</code> object, it in turn calls the <code>getName()</code> method of the <code>Child</code> class.</p>
+<p>In other words, the <code>printInfo()</code> method is declared only in the <code>Parent</code> class, but it calls the <code>getName()</code> method of the <code>Child</code> class if the <code>printInfo()</code> method is called on a <code>Child</code> object.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-user">Parent</span> parent = new <span class="text-user">Parent</span>();
+parent.printnInfo();</code></pre>
+        </td>
+        <td>
+            This code displays the following text on the screen:<br>
+            <pre><code><span class="text-green">Luke</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-green">Child</span> child = new <span class="text-green">Child</span>();
+child.printnInfo();</code></pre>
+        </td>
+        <td>This code displays the following text on the screen:<br>
+            <pre><code><span class="text-green">Luke, I am your father</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>And all because from the compiler's point of view (a very simplified version of it), the code of the <code><span class="text-green">Child</span></code> class looks like this:</p>
+<div class="lesson-example">
+<pre class="language-java"><code>public class <span class="text-green">Child</span> <span class="text-red">extends</span> <span class="text-user">Parent</span>
+{
+   public <span class="text-viola">getName</span>() {
+      return <span class="text-green">"Luke, I am your father"</span>;
+   }
+
+   <span class="text-invisible">public void printInfo()
+   {
+      System.out.println(getName());
+   }</span>
+}</code></pre>
+    <div class="lesson-example-caption">Here's how the <code>Child</code> class appears from the compiler's point of view</div>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini11"></div>
+<hr>
+<h2>3. Lists</h2>
+<p>Here's a brief reminder about lists (<code>List</code>). Lists have a lot in common with arrays:</p>
+<ul>
+    <li>They can store a lot of data of a specific type.</li>
+    <li>They let you get elements by their index.</li>
+    <li>The indices of the elements start at <code>0</code>.</li>
+</ul>
+<p><strong>Advantages of lists:</strong></p>
+<p>Unlike arrays, lists can dynamically change size. Immediately after creation, the size of a list is <code>0</code>. As items are added to the list, its size increases. Example of creating a list:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-red">ArrayList</span>&lt;<span class="text-green">String</span>&gt; <span class="text-user">myList</span> = new <span class="text-red">ArrayList</span>&lt;<span class="text-green">String</span>&gt;();</code></pre>
+    <div class="lesson-example-caption">Creating a new <code>ArrayList</code></div>
+</div>
+<p>The value indicated in the angle brackets is the data type that the list can store.</p>
+<p>Here are some methods for working with a list:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Brief description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">ArrayList</span>&lt;<span class="text-green">String</span>&gt; <span class="text-user">list</span> = new <span class="text-red">ArrayList</span>&lt;<span class="text-green">String</span>&gt;();</code></pre>
+        </td>
+        <td>Creating a new list of strings</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-user">list</span>.<span class="text-red">add</span>("name");</code></pre>
+        </td>
+        <td>Add an element to the end of the list</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-user">list</span>.<span class="text-red">add</span>(0, "name");</code></pre>
+        </td>
+        <td>Add an element to the start of the list</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String name = <span class="text-user">list</span>.<span class="text-red">get</span>(5);</code></pre>
+        </td>
+        <td>Get an element by its index</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-user">list</span>.<span class="text-red">set</span>(5, "new name");</code></pre>
+        </td>
+        <td>Change an element by its index</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int count = <span class="text-user">list</span>.<span class="text-red">size</span>();</code></pre>
+        </td>
+        <td>Get the number of elements in the list</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-user">list</span>.<span class="text-red">remove</span>(4);</code></pre>
+        </td>
+        <td>Remove an element from the list</td>
+    </tr>
+    </tbody>
+</table>
+<p>For more information about lists, you can read the following articles:</p>
+<ul>
+    <li><a href="https://javarush.ru/groups/posts/1936-rabota-arraylist-v-kartinkakh--">ArrayList in pictures</a></li>
+    <li><a href="https://javarush.ru/groups/posts/1934-klass-arraylist">ArrayList class</a></li>
+    <li><a href="https://javarush.ru/groups/posts/1935-udalenie-ehlementa-iz-spiska-arraylist">Removing an item from an ArrayList</a></li>
+</ul>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini12"></div>
+<hr>
+<h2>4. Random numbers</h2>
+<p>The CodeGym game engine has two methods that can be used to generate random numbers. These methods are:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>int <span class="text-red">getRandomNumber</span>(int <span class="text-green">max</span>)</code></pre>
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>int <span class="text-red">getRandomNumber</span>(int <span class="text-user">min</span>, int <span class="text-green">max</span>)</code></pre>
+</div>
+<p>The first method — <code>getRandomNumber(int max)</code> — returns a random number in the range <code>0</code>, <code>1</code>, <code>2</code>, ... <code>max-1</code>. Under the hood, it uses the <code>Random</code> class from the <code>java.util</code> package, but that doesn't change how you use a random number.</p>
+<p><code>getRandomNumber(int)</code> accepts an integer as an argument. This number will be the upper bound on the numbers that the random number generator can return. The lower bound is 0. Attention! The random number generator will NEVER return the value of the upper bound. For example, if you call <code>getRandomNumber(3)</code>, it will randomly return either 0, 1, or 2. As you can see, it will not return 3. Using a random number generator in this way is rather simple, but it is suitable for many cases.</p>
+<p>The second method — <code>getRandomNumber(int min, int max)</code> — returns a random integer in the range <code>[min, max-1]</code>. It will never return a number less than <code>min</code>, and it will never return a number greater than <code>max-1</code>.</p>
+<p>How can these methods be used in practice?</p>
+<p><strong>1. Dice</strong></p>
+<p>Suppose you want to simulate the roll of a die and get a random number in the range <code>1-6</code>. How would you do it? This can be done with code like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>int dice = getRandomNumber(1, 7);</code></pre>
+</div>
+<p>This method will return a random integer in the range <code>1-6</code>.</p>
+<p><strong>2. Target practice</strong></p>
+<p>Suppose you want to simulate shooting at a target, and the accuracy of a shot includes a random component that varies in the range from <code>-10</code> to <code>+10</code> inclusive. This can be done with code like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>int dx = getRandomNumber(-10, 11);</code></pre>
+</div>
+<p>This method will return a random integer in the range <code>-10</code> to <code>+10</code>.</p>
+<p>There are many ways to use random numbers in games. You're only limited by your imagination. Write your own games, refine them, and enjoy the process.</p>
+<p>Everyone can play games, but only programmers can create them.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini13"></div>

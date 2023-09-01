@@ -1,0 +1,90 @@
+<p>"Hi, Amigo!"</p>
+<p>"I can teach you my special skill: avoiding unnecessary work."</p>
+<p><span class="text-user">"Hmm. I like how this is starting."</span></p>
+<p>"Remember, it's impossible to know everything. And it's not necessary. But, if you can quickly find the information you need, then you're golden."</p>
+<p>"Java is growing so quickly, because Java programmers use each other's work. The Internet has millions of Java libraries that are well written, debugged, documented, and license free. Use them."</p>
+<p>"There are hundreds of websites for programmers, where more experienced programmers help beginners and those who are less experienced. Use them."</p>
+<p>"Anything you may want to write, somebody else has already written. Well, maybe not everything, but 90-95 percent, for sure."</p>
+<p><span class="text-user">"Whoa."</span></p>
+<p>"I want you to always remember two things:"</p>
+<p><strong>1. Programming started over 50 years ago. Java is almost 20 years old.</strong></p>
+<p><strong>99% of the code you need has already been written.</strong></p>
+<p><strong>2. Before you write anything from scratch, search the Internet. Most likely, someone has needed it before and already solved the problem.</strong></p>
+<p>"So, we're going to learn how to 'google', i.e. search the Internet. As you might have guessed, 'googling' involves using the Google search engine."</p>
+<p>"Other search engines will work too. But because programming is evolving most rapidly in Silicon Valley, Google will be our tool of choice."</p>
+<p>"I will give you tasks where you need to find something using Google, so you'll have to learn how to search for things."</p>
+<p>"But for now, we'll just start with some examples."</p>
+<table>
+    <tbody>
+    <tr>
+        <th >What we want to know</th>
+        <th >Google query</th>
+        <th >Note</th>
+    </tr>
+    <tr>
+        <td>In Java, how do I check whether a file exists?</td>
+        <td>java file exists</td>
+        <td>The very first link has the answer.</td>
+    </tr>
+    <tr>
+        <th colspan="3">Answer:</th>
+    </tr>
+    <tr>
+        <td colspan="3">
+<pre data-line="" data-start="" class="line-numbers language-java"><code>File f = new File(filePathString);
+if(f.exists())
+{ /* do something */ }</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>In Java, how do I download a file from the Internet?</td>
+        <td>java file download</td>
+        <td>The very first link has an example.</td>
+    </tr>
+    <tr>
+        <th colspan="3">Answer:</th>
+    </tr>
+    <tr>
+        <td colspan="3">
+<pre data-line="" data-start="" class="line-numbers language-java"><code>URL website = new URL("http://www.website.com/information.asp");
+ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+FileOutputStream fos = new FileOutputStream("information.html");
+fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>How much is $100 in rubles?</td>
+        <td>100 dollar in RUB</td>
+        <td>You don't even need to click a link for this answer!</td>
+    </tr>
+    <tr>
+        <th colspan="3">Answer:</th>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <pre data-line="" data-start="" class="line-numbers language-java"><code>3 270.21812 Russian rubles</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>How do I figure out which JDK version is installed?</td>
+        <td>how to get jdk version</td>
+        <td>The second link.</td>
+    </tr>
+    <tr>
+        <th colspan="3">Answer:</th>
+    </tr>
+    <tr>
+        <td colspan="3">
+<pre data-line="" data-start="" class="line-numbers language-java"><code>C:\&gt;java -version
+java version "1.6.0_18"
+Java(TM) SE Runtime Environment (build 1.6.0_18-b07)
+Java HotSpot(TM) Client VM (build 16.0-b13, mixed mode, sharing)</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Don't be lazy. Go to Google, enter those queries, and find the answers."</p>
+<p>"We're learning how to find answers in seconds rather than hours, and sometimes weeks. Which can happen."</p>
+<p><span class="text-user">"Wow. I promise I won't be lazy."</span></p>
+<p>"An experienced developer can use the Internet to find an answer or a clue for 99.99% of all problems that may arise."</p>
+<p><span class="text-user">"Whoa!" I'm going to always listen carefully to what you have to say!"</span></p>

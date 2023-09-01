@@ -1,0 +1,67 @@
+<p>"And now it's time for a small but interesting topic: conversions to the String type."</p>
+<p>"In Java, any data type can be converted to a String."</p>
+<p><span class="text-user">"That sounds cool."</span></p>
+<p>"It's better than cool. Almost every type can be implicitly converted to a String. This is easy to see when we add two variables, where one is a String and the other is something else. The non-String variable will be converted to a String."</p>
+<p>"Check out a couple of examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Command</th>
+        <th>What really happens</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>int</strong> x = 5;
+<strong>String</strong> text = "X=" + <span class="text-user">x</span>;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>int</strong> x = 5;
+<strong>String</strong> s = "X=" + <span class="text-red">Integer.toString(</span><span class="text-user">x</span><span class="text-red">)</span>;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Cat</strong> cat = <strong>new</strong> Cat("Oscar");
+<strong>String</strong> text = "My cat is " + <span class="text-user">cat</span>;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Cat</strong> cat = <strong>new</strong> Cat("Oscar");
+<strong>String</strong> text = "My cat is" + <span class="text-user">cat</span>.<span class="text-red">toString()</span>;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Object</strong> o = <strong>null</strong>;
+<strong>String</strong> text = "Object is " + <span class="text-user">o</span>;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Object</strong> o = <strong>null</strong>;
+<strong>String</strong> text = "Object is " + <span class="text-red">"null"</span>;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>String</strong> text = <span class="text-user">5</span> + <span class="text-user">'\u0000'</span> + "Log";
+</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>int</strong> <span class="text-user">i2</span> = 5 + <span class="text-user">(int)</span> '<span class="text-user">\u0000</span>';
+<strong>String</strong> text = <span class="text-red">Integer.toString(</span><span class="text-user">i2</span><span class="text-red">)</span> + <strong>"Log"</strong>;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>String</strong> text = "Object is " + <span class="text-user">(float) 2 / 3</span>;
+</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>float</strong> <span class="text-user">f2</span> = <span class="text-user">((float) 2) / 3</span>;
+<strong>String</strong> text = "Object is " + <span class="text-red">Float.toString(</span><span class="text-user">f2</span><span class="text-red">)</span>;</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Conclusion:</strong> <span class="text-corporate">If we add <strong>a String</strong> and 'any other type', the second type will be <a href='https://codegym.cc/groups/posts/int-to-string-java' target='_blank'>converted to a String</a>.</span></p>
+<p>"Pay attention to line four in the table. All operations are executed from left to right. That's why adding <span class="text-user">5 + '\u0000'</span>" is the same as adding integers."</p>
+<p><span class="text-user">"So, if I write something like</span> <code><span class="text-viola">String s = 1+2+3+4+5+"m"</span></code><span class="text-user">, I'll get</span> <code><span class="text-viola">s = "15m"</span></code> <span class="text-user">?"</span></p>
+<p>"Yeah. The numbers will first be added, and then the sum will be converted to a string."</p>

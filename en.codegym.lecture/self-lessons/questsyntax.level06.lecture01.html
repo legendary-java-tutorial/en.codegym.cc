@@ -1,0 +1,33 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hey, Ellie. Do you have something interesting to tell me?"</span></p>
+<p>"Today we'll talk about how long an object stays in memory, also known as the object's lifetime. <span class="text-green">After an object is created, it exists (lives) as long as at least one variable is storing its address (there is at least one reference to it). </span>If there are no more references, the object dies. Here are some examples:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class MainClass
+{
+   public static void main (String[] args)
+   {
+    <span class="text-red">┏ <sup>Tommy</sup></span>
+    <span class="text-red">┃</span> Cat cat = new Cat("Tommy");
+    <span class="text-red">┃</span> cat = null;
+    <span class="text-red">┗</span>
+    <span class="text-user">┏ <sup>Sammy</sup></span>
+    <span class="text-user">┃</span> Cat cat1 = new Cat("Sammy");
+    <span class="text-user">┃</span><span class="text-viola">┏ <sup>Missy</sup></span>
+    <span class="text-user">┃</span><span class="text-viola">┃</span>Cat cat2 = new Cat("Missy");
+    <span class="text-user">┃</span><span class="text-viola">┃</span>cat2 = cat1;
+    <span class="text-user">┃</span><span class="text-viola">┗</span>
+    <span class="text-user">┃</span><span class="text-green">┏ <sup>Ginger</sup></span>
+    <span class="text-user">┃</span><span class="text-green">┃</span>cat1 = new Cat("Ginger");
+    <span class="text-user">┃</span><span class="text-green">┃</span>cat2 = null;
+    <span class="text-user">┃</span><span class="text-green">┗</span>
+    <span class="text-user">┗</span>
+   }
+}
+</code></pre>
+<p><span class="text-red">"The Tommy object exists for only one line from its creation. The only variable referencing the object is set to null in the very next line, so the object is destroyed by the Java Virtual Machine (JVM)."</span></p>
+<p><span class="text-user">"The Sammy object is stored in the <strong>cat1</strong> variable after it is created. Or, more accurately, the variable stores a reference to it. A couple of lines later, this reference is copied to <strong>cat2</strong>. Then a reference to another object is saved to <strong>cat1</strong>. Now, only <strong>cat2</strong> references <strong>Sammy</strong>. Finally, the last remaining reference to the object is set to null in the last line of the main method."</span></p>
+<p><span class="text-viola">"The Missy object exists for only one line after its creation. In the next line, the <strong>cat2</strong> variable is set to another value, and the reference to <strong>Missy</strong> is lost. The object can no longer be accessed, so it is considered garbage by the system (i.e. the object is dead)."</span></p>
+<p><span class="text-green">"Once created, the Ginger object exists until the method ends. At the end of the method, the <strong>cat2</strong> variable is destroyed, with Ginger being destroyed immediately after that."</span></p>
+<p><span class="text-user">"I see."</span></p>
+<p>"But if we create a <strong>Cat</strong> object inside a method and store a reference to it in an instance variable, then the <strong>Cat</strong> object will exist as long as it is referenced by another object that is still alive."</p>
+<p>"Actually, an object isn't usually immediately destroyed by the system. The Java Virtual Machine performs 'garbage collection' from time to time, destroying objects that have been marked for deletion. More about that process later."</p>
+<p>"And, if we no longer want <span class="text-corporate">a variable to reference an object, we can set it to null</span>, or assign it a reference to another object."</p>

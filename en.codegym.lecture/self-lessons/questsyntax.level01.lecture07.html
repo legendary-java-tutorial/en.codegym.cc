@@ -1,0 +1,78 @@
+<p>"Hi, it's me again. I'll give you three lessons today. And this is the second one! Make yourself comfortable and listen up. I'm going to tell you about displaying text on the screen. It's actually very simple:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>What will be displayed on the screen</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong>println</strong>(<span class="text-red">"Diego"</span>);
+System.out.<strong>println</strong>(<span class="text-green">3</span>);
+System.out.<strong>println</strong>(<span class="text-user">"Rain"</span> + <span class="text-user">"In"</span> + <span class="text-user">"Spain"</span>);</code></pre>
+        </td>
+        <td><code><span class="text-red">Diego</span></code><br />
+            <code><span class="text-green">3</span></code><br />
+            <code><span class="text-user">RainInSpain</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong>println</strong>(<span class="text-corporate">1</span> + <span class="text-corporate">3</span>);
+System.out.<strong>println</strong>(<span class="text-green">"1"</span> + <span class="text-green">"3"</span>);
+System.out.<strong>println</strong>(<span class="text-user">1</span> + <span class="text-green">"3"</span>);
+System.out.<strong>println</strong>(<span class="text-green">"1"</span> + <span class="text-user">3</span>);
+System.out.<strong>println</strong>(<span class="text-green">"1"</span> + (<span class="text-user">1</span> + <span class="text-user">3</span>));</code></pre>
+        </td>
+        <td><code><span class="text-corporate">4</span></code><br />
+            <code><span class="text-green">13</span></code><br />
+            <code><span class="text-green">13</span></code><br />
+            <code><span class="text-green">13</span></code><br />
+            <code><span class="text-green">14</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong>println</strong>(<span class="text-green">"Amigo is the best!"</span>);
+System.out.<strong>println</strong>(<span class="text-green">"Amigo"</span> + <span class="text-green">"is the best!"</span>);
+System.out.<strong>println</strong>(<span class="text-green">"Amigo"</span> + <span class="text-green">" "</span> + <span class="text-green">"is the best!"</span>);</code></pre>
+        </td>
+        <td><code><span class="text-green">Amigo is the best!</span></code><br />
+            <code><span class="text-green">Amigois the best!</span></code><br />
+            <code><span class="text-green">Amigo is the best!</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong>println</strong>(<span class="text-red">3</span> * <span class="text-red">3</span> + <span class="text-red">4</span> * <span class="text-red">4</span>);
+System.out.<strong>println</strong>(<span class="text-red">1</span> * <span class="text-red">2</span> + <span class="text-red">3</span> * <span class="text-red">4</span>);</code></pre>
+        </td>
+        <td><code><span class="text-red">25</span></code><br />
+            <code><span class="text-red">14</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong><span class="text-yellow">print</span></strong>(<span class="text-green">"Diego"</span>);
+System.out.<strong><span class="text-yellow">print</span></strong>(<span class="text-green">"Diego"</span>);
+System.out.<strong><span class="text-yellow">print</span></strong>(<span class="text-green">"Diego"</span>);</code></pre>
+        </td>
+        <td><code><span class="text-green">DiegoDiegoDiego</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong><span class="text-yellow">print</span></strong>(<span class="text-green">"Diego "</span>);
+System.out.<strong>println</strong>(<span class="text-corporate">"is the best!"</span>);
+System.out.<strong><span class="text-yellow">print</span></strong>(<span class="text-red">"Amigo "</span>);
+System.out.<strong>println</strong>(<span class="text-user">"is the best!"</span>);</code></pre>
+        </td>
+        <td><code><span class="text-green">Diego</span> <span class="text-corporate">is the best!</span></code><br />
+            <code><span class="text-red">Amigo</span> <span class="text-user">is the best!</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0141"></div>
+<p><span class="text-user">"Could you tell me about <strong>print()</strong> and <strong>println()</strong> one more time?"</span></p>
+<p><span class="text-green">"The</span> <strong>print()</strong>, <span class="text-green">function is used to display text on the screen, character by character.</span> When the screen no longer has room on a line, the text begins to be displayed on the next line. <span class="text-red">You can use the</span> <strong>println()</strong> <span class="text-red">function to stop displaying text on the current line</span> even before it is full. Subsequent text will appear on the next line."</p>
+<p><span class="text-user">"OK. And what was that trick with adding numbers and strings?"</span></p>
+<p>"If you add two numbers, the result is also a number: 2+2 equals 4. If you add a number and a string, the number is converted to a string. Then the two strings are simply joined together."</p>
+<p><span class="text-user">"Oh! That's what I thought from looking at the examples, but who knows. Thank you for this interesting lesson, Ellie."</span></p>
+<p>"You're welcome. And finally, here are a few tasks from Diego. He wanted me to check your progress."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0122"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0123"></div>

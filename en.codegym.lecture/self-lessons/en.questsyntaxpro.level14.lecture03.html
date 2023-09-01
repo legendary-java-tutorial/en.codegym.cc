@@ -1,0 +1,291 @@
+<h2>1. Types of exceptions</h2>
+<img data-max-width="1080" data-id="4b137035-7e83-4d1e-a2f7-70211e6638b1" src="https://cdn.codegym.cc/images/article/4b137035-7e83-4d1e-a2f7-70211e6638b1/1080.jpeg" alt="Types of exceptions">
+<p>All exceptions are divided into 4 types, which are actually classes that inherit one another.</p>
+<p><span class="text-bold"><code>Throwable</code> class</span></p>
+<p><span class="text-green">The base class for all exceptions is the <code>Throwable</code> class. <span class="text-orange">The <code>Throwable</code> class contains the code that writes the current call stack (stack trace of the current method) to an array.</span></span> We'll learn what a stack trace is a little later.</p>
+<p><span class="text-red">The <strong>throw</strong> operator can only accept an object that derives from the <code>Throwable</code> class.</span> And although you can theoretically write code like <code>throw new Throwable();</code>, nobody usually does this. The main purpose of the <code>Throwable</code> class is to have a single parent class for all exceptions.</p>
+<p><span class="text-bold"><code>Error</code> class</span></p>
+<p>The next exception class is the <code>Error</code> class, which directly inherits the <code>Throwable</code> class. <span class="text-red">The Java machine creates objects of the <code>Error</code> class (and its descendants) <strong>when serious problems have occurred</strong>.</span> For example, a hardware malfunction, insufficient memory, etc.</p>
+<p>Usually, as a programmer, <strong>there is nothing you can do</strong> in a situation where such an error (the kind for which an <code>Error</code> should be thrown) has occurred in the program: these errors are too serious. All you can do is notify the user that the program is crashing and/or write all known information about the error to the program log.</p>
+<p><span class="text-bold"><code>Exception</code> class</span></p>
+<p>The <code>Exception</code> and <code>RuntimeException</code> classes are for common errors that happen in the operation of lots of methods. <span class="text-green">The goal of each thrown exception is to be caught by a <code>catch</code> block that knows how to properly handle it.</span></p>
+<p><span class="text-red">When a method cannot complete its work for some reason, it should immediately notify the calling method by throwing an exception of the appropriate type.</span></p>
+<p>In other words, if a variable is equal to <code>null</code>, the method will throw a <code>NullPointerException</code>. If the incorrect arguments were passed to the method, it will throw an <code>InvalidArgumentException</code>. If the method accidentally divides by zero, it will throw an <code>ArithmeticException</code>.</p>
+<p><span class="text-bold"><code>RuntimeException</code> class</span></p>
+<p><code>RuntimeExceptions</code> are a subset of <code>Exceptions</code>. We could even say that <code>RuntimeException</code> is a lightweight version of ordinary exceptions (<code>Exception</code>) — fewer requirements and restrictions are imposed on such exceptions</p>
+<p>You'll learn the difference between <code>Exception</code> and <code>RuntimeException</code> later.</p>
+<hr>
+<h2>2. <code>Throws</code>: <span class="term">checked exceptions</span></h2>
+<p><img data-max-width="1024" data-id="3159bdfb-9d62-4696-b636-8e8680993125" src="https://cdn.codegym.cc/images/article/3159bdfb-9d62-4696-b636-8e8680993125/1024.jpeg" alt="Throws: checked exceptions"></p>
+<p>All Java exceptions fall into 2 categories: <span class="term">checked</span> and <span class="term">unchecked</span>.</p>
+<p><span class="text-green">All exceptions that inherit the <code><span class="text-green">RuntimeException</span></code> or <code><span class="text-green">Error</span></code> are considered <span class="term"><span class="text-green">unchecked exceptions</span></span>.</span> <span class="text-red">All others are <span class="term"><span class="text-red">checked exceptions</span></span>.</span></p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Important!</div>
+        <div class="lesson-note__content">
+            <p>Twenty years after checked exceptions were introduced, almost every Java programmer thinks of this as a bug. In popular modern frameworks, 95% of all exceptions are unchecked. The C# language, which almost copied Java exactly, did not add <span class="term">checked exceptions</span>.</p>
+        </div>
+    </div>
+</div>
+<p>What is the main difference between <span class="term">checked</span> and <span class="term">unchecked</span> exceptions?</p>
+<p>There are additional requirements imposed on <span class="term">checked</span> exceptions. Roughly speaking, they are these:</p>
+<p><strong>Requirement 1</strong></p>
+<p><span class="text-red">If a method throws a <span class="term">checked</span> exception</span>, <span class="text-viola">it must indicate the type of exception in its signature</span>. <span class="text-green">That way, every method that calls it is aware that this "meaningful exception" might occur in it.</span></p>
+<p>Indicate <span class="text-red"><span class="term">checked</span></span> exceptions after the <span class="code"><span class="text-orange">method parameters</span></span> after the <code>throws</code> keyword (don't use the <code>throw</code> keyword by mistake). It looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">type</span> <span class="text-user">method</span> (<span class="text-orange">parameters</span>) throws <span class="text-red">exception</span></code></pre>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>checked exception</th>
+        <th>unchecked exception</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void calculate(int n) <strong>throws</strong> <span class="text-red">Exception</span>
+{
+   if (n == 0)
+      <strong>throw</strong> new <span class="text-red">Exception</span>("n is null!");
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>public void calculate(n)
+<span>{
+</span>   if (n == 0)
+      throw new <span class="text-red">RuntimeException</span>("n is null!");
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-green">In the example on the right, our code throws an <span class="term"><span class="text-green">unchecked</span></span> exception — no additional action is required.</span> <span class="text-orange">In the example on the left, the method throws a <span class="term"><span class="text-orange">checked</span></span> exception, so the <code>throws</code> keyword is added to the method signature along with the type of the exception.</span></p>
+<p><span class="text-viola">If a method expects to throw multiple <span class="term"><span class="text-viola">checked</span></span> exceptions, all of them must be specified after the <code>throws</code> keyword, separated by commas.</span> The order is not important. Example:</p>
+<pre class="language-java"><code>public void calculate(int n) throws <span class="text-red">Exception</span>, <span class="text-red">IOException</span>
+{
+   if (n == 0)
+      throw new <span class="text-red">Exception</span>("n is null!");
+   if (n == 1)
+      throw new <span class="text-red">IOException</span>("n is 1");
+}</code></pre>
+<p><strong>Requirement 2</strong></p>
+<p>If you call a method that has <span class="term">checked</span> exceptions in its signature, <span class="text-red">you cannot ignore the fact that it throws them.</span></p>
+<p>You must either catch all such exceptions by adding <code>catch</code> blocks for each one, or by <span class="text-red">adding them to a <code><span class="text-red">throws</span></code> clause</span> for your method.</p>
+<p>It's as if we're saying, "<span class="text-orange">These exceptions are so important that we must catch them. And if we do not know how to handle them, then anyone who might call our method must be notified that such exceptions can occur in it.</span></p>
+<p>Example:</p>
+<p>Imagine that we are writing a method to create a world populated by humans. The initial number of people is passed as an argument. So we need to add exceptions if there are too few people.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Creating Earth</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void <span class="text-red">createWorld</span>(int n) throws <span class="text-viola">EmptyWorldException</span>, <span class="text-viola">LonelyWorldException</span>
+{
+   if (n == 0)
+      throw new <span class="text-viola">EmptyWorldException</span>(<span class="text-green">"There are no people!"</span>);
+   if (n == 1)
+      throw new <span class="text-viola">LonelyWorldException</span> (<span class="text-green">"There aren't enough people!"</span>);
+   System.out.println(<span class="text-green">"A wonderful world was created. Population: " </span>+ n);
+}</code></pre>
+        </td>
+        <td>The method potentially throws two <span class="term">checked</span> exceptions:</p>
+            <ul>
+                <li><span class="text-red">EmptyWorldException</span></li>
+                <li><span class="text-red">LonelyWorldException</span></li>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>This method call can be handled in 3 ways:</p>
+<p><strong>1. Don't catch any exceptions</strong></p>
+<p>This is most often done when the method does not know how to properly handle the situation.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void <span class="text-user">createPopulatedWorld</span>(int population)
+throws <span class="text-viola">EmptyWorldException</span>, <span class="text-viola">LonelyWorldException</span>
+{
+   <span class="text-red">createWorld</span>(population);
+}</code></pre>
+        </td>
+        <td>The calling method does not catch the exceptions and must inform others about them: it adds them to its own <code>throws</code> clause</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>2. Catch some of the exceptions</strong></p>
+<p>We handle the errors we can handle. But the ones we don't understand, we throw them up to the calling method. To do this, we need to add their name to the throws clause:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void <span class="text-user">createNonEmptyWorld</span>(int&nbsp;population)
+throws <span class="text-viola">EmptyWorldException</span>
+{
+   try
+   {
+      <span class="text-red">createWorld</span>(population);
+   }
+   catch (<span class="text-viola">LonelyWorldException</span> e)
+   {
+      e.printStackTrace();
+   }
+}</code></pre>
+        </td>
+        <td>The caller catches only one <span class="term">checked</span> exception — <code><span class="text-viola">LonelyWorldException</span></code>. The other exception must be added to its signature, indicating it after the <code>throws</code> keyword</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>3. Catch all exceptions</strong></p>
+<p>If the method does not throw exceptions to the calling method, then the calling method is always confident that everything worked well. And it will be unable to take any action to fix an exceptional situations.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void <strong><span class="text-user">createAnyWorld</span></strong>(int population)
+{
+   try
+   {
+      <span class="text-red">createWorld</span>(population);
+   }
+   catch (<span class="text-viola">LonelyWorldException</span> e)
+   {
+      e.printStackTrace();
+   }
+   catch (<span class="text-viola">EmptyWorldException</span> e)
+   {
+      e.printStackTrace();
+   }
+}</code></pre>
+        </td>
+        <td>All exceptions are caught in this method. The caller will be confident that everything went well.</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1408"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1409"></div>
+<hr>
+<h2>3. Wrapping exceptions</h2>
+<p><span class="term">Checked</span> exceptions seemed cool in theory, but turned out to be a huge frustration in practice.</p>
+<p>Suppose you have a super popular method in your project. It is called from hundreds of places in your program. And you decide to add a new <span class="term">checked</span> exception to it. And it may well be that this <span class="term">checked</span> exception is really important and so special that only the <code>main()</code> method knows what to do if it is caught.</p>
+<p>That means <span class="text-orange">you'll have to add the <span class="term"><span class="text-orange">checked</span></span> exception to the <code>throws</code> clause of every method that calls your super popular method</span>. As well as in the <code>throws</code> clause of all the methods that call those methods. And of the methods that call those methods.</p>
+<p>As a result, the <code>throws</code> clauses of half of the methods in the project get a new <span class="term">checked</span> exception. And of course your project is covered by tests, and now the tests don't compile. And now you have to edit the throws clauses in your tests as well.</p>
+<p><span class="text-green">And then all your code (all the changes in hundreds of files) will have to be reviewed by other programmers. </span>And at this point we ask ourselves why we made we made so many bloody changes to the project? Day(s?) of work, and broken tests — all for the sake of adding one <span class="term">checked</span> exception?</p>
+<p>And of course, there are still problems related to inheritance and method overriding. <span class="text-red">The problems that come from <span class="term">checked</span> exceptions are much larger than the benefit.</span> The bottom line is that now few people love them and few people use them.</p>
+<p>However there is still a lot of code (including standard Java library code) that contains these <span class="term">checked</span> exceptions. What is to be done with them? We can't ignore them, and we don't know how to handle them.</p>
+<p>Java programmers proposed to wrap <span class="term">checked</span> exceptions in <code>RuntimeException</code>. In other words, catch all the <span class="term">checked</span> exceptions and then create <span class="term">unchecked</span> exceptions (for example, <code>RuntimeException</code>) and throw them instead. Doing that looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>try
+{
+   <span class="text-green">// Code where a checked exception might occur</span>
+}
+catch(<span class="text-neon">Exception exp</span>)
+{
+   throw new <span class="text-viola">RuntimeException</span>(<span class="text-viola">exp</span>);
+}</code></pre>
+</div>
+<p>It's not a very pretty solution, but there's nothing criminal here: the exception was simply stuffed inside a <code>RuntimeException</code>.</p>
+<p>If desired, you can easily retrieve it from there. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>try
+{
+   // Code where we wrap the checked exception
+   // in a RuntimeException
+}
+catch(<span class="text-viola">RuntimeException</span> <span class="code"><span class="text-viola">e</span></span>)
+{
+   Throwable <span class="code"><span class="text-green">cause</span></span> = <span class="code"><span class="text-viola">e</span></span>.getCause();
+   if (<span class="code"><span class="text-green">cause</span></span> instanceof <span class="text-neon">Exception</span>)
+   {
+      <span class="text-neon">Exception <span class="code">exp</span></span> = (<span class="text-neon">Exception</span>) <span class="code"><span class="text-green">cause</span></span>;
+      // Exception handling code goes here
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><br><br><br><br>Get the exception stored inside the <code>RuntimeException</code> object. The <code><span class="text-green">cause</span></code> variable maybe <code>null</code><br><br>
+            Determine its type and convert it to a <span class="term">checked</span> exception type.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1410"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1411"></div>
+<hr>
+<h2>4. Catching multiple exceptions</h2>
+<p>Programmers really hate to duplicate code. They even came up with a corresponding development principle: <span class="term">Don't Repeat Yourself (DRY)</span>. But <span class="text-orange">when handling exceptions, there are frequent occasions when a <code>try</code> block is followed by several <code>catch</code> blocks with the same code.</span></p>
+<p>Or there could be 3 <code>catch</code> blocks with the same code and another 2 <code>catch</code> blocks with other identical code. This is a standard situation when your project <span class="text-red">handles exceptions responsibly.</span></p>
+<p>Starting with version 7, in the Java language added the ability to specify multiple types of exceptions in a single <code>catch</code> block. It looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>try
+{
+   <span class="text-green">// Code where an exception might occur</span>
+}
+catch (<span class="text-viola">ExceptionType1</span> | <span class="text-viola">ExceptionType2</span> | <span class="text-viola">ExceptionType3</span> <span class="text-red">name</span>)
+{
+   <span class="text-user">// Exception handling code</span>
+}</code></pre>
+</div>
+<p>You can have as many <code>catch</code> blocks as you want. However, a single <code>catch</code> block cannot specify exceptions that inherit one another. In other words, you cannot write catch (<code>Exception</code> | <code>RuntimeException</code> e), because the <code>RuntimeException</code> class inherits <code>Exception</code>.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task14.task1412"></div>
+<hr>
+<h2>5. Custom exceptions</h2>
+<p>You can always create your own exception class. You simply create a class that inherits the <code>RuntimeException</code> class. It will look something like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>class <span class="text-user">ClassName</span> extends <span class="text-viola">RuntimeException</span>
+{
+}</code></pre>
+</div>
+<p>We'll discuss the details as you learn OOP, inheritance, constructors, and method overriding.</p>
+<p>However, even if you only have a simple class like this (entirely without code), you can still throw exceptions based on it:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Solution
+{
+   public static void main(String[] args)
+   {
+      throw new <span class="text-user">MyException</span>();
+   }
+}
+
+class <span class="text-user">MyException</span> extends <span class="text-viola">RuntimeException</span>
+{
+}</code></pre>
+        </td>
+        <td><br><br><br><br>Throw an <span class="term">unchecked</span> <code>MyException</code>.</td>
+    </tr>
+    </tbody>
+</table>
+<p>In the <span class="term">Java Multithreading</span> quest, we will take a deep dive into working with our own custom exceptions.</p>

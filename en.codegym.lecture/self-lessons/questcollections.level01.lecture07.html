@@ -1,0 +1,120 @@
+<p>"Hi, Amigo, once again."</p>
+<p><span class="text-user">"Hello to you, Rishi. What will today's lesson be about?"</span></p>
+<p>"Today I'm going to tell you about Reader and Writer."</p>
+<p><span class="text-user">"But, Rishi, I already know almost everything about them!"</span></p>
+<p>"Repetition is the mother of learning."</p>
+<p><span class="text-user">"Hmm. Well, okay."</span></p>
+<p>"<strong>Reader</strong> and <strong>Writer</strong> are analogs to <strong>InputStream</strong> and <strong>OutputStream</strong>, but they work with characters, not bytes. Sometimes they are also called character streams, as opposed to <strong>InputStream</strong> and <strong>OutputStream</strong>, which are called byte streams."</p>
+<p><span class="text-user">"One is for characters, the other is for bytes. I remember."</span></p>
+<p>"It's not just that. These classes are specially designed to work with text and strings. Today we will look at two classic implementations of these abstract classes: <strong>FileReader</strong> and <strong>FileWriter</strong>."</p>
+<p>"Here are the methods of the <strong>FileReader</strong> class:"</p>
+<table style="width: 100%;">
+    <tbody>
+    <tr>
+        <th width="55%">Method</th>
+        <th width="45%">Description</th>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>()</code></td>
+        <td>Reads one character from the stream and returns it.</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>(char cbuf[], int offset, int length)</code></td>
+        <td>Reads an array of characters, returns the number of characters read.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>ready</strong>()</code></td>
+        <td>Returns true if it is possible to read from the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>close</strong>()</code></td>
+        <td>Closes the input stream.</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>(java.nio.CharBuffer target)</code></td>
+        <td>Read a set of characters into a buffer.</td>
+    </tr>
+    <tr>
+        <td><code>int <strong>read</strong>(char cbuf[])</code></td>
+        <td>Reads an array of characters.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>skip</strong>(long n)</code></td>
+        <td>Skips n characters in the stream.</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>getEncoding</strong>()</code></td>
+        <td>Returns the current encoding of the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Well, I know almost all of this. But what about FileWriter?"</span></p>
+<table style="width: 100%;">
+    <tbody>
+    <tr>
+        <th width="55%">Method</th>
+        <th width="45%">Description</th>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(int c)</code></td>
+        <td>Writes one character to the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(char cbuf[], int off, int len)</code></td>
+        <td>Writes an array of characters to the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(char cbuf[])</code></td>
+        <td>Writes an array of characters to the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(String str, int off, int len)</code></td>
+        <td>Writes part of a string to the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>write</strong>(String str)</code></td>
+        <td>Writes a string to the stream.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>flush</strong>()</code></td>
+        <td>Writes everything cached in memory to disk.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>close</strong>()</code></td>
+        <td>Closes the stream.</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>getEncoding</strong>()</code></td>
+        <td>Returns the current encoding of the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I know that!"</span></p>
+<p>"That's wonderful. Then let's look at one interesting example, and later Diego will give you more tasks."</p>
+<p>"How do you read a file line by line? Can you write the code?"</p>
+<p><span class="text-user">"Easy, look:"</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Create a list for storing the lines
+List<strong>&lt;String&gt;</strong> list = new ArrayList<strong>&lt;String&gt;()</strong>;
+
+// Open the file
+File <span class="text-green">file</span> = new File("<span class="text-green">c:/document.txt</span>");
+BufferedReader <span class="text-red">reader</span> = new BufferedReader(new <span class="text-corporate">FileReader</span>(file));
+
+// As long as the file isn't empty, read from it
+while (<span class="text-red">reader</span>.ready())
+{
+ list.add(<span class="text-red">reader</span>.readLine());
+}
+
+// Close the file
+reader.close();</code></pre>
+<p>"Hmm. Not bad."</p>
+<p><span class="text-user">"Not bad? It's all simple and beautiful. Admit it, Rishi—I already have an excellent mastery of I/O threads. So what could be improved here?"</span></p>
+<p>"Well, for example, you could do this:"</p>
+<div class="code-heading">Rishi's code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>File <span class="text-green">file</span> = new File("<span class="text-green">c:/document.txt</span>");
+
+List list = Files.<span class="text-red">readAllLines</span>(<span class="text-green">file</span>.toPath(), <span class="text-user">Charset.defaultCharset(</span>));</code></pre>
+<p><span class="text-user">"Hmm. That is shorter. And just today you told me about all these methods. I'll rework it. Thank you for the lesson, Rishi."</span></p>
+<p>"Good luck, Amigo."</p>

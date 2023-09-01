@@ -1,0 +1,215 @@
+<h2>1. Introduction</h2>
+<p>A game engine would be of little use if we could only use it to draw something on the screen. To write a full-fledged game, we need it to interact with the user! To be more precise, our program should track user actions and respond to them.</p>
+<p>To do this, the CodeGym game engine has special methods that it calls when the user clicks the mouse buttons or keyboard keys.</p>
+<p>The point of the class is that you write these methods yourself, and then the CodeGym game engine is responsible for calling them. All you need is to declare these methods in your code. This is easier to do than it sounds.</p>
+<hr>
+<h2>2. Working with the mouse</h2>
+<p>The game engine has two methods for working with the mouse:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>void <span class="text-green">onMouseLeftClick</span>(int x, int y)</code></pre>
+    <pre class="lecture-code lecture-code--present language-java"><code>void <span class="text-red">onMouseRightClick</span>(int x, int y)</code></pre>
+</div>
+<p>You simply declare these methods in your own class that inherits the <code>Game</code> class. And then write whatever code you want in these methods. The game engine will call these methods when the user clicks the mouse buttons.</p>
+<p><code>onMouseLeftClick(int x, int y)</code> is called by the engine when the <span class="text-green">left mouse button</span> is clicked. Its parameters are the coordinates of the cell of the playing field where the click occurred. The coordinates of the top left cell are <code>(0,0)</code>. To use this method, you need to override it, placing the <code>@Override</code> annotation before the method name.</p>
+<p><code>onMouseRightClick(int x, int y)</code> is called when <span class="text-red">right mouse button</span> is clicked. It works similar to the <code>onMouseLeftClick(int x, int y)</code> method.</p>
+<p>Examples of using these methods:</p>
+<pre class="language-java"><code>import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
+import com.javarush.engine.cell.Key;
+
+public class MySuperGame extends Game {
+   @Override
+   public void initialize() {
+      // Set the size of the playing field to 3x3
+      setScreenSize(3, 3);
+
+      // Paint the playing field white
+      for (int x = 0; x &lt; 3; x++) {
+         for (int y = 0; y &lt; 3; y++) {
+            setCellColor(x, y, Color.WHITE);
+         }
+      }
+   }
+
+   @Override
+   public void onMouseLeftClick(int x, int y) {
+      // Put a "X" in the cell that was clicked with the left mouse button
+      setCellValue(x, y, "X");
+   }
+
+   @Override
+   public void onMouseRightClick(int x, int y) {
+      // Clear the cell that was clicked with the right mouse button
+      setCellValue(x, y, "");
+   }
+}</code></pre>
+<p>In the example above, we declared both methods: <code>onMouseLeftClick()</code> and <code>onMouseRightClick()</code>. The first method will be called when the user clicks the left mouse button on cells of the playing field. The second method will be called when the right mouse button is clicked.</p>
+<p>As arguments, the CodeGym game engine will pass the <code>(x, y)</code> coordinates of the cell of the playing field where the mouse was clicked.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini07"></div>
+<hr>
+<h2>3. Working with the keyboard</h2>
+<p>The game engine has two methods for working with the keyboard:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>void <span class="text-green">onKeyPress</span>(Key key);</code></pre>
+    <pre class="lecture-code lecture-code--present language-java"><code>void <span class="text-red">onKeyReleased</span>(Key key);</code></pre>
+</div>
+<p>If you want to do something when the user presses a key, you just need to declare these methods in your class that inherits the <code>Game</code> class.</p>
+<p>You write your code in these methods, and the game engine will call them when the user presses (or releases) a key.</p>
+<p><code>onKeyPress(Key key)</code> is called when any key is <span class="text-green"><strong>pressed</strong></span>. The value of the pressed key (or <code>Key.<span class="text-viola">UNKNOWN</span></code>) is passed to the method as the <code>key</code> parameter. To use this method, you need to override it, placing the <code>@Override</code> annotation before the method name.</p>
+<p><code>onKeyReleased(Key key)</code> is called when any key is <span class="text-red"><strong>released</strong></span>. The value of the corresponding key (or <code>Key.<span class="text-viola">UNKNOWN</span></code>) gets assigned to the <code>key</code> parameter. To use this method, you need to override it, placing the <code>@Override</code> annotation before the method name.</p>
+<p>Examples of using these methods:</p>
+<pre class="language-java"><code>import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
+import com.javarush.engine.cell.Key;
+
+public class MySuperGame extends Game {
+   @Override
+   public void initialize() {
+      // Set the size of the playing field to 3x3
+      setScreenSize(3, 3);
+
+      // Paint the playing field white
+      for (int x = 0; x &lt; 3; x++) {
+         for (int y = 0; y &lt; 3; y++) {
+            setCellColor(x, y, Color.<span class="text-viola">WHITE</span>);
+         }
+      }
+   }
+
+   @Override
+   public void onKeyPress(Key key) {
+      // When the spacebar is pressed, the center cell turns yellow
+      if (key == Key.<span class="text-viola">SPACE</span>) {
+         setCellColor(1, 1, Color.<span class="text-viola">YELLOW</span>);
+      }
+   }
+
+   @Override
+   public void onKeyReleased(Key key) {
+      // When the spacebar is released, the center cell returns to white
+      if (key == Key.<span class="text-viola">SPACE</span>) {
+         setCellColor(1, 1, Color.<span class="text-viola">WHITE</span>);
+      }
+   }
+}</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini08"></div>
+<hr>
+<h2>4. List of all supported keys</h2>
+<p>When the CodeGym engine calls the <code>onKeyPress()</code> and <code>onKeyReleased()</code> methods, it passes information to them about the pressed (released) key. To do this, the CodeGym engine has a special type called <code>Key</code>.</p>
+<p>In the current version of the engine, the <code>Key</code> type only supports a limited set of 9 values:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Value</th>
+        <th>What the user pressed</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.ENTER</code></pre>
+        </td>
+        <td>The user pressed the <span class="term">Enter</span> key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.ESCAPE</code></pre>
+        </td>
+        <td>The user pressed the <span class="term">Esc</span> key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.PAUSE</code></pre>
+        </td>
+        <td>The user pressed the <span class="term">Pause</span> key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.SPACE</code></pre>
+        </td>
+        <td>The user pressed the <span class="term">Space</span> key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.LEFT</code></pre>
+        </td>
+        <td>The user pressed the <span class="term">Left Arrow</span> key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.RIGHT</code></pre>
+        </td>
+        <td>The user pressed the <span class="term">Right Arrow</span> key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.UP</code></pre>
+        </td>
+        <td>The user pressed the <span class="term">Up Arrow</span> key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.DOWN</code></pre>
+        </td>
+        <td>The user pressed the <span class="term">Down Arrow</span> key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Key.UNKNOWN</code></pre>
+        </td>
+        <td>Any key other than those listed above</td>
+    </tr>
+    </tbody>
+</table>
+<p>If the player presses the space bar, then the <code>onKeyPress()</code> method will be called with <code>Key.SPACE</code> as the parameter. If the user presses the left arrow, then the parameter will be <code>Key.LEFT</code>. If the user presses any key that is not in the list above, then the <code>onKeyPress()</code> method will be called with <code>Key.UNKNOWN</code> as the parameter.</p>
+<p>The issue here is that the existing CodeGym games were designed to run on a phone. Instead of the standard keyboard, we have 8 virtual buttons:</p>
+<p><img data-id="39cfc874-c7ae-40d0-8bfc-24d7697dfefe" src="https://cdn.javarush.ru/images/article/39cfc874-c7ae-40d0-8bfc-24d7697dfefe/original.png" alt=""></p>
+<hr>
+<h2>5. Working with a timer</h2>
+<p>Many games take place in real time, i.e. the user might do nothing, but certain events are still occur in the game. To allow you to implement such games, we added a timer to the game engine.</p>
+<p>Here's how it works: you turn on the timer and set the time after which it should be triggered. For example, 500 ms. Then, every half second, the CodeGym game engine will call the <code>onTurn()</code> method. An infinite number of times — until the timer is turned off.</p>
+<p>How do you use a timer?</p>
+<p><strong>1. Turn on the timer</strong></p>
+<p>To turn on the timer, we have the <code>void setTurnTimer(int timeMs)</code> method. The method takes as an argument the duration (in milliseconds or 1/1000s of a second) of the interval between callbacks. You just need to call this method once, and the game engine will start calling the <code>onTurn()</code> method every <code>timeMs</code> milliseconds.</p>
+<p><strong>2. Override the <code>onTurn(int)</code> method</strong></p>
+<p>To do this, you must declare a <code>void onTurn(int step)</code> method in a class that inherits the <code>Game</code> class. The game engine will call this method. With each call, the engine passes the a sequential number that identifies the method call (<code>1</code>, <code>2</code>, <code>3</code>, ...).</p>
+<p><strong>3. Turn off the timer</strong></p>
+<p>If the timer is no longer needed, for example because the user has finished the game, then it can be turned off. To do this, simply call the <code>stopTurnTimer()</code> method.</p>
+<p><strong>4 Accelerate/change the timer</strong></p>
+<p>In some games, the frequency of events increases regularly, so it would be convenient to be able to speed up our timer, i.e. reduce the time between callbacks. And nothing could be easier — just call <code>setTurnTimer(int timeMs)</code> again with the new value, and the time between calls to <code>onTurn()</code> will change.</p>
+<p>Example:</p>
+<pre class="language-java"><code>import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
+
+public class MySuperGame extends Game {
+   ...
+   @Override
+   public void initialize() {
+      // Create a 3x3 playing field
+      setScreenSize(3, 3);
+      showGrid(false);
+      setCellValueEx(1, 1, Color.<span class="text-viola">BLUE</span>, "X", Color.<span class="text-viola">ORANGE</span>, 50);
+
+      setTurnTimer(500); // Turn on the timer. The interval between callbacks is 500ms.
+   }
+
+   @Override
+   public void onTurn(int step) {
+      if (step == 100) {
+         stopTurnTimer(); // If this is the 100th callback, then turn off the timer
+      }
+
+      if (step % 2 == 1) {
+         // If this is an odd calllback, then set the cell background to red
+         setCellColor(1, 1, Color.<span class="text-viola">RED</span>);
+      } else {
+         // If this is an even callback, then set the cell background to blue
+         setCellColor(1, 1, Color.<span class="text-viola">BLUE</span>);
+      }
+   }
+   ...
+}</code></pre>
+<p>In this simple example, we created a field that is 3 cells by 3 cells. Then we turned on a timer that will call the <code>onTurn()</code> method every half second.</p>
+<p>Here, the color of the central cell will change every half second. The text of the cell will not change. After 50 seconds (100 callbacks), the color will stop changing and the timer will turn off.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini09"></div>

@@ -1,0 +1,70 @@
+<a href='https://cdn.codegym.cc/images/article/0a773d44-4da2-42ff-be26-51a8b084d220/original.jpeg' alt=""  target='_blank'><img data-id="0a773d44-4da2-42ff-be26-51a8b084d220" data-max-width="1080" alt="Stack trace - 1" src="https://cdn.codegym.cc/images/article/0a773d44-4da2-42ff-be26-51a8b084d220/original.jpeg"></a>
+<p>"Hi! Today I'll tell you what a stack trace is. But first I need to tell you what a stack is."</p>
+<p>"Imagine a pile of papers – directives for a certain employee. You can put a new task on top of the pile, or you can take a task from the top. This means that tasks won't be executed in the order they were received. The task placed on the pile most recently will be the first to be executed. <span class="text-green">Structuring the elements of a collection this way forms a <strong><em>stack</em></strong>.</span>"</p>
+<p>"<span class="text-corporate">Java has a special collection for that – Stack</span>. It's a collection that has methods to 'add an element' and 'take (get) an element'. As you may have guessed, the element that was added last will be the first to be taken."</p>
+<p><span class="text-user">"Sounds rather straightforward."</span></p>
+<p>"Great. Now I'll explain what a <strong><em>stack trace</em></strong> is."</p>
+<p>"Imagine that in a Java program <span class="text-green">method A</span> called <span class="text-viola">method B</span>, which called <span class="text-corporate">method C</span>, which in turn called <span class="text-neon">method D</span>. To exit <span class="text-viola">method B</span>, we must first exit <span class="text-corporate">method C</span>, and to do that – we must first exit <span class="text-neon">method D</span>. This behavior resembles a stack."</p>
+<p><span class="text-user">"Why do you say it resembles it?"</span></p>
+<p>"To get to some task in the middle of our stack of papers, for example, you first need to execute all the tasks lying on top of it."</p>
+<p><span class="text-user">"There's some similarity, but I'm not sure I understand everything correctly."</span></p>
+<p>"Look. A stack is a set of elements. Like pieces of paper in a pile. To take the third piece of paper from the top, you first need to take the second, and for that, you need to take the first. You can always put and take pieces of paper, but you always have to take the top paper first."</p>
+<p>"The same is true for function calls. <span class="text-green">Method A</span> calls <span class="text-viola">method B</span>, which calls <span class="text-corporate">method C</span>. To exit <span class="text-green">A</span>, you must first exit <span class="text-viola">B</span>, and to do that, you need to exit <span class="text-corporate">C</span>."</p>
+<p><span class="text-user">"Wait. If I understand what you're saying, the entire concept of a stack boils down to 'take the piece of paper that was added last' and 'you can only exit the method you most recently entered'. Is that accurate?"</span></p>
+<p>"Yes. The sequence of function calls is known as the ‘call stack' or simply the ‘stack'. <span class="text-green">The last function called is the first function to end.</span> Let's dig into an example."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Get and display the current call stack:</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java  data-line="" data-start=""><code>public class ExceptionExample
+{
+  public static void main(String[] args)
+  {
+    <strong><strong>method1</strong>();</strong>
+  }
+
+  public static void <strong>method1</strong>()
+  {
+    <strong><strong>method2</strong>();</strong>
+  }
+
+  public static void <strong>method2</strong>()
+  {
+    <strong><strong>method3</strong>();</strong>
+  }
+
+  public static void <strong>method3</strong>()
+  {
+     <span class="text-viola">StackTraceElement</span>[] <span class="text-user">stackTraceElements</span> = <strong>Thread</strong>.<span class="text-red">currentThread</span>().<span class="text-red">getStackTrace</span>();
+    for (<span class="text-viola">StackTraceElement</span> <span class="text-user">element</span> : <span class="text-user">stackTraceElements</span>)
+    {
+       System.out.println(<span class="text-user">element</span>.<span class="text-green">getMethodName</span>());
+    }
+  }
+}</code></pre>
+</td>
+</tr>
+<tr><th>Result:</th></tr>
+<tr>
+<td><pre class="line-numbers language-java  data-line="" data-start=""><code>getStackTrace
+method3
+method2
+method1
+main</td>
+</code>
+</pre>
+</tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task09.task0931"></div>
+<p><span class="text-user">"OK. I get everything about function calls. But what is this StackTraceElement?"</span></p>
+<p>"The Java Machine keeps track of all function calls. For that, it has a special collection – the stack. When one function calls another, the Java Machine puts a new <span class="text-viola">StackTraceElement</span> object onto the stack. When a function finishes, that element is removed from the stack. <span class="text-corporate">This means that the stack always stores up-to-date information about the current state of the 'stack of function calls'.</span>"</p>
+<p>"Each <span class="text-viola">StackTraceElement</span> object contains information about the called method. In particular, you can get the method name using the <span class="text-green">getMethodName</span> method."</p>
+<p>"You can see how this works in the example above:</p>
+<p>1) We get the call stack.</p>
+<p>2) We use a <strong>for-each</strong> loop to go through it. I hope you haven't forgotten what that is.</p>
+<p>3) We output the method names to <strong>System.out</strong>."</p>
+<p><span class="text-user">"Fascinating! And not too complicated either. Thank you, Rishi!"</span></p>

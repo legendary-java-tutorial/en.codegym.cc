@@ -1,0 +1,73 @@
+<p>"Hi, Amigo!</p>
+<p>"Everything new is just something old that we've forgotten. Today I'll talk about stopping threads. I hope you've already forgotten how the interrupt() method works."</p>
+<p><span class="text-user">"Yes, Ellie, I've completely forgotten it."</span></p>
+<p>"Great. Then I'll remind you."</p>
+<p>"In Java, if someone wants to stop a running thread, he can signal this to the thread. To do this, you need to set the Thread object's hidden <strong>isInterrupted</strong> variable to true."</p>
+<p>"Each Thread has an interrupt() method, which is used to set this flag. When the <strong>interrupt</strong>() method is called, the <strong>isInterrupted</strong> variable inside the Thread object is set to true."</p>
+<p>"And when the Thread.sleep() or join() method is called on a thread, the method checks whether the isInterrupted flag is set for the current thread. If this flag is set (the variable <strong>isInterrupted</strong> equals true), then the methods throw an <strong>InterruptedException</strong>."</p>
+<p>"Here, I'll remind you of an old example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Clock <span class="text-user">implements Runnable</span>
+{
+public void run()
+{
+<strong><span class="text-user">Thread current = Thread.currentThread();</span></strong>
+
+while (<span class="text-red">!current.isInterrupted()</span>)
+{
+Thread.sleep(1000);
+System.out.println("Tik");
+}
+}
+}</code></pre>
+        </td>
+        <td><span class="text-user">The Clock's run method gets the Thread object for the current thread.</span></p>
+            <p>The Clock class writes the word "Tick" to the console once per second as long as the current thread's isInterrupt variable is false.</p>
+            <p>When isInterrupt becomes true, the run method terminates.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-user">Clock clock = new Clock();
+Thread clockThread = new Thread(clock);
+clockThread.start();</span>
+
+<span class="text-green">Thread.sleep(10000);</span>
+<span class="text-red">clockThread.interrupt();</span>
+}</code></pre>
+        </td>
+        <td><span class="text-user">The main thread starts a child thread (clock) that should run forever.</span></p>
+            <p><span class="text-green">Wait 10 seconds</span> <span class="text-red">and cancel the task by calling the interrupt method.</span></p>
+            <p>The main thread finishes its work.</p>
+            <p>The clock thread finishes its work.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Here we use the <strong>sleep</strong> method as part of an infinite loop in the <strong>run</strong> method. In the loop, the <strong>isInterrupt</strong> variable is checked automatically. If a thread calls the <strong>sleep</strong> method, the method first checks whether <strong>isInterrupt</strong> is true for that thread (the one that called the sleep method). If it is true, then the method won't sleep. Instead, it throws an <strong><span class="text-red">InterruptedException</span></strong>."</p>
+<p><span class="text-user">"But in this example, we constantly check the isInterrupted variable in the loop's condition."</span></p>
+<p><span class="text-user">"I remember there were some reasons why we couldn't use this approach. Could you remind me?"</span></p>
+<p>"<strong>First</strong>, the <strong>run</strong> method doesn't always have a loop. The method might simply consist of a few dozen calls to other methods. In this case, you would have to add an isInterrupted check before each method call."</p>
+<p>"<strong>Second</strong>, some method involving lots of different actions might take a very long time to execute."</p>
+<p>"<strong>Third</strong>, throwing an exception doesn't replace the isInterrupted check. It's just a convenient addition. The thrown exception lets you to quickly unwind the call stack back to the <strong>run</strong> method itself."</p>
+<p>"<strong>Fourth</strong>, the sleep method is used a lot. It turns out that this helpful method is enhanced by an implicit check that is no less helpful. <strong>It's as if nobody specifically added the check, but there it is.</strong> This is super valuable when you're using someone else's code and you can't add the check yourself."</p>
+<p>"<strong>Fifth</strong>, the additional check doesn't degrade performance. Calling the sleep method means that the thread shouldn't be doing anything (except sleeping), so the extra work doesn't bother anyone."</p>
+<p><span class="text-user">"That's exactly what you said previously."</span></p>
+<p><span class="text-user">"And what about your statement, «<strong>Nobody can guarantee that a thread will be stopped. Only a thread can stop itself.</strong>» Can you explain that?"</span></p>
+<p>"Sure."</p>
+<p>"Previously, in early versions of Java, threads had a stop() method. And when you called it, the JVM actually stopped the thread. But if a thread was doing something outside the JVM (for example, writing to a file or calling OS functions) when it was interrupted this way, the interruption caused a lot of problems, such as unclosed files, unreleased system resources, etc."</p>
+<p>"A general meeting of Java's creators decided to remove the method for forcibly stopping threads. Now all we can do is set a certain flag (isInterrupted) and hope that the thread code was written correctly, so that this flag will be processed. This flag is like a sign that says, 'Thread, stop, please. It's very important!'. But whether it stops or not is its own business."</p>
+<p><span class="text-user">"But what about the InterruptedException?"</span></p>
+<p>"What if the code running on this thread has a bunch of try-catch blocks? Even if an InterruptedException occurs somewhere, there's definitely no guarantee that some try-catch won't catch it and forget about it. So there are no guarantees the thread will stop."</p>
+<p>"Another thing is that threads are already considered quite low-level programming. But I'll tell you about that next time."</p>
+<p><span class="text-user">"You're not Ellie—you're Scheherazade!"</span></p>
+<p>"So, Amigo! Is everything in the current lesson clear?"</p>
+<p><span class="text-user">"Yep."</span></p>
+<p>"Okay, good."</p>

@@ -1,0 +1,129 @@
+<p>"Hi, Amigo!"</p>
+<p>"Now it's time for another interesting topic: encodings."</p>
+<p>"Perhaps you've already heard somewhere that each character has a code (number). That's why the char type can represent both symbols and numbers."</p>
+<p>"For example, the code for the letter 'A' in the English alphabet is 65. 'B' is 66, 'C' is 67, and so on. There are unique codes for uppercase letters, lowercase letters, Cyrillic letters, Chinese characters (yeah, lots and lots of codes), numbers, and various symbols. In short, there is a code for practically everything you'd call a character."</p>
+<p><span class="text-user">"So, every letter and character corresponds to some number?"</span></p>
+<p>"Precisely."</p>
+<p>"A character can be converted to a number, and a number to a character. Java generally doesn't see a difference between them:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>char c = 'A'; //The code (number) for 'A' is 65
+c++; //Now c contains the number 66, which is the code for 'B'</code></pre>
+<p><span class="text-user">"Interesting."</span></p>
+<p>"So, an encoding is a set of symbols and their corresponding set of codes. But not just one encoding has been invented—there are quite a few. It wasn't until later that a common universal encoding, Unicode, was invented."</p>
+<p>"But no matter how many universal standards are invented, no one is in a hurry to abandon the old ones. And then everything happens just like in this cartoon:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/f20af4d7-98e4-43ad-9180-57daad196bfb/original.jpeg' target='_blank'><img data-id="f20af4d7-98e4-43ad-9180-57daad196bfb" data-max-width="850" alt="Character encodings - 1" src="https://cdn.codegym.cc/images/article/f20af4d7-98e4-43ad-9180-57daad196bfb/original.jpeg"></a>
+
+<p>"Imagine that Vincent and Nick decide to make their own encodings."</p>
+<p>"Here's Vincent's encoding:"<br />
+    <img data-id="a62ce2ac-d382-4fb4-9e20-16c395562895" data-max-width="853" alt="Character encodings - 2" src="https://cdn.codegym.cc/images/article/a62ce2ac-d382-4fb4-9e20-16c395562895/original.png"></p>
+<p>"And here's Nick's encoding:"<br />
+    <img data-id="99c29678-d436-4b2b-bb6f-6b7e93f9a01f" data-max-width="854" alt="Character encodings - 3" src="https://cdn.codegym.cc/images/article/99c29678-d436-4b2b-bb6f-6b7e93f9a01f/original.png"></p>
+<p>"They even use the same characters, but the codes for the characters are different."</p>
+<p>"When the string 'ABC-123' is written to a file using Vincent's encoding, we get the following set of bytes:"<br />
+    <img data-id="5cf51099-799e-44db-a74b-00e18dcd1708" data-max-width="283" alt="Character encodings - 4" src="https://cdn.codegym.cc/images/article/5cf51099-799e-44db-a74b-00e18dcd1708/original.png"></p>
+<p>"And now another program that uses Nick's encoding wants to read the file:"</p>
+<p>"Here's what it will read: «345-IJK»."</p>
+<p>"And the worst thing is that encodings typically aren't stored anywhere in files, so developers have to guess."</p>
+<p><span class="text-user">"Well, how do they guess them?"</span></p>
+<p>"That's a different topic. But I want to explain how to work with encodings. As you already know, the size of a char in Java is two bytes. And Java Strings use the Unicode format."</p>
+<p>"But Java lets you convert a String into a set of bytes in any encoding that it knows. The String class has special methods for this. Java also has a special Charset class that describes a specific encoding."</p>
+<p><strong>1) How do I get a list of all the encodings Java supports?</strong></p>
+<p>"There is a special static method called availableCharsets for that. "This method returns a set of pairs (encoding name, object that describes the encoding):"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>SortedMap&lt;String,Charset&gt; charsets = Charset.availableCharsets();</code></pre>
+<p>"Each encoding has a unique name. Here are some of them: UTF-8, UTF-16, Windows-1251, KOI8-R,…"</p>
+<p><strong>2) How do I get the current active encoding (Unicode)?</strong></p>
+<p>"There is a special method called <strong>defaultCharset</strong> for that.</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Charset currentCharset = Charset.defaultCharset();</code></pre>
+<p><strong>3) How do I convert a String to a specific encoding?</strong></p>
+<p>"In Java, you can convert a String to a byte array in any encoding that Java knows:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>byte</strong>[] getBytes()</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+byte[] buffer = s.<strong>getBytes</strong>()</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>byte</strong>[] getBytes(<strong>Charset</strong> <strong>charset</strong>)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+Charset koi8 = Charset.forName("KOI8-R");
+byte[] buffer = s.<strong>getBytes</strong>(koi8);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>byte</strong>[] getBytes(<strong>String</strong> <strong>charsetName</strong>)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+byte[] buffer = s.<strong>getBytes</strong>("Windows-1251")</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>4) How do I to convert a byte array that I read from a file to a String, if I know what its encoding was in the file?</strong></p>
+<p>"This is even easier. The String class has a special constructor:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String(<strong>byte bytes</strong>[])</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>byte[] buffer = new byte[1000];
+inputStream.read(buffer);
+
+String s = <strong>new String(buffer);</strong></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String(<strong>byte bytes</strong>[], Charset charset)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>byte[] buffer = new byte[1000];
+inputStream.read(buffer);
+
+<strong>Charset koi8 = Charset.forName("KOI8-R");</strong>
+String s = <strong>new String(buffer, koi8);</strong></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String(<strong>byte bytes</strong>[], String charsetName)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>byte[] buffer = new byte[1000];
+inputStream.read(buffer);
+
+String s = <strong>new String(buffer, "Windows-1251");</strong></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>5) How do I convert a byte array from one encoding to another?</strong></p>
+<p>"There are many ways. Here's one of the simplest:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Charset koi8 = Charset.forName("KOI8-R");
+Charset windows1251 = Charset.forName("Windows-1251");
+
+byte[] buffer = new byte[1000];
+inputStream.read(buffer);
+String s = new String(buffer, koi8);
+buffer = s.getBytes(windows1251);
+outputStream.write(buffer);</code></pre>
+<p><span class="text-user">"That's what I thought. Thanks for the interesting lesson, Rishi."</span></p>

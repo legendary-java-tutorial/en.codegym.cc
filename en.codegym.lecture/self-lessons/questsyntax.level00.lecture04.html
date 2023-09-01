@@ -1,0 +1,370 @@
+<!--<div class="row">
+    <div class="col"><img data-id="b7adf6cb-9b01-40bc-b249-638acc575918" data-max-width="800" alt="Ellie, variables, and data types - 1" src="https://cdn.codegym.cc/images/article/b7adf6cb-9b01-40bc-b249-638acc575918/original.png"></div>
+</div>-->
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/X6RlWfvpYwU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p><em>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></em></p>
+<hr>
+<p>A woman with pink hair entered the cabin. "I wonder if all human women have hair like this," Amigo managed to think.</p>
+<p>"Hi! My name is Eleanor Carrey. You can call me Ellie. I'm the navigator here on the Galactic Rush."</p>
+<p><span class="text-user">"Hi, Ellie," Amigo willed himself to say.</span></p>
+<p>"I'm going to explain the most interesting part of the entire Java language: variables."</p>
+<p><span class="text-user">"I'm ready to listen. What are these variables you speak of?"</span></p>
+<p>"<span class="text-green">Variables are special entities used to store data.</span> Any data. In Java, all data is stored in variables. The closest analogy here is a box."</p>
+<p><span class="text-user">"A box? What kind of box?"</span></p>
+<p>"Just any old box. Suppose you write the number 13 on a piece of paper and put it into a box. Now we can say that the box is storing the value 13."</p>
+<p>"In Java, every variable has three important properties: <span class="text-yellow">type</span>, <span class="text-green">name</span>, and <span class="text-viola">value</span>."</p>
+<p><span class="text-user">"Can you clarify what that means?"</span></p>
+<p>"Sure. <span class="text-green">We use a name, so we can distinguish one variable from another. It's like a label on a box.</span>"</p>
+<p>"<span class="text-yellow">A variable's type determines the kinds of values/data that can be stored in it. </span>We put a hat into a hatbox, shoes into a shoebox, etc."</p>
+<p><span class="text-viola">"The value is the specific object, data, or information stored in the variable."</span></p>
+<p><span class="text-user">"Can you tell me more about types?"</span></p>
+<p>"Sure. Every object in Java has a certain type. Some examples include integer, fractional number, text, Cat, House, etc."</p>
+<p><span class="text-red">"A variable also has a type. It can only store values whose type is the same as its own."</span></p>
+<p>"You can see this in real life. Different kinds of boxes are used to store different things:"</p>
+<a href='https://cdn.codegym.cc/images/article/4195b19c-af84-4642-abb9-ee6bbe83e5b4/original.jpeg' alt="" target='_blank'><img data-id="4195b19c-af84-4642-abb9-ee6bbe83e5b4" data-max-width="850" alt="Ellie, variables, and data types - 2" src="https://cdn.codegym.cc/images/article/4195b19c-af84-4642-abb9-ee6bbe83e5b4/original.jpeg"></a>
+<p>"To create (or declare) a variable, we use the name of the type: <code>TypeName variableName</code>."</p>
+<p>"Here are some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>To declare a variable:<br />
+            first the type, then the name.</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><mark class="red">int a</mark>;
+</code></pre>
+        </td>
+        <td>Create an <mark class="red">int</mark> variable named <mark class="red">a</mark>.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><mark class="green">String s</mark>;
+</code></pre>
+        </td>
+        <td>Create a <mark class="green">String</mark> variable named <mark class="green">s</mark>.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><mark class="viola">double c</mark>;
+</code></pre>
+        </td>
+        <td>Create a <mark class="viola">double</mark> variable named <mark class="viola">c</mark>.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"The two most common types are integers (declared using the word <mark class="red">int</mark>) and text (declared using the word <mark class="green">String</mark>)."</p>
+<p><span class="text-user">"What is a double?"</span></p>
+<p>"<strong>Doubles</strong> are fractional, or real, numbers."</p>
+<p><span class="text-user">"You said a variable has three properties: type, name, and value. But I can only see two. So, my question is, how do you assign a value to a variable?"</span></p>
+<p>"Let’s go back to our box analogy. Imagine that you take a piece of paper, write the number 42, and put it into the box. Now the box stores the value 42."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"We use a special operation (<strong>assignment</strong>) to assign values to variables. Assignment <span class="text-green">copies values from one variable into another</span>. It doesn’t move values. It copies them. Like a file on a disk. This is how it looks:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><mark class="green">i</mark> = 3;
+</code></pre>
+        </td>
+        <td>Assign the value 3 to variable <mark class="green">i</mark>.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><mark class="green">a</mark> = 1;
+<mark class="viola">b</mark> = <mark class="green">a</mark>+1;
+</code></pre>
+        </td>
+        <td>Assign the value 1 to variable <mark class="green">a</mark>.<br />
+            Assign the value 2 to variable <mark class="viola">b</mark>.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><mark>x</mark> = 3;
+<mark>x</mark> = <mark>x</mark> + 1;
+</code></pre>
+        </td>
+        <td>Assign the value 3 to variable <mark>x</mark>.<br />
+            In the next line, the value of <mark>x</mark> increases by 1, making x equal to 4.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"To perform the assignment operation, we use the <strong>equal sign</strong> (<code>=</code>)."</p>
+<p>"I'll say it again: <strong>This isn't making a comparison</strong>. We are <span class="text-red">copying the value on the right of the equal sign</span> to the variable on the left. To perform a comparison, Java uses a double equal sign (<code>==</code>)."</p>
+<p><span class="text-user">"I know how to put a cat into a variable. It's almost like a program."</span></p>
+<p><span class="text-user">"How to Trap a Cat:</span></p>
+<p><span class="text-user">1. Take an empty box.</span></p>
+<p><span class="text-user">2. Wait."</span></p>
+
+<a href='https://cdn.codegym.cc/images/article/a9a5ffcb-edb4-4a08-b4a4-c2b84cf197c2/original.jpeg' target='_blank'><img data-id="a9a5ffcb-edb4-4a08-b4a4-c2b84cf197c2" data-max-width="850" alt="Ellie, variables, and data types - 3" src="https://cdn.codegym.cc/images/article/a9a5ffcb-edb4-4a08-b4a4-c2b84cf197c2/original.jpeg"></a>
+
+<p>"No, Amigo. You can only squeeze one cat into a box. <span class="text-green">Uh, I mean you can only assign one value to a variable.</span>"</p>
+<p><span class="text-user">"I see. Could you give me more examples of creating variables?"</span></p>
+<p>"OK. Let me repeat: to create (or declare) a variable, you need use the name of the «<code>TypeName variableName</code>»."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <mark class="red">s</mark>;
+</code></pre>
+        </td>
+        <td>A <code>String</code> variable named <mark class="red">s</mark> is created.<br />This variable can store text.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <mark>x</mark>;
+</code></pre>
+        </td>
+        <td>An <code>int</code> variable named <mark>x</mark> is created.<br />This variable can store integers.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <mark class="viola">a</mark>, <mark class="user">b</mark>, <mark class="green">c</mark>;
+int <mark>d</mark>;
+</code></pre>
+        </td>
+        <td><code>int</code> variables named <mark class="viola">a</mark>, <mark class="user">b</mark>, <mark class="green">c</mark>, and <mark>d</mark> are created.<br>These variables can store integers.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Oh, now I see!"</span></p>
+<p>"Keep in mind that you can’t create two variables with identical names in the same method."</p>
+<p><span class="text-user">"How about in different methods?"</span></p>
+<p>"Yes, you can do that. That’s like having boxes at different houses."</p>
+<p><span class="text-user">"Can I name a variable anything I like?"</span></p>
+<p>"Almost. Variable names <span class="text-red">cannot contain spaces, +, -, etc.</span> It's best to <span class="text-green">just use letters and numbers in a variable’s name</span>."</p>
+<p>"Remember <strong>that Java is case-sensitive.</strong> <span class="text-yellow"><code>int a</code> is not the same as <code>Int a</code>.</span>"</p>
+<p>"By the way, in Java you can create a variable and simultaneously assign a value to it. This saves time and space."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Compact code</th>
+        <th>Equivalent but longer code</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">int a = 5;</span>
+<span class="text-user">int b = 6;</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">int a;
+a = 5;</span>
+<span class="text-user">int b;
+b = 6;</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">int c = 7;</span>
+<span class="text-viola">int d = c+1;</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">int c;
+c = 7;</span>
+<span class="text-viola">int d;
+d = c+1;</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-user">String s = "I'm Amigo";</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-user">String s;
+s = "I'm Amigo";</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That way is a lot more compact and clear."</span></p>
+<p>"That's how we roll."</p>
+<p>"There are two types that every Java novice needs to become familiar with: <span class="text-green">int (integers)</span> and <span class="text-yellow">String (text/strings)</span>."</p>
+<p>"The <strong>int</strong> type lets you store numbers in variables and perform operations on them: addition, subtraction, multiplication, division, etc."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <mark>x</mark> = 1;
+int <mark class="user">y</mark> = <mark>x</mark>*2;
+int <mark class="green">z</mark> = 5*<mark class="user">y</mark>*<mark class="user">y</mark> + 2*<mark class="user">y</mark> + 3;</code></pre>
+        </td>
+        <td><mark>x</mark> equals 1<br />
+            <mark class="user">y</mark> equals 2<br />
+            <mark class="green">z</mark> equals 20+4+3, which equals 27</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <mark class="user">a</mark> = 5;
+int <mark class="green">b</mark> = 1;
+int <mark class="viola">c</mark> = (<mark class="user">a</mark>-<mark class="green">b</mark>) * (<mark class="user">a</mark>+<mark class="green">b</mark>);</code></pre>
+        </td>
+        <td><mark class="user">a</mark> equals 5<br />
+            <mark class="green">b</mark> equals 1<br />
+            <mark class="viola">c</mark> equals 4*6, which equals 24</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <mark class="user">a</mark> = 64;
+int <mark class="red">b</mark> = <mark class="user">a</mark>/8;
+int <mark class="viola">c</mark> = <mark class="red">b</mark>/4;
+int <mark>d</mark> = <mark class="viola">c</mark>*3;</code></pre>
+        </td>
+        <td><mark class="user">a</mark> equals 64<br />
+            <mark class="red">b</mark> equals 8<br />
+            <mark class="viola">c</mark> equals 2<br />
+            <mark>d</mark> equals 6</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Got it. Is programming always this easy?"</span></p>
+<p>"Actually, yes."</p>
+<p><span class="text-user">"Nice! So, what’s next?"</span></p>
+<p>"The <strong>String</strong> type lets you store lines of text, also known as 'strings'."</p>
+<p>"To assign a string in Java, you need to place the text inside quotation marks. Here are some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s</span> = <span class="text-green">"Amigo"</span>;</code></pre>
+        </td>
+        <td><code><span class="text-user">s</span></code> contains <code><span class="text-green">"Amigo"</span></code>.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s</span> = <span class="text-green">"123"</span>;</code></pre>
+        </td>
+        <td><code><span class="text-user">s</span></code> contains <code><span class="text-green">"123"</span></code>.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s</span> = <span class="text-green">"123 + 456"</span>;</code></pre>
+        </td>
+        <td><code><span class="text-user">s</span></code> contains <code><span class="text-green">"123 + 456"</span></code>.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Got it. It doesn’t look very hard."</span></p>
+<p>"Here's one more fun fact for you."</p>
+<p>"You can join strings together with a plus sign (<code>+</code>). Look at these examples."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s</span> = <span class="text-green">"Amigo"</span> + <span class="text-green">" is the best"</span>;</code></pre>
+        </td>
+        <td><code><span class="text-user">s</span></code> contains <code><span class="text-green">"Amigo is the best"</span></code>.</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-user">s</span> = <span class="text-green">""</span>;</code></pre>
+        </td>
+        <td><code><span class="text-user">s</span></code> contains an empty string – a string with no symbols at all.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-viola">x</span> = 333;
+String <span class="text-user">s</span> = <span class="text-green">"Amigo"</span> + <span class="text-viola">x</span>;</code></pre>
+        </td>
+        <td><code><span class="text-user">s</span></code> contains <code><span class="text-green">"Amigo333"</span></code>.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"So, you can add strings to numbers?"</span></p>
+<p>"Yes, but remember that <span class="text-yellow">when you add strings and numbers, the result is always a string</span>."</p>
+<p><span class="text-user">"I figured that out from your example."</span></p>
+<p>"If you’re so smart, try figuring out how to display a variable on the screen."</p>
+<p><span class="text-user">"Hmmm. A variable? On the screen? Nothing comes to mind."</span></p>
+<p>"Actually, it’s simple. To display something on the screen, we use a <code><span class="text-red">System.out.println()</span></code> command, and we pass whatever we want to print as an argument."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20px"></th>
+        <th>Code</th>
+        <th>Screen output</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong>println</strong>("Amigo");</code></pre>
+        </td>
+        <td>Amigo</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>System.out.<strong>println</strong>("Ami"+"go");</code></pre>
+        </td>
+        <td>Amigo</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-red">s</span> = "Amigo";
+System.out.<strong>println</strong>(<span class="text-red">s</span>);</code></pre>
+        </td>
+        <td>Amigo</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-red">s</span> = "Am";
+System.out.<strong>println</strong>(<span class="text-red">s</span>+"igo");</code></pre>
+        </td>
+        <td>Amigo</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"A-ha! That makes everything much clearer."</span></p>
+<p>"Great. Here are three more exercises for you."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0102"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0103"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0105"></div>

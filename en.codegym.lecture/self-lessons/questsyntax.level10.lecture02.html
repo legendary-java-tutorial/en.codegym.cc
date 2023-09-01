@@ -1,0 +1,96 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Rishi!"</span></p>
+<p>"You've already mastered the basics of Java syntax, so now I want to give you some more details."</p>
+<p>"Today, we'll talk about primitive types and how much memory they occupy. This knowledge will come in handy, maybe even today. Here are the basic types:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th style="text-align: center;">Type</th>
+        <th style="text-align: center;">Size,<br />bytes</th>
+        <th style="text-align: center;">Value range</th>
+        <th style="text-align: center;">Default value</th>
+        <th style="text-align: center;">Description</th>
+    </tr>
+    <tr>
+        <td><span class="text-green">byte</span></td>
+        <td><span class="text-green">1</span></td>
+        <td><span class="text-green">-128 .. 127</span></td>
+        <td><span class="text-green">0</span></td>
+        <td><span class="text-green">The smallest integer, 1 byte</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-green">short</span></td>
+        <td><span class="text-green">2</span></td>
+        <td><span class="text-green">-32,768 .. 32,767</span></td>
+        <td><span class="text-green">0</span></td>
+        <td><span class="text-green">Short integer, 2 bytes</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-green">int</span></td>
+        <td><span class="text-green">4</span></td>
+        <td><span class="text-green">-2*10<sup>9</sup> .. 2*10<sup>9</sup></span></td>
+        <td><span class="text-green">0</span></td>
+        <td><span class="text-green">Integer, 4 bytes</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-green">long</span></td>
+        <td><span class="text-green">8</span></td>
+        <td><span class="text-green">-9*10<sup>18</sup> .. 9*10<sup>18</sup></span></td>
+        <td><span class="text-green">0L</span></td>
+        <td><span class="text-green">Long integer, 8 bytes</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-viola">float</span></td>
+        <td><span class="text-viola">4</span></td>
+        <td><span class="text-viola">-10<sup>127</sup> .. 10<sup>127</sup></span></td>
+        <td><span class="text-viola">0.0f</span></td>
+        <td><span class="text-viola">Fractional number, 4 bytes</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-viola">double</span></td>
+        <td><span class="text-viola">8</span></td>
+        <td><span class="text-viola">-10<sup>1023</sup> .. 10<sup>1023</sup></span></td>
+        <td><span class="text-viola">0.0d</span></td>
+        <td><span class="text-viola">Fractional number that is twice the size of a float, 8 bytes</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-corporate">boolean</span></td>
+        <td><span class="text-corporate">1</span></td>
+        <td><span class="text-corporate">true, false</span></td>
+        <td><span class="text-corporate">false</span></td>
+        <td><span class="text-corporate">Boolean type (only true or false)</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-user">char</span></td>
+        <td><span class="text-user">2</span></td>
+        <td><span class="text-user">0..65,535</span></td>
+        <td><span class="text-user">'\u0000'</span></td>
+        <td><span class="text-user">Characters, 2 bytes, all unsigned values</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-red">Object</span></td>
+        <td><span class="text-red">4</span></td>
+        <td><span class="text-red">Any reference or null.</span></td>
+        <td><span class="text-red">null</span></td>
+        <td><span class="text-red">Stores references to instances of Object or classes that descend from Object</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Let me tell you more about each type."</p>
+<p><span class="text-green">"The byte type is the smallest integer type. Variables of this type occupy just 1 byte of memory. A byte can store values in the range between -128 and 127."</span></p>
+<p><span class="text-user">"Why do we need such a small type? Why can't we always use int?"</span></p>
+<p>"We could. But if you're creating large arrays whose elements never need to store values greater than 100, why not use this type? Does that make sense?"</p>
+<p>"A <strong>short</strong> is twice as long as a byte, and it also only stores integers. The biggest positive number it can store is 32,767. The biggest negative number it can store is -32,768."</p>
+<p>"The <strong>int</strong> type you are already familiar with. It can store integers in the range ±2,000,000,000."</p>
+<p><span class="text-viola">"The <strong>float</strong> type was created to store real (fractional) numbers. Its size is 4 bytes."</span></p>
+<p>"Fractional numbers are stored in a rather interesting form."</p>
+<p>"For example, the number <span class="text-green">987654.321</span> can be represented as 0.987654321*10<span class="text-red"><sup>6</sup></span>. This means that it can be represented as two numbers in memory: 0.<span class="text-green">987654321</span> (<strong>mantissa, or significand</strong>) and <span class="text-red">6</span> (<strong>base-10 exponent</strong>)."</p>
+<p><span class="text-user">"What do we need that for?"</span></p>
+<p>"This approach lets us use 4 bytes to store numbers much greater than what an int can store. To do this, we have to sacrifice accuracy. Only a portion of those bytes are used to store the mantissa, which means that these numbers only store 6-7 decimal places. Less significant decimal places are discarded."</p>
+<p><span class="text-corporate">"These numbers are also called <strong>float</strong>ing-point numbers. This is where the name the <span style="text-decoration: underline;"><strong>float</strong></span> type came from.</span>"</p>
+<p><span class="text-user">"I see."</span></p>
+<p><span class="text-viola">"The <strong>double</strong> type is similar to <strong>float</strong>, but twice as long (hence the name), taking up 8 bytes.</span> It can accommodate a larger mantissa and more significant digits. If you need to store real numbers, always try to use this type."</p>
+<p><span class="text-red">"<strong>char</strong> is a hybrid type. Its values can be interpreted both as numbers (which can be added or subtracted) and characters.</span> This is possible because even if characters have a visual representation, the computer mainly sees them as numbers. And it's more convenient to treat them as numbers. <span class="text-red">One more thing: the <strong>char</strong> type is always positive. It can't hold negative values.</span>"</p>
+<p><span class="text-green">"The <strong>boolean</strong> type is a logical type that can store only two values: <strong>true</strong> or <strong>false </strong>.</span>"</p>
+<p><span class="text-corporate">"Despite its presence in this chart, the <strong>Object</strong> type isn't a primitive type.</span> It's the base class for all classes in Java. First, all classes are derived from it and therefore contain its methods. Second, an Object variable can store references to objects of any type, including null (<strong>a null</strong> reference)."</p>
+<p><span class="text-user">"I've learned a lot today. Thank you for the lesson, Rishi."</span></p>

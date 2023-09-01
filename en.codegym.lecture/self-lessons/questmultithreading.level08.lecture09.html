@@ -1,0 +1,93 @@
+<a href='https://cdn.codegym.cc/images/article/5c7088e8-8aa6-49a3-97de-bc3929387b51/original.jpeg' target='_blank'><img data-id="5c7088e8-8aa6-49a3-97de-bc3929387b51" data-max-width="850" alt="Executor, ExecutorService, Executor - 1" src="https://cdn.codegym.cc/images/article/5c7088e8-8aa6-49a3-97de-bc3929387b51/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"Nothing is perfect when it is first created. The same is true of threads. In time, Java's creators became convinced of the shortcomings of the Runnable interface. It didn't support throwing exceptions and didn't make it possible to find out the result of executing tasks…"</p>
+<p>"The Runnable interface is more suitable for large independent tasks than for small subtasks that you want to run a dozen at a time, and then collect their results."</p>
+<p>"That's why the <strong>Callable</strong> interface was invented. It's much better suited for parallel execution of small tasks than <strong>Runnable</strong> and <strong>Thread,</strong> in part because it's a generic interface."</p>
+<p>"Here's a typical implementation of the interface:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class ReverseString implements Callable&lt;<span class="red_text text-red">String</span>&gt;
+{
+ String str;
+
+ ReverseString(String str)
+ {
+  this.str = str;
+ }
+
+ public <span class="text-red">String</span> call() throws Exception
+ {
+  StringBuilder builder = new StringBuilder(str);
+  builder.reverse();
+  return builder.toString();
+ }
+}</code></pre>
+<p>"Unlike <strong>Runnable</strong>, here we need to override the call method, which returns a result of the type specified by the type argument. This approach is much more convenient than the Runnable interface's run method, which returns void. Sometimes developers had to come up with various workarounds to get a thread's result."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"And now look at how <strong>Callable</strong> can work together with ThreadPoolExecutor:</p>
+<p>"First, the <strong>ThreadPoolExecutor</strong> class's submit method returns a parameterized Future object. You can use this object to find out whether a task if finished and to get the result."</p>
+<p>"Here's how it works:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// 1. Create a ThreadPoolExecutor
+ExecutorService <span class="text-red">service</span> = Executors.newFixedThreadPool(5);
+
+// 2. Add a task to it
+<span class="text-user">Future</span>&lt;String&gt; <strong><span class="text-user">task</span></strong> = service.<span class="text-user">submit</span><strong>(new ReverseString("Amigo"));</strong>
+
+// 3. Wait until the task is done
+<strong>while(!</strong><span class="text-user">task</span><strong>.<span class="text-green">isDone</span>())
+{
+ Thread.sleep(1);
+}</strong>
+
+// 4. Try to get the result
+//We will get either the result, or an exception if one occurred while the task was being executed
+<strong>try
+{
+ System.out.println("Full string : " + task.get());
+}
+catch (Exception ie)
+{
+ ie.printStackTrace(System.err);
+}</strong>
+  
+// 5. Stop the ThreadPool.
+<strong><span class="text-red">service</span>.<span class="text-user">shutdown</span>();</strong></code></pre>
+<p><span class="text-user">"Far out! I especially like the Future class. What methods does it have?"</span></p>
+<p>"Here are the most interesting:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean cancel(boolean mayInterrupt);</code></pre>
+        </td>
+        <td>Stops the task.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean isCancelled();</code></pre>
+        </td>
+        <td>Returns true if the task was stopped.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean isDone();</code></pre>
+        </td>
+        <td>Returns true if task is done being executed.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>V get() throws InterruptedException, ExecutionException;</code></pre>
+        </td>
+        <td>Returns the result of the call method or throws an exception if one occurred.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Cool! So you can also stop tasks."</span></p>
+<p>"Don't rely on this too much—not every thread can stop. But if a task is still in the queue, then this will work fine."</p>
+<p><span class="text-user">"I like this approach. It's much more convenient than creating threads yourself and then trying to pull a result out of them."</span></p>
+<p>"Great. That's where we'll end today."</p>

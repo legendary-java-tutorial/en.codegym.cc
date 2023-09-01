@@ -1,0 +1,51 @@
+<a href='https://cdn.codegym.cc/images/article/8b6ade60-0c43-4a21-9777-a3fa58c03625/original.jpeg' target='_blank'><img data-id="8b6ade60-0c43-4a21-9777-a3fa58c03625" data-max-width="850" alt="Thread life cycle and thread states - 1" src="https://cdn.codegym.cc/images/article/8b6ade60-0c43-4a21-9777-a3fa58c03625/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"We're going to start a new topic: threads."</p>
+<p>"Let's get started. Today we will examine the states that a Thread object passes through (or might pass through) when a thread is running."</p>
+<p>"How many states can you name right now, Amigo?"</p>
+<p><span class="text-user">"Two. The first is a thread before the start() method is called: the object exists, but the thread isn't active yet. And the second is after the start() method has been called: when the thread is doing something important."</span></p>
+<p>"You're right—there is such a distinction. These states are called <strong>new</strong> and <strong>running</strong>, but that's just the beginning."</p>
+<p>"First, at some point the thread will finish running, which means there may be a situation where the Thread object exists, but the thread is not in the new or running state. "This state, where the thread has finished running, is called <strong>terminated</strong>."</p>
+<p>"But there's more. Don't forget that at any given time only one thread is actually running. What appears to be simultaneous work is actually the processor constantly jumping from thread to thread. There is a separate state for when the thread seems to be running, but is actually waiting for its turn: it's called <strong>ready-to-run</strong>. As a thread works, it constantly switches from <strong>running</strong> to <strong>ready</strong>, and then back to <strong>running</strong> when it becomes active again."</p>
+<p>"Immediately after the <strong>start</strong>() method is called, the thread is assigned the <strong>ready-to-run</strong> status and placed in a shared list of threads that the JVM switches between."</p>
+<p><span class="text-user">"That's not too difficult. Before it starts running, it has the <strong>new</strong> state. After it has finished, it is <strong>terminated</strong>. When it is running, the thread is in the <strong>running</strong> state; then when it is waiting, it's in the <strong>ready</strong> state."</span></p>
+<p>"Your brevity is amazing, but you're right."</p>
+<p>"But there's more. The thread can be blocked. For example, when you enter a <strong>synchronized</strong> block. If a thread gets to a code block marked as <strong>synchronized</strong> and another thread is using it, then our thread will enter the <strong>blocked</strong> state and will wait for the object's mutex (lock) to be released."</p>
+<p>"Here's how this situation with states looks:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/1656cd39-24d2-4dac-bbf3-63b24f39c564/original.jpeg' target='_blank'><img data-id="1656cd39-24d2-4dac-bbf3-63b24f39c564" data-max-width="850" alt="Thread life cycle and thread states - 2" src="https://cdn.codegym.cc/images/article/1656cd39-24d2-4dac-bbf3-63b24f39c564/original.jpeg"></a>
+
+<p>"But there's more. There is also a separate state called <strong>waiting</strong>. This is when a thread is not <strong>blocked</strong>, but also not <strong>ready</strong>. For example, when you call the <strong>join</strong>() method on another thread."</p>
+<p>When we call join() on an another Thread object, it's as if our thread «joins» it, but in reality it just waits for the other thread to finish.</p>
+<p>"Additionally, there is also the <strong>wait</strong>() method (from the wait/notify/notifyAll trio of methods), which switches a <strong>thread</strong> to the <strong>waiting</strong> state when it is called."</p>
+<p><span class="text-user">"Whoa."</span></p>
+<p>"Wait a minute! There's still more. A thread can sleep by calling the sleep method, for example. There is also a separate state for this. It's called «<strong>timed waiting</strong>». «<strong>timed waiting</strong>» means the thread is waiting for something for a limited time. If you call a wait method with a parameter, such as wait(timeout) or join(timeout), then the thread will enter the timed-waiting state."</p>
+<p>"Here's the full diagram:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/c4cad6ec-ffc9-4538-88a4-dd8ed6772439/original.jpeg' target='_blank'><img data-id="c4cad6ec-ffc9-4538-88a4-dd8ed6772439" data-max-width="1024" alt="Thread life cycle and thread states - 3" src="https://cdn.codegym.cc/images/article/c4cad6ec-ffc9-4538-88a4-dd8ed6772439/original.jpeg"></a>
+
+<p><span class="text-user">"Hmm. Is that all? Or are there 10 more interesting states?"</span></p>
+<p>"For now, that's it."</p>
+<p>"In practice, you can just remember the first diagram. It's simpler. But the second is more accurate."</p>
+<p>"Strangely enough, there are a lot of Thread state diagrams on the Internet, and they're all different."</p>
+<p>"That's why I gave you this diagram—it's the most complete and correct."</p>
+<p>"In this diagram, the ready and running states are combined in a single block called runnable. Do you know why?"</p>
+<p><span class="text-user">"No. It's the first time I've seen something like that."</span></p>
+<p>"The <strong>Thread</strong> class has an inner class called <strong>State</strong>, as well as a <strong>public State getState()</strong> method."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public enum <span class="text-green">State</span>
+{
+ <span class="text-neon">NEW</span>,
+ <span class="text-green">RUNNABLE</span>,
+ <span class="text-yellow">BLOCKED</span>,
+ <span class="text-viola">WAITING</span>,
+ <span class="text-user">TIMED_WAITING</span>,
+ <span class="text-red">TERMINATED</span>;
+}</code></pre>
+<p>"You can always call the <strong>getState</strong>() method on a <strong>Thread</strong> object, and find out its current state. And, of course, it will be one of the State enum values."</p>
+<p><span class="text-user">"I see. So, the real states are inside the JVM, but there are also states that you can access via Java code using the State getState() method."</span></p>
+<p><span class="text-user">"And under what circumstances would I use that?"</span></p>
+<p>"Most likely, never."</p>
+<p>"But you have to know what's going on inside threads. Otherwise, you'll have lots of bugs, and you won't even be able to guess what's causing them."</p>
+<p>"Plus, employers love asking about Thread states during interviews."</p>

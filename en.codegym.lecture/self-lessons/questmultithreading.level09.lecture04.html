@@ -1,0 +1,169 @@
+<p>"Since developers could come up with classes that describe numbers, they decided to be creative, like real developers."</p>
+<p>"First, they came up with an abstract Number class, from which Byte, Short, Integer, Long, Float, and Double are derived. It has methods that help convert numbers to other numeric types."</p>
+<table>
+    <tbody>
+    <tr>
+        <th></th>
+        <th>Methods of the Number class</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <strong>intValue</strong>()</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>long <strong>longValue</strong>()</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>float <strong>floatValue</strong>()</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>double <strong>doubleValue</strong>()</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>byte <strong>byteValue</strong>()</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>short <strong>shortValue</strong>()</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Right. After all, you can't write this:"</span></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Long x = 100000;
+Integer y = (Integer) x;</code></pre>
+<p>"Yeah, these types are not primitives. That's why we use the methods of the Number class:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Long x = 100000;
+Integer y = x.<strong>intValue()</strong>;</code></pre>
+<p>"But there are still a couple of things to consider. Because Integer is not an int, Integer objects can't be compared with the classic «==» operator."</p>
+<div class="code-heading">Comparing primitive types</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>int x = 500;
+int y = 500;</strong>
+x == y; //true</code></pre>
+<div class="code-heading">Comparing non-primitive types</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Integer x = 500;
+Integer y = 500;</strong>
+x == y; //false
+x.equals(y); //true</code></pre>
+<p><span class="text-user">"Exactly. Somehow I didn't think of that right away."</span></p>
+<p>"But there's more."</p>
+<p><span class="text-user">"You're shorting my circuits! What else is there?"</span></p>
+<p>"When we assign an int value to an Integer variable, the Integer.valueOf method is called:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What really happens</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = 5;</code></pre>
+        </td>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = Integer.valueOf(5);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Yeah, I already understood that from the example above."</span></p>
+<p>"But, the valueOf function does not always create a new Integer object."</p>
+<p><span class="text-user">"Uh, what do you mean «not always»?"</span></p>
+<p>"It caches values from -128 to 127."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What really happens</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = 300;
+Integer y = 300;
+Integer z = 300;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = Integer.valueOf(300);
+Integer y = Integer.valueOf(300);
+Integer z = Integer.valueOf(300);</code></pre>
+        </td>
+        <td>Variable x, y, and z contain references to different objects</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = 100;
+Integer y = 100;
+Integer z = 100;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = Integer.valueOf(100);
+Integer y = Integer.valueOf(100);
+Integer z = Integer.valueOf(100);</code></pre>
+        </td>
+        <td>Variables x, y, and z contain references to the same object.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = new Integer(10)
+Integer y = new Integer(10)
+Integer z = 10;
+Integer t = 10;</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Integer x = new Integer(10)
+Integer y = new Integer(10)
+Integer z = Integer.valueOf(10);
+Integer t = Integer.valueOf(10);</code></pre>
+        </td>
+        <td>Variables z and t contain references to the same object.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"In other words, the situation is this:"</p>
+<p><strong>1)</strong> If we write «new Integer()», then we are guaranteed to get a new object.</p>
+<p><strong>2)</strong> If we call Integer.valueOf(), explicitly or through autoboxing, then the method may return a new object or a cached object if the number argument is in the range from -128 to 127.</p>
+<p><span class="text-user">"What's so terrible about the method returning an object from the cache?"</span></p>
+<p>"Never mind. You just need to know that sometimes, when you're not expecting it, objects might be equal. Everything with equality is complicated. If we compare a primitive with a non-primitive, then they are compared as primitives:"</p>
+<div class="code-heading">Comparison problem</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int x = 300;
+Integer y = 300;
+Integer z = 300;
+
+x == y; //true (comparison based on primitive value)
+x == z; //true (comparison based on primitive value)
+y == z; //false (comparison based on references)</code></pre>
+<div class="code-heading">An even more interesting example. The cache enters the picture here</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int x = 100;
+Integer y = 100;
+Integer z = 100;
+
+x == y; //true (comparison based on primitive value)
+x == z; //true (comparison based on primitive value)
+y == z; //true (comparison based on references; they point to the same object)</code></pre>
+<div class="code-heading">But the cache is not involved here</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int x = 100;
+Integer y = new Integer(100);
+Integer z = 100;
+
+x == y; //true (comparison based on primitive value)
+x == z; //true (comparison based on primitive value)
+y == z; //false (comparison based on references; they point to different objects)</code></pre>
+<p><span class="text-user">"Great... And how will I memorize all this?"</span></p>
+<p>"You don't need to memorize this. You just need to understand how this is all organized and what actually happens when a primitive and its non-primitive counterpart come into play."</p>
+<p>"I also recommend that you look at the methods of the Integer class. It has quite a few good and useful methods. You've even used one of them quite often."</p>
+<p><span class="text-user">"Yeah, I remember. Integer.parseInt();"</span></p>

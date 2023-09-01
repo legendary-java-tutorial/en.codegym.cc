@@ -1,0 +1,165 @@
+<p>"Hello, Amigo! Today we'll learn about another interesting topic. Specifically, <span class="text-red">saving and loading</span> (reconstructing) <span class="text-red">objects</span>. Suppose we have a Cat class:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public String name;
+ public int age;
+ public int weight;
+}</code></pre>
+<p>And let's say we want to add a convenient mechanism for saving to and loading from a file.</p>
+<p>We could do it like this:</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat {
+    public String name;
+    public int age;
+    public int weight;
+
+    public void <span class="text-red"><strong>save</strong></span>(PrintWriter <span class="text-red">writer</span>) throws Exception {
+        <span class="text-red">writer</span>.println(name);
+        <span class="text-red">writer</span>.println(age);
+        <span class="text-red">writer</span>.println(weight);
+        <span class="text-red">writer</span>.flush();
+    }
+
+    public void <span class="text-green"><strong>load</strong></span>(BufferedReader <span class="text-green">reader</span>) throws Exception {
+        name = <span class="text-green"><strong>reader</strong></span>.readLine();
+        age = Integer.parseInt(<span class="text-green">reader</span>.readLine());
+        weight = Integer.parseInt(<span class="text-green">reader</span>.readLine());
+    }
+}</code></pre>
+<p><span class="text-user">"Wow! That's so easy! We just write the values of each argument, one on each line. When we load the file, we read them in the same order. It's the perfect solution."</span></p>
+<p>"Thanks, Amigo. Now you can write the save and load methods for this group of classes:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public String name;
+ public int age;
+ public int weight;
+}
+class Dog
+{
+ public String name;
+ public int age;
+}
+class Human
+{
+ public Cat cat;
+ public Dog dog;
+}</code></pre>
+<p>You have an Human object, which can have one dog and one cat.</p>
+<p><span class="text-user">"I have a solution:"</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat {
+    public String name;
+    public int age;
+    public int weight;
+
+    public void <span class="text-red"><strong>save</strong></span>(PrintWriter <span class="text-red">writer</span>) throws Exception {
+        <span class="text-red">writer</span>.println(name);
+        <span class="text-red">writer</span>.println(age);
+        <span class="text-red">writer</span>.println(weight);
+        <span class="text-red">writer</span>.flush();
+    }
+
+    public void <span class="text-green"><strong>load</strong></span>(BufferedReader <span class="text-green">reader</span>) throws Exception {
+        name = <span class="text-green">reader</span>.readLine();
+        age = Integer.parseInt(<span class="text-green">reader</span>.readLine());
+        weight = Integer.parseInt(<span class="text-green">reader</span>.readLine());
+    }
+}</code></pre>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Dog {
+    public String name;
+    public int age;
+
+    public void <span class="text-red"><strong>save</strong></span>(PrintWriter <span class="text-red">writer</span>) throws Exception {
+        <span class="text-red">writer</span>.println(name);
+        <span class="text-red">writer</span>.println(age);
+        <span class="text-red">writer</span>.flush();
+    }
+
+    public void <span class="text-green"><strong>load</strong></span>(BufferedReader <span class="text-green">reader</span>) throws Exception {
+        name = <span class="text-green">reader</span>.readLine();
+        age = Integer.parseInt(<span class="text-green">reader</span>.readLine());
+    }
+}</code></pre>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class Human {
+    public Cat cat;
+    public Dog dog;
+
+    public void <span class="text-red"><strong>save</strong></span>(PrintWriter <span class="text-red">writer</span>) throws Exception {
+        cat.save(<span class="text-red">writer</span>);
+        dog.save(<span class="text-red">writer</span>);
+    }
+
+    public void <span class="text-green"><strong>load</strong></span>(BufferedReader <span class="text-green">reader</span>) throws Exception {
+        cat.load(<span class="text-green">reader</span>);
+        dog.load(<span class="text-green">reader</span>);
+    }
+}</code></pre>
+<p>"That's a very good solution. But what happens if a human has a dog but no cat?"</p>
+<p>Where are the null checks?</p>
+<p><span class="text-user">"I'll fix it now:"</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class Human {
+    public Cat cat;
+    public Dog dog;
+
+    public void <span class="text-red"><strong>save</strong></span>(PrintWriter <span class="text-red">writer</span>) throws Exception {
+        if (cat != null)
+            cat.save(<span class="text-red">writer</span>);
+        if (dog != null)
+            dog.save(<span class="text-red">writer</span>);
+    }
+
+    public void <span class="text-green"><strong>load</strong></span>(BufferedReader <span class="text-green">reader</span>) throws Exception {
+        cat = new Cat();
+        cat.load(<span class="text-green">reader</span>);
+        dog = new Dog();
+        dog.load(<span class="text-green">reader</span>);
+    }
+}</code></pre>
+<p>"It's still not quite right. You have two errors:"</p>
+<p><strong>1)</strong> A person might not have a cat or dog, but they will still be created when the load method is called</p>
+<p><strong>2)</strong> If we only save a dog, its data will be read by the cat when it is loaded.</p>
+<p><span class="text-user">"Well, what should I do?"</span></p>
+<p>"We <span class="text-red">can't skip writing the variables, otherwise we'll have problems during reading</span>. You need to make sure that variables that are null during the save operation are set to null during the load operation. Here's my version:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class Human {
+    public Cat cat;
+    public Dog dog;
+
+    public void <span class="text-red"><strong>save</strong></span>(PrintWriter <span class="text-red">writer</span>) throws Exception {
+        String isCatPresent = cat != null ? "yes" : "no";
+        writer.println(isCatPresent);
+        writer.flush();
+
+        if (cat != null)
+            cat.save(<span class="text-red">writer</span>);
+
+        String isDogPresent = dog != null ? "yes" : "no";
+        writer.println(isDogPresent);
+        writer.flush();
+
+        if (dog != null)
+            dog.save(<span class="text-red">writer</span>);
+    }
+
+    public void <span class="text-green"><strong>load</strong><strong></strong></span>(BufferedReader <span class="text-green">reader</span>) throws Exception {
+
+        String isCatPresent = reader.readLine();
+        if (isCatPresent.equals("yes")) {
+            cat = new Cat();
+            cat.load(<span class="text-green">reader</span>);
+        }
+
+        String isDogPresent = reader.readLine();
+        if (isDogPresent.equals("yes")) {
+            dog = new Dog();
+            dog.load(<span class="text-green">reader</span>);
+        }
+    }
+}</code></pre>
+<p><span class="text-user">"Yes, I like this solution."</span></p>
+<p>"Yeah, it's nice."</p>

@@ -1,0 +1,156 @@
+<p>"Hi, Amigo. On our planet, we use Pascal, which is more advanced. This is how it would look in Pascal."</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Pascal</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>If</strong> a &lt; b <strong>Then</strong>
+    WriteLn ('a is less than b');</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>if</strong> (a &lt; b)
+    System.out.println("a is less than b");</code></pre>
+    </div>
+</div>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Pascal</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>If</strong> a &lt; b <strong>Then</strong>
+    WriteLn('a is less than b')
+<strong>Else</strong>
+    WriteLn('a is greater than b');</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>if</strong> (a &lt; b)
+    System.out.println("a is less than b");
+<strong>else</strong>
+    System.out.println("a is greater than b");</code></pre>
+    </div>
+</div>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Pascal</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>If</strong> a &lt; b <strong>Then</strong>
+    <strong>Begin</strong>
+        WriteLn('a is less than b');
+        WriteLn('a is less than b');
+    <strong>End</strong>
+<strong>Else</strong>
+    <strong>Begin</strong>
+        WriteLn('a is greater than b');
+        WriteLn('a is greater than b');
+    <strong>End;</strong>
+</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>if</strong> (a &lt; b)
+{
+    System.out.println("a is less than b");
+    System.out.println("a is less than b");
+}
+<strong>else</strong>
+{
+    System.out.println("a is greater than b");
+    System.out.println("a is greater than b");
+}
+
+</code></pre>
+    </div>
+</div>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Pascal</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>If</strong> <span class="text-red">a</span> &lt; <span class="text-user">b</span> <strong>And</strong> <span class="text-red">a</span> &lt; <span class="text-viola">c</span> <strong>Then</strong>
+    WriteLn(<span class="text-green">'a is the minimum of a, b, c'</span>);</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>if</strong> (<span class="text-red">a</span> &lt; <span class="text-user">b</span> &amp;&amp; <span class="text-red">a</span> &lt; <span class="text-viola">c</span>)
+    System.out.println(<span class="text-green">"a is the minimum of a, b, c"</span>);</code></pre>
+    </div>
+</div>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Pascal</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>If</strong> <span class="text-red">a</span> &lt; <span class="text-user">b</span> Or <span class="text-red">a</span> &lt; <span class="text-viola">c</span> <strong>Then</strong>
+    WriteLn(<span class="text-green">'a is either less than b, or less than c'</span>);</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>if</strong> (<span class="text-red">a</span> &lt; <span class="text-user">b</span> || <span class="text-red">a</span> &lt; <span class="text-viola">c</span>)
+    System.out.println(<span class="text-green">"a is either less than b, or less than c"</span>);</code></pre>
+    </div>
+</div>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Pascal</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>If</strong> Not (a &lt; b) <strong>Then</strong>
+    WriteLn(<span class="text-green">'b is less than or equal to a'</span>)
+<strong>Else</strong>
+    WriteLn(<span class="text-green">'b is greater than a'</span>);</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>if</strong> ( !(a &lt; b) )
+    System.out.println(<span class="text-green">"b is less than or equal to a"</span>);
+<strong>else</strong>
+    System.out.println(<span class="text-green">"b is greater than a"</span>);</code></pre>
+    </div>
+</div>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Pascal</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>If</strong> a &lt; b <strong>Then</strong>
+    <strong>Begin</strong>
+       <strong>If</strong> a &lt; c <strong>Then</strong>
+            WriteLn(<span class="text-green">'a is the minimum'</span>)
+        <strong>Else</strong>
+            WriteLn(<span class="text-green">'c is the minimum'</span>);
+    <strong>End</strong>
+<strong>Else</strong>
+    <strong>Begin</strong>
+        <strong>If</strong> b &lt; c <strong>Then</strong>
+            WriteLn(<span class="text-green">'b is the minimum'</span>)
+        <strong>Else</strong>
+            WriteLn(<span class="text-green">'c is the minimum'</span>);
+    <strong>End;</strong></code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>if</strong> (a &lt; b)
+{
+    <strong>if</strong> (a &lt; c)
+        System.out.println(<span class="text-green">"a is the minimum"</span>);
+    <strong>else</strong>
+        System.out.println(<span class="text-green">"c is the minimum"</span>);
+}
+<strong>else</strong>
+{
+    <strong>if</strong> (b &lt; c)
+        System.out.println(<span class="text-green">"b is the minimum"</span>);
+    <strong>else</strong>
+        System.out.println(<span class="text-green">"c is the minimum"</span>);
+}</code></pre>
+    </div>
+</div>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Pascal</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>If</strong> a &lt;= b <strong>And</strong> a &lt;= c <strong>Then</strong>
+    WriteLn(<span class="text-green">'a is the minimum'</span>)
+<strong>Else</strong> <strong>If</strong> b &lt;= a <strong>And</strong> b &lt;= c <strong>Then</strong>
+    WriteLn(<span class="text-green">'b is the minimum'</span>)
+<strong>Else</strong> <strong>If</strong> c &lt;= a <strong>And</strong> c &lt;= b <strong>Then</strong>
+    WriteLn(<span class="text-green">'c is the minimum'</span>);</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>if</strong> (a &lt;= b &amp;&amp; a &lt;= c)
+    System.out.println(<span class="text-green">"a is the minimum"</span>);
+<strong>else</strong>   <strong>if</strong> (b &lt;= a &amp;&amp; b &lt;= c)
+    System.out.println(<span class="text-green">"b is the minimum"</span>);
+<strong>else</strong>   <strong>if</strong> (c &lt;= a &amp;&amp; c &lt;= b)
+    System.out.println(<span class="text-green">"c is the minimum"</span>);</code></pre>
+    </div>
+</div>

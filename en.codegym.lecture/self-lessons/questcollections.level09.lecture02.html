@@ -1,0 +1,211 @@
+<p>"Here I am. As requested, I'll now tell you how to write your first web server."</p>
+<p>"A web server is like an operating system. It's not valuable in and of itself. It's <span class="text-viola">valuable because you can run special web programs (servlets) on it.</span>"</p>
+<p>"It's these servlets that process the requests that come from users."</p>
+<p><span class="text-user">"How do they process requests? How do I run my program inside a web server?"</span></p>
+<p>"To write your own servlet, your class must inherit the HttpServlet class. Then implement its doGet() and doPost() methods. When a request comes from a user, the web server creates one of your servlet objects and calls its doGet() method. Or it calls the doPost() method, depending on the type of request coming from the browser."</p>
+<p><span class="text-user">"But how does my program even get into the web server?"</span></p>
+<p>"That's simple. You write the program, compile it, and put it in a special folder in the directory where you installed Tomcat."</p>
+<p>"Servlets are a large and interesting, but separate, topic. So, I won't explain that to you today. I'll tell you a little about something else."</p>
+<p>"JSPs are a very interesting type of servlet called. They are kinda like PHP."</p>
+<p>"Let's write and run the simplest possible web program using JSPs."</p>
+<p><span class="text-user">"Let's do it! I'm ready."</span></p>
+<p>"Then let's begin."</p>
+<p><strong>Step 1: Create a new web project</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/d821d0dd-d42d-460c-9e36-4f2e151b97d3/original.jpeg' target='_blank'><img data-id="d821d0dd-d42d-460c-9e36-4f2e151b97d3" data-max-width="850" alt="Run a simple web application - 1" src="https://cdn.codegym.cc/images/article/d821d0dd-d42d-460c-9e36-4f2e151b97d3/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p><strong>Step 2: Set the module type to Java Module. Set the application type to Web Application and specify the JDK.</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/bde88bd5-6900-4cfe-a8cb-9416b5cfb49d/original.jpeg' target='_blank'><img data-id="bde88bd5-6900-4cfe-a8cb-9416b5cfb49d" data-max-width="850" alt="Run a simple web application - 2" src="https://cdn.codegym.cc/images/article/bde88bd5-6900-4cfe-a8cb-9416b5cfb49d/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p><strong>Step 3: Give it a name project </strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/9c98c608-b929-49ad-a324-a6b8d0a008fa/original.jpeg' target='_blank'><img data-id="9c98c608-b929-49ad-a324-a6b8d0a008fa" data-max-width="850" alt="Run a simple web application - 3" src="https://cdn.codegym.cc/images/article/9c98c608-b929-49ad-a324-a6b8d0a008fa/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p>"You should see a new empty project."</p>
+<p>"Almost empty. It will include one file called index.jsp. Find it."</p>
+<p><strong>Step 4: Find the JSP file</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/1ef37da6-a145-46d5-92e6-53a3d6221b22/original.jpeg' target='_blank'><img data-id="1ef37da6-a145-46d5-92e6-53a3d6221b22" data-max-width="1024" alt="Run a simple web application - 4" src="https://cdn.codegym.cc/images/article/1ef37da6-a145-46d5-92e6-53a3d6221b22/original.jpeg"></a>
+
+<p><span class="text-user">"Found it."</span></p>
+<p>"Great. This is where we can write our servlet's code."</p>
+<p>"But let's first configure IntelliJ IDEA a little."</p>
+<p>"You can run servlets in Tomcat directly from IntelliJ IDEA. And debug them, if needed. Basically, it's super convenient and awesome. You will appreciate it when the time comes."</p>
+<p><span class="text-user">"I believe you. So what's next?"</span></p>
+<p>"We'll 'teach' IntelliJ IDEA how to run our web module (our application) in Tomcat."</p>
+<p><strong>Step 5: Choose 'Edit Configuration' in the menu</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/25be1147-adac-489d-b442-3e28deb1053b/original.jpeg' target='_blank'><img data-id="25be1147-adac-489d-b442-3e28deb1053b" data-max-width="1024" alt="Run a simple web application - 5" src="https://cdn.codegym.cc/images/article/25be1147-adac-489d-b442-3e28deb1053b/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p><strong>Step 6: Create a new configuration by clicking the plus sign</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/fd80e95a-f977-4896-871b-f0c44ef1b6d1/original.jpeg' target='_blank'><img data-id="fd80e95a-f977-4896-871b-f0c44ef1b6d1" data-max-width="1024" alt="Run a simple web application - 6" src="https://cdn.codegym.cc/images/article/fd80e95a-f977-4896-871b-f0c44ef1b6d1/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p><strong>Step 7: Indicate what to run (Tomcat Server, Local)</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/2efb357d-662a-4c14-8adc-e390748560a9/original.jpeg' target='_blank'><img data-id="2efb357d-662a-4c14-8adc-e390748560a9" data-max-width="1024" alt="Run a simple web application - 7" src="https://cdn.codegym.cc/images/article/2efb357d-662a-4c14-8adc-e390748560a9/original.jpeg"></a>
+
+<p>"Specify a name for the configuration in the Name field, which is marked red."</p>
+<p>"The port that Tomcat will launch the servlet on is indicated in green."</p>
+<p>"We also need to tell IntelliJ IDEA where Tomcat is located. Click the Configure button…"</p>
+<p><strong>Step 8: Create a run configuration</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/35aeb74f-0359-47a6-9d42-c692f7c75819/original.jpeg' target='_blank'><img data-id="35aeb74f-0359-47a6-9d42-c692f7c75819" data-max-width="1024" alt="Run a simple web application - 8" src="https://cdn.codegym.cc/images/article/35aeb74f-0359-47a6-9d42-c692f7c75819/original.jpeg"></a>
+
+<p>"Now you need to select the folder where Tomcat is located:"</p>
+<p><strong>Step 9: Specify Tomcat's location</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/dd0bd7ec-1e7d-4476-a353-3b798b3eb09b/original.jpeg' target='_blank'><img data-id="dd0bd7ec-1e7d-4476-a353-3b798b3eb09b" data-max-width="573" alt="Run a simple web application - 9" src="https://cdn.codegym.cc/images/article/dd0bd7ec-1e7d-4476-a353-3b798b3eb09b/original.jpeg"></a>
+
+
+<a href='https://cdn.codegym.cc/images/article/c7bef026-262b-42a7-b626-0e8dae2d7c37/original.jpeg' target='_blank'><img data-id="c7bef026-262b-42a7-b626-0e8dae2d7c37" data-max-width="573" alt="Run a simple web application - 10" src="https://cdn.codegym.cc/images/article/c7bef026-262b-42a7-b626-0e8dae2d7c37/original.jpeg"></a>
+
+<a href='https://cdn.codegym.cc/images/article/75342840-1043-49cf-b187-8a9064d8eabb/original.jpeg' target='_blank'><img data-id="75342840-1043-49cf-b187-8a9064d8eabb" data-max-width="573" alt="Run a simple web application - 11" src="https://cdn.codegym.cc/images/article/75342840-1043-49cf-b187-8a9064d8eabb/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p>"You should get something like this:"</p>
+<p><strong>Step 10: Resulting configuration</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/e63a77c9-6d29-4bd2-87be-e025c4ece562/original.jpeg' target='_blank'><img data-id="e63a77c9-6d29-4bd2-87be-e025c4ece562" data-max-width="1024" alt="Run a simple web application - 12" src="https://cdn.codegym.cc/images/article/e63a77c9-6d29-4bd2-87be-e025c4ece562/original.jpeg"></a>
+
+<p>"Now we need to connect our project to Tomcat."</p>
+<p><span class="text-user">There's so much that has to be done. It's a good thing I've got such detailed instructions."</span></p>
+<p>"You bet! I try for my friend."</p>
+<p>"Now press the Fix button and IDEA will do everything on its own."</p>
+<p><strong>Step 11: IDEA connects the project and Tomcat</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/55b09d72-f12d-4719-844b-d9a1f95cb694/original.jpeg' target='_blank'><img data-id="55b09d72-f12d-4719-844b-d9a1f95cb694" data-max-width="1024" alt="Run a simple web application - 13" src="https://cdn.codegym.cc/images/article/55b09d72-f12d-4719-844b-d9a1f95cb694/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p>"Great. One more comment. Port 8080 is probably already occupied. After all, Tomcat started running immediately after installation."</p>
+<p>"IntelliJ IDEA can add servlets to a running project, but for simplicity, for now, it will start a new Tomcat server every time."</p>
+<p><span class="text-user">"So, we'll have several Tomcats running?"</span></p>
+<p>"Yep. And each one needs its own port. So, let's change port 8080 to port 8888 in the project settings."</p>
+<p><span class="text-user">"4 eights. I like it."</span></p>
+<p><strong>Step 12: Change the port to 8888</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/e9571f96-4f72-4f0a-8e08-99bdb3f890c6/original.jpeg' target='_blank'><img data-id="e9571f96-4f72-4f0a-8e08-99bdb3f890c6" data-max-width="1024" alt="Run a simple web application - 14" src="https://cdn.codegym.cc/images/article/e9571f96-4f72-4f0a-8e08-99bdb3f890c6/original.jpeg"></a>
+
+<p><span class="text-user">"Done."</span></p>
+<p>"Great. We're done with the settings."</p>
+<p><span class="text-user">"So, what's next?"</span></p>
+<p>"Now let's change our index.jsp file a little"</p>
+<p>"Write something there, for example, «Power to crustaceans!»"</p>
+<p><strong>Step 13: Change index.jsp</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/d37acd70-3e57-4a01-b2ed-e60dbea904b2/original.jpeg' target='_blank'><img data-id="d37acd70-3e57-4a01-b2ed-e60dbea904b2" data-max-width="1024" alt="Run a simple web application - 15" src="https://cdn.codegym.cc/images/article/d37acd70-3e57-4a01-b2ed-e60dbea904b2/original.jpeg"></a>
+
+<p><span class="text-user">"No, I'd rather write «Power to robots!»"</span></p>
+<p>"Great. Now there's just a little left to do."</p>
+<p><strong>Step 14: Run the servlet and Tomcat</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/b7e813a6-c90e-4bcc-831f-44fa84292a89/original.jpeg' target='_blank'><img data-id="b7e813a6-c90e-4bcc-831f-44fa84292a89" data-max-width="1024" alt="Run a simple web application - 16" src="https://cdn.codegym.cc/images/article/b7e813a6-c90e-4bcc-831f-44fa84292a89/original.jpeg"></a>
+
+<p>"The Tomcat log and stack trace should be visible. The log should have no errors."</p>
+<p>"Something like this:"</p>
+<p><strong>Step 15 - Tomcat log</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/bc30a6cd-6008-40b8-961f-6e9fe3fcc611/original.jpeg' target='_blank'><img data-id="bc30a6cd-6008-40b8-961f-6e9fe3fcc611" data-max-width="1024" alt="Run a simple web application - 17" src="https://cdn.codegym.cc/images/article/bc30a6cd-6008-40b8-961f-6e9fe3fcc611/original.jpeg"></a>
+
+<p>"At the same time, IDEA should open a browser with the URL to your servlet."</p>
+<p>"You should get something like this:"</p>
+<p><strong>Step 16: Change index.jsp</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/94eb07da-a1d5-4e3c-80a9-292f89f41eb5/original.jpeg' target='_blank'><img data-id="94eb07da-a1d5-4e3c-80a9-292f89f41eb5" data-max-width="1024" alt="Run a simple web application - 18" src="https://cdn.codegym.cc/images/article/94eb07da-a1d5-4e3c-80a9-292f89f41eb5/original.jpeg"></a>
+
+<p><span class="text-user">"Yep. That's what I got. Cool!"</span></p>
+<p>"And now enter the following URL in the browser:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%"></th>
+    </tr>
+    <tr>
+        <td>http://localhost:8888/index.jsp</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Nothing changed."</span></p>
+<p>"Don't say that."</p>
+<p><strong>Step 17: Change index.jsp</strong></p>
+
+<a href='https://cdn.codegym.cc/images/article/0b6ae1c9-29af-4b36-b363-64da03bb8609/original.jpeg' target='_blank'><img data-id="0b6ae1c9-29af-4b36-b363-64da03bb8609" data-max-width="1024" alt="Run a simple web application - 19" src="https://cdn.codegym.cc/images/article/0b6ae1c9-29af-4b36-b363-64da03bb8609/original.jpeg"></a>
+
+<p>"Now the browser displays the index.jsp file you saw in IntelliJ IDEA."</p>
+<p><span class="text-user">"The one I changed?"</span></p>
+<p>"Yes."</p>
+<p>"But if only the domain is specified in the browser's request, and not the rest of the request, then the default handler will be called. In our case, this is index.jsp."</p>
+<p>"Suppose you have three files: <span class="text-green">index.jsp</span>, <span class="text-user">apple.jsp</span>, <span class="text-viola">google.jsp</span>. Here's how things will work:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Request</th>
+        <th width="50%">Response</th>
+    </tr>
+    <tr>
+        <td><span class="text-green">http://localhost:8888</span></td>
+        <td><span class="text-green">index.jsp</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-green">http://localhost:8888/</span></td>
+        <td><span class="text-green">index.jsp</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-green">http://localhost:8888/index.jsp</span></td>
+        <td><span class="text-green">index.jsp</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-user">http://localhost:8888/apple.jsp</span></td>
+        <td><span class="text-user">apple.jsp</span></td>
+    </tr>
+    <tr>
+        <td>http://localhost:8888/<span class="text-red">samsung.jsp</span></td>
+        <td><span class="text-red">Error message: Servlet not found</span></td>
+    </tr>
+    <tr>
+        <td><span class="text-viola">http://localhost:8888/google.jsp</span></td>
+        <td><span class="text-viola">google.jsp</span></td>
+    </tr>
+    <tr>
+        <td>http://localhost:8888/<span class="text-red">index</span></td>
+        <td><span class="text-red">Error message: Servlet not found</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I understand that."</span></p>
+<p><span class="text-user">"Bilaabo, you've been telling that JSPs are awesome for so long. But they're very similar to ordinary HTML pages. Everything's exactly the same."</span></p>
+<p>"Well, not everything. Try adding the following text to the JSP:"</p>
+<div class="code-heading">JSP code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="blue_text text-user"><b>&lt;%@ page contentType="text/html; charset=UTF-8" language="java" %&gt;</b></span>
+<span class="grey_text text-neon">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Amigo says hi&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;</span>
+<span class="violet_text">&lt;%--This is still HTML--%&gt;</span>
+<span class="dred_text text-red">&lt;%
+// But I can write Java code here
+
+String s = "Power to robots!";
+for(int i=0; i&lt;10; i++)
+{
+ out.println(s);
+ out.println("&lt;br&gt;");
+}
+
+%&gt;</span>
+<span class="violet_text text-viola">&lt;%--and this is HTML again--%&gt;</span>
+<span class="grey_text text-neon">&lt;/body&gt;
+&lt;/html&gt;</span></code></pre>
+<p><span class="text-viola">"You can embed Java code inside a JSP page, and it will run!</span></p>
+<p>"Java code in a JSP page is called a scriptlet and is enclosed in &lt;% and %&gt; tags"</p>
+<p><span class="text-user">"Whoa."</span></p>
+<p><span class="text-user">"OK. I'll go write a few JSP pages of my own."</span></p>
+<p><span class="text-user">"Thank you so much, Bilaabo."</span></p>
+<p>"And thank you to you, my friend!"</p>

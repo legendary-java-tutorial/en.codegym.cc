@@ -1,0 +1,76 @@
+<p>"Hello, Amigo! Today you're going to learn how to do something new: replace the System.out object."<br />
+    <strong>System.out</strong> is a static <strong>PrintStream</strong> variable called <span class="text-red"><strong>out</strong></span> in the <strong>System</strong> class. This variable has the <span class="text-red"><strong>final</strong></span> modifier, so you simply assign it a new value. However, the System class has a special method to do this: <strong>setOut(PrintStream stream)</strong>. And that's what we'll use.</p>
+<p><span class="text-user">"Interesting. And what will we replace it with?"</span></p>
+<p>"We need some object that can collect the output data. <strong>ByteArrayOutputStream</strong> is best suited for this job. This is a special class that is a dynamic (resizable) array and implements the OutputStream interface."</p>
+<p><span class="text-user">"An adapter between an array and OutputStream?"</span></p>
+<p>"Something like that. Here's what our code looks like."</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+ //Save the current PrintStream in a special variable
+ PrintStream <span class="text-user">consoleStream</span> = System.out;
+
+ //Create a dynamic array
+ ByteArrayOutputStream <span class="text-red">outputStream</span> = new ByteArrayOutputStream();
+ //Create an adapter for the PrintStream class
+ PrintStream <span class="text-green">stream</span> = new PrintStream(<span class="text-red">outputStream</span>);
+ //Set it as the current System.out
+ System.setOut(<span class="text-green">stream</span>);
+
+ //Call a function that knows nothing about our changes
+ printSomething();
+
+ //Convert the data written to our ByteArray into a string
+ String <span class="text-red"><strong>result</strong></span> = <span class="text-red">outputStream</span>.toString();
+
+ //Put everything back to the way it was
+ System.setOut(<span class="text-user">consoleStream</span>);
+}
+
+public static void printSomething()
+{
+ System.out.println("Hi");
+ System.out.println("My name is Amigo");
+ System.out.println("Bye-bye!");
+}</code></pre>
+<p><span class="text-user">"And what will we do with this line?"</span></p>
+<p>"Well, whatever we want. For example, we would reverse it. Then the code would look like this:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+ //Save the current PrintStream in a special variable
+ PrintStream <span class="text-user">consoleStream</span> = System.out;
+
+ //Create a dynamic array
+ ByteArrayOutputStream <span class="text-red">outputStream</span> = new ByteArrayOutputStream();
+ //Create an adapter for the PrintStream class
+ PrintStream <span class="text-green">stream</span> = new PrintStream(<span class="text-red">outputStream</span>);
+ //Set it as the current System.out
+ System.setOut(<span class="text-green">stream</span>);
+
+ //Call a function that knows nothing about our changes
+ printSomething();
+
+ //Convert the data written to our ByteArray into a string
+ String <span class="text-red"><strong>result</strong></span> = <span class="text-red">outputStream</span>.toString();
+
+ //Put everything back to the way it was
+ System.setOut(<span class="text-user">consoleStream</span>);
+
+ //Reverse the string
+ StringBuilder stringBuilder = new StringBuilder(result);
+ stringBuilder.reverse();
+ String reverseString = stringBuilder.toString();
+
+ //Output it to the console
+ System.out.println(reverseString);
+}
+
+public static void printSomething()
+{
+ System.out.println("Hi");
+ System.out.println("My name is Amigo");
+ System.out.println("Bye-bye!");
+}</code></pre>
+<p><span class="text-user">"How interesting! Now I'm beginning to understand a little bit of the great capabilities these small classes provide."</span><br />
+    <span class="text-user">"Thank you for the interesting lesson, Bilaabo."</span></p>

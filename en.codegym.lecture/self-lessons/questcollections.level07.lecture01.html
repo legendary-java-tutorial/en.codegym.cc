@@ -1,0 +1,284 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"Our topic today won't merely be interesting — it will be downright epic."</p>
+<p>"Today I'm going to you what <strong>design patterns are.</strong>"</p>
+<p><span class="text-user">"Cool! I've heard a lot about them. I can't wait!"</span></p>
+<p>"Experienced programmers have to write a lot of classes. But the most difficult part of this job is deciding which classes to create and how to divide the work among them."</p>
+<p>"The more they solved such questions, the more they realized that some solutions are good, while others are bad."</p>
+<p>"Bad solutions usually create more problems than they solve. They extend poorly, create many unnecessary limitations, etc. And good solutions are the opposite."</p>
+<p><span class="text-user">"Is there some analogy you can make?"</span></p>
+<p>"Let's say you're building a house. And you're thinking of what it will be made of. You decide you need walls, a floor, and a ceiling. As a result, you build a house with a flat roof and no foundation. Such a house will crack, and the roof will leak. This is a bad solution."</p>
+<p>"Conversely, a house consisting of a foundation, walls, and a gable roof would be a good solution. Heavy snowfall presents no problem, since the snow will slide off the roof. And shifting soils are nothing to fear, because the foundation will ensure stability. We would call such a solution good."</p>
+<p><span class="text-user">"I see. Thanks."</span></p>
+<p>"OK. Then I will continue."</p>
+<p>"In time, the good solutions came to be known as design patterns, while the bad ones were called anti-patterns."</p>
+<p><strong><span class="text-red">"A design pattern is like an answer to a question. It's difficult to understand if you've never heard the question."</span></strong></p>
+<p>"<strong>The first category of patterns is creational patterns.</strong> Such patterns describe good solutions related to the creation of objects."</p>
+<p><span class="text-user">"What's so complicated about creating objects?"</span></p>
+<p>"As it happens, that's just what we're going to explore now."</p>
+<h3>Singleton pattern.</h3>
+
+<a href='https://cdn.codegym.cc/images/article/189ae6b2-b5f9-4b4f-b995-d1b2a05e19c1/original.jpeg' target='_blank'><img data-id="189ae6b2-b5f9-4b4f-b995-d1b2a05e19c1" data-max-width="1024" alt="Design patterns: singleton, factory, factory method, abstract factory - 1" src="https://cdn.codegym.cc/images/article/189ae6b2-b5f9-4b4f-b995-d1b2a05e19c1/original.jpeg"></a>
+
+<p>"Often in programs, only a single copy of some objects can exist. For example, the console, logger, garbage collector, etc."</p>
+<p>"<span class="text-red">Bad solution:</span> don't create any objects — just create a class whose methods are all static."</p>
+<p>"<span class="text-green">Good solution:</span> create a single object and store it in a static variable. Prevent the creation of a second object of the class. For example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Sun
+{
+ private static Sun instance;
+ public static Sun getInstance()
+ {
+  if (instance == null)
+  instance = new Sun();
+
+  return instance;
+ }
+
+ private Sun()
+ {
+ }
+}</code></pre>
+<div class="code-heading">How it is called</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Sun sun = Sun.getInstance();</code></pre>
+<p>"It's simple."</p>
+<p>"First, we make the constructor private. Now it can only be called from inside our class. We've blocked creation of Sun objects everywhere except within methods of the Sun class."</p>
+<p>"Second, an object of this class can only be obtained by calling the getInstance() method. Not only is this the only method that can create a Sun object, it also ensures that there is only one such object."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"When you think, «Now, how exactly would I do that?», a pattern says, «you can try this — this is one of the best solutions.»"</p>
+<p><span class="text-user">"Thanks. Now things are starting to become clear."</span></p>
+<p>"You can also read about this pattern <a href="https://en.wikipedia.org/wiki/Singleton_pattern" target="_blank">here</a>."</p>
+<h3>Factory pattern.</h3>
+
+<a href='https://cdn.codegym.cc/images/article/9919e724-d17e-45e4-a53e-6d9d31a72cbd/original.jpeg' target='_blank'><img data-id="9919e724-d17e-45e4-a53e-6d9d31a72cbd" data-max-width="1024" alt="Design patterns: singleton, factory, factory method, abstract factory - 2" src="https://cdn.codegym.cc/images/article/9919e724-d17e-45e4-a53e-6d9d31a72cbd/original.jpeg"></a>
+
+<p>"Here's a situation that programmers face very often. You have some base class and many subclasses. For example, a game character class (GamePerson) and classes for all the other characters which inherit it."</p>
+<p>"Let's say you have the following classes:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>abstract class GamePerson
+{
+}
+
+class Warrior extends GamePerson
+{
+}
+
+class Mag extends GamePerson
+{
+}
+
+class Troll extends GamePerson
+{
+}
+
+class Elf extends GamePerson
+{
+}</code></pre>
+<p>"The question is how do we flexibly and conveniently manage the creation of objects of these classes."</p>
+<p><span class="text-viola">"If this problem seems far-fetched to you, imagine that in the game you need to create dozens of swords and shields, hundreds of magic spells, and thousands of monsters. You can't do without a convenient approach to object creation here."</span></p>
+<p>"The <strong>Factory</strong> pattern offers a good solution."</p>
+<p>"First, we need to create an enum whose values correspond to the various classes."</p>
+<p>"Second, create a special <strong>Factory</strong> class that has static method(s) that create object(s) based on an enum value."</p>
+<p>"For example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public enum PersonType
+{
+ UNKNOWN,
+ WARRIOR,
+ MAG,
+ TROLL,
+ ELF,
+}
+
+public class PersonFactory
+{
+ public static GamePerson createPerson(PersonType personType)
+ {
+  switch(personType)
+  {
+   WARRIOR:
+   return new Warrior();
+   MAG:
+   return new Mag();
+   TROLL:
+   return new Troll();
+   ELF:
+   return new Elf();
+   default:
+   throw new GameException();
+  }
+ }
+}</code></pre>
+<div class="code-heading">How it is called</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>GamePerson person = PersonFactory.createPerson(PersonType.MAG);</code></pre>
+<p><span class="text-user">"In other words, we created a special class to manage object creation?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"So what advantages does this provide?"</span></p>
+<p>"First, in this class, the objects can be initialized with the necessary data."</p>
+<p>"Second, you can pass the needed enum value between methods as much as you like in order to ultimately create the desired object."</p>
+<p>"Third, the number of enum fields does not have to match the number of classes. There may be many types of characters, but few classes."</p>
+<p>"For example, a <strong>Mag &amp; Warrior</strong> might use one class (Human), but with different strength and magic properties (constructor arguments)."</p>
+<p>"Here's what it might look like (for clarity, I've also added dark elves):"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public enum PersonType
+{
+ UNKNOWN,
+ WARRIOR,
+ MAG,
+ TROLL,
+ ELF,
+ DARK_ELF
+}
+
+public class PersonFactory
+{
+ public static GamePerson createPerson(PersonType personType)
+ {
+  switch(personType)
+  {
+   WARRIOR:
+   return new Human(10, 0); // Strength, magic
+   MAG:
+   return new Human(0, 10); // Strength, magic
+   TROLL:
+   OGR:
+   return new Troll();
+   ELF:
+   return new Elf(true); // true – good, false – evil
+   DARK_ELF:
+   return new Elf(false); // true – good, false – evil
+   default:
+   throw new GameException();
+  }
+ }
+}</code></pre>
+<div class="code-heading">How it is called</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>GamePerson person = PersonFactory.createPerson(PersonType.MAG);</code></pre>
+<p>"In the example above, we used just three classes to create six different types of objects. This is very convenient. Moreover, we have all this logic concentrated in one class and one method."</p>
+<p>"Now suppose we decide to create a separate class for Ogre — we simply change a couple of lines of code here, and not half the application."</p>
+<p><span class="text-user">"I agree. That's a good solution."</span></p>
+<p>"And that's what I'm talking about: design patterns are collections of good solutions."</p>
+<p><span class="text-user">"I also wish I knew where to use them…"</span></p>
+<p>"Yep. I agree, you won't understand right away. Still, it's better to know and not be able to do than to not know and not be able to do. Here's another useful link for you about this pattern: <a href="https://en.wikipedia.org/wiki/Factory_method_pattern" target="_blank">Factory Pattern</a>"</p>
+<p><span class="text-user">"Oh, thanks."</span></p>
+<p>"<strong>Abstract factory</strong> pattern."</p>
+<p>"Sometimes when you have a lot of objects, the idea of creating a factory for factories suggests itself. Such a factory is called an <strong>abstract factory</strong>."</p>
+<p><span class="text-user">"Where would this be needed?!"</span></p>
+<p>"Suppose you have several groups of identical objects. This is easier to show with an example."</p>
+<p>"Now, let's say you have three races in your game: humans, elves, and demons. And for balance, each race has warriors, archers, and mages. A player can only create objects belonging to the race he or she is playing for in the game. Here's how it would look in code:"</p>
+<div class="code-heading">Declaration of soldier classes</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Warrior
+{
+}
+class Archer
+{
+}
+class Mag
+{
+}</code></pre>
+<div class="code-heading">Humans</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class HumanWarrior extends Warrior
+{
+}
+
+class HumanArcher extends Archer
+{
+}
+
+class HumanMag extends Mag
+{
+}</code></pre>
+<div class="code-heading">Elves</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class ElfWarrior extends Warrior
+{
+}
+
+class ElfArcher extends Archer
+{
+}
+
+class ElfMag extends Mag
+{
+}</code></pre>
+<div class="code-heading">Demons</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class DaemonWarrior extends Warrior
+{
+}
+
+class DaemonArcher extends Archer
+{
+}
+
+class DaemonMag extends Mag
+{
+}</code></pre>
+<p>And now let's create the races, or we could also call them armies.</p>
+<div class="code-heading">Armies</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>abstract class Army
+{
+ public Warrior createWarrior();
+ public Archer createArcher();
+ public Mag createMag();
+}</code></pre>
+<div class="code-heading">Human army</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class HumanArmy extends Army
+{
+ public Warrior createWarrior()
+ {
+  return new HumanWarrior();
+ }
+ public Archer createArcher()
+ {
+  return new HumanArcher();
+ }
+ public Mag createMag()
+ {
+  return new HumanMag();
+ }
+}</code></pre>
+<div class="code-heading">Elf army</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class ElfArmy extends Army
+{
+ public Warrior createWarrior()
+ {
+  return new ElfWarrior();
+ }
+ public Archer createArcher()
+ {
+  return new ElfArcher();
+ }
+ public Mag createMag()
+ {
+  return new ElfMag();
+ }
+}</code></pre>
+<div class="code-heading">Demon army</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class DaemonArmy extends Army
+{
+ public Warrior createWarrior()
+ {
+  return new DaemonWarrior();
+ }
+ public Archer createArcher()
+ {
+  return new DaemonArcher();
+ }
+ public Mag createMag()
+ {
+  return new DaemonMag();
+ }
+}</code></pre>
+<p><span class="text-user">"But how do you use this?"</span></p>
+<p>"You can use the Army, Warrior, Archer, and Mage classes anywhere in the program, and to create the necessary objects — simply pass an object of the desired Army subclass."</p>
+<p>"For example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Army humans = new HumanArmy();
+Army daemons = new DaemonArmy();
+
+Army winner = FightSimulator.simulate(humans, daemons);</code></pre>
+<p>"In the example above, we have a class that simulates battles between different races (armies). You just need to pass two Army objects. The class itself uses them to creates various troops and conducts virtual battles between them in order to identify the victor."</p>
+<p><span class="text-user">"I see. Thanks. A really interesting approach."</span></p>
+<p><span class="text-user">"A good solution, regardless of what you say."</span></p>
+<p>"Yep."</p>
+<p>"Here is another good link on the topic: <a href="https://en.wikipedia.org/wiki/Abstract_factory_pattern" target="_blank">Abstract factory pattern</a>"</p>
+<div></div>

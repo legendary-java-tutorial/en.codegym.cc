@@ -1,0 +1,415 @@
+<h2>1. Comparing objects with <code>==</code></h2>
+<p>The favorite mistake of newbie programmers is comparing objects (especially strings) using the <code>==</code> operator. For example:</p>
+<pre class="language-java"><code>Scanner console = new Scanner(System.in);
+String s1 = console.nextLine();
+String s2 = console.nextLine();
+if (s1 == s2)
+{
+   System.out.println("The strings are equal");
+}</code></pre>
+<p>This code will never display "The strings are equal", because the <code>if</code> statement compares references to two different string objects.</p>
+<p>Here is the correct version of the code:</p>
+<pre class="language-java"><code>Scanner console = new Scanner(System.in);
+String s1 = console.nextLine();
+String s2 = console.nextLine();
+if (s1.<span class="text-red">equals</span>(s2))
+{
+   System.out.println("The strings are equal");
+}</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1119"></div>
+<hr>
+<h2>2. Changing a <code>String</code> object</h2>
+<p>Newbie programmers often forget that all objects of the class are <span class="term">immutable</span>, and that every method of the <code>String</code> class returns a new object — the current object never changes.</p>
+<p>Example:</p>
+<pre class="language-java"><code>String s = "Hello";
+s.toUpperCase (); // Convert to uppercase</code></pre>
+<p>This code is very similar to the correct code, but it won't work as expected. The <code>toUpperCase()</code> method does not change the object on which it is called. The correct code would look like this:</p>
+<pre class="language-java"><code>String s = "Hello";
+<span class="text-red">String result</span> = s.toUpperCase(); // Convert to uppercase</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1120"></div>
+<hr>
+<h2>3. Forgetting to initialize objects that are elements of an array</h2>
+<p>Another common mistake is to forget to initialize an array variable. Example:</p>
+<pre class="language-java"><code>int[] array;
+array[0] = 1;
+array[0] = 2;</code></pre>
+<p>This code won't work: you need to explicitly set the array variable equal to a reference to the container object that will store the elements of the array.</p>
+<pre class="language-java"><code>int[] array <span class="text-red">= new int[10];</span>
+array[0] = 1;
+array[0] = 2;</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1128"></div>
+<hr>
+<h2>4. Using a local variable instead of an instance variable.</h2>
+<p>Newbies don't like to come up with long and meaningful names for variables. They frequently use single-letter names: <code>a</code>, <code>b</code>, <code>i</code>, etc. That's a cruel thing to do when the code has several variables like that:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Put the number 99 into 100 cells of an array</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Solution
+{
+  public static <span class="text-viola">int a</span> = 99;
+  public static <span class="text-green">int i</span> = 100;
+
+  public static void main(String[] args)
+  {
+    <span class="text-orange">int[]</span> a = new int[<span class="text-green">i</span>];
+    for (int i = 0; i &lt; 10; i++)
+    {
+      a[i] = <span class="text-viola">a</span>;
+    }
+  }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The code above will not compile. The correct version looks like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Put the number 99 into 100 cells of an array</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Solution
+{
+   public static int <span class="text-red">value</span> = 99;
+   public static int <span class="text-green">count</span> = 100;
+
+   public static void main(String[] args)
+   {
+      int[] a = new int[<span class="text-green">count</span>];
+      for (int i = 0; i &lt; <span class="text-green">count</span>; i++)
+      {
+         a[i] = <span class="text-red">value</span>;
+      }
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1121"></div>
+<hr>
+<h2>5. Removing a collection item</h2>
+<p>Very often there are situations when a certain element needs to be removed from a collection. The code looks roughly like this:</p>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+Collections.addAll(list, 0, -5, -7, -12, 5, 15);
+
+for (Integer value: list)
+   if (value &lt; 0)
+      list.remove(value);</code></pre>
+<p>This code will not work, because you cannot use a for-each loop to simultaneously traverse the elements of a collection and modify that collection.</p>
+<p>There are several solutions. First, you can go traverse one collection and change another:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Solution 1</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+Collections.addAll(list, 0, -5, -7, -12, 5, 15);
+
+<span class="text-red">ArrayList&lt;Integer&gt; copy = new ArrayList&lt;Integer&gt;(list);</span>
+for (Integer value: <span class="text-red">copy</span>)
+   if (value &lt; 0)
+      list.remove(value);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Second, since Java 8, collections have a <code>removeIf()</code> method, to which you can pass a rule (lambda function) that indicates which elements to remove.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Solution 2</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+Collections.addAll(list, 0, -5, -7, -12, 5, 15);
+
+<span class="text-red">list.removeIf( x-&gt; x&lt;0 );</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1122"></div>
+<hr>
+<h2>6. Placing several classes with the <code>public</code> modifier into a single file</h2>
+<p>There can be only one public class in a file. More classes can be declared in a file, but they must either be inner classes of a public class, or not have the <code>public</code> modifier. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Contents of the Solution.java file</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+}
+public class Main
+{
+}</code></pre>
+        </td>
+        <td><span class="text-red">This is not allowed: two public classes in a single file.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+}
+class Main
+{
+}</code></pre>
+        </td>
+        <td><span class="text-green">But you can do this. The Main class is not public</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+  public static class Main
+  {
+  }
+}</code></pre>
+        </td>
+        <td><span class="text-green">And you can do this. The Main class is a nested class</span></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1123"></div>
+<hr>
+<h2>7. Calling ordinary (non-static) methods of a class from the static <code>main()</code> method</h2>
+<p>Sometimes newbie programmers try to access non-static variables and methods from the <code>main()</code> method or other static methods. Such code will not work, of course.</p>
+<pre class="language-java"><code>public class Solution
+{
+   public int n = 100;
+   public int[] createArray()
+   {
+      return new int[n];
+   }
+
+   public static void main(String[]args)
+   {
+      int[] array = createArray();
+   }
+}</code></pre>
+<p>The main method can only refer to static methods/variables. Well, or it must first create an instance of the <code>Solution</code> class, and only then call non-static methods of that object. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Solution 1</th>
+        <th>Solution 2</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+  public <span class="text-red">static</span> int n = 100;
+
+  public <span class="text-red">static</span> int[] createArray()
+  {
+    return new int[n];
+  }
+
+  public static void main(String[]args)
+  {
+    int[] array = createArray();
+  }
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+  public int n = 100;
+
+  public int[] createArray()
+  {
+    return new int[n];
+  }
+
+  public static void main(String[]args)
+  {
+    <span class="text-red">Solution sol = new Solution();</span>
+    int[] array = <span class="text-red">sol</span>.createArray();
+  }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1124"></div>
+<hr>
+<h2>8. Declaring a constructor like a method</h2>
+<p>Another common mistake is incorrectly declaring a class constructor. The name of a constructor must be the same as the name of the class, and a constructor has no result type. The most common mistakes look like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Person
+{
+   private String value;
+
+   <span class="text-red">void</span> Person(String value)
+   {
+      this.value = value;
+   }
+}</code></pre>
+        </td>
+        <td>
+            <br><br><br><br>There shouldn't be a return type here
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Person
+{
+   private String value;
+
+   <span class="text-red">constructor</span>(String value)
+   {
+      this.value = value;
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><br>Invalid constructor name. The name of the constructor must match the class name</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Person
+{
+   private String <span class="text-user">value</span>;
+
+   Person(String <span class="text-green">value</span>)
+   {
+      <span class="text-green">value</span> = <span class="text-green">value</span>;
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><br><br><br><code>this </code> is missing. The <code><span class="text-green">value</span></code> variable will be assigned to itself</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Person
+{
+   private String value;
+
+   Person(String value)
+   {
+      this.value = value;
+   }
+}</code></pre>
+        </td>
+        <td><br><br><br><br>That is all correct</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1125"></div>
+<hr>
+<h2>9. Incorrect inheritance of interfaces</h2>
+<p>Java's creators tried to make it very close to English, so they chose different keywords for certain related concepts.</p>
+<p>When a class inherits a class, you have to use the <code><span class="text-red">extends</span></code> keyword:</p>
+<pre class="language-java"><code>class Pet
+{
+}
+
+class Cat <span class="text-red">extends</span> Pet
+{
+}</code></pre>
+<p>When a class inherits an interface, you need to use the <code><span class="text-red">implements</span></code> keyword:</p>
+<pre class="language-java"><code>interface Meow
+{
+}
+
+class Cat <span class="text-red">implements</span> Meow
+{
+}</code></pre>
+<p>When an interface inherits an interface, use the <code><span class="text-red">extends</span></code> keyword:</p>
+<pre class="language-java"><code>interface Meow
+{
+}
+
+interface Voice <span class="text-red">extends</span> Meow
+{
+}</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1126"></div>
+<hr>
+<h2>10. Omitting <code>break</code> in a <code>switch</code> statement</h2>
+<p>And the last mistake for us today, but not the last one for beginners, is failing to include a <code>break</code> statement in a <code>switch</code> statement. Example</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Wrong</th>
+        <th>Right</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>LocalDate date = LocalDate.now();
+DayOfWeek day = date.getDayOfWeek();
+switch (day)
+{
+   case MONDAY:
+      System.out.println("Monday");
+   case TUESDAY:
+      System.out.println("Tuesday");
+   case WEDNESDAY:
+      System.out.println("Wednesday");
+   case THURSDAY:
+      System.out.println("Thursday");
+   case FRIDAY:
+      System.out.println("Friday");
+   case SATURDAY:
+      System.out.println("Saturday");
+   case SUNDAY:
+      System.out.println("Sunday");
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>LocalDate date = LocalDate.now();
+DayOfWeek day = date.getDayOfWeek();
+switch (day)
+{
+   case MONDAY:
+      System.out.println("Monday");
+      <span class="text-red">break</span>;
+   case TUESDAY:
+      System.out.println("Tuesday");
+      <span class="text-red">break</span>;
+   case WEDNESDAY:
+      System.out.println("Wednesday");
+      <span class="text-red">break</span>;
+   case THURSDAY:
+      System.out.println("Thursday");
+      <span class="text-red">break</span>;
+   case FRIDAY:
+      System.out.println("Friday");
+      <span class="text-red">break</span>;
+   case SATURDAY:
+      System.out.println("Saturday");
+      <span class="text-red">break</span>;
+   case SUNDAY:
+      System.out.println("Sunday");
+      <span class="text-red">break</span>;
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task11.task1127"></div>

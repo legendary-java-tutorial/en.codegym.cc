@@ -1,0 +1,64 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi!"</span></p>
+<p>"Today I will tell you about version control systems."</p>
+<p>"As you probably already know, programs are often very large and take a very long time to write. Sometimes dozens of people can spend years writing a program."</p>
+<p>"Projects with millions of lines of code are a reality."</p>
+<p><span class="text-user">"Whoa."</span></p>
+<p>"It's all very complicated. People often interfere with each other, and often modify the same code, and so on and so forth."</p>
+<p>"To bring order to this mess, programmers began using <span class="text-green"><strong>version control systems</strong></span> for their code."</p>
+<p><span class="text-green">"<strong>A version control system</strong></span> is a program consisting of a client and server.</p>
+<p>"The program stores data (the code written by programmers) on a server, and programmers add to or change it using clients."</p>
+<p>"The main difference between a version control system and programs that simply make it possible to work collaboratively on documents is that it stores all of the previous versions of all the documents (code files)."</p>
+<p><span class="text-user">"Can you give me more details. How does it all work?"</span></p>
+<p>"Imagine that you are a programmer and you want to make small changes to the source code of a program stored in a repository on the server."</p>
+<p>"Here's what you need to do:"</p>
+<p><span class="text-viola">"1) Log in to the server."</span></p>
+<p><span class="text-viola">"2) Copy the latest version of all of the files to your computer using the Checkout command."</span></p>
+<p><span class="text-viola">"3) Make changes to the required files."</span></p>
+<p><span class="text-viola">"4) Run the program locally to make sure that it compiles and runs."</span></p>
+<p><span class="text-viola">"5) Send your 'changes' to the server using the Commit command."</span></p>
+<p><span class="text-user">"That generally makes sense."</span></p>
+<p>"But there's more. Imagine that you arrive at work in the morning, but it's already lunchtime in India. So your Indian colleagues have already made changes and committed their changes to your repository on the server."</p>
+<p>"You need to work with the latest version of the code. So you perform the <strong>Update</strong> command."</p>
+<p><span class="text-user">"How is that different from <strong>Checkout</strong>?"</span></p>
+<p>"<strong>Checkout</strong> is designed to copy all of the repository's files, but Update only updates the files that have been updated on the server since you last ran a <strong>Checkout</strong>/<strong>Update</strong> command."</p>
+<p>"This is approximately how it works:"</p>
+<p><strong>Checkout</strong>:</p>
+
+<a href='https://cdn.codegym.cc/images/article/83fe1504-b99d-4de2-ba46-cdeb0ca506b7/original.jpeg' target='_blank'><img data-id="83fe1504-b99d-4de2-ba46-cdeb0ca506b7" data-max-width="850" alt="Version control systems - 1" src="https://cdn.codegym.cc/images/article/83fe1504-b99d-4de2-ba46-cdeb0ca506b7/original.jpeg"></a>
+
+<p>"Now, let's say we changed file B and want to upload it to the server. To do this, we need to use the <strong>Commit</strong> command."</p>
+
+<a href='https://cdn.codegym.cc/images/article/9b564dd9-4380-4fad-bfaa-e53398cae8bb/original.jpeg' target='_blank'><img data-id="9b564dd9-4380-4fad-bfaa-e53398cae8bb" data-max-width="850" alt="Version control systems - 2" src="https://cdn.codegym.cc/images/article/9b564dd9-4380-4fad-bfaa-e53398cae8bb/original.jpeg"></a>
+
+<p>"And here's how the <strong>Update</strong> command works:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/59035d2e-2800-4b5a-bb2e-3f8bcd8377e6/original.jpeg' target='_blank'><img data-id="59035d2e-2800-4b5a-bb2e-3f8bcd8377e6" data-max-width="850" alt="Version control systems - 3" src="https://cdn.codegym.cc/images/article/59035d2e-2800-4b5a-bb2e-3f8bcd8377e6/original.jpeg"></a>
+
+<p><span class="text-user">"How interesting! Are there any other commands?"</span></p>
+<p>"Yes, there are quite a few. But they vary depending on which version control program you choose. So, I'm trying to just explain the general principles."</p>
+<p>"There is also an operation called merging—the union of two documents. Suppose two programmers are modified the same file at the same time. Then the program on the server will not allow both changes to be committed. Whoever commits first gets to add his or her changes."</p>
+<p><span class="text-user">"So what does the other person do?"</span></p>
+<p>"He or she will be invited to perform a <strong>Update</strong> operation to grab the latest changes from the server. By the way, this — doing an <strong>Update</strong> before committing — is good practice."</p>
+<p><span class="text-green">"Then, during the Update operation, the client program will try to merge the local changes with the changes received from the server."</span></p>
+<p><span class="text-viola">"If the programmers changed different parts of the file, then the version control program will probably be able to merge them successfully.</span> <span class="text-corporate">If the changes are in the same place, then the version control program will report a merge conflict and prompt the user to manually merge the changes."</span></p>
+<p>"For example, this often happens when both programmers add something to the end of a file."</p>
+<p><span class="text-user">"I see. Overall, that seems reasonable."</span></p>
+<p>"And there's one more thing: branches."</p>
+<p>"Imagine that two programmers from a team are tasked with rewriting the same module. Or even better — rewriting it from scratch. Until this module is completed, the program won't be able to run, and might not even compile."</p>
+<p><span class="text-user">"So what are they supposed to do?"</span></p>
+<p>"They move forward by adding branches to the repository. Roughly speaking, this means the repository gets divided into two parts. Not by files or directories, but by versions."</p>
+<p>"Imagine <span class="text-red">electricity was never discovered and robots were never invented. Then the three liberation wars would never have happened, and all of human history would have followed a completely different path.</span>"</p>
+<p>"This path is an alternative branch of history."</p>
+<p>"Or you can just try picturing a branch as simply a copy of the repository. In other words, at some point, we made a clone of the repository on the server, so that, in addition to the main repository (<span class="text-corporate">often called the trunk</span>), we have another <span class="text-corporate">branch</span>."</p>
+<p><span class="text-user">"Well, that seems more understandable.</span></p>
+<p><span class="text-user">"Why couldn't you just say that we copied the repository?"</span></p>
+<p>"This isn't simple copying."</p>
+<p>"These branches can not only be separated from the trunk, but also merged into it."</p>
+<p><span class="text-user">"In other words, some work can be done in a branch, and then when it's finished you can add the repository branch to the repository trunk?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"And what will happen to the files?"</span></p>
+<p>"The files will be merged."</p>
+<p><span class="text-user">"Well, that sounds cool. I hope it's just as cool in action."</span></p>
+<p>"And then some. Okay, let's take a break."</p>
+<p>"There is a bunch of useful information <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control" target="blank">here</a>"</p>

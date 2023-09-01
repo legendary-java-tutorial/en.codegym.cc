@@ -1,0 +1,167 @@
+<a href='https://cdn.codegym.cc/images/article/7d4819fe-9d0a-4fee-8232-924cf40fbdca/original.jpeg' target='_blank'><img data-id="7d4819fe-9d0a-4fee-8232-924cf40fbdca" data-max-width="850" alt="final and other Java keywords - 1" src="https://cdn.codegym.cc/images/article/7d4819fe-9d0a-4fee-8232-924cf40fbdca/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"Today I'm going to tell you about several keywords in Java. But I'll start with the most interesting: <strong>the keyword final.</strong>"</p>
+<p>"You can use the keyword <strong>final</strong> when declaring a variable, method, or class."</p>
+<p><span class="text-user">"And why do we need final?"</span></p>
+<p>"It's pretty simple. If we mark a variable as final, then it becomes unchangeable:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>final int i = 5;
+i++; //Compilation error: the value of i cannot be changed.</code></pre>
+<p><span class="text-user">"I see."</span></p>
+<p>"If we mark a method as final, then overriding the method in derived classes is forbidden:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public final String getName()
+ {
+  return "cat";
+ }
+}
+
+class Tiger extends Cat
+{
+ public String getName() //Compilation error: overriding the getName()
+ {
+  return "tiger";
+ }
+}</code></pre>
+<p><span class="text-user">"I see. But why would you need to prohibit overriding a method?"</span></p>
+<p>"Well, as an example, suppose a programmer has written a lot of important code in a method and wants to guarantee that all classes that inherit his class will have the specified behavior."</p>
+<p>"And finally, the third usage."</p>
+<p>"If we mark a class with the keyword final, then it cannot be inherited."</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public final class Cat
+{
+ public String getName()
+ {
+  return "cat";
+ }
+}
+
+class Tiger extends Cat //Compilation error: the Cat class cannot be
+{
+ public String getName()
+ {
+  return "tiger";
+ }
+}</code></pre>
+<p><span class="text-user">"And why would we prevent a class from being inherited?"</span></p>
+<p>"You should understand that we don't prevent inheritance to be annoying, but rather for the sake of security and code integrity. If class inheritance is not prohibited, then the implication is that it is allowed. And that the code written by the class's designer will work properly for objects of this class as well as objects of any derived classes."</p>
+<p>"But if a developer realizes that even small changes to his class will cause everything to stop working as expected, then it is better to forbid inheritance."</p>
+<p>"For example, the String class is declared as final, as are all primitive types: Integer, Boolean, Double, Character…"</p>
+<p><span class="text-user">"Ah, got it. The String class was created as an immutable class and if they were suddenly mutable, then a lot of things would stop working."</span></p>
+<p>"Well, almost. Let's put it this way: everything would work almost as before, but sometimes there would be errors that would be very difficult to find and understand. So, in some cases, inheriting classes or methods is not really a sin, but forbidding it means fewer errors to catch later."</p>
+<p><span class="text-user">"Where else can you use final?"</span></p>
+<p>"You can use final before function parameters, and before variables in a method. Here's an example:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public void setName(final String name)
+{
+ final String displayName = "Mr."+ name;
+  …
+ this.name = displayName;
+}</code></pre>
+<p><span class="text-user">"And what's the point of that?"</span></p>
+<p>"Well, there are two. First, we declare a variable as final if we want to tell other developers that this value is a specific constant, and not just a variable."</p>
+<p>For example, we want to calculate the sales tax based on a price:</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public int getPriceNDS()
+{
+ final int NDS = 20;
+ return this.price * NDS / 200;
+}</code></pre>
+<p>"And second, we need this type of variable when writing local or anonymous inner classes. I'll tell you about these types of classes soon. But not today."</p>
+<p><span class="text-user">"Okay, so far there hasn't been anything too complicated."</span></p>
+<p>"Please note that only the variable becomes unchangeable, not an object it might refer to. The object can still be changed."</p>
+<p><span class="text-user">"I was actually just about to ask about that. And there's no way to make the object unchangeable?"</span></p>
+<p>"No, unless you write an immutable class."</p>
+<p>"Please note that because the value of a final variable can't be changed, you must assign its initial value immediately."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>This code will compile</th>
+        <th>This code <span class="text-red">won't</span> compile</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Home
+{
+ private final int width = 200;
+ private final int height = 100;
+
+ public Home()
+ {
+ }
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Home
+{
+<span class="text-red"> private final int width;
+ private final int height;</span>
+
+ public Home()
+ {
+ }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"But, that said, Java lets you delay initialization of a class's final variables until the constructor."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>This code will compile</th>
+        <th>This code <span class="text-red">won't</span> compile</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Home
+{
+ private final int width = 200;
+ private final int height;
+
+ public Home()
+ {
+  height = 100;
+ }
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Home
+{
+<span class="text-red"> private final int width;</span>
+ private final int height;
+
+ public Home()
+ {
+  height = 100;
+ }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Additionally, different constructors can initialize final variables with different values. This is quite convenient:"</p>
+<div class="code-heading">This code will compile</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Home
+{
+ private final int width;
+ private final int height;
+
+ public Home()
+ {
+ <span class="text-green"> height = 100;
+  width = 200;</span>
+ }
+
+ public Home(int width)
+ {
+<span class="text-green">  this.height = 300;
+  this.width = width;</span>
+ }
+
+ public Home(int width, int height)
+ {
+<span class="text-green">  this.height = height;
+  this.width = width;</span>
+ }
+}</code></pre>
+<p><span class="text-user">"That was a really interesting topic, and absolutely everything makes sense. Thank you, Bilaabo!"</span></p>

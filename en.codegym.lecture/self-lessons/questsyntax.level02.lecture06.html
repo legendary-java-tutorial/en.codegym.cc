@@ -1,0 +1,151 @@
+<p>"Hi, Amigo, it's me again, Ellie. Sorry for saying that over and over again, but it's customary on the Earth in the 31st century. I'd like to give you more details about reference variables and passing reference variables to functions (methods)."</p>
+<p><span class="text-user">"I'm ready."</span></p>
+<p>"Great, then listen. Reference variables are any non-primitive variables. Such variables only contain an object reference (a reference to an object)."</p>
+<p><span class="text-user">"Primitive variables contain values, while reference variables store references to objects or null. Am I right?"</span></p>
+<p>"Absolutely."</p>
+<p><span class="text-user">"What's a reference?"</span></p>
+<p>"The relationship between an object and an object reference is like the relationship between a person and her phone number. The phone number isn't the person, but it can be used to call the person, ask for some information, manage her, or give orders. A reference is also used to work with objects. All objects interact with one another using references."</p>
+<p><span class="text-user">"As if they were talking to each other over the phone?"</span></p>
+<p>"Exactly. <span class="text-red">When a primitive variable is assigned, the value is copied. If a reference is assigned, only the address of the object (the phone number) is copied. The object itself isn't copied.</span>"</p>
+<p><span class="text-user">"OK, I got it."</span></p>
+<p>"A reference gives you one more benefit: you can pass an object reference to any method, and that method will be able to use the reference to modify (change) the object by calling its methods and accessing data inside the object."</p>
+<table class="compare-code">
+    <tbody>
+    <tr>
+        <td>
+            <div class="code-heading">Example 1<br />
+                The values m and n don't change here.</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public class References
+{
+  public static void main (String[] args)
+  {
+    <span class="text-red">int m = 5;
+    int n = 6;</span>
+
+    System.out.println("M=" + m + " N=" + n);
+    swap(<mark class="green">m, n</mark>);
+    System.out.println("M=" + m + " N=" + n);
+  }
+
+  private static void swap(<mark class="green">int a, int b</mark>)
+  {
+    <mark>int c = a;</mark>
+    <mark>a = b;</mark>
+    <mark>b = c;</mark>
+  }
+}</code></pre>
+        </td>
+        <td><div class="code-heading">And here's why.<br />
+            This code is analogous to the code on the left</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public class References
+{
+  public static void main (String[] args)
+  {
+    <span class="text-red">int m = 5;
+    int n = 6;</span>
+
+    System.out.println("M=" + m + " N=" + n);
+    <mark class="green">int a = m, b = n;</mark>
+
+    <mark>int c = a;</mark>
+    <mark>a = b;</mark>
+    <mark>b = c;</mark>
+
+    System.out.println("M=" + m + " N=" + n);
+  }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Only the values 5 (m) and 6 (n), respectively, are assigned to variables <mark class="green">a</mark> and <mark class="green">b</mark>; <mark class="green">a</mark> and <mark class="green">b</mark> know nothing about (and don't influence in any way) m and n."</p>
+<p><span class="text-user">"To tell you the truth, I now realize that I didn't understand anything. Can you give me a few more examples?"</span></p>
+<p>"With an object reference, we could have done the following:"</p>
+<table class="compare-code">
+    <tbody>
+    <tr>
+        <td>
+            <div class="code-heading">Example 2<br />
+                The objects' data changes in this code</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public class Primitives
+{
+  public static void main(String[] args)
+  {
+    <span class="text-red">Student jen = new Student();
+    jen.name = "Jen";
+    jen.age = 21;
+
+    Student beth = new Student();
+    beth.name = "Beth";
+    beth.age = 15;</span>
+
+    System.out.println("Jen is " + jen.age);
+    System.out.println("Beth is " + beth.age);
+
+<span class="text-user">    ageSwap(jen, beth);</span>
+
+    System.out.println("Jen is " + jen.age);
+    System.out.println("Beth is " + beth.age);
+  }
+
+  private static void ageSwap(Student a,
+                                    Student b)
+  {
+    <span class="text-green">int c = a.age;
+    a.age = b.age;
+    b.age = c;</span>
+  }
+
+  static class Student
+  {
+    String name;
+    int age;
+  }
+}</code></pre>
+        </td>
+        <td>
+            <div class="code-heading">And here's why.<br />
+                This code is analogous to the code on the left</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>public class Primitives
+{
+  public static void main(String[] args)
+  {
+    <span class="text-red">Student jen = new Student();
+    jen.name = "Jen";
+    jen.age = 21;
+
+    Student beth = new Student();
+    beth.name = "Beth";
+    beth.age = 15;
+</span>
+    System.out.println("Jen is " + jen.age);
+    System.out.println("Beth is " + beth.age);
+
+   <span class="text-user"> Student a = jen, b = beth;</span>
+
+    <span class="text-green">int c = a.age;
+    a.age = b.age;
+    b.age = c;</span>
+
+    System.out.println("Jen is " + jen.age);
+    System.out.println("Beth is " + beth.age);
+  }
+
+
+
+
+
+  static class Student
+  {
+    String name;
+    int age;
+  }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"References to jen and beth, respectively, are assigned to the variables a and b; a and b change the values inside the objects jen and beth."</p>
+<p><span class="text-user">"And you can declare classes inside of other classes, right? Cool!"</span></p>
+<p><span class="text-user">"But I still don't understand everything else very well."</span></p>
+<p>"All in due time."</p>

@@ -1,0 +1,135 @@
+<div class="row">
+    <div class="col"><img data-id="611c41bf-3bfe-499d-bb74-3ab760e161e0" data-max-width="800" alt="The virtual machine and the first command - 1" src="https://cdn.codegym.cc/images/article/611c41bf-3bfe-499d-bb74-3ab760e161e0/original.gif"></div>
+</div>
+<p>"Hello, Amigo! My name is Rishi. I'm going to help you learn Java."</p>
+<p><span class="text-user">"I'm all ears!"</span></p>
+<p>"A program is a set (list) of commands. First, you execute the first command, then the second, then the third and so on. Once all the commands are executed, the program is finished."</p>
+<p><span class="text-user">"What kinds of commands are there?"</span></p>
+<p>"<strong>Commands depend on what is executing them.</strong> On the types of commands the actor knows (and understands)."</p>
+<p>"You can give a command to a dog: 'Sit!', 'Bark!'; to a cat: 'Shoo!'; to a human: 'Freeze, or I’ll shoot!'; or to a robot: 'Work! Work, roboscum!'"</p>
+<p><span class="text-user">"What else?" Amigo was finally starting to have fun.</span></p>
+<p>"Programs written in Java are executed by the Java virtual machine (JVM). The JVM is a special program that knows how to execute programs written in Java."</p>
+<p>"The list of its commands is quite extensive. For example, this command could be used to display 'Robots are friends to humans' on the screen."</p>
+<div class="code-heading">Here's a super simple command:</div>
+<pre class="line-numbers language-java" data-line="" data-start="0"><code>System.out.println("Robots are friends to humans");
+</code></pre>
+
+
+<a href='https://cdn.codegym.cc/images/article/6b737aa0-04fc-42c7-8eb2-abc818c38f52/original.jpeg' target='_blank'><img data-id="6b737aa0-04fc-42c7-8eb2-abc818c38f52" data-max-width="800" alt="The virtual machine and the first command - 3" src="https://cdn.codegym.cc/images/article/6b737aa0-04fc-42c7-8eb2-abc818c38f52/original.jpeg"></a>
+
+
+<p><span class="text-user">&#34;O_O&#34;</span></p>
+<p>"Rather than starting with commands, we’ll begin with a couple of simple principles."</p>
+<p>"<strong>Knowing a couple of principles can replace knowledge of many facts</strong>."</p>
+<p>"Here’s the first principle."</p>
+<p><span class="text-green">"In the Java programming language, each command is written on its own line. A semicolon must be placed at the end of a command."</span></p>
+<p>"Suppose we want to display 'Humans and robots are friends forever' on the screen three times. This is how it would look:"</p>
+<div class="code-heading">The program is made up of three commands:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>System.out.println("Humans and robots are friends forever");
+System.out.println("Humans and robots are friends forever");
+System.out.println("Humans and robots are friends forever");
+</code></pre>
+<p>"How about a small task then?"</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0142"></div>
+<p>"The second principle.&#34;</p>
+<p><span class="text-red">"A program can’t consist of nothing but commands."</span></p>
+<p>"Imagine a room in an apartment. A room can’t exist on its own. It’s part of some apartment. An apartment also can’t exist on its own. It’s part of some building."</p>
+<p>"On the other hand, we can say that the building is divided into apartments and an apartment is divided into rooms."</p>
+<p><span class="text-user">"Everything is clear so far."</span></p>
+<p>"A command is like a room. In the Java programming language, a command can't exist on its own. It's part of a function (in Java, 'functions' are also called 'methods'). A method is part of a class. In other words, a class is divided into methods and methods are divided into commands."</p>
+<p><span class="text-user">"So a class is an apartment building, a function/method is an apartment, and a command is a room. Did I get that right?"</span></p>
+<p>"Yes, that's absolutely correct."</p>
+<p>Amigo looked at Rishi in awe. This human was explaining to him the basics of programming using the divine Java language! And he, Amigo, just understood (had guessed all by himself!) that programs consist of classes, classes consist of methods, and methods consist of commands!</p>
+<p style="margin-bottom:45px;">Amigo still didn't know why he needed it, but he was certain that this knowledge would make him the most powerful robot on the planet.</p>
+<p>Meanwhile, Rishi went on:</p>
+<p><span class="text-green">"Programs in Java consist of classes. </span> <span class="text-yellow">There might be tens of thousands of classes.</span> <span class="text-viola">A minimal program is one class. For each class, a separate file is created. The name of the file matches the name of the class.</span>"</p>
+<p>"Suppose you decide to create a class that describes a home. You’ll need to create a Home class that will be saved in the file Home.java."</p>
+<p>"If you want to describe a cat in the program, then you’ll have to create a file Cat.java and declare the Cat class in it, etc."</p>
+<p>"The files contain code (text) written in the Java programing language. Usually a class’s code consists of the 'class name' and 'class body'. <span class="text-red">The class body is written in curly brackets.</span> This is how the Home class (file Home.java) should look:"</p>
+<div class="text-center">
+<pre class="lecture-code inline-block language-java" data-line="" data-start=""><code>public class Home
+{
+    <mark class="bl">
+
+Class body
+
+
+</mark>
+}</code></pre>
+</div>
+<p><span class="text-user">&#34;I understand so far.&#34;</span></p>
+<p>"Great. Let’s go on then. The class body may contain variables (also known as data) and methods ('functions')."</p>
+<div class="text-center">
+<pre class="lecture-code inline-block language-java" data-line="" data-start=""><code>public class Home
+{
+    <mark class="bl"><span class="text-user">Variable A</span>
+</mark>
+
+    <mark class="bl"><span class="text-user">Variable Z</span>
+</mark>
+
+    <mark class="bl">
+<span class="text-green">Method 1</span>
+
+</mark>
+
+    <mark class="bl">
+<span class="text-green">Method N</span>
+
+</mark>
+}</code></pre>
+</div>
+<p><span class="text-user">"Would you please give me an example?"</span></p>
+<p>"An example? Of course!"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class Home
+{
+    int a;
+    int b;
+
+    public static void main(String[] args)
+    {
+        System.out.print("1");
+    }
+
+    public static double pi()
+    {
+        return 3.14;
+    }
+}
+</code></pre>
+<p><span class="text-user">"Are <code>int a</code> and <code>int b</code> variables, and <code>main</code> and <code>pi</code> methods?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"Can classes exist without variables?"</span></p>
+<p>"Yes."</p>
+<p><span class="text-user">"And without methods?"</span></p>
+<p>"Yes. But a minimal program must contain at least one class that must include at least one method/function to get the program running. This method must be named 'main'. A minimal program looks like this:"</p>
+<div class="text-center">
+<pre class="lecture-code inline-block language-java" data-line="" data-start=""><code>public class Home
+{
+    public static void main (String[] args)
+    {
+    }
+}
+</code></pre>
+</div>
+<p><span class="text-user">"I can see the Home class here. I can see the 'main' method, but where are the commands?"</span></p>
+<p>"A minimal program doesn't have any commands. That’s why it's called 'minimal'."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"The class that starts the program can have any name, but the 'main' method used to start the program must always look the same:"</p>
+<div class="text-center">
+<pre class="lecture-code inline-block language-java" data-line="" data-start=""><code>public class Home
+{
+   <span class="text-red">//Unchangeable part</span>
+   public static void main(String[] args) 
+   {
+       <mark class="bl">
+
+Code for the method
+
+
+</mark>  
+   }
+}</code></pre>
+</div>
+<p><span class="text-user">"I think I understand everything. At least, it seems so right now."</span></p>
+<p>"Brilliant. Let’s go further and write a few lines of code, then</p>

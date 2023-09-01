@@ -1,0 +1,49 @@
+<p>"Amigo, you won't believe it, but there is a <strong>For</strong> loop in the Pascal language too. This construct exists in almost every programming language. But in Pascal it's much clearer. Look:"</p>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Pascal</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>For</strong> <span class="text-red">i</span> := <span class="text-red">1</span> <strong>to</strong> <span class="text-red">10</span> <strong>do</strong>
+<strong>Begin</strong>
+    <span class="text-viola">Writeln</span>(<span class="text-red">i</span>);
+<strong>End;</strong></code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Java</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>for</strong> (<strong>int</strong> <span class="text-red">i</span> = <span class="text-red">1</span>; i &lt;= <span class="text-red">10</span>; <span class="text-red">i</span>++)
+{
+    <span class="text-viola">System.out.println</span>(<span class="text-red">i</span>);
+}</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Pascal</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>For</strong> <span class="text-red">i</span> := <span class="text-red">1</span> <strong>to</strong> <span class="text-red">10</span> <strong>do step</strong> <span class="text-user">2</span>
+<strong>Begin</strong>
+    <span class="text-viola">Writeln</span>(<span class="text-red">i</span>);
+<strong>End;</strong></code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Java</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>for</strong> (<strong>int</strong> <span class="text-red">i</span> = <span class="text-red">1</span>; <span class="text-red">i</span> &lt;= <span class="text-red">10</span>; <span class="text-red">i</span> = <span class="text-red">i</span> + <span class="text-user">2</span>)
+{
+    <span class="text-viola">System.out.println</span>(<span class="text-red">i</span>);
+}</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Pascal</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>For</strong> <span class="text-red">i</span> := <span class="text-red">10</span> <span class="text-user">downto</span> <span class="text-red">0</span> <strong>do step</strong> <span class="text-user">2</span>
+<strong>Begin</strong>
+    <span class="text-viola">Writeln</span>(<span class="text-red">i</span>);
+<strong>End;</strong></code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Java</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>for</strong> (<strong>int</strong> <span class="text-red">i</span> = <span class="text-red">10</span>; <span class="text-red">i</span> &gt;= <span class="text-red">0</span>; <span class="text-red">i</span> = <span class="text-red">i</span> - <span class="text-user">2</span>)
+{
+    <span class="text-viola">System.out.println</span>(<span class="text-red">i</span>);
+}</code></pre>
+</div>
+</div>

@@ -1,0 +1,35 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"You're already a solid programmer. So, today we're going to have a lesson on MVC."</p>
+<p>"MVC stands for <strong><span class="text-green">Model</span>&#8212;<span class="text-user">View</span>&#8212;<span class="text-red">Controller</span></strong>. It's an architectural design pattern for large applications, where the application is split into three parts."</p>
+<p>"The first part contains all of the application's <span class="text-green">business logic</span>. This part is called the <span class="text-green">model</span>. It contains the code that does everything the application was created to do. This part is the least dependent on the others."</p>
+<p>"The second part contains everything pertaining to <span class="text-user">displaying data to the user</span>. This part is called the <span class="text-user">view</span>. It contains the code that controls displaying windows, pages, messages, etc."</p>
+<p>"The third part contains the code that <span class="text-red">processes user actions</span>. Any user actions intended to change the model should be handled here. This part is called the  <span class="text-red">Controller</span>."</p>
+<p>"This approach allows you to create three things independently: <span class="text-green">the program's logic (the model)</span>, <span class="text-user">the mechanism for displaying the program's data to the user (the view)</span>, and a <span class="text-red">handler for user input/actions (the controller)</span>."</p>
+<p>"Applications frequently have <span class="text-user">several views</span>. This is normal. You can view the exact same data in Excel as both numbers and diagrams. In games, you can view events from a first-person, third-person, or map view, plus many others. All of these are <span class="text-user">different views</span> for a single <span class="text-green">Model</span>."</p>
+<p>"All of the code that decides what to change in the model in response to user actions is gathered into the <span class="text-red">Controller</span>. For example, if the user decides to close the program, then you need to save the model's data to a file on disk. Or if the user enters new data, then you need to add it to the model. The model will then notify all of the views about the data changes, so they only display the current state of the data."</p>
+<p><span class="text-user">"Say that again."</span></p>
+<p>"From the perspective of a Java developer, we could say that the model, view, and controller are three groups of classes where:"</p>
+<p>"<strong>a)</strong> each part has its own purpose;"</p>
+<p>"<strong>b)</strong> the relationships between the classes of a single group are very strong;"</p>
+<p>"<strong>c)</strong> the relationships between groups are very weak;"</p>
+<p>"<strong>d)</strong> the ways that the parts communicate with each other are heavily regulated."</p>
+<p>"And here's another way to picture it:</p>
+
+<a href='https://cdn.codegym.cc/images/article/270590c5-2706-42eb-82bf-ce783ff516c5/original.jpeg' target='_blank'><img data-id="270590c5-2706-42eb-82bf-ce783ff516c5" data-max-width="850" alt="MVC - 1" src="https://cdn.codegym.cc/images/article/270590c5-2706-42eb-82bf-ce783ff516c5/original.jpeg"></a>
+
+<p>"The model is <span class="text-red">the most independent part of the system</span>. It doesn't depend on the view or the controller. The model cannot use classes from the view or controller groups(!)."</p>
+<p>"The view's primary limitation is <span class="text-red">that it cannot change the model</span>. View classes can access the model for data or to subscribe to events, but view classes cannot change the model."</p>
+<p>"The controller's primary limitation is that it <span class="text-red">doesn't display data</span>. The controller processes user actions and modifies the model accordingly."</p>
+<p><span class="text-user">"But why do I need this?"</span></p>
+<p>"The fact that you don't use this right now, doesn't mean that you won't use this in the near future. You're here studying to get a job. And even if this knowledge doesn't prove useful while studying, it will definitely come in handy while working."</p>
+<p>"After all, real projects and interviews still await you..."</p>
+<p>"We're here talking together now, but perhaps in a month you'll already be working."</p>
+<p><span class="text-user">"You are absolutely right, Bilaabo. I'll listen to you carefully."</span></p>
+<p>"The MVC pattern is very common in application architecture. You need to know it, so that you don't suddenly start adding view classes to the model because you find that way more convenient."</p>
+<p>"The most important thing in any project is its architecture. <span class="text-red"><strong>Your task at this stage isn't so much to be able to create a good architecture, as it is to learn to understand someone else's.</strong></span> You'll still need to grow for a couple of years before you create your own. But you need to understand what other people have created. Right away."</p>
+<p>"When an application uses a standard architecture, everything becomes much clearer. By knowing the architecture, you know where things are, how everything interacts, roughly how the program works, where to add a needed class, and where to search for the cause of a bug."</p>
+<p>"But, if you aren't familiar with standard approaches to architecture, then even the best architecture won't tell you anything. You'll be like a peasant from the middle ages looking at a new car. A standard car."</p>
+<p><span class="text-user">"I see. Thanks for the interesting lesson, Bilaabo."</span></p>
+<p>"Finally, here is a good link that you should definitely check out:"</p>
+<p><a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank">Link to additional material</a></p>

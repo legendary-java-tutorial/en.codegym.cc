@@ -1,0 +1,35 @@
+<p>"We just have to cover StringBuilder, and then I think we're done."</p>
+<p>"As you already know, StringBuilder is like the String class, except it is mutable."</p>
+<p><span class="text-user">"And I also remember that the compiler generates code that uses StringBuilder when we simply add Strings together."</span></p>
+<p>"Yes, you are right. What a remarkable memory you have. Then again, every robot does. I always forget that."</p>
+<p>"Let's examine what you can do using the <strong>StringBuilder</strong> class:"</p>
+<p><strong>1) I have an ordinary String, and I want to make it mutable. How do I do that?</strong></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Bender";
+StringBuilder s2 = new StringBuilder(s);</code></pre>
+<p><strong>2) I want to add a character to an existing mutable string?</strong></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Bender";
+StringBuilder s2 = new StringBuilder(s);
+s2.append("!");</code></pre>
+<p><strong>3) And how to do I convert a StringBuilder back to a String?</strong></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Bender";
+StringBuilder s2 = new StringBuilder(s);
+s2.append("!");
+s = s2.toString();</code></pre>
+<p><strong>4) And if I need to delete a character?</strong></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Bender";
+StringBuilder s2 = new StringBuilder(s);
+s2.deleteCharAt(2); //Becomes "Beder"</code></pre>
+<p><strong>5) How do I replace part of a String with another?</strong></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Bender";
+StringBuilder s2 = new StringBuilder(s);
+s2.replace (3, 5, "_DE_"); //Becomes "Ben_DE_r"</code></pre>
+<p><strong>6) What if I need to reverse a String?</strong></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Bender";
+StringBuilder s2 = new StringBuilder(s);
+s2.reverse(); //Becomes "redneB";</code></pre>
+<p><span class="text-user">"Cool. Thanks, Ellie, everything makes sense."</span></p>
+<p>"I'm glad you liked it."</p>
+<p>"I would also like to remind you about something Bilaabo should have told you."</p>
+<p>"There's another class called <strong>StringBuffer</strong>. It's like <strong>StringBuilder</strong>, but its methods are declared as <strong>synchronized</strong>. This means that before any call to one of its methods the Java machine checks whether the object is busy; if it isn't, the JVM marks it as busy. After exiting the method, the object is released. As a result, these calls are slower. You shouldn't use <strong>StringBuffer</strong> unless you have to."</p>
+<p>"But if you need a mutable <strong>String</strong> that will be used across multiple threads, then you won't find anything better than <strong>StringBuffer</strong> ."</p>
+<p><span class="text-user">"Thanks for the info. I think that might come in handy someday."</span></p>

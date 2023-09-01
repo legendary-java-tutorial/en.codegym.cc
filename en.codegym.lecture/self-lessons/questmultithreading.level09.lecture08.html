@@ -1,0 +1,109 @@
+<p>"Hi, Amigo! It's me again. I'd like to tell you about another fairly simple wrapper class. Today we'll be talking about Character, the wrapper for char."</p>
+<p>"This class is also quite simple."</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Character
+{
+ private final char <span class="text-red">value</span>;
+
+ Character(char value)
+ {
+  <span class="text-red">this.value</span> = value;
+ }
+
+ public char charValue()
+ {
+  return <span class="text-red">value</span>;
+ }
+
+ static final Character <span class="text-green">cache</span>[] = new Character[127 + 1];
+
+ public static Character valueOf(char c)
+ {
+  if (c &lt;= 127)
+   return <span class="text-green">cache</span>[(int)c];
+
+  return new Character(c);
+ }
+
+ public int hashCode()
+ {
+  return (int)<span class="text-red">value</span>;
+ }
+
+ public boolean equals(Object <span class="text-corporate">obj</span>)
+ {
+  if (<span class="text-corporate">obj</span> instanceof Character)
+  {
+   return <span class="text-red">value</span> == <span class="text-corporate">((Character)obj).charValue()</span>;
+  }
+  return false;
+ }
+}</code></pre>
+<p>"It has the following:"</p>
+<p><strong>1)</strong> A constructor that takes the internal value and a charValue method that returns it.</p>
+<p><strong>2)</strong> A valueOf method that returns Character objects, but caches objects with values from 0 to 127. Just like Integer, Short, and Byte.</p>
+<p><strong>3)</strong> hashCode() and equals methods — again, there's nothing surprising here.</p>
+<p>"And it has lots of other useful methods (not shown above). I'll list a few for you here:"</p>
+<table class="table_example">
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isDefined</strong>(char)</code></pre>
+        </td>
+        <td class="wide-text">Is the character a Unicode character?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isDigit</strong>(char)</code></pre>
+        </td>
+        <td class="wide-text">Is the character a digit?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isISOControl</strong>(char)</code></pre>
+        </td>
+        <td class="wide-text">Is the character a control character?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isLetter</strong>(char)</code></pre>
+        </td>
+        <td class="wide-text">Is the character a letter?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isJavaLetterOrDigit</strong>()</code></pre>
+        </td>
+        <td class="wide-text">Is the character a letter or a digit?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isLowerCase</strong>(char)</code></pre>
+        </td>
+        <td class="wide-text">Is this a lowercase letter?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isUpperCase</strong>(char)</code></pre>
+        </td>
+        <td class="wide-text">Is this an uppercase letter?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isSpaceChar</strong>(char)</code></pre>
+        </td>
+        <td class="wide-text">Is the character a space or something similar (there are lots of invisible characters)?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <strong>isTitleCase</strong>(char)</code></pre>
+        </td>
+        <td class="wide-text">Is the character a titlecase character?</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Thank you, Kim. I think some of these methods will be useful for me."</span></p>

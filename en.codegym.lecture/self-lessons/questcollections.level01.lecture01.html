@@ -1,0 +1,152 @@
+<p>"Hi, Amigo. Long time, no see."</p>
+<p><span class="text-user">"Hi, Bilaabo. What are you going to talk about?"</span></p>
+<p><strong>"Today I'm going to tell  you about working with files.</strong> Java has a special class (File) that you can use to manage files on a hard drive. For managing file contents, there are other classes: FileInputStream, FileOutputStream, etc."</p>
+
+<a href='https://cdn.codegym.cc/images/article/ed029b03-7b7b-43e2-b04f-ac4a9b720404/original.jpeg' target='_blank'><img data-id="ed029b03-7b7b-43e2-b04f-ac4a9b720404" data-max-width="850" alt="File, Files, Path - 1" src="https://cdn.codegym.cc/images/article/ed029b03-7b7b-43e2-b04f-ac4a9b720404/original.jpeg"></a>
+
+<p><span class="text-user">"Interesting. But when you say 'manage files', what do you mean?"</span></p>
+<p>"That just what I'm going to explain now. Files can be created, deleted, renamed, and much more. You can pass a File object to practically every class that works with (reads, writes, changes) the contents of a file. For example:"</p>
+<div class="code-heading">You can pass the file name directly to FileInputStream</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>FileInputStream <strong>input</strong> = <strong>new</strong> FileInputStream("<span class="text-green">c:/path/a.txt</span>");</code></pre>
+<div class="code-heading">Or you can create a File object separately, and then pass it to FileInputStrea</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>File <span class="text-red">file</span> = <strong>new</strong> File("<span class="text-green">c:/path/a.txt</span>");
+FileInputStream <strong>input</strong> = <strong>new</strong> FileInputStream(<span class="text-red">file</span>);</code></pre>
+<p><span class="text-user">"But the second option is longer. I still don't understand why we need these file objects."</span></p>
+<p>"For this specific example, you're right. "This isn't an example of how you have to do it, but rather how you can do it.<br />
+    But imagine that you need to display a list of all files located in a specific directory. Here's how this can be done using File objects:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>File <span class="text-user">folder</span> = new File("<span class="text-green">c:/path/</span>");
+<strong>for</strong> (File <span class="text-red">file</span> : <span class="text-user">folder</span>.listFiles())
+{
+ <strong>System.out.println</strong>(<span class="text-red">file</span>.getName());
+}</code></pre>
+<p><span class="text-user">"Is <strong>listFiles()</strong> a method that returns a list of files in the folder indicated by «c:/path/»?"</span></p>
+<p>"Yes. But programmers usually say 'directory'. The term 'folder' came into use relatively recently, but in principle, both terms are correct and you can say whichever one you prefer."</p>
+<p><span class="text-user">"OK. And what does <strong>getName</strong>() do? Return the name of the file? What exactly is included in the name? The full name including the path, or just the name of the file itself?"</span></p>
+<p>"Only the name of the file itself. For the full path, there's file.getAbsolutePath()."</p>
+<p><span class="text-user">"So what other methods does the File class have?"</span></p>
+<p>"Take a look at this:"</p>
+<table class="table_example" style="width: 100%; height: 0px;" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+        <th style="width: 35%;" width="35%">Method</th>
+        <th style="width: 35%;" width="65%">Description</th>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>isDirectory</strong>()</code></td>
+        <td>Is the File object a directory?</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>isFile</strong>()</code></td>
+        <td>Is the object a file?</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>length</strong>()</code></td>
+        <td>Returns the file size/length in bytes.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>createNewFile</strong>()</code></td>
+        <td>Creates a new, empty file if a file with this name does not yet exist.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>mkdir</strong>()</code></td>
+        <td>Creates a directory. The name «mkdir» comes from «make directory».</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>mkdirs</strong>()</code></td>
+        <td>Creates a directory and all its subdirectories.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>delete</strong>()</code></td>
+        <td>Deletes the file associated with the object. If the object is a directory, then the directory is deleted only if there are no files in it.</td>
+    </tr>
+    <tr>
+        <td><code>void <strong>deleteOnExit</strong>()</code></td>
+        <td>Adds the file to a special list of files that will be automatically deleted when the program exits.</td>
+    </tr>
+    <tr>
+        <td><code>File createTempFile(</code><br />
+            <code> String prefix,</code><br />
+            <code> String suffix,</code><br />
+            <code> File directory)</code></td>
+        <td>Creates a temporary file with a randomly generated unique name, something like «dasd4d53sd».<br />
+            Additional parameters are a name prefix and suffix. If a directory is not specified, then the file is created in a special OS directory for temporary files.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>exists</strong>()</code></td>
+        <td>Returns true if a file with the same name exists on the hard drive.</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>getAbsolutePath</strong>()</code></td>
+        <td>Returns the full path of the file with all its subdirectories.</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>getCanonicalPath</strong>()</code></td>
+        <td>Returns the canonical file path.<br />
+            For example, converts the path «c:/dir/dir2/../a.txt» to «c:/dir/a.txt»</td>
+    </tr>
+    <tr>
+        <td><code>String[] <strong>list</strong>()</code></td>
+        <td>Returns an array of the names of files contained in the directory represented by the current object.</td>
+    </tr>
+    <tr>
+        <td><code>File[] <strong>listFiles</strong>()</code></td>
+        <td>Returns an array of files contained in the directory represented by the current File object.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>getTotalSpace</strong>()</code></td>
+        <td>Returns the amount of total space (number of bytes) on the disk on which the file is located.</td>
+    </tr>
+    <tr>
+        <td><code>long <strong>getFreeSpace</strong>()</code></td>
+        <td>Returns the amount of free space (number of bytes) on the disk on which the file is located.</td>
+    </tr>
+    <tr>
+        <td><code>boolean <strong>renameTo</strong>(File)</code></td>
+        <td>Renames the file, i.e. the contents of the file actually get a new name. In other words, you can rename file «c:/dir/a.txt» to «d:/out/text/b.doc».</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>getName</strong>()</code></td>
+        <td>Returns only the file name without the path.</td>
+    </tr>
+    <tr>
+        <td><code>String <strong>getParent</strong>()</code></td>
+        <td>Returns only the path (directory) to the current file, without the name itself.</td>
+    </tr>
+    <tr>
+        <td><code>Path <strong>toPath</strong>()</code></td>
+        <td>Returns a Path object that corresponds to the current File object.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Whoa! Not a very small list, huh? And it seems like you can do quite a lot with it: create and delete files, rename them,..."</span></p>
+<p><span class="text-user">"So to get the directory of the current file, I need to call getParent()?"</span></p>
+<p>"Yep, but it returns a String ― the file path ― not a File object. Actually, the File class duplicates almost all of its methods: one version returns a String, the other ― a File object. Check it out:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>File</strong> <span class="text-red">file</span> = new File("<span class="text-green">c:/path/a.txt</span>");
+<strong>String</strong> directory = <strong><span class="text-red">file</span>.getParent</strong>();</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>File</strong> <span class="text-red">file</span> = new File("<span class="text-green">c:/path/a.txt</span>");
+<strong>File</strong> directory = <span class="text-red">file</span>.<strong>getParentFile</strong>();</code></pre>
+<p>If you have a String with the file path and you need a <strong>File</strong> object, then use the constructor. If the situation is reversed (you have a <strong>File</strong> object but you need a String), then use <strong>getAbsolutePath</strong>(). For example:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String <span class="text-user">path</span> = "<span class="text-green">c:/a.tx</span>t";
+File <span class="text-red">file</span> = new <strong>File</strong>(<span class="text-green"><strong>path</strong></span>);</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>File <span class="text-red">file</span> = <strong>new File</strong>("<span class="text-green">c:/a.txt</span>");
+String <span class="text-user">path</span> = <span class="text-red">file</span>.<strong>getAbsolutePath</strong>();</code></pre>
+<p><span class="text-user">"Got it."</span></p>
+<p>"Great. Then here's a small task for you: show the names of all the files located in the same directory as the current file."</p>
+<p><span class="text-user">"Nothing could be easier. Here, look:"</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>//Some file
+File <span class="text-green">originalFile</span> = <strong>new</strong> File("<strong>c:/path/dir2/a.txt</strong>");
+
+//An object representing the directory
+File <span class="text-green">folder</span> = <span class="text-green">originalFile</span>.getParentFile();
+
+//Print the file list on screen
+<strong>for</strong> (File <span class="text-red">file</span> : <span class="text-green">folder</span>.listFiles())
+{
+ <strong>System.out.println</strong>(<span class="text-red">file</span>.getName());
+}</code></pre>
+<p>"Hmm. Correct."</p>
+<p><span class="text-user">"But it's a little confusing that the same class ― File ― is used for both the file and the directory. That doesn't seem very logical to me."</span></p>
+<p>"It worked out that way for historical reasons. A directory used to be a special 'empty' file on disk. Of course, now a lot has changed, but not everything. That's all I have today."</p>
+<p><span class="text-user">"Thanks for the interesting lesson, Bilaabo."</span></p>

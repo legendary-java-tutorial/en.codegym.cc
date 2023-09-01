@@ -1,0 +1,153 @@
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/2eRhUjUjMzw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hey, Ellie!"</span></p>
+<p>"Today, I'll tell you about a new and interesting entity: arrays. <span class="text-green">An array is a data type that can store several values instead of just one."</span></p>
+<a href='https://cdn.codegym.cc/images/article/30d243da-08c0-46bc-bd1e-b6fab5c79bc0/original.jpeg' alt="" target='_blank'><img data-id="30d243da-08c0-46bc-bd1e-b6fab5c79bc0" data-max-width="1080" alt="Arrays - 1" src="https://cdn.codegym.cc/images/article/30d243da-08c0-46bc-bd1e-b6fab5c79bc0/original.jpeg"></a>
+<p>"Let's start with an analogy. Let's compare a house and an apartment building. An ordinary house is usually occupied by just one family, but an apartment building is divided into many apartments. To send a letter to a family living in a house, you need to indicate the unique address of the house. <span class="text-corporate">To send a letter to a family living in an apartment building, you need to write the apartment building's unique address and the apartment number."</span></p>
+<p><span class="text-user">"Everything seems clear so far."</span></p>
+<p>"An array variable is like an apartment-building variable. You can store many values in it instead of just one. <span class="text-viola">Such a variable has several apartments (elements) that you can refer to using an apartment number (index).</span> To do this, indicate the index of the array element you want to access in square brackets after the name of the array variable. It's quite simple."</p>
+<p><span class="text-user">"I hope so, Ellie."</span></p>
+<p>"An apartment-building variable (array variable) can contain elements of any type. You just need to write '<strong>TypeName[] variable_name</strong>' instead of '<strong>TypeName variable_name</strong>'."</p>
+<p>Here are some examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-user">String</span>[] <span class="text-viola">list</span> = new String[<span class="text-red">5</span>];</code></pre>
+        </td>
+        <td>Create a <code><span class="text-user">String</span></code> array with <code><span class="text-red">5</span></code> elements</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-viola">System.out.println</span>(<span class="text-corporate">list</span>[0]);
+<span class="text-viola">System.out.println</span>(<span class="text-corporate">list</span>[1]);
+<span class="text-viola">System.out.println</span>(<span class="text-corporate">list</span>[2]);
+<span class="text-viola">System.out.println</span>(<span class="text-corporate">list</span>[3]);
+<span class="text-viola">System.out.println</span>(<span class="text-corporate">list</span>[4]);</code></pre>
+        </td>
+        <td>Five '<strong>null</strong>' values will be displayed.</p>
+            <p>To access the value of a particular array element, use square brackets and the element's index.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-green">listCount</span> = <span class="text-corporate">list</span>.<span class="text-red">length</span>;</code></pre>
+        </td>
+        <td><code><span class="text-green">listCount</span></code> will be assigned the value 5, which is the number of elements in the <code><span class="text-corporate">list</span></code> array.<br />
+            <code><span class="text-corporate">list</span>.<span class="text-red">length</span></code> stores the array's length (number of elements).</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-corporate">list</span>[1] = "Mom";
+String s = <span class="text-corporate">list</span>[1];</code></pre>
+        </td>
+        <td>When assigning objects to array elements, you need to indicate the element index in square brackets.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>for (int <span class="text-red">i</span> = 0; <span class="text-red">i</span> &lt; <span class="text-corporate">list</span>.<span class="text-red">length</span>; <span class="text-red">i</span>++)
+{
+     System.out.println(<span class="text-corporate">list</span>[<span class="text-red">i</span>]);
+}</code></pre>
+        </td>
+        <td>Display the values of all array elements on the screen.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"How interesting!"</span></p>
+<p>"An array variable requires additional initialization."</p>
+<p><span class="text-user"> — ?</span></p>
+<p>"With a regular variable, you can just declare it and then assign various values to it. With an array, it's a bit more complicated."</p>
+<p><span class="text-green">"You must first create a container that will hold N elements, and only then can you start placing values into the container."</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String[] <span class="text-corporate">list</span> = null;</code></pre>
+        </td>
+        <td>The <code><span class="text-corporate">list</span></code> array variable is <strong>null</strong>. It can only store a reference to a container for elements. You must create the container separately.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String[] <span class="text-corporate">list</span> = new String[<span class="text-red">5</span>];</code></pre>
+        </td>
+        <td>Create a container for <code><span class="text-red">5</span></code> elements and assign a reference to the <code><span class="text-corporate">list</span></code> variable. This container has 5 apartments (elements) numbered 0, 1, 2, 3, and 4.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String[] <span class="text-corporate">list</span> = new String[<span class="text-red">1</span>];</code></pre>
+        </td>
+        <td>Create a container for <code><span class="text-red">1</span></code> element and assign a reference to the <code><span class="text-corporate">list</span></code> variable. To put something into this container, we would write something like <code><span class="text-corporate">list</span>[0] = <span class="text-green">"Yo!"</span>;</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String[] <span class="text-corporate">list</span> = new String[<span class="text-red">0</span>];</code></pre>
+        </td>
+        <td>Create a container for <code><span class="text-red">0</span></code> elements and assign a reference to the <code><span class="text-corporate">list</span></code> variable. You can't store anything in this container.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I see. Now it's getting clearer."</span></p>
+<p>"Here are some basic <strong>facts about arrays:"</strong></p>
+<p>1) <span class="text-green">An array consists of many elements.</span></p>
+<p>2) <span class="text-red">To access a certain element, you indicate its number (index).</span></p>
+<p>3) <span class="text-user">All elements are of the same type.</span></p>
+<p>4) <span class="text-viola">The initial value for all elements is null; for arrays of primitive types, the initial value is 0, 0.0 (for fractional numbers), or false (for booleans). It's exactly the same as with uninitialized variables that are not in arrays.</span></p>
+<p>5) <span class="text-corporate">String[] list simply declares a variable. You need to first create an array (container), put something into it, and only then use it (see the example below).</span></p>
+<p>6) <span class="text-neon">When we create an array (container) object, we need to indicate its length, or the number of elements. We do this using new TypeName[n];</span></p>
+<a href='https://cdn.codegym.cc/images/article/a35848af-4a67-4ed6-b864-1fbe1bf472c3/original.jpeg' alt=""  target='_blank'><img data-id="a35848af-4a67-4ed6-b864-1fbe1bf472c3" data-max-width="851" alt="Arrays - 2" src="https://cdn.codegym.cc/images/article/a35848af-4a67-4ed6-b864-1fbe1bf472c3/original.jpeg"></a>
+<p>Here are some examples:</p>
+<table>
+    <tbody>
+    <tr style="height: 24px;">
+        <th style="height: 24px;">Code</th>
+        <th style="height: 24px;">Description</th>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 90px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String <span class="text-red">s</span>;
+String[] <span class="text-green">list</span>;</code></pre>
+        </td>
+        <td style="height: 90px;"><code><span class="text-red">s</span></code> equals null<br />
+            <code><span class="text-green">list</span></code> equals null</td>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 90px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">list</span> = new String[<span class="text-red">10</span>];
+int <span class="text-viola">n</span> = <span class="text-green">list</span>.length;</code></pre>
+        </td>
+        <td style="height: 90px;"><span class="text-red">The <code><span class="text-green">list</span></code> variable stores a reference to an object – a 10-element array of Strings</span><br />
+            <span class="text-viola">n</span> equals <span class="text-red">10</span></td>
+    </tr>
+    <tr style="height: 65px;">
+        <td style="height: 65px;">
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-user">list</span> = new String[<span class="text-viola">0</span>];</code></pre>
+        </td>
+        <td style="height: 65px;">Now <code><span class="text-user">list</span></code> contains a <code><span class="text-viola">0</span></code> element array. The array exists, but it can't store Strings.</td>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 90px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-green">list</span> = null;
+System.out.println(<span class="text-green">list</span>[1]);</code></pre>
+        </td>
+        <td style="height: 90px;">This will throw an exception (run-time error) and the program will be abnormally terminated: <code><span class="text-green">list</span></code> contains a null reference.</td>
+    </tr>
+    <tr style="height: 162px;">
+        <td style="height: 162px;">
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-user">list</span> = new String[10];
+System.out.println(list[11]);</code></pre>
+        </td>
+        <td style="height: 162px;">This will throw an exception (run-time error): array index out of bounds.</p>
+            <p>If <code><span class="text-user">list</span></code> contains 10 elements, the valid indices are: 0,1,2,3,4,5,6,7,8, and 9 (for a total of 10 indices).</td>
+    </tr>
+    </tbody>
+</table>

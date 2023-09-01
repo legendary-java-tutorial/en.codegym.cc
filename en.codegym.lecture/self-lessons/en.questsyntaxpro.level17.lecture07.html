@@ -1,0 +1,249 @@
+<h2>1. Abilities</h2>
+<p>To better understand the benefits of interfaces and where to use them, we need to talk about some more abstract things.</p>
+<p>A class usually models a particular object.  An interface corresponds less to objects, and more to their abilities or roles.</p>
+<img width="800" src="https://cdn.codegym.cc/images/article/32745779-1857-417b-999a-1d00522cc13a/800.webp" alt="The essence of interfaces">
+<p>For example, things like cars, bikes, motorcycles, and wheels are best represented as classes and objects. But their abilities — such as "I can be ridden", "I can transport people", "I can stand" — are better presented as interfaces. Here are some examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>interface CanMove
+{
+   void move(String newLocation);
+}</code></pre>
+        </td>
+        <td>Corresponds to the ability to move</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>interface Rideable
+{
+   void ride(Passenger passenger);
+}</code></pre>
+        </td>
+        <td>Corresponds to the ability to be ridden</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>interface CanTransport
+{
+   void addStuff(Object stuff);
+   Object removeStuff();
+}</code></pre>
+        </td>
+        <td>Corresponds to the ability to transport stuff</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="code">Wheel</span> <span class="text-red">implements CanMove</span>
+{
+   ...
+}</code></pre>
+        </td>
+        <td>The <code>Wheel</code> class can <span class="text-red">move</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="code">Car</span> <span class="text-red">implements CanMove, Rideable, CanTransport</span>
+{
+   ...
+}</code></pre>
+        </td>
+        <td>The <code>Car</code> class can <span class="text-red">move, be ridden, and transport stuff</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="code">Skateboard</span> <span class="text-red">implements CanMove, Rideable</span>
+{
+   ...
+}</code></pre>
+        </td>
+        <td>The <code>Skateboard</code> class can <span class="text-red">move and be ridden</span></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1714"></div>
+<hr>
+<h2>2. Roles</h2>
+<p><span class="text-viola">Interfaces greatly simplify a programmer's life.</span> Very often, a program has thousands of objects, hundreds of classes, but <span class="text-orange">just a couple dozen interfaces</span>, i.e. <strong>roles</strong>. There are few roles, but there are many ways to combine them (classes).</p>
+<p>The whole point is that <span class="text-green">you don't have to write code for in each class to interact with every other class. You just need to interact with their roles (interfaces).</span></p>
+<p>Imagine you are a pet trainer. Each of the pets you work with can have several different abilities. You get into a friendly argument with your neighbor regarding whose pets can make the most noise. To settle the matter, you just line up all the pets that can "speak", and you give them the command: Speak!</p>
+<p>You don't care what kind of animal they are or what other abilities they have. Even if they can do a triple back somersault. At this particular moment, you are only interested in their ability to speak loudly. Here's what it would look like in code:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>interface <span class="code">CanSpeak</span>
+{
+   void <span class="code">speak</span>();
+}</code></pre>
+        </td>
+        <td>The <code>CanSpeak</code> ability. This interface understands the command to <code>speak</code>, meaning that it has a corresponding method.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="text-user">Cat</span> <span class="text-red">implements</span> <span class="code">CanSpeak</span>
+{
+   void speak()
+   {
+      println("MEOW");
+   }
+}
+
+class <span class="text-user">Dog</span> <span class="text-red">implements</span> <span class="code">CanSpeak</span>
+{
+   void speak()
+   {
+      println("WOOF");
+   }
+}
+
+class <span class="code text-user">Fish</span>
+{
+   ...
+}</code></pre>
+        </td>
+        <td>Animals that have this feature.
+            <p>To facilitate understanding, we provided the classes names in English. This is allowed in Java, but it is highly undesirable.</p>
+            <p><br><br><br><br><br><br><br><br><br><br><br><br>Our <code><span class="text-user">Fish</span></code> does not have the ability to speak (does not implement the <code>CanSpeak</code> interface).</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   // Add all the animals to the list
+   ArrayList <span class="text-green">pets</span> = new ArrayList();
+   <span class="text-green">pets</span>.add(new <span class="text-user">Cat</span>());
+   <span class="text-green">pets</span>.add(new <span class="text-user">Dog</span>());
+   <span class="text-green">pets</span>.add(new <span class="text-user">Fish</span>());
+
+   // If the ability exists, then make a sound
+   for(Object <span class="text-orange">pet</span>: <span class="text-green">pets</span>)
+   {
+      if (<span class="text-orange">pet</span> <strong>instanceof</strong> <span class="text-red">CanSpeak</span>)
+      {
+         <span class="text-red">CanSpeak</span> loudmouth = (<span class="text-red">CanSpeak</span>) <span class="text-orange">pet</span>;
+         <span class="text-user">loudmouth</span>.<span class="text-red">speak</span>();
+      }
+   }
+}</code></pre>
+        </td>
+        <td>And how do we give them the command?</td>
+    </tr>
+    </tbody>
+</table>
+<p>When the number of classes in your programs reaches the thousands, you will not be able to live without interfaces. Instead of describing the interaction of thousands of classes, it is enough to describe the interaction of a few dozen interfaces — this greatly simplifies life.</p>
+<p>And when combined with polymorphism, this approach is generally a smashing success.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1715"></div>
+<hr>
+<h2>3. The <code>default</code> implementation of interface methods</h2>
+<p>Abstract classes can have variables and implementations of methods, but they cannot have multiple inheritance. Interfaces cannot have variables or implementations of methods, but that can have multiple inheritance.</p>
+<p>The situation is expressed in the following table:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Ability/property</th>
+        <th>Abstract classes</th>
+        <th>Interfaces</th>
+    </tr>
+    <tr>
+        <td><strong>Variables</strong></td>
+        <td class="text-center"><span class="text-green">✔</span></td>
+        <td class="text-center"><span class="text-red">✖</span></td>
+    </tr>
+    <tr>
+        <td><strong>Method implementation</strong></td>
+        <td class="text-center"><span class="text-green">✔</span></td>
+        <td class="text-center"><span class="text-red">✖</span></td>
+    </tr>
+    <tr>
+        <td><strong>Multiple inheritance</strong></td>
+        <td class="text-center"><span class="text-red">✖</span></td>
+        <td class="text-center"><span class="text-green">✔</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>So, some programmers really wanted interfaces to have the ability to have method implementations. But having the ability to add a method implementation does not mean that one will always be added. Add it if you want. Or if you don't, then don't.</p>
+<p>In addition, problems with multiple inheritance are primarily due to variables. In any event, that's what they decided and did. Starting with JDK 8, Java introduced the ability to add method implementations to interfaces.</p>
+<p>Here's an updated table (for JDK 8 and above):</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Ability/property</th>
+        <th>Abstract classes</th>
+        <th>Interfaces</th>
+    </tr>
+    <tr>
+        <td><strong>Variables</strong></td>
+        <td class="text-center"><span class="text-green">✔</span></td>
+        <td class="text-center"><span class="text-red">✖</span></td>
+    </tr>
+    <tr>
+        <td><strong>Method implementation</strong></td>
+        <td class="text-center"><span class="text-green">✔</span></td>
+        <td class="text-center"><span class="text-green">✔</span></td>
+    </tr>
+    <tr>
+        <td><strong>Multiple inheritance</strong></td>
+        <td class="text-center"><span class="text-red">✖</span></td>
+        <td class="text-center"><span class="text-green">✔</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>Now for abstract classes as well as interfaces, you can declare methods with or without an implementation. And this is excellent news!</p>
+<p>In abstract classes, methods without an implementation must be preceded by the <code>abstract</code> keyword. You don't need to add anything before methods with an implementation. In interfaces, the opposite is true. If a method does not have an implementation, then nothing should to be added. But if there is an implementation, then the <code>default</code> keyword must be added.</p>
+<p>For simplicity, we present this information in the following little table:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Ability/property</th>
+        <th class="text-center">Abstract classes</th>
+        <th class="text-center">Interfaces</th>
+    </tr>
+    <tr>
+        <td><strong>Methods with no implementation</strong></td>
+        <td class="text-center"><code>abstract</code></td>
+        <td class="text-center">–</td>
+    </tr>
+    <tr>
+        <td><strong>Methods with an implementation</strong></td>
+        <td class="text-center">–</td>
+        <td class="text-center"><code>default</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Problem</strong></p>
+<p>Using interfaces that have methods can greatly simplify large class hierarchies. For example, the abstract <code>InputStream</code> and <code>OutputStream</code> classes can be declared as interfaces! This lets us use them much more often and much more conveniently.</p>
+<p><span class="text-viola">But there are already tens of millions (billions?) of Java classes in the world. And if you start changing standard libraries, then you might break something. Like everything! 😛</span></p>
+<p>In order to not accidentally break existing programs and libraries, it was decided that method implementations in interfaces would have the <span class="text-orange">lowest inheritance precedence</span>.</p>
+<p>For example, if one interface inherits another interface that has a method, and the first interface declares the same method but without an implementation, then the method implementation from the inherited interface will not reach the inheriting interface. Example:</p>
+<pre class="language-java"><code>interface Pet
+{
+   default void meow()
+   {
+      System.out.println(<span class="text-green">"Meow"</span>);
+   }
+}
+
+interface Cat extends Pet
+{
+   void meow(); // Here we override the default implementation by omitting an implementation
+}
+
+class Tom implements Cat
+{
+}</code></pre>
+<p>The code will not compile because the <code>Tom</code> class does not implement the <code>meow()</code> method.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1716"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1717"></div>

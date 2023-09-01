@@ -1,0 +1,128 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="9b671a75-9513-4b55-b112-bc9422db5be9" src="https://cdn.javarush.ru/images/article/9b671a75-9513-4b55-b112-bc9422db5be9/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="04d3c0c2-5736-46fe-9087-8b99d812aa3f" src="https://cdn.javarush.ru/images/article/04d3c0c2-5736-46fe-9087-8b99d812aa3f/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="18c00c56-a088-4152-86f3-ad3df24bcb0a" src="https://cdn.javarush.ru/images/article/18c00c56-a088-4152-86f3-ad3df24bcb0a/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. <code>Thread.sleep()</code></h2>
+<p>You can insert pauses into the execution of a Java program. This isn't usually necessary, since users want their programs to run as quickly as possible. Not many people would be happy if you deliberately slowed down your code.</p>
+<p>But as a programmer, there can be tons of situations where a pause in your code will be useful. For example, suppose you're writing a game and you want it to do something once every two seconds or several times a second.</p>
+<p>Basically, pauses are useful, so let's see how to add a pause to your code. It's actually very simple:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Thread.sleep</span>(<span class="text-user">duration</span>);</code></pre>
+</div>
+<p>Where <code><span class="text-user">duration</span></code>&nbsp;is the length of the pause in milliseconds (<code>1/1000</code> of a second).</p>
+<p>This statement will pause your program for <code><span class="text-user">duration</span></code>&nbsp;milliseconds. Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">Thread.sleep</span>(2000);</code></pre>
+        </td>
+        <td>Pauses the program for 2 seconds.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">Thread.sleep</span>(500);</code></pre>
+        </td>
+        <td>Pauses the program for half a second.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-viola">Thread.sleep</span>(60 * 60 * 1000);</code></pre>
+        </td>
+        <td>Pauses the program for 1 hour.</td>
+    </tr>
+    </tbody>
+</table>
+<p>Here's how it can be used in practice. Let's say we're writing a program that will launch a spaceship. This is how the code might look like:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>for (int <span class="text-red">i</span> = 10; <span class="text-red">i</span> &gt; 0; <span class="text-red">i</span>--)
+{
+&nbsp;  System.out.println(<span class="text-red">i</span>);
+&nbsp;  <span class="text-viola">Thread.sleep</span>(1000);
+}
+
+System.out.println("Let's go!");</code></pre>
+        </td>
+        <td>Each second, the program will display a number: <code>10</code>, then <code>9</code>, then <code>8</code>, etc.<br><br><br><br><br>
+            When the count reaches <code>0</code>, the program will display "<code>Let's go!</code>"
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. Calculating a pause correctly</h2>
+<p>The length of the pause is easy to calculate. If you need the program to do something once a second, then the pause is 1000 ms. If 2 times per second, then pause for 500ms (1000/2).</p>
+<p>If you need to do something 15 times per second, pause for 66 ms (1000/15). It all seems rather straightforward:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>The <span class="text-red">duration of one iteration of the loop</span> = 1000 / <span class="text-user">number of times per second</span></code></pre>
+</div>
+<p>But there is a very important nuance here. Though many statements execute very quickly, they are not instantaneous.</p>
+<p>Look at this. Let's say you have an action that takes 100ms to complete. You want to perform this action 5 times per second. How long should you pause? Definitely not 200ms.</p>
+<p>For the action to be performed 5 times per second, we need the <span class="term">time required to execute the action</span> plus the <span class="term">pause duration</span> to be equal to 200 ms. If we do that, then it will run precisely 5 times per second. In our case, the action requires 100 ms, which means that there is still 100 ms left for the pause.</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-orange">pause duration</span> = <span class="text-red">duration of one iteration of the loop</span> - <span class="text-green">time required to execute the action</span></code></pre>
+</div>
+<p>Game developers are well aware of the fact that the <span class="term">time required to execute an action</span> is much higher than zero. And so are the people who play games.</p>
+<p>If a game runs at 20 FPS, that means that it can draw only 20 frames on the screen in one second. <code>1000/20</code> yields 50 ms. This is the <span class="term">time required to draw a frame</span> while playing the game.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0808"></div>
+<hr>
+<h2>3. Nanoseconds</h2>
+<p>Computers today are much faster than when Java was created. That means that a pause of 1 millisecond may not be sufficiently granular.</p>
+<p>Suppose we have some super brief action that we want to perform 2000 times per second. How do we pause for half a millisecond?</p>
+<p>For this, there is one more variant of the <code>Thread.sleep()</code> method:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Thread.sleep</span>(<span class="text-user">milliseconds, nanoseconds</span>);</code></pre>
+</div>
+<p>This method puts the program to sleep for the specified amount of milliseconds and nanoseconds.</p>
+<p>Nanoseconds are 1 millionth of a millisecond. That means that a pause of one and a half milliseconds would look like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>Thread.sleep(<span class="text-user">1</span>, <span class="text-user">500_000</span>);</code></pre>
+</div>
+<p>And if you want a pause of <code>1/10</code> of a millisecond, you need to write this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>Thread.sleep(<span class="text-user">0</span>, <span class="text-user">100_000</span>);</code></pre>
+</div>
+<p>You might not be using this method in your programs right now. But it's better to know about it and not use it than to need it and not know about it.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0809"></div>
+<hr>
+<h2>4. <code>TimeUnit</code> class</h2>
+<p>By the way, Java has another class that will make your life easier if you decide to slow down your application. We're talking about the <code>TimeUnit</code> class in the <code>java.util.concurrent</code> package.</p>
+<p>Remember that since the class isn't in the <code>java.lang</code> package, then you either need to add the line <code>import java.util.concurrent.TimeUnit;</code>, or write <code>java.util.concurrent.TimeUnit</code> each time in your code.</p>
+<p>This class does the same thing as <code>Thread.sleep()</code>, but it's more convenient:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">TimeUnit</span>.<span class="text-green">HOURS</span>.<span class="text-viola">sleep</span>(<span class="text-user">15</span>)</code></pre>
+</div>
+<p>This code will put your program to sleep for 15 hours. Minutes, seconds, days are also available.&nbsp;As well as microseconds (1/1000,000) and nanoseconds (1/1000,000,000).</p>
+<p>The <code><span class="text-neon">TimeUnit</span></code>&nbsp;class has the following properties:</p>
+<ul>
+    <li>nanoseconds: <code><span class="text-green">NANOSECONDS</span></code></li>
+    <li>microseconds: <code><span class="text-green">MICROSECONDS</span></code></li>
+    <li>milliseconds: <code><span class="text-green">MILLISECONDS</span></code></li>
+    <li>seconds <code><span class="text-green">SECONDS</span></code></li>
+    <li>minutes: <code><span class="text-green">MINUTES</span></code></li>
+    <li>hours: <code><span class="text-green">HOURS</span></code></li>
+    <li>days: <code><span class="text-green">DAYS</span></code></li>
+</ul>
+<p>Work with these properties is super convenient, since there is no need to think about converting, say, hours into milliseconds. Such code is much more pleasant to write and read.</p>
+<p>More details can be read <a href="https://www.javaworld.com/article/2074114/the-highly-useful-java-timeunit-enum.html" target="_blank">here</a>.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0810"></div>

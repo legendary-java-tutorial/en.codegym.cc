@@ -1,0 +1,96 @@
+<p>"Hi, buddy. Bilaabo will tell you how this would all look in Pascal."</p>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Pascal</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">i</span> := 3;
+<strong>While</strong> <span class="text-red">i</span> &gt;= 0 <strong>Do</strong>
+<strong>Begin</strong> 
+    <span class="text-viola">WriteLn</span>(<span class="text-red">i</span>);
+    <span class="text-red">i</span> := <span class="text-red">i</span> - 1;
+<strong>End;</strong></code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Java</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code>int <span class="text-red">i</span> = 3;
+<strong>while</strong> (<span class="text-red">i</span> &gt;= 0)
+{
+    <span class="text-viola">System.out.println</span>(<span class="text-red">i</span>);
+    <span class="text-red">i</span>--;
+}</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Pascal</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">i</span> := 0;
+<strong>While</strong> <span class="text-red">i</span> &lt; 3 <strong>Do</strong>
+<strong>Begin</strong> 
+    <span class="text-viola">WriteLn</span>(<span class="text-red">i</span>);
+    <span class="text-red">i</span> := <span class="text-red">i</span> + 1;
+<strong>End;</strong></code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Java</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code>int <span class="text-red">i</span> = 0;
+<strong>while</strong> (<span class="text-red">i</span> &lt; 3)
+{
+    <span class="text-viola">System.out.println</span>(<span class="text-red">i</span>);
+    <span class="text-red">i</span>++;
+}</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Pascal</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">isExit</span> := False;
+<strong>While</strong> Not <span class="text-red">isExit</span> <strong>Do</strong>
+<strong>Begin</strong>
+    <span class="text-yellow">ReadLn</span>(s);
+    <span class="text-red">isExit</span> :=  (s = 'exit');
+<strong>End;</strong></code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Java</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code>boolean <span class="text-red">isExit</span> = <strong>false;</strong>
+<strong>while</strong> (!<span class="text-red">isExit</span>)
+{
+    String <span class="text-user">s</span> = <span class="text-yellow">buffer</span>.readLine();
+    <span class="text-red">isExit</span> = <span class="text-user">s</span>.equals("exit");
+}</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Pascal</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>While</strong> True <strong>Do</strong>
+    <span class="text-viola">WriteLn</span>('C');</code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Java</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>while (true)</strong>
+    <span class="text-viola">System.out.println</span>(<span class="text-green">'C'</span>);</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Pascal</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>While</strong> True <strong>Do</strong>
+<strong>Begin</strong>
+    <span class="text-yellow">ReadLn</span>(<span class="text-user">s</span>);
+    <strong>If</strong>  <span class="text-user">s</span> = 'exit' <strong>Then</strong> 
+        <strong>Break;</strong>
+<strong>End;</strong></code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">Java</div>
+<pre class="line-numbers language-undefined" data-line="" data-start=""><code><strong>while (true) </strong>
+{
+    String <span class="text-user">s</span> = <span class="text-yellow">buffer</span>.readLine();
+    if (<span class="text-user">s</span><strong><strong>.equals</strong></strong>("exit")) 
+        <strong>break; </strong>   
+}</code></pre>
+</div>
+</div>
+<p><span class="text-user">"This comparison with Pascal might be useful for those who know Pascal."</span></p>
+<p>"You mean you don't? Come on! It's the most popular language on my home planet."</p>
+<p><span class="text-user">"OK, OK. I believe you that it's cool. And that if I knew it, it would help me."</span></p>

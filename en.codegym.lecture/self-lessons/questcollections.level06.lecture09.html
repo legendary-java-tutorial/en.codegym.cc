@@ -1,0 +1,41 @@
+<p>"Well, how is your processor?"</p>
+<p><span class="text-user">"It's OK. I sat in liquid nitrogen for an hour, so now I'm as good as new!"</span></p>
+<p>"Great. Then let's continue."</p>
+<p><strong>"Set collections."</strong></p>
+<p>Mathematically speaking, a set is a group of unique elements. Thus, in programming, a Set is a collection of unique elements, i.e. a collection that doesn't let you store identical elements.</p>
+<p>"I don't know if Ellie showed you Set's inheritance hierarchy. If not, here it is:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/6858a958-40d3-4867-a891-da98c7f000dd/original.jpeg' target='_blank'><img data-id="6858a958-40d3-4867-a891-da98c7f000dd" data-max-width="850" alt="Implementations of the Set and Queue interfaces - 1" src="https://cdn.codegym.cc/images/article/6858a958-40d3-4867-a891-da98c7f000dd/original.jpeg"></a>
+
+<p>"A <strong>HashSet</strong> is a collection that store elements internally using the hash values returned by the <strong>hashCode</strong>() method."</p>
+<p>"For simplicity, HashSet&lt;E&gt; stores a HashMap&lt;E, Object&gt; object that stores the HashSet's values as keys."</p>
+<p><span class="text-user">"Whoa!"</span></p>
+<p>"Using hash codes lets you quickly search for, add, and remove elements from the Set."</p>
+<p>"But keep in mind that your class must properly implement the <strong>hashCode &amp; equals</strong> methods in order to add objects of your classes to a Set, and to correctly find them there."</p>
+<p>"Both methods are used a lot inside <strong>HashSet/HashMap.</strong>"</p>
+<p>"If you forget to implement the <strong>hashCode</strong>() method, then you risk not being able to find your object in the Set, even if it is present."</p>
+<p><span class="text-user">"Yes, I remember, I remember. You told me about this earlier. I've heard all about it."</span></p>
+<p>"OK. Then here's some more useful information for you."</p>
+<p>"Suppose you've correctly implemented <strong>hashCode and equals </strong> in your class, and you happily store your objects in a Set."</p>
+<p>"But then you go and change one of the objects, and by so doing you change the internal data used to calculate its <strong>hash</strong>. So the object's hash changes."</p>
+<p>"And this means that when you search for it in the Set, you probably won't find it."</p>
+<p><span class="text-user">"Whoa! How does that work?"</span></p>
+<p>"This is a well-known pitfall when working with hashes. Essentially, HashSet (and HashMap) searches are only guaranteed to work properly if the objects are <strong>immutable</strong>."</p>
+<p><span class="text-user">"Whoa! And what, no one does anything about it?"</span></p>
+<p>"Everyone pretends that the problem doesn't exist. But this frequently comes up in interviews, so it may be worth remembering…"</p>
+<p>"A <strong>LinkedHashSet</strong> is a HashSet whose elements are also stored in a linked list. Normal HashSets don't support ordering of the elements. First, it simply isn't an official operation. Second, even the internal order can change significantly when a single element is added."</p>
+<p>But you can get an iterator from a <strong>LinkedHashSet</strong> and use it to go through all of the elements in the order they were added to the <strong>LinkedHashSet</strong>. It doesn't happen often, but sometimes this is very much needed."</p>
+<p><span class="text-user">"I see. I love when classes exist for these «just in case» scenarios. Such cases aren't all that rare."</span></p>
+<p>"<strong><span class="text-green">TreeSet</span></strong> is a collection that stores elements in the form of a tree ordered by values. A <span class="text-green"><strong>TreeSet</strong></span>&lt;E&gt; contains a <span class="text-green"><strong>TreeMap</strong></span>&lt;E, Object&gt; that stores all of these values. And this <span class="text-green"><strong>TreeMap</strong></span> uses a balanced <strong><span class="text-red">red</span>-black</strong> <span class="text-red"><strong>tree to store elements</strong></span>. As a result, it supports very fast add, remove, and contains operations."</p>
+<p><span class="text-user">"Yes, I remember. We discussed that just recently. And I also thought about where this is used."</span></p>
+<p><span class="text-user">"And it turns out that some of Java's most popular collections use it."</span></p>
+<p>"Yep. By the way, interviewers often ask about <span class="text-green">TreeSet</span>. They're usually trying to trick you. They'll say, 'if a TreeSet uses a binary tree, then all elements can form one long branch, so searches will take a long time. «This is just the time to put the insolent fellow in his place by stating, "Even a child knows that TreeSet and TreeMap use balanced <strong><span class="text-red">red</span>-black</strong> trees, so that situation is actually impossible.»"</p>
+<p><span class="text-user">"Ah. I'd love to see the face of the person who asked that question. I might even memorize that phrase. …"</span></p>
+<p><span class="text-user">"But in practice, Set turned out to not be as simple as I initially thought."</span></p>
+<p>"On the other hand, the situation with <strong>Queue</strong> is much simpler:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/c0de5055-accc-44b9-9171-a45ac321fba1/original.jpeg' target='_blank'><img data-id="c0de5055-accc-44b9-9171-a45ac321fba1" data-max-width="850" alt="Implementations of the Set and Queue interfaces - 2" src="https://cdn.codegym.cc/images/article/c0de5055-accc-44b9-9171-a45ac321fba1/original.jpeg"></a>
+
+<p>"<strong>Queue</strong> implements a queue. Elements are added to the end of the queue and taken from the front."</p>
+<p>"<strong>PriorityQueue</strong> is actually the only classic implementation of the <strong>Queue</strong> interface, not counting <strong>LinkedList</strong>, which technically is also a queue."</p>
+<p>"Okay, I'm getting tired. That's all for today. Until next time."</p>

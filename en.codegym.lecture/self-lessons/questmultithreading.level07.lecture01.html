@@ -1,0 +1,97 @@
+<a href='https://cdn.codegym.cc/images/article/9462a633-c48e-4320-8610-db04a8bf9176/original.jpeg' target='_blank'><img data-id="9462a633-c48e-4320-8610-db04a8bf9176" data-max-width="850" alt="Loops (break and return, continue, labels) - 1" src="https://cdn.codegym.cc/images/article/9462a633-c48e-4320-8610-db04a8bf9176/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"Today I will tell you about some things that are convenient when working with loops."</p>
+<p>"The first is the keyword <strong>break</strong>. If you use this command in the body of a loop, then the loop will terminate immediately when the command is executed. Here's an example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Output:</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>for (int i = 0; i &lt; 10; i++)
+{
+System.out.println(i);
+if (i &gt; 5)
+break;
+}</code></pre>
+        </td>
+        <td>0<br />
+            1<br />
+            2<br />
+            3<br />
+            4<br />
+            5</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Can break only be used in a loop?"</span></p>
+<p>"Yes. The break statement can only be used in a loop. When a break statement is executed, the loop terminates immediately."</p>
+<p><span class="text-user">"OK. Got it."</span></p>
+<p>"Great. Now the second thing I want to share is the keyword continue. It can also only be used in a loop. When this command is executed, a new iteration of the loop begins immediately. In other words, any remaining code in the body of the loop is simply skipped."</p>
+<p>"Here's an example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Output:</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>for (int i = 0; i &lt; 10; i++)
+{
+if (i % 2 == 0)
+continue;
+System.out.println(i);
+}</code></pre>
+        </td>
+        <td>1<br />
+            3<br />
+            5<br />
+            7<br />
+            9</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"So, once the program reaches a continue command in a loop, it stops executing the code in the loop?"</span></p>
+<p>"No. Look, we have a loop when we execute the same code several times. In the example above, we have a loop from 0 to 9, i.e. the body of the loop will be executed 10 times. Right?"</p>
+<p><span class="text-user">"Yes."</span></p>
+<p>"One pass through the body of the loop is called an iteration. Our loop consists of 10 iterations—the body of the loop will be executed ten times."</p>
+<p><span class="text-user">"Yes, that's clear."</span></p>
+<p>"The <strong>continue</strong> command terminates the current iteration prematurely, i.e. any remaining code inside the loop is skipped and a new iteration begins."</p>
+<p>"Here's another example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>ArrayList list = new ArrayList();
+<strong>for</strong> (Object o: list)
+{
+<strong>if</strong> (o == null) <strong>continue</strong>;
+System.out.println(o.toString());
+}</code></pre>
+<p>"In this example, we display a string representation of all the objects in list. But we skip any objects that are null."</p>
+<p><span class="text-user">"OK, got it. I can see how convenient this is."</span></p>
+<p>"Yep. I also want to tell you about labels. They are rarely used in Java, because they often violate the beauty of a program's logic. But you may encounter them in the code at some point. So I'd rather tell you about them than have you hear about them on the playground."</p>
+<p>"Once upon a time it was permissible to jump from any line to any line in code. We did this using labels and the goto statement. Here's how it looks:"</p>
+<div class="code-heading">Horrible code with labels</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>System.out.println("Make cookies,");
+label: System.out.println("not");
+System.out.println("war");
+goto label;</code></pre>
+<p>"In this example, after the <strong>goto label</strong> command is executed, the program jumps to the line marked <strong>label</strong>.</p>
+<p>"Later, everyone wised up and decided to not use the <strong>goto</strong> statement. Java doesn't support goto, but <strong>goto</strong> is a reserved word. Not a big deal…"</p>
+<p><span class="text-user">"So, no goto and no labels in Java?"</span></p>
+<p>"There is no goto statement, but there are labels!"</p>
+<p><span class="text-user">"How can that be?"</span></p>
+<p>"In Java, labels can be used with the continue and break commands. They are used when you have many nested loops."</p>
+<p>"For example, suppose you have 5 nested loops and when some condition is satisfied you want to get out of three of them, but not all of them. Labels are an elegant way to do this:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">label1:</span> <strong>for</strong> (int i = 0; i &lt; 10; i++)
+<span class="text-red"> label2:</span> <strong>for</strong> (int j = 0; j &lt; 10; j++)
+  <span class="text-green">label3:</span> <strong>for</strong> (int k =0; k &lt; 10; k++)
+   <strong>if</strong> (i == j &amp;&amp; j == k)
+    <strong>break</strong> <span class="text-red">label2</span>;</code></pre>
+<p>"In this example, when the break statement is executed, we exit not from the loop with variable k, but from the loop labeled label2 - i.e. we immediately exit the two loops with k and j."</p>
+<p><span class="text-user">"How often is that used?"</span></p>
+<p>"To be honest, not often, but you never know. Maybe you'll see it sometime. These are syntax fundamentals—you need to know all this!"</p>
+<p><span class="text-user">"OK. Thank you, Bilaabo."</span></p>

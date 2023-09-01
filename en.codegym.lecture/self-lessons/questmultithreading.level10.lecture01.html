@@ -1,0 +1,190 @@
+<a href='https://cdn.codegym.cc/images/article/2ae40010-7c06-42e0-9ab5-54ae7ba43ccc/original.jpeg' target='_blank'><img data-id="2ae40010-7c06-42e0-9ab5-54ae7ba43ccc" data-max-width="850" alt="Notation for binary numbers like 1000100B - 1" src="https://cdn.codegym.cc/images/article/2ae40010-7c06-42e0-9ab5-54ae7ba43ccc/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"I want to tell you a little about different numbering systems."</p>
+<p>"You've already heard that people use the decimal system. Here are the main facts of this system:</p>
+<p><span class="text-red"><strong>1)</strong> 10 digits are used to write numbers: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9.</span></p>
+<p><span class="text-red"><strong>2)</strong> The number 543 means 5 hundreds + 4 tens + 3 ones.</span></p>
+<p>"This is equivalent to writing 5*100 + 4*10 + 3*1, which can be written as 5*10<sup>2</sup> + 4*10<sup>1</sup> + 3*10<sup>0</sup>.</p>
+<p>Note that thousands, hundreds, tens and ones are powers of the number 10.</p>
+<p><strong>1)</strong> One is 10 to the zeroth power.</p>
+<p><strong>2)</strong> Ten is 10 to the first power.</p>
+<p><strong>3)</strong> One hundred is 10 to the second power.</p>
+<p><strong>4)</strong> One thousand is 10 in the third power, etc.</p>
+<p><span class="text-user">"Yep. Got it."</span></p>
+<p>"But now imagine that we only have 8 digits. Then we have the octal system. Here are its main facts:"</p>
+<p><span class="text-red"><strong>1)</strong> 8 digits are used to write numbers: 0, 1, 2, 3, 4, 5, 6, 7.</span></p>
+<p><span class="text-red"><strong>2)</strong> The number 543<sub>8</sub> means 5*8<sup>2</sup>+4*8<sup>1</sup>+3*8<sup>0</sup>. In other words, it's 5*64 + 4*8 + 3*1 = 320+32+3 = 320+32+3=355<sub>10</sub></span></p>
+<p><strong>I wrote 8 and 10 as subscripts to indicate how many digits are used to represent the number.</strong></p>
+<p><span class="text-user">"I think I get it. I think I could convert a number from the octal system to decimal. But I probably couldn't go the other way."</span></p>
+<p>"It's not so difficult. Imagine you need to use several trucks to move a pile of sand. You have dump trucks, ordinary trucks, and very small trucks. But the trucks can't go if they're not full."</p>
+<p>"How would you do it?"</p>
+<p><span class="text-user">"First, I would fill up dump trucks, since they're the biggest. Then, when I saw that there wasn't enough sand to fill the truck, I would switch to the smaller vehicles. And then the even smaller ones."</span></p>
+<p>"It's actually very similar here. Let's try to convert the number 355<sub>10</sub> back to octal."</p>
+<p>"First, we divide it by 64 (8<sup>2</sup>) and get 5 with a remainder of 35. This means that the first digit of our number is 5. Then we divide the remainder by 8 (8<sup>1</sup>) and get 4 with a remainder of 3. Thus, we get the number 543<sub>8</sub>."</p>
+<p>"By the way, you can also move in the other direction. After all, 543<sub>8</sub> == 5*64+4*8+3 == ((5)*8+4)*8+3. Our octal "tens" and "hundreds" must be divided by 8. Hence, the remainder of division by 8 will be our octal digits."</p>
+<p>"First, let's divide 355 by 8. We get 44 with a remainder of 3. That is, 355=44*8+3. And 44 can be represented as 5*8+4. Thus, 355= (5*8+4)*8+3; Here are our digits: 5, 4, 3. The number we're looking for is 543<sub>8</sub>."</p>
+<p><span class="text-user">"I think I get it, but I'll need to practice a little to understand everything all the way."</span></p>
+<p>"Programming often involves using numbers with different bases (i.e. the number of digits used in the numbering system). The most popular are 2, 8, 10, 16, and 64."</p>
+<p><span class="text-user">"But why is this necessary? Why do we need numbers represented by 2, 8, 16, or 64 digits?"</span></p>
+<p>"It's about how the processor works internally. Very simplistically, if current is flowing through a wire, then we say that it's value is 1; if there is no current, then its value is 0. All numbers are stored in memory cells. These cells have a very basic design. And they can only store 0 or 1."</p>
+<p>"But such simplification (only 0 or 1) made it possible to make elements inside the processor and memory very small. Modern processors and memory modules include billions of different elements. And their area is often no more than a square centimeter."</p>
+<p><span class="text-user">"Whoa. Now I know."</span></p>
+<p>"Now we turn to binary numbers. Here we have the same thing as with octal, only easier."</p>
+<p><span class="text-red"><strong>1)</strong> 2 digits are used to write numbers: 0, 1.</span></p>
+<p><span class="text-red"><strong>2)</strong> The number 101<sub>2</sub> means 1*2<sup>2</sup> + 0*2<sup>1</sup> + 1*2<sup>0</sup>.</span> In other words, it's 1*4+0*2+1*1 =4+1=51<sub>10</sub></p>
+<p><span class="text-user">"Yes. I remember. One cell, which can have a value of either 0 or 1, is called a bit. But it can't store very much information, so they are combined into groups of 8. These groups are called bytes."</span></p>
+<p>"Exactly. A byte is a group of eight bits. It can store the following values: 00000000, 00000001, ... 11111111. These values correspond to the decimal numbers 0,1, ... 255. Which gives us a total of 256 values."</p>
+<p>What's the largest integer in Java? Or rather what is its type?</p>
+<p><span class="text-user">"A long. A long consists of 8 bytes. In other words, 64 bits. It can store values from -2<sup>63</sup> up to 2<sup>63</sup>-1.</span></p>
+<p>"Yep. I won't touch on how to convert numbers from decimal to binary or vice versa. Otherwise, the lesson would be too long."</p>
+<p>"Instead, let's talk a little more about the hexadecimal system."</p>
+<p><span class="text-user">"Yes, it's very interesting. For the binary and octal systems, we simply got rid of digits, starting with two and eight, respectively. But what do we do here? Add new digits?"</span></p>
+<p>"Exactly! Look at this:"</p>
+<p><span class="text-red"><strong>1)</strong> 16 digits are used to write numbers: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F.</span></p>
+<p><span class="text-red"><strong>2)</strong> The number 543<sub>16</sub> means 5*16<sup>2</sup> + 4*16<sup>1</sup> + 3*16<sup>0</sup>.</span> In other words, it's 5*256+4*16+3*1 = 1280+64+3 = 1347<sub>10</sub></p>
+<p><span class="text-user">"So, we just added letters as digits? O_o"</span></p>
+<p>"Yep. And what's the big deal? Why invent new numbers when letters work perfectly well? Check it out:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Hexadecimal digit</th>
+        <th>Decimal value</th>
+    </tr>
+    <tr>
+        <td>0</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>8</td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>9</td>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td>10</td>
+    </tr>
+    <tr>
+        <td>B</td>
+        <td>11</td>
+    </tr>
+    <tr>
+        <td>C</td>
+        <td>12</td>
+    </tr>
+    <tr>
+        <td>D</td>
+        <td>13</td>
+    </tr>
+    <tr>
+        <td>E</td>
+        <td>14</td>
+    </tr>
+    <tr>
+        <td>F</td>
+        <td>15</td>
+    </tr>
+    </tbody>
+</table>
+<p>"I'm also not going to talk about converting from decimal to hexadecimal. But here's one interesting fact. A hexadecimal digit is represented by exactly 4 bits, with values from 0 to 15. So, one byte can be written with eight binary digits (0 or 1) or two hexadecimal digits."</p>
+<p>"Here's an example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Decimal number</th>
+        <th>Binary number</th>
+        <th>Hexadecimal number</th>
+    </tr>
+    <tr>
+        <td>0</td>
+        <td>0000 0000</td>
+        <td>00</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>0000 0001</td>
+        <td>01</td>
+    </tr>
+    <tr>
+        <td>15</td>
+        <td>0000 1111</td>
+        <td>0f</td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td>0001 0000</td>
+        <td>10</td>
+    </tr>
+    <tr>
+        <td>31</td>
+        <td>0001 1111</td>
+        <td>1f</td>
+    </tr>
+    <tr>
+        <td>32</td>
+        <td>0010 0000</td>
+        <td>20</td>
+    </tr>
+    <tr>
+        <td>128</td>
+        <td>1000 0000</td>
+        <td>80</td>
+    </tr>
+    <tr>
+        <td>129</td>
+        <td>1000 0001</td>
+        <td>81</td>
+    </tr>
+    <tr>
+        <td>255</td>
+        <td>1111 1111</td>
+        <td>ff</td>
+    </tr>
+    </tbody>
+</table>
+<p>"The hexadecimal representation is easily converted to binary (and vice versa). That's why the internal byte representation of a number is rarely given in binary (using 0s and 1s) in programming. That would be too long and difficult to understand. Hexadecimal notation is much more readable and compact."</p>
+<p><span class="text-user">"I agree. Even I liked it."</span></p>
+<p>"By the way, Java lets you write numbers in various numbering systems directly in the code:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Base</th>
+        <th>Distinguishing feature</th>
+        <th>Examples</th>
+        <th>Invalid numbers</th>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td><span class="text-green">0b</span> at the beginning of the number</td>
+        <td><span class="text-green">0b</span>00001111</td>
+        <td><span class="text-green">0b</span>11111<span class="text-red">2</span>1</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td><span class="text-green">0</span> at the beginning of the number</td>
+        <td><span class="text-green">0</span>1234343</td>
+        <td><span class="text-green">0</span>12<span class="text-red">8</span></td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>None</td>
+        <td>95459</td>
+        <td>909<span class="text-red">a</span></td>
+    </tr>
+    <tr>
+        <td>16</td>
+        <td><span class="text-green">0x</span> at the beginning of the number</td>
+        <td><span class="text-green">0x</span>10ff</td>
+        <td><span class="text-green">0x</span>1c<span class="text-red">gh</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Excellent lesson. Thank you, Bilaabo."</span></p>

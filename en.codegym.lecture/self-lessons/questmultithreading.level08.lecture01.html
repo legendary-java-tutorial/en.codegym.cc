@@ -1,0 +1,207 @@
+<a href='https://cdn.codegym.cc/images/article/2bd160b0-0b78-4e3c-a5bd-5c4053887363/original.jpeg' target='_blank'><img data-id="2bd160b0-0b78-4e3c-a5bd-5c4053887363" data-max-width="850" alt="switch, case, default - 1" src="https://cdn.codegym.cc/images/article/2bd160b0-0b78-4e3c-a5bd-5c4053887363/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo! So good to see you again. Only your lectures are so good and understandable. Not like this Java Memory Model."</span></p>
+<p>"Yes, Bilaabo knows how to choose lessons. Today I'm going to tell you about the switch statement."</p>
+<p><span class="text-user">"I think someone already told me about it."</span></p>
+<p>"Ellie did. So, Amigo doesn't want to hear a lesson about the switch statement? Maybe you'll start teaching your own?"</p>
+<p><span class="text-user">"No, I want to, I want to. Let's hear about the switch statement."</span></p>
+<p>"OK. In Java, there's something called a switch statement. It's convenient when you need to perform certain actions depending on various values ​​of some variable."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example with switch</th>
+        <th>Equivalent code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int i = 5;
+switch(i)
+{
+ case 1:
+  System.out.println("one");
+  break;
+ case 2:
+  System.out.println("two");
+  break;
+ case 3:
+  System.out.println("three");
+  break;
+ default:
+  System.out.println("many");
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int i = 5;
+if (i == 1)
+{
+ System.out.println("one");
+}
+else if (i == 2)
+{
+ System.out.println("two");
+}
+else if (i == 3)
+{
+ System.out.println("three");
+}
+else
+{
+ System.out.println("many");
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <strong>switch</strong> statement lets you jump to the desired piece of code if the variable passed to it matches the value that follows the keyword case.</p>
+<p>If i is 1, then execution will jump to the line marked «case 1».</p>
+<p>If i is 2, then execution will jump to the line marked «case 2».</p>
+<p>If i is 3, then execution will jump to the line marked «case 3».</p>
+<p>"If there is no jump to any of the cases, then the «default» block is executed."</p>
+<p><span class="text-user">"I see. And on the right is the same logic, but implemented using if statements?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"And what's with the word 'break'? You said it can only be used in loops?"</span></p>
+<p>"Yes, and here. When the <strong>break</strong> statement is executed, we immediately exit the <strong>switch</strong>."</p>
+<p>"But if the break statement is removed, then all the lines inside the switch will be executed until the end."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Output (for i = 1)</th>
+        <th>Output (for i = 2)</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>switch(i)
+{
+ case 1:
+  System.out.println("one");
+ case 2:
+  System.out.println("two");
+ case 3:
+  System.out.println("three");
+ default:
+  System.out.println("many"); }</code></pre>
+        </td>
+        <td>one<br />
+            two<br />
+            three<br />
+            many</td>
+        <td>two<br />
+            three<br />
+            many</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Actually, case is a label in the code. In the switch statement, we jump to the next label and start executing all the code until the end of the switch, or until we meet a break statement."</p>
+<p><span class="text-user">"So, if we don't write break, then the line we jump to will be executed, followed by all the other lines until the closing brace. Is that right?"</span></p>
+<p>"Yes."</p>
+<p><span class="text-user">"Piece of cake. But I like using if statements better. They don't have these pointless break statements."</span></p>
+<p>"It's true that if statements are very often more compact. But a switch statement is sometimes more readable."</p>
+<p>"Compare:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example with switch</th>
+        <th>Equivalent code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public String getName(int i)
+{
+ switch(i)
+ {
+  case 1:
+   return "one";
+  case 2:
+   return "two";
+  case 3:
+   return "three";
+  default:
+   return "many";
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public String getName(int i)
+{
+ if (i == 1)
+  return "one";
+
+ if (i == 2)
+  return "two";
+
+ if (i == 3)
+  return "three";
+
+return "many"
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I wouldn't say that it's more readable."</span></p>
+<p>"Okay, but what about this example?"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example with switch</th>
+        <th>Equivalent code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public String getName(int i)
+{
+ switch(i)
+ {
+  case 1:
+  case 2:
+   return "one or two";
+  case 3:
+  case 4:
+  case 5:
+   return "three to five";
+  default:
+   return "many";
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public String getName(int i)
+{
+ if (i == 1 || i == 2)
+  return "one or two";
+
+ if (i == 3 || i == 4 || i == 5)
+  return "three to five";
+
+return "many"
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Bilaabo, your example doesn't look quite right. So, I can omit the break statement if I use return?"</span></p>
+<p>"That's right. A return statement will immediately exit the method."</p>
+<p><span class="text-user">"It seems that if statements are always more compact. But the switch statement turned out to be more readable this time."</span></p>
+<p>"Phew, at last."</p>
+<p>"One more thing. You don't have to write default at the end. If you don't, then simply nothing will happen if none of the labels match."</p>
+<p><span class="text-user">"Uh, exactly. Like if-else, but readable—much more readable!"</span></p>
+<p>"Great. I'm glad you liked my lesson."</p>
+<p>"Oh, I almost forgot. Initially, you could only use primitive types and enums in switch statements. But now they've added support for Strings."</p>
+<p><span class="text-user">"You mean that I write this?"</span></p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public int getNumber(String <span class="text-green">number</span>)
+{
+ switch(<span class="text-green">number</span>)
+ {
+  case <span class="text-green">"one"</span>:
+   return 1;
+  case <span class="text-green">"two"</span>:
+   return 2;
+  case <span class="text-green">"three"</span>:
+   return 3;
+  default:
+   return -1;
+ }
+}</code></pre>
+<p>"Yep. Convenient, right?"</p>
+<p><span class="text-user">"Yes. Switch statements are great!"</span></p>

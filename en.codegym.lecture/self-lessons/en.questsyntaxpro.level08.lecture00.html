@@ -1,0 +1,333 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="0ee63c4f-2d27-4789-8c42-1425f8d4ad61" src="https://cdn.javarush.ru/images/article/0ee63c4f-2d27-4789-8c42-1425f8d4ad61/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="5074d1cf-c7c3-4702-aa58-879bb530016f" src="https://cdn.javarush.ru/images/article/5074d1cf-c7c3-4702-aa58-879bb530016f/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="9b1c35a3-2b50-4284-95b8-971e4396a89e" src="https://cdn.javarush.ru/images/article/9b1c35a3-2b50-4284-95b8-971e4396a89e/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="5c515068-f306-451f-ae98-ca0d0e328b9d" src="https://cdn.javarush.ru/images/article/5c515068-f306-451f-ae98-ca0d0e328b9d/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="3c241678-0248-4a31-97a5-fc3e96bf7918" src="https://cdn.javarush.ru/images/article/3c241678-0248-4a31-97a5-fc3e96bf7918/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="dfd6496b-6945-40c0-9ba0-d3ce0f07d8dc" src="https://cdn.javarush.ru/images/article/dfd6496b-6945-40c0-9ba0-d3ce0f07d8dc/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Trigonometric functions in Java</h2>
+<p>When we studied rounding numbers earlier, we got acquainted with the <code><span class="text-viola">Math</span></code> class and some of its methods. We will now look at this class in more detail.</p>
+<p>As the name implies, the <code><span class="text-viola">Math</span></code> class contains methods for the mathematical operations most frequently used by programmers. Here are the most interesting ones:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">sin</span>(double d)</code></pre>
+        </td>
+        <td>Returns the sine of the angle <code>d</code>, in radians</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">cos</span>(double d)</code></pre>
+        </td>
+        <td>Returns the cosine of the angle <code>d</code>, in radians</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">tan</span>(double d)</code></pre>
+        </td>
+        <td>Returns the tangent of the angle <code>d</code>, in radians</td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">asin</span>(double d)</code></pre>
+        </td>
+        <td>Returns the arcsine</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">acos</span>(double d)</code></pre>
+        </td>
+        <td>Returns the arccosine</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">atan</span>(double d)</code></pre>
+        </td>
+        <td>Returns the arctangent</td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">sinh</span>(double d)</code></pre>
+        </td>
+        <td>Returns the hyperbolic sine</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">cosh</span>(double d)</code></pre>
+        </td>
+        <td>Returns the hyperbolic cosine</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">tanh</span>(double d)</code></pre>
+        </td>
+        <td>Returns the hyperbolic tangent</td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code><span class="text-viola">Math</span>.<span class="text-red">sin</span>()</code>, <code><span class="text-viola">Math</span>.<span class="text-red">cos</span>()</code> and <code><span class="text-viola">Math</span>.<span class="text-red">tan</span>()</code> methods take an angle expressed in radians. To convert an angle from degrees to radians and vice versa, the <code>Math</code> class offers two special methods:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">toRadians</span>(double angdeg)</code></pre>
+        </td>
+        <td>Converts an angle from degrees to radians</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">toDegrees</span>(double angrad)</code></pre>
+        </td>
+        <td>Converts an angle from radians to degrees</td>
+    </tr>
+    </tbody>
+</table>
+<p>By the way, in addition to methods, the <code><span class="text-viola">Math</span></code> class also has two <span class="term">constant variables</span> (static fields of the class):</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Constant</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-viola">Math</span>.<span class="text-neon">PI</span></code></pre>
+        </td>
+        <td>The "Pi" constant is equal to <code>3.141592653589793</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-viola">Math</span>.<span class="text-neon">E</span></code></pre>
+        </td>
+        <td>The "E" constant is equal to <code>2.718281828459045</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>All these functions can be very useful to you if you decide to write your own games, work with graphics, or simply calculate the length of a path on a map.</p>
+<p>For example, if you want to calculate <code>sin(45°)</code>, here's how you do it:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Math</span>.<span class="text-red">sin</span>( <span class="text-viola">Math</span>.<span class="text-red">toRadians</span>(45) )</code></pre>
+</div>
+<p>Here's an example:</p>
+<pre class="language-java"><code>public class Main
+{
+   public static int <span class="text-neon">N</span> = 10;
+
+   public static void drawValue(double y)
+   {
+     int value = (int) (y * <span class="text-neon">N</span>) + <span class="text-neon">N</span>;
+     for (int i = 0; i &lt; 2 * <span class="text-neon">N</span>; i++)
+     {
+       char c = i == <span class="text-neon">N</span> ? '|': '.';
+       if (i == value)
+         c = '*';
+       System.out.print(c);
+     }
+     System.out.println();
+   }
+
+   public static void main(String[] args)
+   {
+     for (int i = 0; i &lt; 10 * <span class="text-neon">N</span>; i++)
+     {
+       double x = i * 1.0 / <span class="text-neon">N</span>;
+       double y = <span class="text-viola">Math</span>.<span class="text-red">sin</span>(x);
+       drawValue(y);
+     }
+   }
+}
+</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0801"></div>
+<hr>
+<h2>2. Algebraic functions in Java</h2>
+<p>In most cases, high school math is enough for a programmer: even sines and cosines are very rarely found in code. Most often they are needed when working with games, maps or game engines. 90% of programmers never encounter this.</p>
+<p>But besides geometry, programmers sometimes have to use algebraic functions. And, of course, the <code><span class="text-viola">Math</span></code> class contains the most common ones:</p>
+<table>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">sqrt</span>(double a)</code></pre>
+        </td>
+        <td>square root of <code>a</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">cbrt</span>(double a)</code></pre>
+        </td>
+        <td>cubic root of <code>a</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">pow</span>(double a, double b)</code></pre>
+        </td>
+        <td>exponentiation: <code>a<sup>b</sup></code></td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">exp</span>(double a)</code></pre>
+        </td>
+        <td>exponential (Euler's number raised to a power): <code><i>e</i><sup>a</sup></code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">log</span>(double a)</code></pre>
+        </td>
+        <td>natural logarithm of <code>a</code>: <code>ln(a)</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">log10</span>(double a)</code></pre>
+        </td>
+        <td>base-10 logarithm of <code>a</code>: <code>log<sub>10</sub>(a)</code></td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">log1p</span>(double x)</code></pre>
+        </td>
+        <td>natural logarithm of <code>x + 1</code>: <code>ln(x + 1)</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>double <span class="text-red">expm1</span>(double x)</code></pre>
+        </td>
+        <td><code><i>e</i><sup>x</sup>-1</code></td>
+    </tr>
+</table>
+<p>If you want the square or cube root of a number, the <code><span class="text-red">sqrt</span>(a)</code> and <code><span class="text-red">cbrt</span>(a)</code> methods are at your service.</p>
+<p>The square root can be calculated as follows:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Math</span>.<span class="text-red">sqrt</span>(2)</code></pre>
+</div>
+<p>If you want to get a root of a higher power, then use the exponentiation method: <code>a</code> to the power of <code>¼</code> is the fourth root, etc.</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Math</span>.<span class="text-red">pow</span>(2, 0.25)</code></pre>
+</div>
+<p>For logarithms and exponents, there are the <code>log(a)</code> (natural logarithm) and <code>exp(x)</code> (exponential) methods. To calculate the base-10 logarithm, we have <code>log10(a)</code>.</p>
+<p>If you want the logarithm of a number <code>b</code> to base <code>a</code>, use this simple formula: <code>log<sub>a</sub>(b) = ln(b) / ln(a)</code></p>
+<p><strong>Useful methods</strong></p>
+<p>If you are performing calculations involving very small values of <code>x</code>, then the last two functions — <code>log1p()</code> and <code>expm1()</code> — may be useful to you.</p>
+<p>When adding very small and very large <code>double</code> variables, you will often find that very small values are simply ignored (discarded) as insignificant. In fact, this will happen if you use the <code>log()</code> and <code>exp()</code> methods. To solve this, programmers came up with functions that return only the "small significant part"</p>
+<p>Example:</p>
+<p>Suppose you want to calculate the natural logarithm of <code><span class="text-red">1 + x</span></code>, where <code>x</code> is <code><span class="text-red">10<sup>-20</sup></span></code>. You can't simply pass this number to the <code>log()</code> method, since if you add <code><span class="text-red">1</span></code> and <code><span class="text-red">10<sup>-20</sup></span></code>, you get <code><span class="text-red">1</span></code>. <code><span class="text-red">10<sup>-20</sup></span></code> is such a small number that it will be completely discarded when the numbers are added.</p>
+<p>Because mathematics often involves calculating the <code>log()</code> of numbers close to <code>1</code>, programmers came up with a way to get around this problem: instead of passing the number itself to the method, pass only its difference from <code>1</code>.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0802"></div>
+<hr>
+<h2>3. Minimum and maximum</h2>
+<p>Two more useful functions are <code>min(a, b)</code> and <code>max(a, b)</code>. As you probably already guessed, the first returns the minimum of two numbers:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-green">a</span>, <span class="text-neon">b</span>)</code></pre>
+</div>
+<p>And the second returns the maximum of two numbers:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Math</span>.<span class="text-red">max</span>(<span class="text-green">a</span>, <span class="text-neon">b</span>)</code></pre>
+</div>
+<p>Why do we need these functions when you can always write <code>if</code> or even use the ternary operator <code>(a &lt; b ? a: b)</code>?</p>
+<p>It's all about the readability of the code. Sometimes your code is overloaded with <code>if</code> statements and you want to use more compact notation. Let's compare:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int x = 0;
+if (<span class="code text-green">x-5+y*20</span> &lt; <span class="code text-neon">x*x+y*y</span>)
+&nbsp; &nbsp;x = <span class="code text-green">x-5+y*20</span>;
+else
+&nbsp; &nbsp;x = <span class="code text-neon">x*x+y*y</span>;</code></pre>
+        </td>
+        <td>Using an <code>if-else</code> statement (the longest way to write it)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int x = <span class="code text-green">x-5+y*20</span> &lt; <span class="code text-neon">x*x+y*y</span> ? <span class="code text-green">x-5+y*20</span> : <span class="code text-neon">x*x+y*y</span>;</code></pre>
+        </td>
+        <td>Using the ternary operator Cons:<br>
+            - bulky code<br>
+            - calculations are performed twice
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int a = <span class="code text-green">x-5+y*20</span>;
+int b = <span class="code text-neon">x*x+y*y</span>;
+int x = a &lt; b ? a : b;</code></pre>
+        </td>
+        <td>This is a great way to write it, but it's a little redundant</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int x = <span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="code text-green">x-5+y*20</span>, <span class="code text-neon">x*x+y*y</span>);</code></pre>
+        </td>
+        <td>Just right 🙂</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>4. Minimum and maximum of several numbers</h2>
+<p>There's another great way to use the <code>min()</code> and <code>max()</code> methods.</p>
+<p>To calculate the minimum (or maximum) of several numbers or variables. It's very convenient to make nested calls to these methods.</p>
+<p>Here's how to find the minimum of 3 numbers:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-green">a</span>, <span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-neon">b</span>, <span class="text-user">c</span>))</code></pre>
+</div>
+<p>So what? It's super convenient: calculate the minimum of two numbers, and then return the minimum of this number and the third number.</p>
+<p>The minimum of four numbers is obtained in the same way:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-green">a</span>, <span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-neon">b</span>, <span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-user">с</span>, <span class="text-orange">d</span>)))</code></pre>
+</div>
+<p>That said, we can write this formula a little more clearly:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-green">a</span>, <span class="text-neon">b</span>), <span class="text-viola">Math</span>.<span class="text-red">min</span>(<span class="text-user">c</span>, <span class="text-orange">d</span>))</code></pre>
+</div>
+<p>It all works the same for the <code>max()</code> method.</p>
+<p>Using the <code>if-else</code> operator or <span class="term">ternary operator</span> would make these code snippets a little more cumbersome. But using the <code>min()</code> and <code>max()</code> methods is just perfect.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0803"></div>

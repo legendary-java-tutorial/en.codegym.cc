@@ -1,0 +1,54 @@
+<h2>Method overloading</h2>
+<p>Our new and interesting topic for today is <span class="term text-viola">method overloading</span>. Be careful — method overloading must not be confused with method overriding.</p>
+<p>Unlike overriding, <span class="text-viola">overloading</span> is a very simple operation. It actually isn't an operation on methods, though sometimes it is referred to by the terrible term <span class="term">parametric polymorphism</span>.</p>
+<p>The issue here is that all methods within a class must have unique names. Well, that's not entirely accurate. Well, more accurately, that's not accurate at all. The method name does not have to be unique. What <span class="text-red">must</span> be unique is the union of the method name and the types of the method's parameters. This union is known as the <span class="term">method signature</span></p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void <span class="text-green">print();</span>
+public void <span class="text-green">print2();</span></code></pre>
+        </td>
+        <td>This is allowed. <span class="text-green">The two methods have unique names.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void <span class="text-green">print();</span>
+public void <span class="text-green">print(int n);</span></code></pre>
+        </td>
+        <td>And also this. <span class="text-green">The two methods have unique names (signatures).</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public void <span class="text-green">print(int n, int n2);</span>
+public void <span class="text-green">print(int n);</span></code></pre>
+        </td>
+        <td><span class="text-green">The methods are still unique</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public int <span class="text-red">print(int a);</span>
+public void <span class="text-red">print(int n);</span></code></pre>
+        </td>
+        <td>But this is <span class="text-red">not allowed</span>. The methods are <span class="text-red">not unique</span>. Even though they return different types.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public int <span class="text-green">print(int a, long b);</span>
+public long <span class="text-green">print(long b, int a);</span></code></pre>
+        </td>
+        <td>But <span class="text-green">you can do this</span>. Method parameters are <span class="text-green">unique</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>The signature includes the <span class="text-green">method name and the parameter types</span>. It does not include the <span class="text-red">method's return type and parameter names</span>. A class cannot have two methods with the same signatures — the compiler won't know which one to call.</p>
+<p>The <span class="text-orange">parameter names don't matter</span>, since they get lost during compilation. Once a method is compiled, <span class="text-green">only its name and parameter types are known.</span> The return type is not lost, but the method's result does not have to be assigned to anything, so it is also not included in the signature.</p>
+<p>According to <span class="term">OOP</span> principles, polymorphism is hiding different implementations behind a single interface. When we call the <code>System.out.println()</code> method, for example, different methods are called depending on which arguments are passed. This is polymorphism in action.</p>
+<p>That is why different methods with identical names contained in the same class are considered to be a weak form of polymorphism.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1708"></div>

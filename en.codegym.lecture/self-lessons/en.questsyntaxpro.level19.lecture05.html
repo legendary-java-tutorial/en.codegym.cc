@@ -1,0 +1,42 @@
+<h2>1. Linux</h2>
+<p>If you are using <span class="term text-neon">Linux</span> and <span class="term text-red">OpenJDK</span>, there is a chance that the compiler will throw an error when you run the game:</p>
+<div class="lesson-example">
+    <pre><code><strong>Error</strong>:(6, 8) java: cannot access javafx.application.Application class file for javafx.application.Application not found</code></pre>
+</div>
+<p><strong>What should you do?</strong></p>
+<p>The issue here is that the CodeGym game engine uses the <span class="term text-viola">JavaFX</span> library, but <span class="term text-red">OpenJDK</span> does not install this library by default. This needs to be fixed:</p>
+<ol>
+    <li>On the command line, enter the following command:
+        <pre><code>sudo apt-get install openjfx</code></pre>
+    </li>
+    <li>After that, go to the project settings (<span class="term">ALT</span>+<span class="term">CTRL</span>+<span class="term">SHIFT</span>+<span class="term">s</span>) → <span class="term">SDKs</span> → <span class="term">Classpath</span> and click the plus icon on the right. Select the <code>jfxrt.jar</code> file. It is located in the installed JDK at the path: <code>&lt;JDK_PATH&gt;/jre/lib/ext/jfxrt.jar</code></li>
+    <li>Click <span class="term">OK</span>.</li>
+</ol>
+<hr>
+<h2>2. JDK 11+</h2>
+<p>You may also encountering problems running the game if you are using JDK version 11 or later: Java JDK 11 <span class="text-red">no longer</span> includes the <span class="term text-viola">JavaFX</span> library. That means that when you run the game, the compiler won't be able to compile it, and there will be an error. To fix the problem, you need to add JavaFX to the project:</p>
+<ol>
+    <li>Download the <span class="term text-viola">JavaFX SDK</span> for Windows from <a href="https://gluonhq.com/products/javafx/" target="_blank">https://gluonhq.com/products/javafx/</a>.</li>
+    <li>Unzip the downloaded archive to any folder (preferably to the <code>lib</code> folder of the <span class="term">Games</span> project).</li>
+    <li>Open <span class="term">IDEA</span>.</li>
+    <li>In IDEA, go to <span class="term">File</span> → <span class="term">Project Structure...</span></li>
+    <li>Select the <span class="term">Libraries</span> tab and press <span class="term">+</span> → <span class="term">Java</span>.</li>
+    <li>Specify the path to the unpacked <code>javafx-sdk</code> folder and select the <code>lib</code> folder</li>
+    <li>Then press <span class="term">OK</span>. In the new window, add <span class="term text-viola">JavaFX</span> to the <span class="term">Games</span> module.</li>
+    <li>The new library should now appear. Press <span class="term">Apply</span> → <span class="term">OK</span>.</li>
+    <li>To start correctly, open the menu <span class="term">Run</span> → <span class="term">Edit configuration</span>, and in the <span class="term">VM options:</span> field, write the following:
+        <pre><code>--module-path ./lib/javafx-sdk-16/lib --add-modules=javafx.controls,javafx.fxml,javafx.base</code></pre>
+        <img data-max-width="1024" data-id="68b48b95-6642-40f1-a2db-a6025d3c623e" src="https://cdn.javarush.ru/images/article/68b48b95-6642-40f1-a2db-a6025d3c623e/1024.jpeg" alt="">
+        <p>ATTENTION:</p>
+        <p>In recent versions of IntelliJ IDEA, the "VM options" field is not shown by default. To display it, press <strong>ALT+V</strong>
+    <li>Then, in the same tab, you need to add an application. To do this, press <span class="term">+</span> → <span class="term">Application</span></li>
+    <li>Perform these steps:
+        <ol>
+            <li>Select the <span class="term">Games</span> module</li>
+            <li>Write the path to the main class (in this case, <code>SnakeGame</code>)</li>
+            <li>For the <span class="term">VM options</span> field, enter the same value as in item 9.</li>
+            <li>Press: <span class="term">Apply</span> → <span class="term">OK</span></li>
+        </ol>
+    </li>
+    <li>Run the game.</li>
+</ol>

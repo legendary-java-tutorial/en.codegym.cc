@@ -1,0 +1,96 @@
+<p>"I'd like to tell you how to merge strings. <span class="text-green">The process of merging or joining strings is often referred to using the short word 'concatenation'.</span> Cat lovers will find it easy to remember: con-Cat-en-Nation. <strong>I'm joking</strong>."</p>
+<p>"The rules for merging strings are simple. If we 'add' (+) a string and something else, then the 'something else' is implicitly converted to a string via the <span class="text-red">toString</span>() method."</p>
+<p><span class="text-user">"Were you talking to me just now?"</span></p>
+<p>"Okay, I'll explain it in an easier way. If we add a string, a number and a cat, then both the number and the cat will be transformed into strings. Here are some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Equivalent code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-red">cat</span> = new Cat();
+String text = <span class="text-green">"The cat is "</span> + <span class="text-red">cat</span>;</code></pre>
+        </td>
+        <td><code>Cat <span class="text-red">cat</span> = new Cat();</code><br />
+            <code> String s = <span class="text-red">cat</span>.toString();</code><br />
+            <code> String text = <span class="text-green">"The cat is "</span> + s;</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-red">a</span> = 5;
+String text = <span class="text-green">"a is "</span> + <span class="text-red">a</span>;</code></pre>
+        </td>
+        <td><code>int <span class="text-red">a</span> = 5;</code><br />
+            <code> String s = Integer.toString(<span class="text-red">a</span>);</code><br />
+            <code> String text = <span class="text-green">"a is "</span> + s;</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-red">a</span> = 5;
+String text = <span class="text-red">a</span> + <span class="text-green">"a is "</span>;</code></pre>
+        </td>
+        <td><code>int <span class="text-red">a</span> = 5;</code><br />
+            <code> String s = Integer.toString(<span class="text-red">a</span>);</code><br />
+            <code> String text = s + <span class="text-green">"a is "</span>;</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-corporate">cat</span> = new Cat();
+int <span class="text-red">a</span> = 5;
+String text = <span class="text-green">"The cat is "</span> + <span class="text-corporate">cat</span> + <span class="text-red">a</span>;</code></pre>
+        </td>
+        <td><code>Cat <span class="text-corporate">cat</span> = new Cat();</code><br />
+            <code> String s1 = <span class="text-corporate">cat</span>.toString();</code><br />
+            <code> String s2 = Integer.toString(<span class="text-red">a</span>);</code><br />
+            <code> String text = <span class="text-green">"The cat is "</span> + s1 + s2;</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-corporate">cat</span> = new Cat();
+int <span class="text-red">a</span> = 5;
+String text = <span class="text-red">a</span> + <span class="text-green">"The cat is "</span> + <span class="text-corporate">cat</span> + <span class="text-red">a</span>;</code></pre>
+        </td>
+        <td><code>Cat <span class="text-corporate">cat</span> = new Cat();</code><br />
+            <code> String s1 = <span class="text-corporate">cat</span>.toString();</code><br />
+            <code> String s2 = Integer.toString(<span class="text-red">a</span>);</code><br />
+            <code> String s3 = Integer.toString(<span class="text-red">a</span>);</code><br />
+            <code> String text = s3 + <span class="text-green">"The cat is "</span> + s1 + s2;</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Cat <span class="text-corporate">cat</span> = new Cat();
+int <span class="text-red">a</span> = 5;
+String text = <span class="text-corporate">cat</span> + <span class="text-red">a</span> + <span class="text-green">"The cat is "</span> + <span class="text-corporate">cat</span> + <span class="text-red">a</span>;</code></pre>
+        </td>
+        <td><span class="text-red"><em>The program won't compile!</em></span><br />
+            The addition operations are executed from left to right, so we get:<br />
+            <code>String text = (((<span class="text-corporate">cat</span> + <span class="text-red">a</span>) + <span class="text-green">"The cat is "</span>) + <span class="text-corporate">cat</span>) + <span class="text-red">a</span>;</code><br />
+            <span class="text-red"><em>If we add a cat to a number, there is no automatic string conversion.</em></span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>// But you can do this:
+Cat <span class="text-corporate">cat</span> = new Cat();
+int <span class="text-red">a</span> = 5;
+String text = <span class="text-corporate">cat</span> + (<span class="text-red">a</span> + <span class="text-green">"The cat is "</span>) + <span class="text-corporate">cat</span> + <span class="text-red">a</span>;
+
+// This is the same as:
+Cat <span class="text-corporate">cat</span> = new Cat();
+int <span class="text-red">a</span> = 5;
+String text = ((<span class="text-corporate">cat</span> + (<span class="text-red">a</span> + <span class="text-green">"The cat is "</span>)) + <span class="text-corporate">cat</span>)+<span class="text-red">a</span>;</code></pre>
+        </td>
+        <td><code>Cat <span class="text-corporate">cat</span> = new Cat();</code><br />
+            <code> String s1 = <span class="text-corporate">cat</span>.toString();</code><br />
+            <code> String s2 = <span class="text-corporate">cat</span>.toString();</code><br />
+            <code> String s3 = Integer.toString(<span class="text-red">a</span>);</code><br />
+            <code> String s4 = Integer.toString(<span class="text-red">a</span>);</code><br />
+            <code> String text = s1 + s3 + <span class="text-green">"The cat is "</span> + s2 + s4;</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"The time has come to do a few tasks from Diego."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0134"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task03.task0311"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task03.task0312"></div>

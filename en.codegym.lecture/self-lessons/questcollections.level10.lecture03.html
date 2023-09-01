@@ -1,0 +1,38 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"You seem very pleased with yourself today."</p>
+<p><span class="text-user">"Heh, Bilaabo got sick."</span></p>
+<p>"So he couldn't explain a bunch of interesting, useful, and needful things to you. It's time to put on your big-robot pants."</p>
+<p><span class="text-user">"Uh-huh. I promise to figure it all out myself. Bilaabo gave me a link."</span></p>
+<p>"Okay, good. Then I'll tell you something interesting."</p>
+<p>"Namely, how to download videos from the Internet."</p>
+<p>"To work with the Internet, Java has a special class called URL. Here's how to use this class to download a file:"</p>
+<p><span class="text-viola">1) First, you need to specify the correct URL of the server you need.</span></p>
+<p><span class="text-viola">2) Then you need to use the URL to establish a connection with the server.</span></p>
+<p><span class="text-viola">3) Then send the body of the request if it's a POST request. Or you can skip this step if it's a GET request.</span></p>
+<p><span class="text-viola">4) Finally, read the server response.</span></p>
+<p>"This is how a simple file download looks:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">URL url</span> = new <span class="text-red">URL</span>("<span class="text-corporate">https://www.google.com.ua/images/srpr/logo11w.png</span>");
+<span class="text-red">URLConnection connection</span> = <span class="text-red">url</span>.<strong>openConnection</strong>(); // Establish a connection
+
+// Get an OutputStream in order to write the request to it
+<span class="text-user">OutputStream outputStream</span> = <span class="text-red">connection</span>.<strong>getOutputStream</strong>();
+<span class="text-user">outputStream</span>.<strong>write</strong>(1);
+<span class="text-user">outputStream</span>.<strong>flush</strong>();
+
+// Get an InputStream in order to read the response from it
+<span class="text-green">InputStream inputStream</span> = <span class="text-red">connection</span>.getInputStream();
+<strong>Files.copy</strong>(<span class="text-green">inputStream</span>, new File("c:/google.png").toPath());</code></pre>
+<p>"First, we establish a connection with the server by getting a <span class="text-red">URLConnection</span> object."</p>
+<p>"Then we get the OutputStream that the request needs to be written to. And we write something to it."</p>
+<p>"Then we get the InputStream object representing the response, from which we read the response itself. We use the Files.copy method to save the sent data to the file «c:/google.png»."</p>
+<p><span class="text-user">"Yes, I understand. What's «write(1)»?"</span></p>
+<p>"Well, I included that to show you that you can write something there. You actually don't need to write anything in the request in order to download the file. You can just immediately get an InputStream and start reading the response from there. The URL object even has an openStream() method that immediately returns an InputStream object. But this is only suitable for GET requests. For example:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">URL url</span> = new <span class="text-red">URL</span>("<span class="text-corporate">https://www.google.com.ua/images/srpr/logo11w.png</span>");
+<span class="text-green">InputStream inputStream</span> = <span class="text-red">url</span>.<strong>openStream</strong>();
+<strong>Files.copy</strong>(<span class="text-green">inputStream</span>, new File("c:/google.png").toPath());</code></pre>
+<p><span class="text-user">"How interesting! I didn't think downloading a file was so easy."</span></p>
+<p>"Well, nobody usually does it like this, since files can be large and take a very long time to download."</p>
+<p>"There are quite a few frameworks that greatly simplify working with files, but I'm not ready to talk about them now. Some other time."</p>

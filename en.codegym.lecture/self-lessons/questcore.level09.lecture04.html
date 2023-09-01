@@ -1,0 +1,30 @@
+<p>"Hello, Amigo! Yesterday Rishi told you about <strong>FileInputStream</strong> and <strong>FileOutputStream</strong>. And today I will tell you about the <span class="text-red"><strong>FileReader</strong></span> and <span class="text-red"><strong>FileWriter</strong></span> classes."</p>
+<p>As you probably already guessed, all these classes are adapters between the File object and the <strong>InputStream</strong>, <strong>OutputStream</strong>, <strong>Reader</strong>, and <strong>Writer</strong> «interfaces».</p>
+<p><span class="text-user">"They are similar to adapters between File and Reader/Writer, but you only need to pass a String object to the constructor, not a File!"</span></p>
+<p>"Actually, they have several constructors. There are constructors for both File and String objects. If you pass a String object to the constructor, then the constructor will quietly create a File object using the file path taken from the passed String object."</p>
+<p>This is for convenience. <span class="text-red">Java's creators took the most frequent use cases for these classes and wrote constructors for all of them.</span> That's pretty convenient, don't you think?</p>
+<p><span class="text-user">"Oh, yes. Convenient. I agree. But why then do I have to constantly write:"</span><br />
+    <strong><span class="text-user">BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));</span></strong><br />
+    <span class="text-user">"Why didn't they add this use case?"</span></p>
+<p>"The issue here is that a  <span class="text-red">typical Java program doesn't work with the console. In truth, you almost never read anything from it.</span> Even with a web server, application server, or some other complicated system."</p>
+<p>But we do have PrintStream for outputting data and text to the console. Because these «server applications» often do use the console to display their status, errors, and all sorts of other information.</p>
+<p><span class="text-user">"Got it. And you can also copy a file using FileReader and FileWriter?"</span></p>
+<p>"Yes, if it's a text file (i.e. it consists of characters). Here's an example:"</p>
+<div class="code-heading">Copy a file on disk</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws Exception
+{
+ <span class="text-green">FileReader <strong>reader</strong></span> = new <span class="text-green">FileReader</span>("c:/data.txt");
+ <span class="text-user">FileWriter <strong>writer</strong></span> = new <span class="text-user">FileWriter</span>("c:/result.txt");
+
+ while (<span class="text-green">reader.<strong>ready</strong></span>()) //as long as there are unread bytes in the input stream
+ {
+  int data = <span class="text-green">reader.<strong>read</strong></span>(); //Read one character (the char will be widened to an int)
+  <span class="text-user">writer.<strong>write</strong></span>(data); //Write one character (the int will be truncated/narrowed to a char)
+ }
+
+ //Close the streams after we done using them
+ <span class="text-green">reader.<strong>close</strong></span>();
+ <span class="text-user">writer.<strong>close</strong></span>();
+}</code></pre>
+<p><span class="text-user">"Almost no differences."</span></p>
+<p>"Yeah, the differences are minimal."</p>

@@ -1,0 +1,148 @@
+<p>"Hello, Amigo! Today I will tell you what exactly an «<span class="text-red"><strong>adapter</strong></span>» is. I hope that after learning about this topic you'll have a much better understanding of input/output streams."</p>
+<a href='https://cdn.codegym.cc/images/article/381e3ee3-523d-4ca7-8d33-c82c16cf3d75/original.jpeg' target='_blank'><img data-id="381e3ee3-523d-4ca7-8d33-c82c16cf3d75" data-max-width="850" alt="Adapters - 1" src="https://cdn.codegym.cc/images/article/381e3ee3-523d-4ca7-8d33-c82c16cf3d75/original.jpeg"></a>
+<p>Imagine your program uses two frameworks written by other programmers/companies. Both frameworks are very good and use OOP principles: abstraction, polymorphism, encapsulation. Together, they almost completely cover what your program needs to do. You're left with a simple task. You need to pass objects created by one framework to the other framework. But both frameworks are completely different and "don't know about each other", i.e. they don't have any classes in common. You need to somehow convert the objects of one framework into objects of the other.</p>
+<p>This task can be beautifully solved by applying the «<strong>adapter</strong>» technique (design pattern):</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyClass <strong>implements</strong> <span class="text-red">Interface2</span>
+{
+ private <span class="text-red">Interface1</span> <span class="text-user">object</span>;
+ MyClass(<span class="text-red">Interface1</span> object)
+ {
+  this.<span class="text-user">object</span> = object;
+ }
+// This is where we put the Interface2 methods 
+// that call Interface1 methods
+}</code></pre>
+        </td>
+        <td>This reflects the adapter design pattern.</p>
+            <p>The basic idea is that the MyClass class converts (adapts) one interface to the other.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Can you give me a more specific example?"</span></p>
+<p>"OK. Let's say that each framework has its own unique "list" interface. They might look something like this:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface <span class="text-user"><strong>AlphaList</strong></span>
+{
+ void <span class="text-user">add</span>(int value);
+ void <span class="text-user">insert</span>(int index, int value);
+ int <span class="text-user">get</span>(int index);
+ void <span class="text-user">set</span>(int index, int value);
+ int <span class="text-user">count</span>();
+ void <span class="text-user">remove</span>(int index);
+}</code></pre>
+        </td>
+        <td>Code from the first (<span class="text-user"><strong>Alpha</strong></span>) framework</p>
+            <p><span class="text-user"><strong>AlphaList</strong></span> is one of the interfaces that allows the framework code to interact with the code that uses the framework.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-user"><strong>AlphaListManager</strong></span>
+{
+ public static <span class="text-user"><strong>AlphaList createList</strong></span>()
+ {
+  //some code to create an object
+ }
+}</code></pre>
+        </td>
+        <td><span class="text-user"><strong>AlphaList</strong></span><span class="text-user"><strong>Manager</strong></span> AlphaListManager is a class in the framework. Its createList method creates an <span class="text-user"><strong>AlphaList</strong></span> object</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface <span class="text-user"><strong>BetaList</strong></span>
+{
+ int <span class="text-red">getValue</span>(int index);
+ void <span class="text-red">setValue</span>(int index, int value);
+ int <span class="text-red">getSize</span>();
+ void <span class="text-red">setSize</span>(int newSize);
+}
+class <span class="text-red"><strong>BetaSaveManager</strong></span>
+{
+ public static void <span class="text-red">saveList</span>(<span class="text-red"><strong>BetaList</strong></span> list)
+ {
+  //some code to save a BetaList object
+  //to a file on disk
+ }
+}</code></pre>
+        </td>
+        <td>Code from the second (<span class="text-red"><strong>Beta</strong></span>) framework.</p>
+            <p><strong><span class="text-red">BetaList</span></strong> is one of the interfaces that allows the framework code to interact with the code that uses the framework.</p>
+            <p><span class="text-red"><strong>BetaSaveManager</strong></span> is a class in the framework. Its <span class="text-red">saveList</span> method saves a <span class="text-red"><strong>BetaList</strong></span> object</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java " data-line="" data-start=""><code>class <span class="text-green">ListAdapter</span> implements <span class="text-red">BetaList</span>
+{
+ private <span class="text-user"><strong>AlphaList</strong></span> <span class="text-user">list</span>;
+ <span class="text-green">ListAdapter</span>(<span class="text-user">AlphaList</span> list)
+ {
+  this.<span class="text-user">list</span> = list;
+ }
+
+ int <span class="text-red"><strong>getValue</strong></span>(int index)
+ {
+  return this.<span class="text-user">list.get</span>(index);
+ }
+
+ void <span class="text-red"><strong>setValue</strong></span>(int index, int value)
+ {
+  this.<span class="text-user">list.set</span>(index, value);
+ }
+
+ int <span class="text-red"><strong>getSize</strong></span>()
+ {
+  return this.list.count();
+ }
+
+ void <span class="text-red"><strong>setSize</strong></span>(int newSize)
+ {
+  if (newSize &gt; this.<span class="text-user">list.count</span>()
+  {
+   while (this.<span class="text-user">list.count</span>() &lt; newSize)
+  {
+   this.<span class="text-user">list.add</span>(null);
+  }
+ }
+ else if (newSize &lt; this.<span class="text-user">list.count</span>() {
+   while (this.<span class="text-user">list.count</span>() &gt; newSize)
+   {
+    list.remove(<span class="text-user">list.count</span>() - 1);
+   }
+  }
+ }
+}</code></pre>
+        </td>
+        <td>«Adapter» class that converts from the <span class="text-user"><strong>AlphaList</strong></span> interface to the <span class="text-red"><strong>BetaList</strong></span> interface</p>
+            <p>The <span class="text-green">ListAdapter</span> class implements the <span class="text-red">BetaList</span> interface from the second framework.</p>
+            <p>When someone calls these methods, the class code «forwards» the calls to the <span class="text-user">list</span> variable, which is an <span class="text-user">AlphaList</span> from the first framework.</p>
+            <p>An <span class="text-user">AlphaList</span> object is passed to the <span class="text-green">ListAdapter</span> constructor</p>
+            <p>The <span class="text-red">setSize</span> method operates according to the following rules: if the size of the list must be increased, add empty (null) items. If the size of the list needs to be reduced, delete items at the end.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java " data-line="" data-start=""><code>public static void main(String[] args)
+{
+ <span class="text-user"><strong>AlphaList</strong> listAlpha = <strong>AlphaListManager</strong>.createLi</span>st();
+ <span class="text-red"><strong>BetaList listBet</strong></span>a = new <span class="text-green"><strong>ListAdapter</strong></span>(<span class="text-user">listAlpha</span>);
+ <span class="text-red"><strong>BetaSaveManager</strong>.<strong>saveList</strong></span>(<span class="text-red"><strong>listBeta</strong></span>);
+}</code></pre>
+        </td>
+        <td>An example of how it might be used</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I liked your last example most of all. Very concise and understandable."</span></p>

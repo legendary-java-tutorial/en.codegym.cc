@@ -1,0 +1,119 @@
+<img data-max-width="1080" data-id="36a3a00d-9faa-458b-82fb-91aecef9b5bd" src="https://cdn.javarush.ru/images/article/36a3a00d-9faa-458b-82fb-91aecef9b5bd/1080.jpeg" alt="Exception types">
+<p>"I wanted to talk about one more thing today. In Java, all exceptions are divided into two types: <span class="text-green">checked</span> and <span class="text-red">unchecked</span> (those that must be caught and those you don't have to catch). By default, all <a href='https://codegym.cc/groups/posts/exceptions-in-java' target='_blank'>exceptions</a> need to be caught."</p>
+<p><span class="text-user">"Can you intentionally throw exceptions in your code?"</span></p>
+<p>"You can throw any exception in your own code. You can even write your own exceptions. But we'll talk about that later. Right now, let's concentrate on exceptions thrown by the Java Machine."</p>
+<p><span class="text-user">"OK."</span></p>
+<p>"If <span class="text-user">ClassNotFoundException</span> or <span class="text-user">FileNotFoundException</span> are thrown (occur)  in a method, the developer must indicate them in the method declaration. These are <span class="text-red">checked</span> exceptions. This is how it usually looks:"</p>
+<table>
+<tbody>
+<tr>
+<th>Examples of checked exceptions</th>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>public static void method1() <span class="text-red">throws</span> <span class="text-user">ClassNotFoundException</span>, <span class="text-user">FileNotFoundException</span></code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>
+public static void main() <span class="text-red">throws</span> <span class="text-user">IOException</span>
+</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code>public static void main() // Doesn't throw any exceptions</code></pre>
+</td>
+</tr>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"So we just write 'throws' followed by a comma-delimited list of exceptions, right?"</span></p>
+<p>"Yes. But there's more. For the program to compile, the method that calls <code><span class="text-green">method1</span></code> in the example below must do one of two things: <span class="text-green">either catch these exceptions or rethrow them (to the caller)</span>, <span class="text-corporate">indicating the rethrown exceptions in its declaration.</span>"</p>
+<p>"Again. If your main method needs to call a method whose declaration contains '<span class="text-red">throws</span> <span class="text-user">FileNotFoundException</span>, …', then you need to do one of two things:</p>
+<p>1) <span class="text-green">Catch</span> <span class="text-user">FileNotFoundException</span>, …</p>
+<p>You must wrap the code calling the unsafe method in <strong>a try-catch</strong> block.</p>
+<p>2) <span class="text-corporate">Don't catch</span> <span class="text-user">FileNotFoundException</span>, …</p>
+<p>You must add these exceptions to <strong>the throws</strong> list of your <strong>main</strong> method."</p>
+<p><span class="text-user">"Could you give me an example?"</span></p>
+<p>"Take a look at this:"</p>
+<div class="code-heading">Examples of checked exceptions</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+    <span class="text-green">method1</span>();
+}
+
+public static void <span class="text-green">method1</span>() <span class="text-red">throws</span> <span class="text-user">FileNotFoundException</span>, <span class="text-user">ClassNotFoundException</span>
+{
+    //Throws FileNotFoundException if the file doesn't exist
+    FileInputStream fis = new FileInputStream("C2:\badFileName.txt");
+}</code></pre>
+<p>"The code in this example won't compile, because <strong>the main</strong> method calls <span class="text-green">method1()</span>, which throws exceptions that have to be caught."</p>
+<p>"To make it compile, we need to add exception handling to the main method. You can do this in one of two ways:"</p>
+<div class="code-heading">Option 1: We simply rethrow the exception (to the caller):</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)  <span class="text-red">throws</span> <span class="text-user">FileNotFoundException</span>, <span class="text-user">ClassNotFoundException</span> 
+{
+    <span class="text-green">method1</span>();
+}
+
+public static void <span class="text-green">method1</span>() <span class="text-red">throws</span> <span class="text-user">FileNotFoundException</span>, <span class="text-user">ClassNotFoundException</span>
+{
+    //Throws FileNotFoundException if the file doesn't exist
+    FileInputStream fis = new FileInputStream("C2:\badFileName.txt");
+}</code></pre>
+<p>"And here we catch it with a <strong>try-catch</strong>:"</p>
+<div class="code-heading">Option 2: Catch the exception:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+    <span class="text-red">try</span>
+    {
+        <span class="text-green">method1</span>();
+    }
+    <span class="text-red">catch</span>(<span class="text-user">Exception</span> e)
+    {
+    }
+}
+
+public static void <span class="text-green">method1</span>() <span class="text-red">throws</span> <span class="text-user">FileNotFoundException</span>, <span class="text-user">ClassNotFoundException</span>
+{
+    //Throws FileNotFoundException if the file doesn't exist
+    FileInputStream fis = new FileInputStream("C2:\badFileName.txt");
+}</code></pre></code></pre>
+<p><span class="text-user">"It's starting to get clearer."</span></p>
+<p>"Look at the following example. It will help you understand the rest."</p>
+<div class="code-heading">Instead of handling exceptions, we rethrow them to methods farther down the call stack who know how to handle them:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">method2</span>() <span class="text-red">throws</span> <span class="text-user">FileNotFoundException</span>, <span class="text-user">ClassNotFoundException</span>
+{
+    <span class="text-green">method1</span>();
+}</code></pre>
+<div class="code-heading">Handle one exception and throw another:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">method3</span>() <span class="text-red">throws</span> ClassNotFoundException
+{
+   try
+    {
+        <span class="text-green">method1</span>();
+    }
+    catch (<span class="text-user">FileNotFoundException</span> <strong>e</strong>)
+    {
+        System.out.println("FileNotFoundException has been caught.");
+    }
+}</code></pre>
+<div class="code-heading">Catch both exceptions, throw none:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">method4</span>()
+{
+    try
+    {
+        <span class="text-green">method1</span>();
+    }
+    catch (<span class="text-user">FileNotFoundException</span> <strong>e</strong>)
+    {
+        System.out.println("FileNotFoundException has been caught.");
+    }
+    catch (<span class="text-user">ClassNotFoundException</span> <strong>e</strong>)
+    {
+        System.out.println("ClassNotFoundException has been caught.");
+    }
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task09.task0932"></div>
+<p>"There is one more type of exception, the  <span class="text-viola"><em>RuntimeException</em> and classes that inherit it.</span> <span class="text-green">You don't need to catch them. These are unchecked exceptions.</span> They are considered difficult to predict. You can deal with them in the same way, but you don't need to indicate them in <strong>a throws</strong> clause."</p>

@@ -1,0 +1,96 @@
+<div class="row"><div class="col col-md-10 col-lg-8"><div class="embed-responsive embed-responsive-16by9" style="white-space: normal"><iframe width="560" height="315" src="https://www.youtube.com/embed/KwilJ1Rpzh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Hi."</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"It's <span class="text-red">time to learn about loops.</span> Loops are as simple as if/else statements, but even more interesting. <span class="text-green">You can use a loop to execute any command or a block of commands multiple times.</span> In general, a loop looks like this:"</p>
+
+
+<div class="d-flex justify-content-center">
+<div>
+<div class="code-heading">Loop (example 1)</div>
+<pre class="lecture-code language-java"><code>
+while(<span class="text-red">boolean condition</span>)&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+    <span class="text-green">command</span>;
+</code></pre>
+</div>
+</div>
+
+<div class="d-flex justify-content-center">
+<div>
+<div class="code-heading">Loop (example 2) </div>
+<pre class="lecture-code language-java"><code>
+while(<span class="text-red">boolean condition</span>) 
+    <span class="text-user">block of commands in curly brackets</span></code></pre>
+</div>
+</div>
+<p>"It's all very simple. <span class="text-green">A command or block is executed again and again as long as the loop condition is true.</span> First, the condition is checked. If the condition is true, the loop body (block of commands) is executed. The condition is checked again. If the condition is true, the loop body is executed again. This repeats until the condition ceases to be true."</p>
+<p><span class="text-user">"What if it is always true or always false?"</span></p>
+<p>"If it is always true, then the program will never stop running: it will repeat the loop indefinitely. If it's always false, then the loop body will never be executed."</p>
+<p>Here are some examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-red">i</span> = 3;
+while (<span class="text-red">i</span> &gt;= 0)
+{
+    <span class="text-yellow">System.out.println</span>(<span class="text-red">i</span>);
+    <span class="text-red">i</span>--;    //Decrease by 1
+}</code></pre>
+        </td>
+        <td>3<br />
+            2<br />
+            1<br />
+            0</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>int <span class="text-red">i</span> = 0;
+while (<span class="text-red">i</span> &lt; 3)
+{
+    <span class="text-yellow">System.out.println</span>(<span class="text-red">i</span>);
+    <span class="text-red">i</span>++;   //Increase by 1
+}</code></pre>
+        </td>
+        <td>0<br />
+            1<br />
+            2</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>boolean <span class="text-red">isExit</span> = false;
+while (!<span class="text-red">isExit</span>)
+{
+    String <span class="text-user">s</span> = <span class="text-yellow">buffer</span>.readLine();
+    <span class="text-red">isExit</span> = <span class="text-user">s</span><strong>.equals</strong>("exit");
+}</code></pre>
+        </td>
+        <td>The program will print strings from the keyboard until the string <span class="text-green">'exit'</span> is input.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>while (true) 
+    <span class="text-viola">System.out.println</span>("C");</code></pre>
+        </td>
+        <td>The program will <span class="text-red">repeatedly</span> display the letter <span class="text-green">C</span> on screen.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>while (true) 
+{
+    String <span class="text-user">s</span> = <span class="text-yellow">buffer</span>.readLine();
+    if (<span class="text-user">s</span><strong>.equals</strong>("exit")) 
+        break;
+}</code></pre>
+        </td>
+        <td>The program will read strings from the keyboard until the string <span class="text-green">'exit'</span> is input. </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task04.task0445"></div>
+<p><span class="text-user">"After conditional statements, this doesn't seem complicated. I already want to try it."</span></p>

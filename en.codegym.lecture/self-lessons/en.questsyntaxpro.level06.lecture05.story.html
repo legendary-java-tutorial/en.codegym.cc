@@ -1,0 +1,284 @@
+<h2>Constants</h2>
+<p>"Amigo, did you know that in Java not all variables can be changed?"</p>
+<p><span class="text-user">"How's that, Kim? Indeed, the very word 'variable' speaks of change."</span></p>
+<p>"There is no doubt about that. Like many other programming languages, Java has <span class="term">constants</span>, that is, <span class="text-orange">variables whose values cannot be changed</span>. And the very word 'constant' speaks of constancy."</p>
+<p><span class="text-user">"And what are they for?"</span></p>
+<p>"Usually, they are used for some kind of fundamental thing such as the number <code>Pi</code> or the number of days in the months of the year. That said, in principle, a programmer can make any variable a constant, if he or she decides that doing so is necessary."</p>
+<p><span class="text-user">"You mean like a name, color of a car, or name of a day of the week?"</span></p>
+<p>"You've got the right idea. Anything that shouldn't be changed."</p>
+<p><span class="text-user">"And what do these constants look like in Java?"</span></p>
+<p>"Java has a special keyword for them: <code>final</code>. Creating an immutable variable looks the same as creating an ordinary one. The only difference is that before the variable's type you need to write the word <code>final</code>, like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>final <span class="text-viola">Type</span> <span class="text-red">name</span> = <span class="text-user">value</span>;</code></pre>
+</div>
+<p><span class="text-user">"What happens if you create a constant and then try to assign a different value to it?"</span></p>
+<p>"That is the right question to ask! And the right answer is this: if you try to assign a different value to a <code>final</code> variable, then your program simply won't compile."</p>
+<p><span class="text-user">"What if you declare a <code>final</code> variable but don't assign a value to it?"</span></p>
+<p>"There's no point in doing this, so it's also not allowed in Java. A <code>final</code> variable must be initialized when it is declared, that is, you must assign a value to it. There is one exception to this rule: you can move initialization of a static class variable into a constructor. But you'll learn out about that later.</p>
+<p>"That said, not everything that is <code>final</code> is a constant. To reduce the number of keywords, Java developers use the word <code>final</code> for more than just declaring constants. <code>final</code> can also apply to methods and even classes. Methods declared as <code>final</code> cannot be overridden, and a class declared as <code>final</code> cannot be inherited."</p>
+<p><span class="text-user">"Uh... Overridden? Inherited? What language are you speaking now?"</span></p>
+<p>"The language of object-oriented programming. You will get to it very soon. Until then, just enjoy the beautiful terminology."</p>
+<p><span class="text-user">"Okay. So, <code>final</code> can be put before variables, classes, and methods, and this keyword makes them immutable in some sense?"</span></p>
+<p>"Yes. Furthermore, the <code>final</code> modifier may be added before any variables: local variables, method parameters, class fields, and static class variables.</p>
+<p>"Here's the important thing to remember: <code>final</code> before a variable name is just <span class="text-orange">protection against any changes to that <span class="text-bold">variable</span></span>. If a variable stores a reference to an object, then the object can still be changed."</p>
+<p><span class="text-user">"I don't quite understand."</span></p>
+<p>"You will understand really soon. Here's an example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>final <span class="text-viola">int[]</span> <span class="text-red">data</span> = {1, 2, 3, 4, 5, 6};
+
+<span class="text-red">data</span> = {6, 7, 8, 9};
+
+<span class="text-red">data</span>[0] = 0;
+<span class="text-red">data</span>[1] = 0;
+<span class="text-red">data</span>[2] = 0;</code></pre>
+        </td>
+        <td>We create an array.<br><br>
+            <span class="text-red">This is not allowed:</span> the <code><span class="text-red">data</span></code> variable is declared as <code class="token keyword">final</code>.<br><br>
+            <span class="text-green">But you can do this.<br>
+And also this.</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Got it. That's tricky."</span></p>
+<h2>Global constants</h2>
+<p>"What do you think global constants are?"</p>
+<p><span class="text-user">"I guess global constants are probably like global variables, only constants?"</span></p>
+<p>"Exactly. If you need to declare global constants in your program, create <span class="term">static class variables</span>, and make them <code>public</code> and <code>final</code>. There is a special style for the names of such variables: they are written in all capital letters, with an underscore character used to separate words.</p>
+<p>Examples:</p>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+&nbsp; &nbsp;public static <span class="code code--inherit">final</span> <span class="text-viola">String</span> <span class="text-red">SOURCE_ROOT</span> = <span class="text-green">"c:\\projects\\my\\"</span>;
+&nbsp; &nbsp;public static <span class="code code--inherit">final</span> <span class="text-viola">int</span> <span class="text-red">DISPLAY_WIDTH</span> = 1024;
+&nbsp; &nbsp;public static <span class="code code--inherit">final</span> <span class="text-viola">int</span> <span class="text-red">DISPLAY_HEIGHT</span> = 768;
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0614"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0615"></div>
+<h2>Variable shadowing</h2>
+<p>"As I said before, you cannot create multiple local variables with the same names in a single method. In different methods, you can."</p>
+<p><span class="text-user">"I know that!"</span></p>
+<p>"But what you probably don't know is that variables in a class and local variables in a method may well have the same name.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+   public int <span class="text-neon">count</span> = 0;
+   public int <span class="text-green">sum</span> = 0;
+
+   public void add(int <span class="text-viola">data</span>)
+   {
+     <span class="text-green">sum</span> = <span class="text-green">sum</span> + <span class="text-viola">data</span>;
+     int <span class="text-red">sum</span> = <span class="text-viola">data</span> * 2;
+     <span class="text-neon">count</span>++;
+   }
+}</code></pre>
+        </td>
+        <td><pre><code>
+<span class="text-neon">count</span>, <span class="text-green">sum</span>
+<span class="text-neon">count</span>, <span class="text-green">sum</span>
+<span class="text-neon">count</span>, <span class="text-green">sum</span>
+<span class="text-neon">count</span>, <span class="text-green">sum</span>
+<span class="text-neon">count</span>, <span class="text-green">sum</span>
+<span class="text-neon">count</span>, <span class="text-green">sum</span>, <span class="text-viola">data</span>
+<span class="text-neon">count</span>, <span class="text-green">sum</span>, <span class="text-viola">data</span>
+<span class="text-neon">count</span>, <span class="text-red">sum</span>, <span class="text-viola">data</span>
+<span class="text-neon">count</span>, <span class="text-red">sum</span>, <span class="text-viola">data</span>
+<span class="text-neon">count</span>, <span class="text-green">sum</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"In the <code>add</code> method, we declared a local variable named <code><span class="text-red">sum</span></code>. Until the end of the method, it shadows (or <span class="text-bold">masks</span>) the <code>sum</code> instance variable."</p>
+<p><span class="text-user">"Hmm... I would say in some sense this is the expected behavior."</span></p>
+<p>"But that's not the end of the story. It turns out that if an instance variable is shadowed by a local variable, there is still a way to refer to the instance variable within the method. We do this by writing the <code>this</code> keyword before its name:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>this.<span class="text-green">name</span></code></pre>
+</div>
+<p>"Here's an example where the name conflict is successfully resolved:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+   public int <span class="text-neon">count</span> = 0;
+   public int <span class="text-green">sum</span> = 0;
+
+   public void add(int <span class="text-viola">data</span>)
+   {
+     int <span class="code"><span class="text-red">sum</span></span> = data * 2;
+     this.<span class="text-green">sum</span> = this.<span class="text-green">sum</span> + <span class="text-viola">data</span>;
+     <span class="text-neon">count</span>++;
+   }
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>
+this.<span class="text-neon">count</span>, this.<span class="text-green">sum</span>
+this.<span class="text-neon">count</span>, this.<span class="text-green">sum</span>
+this.<span class="text-neon">count</span>, this.<span class="text-green">sum</span>
+this.<span class="text-neon">count</span>, this.<span class="text-green">sum</span>
+this.<span class="text-neon">count</span>, this.<span class="text-green">sum</span>
+this.<span class="text-neon">count</span>, this.<span class="text-green">sum</span>, <span class="text-viola">data</span>
+this.<span class="text-neon">count</span>, <span class="code">this.<span class="text-green">sum</span></span>, <span class="text-viola">data</span>, <span class="code"><span class="text-red">sum</span></span>
+this.<span class="text-neon">count</span>, <span class="code">this.<span class="text-green">sum</span></span>, <span class="text-viola">data</span>, <span class="code"><span class="text-red">sum</span></span>
+this.<span class="text-neon">count</span>, <span class="code">this.<span class="text-green">sum</span></span>, <span class="text-viola">data</span>, <span class="code"><span class="text-red">sum</span></span>
+this.<span class="text-neon">count</span>, this.<span class="text-green">sum</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code><span class="text-neon">count</span></code> and <code><span class="text-green">sum</span></code> variables are available everywhere with or without the <code>this</code> keyword. On lines where the <code><span class="text-red">sum</span></code> local variable shadows the <code><span class="text-green">sum</span></code> instance variable, the <code><span class="text-green">sum</span></code> instance variable can only be accessed using the <code>this</code> keyword.</p>
+<p><span class="text-user">"Obviously, I'll need to practice this."</span></p>
+<p>"You'll manage."</p>
+<p><span class="text-user">"What if a static class variable is shadowed rather than just a (non-static) instance variable? You can't access it through <code>this</code>?"</span></p>
+<p>"Right you are. The this keyword won't work. You need to refer to it through the class name:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>ClassName.<span class="text-green">name</span></code></pre>
+</div>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Solution
+{
+   public static int <span class="text-neon">count</span> = 0;
+   public static int <span class="text-green">sum</span> = 0;
+
+   public void add(int <span class="text-viola">data</span>)
+   {
+     int <span class="code"><span class="text-red">sum</span></span> = data * 2;
+     Solution.<span class="text-green">sum</span> = Solution.<span class="text-green">sum</span> + <span class="text-viola">data</span>;
+     <span class="text-neon">count</span>++;
+   }
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>
+Solution.<span class="text-neon">count</span>, Solution.<span class="text-green">sum</span>
+Solution.<span class="text-neon">count</span>, Solution.<span class="text-green">sum</span>
+Solution.<span class="text-neon">count</span>, Solution.<span class="text-green">sum</span>
+Solution.<span class="text-neon">count</span>, Solution.<span class="text-green">sum</span>
+Solution.<span class="text-neon">count</span>, Solution.<span class="text-green">sum</span>
+Solution.<span class="text-neon">count</span>, Solution.<span class="text-green">sum</span>, <span class="text-viola">data</span>
+Solution.<span class="text-neon">count</span>, <span class="code">Solution.<span class="text-green">sum</span></span>, <span class="text-viola">data</span>, <span class="code"><span class="text-red">sum</span></span>
+Solution.<span class="text-neon">count</span>, <span class="code">Solution.<span class="text-green">sum</span></span>, <span class="text-viola">data</span>, <span class="code"><span class="text-red">sum</span></span>
+Solution.<span class="text-neon">count</span>, <span class="code">Solution.<span class="text-green">sum</span></span>, <span class="text-viola">data</span>, <span class="code"><span class="text-red">sum</span></span>
+Solution.<span class="text-neon">count</span>, Solution.<span class="text-green">sum</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Pay attention: you can access the <code><span class="text-neon">count</span></code> and <code><span class="text-green">sum</span></code> static variables everywhere with or without using the class name <code>Solution</code> as a prefix. In those lines where the <code><span class="text-red">sum</span></code> local variable shadows the <code><span class="text-green">sum</span></code> instance variable, access to the <code><span class="text-green">sum</span></code> class variable is possible only when using <code>Solution</code> as a prefix.</p>
+<h2>Variables inside a <code>for</code> loop</h2>
+<p>"And one more small but interesting fact. There's also a place where a variable is declared in a special way — I'm talking about inside a <span class="text-bold"><code>for</code> loop</span>." Typically, a <code>for</code> loop has a <code>counter</code> variable in parentheses. And what will be the visibility of this variable? After all, it's not in the body of the loop. Is it the whole method? Or not?"</p>
+<p><span class="text-user">"I've already heard something about this. As I understand it, a variable declared in the header of a <span class="text-bold"><code>for</code> loop</span> is visible only in the <span class="text-bold">body of the loop</span> and in the <span class="text-bold">header of the <code>for</code> loop</span>."</span></p>
+<p>"Well done, Amigo. But still, have a look at an example to reinforce this material:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   int <span class="text-red">a</span> = 0;
+
+   for (int <span class="text-neon">i</span> = 0; <span class="text-neon">i</span> &lt; 10; <span class="text-neon">i</span>++)
+   {
+     System.out.println(<span class="text-neon">i</span>);
+   }
+
+   System.out.println("end");
+}</code></pre>
+        </td>
+        <td><pre><code>
+
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>, <span class="text-neon">i</span>
+<span class="text-red">a</span>, <span class="text-neon">i</span>
+<span class="text-red">a</span>, <span class="text-neon">i</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"So you're saying that in my code I could write several loops one after another with a counter variable with the same name, and there will be no problems?"</span></p>
+<p>"There would be no problems. Here, look:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Variable visibility</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   int <span class="text-red">a</span> = 0;
+
+   for (int <span class="text-neon">i</span> = 0; <span class="text-neon">i</span> &lt; 10; <span class="text-neon">i</span>++)
+   {
+     System.out.println(<span class="text-neon">i</span>);
+   }
+
+   for (int <span class="text-viola">i</span> = 0; <span class="text-viola">i</span> &lt; 10; <span class="text-viola">i</span>--)
+   {
+     System.out.println(<span class="text-viola">i</span>);
+   }
+
+   System.out.println("end");
+}</code></pre>
+        </td>
+        <td><pre><code>
+
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>, <span class="text-neon">i</span>
+<span class="text-red">a</span>, <span class="text-neon">i</span>
+<span class="text-red">a</span>, <span class="text-neon">i</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>, <span class="text-viola">i</span>
+<span class="text-red">a</span>, <span class="text-viola">i</span>
+<span class="text-red">a</span>, <span class="text-viola">i</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+<span class="text-red">a</span>
+
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>

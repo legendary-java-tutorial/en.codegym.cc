@@ -1,0 +1,234 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="3ef91cb4-c6b4-462b-ac5a-a04cee6a27a1" src="https://cdn.javarush.ru/images/article/3ef91cb4-c6b4-462b-ac5a-a04cee6a27a1/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="f2c79ba5-f118-4696-80c2-34bc55a1ae6f" src="https://cdn.javarush.ru/images/article/f2c79ba5-f118-4696-80c2-34bc55a1ae6f/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="739c2862-04c8-4185-8273-a4cb2d30be35" src="https://cdn.javarush.ru/images/article/739c2862-04c8-4185-8273-a4cb2d30be35/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Pseudorandom numbers</h2>
+<p>Sometimes a programmer faces seemingly simple tasks: "select a random movie from a certain list", "choose a lottery winner", "shuffle the playlist when the user shakes his or her smartphone", "choose a random number to encrypt a message", etc. In each case, the developer asks a logical question: how to get a random number?</p>
+<p>Actually, getting a truly random number is rather difficult to do. In fact, it is so difficult that special mathematical coprocessors are built into some computers in order to generate numbers that satisfy all the requirements for true randomness.</p>
+<p>Programmers came up with their own solution: <span class="term">pseudorandom numbers</span>. Pseudorandom numbers are a kind of sequence, whose numbers appear to be random. However, by performing a careful analysis, an expert can find certain patterns in the sequence. Such numbers are not suitable for encrypting secret documents, but they suffice for simulating the roll of a die in a game.</p>
+<p>There are many algorithms for generating a sequence of pseudorandom numbers. Almost all of them generate the next random number based on the previous number and some additional helper numbers.</p>
+<p>For example, this program will display <code>1000</code> non-repeating numbers:</p>
+<pre class="language-java"><code>public class Main
+{
+&nbsp; &nbsp;public static int a = 41;
+&nbsp; &nbsp;public static int c = 11119;
+&nbsp; &nbsp;public static int m = 11113;
+&nbsp; &nbsp;public static int seed = 1;
+
+&nbsp; &nbsp;public static int getNextRandom()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;seed = (a * seed + c) % m;
+&nbsp; &nbsp; &nbsp;return seed;
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;for (int i = 0; i &lt; 1000; i++)
+&nbsp; &nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp; &nbsp;System.out.println(getNextRandom());
+&nbsp; &nbsp; &nbsp;}
+&nbsp; &nbsp;}
+}</code></pre>
+<p>By the way, we're not talking about pseudorandom numbers here. We're talking about a sequence of pseudorandom numbers. Looking at a single number, it is impossible to tell whether it is random or not.</p>
+<p>Indeed, there are various ways to get a random number:</p>
+<pre class="language-java"><code>public static int getRandomNumber()
+{
+&nbsp; &nbsp;return 4; // Here's a random number (we got it by rolling a die)
+}</code></pre>
+<hr>
+<h2>2. <code>Math.random()</code></h2>
+<p>In Java, the <code>Math</code> class has a special method that returns a random number. And as you might guess, the method is called <code>random</code>. In general, here is what it looks like to call this method:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>Math.<span class="text-red">random</span>()</code></pre>
+</div>
+<p>This method takes no parameters and returns a pseudorandom real number in the range from <code>0</code> to <code>1</code>. The number 1 itself is not included in the range.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Main
+{
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;for (int i = 0; i &lt; 10; i++)
+&nbsp; &nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp; &nbsp;System.out.println(Math.random());
+&nbsp; &nbsp; &nbsp;}
+&nbsp; &nbsp;}
+}&nbsp;</code></pre>
+        </td>
+        <td>
+                <pre><code>0.<span class="text-red">970</span>3753971734451
+0.<span class="text-red">099</span>79423801773157
+0.<span class="text-red">994</span>048474709053
+0.<span class="text-red">285</span>2203204171295
+0.<span class="text-red">135</span>51248551226025
+0.<span class="text-red">312</span>8547131272822
+0.<span class="text-red">534</span>2480554101412
+0.<span class="text-red">681</span>7369932044817
+0.<span class="text-red">184</span>0767788961758
+0.<span class="text-red">069</span>69563435451254</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>But what if this method isn't quite what you need? Suppose, you want to write a program that simulates rolling a six-sided die. How do you get random integers in the range 1..6, instead of real numbers in the range 0..1?</p>
+<p>It's actually pretty simple.</p>
+<p>First, you need to map the range <code>[0, 1)</code> onto <code>[0, 6)</code>. To do this, simply multiply the result returned by <code>random()</code> by <code>6</code>. Of course, to get integers, you need to round up:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Main
+{
+&nbsp; &nbsp;public static int getRandomDieNumber()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp; return (int) (Math.random() * 6);
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp; for (int i = 0; i &lt; 10; i++)
+&nbsp; &nbsp; &nbsp; {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int x = getRandomDieNumber();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;System.out.println(x);
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp;}
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>5
+2
+3
+3
+2
+4
+1
+1
+5
+0</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>getRandomDieNumber()</code> returns a random integer in the range <code>0..5</code> inclusive. But it will not be a number in the set <code>1, 2, 3, 4, 5, 6</code>. It will be a number in the set <code>0, 1, 2, 3, 4, 5</code>.</p>
+<p>If what you need is numbers in the set <code>1, 2, 3, 4, 5, 6</code>, then just add one to the random numbers:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Main
+{
+&nbsp; &nbsp;public static int getRandomDieNumber()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp; return (int) (Math.random() * 6) + 1;
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;for (int i = 0; i &lt; 10; i++)
+&nbsp; &nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp; &nbsp;int x = getRandomDieNumber();
+&nbsp; &nbsp; &nbsp; &nbsp;System.out.println(x);
+&nbsp; &nbsp; &nbsp;}
+&nbsp; &nbsp;}
+}</code></pre>
+        </td>
+        <td>
+                <pre><code>3
+2
+1
+3
+6
+5
+6
+1
+6
+6</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Now that's perfect!</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0804"></div>
+<hr>
+<h2>3. <code>Random</code> class</h2>
+<p>Java has a special <code>Random</code> class that encapsulates a sequence of pseudorandom numbers. You can create several objects of the <code>Random</code> class. Each of these objects will generate its own sequence of pseudorandom numbers.</p>
+<p>This is a super interesting class with lots of interesting methods. Let's start with the simplest.</p>
+<p><strong><code>double nextDouble()</code></strong></p>
+<p>This method returns a random real number in the range <code>0.0</code>-<code>1.0</code>. It is very similar to the <code>Math.random()</code> method. And no wonder, since the <code>Math.random()</code> method simply calls the <code>nextDouble()</code> method on a <code>Random</code> object.</p>
+<p><strong><code>float nextFloat()</code></strong></p>
+<p>This method is very similar to the <code>nextDouble()</code> method, but the returned random number is a <code>float</code>. It also lies in the range <code>0.0</code>-<code>1.0</code>. And, as always in Java, the range does not include the number <code>1.0</code> itself.</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">Random</span> <span class="text-viola">r</span> = new <span class="text-green">Random</span>();
+float f = <span class="text-viola">r</span>.<span class="text-red">nextFloat</span>();</code></pre>
+</div>
+<p><strong><code>int nextInt(int max)</code></strong></p>
+<p>This method returns a <span class="term">random integer</span> in the range <code>[0, max)</code>. <code>0</code> is included in the range, but <code>max</code> is not.</p>
+<p>In other words, if you want to get a random number in the set <code>1, 2, 3, 4, 5, 6</code>, then you need to add one to the returned random number:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">Random</span> <span class="text-viola">r</span> = new <span class="text-green">Random</span>();
+int x = <span class="text-viola">r</span>.<span class="text-red">nextInt</span>(6) + 1;</code></pre>
+</div>
+<p><strong><code>int nextInt()</code></strong></p>
+<p>This method is similar to the previous one, but it does not take any parameters. So what is the range for its return values? From <code>-2 billion</code> to <code>+2 billion</code>.</p>
+<p>Well, to be precise, from <code>-2147483648</code> to <code>+2147483647</code>.</p>
+<p><strong><code>long nextLong()</code></strong></p>
+<p>This method is similar to the <code>nextInt()</code> method, but the return value will fall somewhere in the entire possible range of <code>long</code>s.</p>
+<p><strong><code>boolean nextBoolean()</code></strong></p>
+<p>This method returns a random <code>boolean</code> value: <code><span class="text-red">false</span></code> or <code><span class="text-green">true</span></code>. This is very convenient when you need to get a long sequence of random boolean values.</p>
+<p><strong><code>void nextBytes(byte[] data)</code></strong></p>
+<p>This method returns nothing (since the return type is <code>void</code>). Instead, it fills the passed array with random values. This is very handy when you need a large buffer filled with random data.</p>
+<p><strong><code>double nextGaussian()</code></strong></p>
+<p>This method returns a random real number in the range <code>0.0</code>-<code>1.0</code>. However, the numbers are not evenly distributed in this range. Instead, they follow a <span class="term">normal distribution</span>.</p>
+<p>Values near the middle of the range (<code>0.5</code>) will occur more often than values at the ends of the range.</p>
+<p><img data-max-width="1024" data-id="fd83be96-681f-4f71-838f-6d107d4583b9" src="https://cdn.codegym.cc/images/article/fd83be96-681f-4f71-838f-6d107d4583b9/1024.jpeg" alt="Random class"></p>
+<p>In our case, the peak of the value distribution will be at <code>0.5</code></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0805"></div>
+<hr>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="44903a32-1b02-492a-a572-53bc7c3360be" src="https://cdn.javarush.ru/images/article/44903a32-1b02-492a-a572-53bc7c3360be/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="742da6a1-99ef-4e7f-a1e7-43e52dcdda2d" src="https://cdn.javarush.ru/images/article/742da6a1-99ef-4e7f-a1e7-43e52dcdda2d/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="c1249913-bb05-45d2-b9f9-78114f865abf" src="https://cdn.javarush.ru/images/article/c1249913-bb05-45d2-b9f9-78114f865abf/original.png" alt="">
+        </div>
+    </div>
+</div>

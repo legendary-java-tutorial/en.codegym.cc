@@ -1,0 +1,285 @@
+<a href='https://cdn.codegym.cc/images/article/738ef12c-b023-40bb-9b54-e58bf6c77726/original.jpeg' target='_blank'><img data-id="738ef12c-b023-40bb-9b54-e58bf6c77726" data-max-width="850" alt="Regular expressions (with examples) - 1" src="https://cdn.codegym.cc/images/article/738ef12c-b023-40bb-9b54-e58bf6c77726/original.jpeg"></a>
+
+<p>"And now I'll tell you about regular expressions. This topic is both complex and simple at the same time. To thoroughly understand regular expressions, you may need to read two or three hefty books, but I can teach you how to use them right now."</p>
+<p><strong>"As experienced programmers like to joke, <span class="text-red">if you have a problem and think you're going to solve it with regular expressions, now you have two problems."</span></strong></p>
+<p><span class="text-user">"Hmm."</span></p>
+<p>"I hope I didn't scare you too much, my friend. No?"</p>
+<p>"Okay, good. So, our new topic is regular expressions."</p>
+<p>"If we oversimplify them, regular expressions are patterns for strings."</p>
+<p>"You can check whether <strong>a string matches a given pattern.</strong> You can also split a string into parts using a delimiter or a pattern."</p>
+<p>"But let's start with something simple: <strong>what is a pattern?</strong>"</p>
+<p>"In SQL (but not in Java), you can check whether a string matches a particular pattern. This is how it looks:"</p>
+<pre data-line="" data-start="" class="line-numbers language-java"><code>name like 'Alex%'</code></pre>
+<p>Here name is a variable, like is a command to check a pattern, and "Alex%" is the pattern.</p>
+<p>In this case, % means any string or substring.</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Pattern</th>
+        <th width="50%">Strings matching the pattern</th>
+    </tr>
+    <tr>
+        <td><strong>&#8216;Alex%&#8217;</strong></td>
+        <td><strong>Alex</strong><br />
+            <strong>Alex</strong>andr<br />
+            <strong>Alex</strong>ander<br />
+            <strong>Alex</strong>andra<br />
+            ….</td>
+    </tr>
+    <tr>
+        <td><strong>&#8216;%x%&#8217;</strong></td>
+        <td>Ma<strong>x</strong><br />
+            Ma<strong>x</strong>im<br />
+            Ale<strong>x</strong>andr<br />
+            …</td>
+    </tr>
+    <tr>
+        <td><strong>&#8216;%a&#8217;</strong></td>
+        <td>Olg<strong>a</strong><br />
+            Helen<strong>a</strong><br />
+            Ir<strong>a</strong><br />
+            …</td>
+    </tr>
+    </tbody>
+</table>
+<p>"In SQL, if you need to specify that there should only be one other character, then you would use the underscore character: "_"."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Pattern</th>
+        <th width="50%">Strings matching the pattern</th>
+    </tr>
+    <tr>
+        <td><strong>&#8216;Alex%_&#8217;</strong></td>
+        <td><strong><s>Alex</s></strong><br />
+            <strong>Alex</strong>andr<br />
+            <strong>Alex</strong>ander<br />
+            <strong>Alex</strong>andra<br />
+            ….</td>
+    </tr>
+    <tr>
+        <td><strong>&#8216;_x&#8217;</strong></td>
+        <td>Ax<br />
+            Bx<br />
+            Cx<br />
+            …</td>
+    </tr>
+    <tr>
+        <td><strong>&#8216;___&#8217;</strong></td>
+        <td>Aaa<br />
+            Aab<br />
+            Bbb<br />
+            …</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That makes sense."</span></p>
+<p>"Okay, then let's move on to regular expressions."</p>
+<p>"Regular expressions typically include restriction not only on the number of characters, but also their 'content'. "Any mask usually consists of two (sometimes more) parts: the first describes character 'preferences', and the second describes the number of characters."</p>
+<p>"Here are some <strong>content</strong> examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20%">Pattern</th>
+        <th width="40%">Description</th>
+        <th width="40%">Examples</th>
+    </tr>
+    <tr>
+        <td>.</td>
+        <td>Any one character</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>\d</td>
+        <td>Any digit</td>
+        <td>7</td>
+    </tr>
+    <tr>
+        <td>\D</td>
+        <td>Any <strong>non-digit</strong></td>
+        <td>C</td>
+    </tr>
+    <tr>
+        <td>\s</td>
+        <td>A space, line break, or tab character</td>
+        <td>&#8216; &#8216;</td>
+    </tr>
+    <tr>
+        <td>\S</td>
+        <td>Anything except spaces, tabs, and line breaks</td>
+        <td>f</td>
+    </tr>
+    <tr>
+        <td>[a-z]</td>
+        <td>Any letter from a to z</td>
+        <td>z</td>
+    </tr>
+    <tr>
+        <td>[0-9]</td>
+        <td>Any digit from 0 to 9.</td>
+        <td>8</td>
+    </tr>
+    <tr>
+        <td>\w</td>
+        <td>Any word character</td>
+        <td>c</td>
+    </tr>
+    <tr>
+        <td>\W</td>
+        <td>Any <strong>non-word</strong> character</td>
+        <td>_</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I won't remember those right off, but it doesn't look too hard."</span></p>
+<p>"Excellent, then here are examples of <strong>the number of characters in a mask:</strong>"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20%">Pattern</th>
+        <th width="40%">Description</th>
+        <th width="40%">Examples</th>
+    </tr>
+    <tr>
+        <td>A?</td>
+        <td>The character 'A' occurs once or not at all</td>
+        <td>A</td>
+    </tr>
+    <tr>
+        <td>B+</td>
+        <td>The character 'B' occurs one or more times</td>
+        <td>BBBB</td>
+    </tr>
+    <tr>
+        <td>C*</td>
+        <td>The character 'C' occurs zero or more times</td>
+        <td>CCC</td>
+    </tr>
+    <tr>
+        <td>D{n}</td>
+        <td>The character 'D' occurs n times</td>
+        <td>The pattern D{4} matches DDDD</td>
+    </tr>
+    <tr>
+        <td>E{n,}</td>
+        <td>The character 'E' occurs n or more times</td>
+        <td>The pattern E{2,} matches EEEEEEE</td>
+    </tr>
+    <tr>
+        <td>F{n,m}</td>
+        <td>The character 'F' occurs between n and m times</td>
+        <td>The pattern E{2,4} matches EEEE</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That all seems pretty straightforward."</span></p>
+<p>"You're catching on to everything so quickly. Now let's see how it looks all together:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20%">Pattern</th>
+        <th width="40%">Description</th>
+        <th width="40%">Examples</th>
+    </tr>
+    <tr>
+        <td>[a-d]?</td>
+        <td>A character between 'a' and 'd' occurs once or not at all</td>
+        <td>a, b, c, d</td>
+    </tr>
+    <tr>
+        <td>[b-d,z]+</td>
+        <td>The characters 'b', 'c', 'd', or 'z' occur one or more times</td>
+        <td>b, bcdcdbdbdbdbzzzzbbzbzb, zbz</td>
+    </tr>
+    <tr>
+        <td>[1,7-9]*</td>
+        <td>The digits 1, 7, 8, or 9 occur zero or more times</td>
+        <td>1, 7, 9, 9777, 111199</td>
+    </tr>
+    <tr>
+        <td>1{5}</td>
+        <td>The digit 1 occurs 5 times</td>
+        <td>11111</td>
+    </tr>
+    <tr>
+        <td>[1,2,a,b]{2}</td>
+        <td>The symbols 1, 2, 'a', or 'b' occur twice</td>
+        <td>11, 12, 1a, ab, 2b, bb, 22</td>
+    </tr>
+    <tr>
+        <td>[a,0]{2,3}</td>
+        <td>The symbols 'a' or 0 occur 2 or 3 times</td>
+        <td>aa, a0,00,0a, aaa,000, a00,0a0, a0a</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Still all clear."</span></p>
+<p>"Really? Hmm. Either I explained everything really well or you're too quick on the uptake. Well, either way, that's good for us."</p>
+<p>"Here are a couple of new insights for you."</p>
+<p>"Since regular expressions are often used to find substrings, we can add two more characters (^ and $) to our patterns."</p>
+<p>"^ means that the substring must include the beginning of the string."</p>
+<p>"$ means that the substring must include the end of the string."</p>
+<p>"Here are some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="30%">Pattern</th>
+        <th width="70%">String and substrings that match the pattern</th>
+    </tr>
+    <tr>
+        <td>a{3}</td>
+        <td><strong><span class="text-green">aaa</span> a <span class="text-green">aaa</span> a <span class="text-green">aaa</span></strong></td>
+    </tr>
+    <tr>
+        <td>a{3}$</td>
+        <td><strong>aaa a aaa a <span class="text-green">aaa</span></strong></td>
+    </tr>
+    <tr>
+        <td>^a{3}</td>
+        <td><strong><span class="text-green">aaa</span> a aaa a aaa</strong></td>
+    </tr>
+    <tr>
+        <td>^a{3}$</td>
+        <td><strong>aaa a aaa a aaa</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p>"And one more important point."</p>
+<p>"In regular expressions, the following characters have special meaning: [ ] \ / ^ $ . | ? * + ( ) { }. They're called control characters. So, you can't simply use them in strings."</p>
+<p>"As in Java code, they must be escaped. "And again as in Java code, the '\' character is used for this."</p>
+<p>"If we want to describe a string consisting of three '?' characters, we can't write '?{3}', because '?' is a control character. We need to do it like this: \?{3}. If we want to use a '\' character, then we need to write '\\'."</p>
+<p><span class="text-user">"OK, got it."</span></p>
+<p>"And now here's another interesting tidbit. In files with Java code, the '\' character must also be escaped in strings, since it's a control character."</p>
+<p><span class="text-user">"Of course."</span></p>
+<p>"So, if you're trying to define a Java regular expression in a string, then you need to escape the '\' character twice."</p>
+<p>"Here's an example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="100%"></th>
+    </tr>
+    <tr>
+        <td>I want a mask that matches 'c:\anything'</td>
+    </tr>
+    <tr>
+        <td>In theory, the regular expression should look like this:<br />
+            one 'c' character,<br />
+            colon,<br />
+            backslash,<br />
+            period, and asterisk (to denote any number of characters). I added spaces to improve readability:<br />
+            c : \ .*<br />
+            But the characters '\' and '.' need to be escaped, so the regular expression will look like this:<br />
+            c :  <span class="text-red">\\</span><span class="text-green">\.</span>*<br />
+            Or, without spaces<br />
+            c:<span class="text-red">\\</span><span class="text-green">\.</span>*</td>
+    </tr>
+    <tr>
+        <td>"We should have three backslashes in our regular expression.<br>
+            That means that in a Java file the regular expression will look like this:"<br />
+            String regexp = "c:<span class="text-red">\\\\</span><span class="text-green">\\.</span>*";</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Wow! Whoa. Now I know."</span></p>
+<p>"And if you decide to dig deeper into this, here are a couple of good links:"</p>
+<p><a href='https://en.wikipedia.org/wiki/Regular_expression' target='_blank'>Lesson on Wikipedia </a></p>

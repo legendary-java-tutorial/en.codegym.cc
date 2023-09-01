@@ -1,0 +1,23 @@
+<a href='https://cdn.codegym.cc/images/article/bfb41b3f-918f-456b-9d42-b84ccbd37034/original.jpeg' target='_blank'><img data-id="bfb41b3f-918f-456b-9d42-b84ccbd37034" data-max-width="850" alt="Using synchronized - 1" src="https://cdn.codegym.cc/images/article/bfb41b3f-918f-456b-9d42-b84ccbd37034/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Yes, I'm here, I'm here."</span></p>
+<p>"Today, I will tell you about using <strong>synchronized</strong> in practice."</p>
+<p>"When a program has many objects and threads, it often happens that multiple threads work with the same object simultaneously. In doing so, the threads interfere with each other."</p>
+<p><span class="text-user">"Yes, I already know this."</span></p>
+<p>"So, let's say you have an object being accessed by multiple threads. You can do two things to avoid problems."</p>
+<p>"The first is to use synchronized blocks to wrap every location where the object is accessed. But this approach may not work if some programmer writes code that accesses the object directly, without a synchronized block."</p>
+<p>"Therefore, a second approach is used most of the time—making the object thread-safe." "In other words, the synchronized mechanism is built into the object itself: it declares its methods synchronized and/or wraps the code inside its methods in synchronized blocks."</p>
+<p><span class="text-user">"So any object that I might use from multiple threads, and this is almost all objects in the program, I have to make thread-safe?"</span></p>
+<p>"In general, yes. In reality, not all objects in a program are used by different threads, but there are usually a lot. So, when you start writing code for a thread and access various objects from it, then with each method call you should ask yourself, «Is this call safe?»"</strong></p>
+<p><span class="text-user">"Safe?"</span></p>
+<p>"Thread-safe, which means it can be safely called from multiple threads."</p>
+<p>"Here are some examples. Suppose you have a String object that is accessed from different threads. As you were already supposed to remember, String is <strong>immutable</strong>—as are all other primitive types. This means that an object does not change after it is created. This means it is impossible to «break» such an object. All immutable objects are thread-safe."</p>
+<p><span class="text-user">"Well, that makes things easier."</span></p>
+<p>"Now, suppose you need a mutable string."</p>
+<p><span class="text-user">"Yeah, I remember. There are two kinds of such strings: StringBuffer and StringBuilder. StringBuffer is like StringBuilder, but all of its methods are synchronized. Is it also thread-safe?"</span></p>
+<p>"Yes. If you need to access a StringBuilder object from multiple threads, you must replace it with a StringBuffer. Otherwise, sooner or later the threads will change it at the same time and «break» it."</p>
+<p><span class="text-user">"What if the object being accessed from different threads is an object of my own class? Do I need to add synchronized to its methods in this case as well?"</span></p>
+<p>"Yes. It's best to follow this rule: all objects that will be accessed from different threads must be thread-safe."</p>
+<p><span class="text-user">"I see. I didn't think that everything was so serious. Thanks, Ellie."</span></p>
+<p>"You're welcome. I hope these tips will help you when Diego gives you a few of his easy tasks. ☺"</p>

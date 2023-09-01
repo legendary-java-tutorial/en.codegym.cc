@@ -1,0 +1,316 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"I'm glad to see you. Today we have a small but very informative lesson. Today I will tell you about the JavaScript language."</p>
+
+<a href='https://cdn.codegym.cc/images/article/9f8cf315-6746-4213-b489-6e43494ad30b/original.jpeg' target='_blank'><img data-id="9f8cf315-6746-4213-b489-6e43494ad30b" data-max-width="850" alt="JavaScript - 1" src="https://cdn.codegym.cc/images/article/9f8cf315-6746-4213-b489-6e43494ad30b/original.jpeg"></a>
+
+<p><span class="text-user">"A new language? How interesting…"</span></p>
+<p>"JavaScript is currently popular thanks to the Internet. The fact is that it is the only language that all browsers can execute. If you want to add animation or logic to your web page, then you can do it with JavaScript."</p>
+<p><span class="text-user">"Is it true that JavaScript is the most popular language?"</span></p>
+<p>"Yes, but it would be more accurate to say that it is the most popular 'second language'. C++, Java, C#, and PHP programmers need to write small scripts in JavaScript to liven up their webpages. But, far fewer people only write code in JavaScript."</p>
+<p><span class="text-user">"Why is it named JavaScript? It sounds almost like Java."</span></p>
+<p>"Actually, initially, it was called LiveScript, but when Java began to become more popular, it was renamed JavaScript."</p>
+<p><span class="text-red">"Java and JavaScript are two completely different languages. Don't confuse them."</span></p>
+<p>"Unlike Java, JavaScript doesn't have classes, and doesn't support static typing, multithreading, and much more. <strong>Java is like a large set of construction tools, while JavaScript is more like a Swiss Army knife.</strong> JavaScript is designed to solve small tasks, but Java is for solving large and very large tasks."</p>
+<p>"Here are some facts about JavaScript:"</p>
+<h3>"The first fact is that JavaScript has functions, but no classes"</h3>
+<p>"You simply write programs using several functions and that's it. For example:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">JavaScript</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>function <span class="text-red">min</span>(a, b)
+{
+ return a
+}<b></b></code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static int <span class="text-red">min</span>(int a, int b)
+{
+return a
+}<b></b></code></pre>
+    </div>
+</div>
+<p>"New functions are declared using «function &lt;name&gt;».</p>
+<p>"Another example:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">JavaScript</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>function <span class="red_text text-red">min</span>(<span class="green_text">a</span>, <span class="dblue_text">b</span>)
+{
+ return <span class="green_text">a</span> &lt; <span class="dblue_text">b</span> ? <span class="green_text">a</span>: <span class="dblue_text">b</span>;
+}
+
+function main()
+{
+ var s = 3;
+ var t = 5;
+ var min = <span class="red_text text-red">min</span>(s, t);
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static int <span class="red_text text-red">min</span>(int <span class="green_text">a</span>, int <span class="dblue_text">b</span>)
+{
+ return <span class="green_text">a</span> &lt; <span class="dblue_text">b</span> ? <span class="green_text">a</span> : <span class="dblue_text">b</span>;
+}
+
+public static void main()
+{
+ int s = 3;
+ int t = 5;
+ int min = <span class="red_text text-red">min</span>(s,t);
+}</code></pre>
+    </div>
+</div>
+<h3>"The second fact is that JavaScript has variables, but those variables don't have types"</h3>
+<p>"JavaScript is a dynamically typed language. This means that variables actually don't have types. Any variable can be assigned a value of any type (values have types). For example:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">JavaScript</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>function <span class="text-green">main</span>()
+{
+ <span class="text-red">var</span> s = "<strong>Bender</strong>";
+ <span class="text-red">var</span> k = <strong>1</strong>;
+ <span class="text-red">var</span> n = <strong>s.length</strong>;
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">main</span>()
+{
+ <span class="text-red">String</span> s ="<strong>Bender</strong>";
+ <span class="text-red">int</span> k = <strong>1</strong>;
+ <span class="text-red">int</span> n = <strong>s.length</strong>();
+}</code></pre>
+    </div>
+</div>
+<p>"But dynamic typing increases the risk of runtime errors:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">JavaScript</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>function <span class="text-green">main</span>()
+{
+ var s = "Bender";
+ var k = 1;
+<span class="text-red"> var n = k.length;</span>
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">main</span>()
+{
+ String s ="Bender";
+ int k = 1;
+ <span class="text-red">int n = k.length();</span>
+}</code></pre>
+    </div>
+</div>
+<p>"In the example above, we used the variable k (an integer) instead of s (a String). In Java, the error would be detected at compile time, but in JavaScript, it won't be caught until later when the code is running."</p>
+<p>"If you want to declare a variable in JavaScript, you need to write «var &lt;name&gt;». There are no variable types, and there are no types for methods/functions or their arguments."</p>
+<p><strong><span class="text-green">"JavaScript has very few strict rules and a lot of anarchy."</span></strong></p>
+<p>"You can declare a function with 5 arguments and call it with two—the rest will just be null. You can declare a function with two arguments, and pass five when you call it. Three will simply be thrown away. There is minimal control over errors, typos, and changes."</p>
+<h3>"The third fact is that JavaScript has if, for, and while statements"</h3>
+<p>"JavaScript has if, for, and while. This is great news. Look at these examples:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">JavaScript</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>function</strong> <span class="text-green">main</span>()
+{
+ var s = "Bender";
+
+ var result = "";
+
+ <span class="text-red">for</span>(var i = 0; i &lt; s.length; i++)
+ {
+  result += s[i] + "";
+ }
+ <span class="text-user">if</span>(result.length &gt; 10)
+ {
+  alert (result);
+ }
+ <span class="text-user">else</span>
+ {
+  <span class="text-yellow">while</span>(result.length <= 10)
+  {
+   result += " ";
+  }
+  alert(result);
+ }
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">main</span>()
+{
+ String s = "Bender";
+ char[] s2 = s.toCharArray();
+ String result = "";
+
+ <span class="text-red">for</span>(int i = 0; i &lt; s.length(); i++)
+ {
+  result += s2[i] + "";
+ }
+ <span class="text-user">if</span>(result.length() &gt; 10)
+ {
+  System.out.println(result);
+ }
+ <span class="text-user">else</span>
+ {
+  <span class="text-yellow">while</span> (result.length() <= 10)
+  {
+   result += " ";
+  }
+  System.out.println(result);
+ }
+}</code></pre>
+    </div>
+</div>
+<p><span class="text-user">"They're pretty similar. I think I could figure out how code written in JavaScript works."</span></p>
+<p>"Your optimism is good."</p>
+<h3>"The fourth fact is that JavaScript supports try-catch-finally blocks"</h3>
+<p>"<strong>JavaScript</strong> has exceptions (<strong>Error</strong>) and that's good. It doesn't have <strong>checked</strong> exceptions, only <strong>unchecked</strong> exceptions similar to a <strong>RuntimeException</strong>. The <strong>try-catch-finally</strong> construct works the same as in Java. For example:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">JavaScript</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>function <span class="text-green">main</span>()
+{
+ <span class="text-red">try</span>
+ {
+  var s = null;
+  var n = s.length;
+ }
+ <span class="text-red">catch</span>(e)
+ {
+  alert(e);
+ }
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">main</span>()
+{
+ <span class="text-red">try</span>
+ {
+  String s = null;
+  int n = s.length();
+ }
+ <span class="text-red">catch</span>(Exception e)
+ {
+  System.out.println(e);
+ }
+}</code></pre>
+    </div>
+</div>
+<p>"When we try to get the length of the String, an exception will be thrown since the variable is null."</p>
+<h3>"The fifth fact is that JavaScript has arrays"</h3>
+<p>"Good news: JavaScript has arrays. Bad news: there are no lists or collections."</p>
+<p>"Another piece of good news is that arrays can dynamically expand when new elements are added and decrease as elements are removed. <span class="text-corporate">It's more like a hybrid between an array and list.</span>"</p>
+<p>For example:</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">JavaScript</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>function <span class="text-green">main</span>()
+{
+ var <span class="text-red">m</span> = [1, 3, 18, 45, 'c', "roma", null];
+ alert(<span class="text-red">m</span>.length); // 7
+
+ <span class="text-red">m</span>.push("end");
+ alert(<span class="text-red">m</span>.length); // 8
+
+ for (var i = 0; i &lt; <span class="text-red">m</span>.length; i++)
+ {
+  alert(<span class="text-red">m</span>[i]);
+ }
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">main</span>()
+{
+ List <span class="text-red">m</span> = Arrays.asList(1, 3, 18, 45,'c', "roma", null);
+ System.out.println(<span class="text-red">m</span>.size()); // 7
+
+ <span class="text-red">m</span>.add("end");
+ System.out.println(<span class="text-red">m</span>.size()); // 8
+
+ for (int i = 0; i &lt; <span class="text-red">m</span>.size(); i++)
+ {
+  System.out.println(<span class="text-red">m</span>.get(i));
+ }
+}</code></pre>
+    </div>
+</div>
+<p><span class="text-user">"What are those square brackets in the array declaration?"</span></p>
+<p>"That's exactly what an array declaration is. To declare an array, you need to write square brackets. Then you list the elements of the array in between the brackets. You declare an empty array simply with a pair of brackets."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>var m = [];</strong></code></pre>
+<h3>"The sixth fact is that JavaScript has objects"</h3>
+<p>"JavaScript has objects. In fact, everything in JavaScript is an object, even primitive types. Each object is represented as a set of key-value pairs. Roughly speaking, every JavaScript object is equivalent to a HashMap in Java. Here's an example of an object declaration:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">JavaScript</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>function <span class="text-green">main</span>()
+{
+ var <span class="text-red">m</span> = {
+  first_name : "Bill",
+  last_name: "Gates",
+  age: 54,
+  weight: 67,
+ <span class="text-user">children</span>: ["Emma", "Catrin"],
+ <span class="text-corporate">wife</span>: {
+  first_name : "Melinda",
+  last_name: "Gates",
+  age: 45,
+  }
+};
+
+ alert(<span class="text-red">m</span>.first_name); // Bill
+ alert(<span class="text-red">m</span>.age); // 54
+ alert(<span class="text-red">m</span>.<span class="text-corporate">wife</span>.first_name); // Melinda
+
+ <span class="text-corporate">m</span>.age = 45;
+ <span class="text-corporate">m</span>.age++;
+ <span class="text-corporate">m</span>["first_name"] = "Stive";
+ <span class="text-corporate">m</span>["wife"] = null;</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void <span class="text-green">main</span>()
+{
+ HashMap <span class="text-red">m</span> = new HashMap();
+ <span class="text-red">m</span>.put("first_name", "Bill");
+ <span class="text-red">m</span>.put("last_name", "Gates");
+ <span class="text-red">m</span>.put("age", 54);
+ <span class="text-red">m</span>.put("weight", 67);
+
+ String[] <span class="text-user">children</span> = {"Emma", "Catrin"};
+ <span class="text-red">m</span>.put("children", <span class="text-user">children</span>);
+
+ HashMap <span class="text-corporate">wife</span> = new HashMap();
+ <span class="text-corporate">wife</span>.put("first_name", "Melinda");
+ <span class="text-corporate">wife</span>.put("last_name", "Gates");
+ <span class="text-corporate">wife</span>.put("age", 45);
+<span class="text-red"> m</span>.put("wife", wife);
+
+ System.out.println(<span class="text-red">m</span>.get("first_name"));
+ System.out.println(<span class="text-red">m</span>.get("age"));
+
+ HashMap <span class="text-corporate">w</span> = ((HashMap)<span class="text-red">m</span>.get("wife"));
+ System.out.println(<span class="text-corporate">w</span>.get("first_name")));
+
+<span class="text-red"> m</span>.put("age", 45);
+ <span class="text-red">m</span>.put("age", ((Integer)m.get("age")) + 1);
+ <span class="text-red">m</span>.put("first_name", "Stive");
+ <span class="text-red">m</span>.put("wife", null);</code></pre>
+    </div>
+</div>
+<p>"To create a new object, you just have to write two curly braces: «{}»."</p>
+<p>"Inside the braces, you can specify object data in the following format: «key, colon, value, comma»."</p>
+<p>"Object fields can be accessed in two ways:"</p>
+<div class="code-heading">Equivalent statements</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">m</span>.<span class="text-green">age</span> = 45;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">m</span>[“<span class="text-green">age</span>”] = 45;</code></pre>
+<p>"If the specified field doesn't exist, then it is created."</p>
+<p>"My relief valve is overloaded or something. I think we should take a break."</p>
+<h3>"The seventh fact is that JavaScript was created to work inside web pages."</h3>

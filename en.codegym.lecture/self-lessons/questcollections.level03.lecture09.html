@@ -1,0 +1,125 @@
+<p>"Okay, then. As you've probably already guessed, that wasn't everything."</p>
+<p>"Now I'll tell you about several other aspects of JAXB. But as we did with JSON, we will begin with collections."</p>
+<p>"When deserializing collections using JAXB, there is also uncertainty about which particular collection (ArrayList, LinkedList, Vector, etc.) to use for the List variable. And again the answer to this question is provided by annotations."</p>
+<p>"It's all pretty simple. <span class="text-corporate">If the collection type is not specified in its annotation, then JAXB will try to select the most appropriate collection using its type.</span> For a List, this will be ArrayList; for a Map, it will be HashMap, etc."</p>
+<p>"In reality, there are far fewer problems here than with JSON, because each class has a unique tag, and you can use the tag to specify the exact class."</p>
+<p>"For example, if you need to deserialize a group of elements that inherit a common ancestor, you use the <span class="text-red">@XmlAny:</span> annotation"</p>
+<div class="code-heading">Convert an object from XML</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void</strong> main(String[] args) throws JAXBException
+{
+ String <span class="text-viola">xmldata</span> = "&lt;zoo&gt;<span class="grey_text">&lt;cat/&gt;&lt;cat/&gt;</span><span class="dblue_text text-user">&lt;dog/&gt;</span><span class="grey_text">&lt;cat/&gt;</span>&lt;/zoo&gt;";
+ StringReader reader = new <strong>StringReader</strong>(<span class="text-viola">xmldata</span>);
+
+ JAXBContext <span class="text-red">context</span> = <strong>JAXBContext.newInstance</strong>(<span class="text-green">Cat.class, Zoo.class, Dog.class</span>);
+ Unmarshaller <span class="text-red">unmarshaller</span> = <span class="text-red">context</span>.<strong>createUnmarshaller</strong>();
+
+<span class="text-green"> Cat cat</span> = (<span class="text-green">Cat</span>) <span class="text-red">unmarshaller</span>.<strong>unmarshal</strong>(<span class="text-user">reader</span>);
+}</code></pre>
+<div class="code-heading">A class whose objects are deserialized from XML</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><span class="text-green">@XmlType(name = "zoo")</span>
+<span class="text-green">@XmlRootElement</span>
+<span class="text-green"><b>class</b> Zoo</span>
+<span class="text-green">{</span>
+<span class="text-green"> <span class="red_text text-red">@XmlAny</span></span>
+<span class="text-green"> <b>public</b> List&lt;Object&gt; animals;</span>
+<span class="text-green">}</span>
+
+<span class="text-green">@XmlType(name = "cat")</span>
+<span class="text-green">@XmlRootElement</span>
+<span class="text-green"><b>class</b> Cat</span>
+<span class="text-green">{</span>
+<span class="text-green"> <b>public</b> String name;</span>
+<span class="text-green"> <b>public</b> int age;</span>
+<span class="text-green"> <b>public</b> int weight;</span>
+
+<span class="text-green"> Cat()</span>
+<span class="text-green"> {</span>
+<span class="text-green"> }</span>
+<span class="text-green">}</span>
+
+<span class="text-green">@XmlType(name = "dog")</span>
+<span class="text-green">@XmlRootElement</span>
+<span class="text-green"><b>class</b> Dog</span>
+<span class="text-green">{</span>
+<span class="text-green"> <b>public</b> String name;</span>
+<span class="text-green"> <b>public</b> int age;</span>
+<span class="text-green"> <b>public</b> int weight;</span>
+
+<span class="text-green"> Cat()</span>
+<span class="text-green"> {</span>
+<span class="text-green"> }</span>
+<span class="text-green">} </span></pre>
+<p>"If a collection is marked with the <span class="text-red">@XmlAny</span> annotation, then any suitable objects can be put in it. And the JAXB <span class="text-red">Unmarshaller</span> pays attention to the tags when populating the collection."</p>
+<p>"In this case, the sequence of tags "<strong>&lt;zoo&gt;<span class="green_text text-green">&lt;cat/&gt;&lt;cat/&gt;</span><span class="red_text text-red">&lt;dog/&gt;</span><span class="green_text text-green">&lt;cat/&gt;</span>&lt;/zoo&gt;</strong>" will be converted into a collection with Cat, Cat, Dog, and Cat objects."</p>
+<p><span class="text-user">"That's about what I expected."</span></p>
+<p>"Uh-huh. Oh, by the way, one more thing. If you deserialize a mixture of text and tags, you need to use the <strong>@XmlMixed</strong> annotation."</p>
+<p>"Here's an example of this type of XML:"</p>
+<div class="code-heading">Sample XML that requires the @XmlMixed annotation</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><span class="grey_text">&lt;data&gt;</span>
+<span class="dblue_text text-user">&lt;items&gt;</span>
+<span class="text-red"> <span class="red_text">test 1</span></span>
+<span class="green_text text-green">&lt;item/&gt;</span>
+<span class="text-red"> <span class="red_text">text 2</span></span>
+<span class="green_text text-green">&lt;item&gt;</span>
+<span class="text-viola"> <span class="violet_text">name</span></span>
+<span class="green_text text-green">&lt;/item&gt;</span>
+<span class="text-red"> <span class="red_text">text 3</span></span>
+<span class="dblue_text text-user">&lt;/items&gt;</span>
+<span class="grey_text">&lt;/data&gt;</span></pre>
+<p><span class="text-user">"Wow. I had forgotten that such XML exists. I got used to everything being pretty, with embedded tags, and everything else."</span></p>
+<p>"It does exist. And JAXB has an annotation even for this case!"</p>
+<p><span class="text-user">"Great. By the way, I wanted to ask: how are enums serialized?"</span></p>
+<p>"Good question! Nice catch! I somehow skipped that topic."</p>
+<p>"There is a special @XmlEnum annotation that must be used to mark enums. You can use it to specify whether the values will be stored as numbers or strings."</p>
+<p>"There is also a @XmlEnumValue annotation that lets you specify the value that will correspond to a particular enum field."</p>
+<p>"Here are some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Numbers</th>
+        <th>Strings</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">@XmlType
+@XmlEnum(Integer.class)</span>
+<strong>public</strong> enum Code
+{
+ <span class="text-user">@XmlEnumValue("1")</span>
+  START,
+
+<span class="text-user"> @XmlEnumValue("2")</span>
+  INPROGRESS,
+
+ <span class="text-user">@XmlEnumValue("3")</span>
+  FINISH
+
+<span class="text-user"> @XmlEnumValue("-1")</span>
+  ERROR
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">@XmlType
+@XmlEnum(String.class)</span>
+<strong>public</strong> enum Card
+{
+ <span class="text-user">@XmlEnumValue("<strong>Spade</strong>")</span>
+  CLUBS,
+
+ <span class="text-user">@XmlEnumValue("<strong>Diamond</strong>")</span>
+  DIAMONDS,
+
+ <span class="text-user">@XmlEnumValue("<strong>Heart</strong>")</span>
+  HEARTS,
+
+ <span class="text-user">@XmlEnumValue("<strong>Club</strong>")</span>
+  SPADES
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Holy moly. I can't imagine where I would need this, but I think it's very useful. And most importantly, I don't have to stick to standard string or numeric values."</span></p>
+<p>"Yep. This is handy, for example, when you write a program that exchanges messages with, say, a Facebook server, and they have an assigned set of values. You just need to assign them to their own enum and everything will work."</p>
+<p><span class="text-user">"That's wonderful. I definitely like JAXB."</span></p>
+<p>"Great. Then that's it for today. Go and take a break."</p>

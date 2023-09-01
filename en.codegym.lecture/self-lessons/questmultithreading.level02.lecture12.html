@@ -1,0 +1,138 @@
+<p>"Hi, Amigo!"</p>
+<p>"As far as I know, Rishi has already told you about regular expressions."</p>
+<p><span class="text-user">"Yes, it was very interesting."</span></p>
+<p>"Great, now I'll tell you about using regular expressions to work with Strings."</p>
+<p>"Let's start with the simplest question:"</p>
+<p><strong>1) How do I check to see if a String matches the pattern specified by a regular expression?</strong></p>
+<p>"There is a matches method for this. You pass a String containing a regular expression, and the method returns true or false."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>boolean <strong>matches</strong>(String regex)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+Boolean test = s.<strong>matches("news\\.*");</strong></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>false (the String doesn't start with "news")</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>2) How do I replace all matching substrings with different strings?</strong></p>
+<p>"There are two methods for this."</p>
+<p>"The <strong>replaceAll</strong> method replaces all occurrences of a substring with another string."</p>
+<p>"The <strong>replaceFirst</strong> method replaces the first occurrence of a passed substring with a specified string."</p>
+<table>
+    <tbody>
+    <tr style="height: 24px;">
+        <th style="height: 24px;">Method(s)</th>
+        <th style="height: 24px;">Example(s)</th>
+    </tr>
+    <tr style="height: 90px;">
+        <td style="height: 205px;" rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String <strong>replaceAll</strong>(String regex, String replacement)</code></pre>
+        </td>
+        <td style="height: 90px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good n<strong>ew</strong>s, <strong>ever</strong>yone!";
+String s2 = s.<strong>replaceAll ("e\\.","EX");</strong></code></pre>
+        </td>
+    </tr>
+    <tr style="height: 115px;">
+        <td style="height: 115px;"><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s2 == "Good nEXs EXEXyonEX";</code></pre>
+        </td>
+    </tr>
+    <tr style="height: 88px;">
+        <td style="height: 203px;" rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String <strong>replaceFirst</strong>(String regex, String replacement)</code></pre>
+        </td>
+        <td style="height: 88px;">
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good n<strong>ew</strong>s, everyone!";
+String s2 = s.<strong>replaceFirst("e\\.","EX");</strong></code></pre>
+        </td>
+    </tr>
+    <tr style="height: 115px;">
+        <td style="height: 115px;"><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s2 == "Good nEXs, everyone!";</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>3) How do I split a string into parts?</strong></p>
+<p>"For this, we have the split method, which takes a delimiting mask:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>String[] <strong>split</strong>(String regex)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good <strong>ne</strong>ws everyo<strong>ne!</strong>";
+String[] ss = s.<strong>split</strong>("ne");
+System.out.println(Arrays.toString(ss));</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Result (an array of three strings):</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>[Good , ws everyo, !]
+"Good ", "ws everyo", "!";</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"The <strong>StringTokenizer</strong> class is another way to <strong>split a string into parts</strong>."</p>
+<p>"This class doesn't use regular expressions. Instead, you simply pass in a String containing a set of delimiters. The advantage of this approach is that it doesn't break the entire string into pieces all at once, instead it slowly moves from the beginning to the end."</p>
+<p>"The class consists of a constructor and two methods. You need to pass the String we are breaking apart into the constructor, along with a String containing the set of delimiting characters."</p>
+<p>The nextToken method returns the next token (substring).</p>
+<p>The hasMoreTokens() method returns true if there are still substrings that haven't been returned yet.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>boolean hasMoreTokens()
+
+String nextToken()</strong></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+
+StringTokenizer tokenizer =
+new StringTokenizer(s,"ne");
+while (tokenizer.hasMoreTokens())
+{
+String token = tokenizer.nextToken();
+System.out.println(token);
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Screen output:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>Good
+ws
+v
+ryo
+!</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Note that any character in the second String passed to the <strong>StringTokenizer</strong> constructor is treated as a delimiter."</p>
+<p><span class="text-user">"Once again, everything seems clear. I might not be able to write this code all by myself right away, but I understand what's going on here."</span></p>
+<p>"Excellent, then we'll assume that you've mastered the topic."</p>

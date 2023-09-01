@@ -1,0 +1,21 @@
+<p>"Hi again. Today we'll briefly learn about the <strong>finalize</strong>() method. The Java Virtual Machine calls the <strong>finalize</strong>() method before destroying an object. The method is used to deallocate system resources or perform other cleanup tasks. In fact, this method is the exact opposite of a constructor in Java. You will recall that constructors are used to create objects."</p>
+<p>"The Object class has a <strong>finalize</strong>() method, which means that every other class does too (<span class="text-green">since all Java classes derive from the Object class</span>). You can simply implement your own <strong>finalize</strong>() method in your class."</p>
+<p>"Here's an example:"</p>
+<div class="code-heading">Example:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+    String <span class="text-user">name</span>;
+
+    Cat(String name)
+    {
+        <strong>this.</strong><span class="text-user">name</span> = name;
+    }
+
+    <span class="text-red">protected void <strong><span class="text-red">finalize</span></strong>() throws Throwable</span>
+    {
+        <span class="text-viola">System.out.println</span>(<span class="text-user">name</span> + " has been destroyed");
+    }
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task06.task0623"></div>
+<p><span class="text-user">"That makes sense, Ellie."</span></p>
+<p>"But <span class="text-red">you should be aware that the Java Virtual Machine decides whether to call this method</span>. More often than not, objects created inside a method and declared garbage when the method completes are destroyed immediately without any call to <strong>finalize</strong>(). <span class="text-viola">This method is more like backup than a reliable solution.</span> The best option is to release all system resources (by setting references to other objects to null) while the object is still alive. I'll tell you more about this method's advantages and nuances later. At this point, you only need to understand two things: there is such a method, and (<span class="text-red">surprise!</span>)  it isn't always called."</p>

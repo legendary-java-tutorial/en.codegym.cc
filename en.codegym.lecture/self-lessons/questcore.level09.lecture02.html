@@ -1,0 +1,89 @@
+<p>"Hello, Amigo! Today, Ellie told you about the adapter pattern."</p>
+<p><span class="text-red">Most classes related to I/O streams are implemented as adapters. They either convert equivalent interfaces or they connect them, starting from the simple and moving up to the complex.</span></p>
+<p><span class="text-user">"Are <strong>InputStreamReader</strong> and <strong>BufferedReader</strong> also adapters? At the very least, they are very similar to adapters in the way they are used: After an object is created, it is passed to the constructor of another class."</span></p>
+<p>"Yes, <strong>InputStreamReader</strong> converts the <strong>InputStream</strong> interface to the <strong>Reader</strong> interface. <strong>BufferedReader</strong> is not an adapter in its purest form, because Java's creators decided not to give its methods their own separate interface. But it is kindred spirit."</p>
+<p><span class="text-red">Instead of writing a bazillion different classes, Java's creators wrote two dozen adapters and allowed them to connect to each other however a programmer might want.</span></p>
+<p>This approach is very convenient. A programmer can always write her class and/or adapter, have it implement a standard interface, and include it in the chain of adapter objects she is building.</p>
+<p><span class="text-user">"So that's how it all works. Instead of big complex classes, we make chains of simple objects and adapters. And then you just create them and combine them in the right order!"</span></p>
+<p>"And you implement whatever is missing."</p>
+<p><span class="text-user">"Yes, I get it."</span></p>
+<p>"But actually I wanted to tell you about <span class="text-red"><strong>Reader</strong></span> and <span class="text-red"><strong>Writer</strong></span> today. These are two abstract classes that are very similar to the InputStream and OutputStream classes. But unlike those classes, these two classes work with characters. They read and write characters. They are very convenient when working with textual information. Let's take a look at the methods they have:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Reader methods</th>
+        <th>What the method does</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int <span class="text-red"><strong>read</strong></span>(<span class="text-green">char</span>[] <span class="text-user">cbuf</span>);</code></pre>
+        </td>
+        <td>"This method immediately reads several characters into the <span class="text-user">buffer</span> (<span class="text-green">char array</span>), until the <span class="text-user">buffer</span> is full or until the source doesn't have any more characters to read."<br />
+            The method returns the number of characters actually read (which can be less than the length of the array)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>int <span class="text-red"><strong>read</strong></span>();</code></pre>
+        </td>
+        <td>"This method reads one character and returns it. The result is widened to an int for looks. If there are no available characters, then the method returns -1."</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>boolean <span class="text-red"><strong>ready</strong></span>();</code></pre>
+        </td>
+        <td>This method returns true if there are any unread characters for the read methods</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red"><strong>close</strong></span>();</code></pre>
+        </td>
+        <td>This method «closes» the stream. You call this when you're done working with the stream.<br />
+            The object then performs the housekeeping operations needed to close the file, etc.<br />
+            At this point, you can't read any more data from the stream.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"It turns out that Reader's <strong>read(char [] cbuf)</strong> method lets us read whole blocks of characters, rather than one character at a time. So it's faster and more convenient."</span></p>
+<p>"Exactly. And now let's see what methods Writer has:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>What the method does</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red"><strong>write</strong></span>(int c);</code></pre>
+        </td>
+        <td>This method writes one character. The int type is narrowed to a char. The extra part is simply discarded.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red"><strong>write</strong></span>(char[] cbuff);</code></pre>
+        </td>
+        <td>This method writes an array of characters.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red"><strong>write</strong></span>(String s);</code></pre>
+        </td>
+        <td>This method writes a string. It is simply converted into an array of characters and then the second method is called.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red"><strong>flush</strong></span>();</code></pre>
+        </td>
+        <td>If the stream is internally storing any data that has not yet been written, this method forces it to be written.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void <span class="text-red"><strong>close</strong></span>();</code></pre>
+        </td>
+        <td>This method «closes» the stream. You call this when you're done working with the stream.<br />
+            The object then performs the housekeeping operations needed to close the file, etc. You can't write data to the stream any longer, and flush is called automatically.</td>
+    </tr>
+    </tbody>
+</table>
+<p>It's important to understand that <strong>Reader</strong> and <strong>Writer</strong> are abstract classes. They don't do anything and contain virtually no code. All their methods will need to be implemented in the classes that inherit them. Their job is <span class="text-red">to standardize how classes interact</span>. Developers don't need to invent their own standards to interact with each other. It is much more convenient for everyone to maintain a few basic standards. This allows classes written by different programmers to easily interact not only with classes written by Java's creators, but also with classes written by other programmers.</p>
+<p><strong>Standards are powerful.</strong></p>
+<p><span class="text-user">"I agree. Supporting common standards is beneficial to everyone."</span></p>

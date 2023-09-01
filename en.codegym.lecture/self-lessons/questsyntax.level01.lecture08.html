@@ -1,0 +1,141 @@
+<div class="row">
+    <div class="col"><img data-id="6168148e-c08f-4409-a3dc-b9437e8164c9" data-max-width="800" alt="Comparison with Pascal - 1" src="https://cdn.codegym.cc/images/article/6168148e-c08f-4409-a3dc-b9437e8164c9/original.gif"></div>
+</div>
+<p>"Hi. My name is Laga Bilaabo. I'm an extraterrestrial and this ship's physician. I hope we'll be good friends."</p>
+<p><span class="text-user">"Me too."</span></p>
+<p>"On my home planet, we use the advanced Pascal programming language instead of the backward Java language. Look at this side-by-side comparison of Java and Pascal code:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th style="width: 50% !important;">Java</th>
+        <th style="width: 50% !important;">Pascal</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class MyFirstClass
+{
+   public static void main(String[] args)
+   {
+      <span class="text-user">int a, b, c;</span>
+      <span class="text-user">String s1, s2;</span>
+      <span class="text-red">System.out.println</span>("Enter two numbers");
+      a = <span class="text-yellow">new Scanner(System.in).nextInt()</span>;
+      b = <span class="text-yellow">new Scanner(System.in).nextInt()</span>;
+      c = a + b;
+      <span class="text-red">System.out.println</span>("The sum is " + c);
+   }
+}</code></pre>
+        </td>
+        <td valign="top">
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Program</strong> MyFirstProgram;
+<strong>Var</strong>
+   <span class="text-user">a, b, c: Integer;</span>
+   <span class="text-user">s1, s2: String;</span>
+Begin
+   <span class="text-red">WriteLn</span>("Enter two numbers");
+   <span class="text-yellow">ReadLn</span>(a);
+   <span class="text-yellow">ReadLn</span>(b);
+   c := a + b;
+   <span class="text-red">WriteLn</span>("The sum is ", c);
+End.</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-corporate">"This is the same program written in two different languages.</span> As you can see, it has fewer lines in Pascal, which is evidence that Pascal is superior to Java."</p>
+<p><span class="text-viola">"I thought this example might help you better understand Java if you've ever seen Pascal before."</span></p>
+<p><span class="text-user">"No, I haven't. Still, it's interesting to compare two programming languages."</span></p>
+<p>"Fair enough. I'll continue then."</p>
+<p>"In Pascal, we place code in the program body, procedures or functions. In Java, this process is simplified: the program body, procedures, and functions are all replaced by functions called methods."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Java</th>
+        <th>Pascal</th>
+    </tr>
+    <tr>
+        <td>
+            <div class="code-heading">Main method</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">public static void main(String[] args)
+{</span>
+   System.out.println("Ho-ho-ho!");
+<span class="text-red">}</span></code></pre>
+        </td>
+        <td valign="top">
+            <div class="code-heading">Program body</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">Begin</span>
+   WriteLn("Ho-ho-ho!");
+<span class="text-red">End.</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="code-heading">Function/method</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">double sqr(double a)
+{</span>
+   return a * a;
+<span class="text-green">}</span></code></pre>
+        </td>
+        <td valign="top">
+            <div class="code-heading">Function</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">Function Sqr(a: Real): Real
+Begin</span>
+   Sqr := a * a;
+<span class="text-green">End;</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="code-heading">Function with void return type</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user"><u>void</u> doubleWrite(String s)
+{</span>
+   System.out.println(s);
+   System.out.println(s);
+<span class="text-user">}</span></code></pre>
+        </td>
+        <td valign="top">
+            <div class="code-heading">Procedure</div>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user"><u><strong>Procedure</strong></u> DoubleWrite(s: String);
+Begin</span>
+   WriteLn(s);
+   WriteLn(s);
+<span class="text-user">End;</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"In the Pascal column, I see the words 'program body', 'function', and 'procedure', but in Java they are all called methods. That's a little weird."</span></p>
+<p>"Yes, we extraterrestrials find it very weird. But humans like to unify everything."</p>
+<p>"In Java, all code is part of a method, so you don't even need to write the word <strong>Function, like in Pascal, to declare a method.</strong>"</p>
+<p>"It's all very simple. If a line of code looks like <strong>Type + Name</strong>, it's a declaration of either a method or a variable. <span class="text-green"> If the name is followed by parentheses, then it's a declaration a new method.</span> <span class="text-corporate">If there are no parentheses, then it's a declaration of a variable.</span>"</p>
+<p>"Declarations of variables and methods in Java are very similar. See for yourself:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">String</span> <span class="text-user">name</span>;</code></pre>
+        </td>
+        <td>Variable called <code><span class="text-user">name</span></code> that is a <code><span class="text-red">String</span></code>.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">String</span> <span class="text-user">getName</span>()
+{
+}</code></pre>
+        </td>
+        <td>Method called <code><span class="text-user">getName</span></code> that returns a <code><span class="text-red">String</span></code>.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"But that's not all. In Java, methods cannot exist in isolation. They must be inside a class. Thus, when humans need to write one small program in Java, they must <span class="text-green">first create a class</span>,<span class="text-corporate"> declare a main method in it</span>, and <strong>only then</strong> <span class="text-red">can they write their code</span> <strong>in the method</strong>. These earthlings are so weird!"</p>
+<p>"Diego dropped by earlier today and asked me to give you these tasks. I hope you like them."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0135"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0138"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0125"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0126"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0127"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0128"></div>

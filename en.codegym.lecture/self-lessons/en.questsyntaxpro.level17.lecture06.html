@@ -1,0 +1,167 @@
+<h2>1. Introducing interfaces</h2>
+<p>Today is your day for knowledge. <span class="text-green">Another new and interesting topic is interfaces.</span></p>
+<p>The concept of an <span class="text-red"><strong>interface</strong></span> is the child of the principles of abstraction and polymorphism. An interface is very similar to an abstract class, in which all the methods are abstract. It is declared in the same way as a class, but we use the <code><span class="text-red">interface</span></code> keyword.</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">interface</span> <span class="text-green">Feline</span>
+{
+   void <span class="text-user">purr</span>();
+   void <span class="text-user">meow</span>();
+   void <span class="text-user">growl</span>();
+}</code></pre>
+</div>
+<p>Here are some useful facts about interfaces:</p>
+<p><strong>1. Declaring an interface</strong></p>
+<pre class="language-java"><code><span class="text-red">interface</span> Drawable
+{
+   void draw();
+}
+
+<span class="text-red">interface</span> HasValue
+{
+   int getValue();
+}</code></pre>
+<ol>
+    <li>Instead of the <code>class</code> keyword, we write <code>interface</code>.</li>
+    <li><span class="text-orange">It contains only abstract methods (don't write the <code><span class="text-orange">abstract</span></code> keyword)</span></li>
+    <li><span class="text-green">In fact, interfaces have all <code><span class="text-green">public</span></code></span> methods</li>
+</ol>
+<b>2. Interface inheritance</b>
+<p>An interface can only inherit interfaces. But an interface can have many parents. Another way to say this is to say that Java has multiple inheritance of interfaces. Examples:</p>
+<pre class="language-java"><code>interface Piece <span class="text-red">extends Drawable, HasValue</span>
+{
+   int getX();
+   int getY();
+}</code></pre>
+<p><strong>3. Inheriting classes from interfaces</strong></p>
+<p><span class="text-green">A class can inherit multiple interfaces (only from one class).</span> This is done using the <code><span class="text-red">implements</span></code> keyword. Example:</p>
+<pre class="language-java"><code>abstract class ChessItem <span class="text-red">implements Drawable, HasValue</span>
+{
+   private int x, y, value;
+   public int getValue()
+   {
+      return value;
+   }
+
+   public int getX()
+   {
+      return x;
+   }
+
+   public  int getY()
+   {
+      return y;
+   }
+}</code></pre>
+<p><span class="text-green">The ChessItem class is declared abstract: it implements all of the inherited methods except <code><span class="text-red">draw</span></code>. </span> In other words, the <code>ChessItem</code> class contains one abstract method — <code>draw()</code>.</p>
+<p>The technical meaning of the <code>extends</code> and <code>implements</code> keywords is the same: both are inheritance. The distinction was made to improve the readability of the code. We also say that classes are inherited (via <code>extends</code>) and interfaces are implemented (via <code>implements</code>)</p>
+<p><strong>4. Variables</strong></p>
+<p>Here's the most important thing: <span class="text-red">ordinary variables cannot be declared in interfaces</span> (although static ones can).</p>
+<p>But why do we need interfaces? When are they used? Interfaces have two strong advantages over classes:</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1711"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1712"></div>
+<hr>
+<h2>2. Separating the "description of methods" from their implementation.</h2>
+<p>Previously, we said that <span class="text-green">if you want to allow the methods of your class to be called from other classes, then your methods need to be marked with the <code>public</code> keyword.</span> If you want some of those methods to be called only from within your class, you need to mark them with the <code>private</code> keyword. In other words, we divide the methods of the class into two categories: "for everybody to use" and "only for our own use".</p>
+<p>Interfaces help strengthen this division further. We'll make a special "class for everyone to use" as well as a second class "only for our own use", which will inherit the first class. Here's roughly how it would look:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Before</th>
+        <th>After</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class <span class="text-green">Student</span>
+{
+   private String name;
+   public Student(String name)
+   {
+      this.name = name;
+   }
+
+   public String getName()
+   {
+      return this.name;
+   }
+
+   private void setName(String name)
+   {
+      this.name = name;
+   }</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>interface <span class="text-red">Student</span>
+{
+   public String getName();
+}
+
+class <span class="text-user">StudentImpl</span> implements <span class="text-red">Student</span>
+{
+   private String name;
+   public StudentImpl(String name)
+   {
+      this.name = name;
+   }
+
+   public String getName()
+   {
+      return this.name;
+   }
+
+   private void setName(String name)
+   {
+      this.name = name;
+   }
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   <span class="text-green">Student</span> student = new <span class="text-green">Student</span>(<span class="text-green">"Alibaba"</span>);
+   System.out.println(student.getName());
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   <span class="text-red">Student</span> student = new <span class="text-user">StudentImpl</span>(<span class="text-green">"Ali"</span>)
+   System.out.println(student.getName());
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>We split our class into two: an <span class="text-red">interface</span> and a <span class="text-user">class</span> that <span class="text-user">inherits</span> the <span class="text-user">interface</span>. And what is the advantage here?</p>
+<p>Many different classes can implement (inherit) the same interface. And each one can have its own behavior. For example, <code><span class="text-orange">ArrayList</span></code> <code><span class="text-orange">LinkedList</span></code> are two different implementations of the <code><span class="text-orange">List</span></code> interface.</p>
+<p>Thus, <span class="text-green">we hide not only the various implementations, but also the implementing class itself (since we only need the interface in the code).</span> This lets us be very flexible: right as the program running, we can replace one object with another, changing an object's behavior without affecting all the classes that use it.</p>
+<p>This is a very powerful technique when combined with polymorphism. For now, it is far from obvious why you should do this. You first need to encounter programs with dozens or hundreds of classes in order to understand that interfaces can make your life so much easier than without them.</p>
+<hr>
+<h2>3. Multiple inheritance</h2>
+<p>In Java, all classes can only have one parent class. In other programming languages, classes can often have multiple parent classes. This is very convenient, but also brings many problems.</p>
+<p>Java's creators arrived at a compromise: they forbade multiple inheritance of classes, but allowed multiple inheritance of interfaces. <span class="text-green">An interface can have multiple parent interfaces.</span> <span class="text-orange">A class can have multiple parent interfaces but only one parent class.</span></p>
+<p>Why did they ban multiple inheritance of classes but allow multiple inheritance of interfaces? Because of so-called <strong>diamond inheritance problem:</strong></p>
+<img data-max-width="1024" data-id="35e2cab5-b221-45ad-94f1-0ead41008739" src="https://cdn.codegym.cc/images/article/35e2cab5-b221-45ad-94f1-0ead41008739/1024.jpeg" alt="Multiple inheritance">
+<p>When the B class inherits the A class, it does not know anything about the C and D classes. So it uses the variables of the A class as it sees fit. The C class does the same: it uses the variables of the A class, but in a different way. And all this results in a conflict in the D class.</p>
+<p>Let's look at the following simple example. Let's say we have 3 classes:</p>
+<pre class="language-java"><code>class Data
+{
+   protected int value;
+}</code></pre>
+<pre class="language-java"><code>class XCoordinate extends Data
+{
+   public void setX (int x) { value = x;}
+   public int getX () { return value;}
+}</code></pre>
+<pre class="language-java"><code>class YCoordinate extends Data
+{
+   public void setY (int y) { value = y;}
+   public int getY () { return value; }
+}</code></pre>
+<p>The Data class stores the <code>value</code> variable. Its XCoordinate descendant class uses that variable to store the <code>x</code> value, and the <code>YCoordinate</code> descendant class uses it to store the <code>y</code> value.</p>
+<p>And it works. Separately. But if we want the XYCoordinates class to inherit both the <code>XCoordinate</code> and <code>YCoordinate</code> classes, then we get broken code. This class will have the methods of its ancestor classes, but they will not work correctly, because they have the same <span class="text-red"><code><span class="text-red">value</span> variable</code></span>.</p>
+<p>But because interfaces cannot have variables, they cannot have this kind of conflict. Accordingly, multiple inheritance of interfaces is allowed.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task17.task1713"></div>

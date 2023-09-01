@@ -1,0 +1,94 @@
+<a href='https://cdn.codegym.cc/images/article/c680bb54-10fc-4315-b679-8dbde73f4bed/original.jpeg' target='_blank'><img data-id="c680bb54-10fc-4315-b679-8dbde73f4bed" data-max-width="850" alt="Strings inner workings, and the substring method - 1" src="https://cdn.codegym.cc/images/article/c680bb54-10fc-4315-b679-8dbde73f4bed/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie."</span></p>
+<p>"I'm going to tell you about substrings. A substring is a part of a string. And the most common operation performed on strings (after combining several strings together) is obtaining a substring."</p>
+<p><strong>7) How do I get part of a String?</strong></p>
+<p>"The substring method returns part of a String. This method has two versions."</p>
+<p>"The first version returns the substring specified by starting and ending indices. <strong><span class="text-red">But the character at the ending index is not included!</span></strong> If you pass the numbers 1 and 3, then the substring will only contain the second and third characters (remember the indices start with 0)."</p>
+<p>"The second version returns the substring starting from the passed index until the end of the String."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method(s)</th>
+        <th>Example(s)</th>
+    </tr>
+    <tr>
+        <td rowspan="2">
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>String</strong> substring(<strong>int beginIndex, int endIndex</strong>)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+s = s.<strong>substring(1,6)</strong>;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Result:</strong></p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>s == "ood n";</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>String</strong> substring(<strong>int beginIndex</strong>)</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>String s = "Good news, everyone!";
+s = s.<strong>substring(1)</strong>;</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That's simple enough. Thanks, Ellie."</span></p>
+<p>"I'm also going to explain the internal workings of String objects to you."</p>
+<p>"As you probably already know, String is an immutable class. And what advantages does that give us? As it happens, one of the key advantages is the ability to get a substring. But first things first."</p>
+<p>"Internally, a String object contains an array of characters, which isn't that hard to guess. But it also stores two more variables: the index of the first character in the array and the character count. Now I will tell you what these are used for."</p>
+<p>"When we create a substring using the <strong>substring</strong> method, a new <span class="text-green">String</span> object is created."</p>
+<p><span class="text-green">"But, instead of storing a reference to a new character array, the object stores a reference to the old array as well as two variables that it uses to determine the part of the original character array that is associated with it."</span></p>
+<p><span class="text-user">"I didn't understand any of that."</span></p>
+<p>"When a substring is created, the character array is not copied to the new String object. Instead, both objects store a reference to the original character array. But! The second object also stores two variables: its starting index in the array and the number of characters that belong to the substring."</p>
+<p>"Check it out:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Getting a substring</th>
+        <th>What's stored inside the substring</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">String s =</span> <span class="text-green">"mama";</span></code></pre>
+        </td>
+        <td>What's stored in s:</p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>char[] <strong>value</strong> = {'m','a','m','a'};
+<strong>offset</strong> = 0;
+<strong>count</strong> = 4;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">String s2 =</span> <span class="text-green">s.substring(1);</span></code></pre>
+        </td>
+        <td>What's stored in s2:</p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>char[] <strong>value</strong> = {'m','a','m','a'};
+<strong>offset</strong> = 1;
+<strong>count</strong> = 3;</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">String s3 =</span> <span class="text-green">s.substring(1, 3);</span></code></pre>
+        </td>
+        <td>What's stored in s3:</p>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>char[] <strong>value</strong> = {'m','a','m','a'};
+<strong>offset</strong> = 1;
+<strong>count</strong> = 2;</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"All three Strings store a reference to the same char array, but they also store the index of the first and last characters that pertain to them. Or more accurately, the index of the first character and the character count."</p>
+<p><span class="text-user">"That makes sense now."</span></p>
+<p>"So, if you take a String that is 10,000 characters long and you create 10,000 substrings of any length, these substrings will use very little memory, because the character array is not duplicated. These Strings, which you would expect to use up a lot of space, will literally only take a couple of bytes."</p>
+<p><span class="text-user">"Cool!"</span></p>
+<p>"But could you do that if you could modify Strings?"</p>
+<p><span class="text-user">"No, someone could change the first String, and then all of its substrings would change too. Now it make sense why they did that. That is a really cool solution."</span></p>
+<p>"I'm glad you liked it."</p>

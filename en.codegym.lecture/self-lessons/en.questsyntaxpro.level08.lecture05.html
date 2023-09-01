@@ -1,0 +1,252 @@
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="c3a5022d-606b-4066-bc20-61a13d8c1218" src="https://cdn.javarush.ru/images/article/c3a5022d-606b-4066-bc20-61a13d8c1218/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="2d496e82-3453-4b1b-b21b-859b0eecb835" src="https://cdn.javarush.ru/images/article/2d496e82-3453-4b1b-b21b-859b0eecb835/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="2212da27-59b2-48ce-9136-0e4f8c69674f" src="https://cdn.javarush.ru/images/article/2212da27-59b2-48ce-9136-0e4f8c69674f/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Bitwise left shift</h2>
+<p>Java also has 3 <span class="term">bitwise shift operators</span>: If you really need to, you can very simply shift all the bits of a number several positions to the left or right.</p>
+<p>To shift the bits of a number to the left, you need the <span class="term"><span class="text-red">bitwise left shift operator</span></span>. This is how it's written:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>a <span class="text-red">&lt;&lt;</span> b</code></pre>
+</div>
+<p>Where <code>a</code> is the number whose bits are being shifted, and <code>b</code> is a number that indicates how many times to shift the bits of the number <code>a</code> to the left. During this operation, the low-order bits added on the right are zeros.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Example</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b00000011 <span class="text-red">&lt;&lt;</span> 1</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b00000110</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b00000011 <span class="text-red">&lt;&lt;</span> 2</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b00001100</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b00000011 <span class="text-red">&lt;&lt;</span>&nbsp;5</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b01100000</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b00000011 <span class="text-red">&lt;&lt;</span> 20</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-orange">00110000</span>00000000<span class="text-orange">00000000</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Shifting one digit to the left has the same effect as multiplying a number by 2.</p>
+<p>Want to multiply a number by 16? 16 is the same as 2<sup>4</sup>. So you shift the number 4 digits to the left</p>
+<hr>
+<h2>2. Bitwise shift right</h2>
+<p>Bits can also be shifted to the right. To do this, use the <span class="term"><span class="text-red">bitwise right shift operator</span></span>. This is how it's written:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>a <span class="text-red">&gt;&gt;</span> b</code></pre>
+</div>
+<p>Where <code>a</code> is the number whose bits are being shifted, and <code>b</code> is the number of times to shift the bits of the number <code>a</code> to right.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Example</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-green">1100001</span>1 <span class="text-red">&gt;&gt;</span> 1</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b0<span class="text-green">1100001</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-green">110000</span>11 <span class="text-red">&gt;&gt;</span> 2</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b00<span class="text-green">110000</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b<span class="text-green">110</span>00011 <span class="text-red">&gt;&gt;</span> 5</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b00000<span class="text-green">110</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="text-center"><code>0b11000011 <span class="text-red">&gt;&gt;&nbsp;</span>20</code></pre>
+        </td>
+        <td>
+            <pre class="text-center"><code>0b00000000</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Shifting one digit to the right has the same effect as dividing a number by 2.</p>
+<p>During this operation, the high-order bits added on the left are zeros, <span class="text-red">but not always</span>!</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Important!</div>
+        <div class="lesson-note__content">
+            <p>The leftmost bit of a signed number is called the <span class="term">sign bit</span>: if the number is positive, it is <code>0</code>; but if the number is negative, this bit is <code>1</code>.</p>
+        </div>
+    </div>
+</div>
+<p>When shifting the bits of a number to the right, the value of the sign bit would ordinarily also shift and the sign of the number would be lost. Accordingly, for negative numbers (where the leftmost bit is <code>1</code>), this bit gets special treatment. When shifting the bits of a number to the right, a <code>0</code> is added on the left if the leftmost bit was <code>0</code>, and a <code>1</code> is added on the left if the leftmost bit was <code>1</code>.</p>
+<p>But in the example above, that doesn't appear to be the result. Why? Because integer literals are <code>int</code>s, and <code>0b<span class="text-green">11111111</span></code>&nbsp;actually means <code>0b00000000<span class="text-green">00000000</span>00000000<span class="text-green">11111111</span></code>. That is, the leftmost bit is zero.</p>
+<p>Many programmers are frustrated by this right-shift behavior and would prefer the number to always be padded with zeros. So Java added another <span class="term"><span class="text-red">right shift operator</span></span>.</p>
+<p>This is how it's written:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code>a <span class="text-red">&gt;&gt;&gt;</span> b</code></pre>
+</div>
+<p>Where <code><span class="text-red">a</span></code>&nbsp;is the number whose bits are being shifted, and <code><span class="text-red">b</span></code>&nbsp; is the number of times to shift the bits of the number <code><span class="text-red">a</span></code> to right. This operator always appends zeros on the left, regardless of the original value of the sign bit of the number <code>a</code>.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0813"></div>
+<hr>
+<h2>3. Working with flags</h2>
+<p>Programmers created an almost entirely new field of study on the basis of bitwise and shift operations: working with flags.</p>
+<p>When computers had very little memory, it was highly popular to cram a lot of information into a single number. A number was treated as an array of bits: an int is 32 bits, and a long is 64 bits.</p>
+<p>You can write a lot of information in such a number, especially if you need to store logical (<code>true</code> or <code>false</code>) values. A single <code>long</code> is like a <code>boolean</code> array comprised of 64 elements. These bits were called <span class="term">flags</span> and were manipulated using the following operations:</p>
+<ul>
+    <li>
+        <div class="term">set flag</div>
+        (make a specific bit equal to <code>1</code>)
+    </li>
+    <li>
+        <div class="term">reset flag</div>
+        (make a specific bit equal to <code>0</code>)
+    </li>
+    <li>
+        <div class="term">check flag</div>
+        (check the value of a specific bit)
+    </li>
+</ul>
+<p>And here's how it's done with bitwise operators.</p>
+<p><strong>Setting a flag</strong></p>
+<p>To set a specific bit to <code>1</code>, you need to perform a bitwise OR operation between the number whose bit you want to set and a specially created number, where only that bit is <code>1</code>.</p>
+<p>For example, suppose you have the number <code>0b00001010</code> and you need to set the 5th bit to <code>1</code>. In that case, you need to:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>0b<span class="text-orange">0000</span><span class="text-green">1010</span> | 0b<span class="text-orange">000<span class="text-red">1<span class="text-green">0000</span></span></span> = 0b<span class="text-orange">000<span class="text-red">1<span class="text-green">1010</span></span></span></code></pre>
+</div>
+<p>If the 5th bit had been set to one already, then nothing would have changed.</p>
+<p>In general, the operation of setting a flag can be written as follows</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code><span class="text-red">a</span> | (<span class="text-user">1</span> &lt;&lt; <span class="text-green">b</span>)</code></pre>
+</div>
+<p>Where <code><span class="text-red">a</span></code>&nbsp;is the number whose bit will be set to <code>1</code>. And <code><span class="text-green">b</span></code>&nbsp;is the position of the bit to be set. Using the left shift operator is super convenient here, since you can immediately tell which bit we are working with.</p>
+<p><strong>Resetting a flag</strong></p>
+<p>To reset a specific bit (i.e. set it to <code>0</code>) without disturbing other bits, you need to perform an <code>&amp;</code> operation between the number whose bit you want to reset (i.e. set to <code>0</code>) and a specially created number, where all the bits are equal to <code>1</code> except for the bit you want to reset.</p>
+<p>For example, suppose you have the number <code>0b00001010</code> and you need to set the 4th bit to <code>0</code>. In that case, you need to:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>0b<span class="text-orange">0000<span class="text-green">1010 </span></span>&amp; 0b<span class="text-orange">1111<span class="text-red">0<span class="text-green">111</span></span></span> = 0b<span class="text-orange">0000<span class="text-red">0<span class="text-green">010</span></span></span></code></pre>
+</div>
+<p>If the 4th bit had been set to zero already, then nothing would have changed.</p>
+<p>In general, the operation of resetting a flag can be written as follows</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">a</span> &amp; ~(<span class="text-user">1</span> &lt;&lt; <span class="text-green">b</span>)</code></pre>
+</div>
+<p>Where <code><span class="text-red">a</span></code>&nbsp;is the number whose bit will be reset to <code>0</code>. And <code><span class="text-green">b</span></code>&nbsp;is the position of the bit to be cleared.</p>
+<p>To get a number where all the bits are <code>1</code> except the one we want to be zero, we first shift 1 <span class="text-green"><strong>b</strong></span>&nbsp;positions to the left, and then use the bitwise <code>NOT</code> operator to invert the result.</p>
+<p><strong>Checking a flag</strong></p>
+<p>In addition to setting or resetting a specific flag, sometimes you just need to check whether a given flag is set, i.e. whether a certain bit is equal to <code>1</code>. This is quite easy to do with a bitwise <code>&amp;</code>.</p>
+<p>For example, suppose you need to check whether the 4th bit is set to <code>1</code> in the number <code>0b00001010</code>. Then you need to do this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>if ( (0b<span class="text-orange">0000</span><span class="text-green">1010 </span>&amp; 0b<span class="text-orange">0000</span><span class="text-red">1</span><span class="text-green">000</span>) == 0b<span class="text-orange">0000</span><span class="text-red">1</span><span class="text-green">000</span> )</code></pre>
+</div>
+<p>In general, the operation of checking a flag can be written as follows</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>(<span class="text-red">a</span> &amp; (<span class="text-user">1</span> &lt;&lt; <span class="text-green">b</span>)) == (<span class="text-user">1</span> &lt;&lt; <span class="text-green">b</span>)</code></pre>
+</div>
+<p>Where <code><span class="text-red">a</span></code>&nbsp;is the number whose bit is being checked. And <code><span class="text-green">b</span></code>&nbsp;is the position of the bit to be checked.</p>
+<hr>
+<h2>4. Encryption</h2>
+<p>The bitwise <code>XOR</code> operation is often used by programmers for simple encryption. In general, such encryption looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">result</span> = <span class="text-green">number</span> ^ <span class="text-user">password</span>;</code></pre>
+</div>
+<p>Where <code><span class="text-green">number</span></code>&nbsp;is the data we want to encrypt, <code><span class="text-user">password</span></code>&nbsp;is a special number used as a "password" for the data, and <code><span class="text-red">result</span></code>&nbsp;is the encrypted number.</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">number</span> == (<span class="text-green">number</span> ^ <span class="text-user">password</span>) ^ <span class="text-user">password</span>;</code></pre>
+</div>
+<p>The important thing here is that when the <code>XOR</code> operator is applied to a number twice, it produces the original number, regardless of the "password".</p>
+<p>To recover <code><span class="text-green">number</span></code>&nbsp;from the <code><span class="text-red">encrypted result</span></code>, you just need to perform the operation again:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">original</span> <span class="text-green">number</span> = <span class="text-red">result</span> ^ <span class="text-user">password</span>;</code></pre>
+</div>
+<p>Example:</p>
+<pre class="language-java"><code>class Solution
+{
+&nbsp; &nbsp;public static int[] encrypt(int[] data, int password)
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;int[] result = new int[data.length];
+&nbsp; &nbsp; &nbsp;for (int i = 0; i &lt;  data.length; i++)
+&nbsp; &nbsp; &nbsp; &nbsp;result[i] = data[i] ^ password;
+&nbsp; &nbsp; &nbsp;return result;
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;int[] data =&nbsp; {1, 3, 5, 7, 9, 11};
+&nbsp; &nbsp; &nbsp;int password = 199;
+
+&nbsp; &nbsp; &nbsp;// Encrypt the array of data
+&nbsp; &nbsp; &nbsp;int[] encrypted = encrypt(data, password);
+&nbsp; &nbsp; &nbsp;System.out.println(Arrays.toString(encrypted));
+
+&nbsp; &nbsp; &nbsp;// Decrypt the array of data
+&nbsp; &nbsp; &nbsp;int[] decrypted = encrypt(encrypted, password);
+&nbsp; &nbsp; &nbsp;System.out.println(Arrays.toString(decrypted));
+&nbsp; &nbsp;}
+}</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task08.task0814"></div>
+<hr>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="26d4737b-004a-42cf-a825-b78cf72c1b61" src="https://cdn.javarush.ru/images/article/26d4737b-004a-42cf-a825-b78cf72c1b61/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="07b30186-d6bc-43cd-9db7-e7a7e9ad8bd4" src="https://cdn.javarush.ru/images/article/07b30186-d6bc-43cd-9db7-e7a7e9ad8bd4/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="cd949794-5d62-4769-ada0-eba14006ae6c" src="https://cdn.javarush.ru/images/article/cd949794-5d62-4769-ada0-eba14006ae6c/original.png" alt="">
+        </div>
+    </div>
+</div>

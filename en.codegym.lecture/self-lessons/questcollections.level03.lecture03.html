@@ -1,0 +1,168 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Since you've already been introduced to JSON, let's talk more about it today."</p>
+<p><span class="text-user">"OK. Where is it usually used?"</span></p>
+<p>"Here's how it usually works. Someone (the client) requests data from a Java program (the server). The program creates Java objects and fills them with information from the database. It then converts them into a format that the requester (the client) can understand, such as JSON, and sends them back."</p>
+<p>"Let me tell you how to work with JSON in Java. Essentially, we only need to do two things: serialize Java objects into the JSON format, and deserialize Java objects from the JSON format."</p>
+<p>"In other words, <span class="text-green">JSON is a standard for sending messages/data from one program to another.</span> There are a lot of standards like that. But if the program is written in JavaScript, it usually tries to use JSON."</p>
+<p><span class="text-user">"OK. I'm ready."</span></p>
+<p>"Great. Then let's get started."</p>
+
+<a href='https://cdn.codegym.cc/images/article/fa67784d-f519-494d-8544-bf9648351fd7/original.jpeg' target='_blank'><img data-id="fa67784d-f519-494d-8544-bf9648351fd7" data-max-width="850" alt="Serialization into JSON - 1" src="https://cdn.codegym.cc/images/article/fa67784d-f519-494d-8544-bf9648351fd7/original.jpeg"></a>
+
+<p>"As you already know, Java has built-in standard serialization tools. But they don't support JSON. So, if you need to serialize an object into JSON, you can use one of the popular frameworks (libraries) that know how to do this."</p>
+<p><span class="text-user">"What's the difference between these different frameworks?"</span></p>
+<p>"They usually differ in their level of complexity: there are frameworks that can only do the very basics, but they are very small and simple. And there are large complex frameworks that can do much more."</p>
+<p>"Jackson is one of the most popular frameworks. We will use it as an example as we look at how to work with JSON."</p>
+<p>"First, you need to download this framework and add it to your project. You need to do this directly in IntelliJ IDEA. You can download the framework using this <a href="http://mvnrepository.com/artifact/com.fasterxml.jackson.core/" target="_blank">link</a>."</p>
+<p><span class="text-user">"Done."</span></p>
+<p>"Great. Let's carry on, then."</p>
+<p>"Converting a Java object into JSON is about as easy as serializing it. To do this, there is a special ObjectMapper class (com.fasterxml.jackson.databind.ObjectMapper)."</p>
+<p>"Let me show you a working example, and then we'll analyze it:"</p>
+<div class="code-heading">Convert an object to JSON"</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+ // Create an object to be serialized into JSON
+<span class="text-green"> Cat cat</span> = new Cat();
+ <span class="text-green">cat</span>.name = "Missy";
+ <span class="text-green">cat</span>.age = 5;
+ <span class="text-green">cat</span>.weight = 4;
+
+ // Write the result of the serialization to a StringWriter
+ StringWriter <span class="text-user">writer</span> = new StringWriter();
+
+ // This is the Jackson object that performs the serialization
+ <span class="text-red">ObjectMapper mapper</span> = new <span class="text-red">ObjectMapper</span>();
+
+ // And here's the serialization itself: the first argument is where, and the second is what
+ <span class="text-red">mapper</span>.writeValue(writer, <span class="text-green">cat</span>);
+
+ // Convert everything written to the StringWriter into a String
+ String <span class="text-user">result</span> = writer.toString();
+ System.out.println(<span class="text-user">result</span>);
+}</code></pre>
+<div class="code-heading">A Cat class whose objects convert to JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start="">
+<code>@JsonAutoDetect
+class Cat
+{
+ public String name;
+ public int age;
+ public int weight;
+Cat(){}
+}</code></pre>
+<div class="code-heading">Serialization result and screen output:</div>
+<pre class="line-numbers language-json" data-line="" data-start=""><code>{"name":"Missy", "age":5, "weight":4}</code></pre>
+<p>"Here's how it works:"</p>
+<p>"In lines 4-7, we create a <span class="text-green">Cat</span> object and populate it with data."</p>
+<p>"In line 10, we create a Writer object where we will write a JSON-string representation of the object."</p>
+<p>"In line 13, we create an <span class="text-red">ObjectMapper</span> object that will perform all of the serialization."</p>
+<p>"In line 16, we write the JSON representation of the <span class="text-green">cat</span> object to <span class="text-user">writer</span>."</p>
+<p>"In lines 19-20, we display the result on the screen."</p>
+<p>"Everything looks pretty simple. No harder than native serialization in Java."</p>
+<p><span class="text-user">"What would deserialization look like?"</span></p>
+<p>"It's almost the same, just shorter:"</p>
+<div class="code-heading">Convert an object from JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+ String jsonString = "<span class="text-viola">{ \"name\":\"Missy\", \"age\":5, \"weight\":4}</span>";
+ <strong>StringReader</strong> <span class="text-user">reader</span> = new <strong>StringReader</strong>(jsonString);
+
+ <span class="text-red">ObjectMapper mapper</span> = new <span class="text-red">ObjectMapper</span>();
+
+<span class="text-green"> Cat cat</span> = <span class="text-red">mapper</span>.readValue(<span class="text-user">reader</span>, <span class="text-green">Cat.class</span>);
+}</code></pre>
+<div class="code-heading">A class whose objects are deserialized from JSON format</div>
+<pre class="line-numbers language-json" data-line="" data-start=""><code>@JsonAutoDetect
+class Cat
+{
+ public String name;
+ public int age;
+ public int weight;
+
+ Cat() { }
+}</code></pre>
+<p>"It's even easier. We take <span class="text-red">ObjectMapper</span> and pass it a string or a StringReader with JSON, as well as the class of <span class="text-green">the object to be deserialized</span>. Then we call the <strong>readValue</strong> method, and as output we get a ready-made Java object with all of the data."</p>
+<p>"Well, that's exactly like deserialization in Java."</p>
+<p>"Almost. There are several requirements placed on objects serialized into, or deserialized from, JSON:"</p>
+<p>"<strong>1)</strong> the fields must be visible: they must either be public or have getters and setters"</p>
+<p>"<strong>2)</strong> there must be a default constructor (one without parameters)"</p>
+<p><span class="text-user">"I see. That's not too surprising. But Java serialized everything, even private fields."</span></p>
+<p>"Well, that was Java. It has access to hidden data. You can't hide from yourself."</p>
+<p>"There's a third aspect here. I hope you noticed the @JsonAutoDetect annotation on the Cat class?"</p>
+<p><span class="text-user">"Yep. I was just about to ask what it was."</span></p>
+<p>"It's an annotation: housekeeping information for the Jackson framework. By using the right annotations, you have quite a lot of flexible control over the results of serialization into JSON."</p>
+<p><span class="text-user">"Cool! What kind of annotations are there?"</span></p>
+<p>"Here are a few examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Annotation</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>@JsonAutoDetect</td>
+        <td>Placed before a class.<br />
+            Marks a class as ready to be serialized into JSON.</td>
+    </tr>
+    <tr>
+        <td>@JsonIgnore</td>
+        <td>Placed before a property.<br />
+            The property will be ignored during serialization.</td>
+    </tr>
+    <tr>
+        <td>@JsonProperty</td>
+        <td>Placed before a property or a getter or setter. Lets you specify a different field name during serialization.</td>
+    </tr>
+    <tr>
+        <td>@JsonWriteNullProperties</td>
+        <td>Placed before a class.<br />
+            Object fields that are null won't be ignored.</td>
+    </tr>
+    <tr>
+        <td>@JsonPropertyOrder</td>
+        <td>Placed before a class.<br />
+            Lets you specify the field order during serialization.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"How interesting! Are there more?"</span></p>
+<p>"There are many. But we won't cover them right now. Now let's rework our first example slightly:"</p>
+<div class="code-heading">Convert an object to JSON</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static void</strong> main(String[] args) throws IOException
+{
+ <span class="text-green">Cat cat</span> = new <span class="text-green">Cat</span>();
+ <span class="text-green">cat</span>.name = "Missy";
+ <span class="text-green">cat</span>.age = 5;
+ <span class="text-green">cat</span>.weight = 4;
+
+ StringWriter <span class="text-user">writer</span> = new StringWriter();
+
+ <span class="text-red">ObjectMapper mapper</span> = new <span class="text-red">ObjectMapper</span>();
+
+ <span class="text-red">mapper</span>.writeValue(<span class="text-user">writer</span>, <span class="text-green">cat</span>);
+
+ String <span class="text-viola">result</span> = <span class="text-user">writer</span>.<strong>toString</strong>();
+ <strong>System.out.println</strong>(<span class="text-viola">result</span>);
+}</code></pre>
+<div class="code-heading">A class whose objects convert to JSON</div>
+<pre class="line-numbers language-json" data-line="" data-start=""><code>@JsonAutoDetect
+class Cat
+{
+ @JsonProperty("alias")
+ public String name;
+ public int age;
+ @JsonIgnore
+ public int weight;
+
+ Cat() {
+ }
+}</code></span></pre>
+<div class="code-heading">Serialization result and screen output:</div>
+<pre class="line-numbers language-json" data-line="" data-start=""><code>{"age":5, "alias":"Missy"}</code></pre>
+<p>"The code remains the same, but I changed the annotations: I specified another name for the name field: alias. I also marked the weight field as Ignore, which caused the JSON object to change."</p>
+<p><span class="text-user">"It's good that you can customize everything like that. I think I'll definitely find this useful."</span></p>
+<p><span class="text-user">"And deserialization will understand how to work with this? When deserializing from JSON to a Java object, the value of the alias field will be written to the Cat object's name field?"</span></p>
+<p>"Yes, deserialization will work as it should. It's smart."</p>
+<p><span class="text-user">"What's not to be happy about then."</span></p>
+<p><span class="text-user">"Thank you for this interesting lesson, Ellie."</span></p>

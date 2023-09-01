@@ -1,0 +1,139 @@
+<p>"Ah. There you are. I've been looking for you."</p>
+<p><span class="text-user">"Did something happen?"</span></p>
+<p>"No, but we're still studying."</p>
+<p><span class="text-user">"OK. I'm listening."</span></p>
+<p>"I want to tell you a couple more things about exceptions:"</p>
+<p>"In Java 7, the <strong>try-catch</strong> construct was extended slightly through the addition of <span class="text-viola">multiple catch</span> blocks. Look at this example:"</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java 5</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>try
+{
+  …
+}
+ catch (<span class="text-red">IOException</span> ex)
+{
+ logger.log(ex);
+ throw ex;
+}
+ catch (<span class="text-user">SQLException</span> ex)
+{
+ <span class="text-green">logger</span>.log(ex);
+ throw ex;
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Java 7</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>try
+{
+  …
+}
+ catch (<span class="text-red">IOException</span> | <span class="text-user">SQLException</span> ex)
+{
+ <span class="text-green">logger</span>.log(ex);
+ throw ex;
+}</code></pre>
+    </div>
+</div>
+<p><span class="text-user">"So now can we write multiple exceptions separated by OR operators ('|' is binary OR)?"</span></p>
+<p>"That's right. Isn't that convenient?"</p>
+<p><span class="text-user">"Hmm. But what will the type of the exception object inside the catch block?"</span></p>
+<p><span class="text-user">"After all, an IOException has its methods, and a SQLException has its methods."</span></p>
+<p>"The exception type will be that of their common ancestor class."</p>
+<p><span class="text-user">"Ah. In other words, it will most likely be <strong><span class="text-green">Exeption</span></strong> or <strong>RuntimeException</strong>. Then why not simply write catch(Exception e)?"</span></p>
+<p>"Sometimes when handling errors individually, it's convenient to group them, writing some errors to a log, rethrowing others, and handling others in some other way."</p>
+<p>"In other words, this scheme is recognized as solving the problem of duplicate catch blocks for handling different errors."</p>
+<p><span class="text-user">"Ah. I get it. Thanks, Ellie."</span></p>
+<p>"That's not all. I want to tell you a little more about the <strong>finally</strong> block."</p>
+<p>"As you probably already know, this block is always executed."</p>
+<p>"And when I say always, I mean <strong>absolutely always</strong>."</p>
+<p>"For example:"</p>
+<div class="code-heading">Example using finally</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>try
+{
+<span class="text-green"> return 1;</span>
+}
+ <strong>finally</strong>
+{
+<span class="text-red"> return 0;</span>
+}</code></pre>
+<p>"Here there's a <span class="text-green">return</span> in the <strong>try</strong> block, and a <span class="text-red">return</span> in the <strong>finally</strong> block. So this method's return value will be the number 0."</p>
+<p>"The <strong>finally</strong> block will execute no matter what happens. And its <span class="text-red">return</span> statement overwrites the other return value with its own value."</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"However, <span class="text-green"><strong>a method can either return a value or throw an exception.</strong></span>"</p>
+<p>"So, <span class="text-red">if a value is returned in a try block, but the <strong>finally</strong> block throws an <strong>exception</strong>, then the result will be an <strong>exception</strong>.</span>"</p>
+<p><span class="text-user">"What if an exception is thrown in the <strong>try</strong> block but the <strong>finally</strong> block has a return statement?"</span></p>
+<p>"Then it is as if the method worked properly and the value in the return statement is returned.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>try
+{
+ return 1;
+}
+ finally
+{
+<span class="text-green"> return 0;</span>
+}</code></pre>
+        </td>
+        <td><span class="text-green">0</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>try
+{
+ return 1;
+}
+ finally
+{
+<span class="text-green"> throw new RuntimeException();</span>
+}</code></pre>
+        </td>
+        <td><span class="text-green">RuntimeException</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>try
+{
+ throw new RuntimeException();
+}
+ finally
+{
+<span class="text-green"> return 0;</span>
+}</code></pre>
+        </td>
+        <td><span class="text-green">0</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>try
+{
+ throw new RuntimeException();
+}
+ finally
+{
+<span class="text-green"> throw new IOException();</span>
+}</code></pre>
+        </td>
+        <td><span class="text-green">IOException</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"The only reason the finally method might not be executed would be the program's immediate termination by a call to the <span class="text-red"><strong>System.exit();</strong></span> method."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>try
+{
+<span class="text-red"> System.exit(0);</span>
+ return 1;
+}
+ finally
+{
+<span class="text-green"> return 0;</span>
+}</code></pre>
+<p><span class="text-user">"I see."</span></p>
+<p>"Keep in mind that all of these topics are usually asked about in interviews, so it would be good for you to understand and remember them."</p>

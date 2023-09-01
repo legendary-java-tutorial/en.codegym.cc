@@ -1,0 +1,41 @@
+<p>"Hello, Amigo! Yesterday you were schooled in the ways of abstract classes. Now it's time to deepen our knowledge. I want to teach you how to use abstract classes correctly."</p>
+<p>It's difficult to come up with a real-world analogy for an abstract class. A class is usually a model of some entity. But an abstract class contains methods that have not been implemented, and can contain methods that have been implemented. What does that mean? What analogy for an abstract class can we find? Is there such a thing in the real world?</p>
+<p>Actually, there is. Imagine the chassis of an almost finished car on a conveyor belt. I can install either a souped-up engine or a highly efficient engine. Either a leather interior or fabric upholstery. The car's specific implementation is not yet determined. What's more, the chassis could be used to produce several specific implementations. But nobody wants the car in its current form. This is <strong>a classic abstract class</strong>: creating instances of it wouldn't make sense, so you can't create them; the class only makes sense because of the many full-fledged heirs that will be created on its basis.</p>
+<p><span class="text-user">"That's easy enough."</span></p>
+<p>But there can be even more abstract analogies. More like interfaces with a few implemented methods. For example, consider a professional <strong>interpreter</strong>. Without specifying the source and target languages, we have an «<strong>abstract translator</strong>». Or consider a bodyguard. We may know that he's mastered martial arts and can protect his client. But which martial arts and how he will protect the client are "implementation details" of each specific bodyguard.</p>
+<p>Let's look at an example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">abstract</span> class <strong>BodyGuard</strong>
+{
+ <span class="text-red">abstract</span> void applyMartialArts(Attacker attacker);
+
+ void <strong>shoot</strong>(Attacker attacker)
+ {
+    gun.shoot(attacker);
+ }
+
+ void <strong>saveClientLife</strong>(Attacker attacker)
+ {
+  <strong>if</strong> (<strong>attacker.hasGun</strong>())
+     <strong>shoot</strong>(attacker);
+  <strong>else</strong>
+     <strong>applyMartialArts</strong>(attacker);
+ }
+}</code></pre>
+        </td>
+        <td>The BodyGuard class determines how to deal with an attack: shoot or use martial arts.</p>
+            <p>However, the specific martial art is not specified, though we are certain that the skill exists.</p>
+            <p>We can create several different bodyguards (by inheriting this class). All of them will be able to protect the client and shoot the attacker.</td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task13.task1329"></div>
+<p><span class="text-user">"You're right. It's a lot like an interface with a few implemented methods."</span></p>
+<p>"Yes, this type of abstract class is common among standard Java SE classes."</p>

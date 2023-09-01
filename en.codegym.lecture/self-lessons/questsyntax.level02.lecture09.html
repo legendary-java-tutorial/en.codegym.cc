@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col"><img data-id="afcf1254-b463-4c07-ae25-a4ec6f9f9c4f" data-max-width="800" alt="Full class name - 1" src="https://cdn.codegym.cc/images/article/afcf1254-b463-4c07-ae25-a4ec6f9f9c4f/original.gif"></div>
+</div>
+<p>"Hi, Amigo. I'd like to tell you about full class names."</p>
+<p>"As you already know, classes are stored in packages. So, a class's full name consists of the names of all the packages, separated by periods, and the class name. <strong>Here are some examples</strong>:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Class name</th>
+        <th>Package name</th>
+        <th>Full name</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String</code></pre>
+        </td>
+        <td>java.lang</td>
+        <td>java.lang.<strong>String</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>FileInputStream</code></pre>
+        </td>
+        <td>java.io</td>
+        <td>java.io.<strong>FileInputStream</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>ArrayList</code></pre>
+        </td>
+        <td>java.util</td>
+        <td>java.util.<strong>ArrayList</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>IOException</code></pre>
+        </td>
+        <td>java.io</td>
+        <td>java.io.<strong>IOException</strong>;</td>
+    </tr>
+    </tbody>
+</table>
+<p>"To use a class in your code, you need to indicate its full name. You can also use its short name, i.e. just the class name, but you'll need to 'import the class'. This means that before you declare your class, you indicate the word <strong>import</strong> followed by the name of the class you want to import. Classes from the java.lang packages are imported by default, so you don't need to import them. Here's an example:"</p>
+<div class="code-heading">Full class name:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>package com.codegym.lesson2;
+
+public class FileCopy2
+{
+    public static void main(String[] args) throws <span class="text-corporate">java.io.IOException</span>
+    {
+        <span class="text-yellow">java.io.FileInputStream</span> fileInputStream =
+                        new <span class="text-yellow">java.io.FileInputStream</span>("c:\\data.txt");
+        <span class="text-red">java.io.FileOutputStream</span> fileOutputStream =
+                        new <span class="text-red">java.io.FileOutputStream</span>("c:\\result.txt");
+
+        while (fileInputStream.available() &gt; 0)
+        {
+            int data = fileInputStream.read();
+            fileOutputStream.write(data);
+        }
+
+        fileInputStream.close();
+        fileOutputStream.close();
+    }
+}</code></pre>
+<p>"Here's an example that uses short names:"</p>
+<div class="code-heading">Short class name:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>package com.codegym.lesson2;
+
+<span class="text-yellow">import java.io.FileInputStream;</span>
+<span class="text-red">import java.io.FileOutputStream;</span>
+<span class="text-corporate">import java.io.IOException;</span>
+
+public class FileCopy
+{
+    public static void main(String[] args) throws <span class="text-corporate">IOException</span>
+    {
+        <span class="text-yellow">FileInputStream</span> fileInputStream =
+                        new <span class="text-yellow">FileInputStream</span>("c:\\data.txt");
+        <span class="text-red">FileOutputStream</span> fileOutputStream =
+                        new <span class="text-red">FileOutputStream</span>("c:\\result.txt");
+
+        while (fileInputStream.available() &gt; 0)
+        {
+            int data = fileInputStream.read();
+            fileOutputStream.write(data);
+        }
+
+        fileInputStream.close();
+        fileOutputStream.close();
+    }
+}</code></pre>
+<p><span class="text-user">"Got it."</span></p>
+<p>"Great."</p>

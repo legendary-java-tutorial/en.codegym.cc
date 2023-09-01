@@ -1,0 +1,791 @@
+<a href='https://cdn.codegym.cc/images/article/1b1d220c-2aaa-4c29-9f14-ff5bb3b218a4/original.jpeg' target='_blank'><img data-id="1b1d220c-2aaa-4c29-9f14-ff5bb3b218a4" data-max-width="850" alt="Operator precedence - 1" src="https://cdn.codegym.cc/images/article/1b1d220c-2aaa-4c29-9f14-ff5bb3b218a4/original.jpeg"></a>
+
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"Bilaabo is happy to greet his friend!"</p>
+<p>"Today Bilaabo will tell you about operator precedence. But first he will tell you about the operators
+    themselves."</p>
+<p><span class="text-user">"What are these operators you speak of?"</span></p>
+<p>"Actually, you're already familiar with them. You just might not have known they are called operators."</p>
+<p>"For example, say we have the expression <strong>c = a + b;</strong>"</p>
+<p>"It has two operators: an addition operator and an assignment operator."</p>
+<p><span class="text-user">"In other words, operators are just mathematical signs? Like multiplication, division, and addition?"</span>
+</p>
+<p>"Yes, that is true. However, there are differences."</p>
+<p>"I won't define operators for you: a definition won't make you smarter. It's better to see them in action. Operators
+    can be divided into several groups, which we'll examine now."</p>
+<p><strong>1)</strong> "<strong>Mathematical operators</strong>"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="10%">Symbol</th>
+        <th width="10%">Example</th>
+        <th width="40%">Name</th>
+        <th width="40%">Description (what it does)</th>
+    </tr>
+    <tr>
+        <td><code>+</code></td>
+        <td><code>a + b</code></td>
+        <td><strong>Addition operator</strong></td>
+        <td>Addition operator.</td>
+    </tr>
+    <tr>
+        <td><code>-</code></td>
+        <td><code>c - d</code></td>
+        <td><strong>Subtraction operator</strong></td>
+        <td>Subtracts the second number from the first.</td>
+    </tr>
+    <tr>
+        <td><code>*</code></td>
+        <td><code>a * t</code></td>
+        <td><strong>Multiplication operator</strong></td>
+        <td>Multiplies two numbers.</td>
+    </tr>
+    <tr>
+        <td><code>/</code></td>
+        <td><code>a / b</code></td>
+        <td><strong>Division operator</strong></td>
+        <td>Divides the first number by the second.</td>
+    </tr>
+    <tr>
+        <td><code>%</code></td>
+        <td><code>c % d</code></td>
+        <td><strong>Divides the first number by the second.</strong></td>
+        <td>Calculates the remainder after dividing the first number by the second.</td>
+    </tr>
+    <tr>
+        <td><code>-</code></td>
+        <td><code>-a</code></td>
+        <td><strong>Unary minus</strong></td>
+        <td>Changes the variable's sign to its opposite.<br/>
+            Plus to minus, and minus to plus.
+        </td>
+    </tr>
+    <tr>
+        <td><code>+</code></td>
+        <td><code>+a</code></td>
+        <td><strong>Unary plus</strong></td>
+        <td>Doesn't change anything. This was added to compliment the unary minus operator. It's just for looks.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I recognize these from school. My firmware includes school courses."</span></p>
+<p><span class="text-user">"But, what's with that percent sign, some sort of wizardry?"</span></p>
+<p>"It's the "<span class="text-red">remainder after division</span>" operator. If 11 is divided by 5, then we get 2 and
+    a remainder of 1. This 1 can be obtained by writing 11 % 5;"</p>
+<p>"When you divide integers in Java, the result is also an integer. The remainder from the division operation is simply
+    ignored. If we divide 8 by 5, we get 1."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="10%">Expression</th>
+        <th width="10%">Result</th>
+        <th width="80%"></th>
+    </tr>
+    <tr>
+        <td><code>19 / 10</code></td>
+        <td>1</td>
+        <td>If we divide 19 by 10, the <strong>result</strong> is 1 with a remainder of 9.</td>
+    </tr>
+    <tr>
+        <td><code>19 % 10</code></td>
+        <td>9</td>
+        <td>If we divide 19 by 10, the result is 1 with a <strong>remainder</strong> of 9.</td>
+    </tr>
+    <tr>
+        <td><code>2 / 5</code></td>
+        <td>0</td>
+        <td>If we divide 2 by 5, the <strong>result</strong>is 0 with a remainder of 2.</td>
+    </tr>
+    <tr>
+        <td><code>16 % 2</code></td>
+        <td>0</td>
+        <td>If we divide 16 by 2, the result is 8 with a <strong>remainder</strong> of 0.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"But what in the world do we need the remainder for?"</span></p>
+<p>"Suppose you need to check whether an integer is even. Then you can write:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>if (a % 2 == 0)</code></pre>
+<p>"And if you need to check if b is odd, then you can write:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>if (b % 2 == 1)</code></pre>
+<p>"Or to check whether d is divisible by 3:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>if (d % 3 == 0)</code></pre>
+<p><span class="text-user">"Interesting. I'll remember that."</span></p>
+<p><strong>2) </strong> "<strong>Comparison operators</strong>"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="10%">Symbol</th>
+        <th width="10%">Example</th>
+        <th width="30%">Name</th>
+        <th width="50%">Description (what it does)</th>
+    </tr>
+    <tr>
+        <td><code>&lt;</code></td>
+        <td><code>a &lt; b</code></td>
+        <td><strong>Less than</strong></td>
+        <td>Checks to see if a is less than b.</td>
+    </tr>
+    <tr>
+        <td><code>&lt;=</code></td>
+        <td><code>c &lt;= d</code></td>
+        <td><strong>Less than or equal to</strong></td>
+        <td>Checks to see if c is less than or equal to d.</td>
+    </tr>
+    <tr>
+        <td><code>&gt;</code></td>
+        <td><code>a &gt; b</code></td>
+        <td><strong>Greater than</strong></td>
+        <td>Checks to see if a is greater than b.</td>
+    </tr>
+    <tr>
+        <td><code>&gt;=</code></td>
+        <td><code>c &gt;= d</code></td>
+        <td><strong>Greater than or equal to</strong></td>
+        <td>Checks to see if c is greater than or equal to d.</td>
+    </tr>
+    <tr>
+        <td><code>==</code></td>
+        <td><code>i == j</code></td>
+        <td><strong>equals</strong></td>
+        <td>Checks to see if i is equal to j.</td>
+    </tr>
+    <tr>
+        <td><code>!=</code></td>
+        <td><code>a != 0</code></td>
+        <td><strong>Not equal to</strong></td>
+        <td>Checks to see if a is not equal to zero.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I already use all of these."</span></p>
+<p>"And what's the main difference between these operators and the mathematical operators?"</p>
+<p><span class="text-user">"If we add two numbers, we get a number; but, if we compare two numbers, we get true or false."</span>
+</p>
+<p>"That's right. The result of a comparison is a "<strong>logical value</strong>" value, which, as you know, is
+    represented by the boolean type. There are two possibilities: true or false.</p>
+<p><span class="text-user">"Yep, that's all clear. I know that already."</span></p>
+<p><strong>3)</strong> "<strong>Logical operators</strong>"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="10%">Symbol</th>
+        <th width="10%">Example</th>
+        <th width="30%">Name</th>
+        <th width="50%">Description (what it does)</th>
+    </tr>
+    <tr>
+        <td><code>&amp;&amp;</code></td>
+        <td><code>a &amp;&amp; b</code></td>
+        <td><strong>AND</strong></td>
+        <td>The expression's result is true only when both a and b are true.</td>
+    </tr>
+    <tr>
+        <td><code>||</code></td>
+        <td><code>c || d</code></td>
+        <td><strong>OR</strong></td>
+        <td>The expression's result is true if either a or b is true. Both of them or at least one.</td>
+    </tr>
+    <tr>
+        <td><code>!</code></td>
+        <td><code>!a</code></td>
+        <td><strong>NOT</strong></td>
+        <td>The expression's result is true only if a is false.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Logical operators can only be used with boolean variables or expressions."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="30%">Example</th>
+        <th width="70%">Description</th>
+    </tr>
+    <tr>
+        <td><code>boolean a = true;</code><br/>
+            <code> boolean b = true;<span class="text-green">if (a &amp;&amp; b)</span></code></td>
+        <td>The if condition is true if both values are true<br/>
+            In other words, if both <strong>a and b</strong> are true, then the result is <strong>true</strong>.
+        </td>
+    </tr>
+    <tr>
+        <td><code>boolean a = true;</code><br/>
+            <code> boolean b = false;<span class="text-green">if (a || b)</span></code></td>
+        <td>The if condition is true if at least one value is true<br/>
+            In other words, if either <strong>a or b</strong> is true, then the result is <strong>true</strong>.
+        </td>
+    </tr>
+    <tr>
+        <td><code>boolean b = false;</code></p>
+            <p><code>if (!b)</code></td>
+        <td>The if condition is true if b is not true.<br/>
+            In other words, if  <strong>b is false</strong>, then the result is <strong>true</strong>.
+        </td>
+    </tr>
+    <tr>
+        <td><code>int a = 2, b = 3, c = 4;</code></p>
+            <p><code><span class="text-green">if (a &lt; b &amp;&amp; a &lt; c)</span></code><br/>
+                <code> <span class="text-green">if ((a &lt; b) &amp;&amp; (a &lt; c))</span></code></td>
+        <td>If a is less than b and a is less than c, then the expression's result is true.<br/>
+            a, b, and c are integers, but the result of comparing integers is a logical value (true, false), which means
+            we can use logical operators.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I know all this already."</span></p>
+<p>"Really? Let's carry on, then."</p>
+<p><strong>4)</strong> "<strong>Bitwise operators</strong>"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="10%">Symbol</th>
+        <th width="10%">Example</th>
+        <th width="30%">Name</th>
+        <th width="50%">Description (what it does)</th>
+    </tr>
+    <tr>
+        <td><code>&amp;</code></td>
+        <td><code>a &amp; b</code></td>
+        <td><strong>AND </strong></td>
+        <td>Bitwise AND</td>
+    </tr>
+    <tr>
+        <td><code>|</code></td>
+        <td><code>c | d</code></td>
+        <td><strong>OR </strong></td>
+        <td>Bitwise OR</td>
+    </tr>
+    <tr>
+        <td><code>~</code></td>
+        <td><code>~a</code></td>
+        <td><strong>NOT</strong></td>
+        <td>Bitwise NOT</td>
+    </tr>
+    <tr>
+        <td><code>^</code></td>
+        <td><code>a ^ b</code></td>
+        <td><strong>XOR</strong></td>
+        <td>Bitwise "EXCLUSIVE OR"</td>
+    </tr>
+    </tbody>
+</table>
+<p>"<a href='https://codegym.cc/groups/posts/10-bitwise-operators' target='_blank'>Bitwise operators</a> perform bit-by-bit operations on integers."</p>
+<p><span class="text-user">"What's that?"</span></p>
+<p>"Each number is represented as a set of bits, and then the result is calculated as follows:"</p>
+<p>"If the first bit of both numbers is 1, then the result's first bit will be 1."</p>
+<p>"If the second bit of both numbers is 1, then the result's second bit will be 1. And so on."</p>
+<p><span class="text-user">"Is that true for all bitwise operators?"</span></p>
+<p>"It's a lot simpler than that. A bit can only have two values, 0 and 1, right?"</p>
+<p><span class="text-user">"Right."</span></p>
+<p>"Then think of 1 as true, and 0 as false. Operations on individual bits will then be nearly identical to logical
+    operations:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Logical expression</th>
+        <th width="50%">Bitwise expression</th>
+    </tr>
+    <tr>
+        <td><strong>true &amp;&amp; true == true</strong></td>
+        <td><code>1&amp;1 == 1</code></td>
+    </tr>
+    <tr>
+        <td><strong>true &amp;&amp; false == false</strong></td>
+        <td><code>1&amp;0 == 0</code></td>
+    </tr>
+    <tr>
+        <td><strong>true || true == true</strong></td>
+        <td><code>1|1 == 1</code></td>
+    </tr>
+    <tr>
+        <td><strong>true || false == true</strong></td>
+        <td><code>1|0 == 1</code></td>
+    </tr>
+    <tr>
+        <td><strong>false || false = false</strong></td>
+        <td><code>0|0 == 0</code></td>
+    </tr>
+    <tr>
+        <td><strong>!false == true</strong></td>
+        <td><code>~0 == 1</code></td>
+    </tr>
+    <tr>
+        <td><strong>!true == false</strong></td>
+        <td><code>~1 == 0</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Oh! That's so easy."</span></p>
+<p>"Yes, just don't forget that bitwise operations use corresponding bits from two numbers."</p>
+<p><span class="text-user">"Yes, I remember: the first bit of one number is paired with the first bit of the second, and the result is also written to the first bit. And the same goes for the rest of the bits."</span>
+</p>
+<p>"That's right. Do you have any other questions?"</p>
+<p><span class="text-user">"What's with the XOR and 'exclusive or'?"</span></p>
+<p>"It's a piece of cake: when the values are different, it's true; when they are the same, it's false."</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Logical expression</th>
+        <th width="50%">Bitwise expression</th>
+    </tr>
+    <tr>
+        <td><strong>true XOR true == false</strong></td>
+        <td><code>1 ^ 1 == 0</code></td>
+    </tr>
+    <tr>
+        <td><strong>false XOR false == false</strong></td>
+        <td><code>0 ^ 0 == 0</code></td>
+    </tr>
+    <tr>
+        <td><strong>true XOR false == true</strong></td>
+        <td><code>1 ^ 0 == 1</code></td>
+    </tr>
+    <tr>
+        <td><strong>false XOR true == true</strong></td>
+        <td><code>0 ^ 1 == 1</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>Here are a couple more examples of bitwise operations:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="10%">Example</th>
+        <th width="30%">Numbers as bits</th>
+        <th width="30%">Result as bits</th>
+        <th width="30%">Result</th>
+    </tr>
+    <tr>
+        <td><code>5 &amp; 3</code></td>
+        <td>0000010<strong>1</strong> &amp; 0000001<strong>1</strong></td>
+        <td>0000000<strong>1</strong></td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td><code>7 &amp; 2</code></td>
+        <td>000001<strong>1</strong>1 &amp; 000000<strong>1</strong>0</td>
+        <td>00000010</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td><code>5 | 9</code></td>
+        <td>00000<strong>1</strong>0<strong>1</strong> | 0000<strong>1</strong>00<strong>1</strong></td>
+        <td>00001101</td>
+        <td>13</td>
+    </tr>
+    <tr>
+        <td><code>5 ^ 9</code></td>
+        <td>00000<strong>101</strong> ^ 00001001</td>
+        <td>0000<strong>1100</strong></td>
+        <td>12</td>
+    </tr>
+    <tr>
+        <td><code>~9</code></td>
+        <td>~<strong>00001001</strong></td>
+        <td>11110110</td>
+        <td>246</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Thank you, Bilaabo. Now I know."</span></p>
+<p>"There is one more group of bitwise operators, the shift operators:"</p>
+<p><strong>5)</strong> "<strong>Shift operators</strong>"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Symbol</th>
+        <th>Example</th>
+        <th>Name</th>
+        <th>Description (what it does)</th>
+    </tr>
+    <tr>
+        <td><code>&gt;&gt;</code></td>
+        <td><code>a &gt;&gt; b</code></td>
+        <td><strong>right shift</strong></td>
+        <td>Shifts the bits of the number a to the right by b digits.</td>
+    </tr>
+    <tr>
+        <td><code>&lt;&lt;</code></td>
+        <td><code>c &lt;&lt; d</code></td>
+        <td><strong>left shift</strong></td>
+        <td>Shifts the bits of the number c to the left by d digits.</td>
+    </tr>
+    <tr>
+        <td><code>&gt;&gt;&gt;</code></td>
+        <td><code>a &gt;&gt;&gt; 2</code></td>
+        <td><strong>unsigned right shift</strong></td>
+        <td>Shifts the bits of the number a to the right by 2 digits.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"What kind of street magic is this?"</span></p>
+<p>"It's actually all really simple. Check it out:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Numbers as bits</th>
+        <th>Result as bits</th>
+        <th>Result</th>
+    </tr>
+    <tr>
+        <td><code>10 &gt;&gt; 1</code></td>
+        <td>0000<strong>101</strong>0 &gt;&gt; 1</td>
+        <td>00000<strong>101</strong></td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td><code>10 &gt;&gt; 2</code></td>
+        <td>0000<strong>101</strong>0 &gt;&gt; 2</td>
+        <td>000000<strong>10</strong></td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td><code>10 &lt;&lt; 1</code></td>
+        <td>0000<strong>101</strong>0 &lt;&lt; 1</td>
+        <td>000<strong>101</strong>00</td>
+        <td>20</td>
+    </tr>
+    <tr>
+        <td><code>10 &lt;&lt; 2</code></td>
+        <td>0000<strong>101</strong>0 &lt;&lt; 2</td>
+        <td>00<strong>101</strong>000</td>
+        <td>40</td>
+    </tr>
+    </tbody>
+</table>
+<p>"Shifting a number's bits to the left by 1 is the same as multiplying the number by 2. Shifting by two digits is
+    equivalent to multiplication by 4, by three digits — multiplication by 8, and so on."</p>
+<p>"Shifting right corresponds to dividing by 2, 4, 8, 16, etc."</p>
+<p><span class="text-user">"But what's the difference between the &gt;&gt;&gt;  and &gt;&gt; operators?"</span></p>
+<p>"They differ when working with negative numbers. This is because <strong>signed numbers use the leftmost bit to
+    indicate the sign.</strong> As a result, a negative number ceases to be negative when shifting to the right. So,
+    they came up with two different operators. Check it out:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20%">Expression</th>
+        <th width="20%">Result</th>
+        <th width="60%">Description</th>
+    </tr>
+    <tr>
+        <td><strong>1</strong>000<strong>1010</strong> &gt;&gt; 1</td>
+        <td><strong>11</strong>000<strong>101</strong></td>
+        <td rowspan="3">The negative number stays negative.<br>
+            For negative numbers, the incoming bits are filled with 1s.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>1</strong>000<strong>1010</strong> &gt;&gt; 2</td>
+        <td><strong>111</strong>000<strong>10</strong></td>
+    </tr>
+    <tr>
+        <td><strong>1</strong>000<strong>1010</strong> &gt;&gt; 3</td>
+        <td><strong>1111</strong>000<strong>1</strong></td>
+    </tr>
+    <tr>
+        <td><strong>1</strong>000<strong>1010</strong> &gt;&gt;&gt; 1</td>
+        <td><strong>01</strong>000<strong>101</strong></td>
+        <td rowspan="3">The negative number is no longer negative. For negative numbers, the incoming bits are filled
+            with 0s.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>1</strong>000<strong>1010</strong> &gt;&gt;&gt; 2</td>
+        <td><strong>001</strong>000<strong>10</strong></td>
+    </tr>
+    <tr>
+        <td><strong>1</strong>000<strong>1010</strong> &gt;&gt;&gt; 3</td>
+        <td><strong>0001</strong>000<strong>1</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p>"The shift is not cyclic. Bits that move beyond the left or right edge of the number are simply discarded."</p>
+<p><strong>6)</strong> "<strong>Assignment operators</strong>"</p>
+<p><span class="text-user">"I already know what assignment is. But why do you say 'operators'?"</span></p>
+<p>"Because there are several of them ☺"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Operator</th>
+        <th width="50%">What it means</th>
+    </tr>
+    <tr>
+        <td><code>a += b;</code></td>
+        <td><code>a = a + b;</code></td>
+    </tr>
+    <tr>
+        <td><code>a -= b;</code></td>
+        <td><code>a = a - b;</code></td>
+    </tr>
+    <tr>
+        <td><code>a *= b;</code></td>
+        <td><code>a = a * b;</code></td>
+    </tr>
+    <tr>
+        <td><code>a %= b;</code></td>
+        <td><code>a = a % b;</code></td>
+    </tr>
+    <tr>
+        <td><code>a |= b;</code></td>
+        <td><code>a = a | b;</code></td>
+    </tr>
+    <tr>
+        <td><code>a &amp;= b;</code></td>
+        <td><code>a = a &amp; b;</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"I think you get the logic."</p>
+<p><strong>7)</strong> "<strong>Increment and decrement operators</strong>"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20%">Notation</th>
+        <th width="20%">Example</th>
+        <th width="60%">Description</th>
+    </tr>
+    <tr>
+        <td><code>++</code></td>
+        <td><code>a++;</code><br/>
+            <code> ++b;</code></td>
+        <td>Increases the number by 1.</td>
+    </tr>
+    <tr>
+        <td><code>--</code></td>
+        <td><code>d--;</code><br/>
+            <code> --i;</code></td>
+        <td>Decreases the number or variable by 1.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span
+        class="text-user">"Is there a difference between putting the two minus signs before or after the variable?"</span>
+</p>
+<p>"Yes, there is, though not very big. If a variable with one of these operators is a part of an expression or
+    assignment, then there are differences. I'd rather show you by example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20%">Example</th>
+        <th width="40%">What really happens</th>
+        <th width="40%">Description</th>
+    </tr>
+    <tr>
+        <td><code>int a = 3;</code><br/>
+            <code> int b = ++a;</code></td>
+        <td><code>int a = 3;</code><br/>
+            <code> a = a + 1;</code><br/>
+            <code> int b = a;</code></td>
+        <td>a is first increased by 1, and then it is used in the expression.</td>
+    </tr>
+    <tr>
+        <td><code>int a = 3;</code><br/>
+            <code> int b = a++;</code></td>
+        <td><code>int a = 3;</code><br/>
+            <code> int b = a;</code><br/>
+            <code> a = a + 1;</code></td>
+        <td>a is first used in the expression, and then increases by 1.</td>
+    </tr>
+    <tr>
+        <td><code>int a = 3;</code><br/>
+            <code> return a++;</code></td>
+        <td><code>int a = 3;</code><br/>
+            <code> int result = a;</code><br/>
+            <code> a = a + 1;</code><br/>
+            <code> return result;</code></td>
+        <td>The function will return 3, but the value of a will be increased by 1.</td>
+    </tr>
+    <tr>
+        <td><code>int x = 5;</code><br/>
+            <code> x = ++x + ++x;</code></td>
+        <td><code>int x = 5;</code><br/>
+            <code> int a = x + 1;// The first term is 6</code><br/>
+            <code> x = a;</code><br/>
+            <code> int b = x + 1;// The second term is 7</code><br/>
+            <code> x = b;</code><br/>
+            <code> x = a + b;</code></td>
+        <td>The result here is 13. First, x will increase by 1, and this value will replace the first term, and then x
+            will again increase by 1.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Whoa! That's cool!"</span></p>
+<p>"I'm glad you liked it. But, if there is no expression or assignment, then there are no differences:"</p>
+<p>"x++ is equivalent to x = x + 1."</p>
+<p>"++x is equivalent to x = x + 1."</p>
+<p><span class="text-user">"I'll keep that in mind. Thanks, Bilaabo."</span></p>
+<p><strong>8)</strong> "<strong><a href='https://codegym.cc/groups/posts/14-ternary-operator' target='_blank'>Ternary operator</a></strong>"</p>
+<p>"This operator doesn't just use one or two variables or expressions. It uses three variables or expressions all at
+    once:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Notation</th>
+        <th width="50%">Equivalent code:</th>
+    </tr>
+    <tr>
+        <td><code>a ? b : c;</code></td>
+        <td><code>if (a)</code><br/>
+            <code> b</code><br/>
+            <code> else</code><br/>
+            <code> c</code></td>
+    </tr>
+    <tr>
+        <td><code>int min = a &lt; b ? a : b;</code></td>
+        <td><code>if (a &lt; b)</code><br/>
+            <code>min = a;</code><br/>
+            <code>else</code><br/>
+            <code>min = b;</code></td>
+    </tr>
+    <tr>
+        <td><code>return a != null ? a.length : 0;</code></td>
+        <td><code>if (a != null)</code><br/>
+            <code>return a.length;</code><br/>
+            <code>else</code><br/>
+            <code>return 0;</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Well, that's super convenient."</span></p>
+<p>"Yes. And it's compact and the code is readable. Enjoy using it!"</p>
+<p><strong>9)</strong> "<strong>Other</strong>"</p>
+<p>"No matter how well organized your music collection, you still have to create a "Miscellaneous" folder."</p>
+<p><span class="text-user">"Yeah, anyone who's ever had to categorize music would totally agree."</span></p>
+<p>"So, there are three more operators I want to tell you about:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20%">Notation</th>
+        <th width="20%">Example</th>
+        <th width="60%">Description</th>
+    </tr>
+    <tr>
+        <td><code>()</code></td>
+        <td><code>(a + b) * c</code></td>
+        <td>Parentheses increase operator precedence.<br />
+            Things in parentheses are executed first.
+        </td>
+    </tr>
+    <tr>
+        <td><code>[]</code></td>
+        <td><code>c [i] = c [i + 1];</code></td>
+        <td>Get an array element by index.</td>
+    </tr>
+    <tr>
+        <td><code>.</code></td>
+        <td><code>int n = a.length;</code></td>
+        <td>The "<strong>dot operator</strong>" accesses an object's variables and methods.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"And, finally, here's a table that summarizes operator precedence:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="20%">Operators</th>
+        <th width="80%">Examples</th>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">Highest precedence (operators are executed according to their order in this table)</td>
+    </tr>
+    <tr>
+        <td><code>()</code><br/>
+            <code>[]</code><br/>
+            <code>.</code></td>
+        <td><code>(a + b)</code><br/>
+            <code>c [i] = c [i] + 1</code></td>
+    </tr>
+    <tr>
+        <td><code>++</code><br/>
+            <code>--</code><br/>
+            <code>~</code><br/>
+            <code>!</code><br/>
+            <code>+</code><br/>
+            <code>-</code></td>
+        <td><code>i++; ++i;</code><br/>
+            <code>--j; a--;</code><br/>
+            <code>~c</code><br/>
+            <code>!f</code><br/>
+            <code>return +a;</code><br/>
+            <code>return -a;</code></td>
+    </tr>
+    <tr>
+        <td><code>*</code><br/>
+            <code>/</code><br/>
+            <code>%</code></td>
+        <td><code>a * b</code><br/>
+            <code>c / d</code><br/>
+            <code>a % b</code></td>
+    </tr>
+    <tr>
+        <td><code>+</code><br/>
+            <code>-</code></td>
+        <td><code>a + b</code><br/>
+            <code>c - d</code><br/>
+            <code>String s = "count"+"35";</code></td>
+    </tr>
+    <tr>
+        <td><code>&gt;&gt;</code><br/>
+            <code>&lt;&lt;</code><br/>
+            <code>&gt;&gt;&gt;</code></td>
+        <td><code>a &gt;&gt; 3</code><br/>
+            <code>b &lt;&lt; 2</code><br/>
+            <code>c &gt;&gt;&gt; 3</code></td>
+    </tr>
+    <tr>
+        <td><code>&lt;</code><br/>
+            <code>&lt;=</code><br/>
+            <code>&gt;</code><br/>
+            <code>&gt;=</code></td>
+        <td><code>a &lt; b</code><br/>
+            <code>a &lt;= b</code><br/>
+            <code>c &gt; b</code><br/>
+            <code>c &gt;= b</code></td>
+    </tr>
+    <tr>
+        <td><code>==</code><br/>
+            <code>!=</code></td>
+        <td><code>a == 3</code><br/>
+            <code>a != 0</code></td>
+    </tr>
+    <tr>
+        <td><code>&amp;</code></td>
+        <td><code>a &amp; 7</code></td>
+    </tr>
+    <tr>
+        <td><code>^</code></td>
+        <td><code>a ^ b</code></td>
+    </tr>
+    <tr>
+        <td><code>|</code></td>
+        <td><code>a | b</code></td>
+    </tr>
+    <tr>
+        <td><code>&amp;&amp;</code></td>
+        <td><code>(a &lt; b) &amp;&amp; (a &lt; c)</code></td>
+    </tr>
+    <tr>
+        <td><code>||</code></td>
+        <td><code>(b != 0) || (c != 0)</code></td>
+    </tr>
+    <tr>
+        <td><code>? : =</code></td>
+        <td><code>a &gt; 0 ? a : -a;</code></td>
+    </tr>
+    <tr>
+        <td><code>=</code><br/>
+            <code>*=, /=, %=</code><br/>
+            <code>-=, +=</code><br/>
+            <code>&lt;&lt;=. &gt;&gt;=, &gt;&gt;&gt;=</code><br/>
+            <code>&amp;=, ^=. |=</code></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">Lowest precedence (performed last)</td>
+    </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>

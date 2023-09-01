@@ -1,0 +1,154 @@
+<p>"Hi, Amigo!"</p>
+<p>"I'd also like to talk about bitmasks and XOR."</p>
+<p>"You already know that numbers consist of bits and you can perform various operations on these bits. A bitmask is a representation of several different logical values (true/false values) as a single integer. In this case, each boolean-value corresponds to a specific bit. Here's how this could be done:"</p>
+<p>"The binary representation of powers of two (1, 2, 4, 8, 16, 32, ...) only involves setting one bit:"</p>
+<table>
+<tbody>
+<tr>
+<th>Number</th>
+<th>Binary representation</th>
+</tr>
+<tr>
+<td>1</td>
+<td><span class="text-green">0000 0001</span></td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="text-green">0000 0010</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td><span class="text-green">0000 0100</span></td>
+</tr>
+<tr>
+<td>8</td>
+<td><span class="text-green">0000 1000</span></td>
+</tr>
+<tr>
+<td>16</td>
+<td><span class="text-green">0001 0000</span></td>
+</tr>
+<tr>
+<td>19 (not a power of two)</td>
+<td><span class="text-red">0001 0011</span></td>
+</tr>
+<tr>
+<td>31 (not a power of two)</td>
+<td><span class="text-red">0001 1111</span></td>
+</tr>
+</tbody>
+</table>
+<p>"So, any integer can be treated as an array of bits or an array of boolean values."</p>
+<p>"Here's how you can store different boolean values in one number:"</p>
+<div class="code-heading">Boolean values</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>boolean a = true;
+boolean b = false;
+boolean c = true;
+boolean d = false;</code></pre>
+<div class="code-heading">Values packed into one number:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int result = 0;
+ if (a) result += 1; // 1 == 2<sup>0</sup> — bit 0
+ if (b) result += 2; // 2 == 2<sup>1</sup> — bit 1
+ if (c) result += 4; // 4 == 2<sup>2</sup> — bit 2
+ if (d) result += 8; // 8 == 2<sup>3</sup> — bit 3</code></pre>
+<p>"Now each bit is 1 if the corresponding boolean variable was true."</p>
+<p>In our case, the variables a and c were true, so result is equal to 1+4 == 5</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>0000 0<span class="text-green">1</span>0<span class="text-red">1</span>
+0000 d<span class="text-green">c</span>b<span class="text-red">a</span></code></pre>
+<p><span class="text-user">"I think I know what's happening."</span></p>
+<p>"Well, if you understand, let's move on."</p>
+<p>"An int has 32 bits. One of them is used for the number's sign, and the other 31 can be used to store the values of 31 boolean variables."</p>
+<p>"A long has 64 bits where we can store 63 boolean variables."</p>
+<p>"Yep."</p>
+<p><span class="text-user">"Dozens of variables crammed into one number. That's quite a few."</span></p>
+<p><span class="text-user">"But where is this applied?"</span></p>
+<p>"Mainly in situations where you need to store a lot of information about objects. When you store a lot of information about an object, there are always a couple dozen boolean variables. "With this approach, they're all conveniently stored in one number."</p>
+<p>"With emphasis on the word 'stored'. Because actually using the number isn't so convenient."</p>
+<p><span class="text-user">"By the way, that's just what I wanted to ask. How do we extract the boolean value from the number?"</span></p>
+<p>"It isn't complicated at all. Let's say you need to determine whether bit 6 is set to 1 (2 to the power of five is 32). We could check like this:"</p>
+<div class="code-heading">Combine numbers into one:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-neon">int a = 32;</span> // 2<sup>5</sup> == 0010 0000
+<span class="text-green">int b = 8;</span> // 2<sup>3</sup> == 0000 1000
+<span class="text-red">int c = 2;</span> // 2<sup>1</sup> == 0000 0010
+
+<strong>int result = a + b + c;</strong> // 32 + 8 + 2 == 42 == 0010 1010</code></pre>
+<div class="code-heading">Extract values by checking specific bits:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-neon">int a = result &amp; 32;</span> // 0010 1010 &amp; 0010 0000 = 0010 0000
+<span class="text-green">int b = result &amp; 8;</span> // 0010 1010 &amp; 0000 1000 = 0000 1000
+<span class="text-red">int c = result &amp; 2;</span> // 0010 1010 &amp; 0000 0010 = 0000 0010</code></pre>
+<p>"Thus, working with bitmasks involves three operations:"</p>
+<p><strong>1)</strong> Set a specific bit to 0</p>
+<p><strong>2)</strong> Set a specific bit to 1</p>
+<p><strong>3)</strong> Check the value of the specific bit.</p>
+<p>"Take bit 6, for example."</p>
+<p>"How do you set bit 6 to 1?"</p>
+<table>
+<tbody>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>result = result | 01000000;
+result |= 01000000;</code></pre>
+</td>
+<td>How do you set bit 6 to 1?</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>result = result &amp; 10111111;
+result &amp;= 10111111;</code></pre>
+</td>
+<td>How do you set bit 6 to 0?</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>c = result &amp; 01000000;</code></pre>
+</td>
+<td>How do you get the value of bit 6?</td>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"That's highly unusual, but not difficult. Man, now I'm a hot-shot programmer."</span></p>
+<p>"And one more little tip on how to easily get numbers with a specific bit set to 0 or 1: 01000000 or 10111111."</p>
+<p><strong>For this, we have the </strong><span class="text-red">&gt;&gt;</span><strong> and </strong><span class="text-red">&lt;&lt;</span><strong> operators.</strong></p>
+<p>"1 is 2 to the zeroth power. In other words, a number with bit 0 set to 1. We need a number with bit 6 set."</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int c = <span class="text-green">1 &lt;&lt; 6</span>; // 0000 0001 <span class="dblue_text text-neon">&lt;&lt; 6</span> == <span class="text-red">0100 0000</span> == 64</code></pre>
+<p><span class="text-user">"Cool! That's really helpful for such cases."</span></p>
+<p><span class="text-user">"But what if I need a number where every bit is set to 1 except one specific bit is set to 0?"</span></p>
+<p>"That also isn't difficult:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int d = <span class="text-green">~(1 &lt;&lt; 6)</span>; // <span class="text-neon">~0100 0000</span> == <span class="text-red">10111111</span></code></pre>
+<p>"In other words, it's all very simple:"</p>
+<table>
+<tbody>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>result = result | (1 &lt;&lt; 6);
+<strong>result |= (1 &lt;&lt; 6);</strong></code></pre>
+</td>
+<td>How do you set bit 6 to 1?</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>result = result &amp; ~(1 &lt;&lt; 6);
+<strong>result &amp;= ~(1 &lt;&lt; 6);</strong></code></pre>
+</td>
+<td>How do you set bit 6 to 0?</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>c = result &amp; (1 &lt;&lt; 6);</strong></code></pre>
+</td>
+<td>How do you get the value of bit 6?</td>
+</tr>
+</tbody>
+</table>
+<p><span class="text-user">"It doesn't look very difficult. But I won't remember it right away."</span></p>
+<p>"But, if you encounter a scary expression such as "result &amp;= ~(1 &lt;&lt; 6)" in someone else's code, you'll know that this someone is just working with a bitmask."</p>
+<p>"And if you encounter it often, then it will remember itself for you."</p>
+<p><span class="text-user">"Remember itself... That sounds good. Thank's for the lesson."</span></p>

@@ -1,0 +1,91 @@
+<p>"Hello to my favorite student. Now I'm going to tell you about the visibility of variables."</p>
+<p><span class="text-user">"Huh? Can variables be invisible?"</span></p>
+<p>&#34;No. <span class="text-green">A variable's 'visibility', or scope, means the places in the code where you can refer to that variable.</span> <span class="text-corporate">You may use some variables everywhere in the program, but others can only be used within their class, and still others – only within one method.</span>&#34;</p>
+<p>"For example, you can't use a variable before it has been declared."</p>
+<p><span class="text-user">"That makes sense."</span></p>
+<p>"Here are a couple of examples:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-viola">┏</span>
+<span class="text-viola">┃</span>public class Variables
+<span class="text-viola">┃</span><span class="text-green">┏</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span>{
+<span class="text-viola">┃</span><span class="text-green">┃</span>   private static String TEXT = "The end.";
+<span class="text-viola">┃</span><span class="text-green">┃</span>  <span class="text-viola">┗━━━━━━━━━━━━━━┛</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span>   public static void main (String[] args)
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┏</span>                         <span class="text-user">┗━━━━━━━┛</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span> {
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>    System.out.println("Hi");
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>    String s = "Hi!";
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┏┗━━━━┛</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> System.out.println(s);
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> if (args != NULL)
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> {
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span>    String s2 = s;
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span>   <span class="text-corporate">┗━━━━┛
+</span><span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span><span class="text-corporate">  ┏</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span>  <span class="text-corporate">┃</span> System.out.println(s2);
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span>  <span class="text-corporate">┗</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> }
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> Variables variables = new Variables();
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> System.out.println(variables.instanceVariable);
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┃</span> System.out.println(TEXT);
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span>  <span class="text-red">┗</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┃</span> }
+<span class="text-viola">┃</span><span class="text-green">┃</span> <span class="text-user">┗</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span>   public String instanceVariable;
+<span class="text-viola">┃</span><span class="text-green">┃</span>  <span class="text-green">┗━━━━━━━━━━━━━━━┛</span>
+<span class="text-viola">┃</span><span class="text-green">┃</span>   public Variables()
+<span class="text-viola">┃</span><span class="text-green">┃</span>   {
+<span class="text-viola">┃</span><span class="text-green">┃</span>      instanceVariable = "Instance variable test.";
+<span class="text-viola">┃</span><span class="text-green">┃</span>   }
+<span class="text-viola">┃</span><span class="text-green">┃</span>}
+<span class="text-viola">┃</span><span class="text-green">┗</span>
+<span class="text-viola">┗
+</span></code></pre>
+<p><span class="text-red">1. A variable declared in a method exists (is visible) from the start of its declaration to the end of the method.</span></p>
+<p><span class="text-corporate">2. A variable declared in a code block exists until the end of the code block.</span></p>
+<p><span class="text-user">3. A method's parameters exist everywhere within the method.</span></p>
+<p><span class="text-green">4. Variables in an object exist during the entire lifespan of the object that contains them. Their visibility is also defined by special access modifiers: <strong>public</strong> and <strong>private</strong>.</span></p>
+<p><span class="text-viola">5. Static (class) variables exist the whole time the program is running. Their visibility is also defined by access modifiers.</span></p>
+<p><span class="text-user">"I love pictures. They help make everything clear."</span></p>
+<p>"Good boy, Amigo. I always knew that you were a smart guy."</p>
+<p>"I'm also going to tell you about '<span class="text-red">access modifiers</span>'. Don't be scared. There's nothing complicated about them. Here you can see the words <strong>public</strong> and <strong>private</strong>."</p>
+<p><span class="text-user">"I'm not scared. It's just that my eye is twitching."</span></p>
+<p>"I believe you. You can manage how the methods and variables of one class are accessed by (or visible to) other classes. You can assign only one access modifier to each method or variable.</p>
+<p>1. <strong>public</strong> access modifier.</p>
+<p><span class="text-green">You can use a variable, method or class marked with the public modifier from anywhere in the program. This is the highest level of access – there are no limitations here.</span></p>
+<p>2. <strong>private</strong> access modifier.</p>
+<p><span class="text-red">You can use a variable or a method marked with the private modifier only from the class it is declared in. For all other classes, the marked method or variable will be invisible, just as if it doesn't exist. This is the highest level of closedness – access only within its own class.</span></p>
+<p>3. No modifier.</p>
+<p>If a variable or a method isn't marked with any modifier, it is considered to be marked with a 'default' access modifier. Such variables and methods are visible to all classes in the package they are declared in. And to them only. This level of access is sometimes called '<strong>package-private</strong>' access, since access to the variables and methods is open for the entire package that contains their class.</p>
+<p>Here's a table that summarizes what we've discussed:"</p>
+<table>
+    <tbody>
+    <tr style="height: 24px;">
+        <th style="height: 48px;" rowspan="2">Modifiers</th>
+        <th style="height: 24px; text-align: center;" colspan="3">Access from…</th>
+    </tr>
+    <tr style="height: 24px;">
+        <th style="height: 24px; text-align: center;">Own class</th>
+        <th style="height: 24px; text-align: center;">Own package</th>
+        <th style="height: 24px; text-align: center;">Any class</th>
+    </tr>
+    <tr style="height: 24px;">
+        <td style="height: 24px;"><b>private</b></td>
+        <td style="height: 24px; text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="height: 24px; text-align: center;"><span class="text-red">No</span></td>
+        <td style="height: 24px; text-align: center;"><span class="text-red">No</span></td>
+    </tr>
+    <tr style="height: 24px;">
+        <td style="height: 24px;">No modifier (<b>package-private</b>)</td>
+        <td style="height: 24px; text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="height: 24px; text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="height: 24px; text-align: center;"><span class="text-red">No</span></td>
+    </tr>
+    <tr style="height: 24px;">
+        <td style="height: 24px;"><b>public</b></td>
+        <td style="height: 24px; text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="height: 24px; text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="height: 24px; text-align: center;"><span class="text-green">Yes</span></td>
+    </tr>
+    </tbody>
+</table>

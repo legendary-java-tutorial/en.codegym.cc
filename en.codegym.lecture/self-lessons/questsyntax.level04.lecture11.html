@@ -1,0 +1,106 @@
+<iframe width="1080" height="608" src="https://www.youtube.com/embed/ULnMQpJnrGY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"I want to tell you about one more loop. The <a href='https://codegym.cc/groups/posts/for-loop-java' target='_blank'>for loop</a>. <span class="text-green">It's just another way to express a while loop, just more compact and convenient (for programmers).</span> Here are some examples:"</p>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">while</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">int i = 3;</span>
+while (<span class="text-corporate">i &gt;= 0</span>)
+{
+    System.out.println(i);
+    <span class="text-viola">i</span>--;
+}</code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">for</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><br>for (<span class="text-green">int i = 3;</span> <span class="text-corporate">i &gt;= 0;</span> <span class="text-viola">i</span>--)
+{
+    System.out.println(<span class="text-viola">i</span>);
+}
+
+
+</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">while</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">int i = 0;</span>
+while (<span class="text-corporate">i &lt; 3</span>)
+{
+    System.out.println(i);
+    <span class="text-viola">i</span>++;
+}</code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">for</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><br>for (<span class="text-green">int i = 0;</span> <span class="text-corporate">i &lt; 3;</span> <span class="text-viola">i</span>++)
+{
+    System.out.println(<span class="text-viola">i</span>);
+}
+
+
+</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">while</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">boolean isExit = false;</span>
+while (<span class="text-corporate">!isExit</span>)
+{
+    String s = buffer.readLine();
+    isExit = s.equals("exit");
+}</code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">for</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><br>for (<span class="text-green">boolean isExit = false;</span> <span class="text-corporate">!isExit;</span> )
+{
+    String s = buffer.readLine();
+    isExit = s.equals("exit");
+}
+
+</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">while</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>while (<span class="text-corporate">true</span>)
+    System.out.println("C");</code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">for</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>for (; <span class="text-corporate">true;</span> )
+    System.out.println("C");</code></pre>
+</div>
+</div>
+<div class="row compare">
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">while</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>while (<span class="text-corporate">true</span>)
+{
+    String s = buffer.readLine();
+    if (s.equals("exit"))
+        break;    
+}</code></pre>
+</div>
+<div class="col-xs-12 col-sm-6 col-md-6">
+<div class="code-heading">for</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>for (; <span class="text-corporate">true;</span> )
+{
+    String s = buffer.readLine();
+    if (s.equals("exit"))
+        break;    
+}</code></pre>
+</div>
+</div>
+<p><span class="text-user">"Eh?"</span></p>
+<p>"These loops are equivalent. <span class="text-green">A <strong>while</strong> loop contains a single condition in the parentheses, but there are three elements in a for loop statement.</span> <span class="text-viola">But the compiler turns a <strong>for</strong> loop into an equivalent <strong>while</strong> loop.</span>"</p>
+<p>"The first expression in a <strong>for</strong> loop (<span class="text-green">highlighted in green</span>) is executed once before the loop begins."</p>
+<p>"<span class="text-corporate">The second expression</span> is evaluated every time before the loop body is executed. This is like the condition in a while loop."</p>
+<p>"<span class="text-viola">The third expression</span> is evaluated after every execution of the loop body."</p>
+<p><span class="text-user">"Why do we need one more loop? Everything is perfectly clear with the <strong>while</strong> loop."</span></p>
+<p>"<span class="text-corporate">It's for programmers' convenience.</span> Loops are very common in programming. It's helpful to have a single line contain information on the loop counter's initial value, the termination condition, and the increment expression."</p>

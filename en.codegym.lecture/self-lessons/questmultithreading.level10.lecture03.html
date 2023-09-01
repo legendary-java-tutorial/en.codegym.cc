@@ -1,0 +1,59 @@
+<a href='https://cdn.codegym.cc/images/article/e87dcb96-9044-44f9-b4c0-2608cc83c1d0/original.jpeg' target='_blank'><img data-id="e87dcb96-9044-44f9-b4c0-2608cc83c1d0" data-max-width="850" alt="Numeric operators - 1" src="https://cdn.codegym.cc/images/article/e87dcb96-9044-44f9-b4c0-2608cc83c1d0/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"I want to tell you about numeric operators."</p>
+<p><span class="text-user">"Bilaabo already told me!"</span></p>
+<p>"Really? Then I'll ask just a couple of questions."</p>
+<p>"How do you increase a variable by 1? Give me as many options as possible."</p>
+<p><span class="text-user">"Easy."</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x++;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>++x;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = x + 1;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x += 1;</code></pre>
+<p>"That's right. And now what if you need to multiply the variable by two?"</p>
+<p><span class="text-user">"Done."</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = x * 2;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x *= 2;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = x + x;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x += x;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = x &lt;&lt; 1;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x &lt;&lt;= 1;</code></pre>
+<p>"How do you raise a variable to the ninth power?"</p>
+<p><span class="text-user">"This still doesn't require thinking."</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = x*x*x*x*x*x*x*x*x;</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = x*x*x; (x3)
+x = x*x*x; (x3*x3*x3 = x9)</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = Math.exp( 9 * Math.log(x)); // x9 == exp(ln(x9)) == exp(9*ln(x));</code></pre>
+<p>"The square root of a number?"</p>
+<p><span class="text-user">"Piece of cake."</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Math.sqrt(x)</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = Math.exp(0.5 * Math.log(x)); // x1/2 = exp(ln(x0.5)) == exp(0.5*ln(x));</code></pre>
+<p>"Sine of pi/2?"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = Math.sin(Math.PI/2);</code></pre>
+<p>"A random number between 0 and 1?"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = Math.random();</code></pre>
+<p>"A random number between 0 and 3?"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = Math.random() *3;</code></pre>
+<p>"A random number between 0 and 10?"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = Math.random() *10;</code></pre>
+<p>"A random number between -5 and 5?"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = Math.random() *10 - 5;</code></pre>
+<p>"A random number between -1 and 1?"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>x = Math.random() *2 - 1;</code></pre>
+<p>"A random number between 0 and 100?"</p>
+<p><span class="text-user">"I even have two solutions for you:"</span></p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>int x = (int) (Math.random() *100);</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Random random = new Random();
+int x = random.nextInt(100);</code></pre>
+<p>"Brilliant! I'm impressed. You have a splendid grasp of the topic."</p>

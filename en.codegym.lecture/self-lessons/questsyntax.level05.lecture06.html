@@ -1,0 +1,101 @@
+<p>"I'd like to tell you about object initialization. <span class="text-green">When you create an object, you need to assign initial values to its variables</span> to avoid the situation where you access an object that doesn't have the information it needs to work correctly."</p>
+<p>"Let's consider a File object. <span class="text-corporate">The minimum necessary information for a file is its name. It would be absurd to create a nameless file.</span>"</p>
+<p>"Suppose we write a MyFile class to work with files. What information would be necessary for each object?"</p>
+<p><span class="text-user">"The name of the file associated with the object?"</span></p>
+<p>"That's right. To do this, we add the <strong>initialize</strong>() method to our class. This is how it looks."</p>
+<div class="code-heading">Example:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyFile
+{
+    private String <span class="text-user">filename</span> = null;
+
+    public void <strong>initialize</strong>(String <span class="text-corporate">name</span>)
+    {
+        <strong>this.</strong><span class="text-user">filename</span> = <span class="text-corporate">name</span>;
+    }
+…
+}</code></pre>
+<p>"We added the <strong>initialize</strong> method to make it possible to work with the object by calling the method. We can call the object's methods immediately after calling the <strong>initialize</strong> method. <span class="text-green">If we can't work with an object, we call it <em><strong>invalid</strong></em>; otherwise, we say the object is <em><strong>valid</strong></em>. The initialize method's main task is to receive all the data that an object requires to make it valid.</span>"</p>
+<p><span class="text-user">"I see."</span></p>
+<p>"Now let's make our task harder. Or, on second thought, easier. Depends on how you look at it. Suppose a programmer using our class would find it more convenient to pass just the file's directory and short name instead of its full path. We could create another <strong>initialize</strong> method (<span class="text-red">Java lets us create several methods with identical names</span>) to let the programmer do this. Here's how our class would look:"</p>
+<div class="code-heading">Example with two <strong>initialize</strong> methods:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyFile
+{
+    private String <span class="text-user">filename</span> = null;
+    public void <strong>initialize</strong>(String <span class="text-corporate">name</span>)
+    {
+        <strong>this.</strong><span class="text-user">filename</span> = <span class="text-corporate">name</span>;
+    }
+
+    public void initialize(String <span class="text-green">folder</span>, String <span class="text-corporate">name</span>)
+    {
+        <strong>this.</strong><span class="text-user">filename</span> = <span class="text-green">folder</span> + <span class="text-corporate">name</span>;
+    }
+
+…
+}</code></pre>
+<p>"One more thing: we often need to create a temporary copy of a file next to the current one."</p>
+<p><span class="text-user">"Can we create a method to do this?"</span></p>
+<p>"Sure. Look."</p>
+<div class="code-heading">Create a copy next to the current file:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyFile
+{
+    private String <span class="text-user">filename</span> = null;
+    public void <strong>initialize</strong>(String <span class="text-corporate">name</span>)
+    {
+        this.<span class="text-user">filename</span> = <span class="text-corporate">name</span>;
+    }
+
+    public void <strong>initialize</strong>(String <span class="text-green">folder</span>, String <span class="text-corporate">name</span>)
+    {
+        this.<span class="text-user">filename</span> = <span class="text-green">folder</span> + <span class="text-corporate">name</span>;
+    }
+
+   // The <span class="text-user">filename</span> will be stored in the same directory as <span class="text-viola">file</span>. 
+    public void <strong>initialize</strong>(MyFile <span class="text-viola">file</span>, String <span class="text-corporate">name</span>) 
+    {       
+        this.<span class="text-user">filename</span> = <span class="text-viola">file</span>.<strong>getFolder</strong>() + <span class="text-corporate">name</span>;
+    }
+
+…
+}</code></pre>
+<p><span class="text-user">"And I can make as many of these methods as I want?"</span></p>
+<p>"Well, within reason. But technically speaking, yes, as many as you want."</p>
+<p><span class="text-user">"When do I have to call the initialize method?"</span></p>
+<p><span class="text-red">"Immediately after creating the object, to make it valid."</a></p>
+<table>
+<tbody>
+<tr>
+<th>Examples:</th>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code><span class="text-viola">MyFile</span> <span class="text-user">file</span> = new <span class="text-viola">MyFile</span>();
+<span class="text-user">file</span>.<span class="text-red">initialize</span>("c:\data\a.txt");
+
+String text = <span class="text-user">file</span>.readText();</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code><span class="text-viola">MyFile</span> <span class="text-user">file</span> = new <span class="text-viola">MyFile</span>();
+<span class="text-user">file</span>.<span class="text-red">initialize</span>("c:\data\", "a.txt");
+
+String text = <span class="text-user">file</span>.readText();</code></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre class="line-numbers language-java data-line="" data-start=""><code><span class="text-viola">MyFile</span> <span class="text-user">file</span> = new <span class="text-viola">MyFile</span>();
+<span class="text-user">file</span>.<span class="text-red">initialize</span>("c:\data\a.txt");
+
+<span class="text-viola">MyFile</span> <span class="text-corporate">file2</span> = new <span class="text-viola">MyFile</span>();
+<span class="text-corporate">file2</span>.<span class="text-red">initialize</span>("a.txt");
+
+String text = <span class="text-corporate">file2</span>.readText();</code></pre>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task05.task0533"></div>
+<p><span class="text-user">"What is this getFolder() method?"</span></p>
+<p>"We haven't actually shown the code here. It represents a method that returns a string with the name of the folder where our file is stored."</p>

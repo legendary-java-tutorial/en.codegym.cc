@@ -1,0 +1,45 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie! How's life?"</span></p>
+<p>"Excellent, thank you. How are you?"</p>
+<p><span class="text-user">"Great, this morning tons of new things were explained to me."</span></p>
+<p>"Well, that's great. You aren't tired?"</p>
+<p><span class="text-user">"Yeah, there's that. I'm a little tired."</span></p>
+<p>"Then you just got lucky. I wanted to cover a large, complex topic today, but at the last minute I changed my mind and decided to cover a small, easy one."</p>
+<p><span class="text-user">"Small and easy? I'm ready."</span></p>
+<p>"Today we'll examine the topic of <strong><a href='https://codegym.cc/groups/posts/exceptions-in-java' target='_blank'>Exceptions</a></strong> in detail."</p>
+<p><span class="text-user">"Are you talking about error handling?"</span></p>
+<p>"You shouldn't think of exceptions as errors. Exceptions are more like reports that 'something unexpected happened'. Based on these reports, you can propose alternative actions."</p>
+<p>"It's all about methods. <span class="text-green">When you call a method, it promises to do what it was called to do.</span>"</p>
+<p><span class="text-red">"When a method, for whatever reason, can't do what it was called to do, it has to let the caller know."</span></p>
+<p>"In other words, <span class="text-viola">the worst thing that could happen is for a method to not do its work and not tell anyone about it. Nothing could possibly be worse than that. You lose control of the situation when that happens.</span>"</p>
+<p>"When you're a new programmer, it seems like you just call methods and they are sure to do what you asked them to do."</p>
+<p>"When you're an experienced programmer, you know that there may be dozens of factors that affect a method's ability to do its job, and that there are a lot of cases that could prevent a method from completing its job."</p>
+<p>"From the programmer's perspective, it's a thousand times better if a program terminates when it encounters an error than if the program encounters an error and then continues working (incorrectly) without the user realizing what happened."</p>
+<p><span class="text-user">"So the program showing something wrong might be worse than if the program closed and lost all of the data?"</span></p>
+<p>"What made you think that the program is simply showing something incorrectly? Maybe the programs has lots of bugs and all your data will be irretrievably lost? Suppose you've typed in text for 3 hours, but none of it will be saved because an error that occurred after just two minutes."</p>
+<p>"When a novice programmer encounters exceptions, he gets frustrated."</p>
+<p><span class="text-viola">"But in reality, exceptions reveal all the possible scenarios that he should've foreseen but didn't."</span></p>
+<p>"You could choose to not handle exceptions and that would make you a bad programmer. But if your methods don't throw exceptions, then you are no programmer at all — because you failed to understand this simple truth:"</p>
+<p><span class="text-red">"a method either does what it was written to do, or it throws an exception. There is no third option!"</span></p>
+<p><span class="text-user">"Okay, I believe you. I promise to use exceptions."</span></p>
+<p>"Great. Then let me tell you about the hierarchy of exceptions:"</p>
+
+<a href='https://cdn.codegym.cc/images/article/6a80c3c6-f9a0-482f-a4ed-20e28b6da777/original.jpeg' target='_blank'><img data-id="6a80c3c6-f9a0-482f-a4ed-20e28b6da777" data-max-width="850" alt="Exception hierarchy, errors - 1" src="https://cdn.codegym.cc/images/article/6a80c3c6-f9a0-482f-a4ed-20e28b6da777/original.jpeg"></a>
+
+<p>"The exception hierarchy is based on four classes."</p>
+<p>"The lowest base class is <strong>Throwable</strong>."</p>
+<p>"The <strong><span class="text-red">Error</span></strong> and <span class="text-green"><strong>Exception</strong></span> classes inherit it."</p>
+<p>"<span class="text-user"><strong>RuntimeException</strong></span> inherits <span class="text-green"><strong>Exception</strong></span>."</p>
+<p>"The <span class="text-red"><strong>Error</strong></span> class is the base class for JVM errors such as <strong>StackOverFlow</strong>, <strong>OutOfMemory</strong>, …"</p>
+<p><span class="text-red">"A program usually can't recover from such errors, which leads it to terminate."</span></p>
+<p>"Indeed, what can be done if there isn't enough memory for the program to continue running normally or there has been a stack overflow?"</p>
+<p>"<span class="text-green"><strong>Exception</strong></span> is the base class for all ordinary exceptions thrown by a program. <span class="text-user">RuntimeException</span> is a special kind of <span class="text-green">Exception</span> that has slightly different rules."</p>
+<p><span class="text-user">"What are they?"</span></p>
+<p>"That is just what I'm going to explain now."</p>
+<p>"As you probably remember, exceptions fall into two categories: <strong>checked</strong> and <strong><span class="text-user">unchecked</span></strong>."</p>
+<p>"If a method throws <strong><span class="text-green">checked</span></strong> exceptions, then the method that calls it must wrap the call in a <strong>try-catch</strong> block. Well, either that or rethrow the exception (to its caller) by clearly indicating <strong>throws</strong> in the method signature."</p>
+<p><span class="text-corporate">"These rules/restrictions don't apply to unchecked exceptions."</span></p>
+<p>"So, all exceptions that inherit Exception are considered checked. Except for exceptions that inherit RuntimeException, which are considered unchecked."</p>
+<p><span class="text-user">"Uh-huh. I remember you telling me something like that earlier."</span></p>
+<p>"Amigo! They ask about <span class="text-red">the exception hierarchy in every interview</span>. I'll say it again — <span class="text-red">every interview</span>. You need to know this topic perfectly."</p>
+<p><span class="text-user">"OK. I'll read everything again and figure it out. Thanks for helping me, Ellie."</span></p>

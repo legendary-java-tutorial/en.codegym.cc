@@ -1,0 +1,60 @@
+<a href='https://cdn.codegym.cc/images/article/a6cc1f2d-7309-42fd-8546-c037d7c20389/original.jpeg' target='_blank'><img data-id="a6cc1f2d-7309-42fd-8546-c037d7c20389" data-max-width="850" alt="Inheriting nested classes - 1" src="https://cdn.codegym.cc/images/article/a6cc1f2d-7309-42fd-8546-c037d7c20389/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Kim."</span></p>
+<p>"I want to tell you about inheriting static and non-static nested classes."</p>
+<p><span class="text-user">"I'm ready."</span></p>
+<p>"There really aren't any issues with inheriting static nested classes. They are inherited just like regular classes:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class <span class="text-green">Car</span>
+{
+ public static class <span class="text-user">Door</span>
+ {
+
+ }
+}
+
+public class <span class="text-red">LamborghiniDoor</span> extends Car.<span class="text-user">Door</span>
+{
+}</code></pre>
+<p><span class="text-user">"But can we make static nested classes inherit static nested classes in other classes?"</span></p>
+<p>"Why not?"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class <span class="text-green">Car</span>
+{
+ public static class <span class="text-neon">Door</span>
+ {
+
+ }
+}
+
+public class <span class="text-green">Lamborghini</span> extends Car
+{
+ public static class <span class="text-user">LamborghiniDoor</span> extends Car.<span class="text-neon">Door</span>
+ {
+ }
+}</code></pre>
+<p><span class="text-user">"OK, got it. They are inherited just like regular classes, right?"</span></p>
+<p>"Yes. But non-static nested classes (known as inner classes) are not inherited as easily."</p>
+<p>"When an instance of an inner class is created, a reference to its outer class is stored and implicitly passed to the constructor."</p>
+<p>"As a result, when you create objects of a class that inherits an inner class, you must pass the required outer object explicitly."</p>
+<p>"This is how it looks:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class <span class="text-green">Car</span>
+{
+ public class <span class="text-neon">Door</span>
+ {
+
+ }
+}
+
+public class <span class="text-red">LamborghiniDoor</span> extends Car.<span class="text-neon">Door</span>
+{
+ <span class="text-red">LamborghiniDoor</span>(<span class="text-green">Car car</span>)
+ {
+  <span class="text-green">car</span>.super();
+ }
+}</code></pre>
+<p>"You must implicitly pass a Car object to the Door constructor. This is done using a special construct: «car.super()»."</p>
+<p>"By the way, if you try to create the LamborghiniDoor constructor without any parameters, the program simply won't compile. A little strange, huh?"</p>
+<p><span class="text-user">"Yeah, there are a couple of nuances, but it's not rocket science."</span></p>

@@ -1,0 +1,28 @@
+<a href='https://cdn.codegym.cc/images/article/0f514915-c788-493f-bd3b-b64d1aebb924/original.jpeg' target='_blank'><img data-id="0f514915-c788-493f-bd3b-b64d1aebb924" data-max-width="850" alt="Shared resources, conflicts, shared access - 1" src="https://cdn.codegym.cc/images/article/0f514915-c788-493f-bd3b-b64d1aebb924/original.jpeg"></a>
+
+<p>"Hi, Amigo! I want to tell you about sharing resources. Across different threads, naturally.</p>
+<p>"I keep talking about the problems that happen when working with multiple threads and how to solve them. This doesn't mean that using threads is bad. Threads are a very powerful tool. In fact, they let you make your program faster and even more reliable. The more complex a program is, the more threads and various independent parts it has."</p>
+<p>"Splitting a program into independent (loosely coupled) parts is very beneficial."</p>
+<p>"Imagine that your program is internally divided into 100 threads. But you only have a dual-core processor. This means that on average 50 threads will be executed on each core."</p>
+<p>"If you need to increase the program's performance, you just buy a dual-processor server and a couple of sweet processors for it. This could get you up to 32 cores, yielding a 2-20 times boost in performance. Depending on the number of truly independent parts it is divided into."</p>
+<p>"This is one of the reasons why Java dominates in enterprise development. If a company has a complex internal program written by 20 developers, then it is much cheaper to buy another server than to double the program's performance through optimization."</p>
+<p><span class="text-user">"So that's what it's all about."</span></p>
+<p>"But! Every time a developer decides to use another thread, he solves one problem and creates two. More and more threads won't endlessly increase the program's performance."</p>
+<p>"First, any program has work that can't be broken apart and run in parallel on different threads. Second, all the threads are executed on the same processor. The more threads you have, the slower each one works."</p>
+<p>"And, most importantly, threads often use the same objects (usually called 'shared resources')."</p>
+<p>"For example, a thread wants to save information about work it has completed in a file. If there are several such threads and they want to write information to the same file, they will interfere with each other. To prevent the file from becoming a jumbled mess, access to the file is limited, i.e. while one thread uses the file, others wait."</p>
+<p><span class="text-user">"Yes, I remember. You do that using the <strong>synchronized</strong> keyword."</span></p>
+<p>"Exactly right."</p>
+<p><span class="text-user">"And what if the threads are writing to different files?"</span></p>
+<p>"Formally, these are different objects, but they are probably on the same hard drive."</p>
+<p><span class="text-user">"So, is it really possible to parallelize something inside the processor?"</span></p>
+<p>"Technically, yes, but as soon as your thread needs something besides the data it has, that something might already be occupied by another thread—and your thread will have to wait."</p>
+<p><span class="text-user">"Well, what should I do then? How do I know if I should make a lot of threads or not?"</span></p>
+<p>"This is determined directly by your program's architecture. Every project has its own 'architect' who knows all the 'resources' used in the program, knows their limitations, and how well/poorly they are parallelized."</p>
+<p><span class="text-user">"And if I don't know?"</span></p>
+<p>"There are two options:"</p>
+<p><strong>a)</strong> work under the supervision of someone who does</p>
+<p><strong>b)</strong> get some lumps figuring it out on your own</p>
+<p><span class="text-user">"I'm a robot: I don't get lumps—only dents."</span></p>
+<p>"Well, then, get some dents."</p>
+<p><span class="text-user">"I see. Thanks. You clarified some things that I had already started to wonder about."</span></p>

@@ -1,0 +1,108 @@
+<p>Hello, Amigo! I'd like to tell you about the internal structure of variables. As you already know, <span class="text-green">each variable is associated with an area of memory where its value is stored.</span>"</p>
+<p><span class="text-user">"Yes. You told me about that last time."</span></p>
+<p>"Great. It's good that you remember. I'll go on, then."</p>
+<p><span class="text-red">"All composite types consist of simpler ones. </span>And they, in their turn, consist of even simpler ones. Until, at last, we end up with <strong>primitive types</strong>, which cannot be further simplified. That's what they are called – <strong>primitive types</strong>. For example, <strong>int</strong> is a primitive type, but <strong>String</strong> is a composite type that stores its data as a table of characters (where each character is a primitive type 
+ <strong>char</strong>)."</p>
+<p><span class="text-user">"Very interesting. Go on."</span></p>
+<p>"Composite types are formed by grouping simple ones. We call such types <span class="text-viola">classes</span>. When we define a new class in a program, we declare a new <span class="text-viola">composite data type</span>. Its data will be either other composite types or primitive types."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public class <span class="text-user">Person</span>
+{
+   <span class="text-green">String name</span>;
+   <span class="text-viola">int age</span>;
+}</code></pre>
+        </td>
+        <td>A new composite type is declared – <code><span class="text-user">Person</span></code>.<br />
+            Its data is stored in the <code><span class="text-green">String</span></code> (composite type) variable <code><span class="text-green">name</span></code> and <code><span class="text-viola">int</span></code> (primitive type) variable <code><span class="text-viola">age</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public class <span class="text-red">Rectangle</span>
+{
+   <span class="text-corporate">int</span> x, y, width, height;
+}</code></pre>
+        </td>
+        <td>A new composite type is declared – <code><span class="text-red">Rectangle</span></code>.<br />
+            It consists of four <code><span class="text-corporate">int</span></code> (primitive type) variables.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public class <span class="text-user">Cat</span>
+{
+   <span class="text-green">Person owner</span>;
+   <span class="text-viola">Rectangle territory</span>;
+   <span class="text-corporate">int age</span>;
+   <span class="text-red">String name</span>;
+}</code></pre>
+        </td>
+        <td>A new composite type is declared – <code><span class="text-user">Cat</span></code>. It has the following variables:<br />
+            &#8212; <code><span class="text-green">owner</span></code>, composite type <code><span class="text-green">Person</span></code><br />
+            &#8212; <code><span class="text-viola">territory</span></code>, composite type <code><span class="text-viola">Rectangle</span></code><br />
+            &#8212; <code><span class="text-corporate">age</span></code>, primitive type <code><span class="text-corporate">int</span></code><br />
+            &#8212; <code><span class="text-red">name</span></code>, composite type <code><span class="text-red">String</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"For now, everything is clear, however weird it may seem."</span></p>
+<p>"Big (composite) types contain many small (primitive) types. That's why objects of these types take up a lot of memory - more than variables of the primitive types. Sometimes much more. Performing assignment operations with such variables used to take a long time and required the copying of large sections of memory. That's why <span class="text-red">variables of composite types do not store the object itself, but rather just a reference to it,</span> i.e. its four-byte address. This is enough to address the data in such objects. The Java machine handles all the associated complexities."</p>
+<p><span class="text-user">"I didn't understand any of that."</span></p>
+<p>"We've previously said that a variable is like a box. If you want to store the number 13 in it, you can write 13 on a piece of paper and put it into the box."</p>
+<p>"But imagine that you need to store something bigger in the box (variable). For example, a dog, a car, or your neighbor. Instead of trying to push the unpushable into the box, you could do something easier: use a photo of the dog instead of the actual dog, a license plate instead of a real car, or your neighbor's phone number instead of your neighbor."</p>
+<p>"We take a piece of paper and write down the neighbor's phone number. This is like a reference to an object. If we copy the piece of paper with the neighbor's phone number on it and put it in several boxes, there are now more references to your neighbor. But, as before, you still have just one neighbor. That makes sense, doesn't it?"</p>
+<p>"An important feature of storing data in this way is that <span class="text-green">you can have many references to a single object</span>"</p>
+<p><span class="text-user">"How interesting! I've almost got it. Tell me one more time, please – what would happen if I assign a variable of a composite type to another variable of the same composite type?"</span></p>
+<p>"Then the two variables would store the same address. That means that <span class="text-red">if you change the data of the object referenced by one variable, you change the data referenced by the other</span>. Both variables reference <strong>the same object</strong>. Of course, there may be many other variables that also store references to it."</p>
+<p><span class="text-user">"What do variables of composite (reference/class) types do if they aren't holding a reference to an object? Is that even possible?"</span></p>
+<p>"Yes, Amigo. You're getting ahead of me with your question. That is possible. If a variable of a reference (composite) type isn't storing a reference to an object, then it stores what is known as a 'null reference'. Basically, this means that it references an object whose address is 0. However, the Java machine never creates objects with this address, so it always knows that if a reference variable contains 0, then it isn't pointing to any object."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String s;
+String s = null;</code></pre>
+        </td>
+        <td>Equivalent statements.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">Person person;</span>
+<span class="text-green">person = new Person();</span>
+<span class="text-viola">person = null;</span></code></pre>
+        </td>
+        <td><span class="text-red">We create a person variable whose value is null.</span><br />
+            <span class="text-green">We assign to it the address of a newly created Person object.</span><br />
+            <span class="text-viola">We assign null to the variable.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><span class="text-red">Cat cat = new Cat();</span>
+<span class="text-green">cat.owner = new Person();</span>
+<span class="text-viola">cat.owner.name = "God";</span></code></pre>
+        </td>
+        <td><span class="text-red">We create a Cat object and store its address in variable cat; cat.owner equals null.</span><br />
+            <span class="text-green">We set cat.owner equal to the address of a newly created Person object.</span><br />
+            <span class="text-green">cat.owner.name still equals null.</span><br />
+            <span class="text-viola">We set cat.owner.name equal to "God"</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Did I understand you correctly? Variables are divided into two types: primitive types and reference types. Primitive types store values directly, while reference types store a reference to an object. Primitive types include int, char, boolean, and many others. Reference types include everything else. We use classes to create them."</span></p>
+<p>"You're absolutely right, my boy."</p>
+<p>"So, you say you've understood everything. Here are some tasks to help you reinforce your knowledge."</p>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0202"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0130"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0204"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0205"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task01.task0129"></div>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task02.task0207"></div>

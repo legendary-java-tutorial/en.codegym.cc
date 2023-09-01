@@ -1,0 +1,118 @@
+<a href='https://cdn.codegym.cc/images/article/65e596f4-ef94-44a7-aa88-2f813d2f6556/original.jpeg' target='_blank'><img data-id="65e596f4-ef94-44a7-aa88-2f813d2f6556" data-max-width="850" alt="Comparator, sorting collections - 1" src="https://cdn.codegym.cc/images/article/65e596f4-ef94-44a7-aa88-2f813d2f6556/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"Today we'll examine a small, but interesting and useful topic: sorting collections."</p>
+<p><span class="text-user">"Sorting? I've heard something about that."</span></p>
+<p>"Long ago, every programmer had to be able to write sorting algorithms. Was able to and had to write them. But those days are over. Today, writing your own sorting code is considered bad form, just like rewriting anything else that has already been invented."</p>
+<p>"In Java (and other programming languages), sorting is already implemented. <strong>Your task is to learn how to properly use what already exists.</strong>"</p>
+<p><span class="text-user">"OK."</span></p>
+<p>"The <strong>Collections</strong> helper class has a static sort method that is used to sort collections—or more precisely, lists. Elements in Maps and Sets don't have an order/index, so there's nothing to sort."</p>
+<p><span class="text-user">"Yes, I remember. I used this method once to sort a list of numbers."</span></p>
+<p>"Great. But this method is much more powerful than it seems at first glance. It can sort not only numbers, but also any objects, based on any criteria. Two interfaces help the method do this: Comparable and <strong>Comparator</strong>."</p>
+<p>"Sometimes you need to sort objects, not numbers. For example, suppose you have a list of people, and you want to sort them by age. We have the <strong>Comparable</strong> interface for this."</p>
+<p>"Let me first show you an example, and then everything will become clearer:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class Woman implements <span class="text-red">Comparable&lt;Woman&gt;</span>
+{
+public int age;
+
+public Woman(int age) {
+this.age = age;
+}
+
+<span class="text-red">public int compareTo(Woman o)</span>
+{
+return this.age - o.age;
+}
+}</code></pre>
+<div class="code-heading">An example of how it might be used:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public static</strong> void main(String[] args )
+{
+ArrayList&lt;Woman&gt; women = new ArrayList&lt;Woman&gt;();
+women.add(new Woman(18));
+women.add(new Woman(21));
+women.add(new Woman(5));
+
+<strong>Collections.sort(women);</strong>
+}</code></pre>
+<p>"To sort objects, you must first know how to compare them. For this, we use Comparable. The <strong>Comparable</strong> interface is a generic, which means that it accepts a type argument. It has only one generic method: compareTo(T o). This method compares the current object (this) and an object passed as an argument (o). In other words, we need to implement this method in our class and then use it to compare the current object (this) with the passed object."</p>
+<p><span class="text-user">"And how does compareTo work? I expected that it would return true or false depending on whether the passed object was greater or smaller."</span></p>
+<p>"Things are trickier here. The compareTo method doesn't return true/false. Instead, it returns an int. This is actually done for simplicity.</p>
+<p>"When a computer needs to determine whether one number is greater than another, it simply subtracts the second number from the first and then looks at the result. If the result is 0, then the numbers are equal. If the result is less than zero, then the second number is greater. And if the result is greater than zero, then the first number is greater."</p>
+<p>"The same logic applies here. According to the specification, the compareTo method must return zero if the compared objects are equal. If the compareTo method returns a number greater than zero, then our object is greater than the passed object. "If the compareTo method returns a number less than zero, then 'this' is less than the passed object."</p>
+<p><span class="text-user">"That's a little weird."</span></p>
+<p>"Yes, but if you're comparing objects simply based on some numeric property, then you can just return the difference between them by subtracting one from the other. Just the way it was done in the example above."</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public</strong> int <strong>compareTo</strong>(Woman o)
+{
+return this.age - o.age;
+}</code></pre>
+<p><span class="text-user">"I think I understand everything. But maybe not. But almost everything."</span></p>
+<p>"Great. Now let's consider a more practical problem. Suppose you've written a cool website for making women's clothing in China. You use a Woman class to describe your customers. You even made a webpage with a table where you can see them all. But there's a problem…"</p>
+<p>"Your Woman object contains not only an age, but also a whole bunch of other data: first name, last name, height, weight, number of children, etc."</p>
+<p>"The table of users has lots of columns, and here's the question: how do you sort your users by the various criteria? By weight, by age, by last name?"</p>
+<p><span class="text-user">"Hmm. Yeah, I often see tables that let you sort by column. So, how do you do that?"</span></p>
+<p>"For this, we have the second interface I wanted to tell you about today: the Comparator interface. It also has a compare method, but it takes two arguments, not one: int compare(T o1, T o2). Here's how it works:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public class Woman
+{
+public int age;
+public int childrenCount;
+public int weight;
+public int height;
+public String name;
+
+public Woman(int age) {
+this.age = age;
+}
+}</code></pre>
+<div class="code-heading">An example of how it might be used:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args )
+{
+ArrayList&lt;Woman&gt; women = new ArrayList&lt;Woman&gt;();
+women.add(new Woman(18));
+women.add(new Woman(21));
+women.add(new Woman(5));
+
+<span class="text-red">Comparator&lt;Woman&gt; compareByHeight = new Comparator&lt;Woman&gt;() {
+public int compare(Woman o1, Woman o2) {</span>
+return o1.height - o2.height;
+<span class="text-red">}
+};</span>
+
+Collections.sort(women, <span class="text-red">compareByHeight</span>);
+}</code></pre>
+<p>"The Comparator interface doesn't hide the object comparison logic inside the class of the objects being compared. Instead, it is implemented in a separate class."</p>
+<p><span class="text-user">"So, I could make several classes that implement the Comparator interface, and have each of them compare different properties? Weight in one, age in another, and height in a third?"</span></p>
+<p>"Yes, it's very simple and convenient."</p>
+<p>"We just call the <strong>Collections.sort</strong> method, passing a list of objects and another special object as the second argument, which implements the <strong>Comparator</strong> interface and tells you how to correctly compare pairs of objects in the sorting process."</p>
+<p><span class="text-user">"Hmm. I think I understand everything. Let me give it a try. Let's say I need to sort users by weight. It would be something like this:"</span></p>
+<div class="code-heading">Example of sorting users by weight:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Comparator&lt;Woman&gt; <span class="text-red">compareByWeight</span> = new Comparator&lt;Woman&gt;() {
+public int <span class="text-red">compare</span>(Woman o1, Woman o2) {
+return o1.weight - o2.weight;
+}
+};
+
+Collections.sort(women, <span class="text-red">compareByWeight</span>);</code></pre>
+<p>"Yes, exactly."</p>
+<p><span class="text-user">"Great. But what if I want to sort in reverse order?"</span></p>
+<p>"Think about it. The answer is very simple!"</p>
+<p><span class="text-user">"I've got it! Like this:"</span></p>
+<div class="code-heading">Sorting in ascending order:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>return o1.weight - o2.weight;</code></pre>
+<div class="code-heading">Sorting in decreasing order:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>return o2.weight – o1.weight;</code></pre>
+<p>"Right. Well done."</p>
+<p><span class="text-user">"And if I want to sort by last name? How do I sort strings, Bilaabo?"</span></p>
+<p>"The String class already implements the compareTo method. You just need to call it:"</p>
+<div class="code-heading">Example of sorting users by name:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Comparator&lt;Woman&gt; <span class="text-red">compareByName</span> = new Comparator&lt;Woman&gt;() {
+<strong>public</strong> int <span class="text-red">compare</span>(Woman o1, Woman o2) {
+return <strong>o1.name.<span class="text-red">compareTo</span></strong>(<strong>o2.name</strong>);
+}
+};
+
+Collections.sort(women, <span class="text-red">compareByName</span>);</code></pre>
+<p><span class="text-user">"That was a great lesson, Bilaabo. Thank you very much."</span></p>
+<p>"And thank you to you, my friend!"</p>

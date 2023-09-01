@@ -1,0 +1,80 @@
+<p>"Hi, Amigo!"</p>
+<p>"Now I'll tell you a little about the sleep, yield, and join methods."</p>
+<p><span class="text-user">"That's boring. I just found an interview question: 'What's the difference between the <strong>yield</strong>(), <strong>sleep</strong>(), and <strong>wait</strong>() methods?'. Can you explain that?"</span></p>
+<p>"No problem. First off, these are three completely different methods."</p>
+<p><strong>1) sleep(timeout)</strong> – stops the current thread (on which sleep was called) for the number of milliseconds indicated by the timeout parameter. The thread then goes into the TIMED_WAITING state. The method may end earlier if the isInterrupted flag is set.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Thread</strong>.sleep(<strong>500</strong>);</code></pre>
+        </td>
+        <td>The current thread suspends its own execution for 500 milliseconds, or 0.5 seconds.</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>2) yield()</strong> – the current thread 'skips its turn'. The thread goes from the running state to the <strong>ready</strong> state, and the JVM proceeds to the next thread. The running and ready states are sub-states of the <strong>RUNNABLE</strong> state.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Thread</strong>.yield();</code></pre>
+        </td>
+        <td>The current thread "skips its turn" and Java immediately switches to the next thread.</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>3) wait(timeout)</strong> – this is a version of the <strong>wait</strong>() method, but with a timeout. "The <strong>wait</strong> method can only be called within a <strong>synchronized</strong> block on a mutex object locked by the current thread. Otherwise, the method throws an Illegal<strong>MonitorState</strong>Exception.</p>
+<p>"Calling this method causes the mutex object's lock to be released, making it available for another thread to acquire. Moreover, the thread enters the WAITING state (for the wait() method without parameters) or the TIMED_WAITING state (for the wait(timeout) method)."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Object <span class="text-red">monitor</span> = getMonitor();
+synchronized(<span class="text-red">monitor</span>)
+{
+ …
+ <span class="text-red">monitor</span>.wait(500);
+ …
+}</code></pre>
+        </td>
+        <td>When the wait method is called, the current thread releases the monitor object's lock, and sleeps for 500 milliseconds. The monitor object can be acquired by another thread.<br />
+            After 500 milliseconds, the thread will wake up and if the monitor is not busy, the thread will acquire it and continue working.<br />
+            If the monitor is locked by another thread, the current thread will switch to the BLOCKED state.</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>4) join(timeout)</strong></p>
+<p>"This method wasn't in your question, but it's in my lesson plan, so I'll tell you about it. When you call the join() or join(timeout) method, the current thread is 'attached' to the Thread which called this method. The current thread goes to sleep and waits till the thread it is joined to finishes (i.e. the thread whose join() method was called)."</p>
+<p>"The current thread enters the WAITING state for the join() method and the TIMED_WAITING state for the join(timeout) method."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Example</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>Thread</strong> thread = <strong>getWorkThread</strong>();
+thread.<span class="text-red">join</span>(<strong>500</strong>);</code></pre>
+        </td>
+        <td>The current thread will join the workerThread thread and wait for it to end.<br />
+            But it will 'unjoin' after 500 milliseconds and continue running.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"The timeout in the wait(timeout) and join(timeout) methods means that the method goes to sleep and waits for something, but no longer than the timeout given in milliseconds. Then it wakes up."</p>
+<p><span class="text-user">"It seems like the only thing these methods have in common is timeout. They do completely different things."</span></p>
+<p>"Yep, that's right."</p>

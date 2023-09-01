@@ -1,0 +1,60 @@
+<p>"Hi! I decided to give you another small lesson about garbage collection."</p>
+<p>As you already know, the Java machine itself monitors when an object becomes unnecessary, and deletes it.</p>
+<p><span class="text-user">"Yep. You and Rishi told me about it earlier. I don't remember the details."</span></p>
+<p>"OK. Then let's go over it again."</p>
+
+<a href='https://cdn.codegym.cc/images/article/bb0e6211-4215-400d-a23c-942089319206/original.jpeg' target='_blank'><img data-id="bb0e6211-4215-400d-a23c-942089319206" data-max-width="850" alt="Garbage collection - 1" src="https://cdn.codegym.cc/images/article/bb0e6211-4215-400d-a23c-942089319206/original.jpeg"></a>
+
+<p>"As soon as an object is created, the JVM allocates memory for it. Interest in the object is monitored using reference variables. <span class="text-green">An object can be deleted during garbage collection, i.e. the procedure by which memory is released if there are no variables referencing the object.</span>"</p>
+<p><span class="text-user">"Tell me a little about the garbage collector—what it is and how it works."</span></p>
+<p>"OK. <a href='https://codegym.cc/groups/posts/16-more-about-the-garbage-collector-' target='_blank'>Garbage collection</a> used to happen on the main thread. Every 5 minutes, or more often. If there was ever not enough free memory, the Java machine would suspend all threads and delete unused objects."</p>
+<p>"But this approach has been abandoned now. The next-gen garbage collector works behind the scenes and on a separate thread. This is called concurrent garbage collection."</p>
+<p><span class="text-user">"I see. How exactly is the decision to delete an object or not made?"</span></p>
+<p>"Just counting the number of references to an object is not very effective—there may be objects that reference each other, but are referenced by no other objects."</p>
+<p>"So Java takes a different approach. <span class="text-corporate">Java divides objects into reachable and unreachable.</span> An object is reachable (alive) if it is referenced by another reachable (living) object. Reachability is determined from threads. Running threads are always considered reachable (alive), even if nobody references them."</p>
+<p><span class="text-user">"OK. I think I get it."</span></p>
+<p><span class="text-user">"How does the actual garbage collection happen—the deletion of unnecessary objects?"</span></p>
+<p>"It's simple. In Java, memory is divided into two parts by convention, and when it's time for garbage collection, all living (reachable) objects are copied to another part of the memory, and the old memory is all released."</p>
+<p><span class="text-user">"That's an interesting approach. No need to count references: copy all the reachable objects, and everything else is garbage."</span></p>
+<p>"It's a bit more complicated than that. Java programmers found that objects are usually divided into two categories: long-lived (which exist the entire time the program is running) and short-lived (which are needed in methods and for performing «local» operations)."</p>
+<p>"It's much more efficient to keep long-lived objects separate from short-lived ones. To do this, it was necessary to come up with a way to determine the longevity of the object."</p>
+<p>"So, they divided all memory into «generations». There are first-generation objects, second-generation objects, etc. Each time memory is cleared, the generation counter is incremented by 1. If certain objects exist in multiple generations, then they are recorded as long-lived."</p>
+<p>"Today, the garbage collector is a very complex and efficient part of Java. Many of its parts work heuristically—based on algorithms that make guesses. As a result, it often «doesn't listen to» the user."</p>
+<p><span class="text-user">"Meaning?"</span></p>
+<p>"Java has a garbage collector (<span class="text-red">GC</span>) object that can be called using the <span class="text-red">System.gc</span>() method."</p>
+<p>"You can also use <span class="text-red">System.runFinalization()</span> to force calls to the finalize methods of the objects to be deleted. But the fact is that, according to the Java documentation, this guarantee neither that garbage collection will start, nor that the finalize() method will be called. <span class="text-red">The garbage collector decides when to call it and on what.</span>"</p>
+<p><span class="text-user">"Whoa! Good to know."</span></p>
+<p>"But there's more. As you know, in Java, some objects reference others. This network of references is used to determine whether an object should be deleted."</p>
+<p>"And, look. Java has special references that let you influence this process. There are special wrapper classes for them. Here they are:"</p>
+<p>"<strong>SoftReference</strong> is a soft reference."</p>
+<p>"<strong>WeakReference</strong> is a weak reference."</p>
+<p>"<strong>PhantomReference</strong> is a phantom reference."</p>
+<p><span class="text-user">"Uh... This reminds me of inner classes, nested classes, nested anonymous classes, and local classes. The names are different, but it's not at all clear what they are for."</span></p>
+<p><span class="text-viola">"Say, Amigo, you've become a programmer. Now you're angry because of the class names, saying «they aren't informative enough, and it's impossible with one name(!) to determine what this class does, how, and why»."</span></p>
+<p><span class="text-user">"Wow. I didn't even notice. But it's so obvious."</span></p>
+<p>"OK. Enough words. Let me tell you about SoftReferences."</p>
+<p>"These references were specifically designed for caching, though they can be used for other purposes—all at the discretion of the programmer."</p>
+<p>"Here's an example of such a reference:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Create a Cat object
+<span class="text-green">Cat cat</span> = new <span class="text-green">Cat</span>();
+
+// Create a soft reference to a Cat object
+<span class="text-red">SoftReference&lt;<span class="text-green">Cat</span>&gt;</span> <strong><span class="text-red">catRef</span></strong> = new <span class="text-red">SoftReference&lt;<span class="text-green">Cat</span>&gt;</span>(<span class="text-green">cat</span>);
+
+// Now only the catRef soft reference points at the object
+<span class="text-green">cat</span> = null;
+
+// Now the ordinary cat variable also references the object
+<span class="text-green">cat</span> = <span class="text-red">catRef</span>.get();
+
+// Clear the soft reference
+<span class="text-red">catRef</span>.clear();</code></pre>
+<p>"If the only references to an object are soft, then it continues to live and is called 'softly-reachable'."</p>
+<p>"But! <span class="text-corporate">An object referenced only by soft references can be deleted by the garbage collector if the program doesn't have enough memory.</span> If suddenly the program doesn't have enough memory, before throwing an <strong>OutOfMemoryException</strong>, the garbage collector will delete all objects referenced by soft references and will try again to allocate memory to the program."</p>
+<p>"Suppose a client program frequently requests various data from a server program. The server program can use a <span class="text-red">SoftReference</span> to cache some of it. If objects kept from death by soft references take up a large part of memory, then the garbage collector simply deletes them all. It's beautiful!"</p>
+<p><span class="text-user">"Yeah. I liked it myself."</span></p>
+<p>"Well, one small addition: The <span class="text-red">SoftReference</span> class has two methods. The get() method returns the object referenced by the <span class="text-red">SoftReference</span>. If the object was deleted by the garbage collector, the <strong>get</strong>() method will suddenly start returning null."</p>
+<p>"The user can also clear the <span class="text-red">SoftReference</span> explicitly by calling the clear() method. In this case, the weak link inside the <span class="text-red">SoftReference</span> object will be destroyed."</p>
+<p>"That's all for now."</p>
+<p><span class="text-user">"Thanks for the interesting story, Ellie. It really was very interesting."</span></p>

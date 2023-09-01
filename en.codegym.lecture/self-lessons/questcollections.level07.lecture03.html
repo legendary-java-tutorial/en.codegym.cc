@@ -1,0 +1,153 @@
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Ellie!"</span></p>
+<p>"Today I want to tell you about iterators."</p>
+<p>"Iterators were invented practically at the same time as collections. The main purpose of collections is to store elements, and the main purpose of an iterator is to retrieve these elements one by one."</p>
+<p><span class="text-user">"What's so difficult about getting a set of elements?"</span></p>
+<p>"First, the elements in some collections, such as Set, don't have an established order and/or the order changes constantly."</p>
+<p>"Second, some data structures may store objects in a very complex way: in different groups, lists, etc. In other words, handing out all the elements in order would be a non-trivial task."</p>
+<p>"Third, collections tend to change. Suppose you decide to display the entire contents of a collection, but right in the middle of the output the JVM switches to another thread that replaces half of the collection's elements. So instead of the output, you get who knows what."</p>
+<p><span class="text-user">"Hmm..."</span></p>
+<p>"But! These are precisely the sort of problems that an iterator can solve. <span class="text-viola">An iterator is a special object within a collection that, on the one hand, has access to all its private data and knows its internal structure, and on the other hand, implements the public Iterator interface, which lets everyone know how to work with it.</span>"</p>
+<p>"Some iterators have an internal array into which all elements of the collection are copied when the iterator is created. This ensures that any subsequent changes to the collection won't affect the number or order of the elements."</p>
+<p>"I think you have come across this when working with <strong>for each</strong>. You can't simultaneously loop over a collection and remove elements from it. This is all precisely because of the way an iterator works."</p>
+<p>"In the new collections added to the concurrency library, the iterator is reworked to eliminate this problem."</p>
+<p>"Let me remind you how an iterator works."</p>
+<p>"Java has a special Iterator interface. Here are its methods:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods of the Iterator&lt;E&gt; interface</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>boolean hasNext()</code></td>
+        <td>Checks if there are any more elements</td>
+    </tr>
+    <tr>
+        <td><code>E next()</code></td>
+        <td>Returns the current element and moves to the next.</td>
+    </tr>
+    <tr>
+        <td><code>void remove()</code></td>
+        <td>Removes the current element</td>
+    </tr>
+    </tbody>
+</table>
+<p>"An iterator lets you successively get all the elements of a collection. It's more logical to think of an iterator as something like an InputStream — it has all the data, but its task is to output it sequentially."</p>
+<p>"The  <strong>next</strong>() method returns the next element in the collection."</p>
+<p>"The <strong>hasNext</strong>() method is used to check if there are any more elements."</p>
+<p>"And <strong>remove</strong>() removes the current element."</p>
+<p>"Any questions?"</p>
+<p><span class="text-user">"Why do the methods have such strange names? Why not isEmpty() and getNextElement()?"</span></p>
+<p>"Wouldn't that make more sense?"</p>
+<p>"It would make more sense, but the names came from the C++ language, where iterators appeared earlier."</p>
+<p><span class="text-user">"I see. Let's continue."</span></p>
+<p>"In addition to an iterator, there is also the Iterable interface, which must be implemented by all collections that support iterators. It has a single method:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods of the Iterable&lt;T&gt; interface</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>Iterator&lt;T&gt;iterator()</code></td>
+        <td>Returns an iterator object</td>
+    </tr>
+    </tbody>
+</table>
+<p>"You can use this method on any collection to get an iterator object to walk through its elements. Let's walk over all the elements of in a <strong>TreeSet</strong>:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">TreeSet</span><span class="dblue_text">&lt;</span><span class="green_text text-green">String</span><span class="dblue_text">&gt;</span> <span class="text-user">set</span> = new <span class="text-user">TreeSet</span><span class="dblue_text">&lt;</span><span class="green_text text-green">String</span><span class="dblue_text">&gt;</span>();
+<span class="text-red">Iterator</span><span class="dblue_text">&lt;</span><span class="green_text text-green">String</span><span class="dblue_text">&gt;</span> <span class="text-red">iterator</span> =<span class="text-user"> set</span>.<strong>iterator</strong>();
+
+<strong>while</strong> (<span class="text-red">iterator</span>.<strong>hasNext</strong>())
+{
+<span class="text-green"> String item</span> = <span class="text-red">iterator</span>.<strong>next</strong>();
+<span class="text-neon"> System.out.println</span>(<span class="text-green">item</span>);
+}</code></pre>
+<p>"Using an iterator like this isn't very convenient — there's too much superfluous and obvious code. The situation became simpler when the <strong>for-each</strong> loop appeared in Java."</p>
+<p>"Now this code is much more compact and readable:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Before</th>
+        <th>After</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">TreeSet</span><strong><span class="dblue_text">&lt;</span></strong><span class="green_text text-green">String</span><strong><span class="dblue_text">&gt;</span></strong> set = new <span class="text-user">TreeSet</span><strong><span class="dblue_text">&lt;</span></strong><span class="green_text text-green">String</span><strong><span class="dblue_text">&gt;</span></strong>();
+<span class="text-red">Iterator</span><span class="dblue_text">&lt;</span><span class="green_text text-green">String</span><span class="dblue_text">&gt;</span> <span class="text-red">iterator</span> =<span class="text-user"> set</span>.iterator();
+
+while (<span class="text-red">iterator</span>.<strong>hasNext</strong>())
+{
+<span class="text-green"> String item</span> = <span class="text-red">iterator</span>.<strong>next</strong>();
+ <span class="text-neon">System.out.println</span>(<span class="text-green">item</span>);
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">TreeSet</span><span class="dblue_text">&lt;</span><span class="green_text text-green">String</span><span class="dblue_text">&gt;</span> set = new <span class="text-user">TreeSet</span><span class="dblue_text">&lt;</span><span class="green_text text-green">String</span><span class="dblue_text">&gt;</span>();
+
+for(<span class="text-green">String item</span> : <span class="text-user">set</span>)
+{
+ <span class="text-neon">System.out.println</span>(<span class="text-green">item</span>);
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-red">"This is the same code! The iterator is used in both cases."</span></p>
+<p>"It's just that its use is hidden in the <strong>for-each</strong> loop. Note that the code on the right has no <span class="text-red">red</span> text at all. The use of the iterator is completely hidden."</p>
+<p>"A <strong>for-each</strong> loop be used for any objects that support iterators. In other words, you can write your own class, add the <strong>iterator</strong>() method to it, and use its objects in a <strong>for-each</strong> construct."</p>
+<p><span class="text-user">"Wow! Of course, I'm not eager to write my own collections and iterators, but the prospect is still tempting. I'll make a note of it."</span></p>
+<p>Additionally, there's another popular type of iterator that even has its own interface. I'm talking about an iterator for lists, i.e. <strong>ListIterator</strong>.</p>
+<p>"Regardless of their implementation, lists maintain the order of elements, which makes working with them through an iterator a little more conveniently."</p>
+<p>"Here are the methods of the <strong>ListIterator</strong>&lt;E&gt; interface:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Method</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td><code>boolean hasNext()</code></td>
+        <td>Checks if there are any more elements ahead.</td>
+    </tr>
+    <tr>
+        <td><code>E next()</code></td>
+        <td>Returns the next element.</td>
+    </tr>
+    <tr>
+        <td><code>int nextIndex()</code></td>
+        <td>Returns the index of the next element</td>
+    </tr>
+    <tr>
+        <td><code>void set(E e)</code></td>
+        <td>Changes the value of the current element</td>
+    </tr>
+    <tr>
+        <td><code>boolean hasPrevious()</code></td>
+        <td>Checks if there are any elements behind.</td>
+    </tr>
+    <tr>
+        <td><code>E previous()</code></td>
+        <td>Returns the previous element</td>
+    </tr>
+    <tr>
+        <td><code>int previousIndex()</code></td>
+        <td>Returns the index of the previous element</td>
+    </tr>
+    <tr>
+        <td><code>void remove()</code></td>
+        <td>Removes the current element</td>
+    </tr>
+    <tr>
+        <td><code>void add(E e)</code></td>
+        <td>Adds an element to the end of the list.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"In other words, here we can move both forward and backward. And there are a couple of other small features."</p>
+<p><span class="text-user">"Well, that's interesting stuff. Where is it used?"</span></p>
+<p>"Suppose you want to move back and forth on a linked list. The get operation will be rather slow, but the next() operation will be very fast."</p>
+<p><span class="text-user">"Hmm. You convinced me. I'll keep it in mind."</span></p>
+<p><span class="text-user">"Thanks, Ellie!"</span></p>

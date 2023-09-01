@@ -1,0 +1,127 @@
+<h2>1. Working with the cells of the playing field</h2>
+<p>It's great that we can divide the playing field into cells. But what can we do with the cells themselves?</p>
+<p>For each cell of the playing field, we can set:</p>
+<ul>
+    <li>cell color (the cell's background color);</li>
+    <li>text (this can be text or a number);</li>
+    <li>text color;</li>
+    <li>text size as a percentage of the cell size.</li>
+</ul>
+<p>Let's consider methods for working with the cells of the playing field:</p>
+<p><code><span class="text-user">void setCellColor(int x, int y, Color color)</span></code> sets the color of the cell with coordinates <code>(x, y)</code> equal to <code>color</code>.</p>
+<p>Examples:</p>
+<pre class="language-java"><code>setCellColor(0, 0, Color.<span class="text-viola">RED</span>);
+setCellColor(3, 6, Color.<span class="text-viola">BLACK)</span>;
+setCellColor(6, 8, Color.<span class="text-viola">NONE</span>);</code></pre>
+<p><code><span class="text-user">Color getCellColor(int x, int y)</span></code> returns the color of the cell with coordinates <code>(x, y)</code>.</p>
+<p>Example:</p>
+<pre class="language-java"><code>Color myColor = getCellColor(2, 0);</code></pre>
+<p><code><span class="text-user">void setCellValue(int x, int y, String value)</span></code> assigns the text in <code>String value</code> to the cell with coordinates <code>(x, y)</code>.</p>
+<p>Examples:</p>
+<pre class="language-java"><code>setCellValue(3, 3, <span class="text-green">"text")</span>;
+setCellValue(0, 8, <span class="text-green">"W"</span>);
+setCellValue(4, 1, <span class="text-green">"2222"</span>);
+setCellValue(6, 6, <span class="text-green">""</span>);</code></pre>
+<p><code><span class="text-user">String getCellValue(int x, int y)</span></code> returns the text contained in the cell with coordinates <code>(x, y)</code>.</p>
+<p>Examples:</p>
+<pre class="language-java"><code>String s = getCellValue(3, 3);
+System.out.println(getCellValue(4, 1));</code></pre>
+<p><code><span class="text-user">void setCellTextSize(int x, int y, int size)</span></code> sets the size of the text in the cell with coordinates <code>(x, y)</code>, where <code>size</code> is the text height as a percentage of the cell height.</p>
+<p>Example:</p>
+<pre class="language-java"><code>setCellTextSize(2, 0, 70); // 70% of the cell height</code></pre>
+<p><code><span class="text-user">int getCellTextSize(int x, int y)</span></code> returns the size of the content in the cell with coordinates <code>(x, y)</code>.</p>
+<p>Example:</p>
+<pre class="language-java"><code>int size = getCellTextSize(2 , 0);</code></pre>
+<p><code><span class="text-user">void setCellNumber(int x, int y, int value)</span></code> assigns the number <code>int value</code> to the cell with coordinates <code>(x, y)</code>.</p>
+<p>Examples:</p>
+<pre class="language-java"><code>setCellNumber(3, 3, 40);
+setCellNumber(0, 8, -8);
+setCellNumber(4, 1, 2222);
+setCellNumber(6, 6, 0);</code></pre>
+<p><code><span class="text-user">int getCellNumber(int x, int y)</span></code> returns the number contained in the cell with coordinates <code>(x, y)</code>. If the cell does not contain a number, it returns 0.</p>
+<p>Examples:</p>
+<pre class="language-java"><code>int i = getCellNumber(3, 3);
+System.out.println(getCellNumber(4, 1));</code></pre>
+<p><code><span class="text-user">void setCellTextColor(int x, int y, Color color)</span></code> sets the color of the content (text) of the cell with coordinates <code>(x, y)</code>.</p>
+<p>Examples:</p>
+<pre class="language-java"><code>setCellTextColor(2, 1, Color.<span class="text-viola">GREEN</span>);
+setCellTextColor(0, 1, Color.<span class="text-viola">NONE</span>);</code></pre>
+<p><code><span class="text-user">Color getCellTextColor(int x, int y)</span></code> returns the color of the content (text) of the cell with coordinates <code>(x, y)</code>.</p>
+<p>Example:</p>
+<pre class="language-java"><code>Color textColor = getCellTextColor(1, 3);</code></pre>
+<p>For your convenience, there are multiple <code>setCellValueEx()</code> methods with different sets of parameters:</p>
+<p><code><span class="text-user">void setCellValueEx(int x, int y, Color cellColor, String value)</span></code> sets the background color and text of the cell with coordinates <code>(x, y)</code> equal to <code>cellColor</code> and <code>value</code>, respectively.</p>
+<p>Example:</p>
+<pre class="language-java"><code>setCellValueEx(0, 2, Color.<span class="text-viola">BLUE</span>, <span class="text-green">"56")</span>;</code></pre>
+<p><code><span class="text-user">void setCellValueEx(int x, int y, Color cellColor, String value, Color textColor)</span></code> sets the background color, text, and text color of the cell with coordinates <code>(x, y)</code> equal to <code>cellColor</code>, <code>value</code>, and <code>textColor</code>, respectively.</p>
+<p>Example:</p>
+<pre class="language-java"><code>setCellValueEx(0, 2, Color.<span class="text-viola">BLACK</span>, <span class="text-green">"56"</span>, Color.<span class="text-viola">GREEN</span>);</code></pre>
+<p><code><span class="text-user">void setCellValueEx(int x, int y, Color cellColor, String value, Color textColor, int textSize);</span></code> sets the background color, text, text color, and text size of the cell with coordinates <code>(x, y)</code> equal to <code>cellColor</code>, <code>value</code>, <code>textColor</code>, and <code>textSize</code>, respectively.</p>
+<p>Example:</p>
+<pre class="language-java"><code>setCellValueEx(0, 2, Color.<span class="text-viola">BLACK</span>, <span class="text-green">"56"</span>, Color.<span class="text-viola">GREEN</span>, 70);</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini04"></div>
+<hr>
+<h2>2. Working with color</h2>
+<p>The CodeGym game engine has a special <code>Color</code> type that contains unique values for 148 colors. It also has a special <code>NONE</code> value that represents the absence of color.</p>
+<p>Examples of working with color</p>
+<pre class="language-java"><code>Color myColor = Color.<span class="text-viola">WHITE</span>;  // The color white is assigned to the myColor variable.
+Color redColor = Color.<span class="text-viola">RED</span>; // The color red is assigned to the redColor variable.
+Color blueColor = Color.<span class="text-viola">BLUE</span>; // The color blue is assigned to the blueColor variable.</code></pre>
+<p>You can color a cell red using the command:</p>
+<pre class="language-java"><code>setCellColor(0, 2, Color.<span class="text-viola">RED</span>);</code></pre>
+<p>You can check whether a cell is a certain color with a command like:</p>
+<pre class="language-java"><code>if (getCellColor(0,2) == Color.<span class="text-viola">GREEN</span>)
+{
+}</code></pre>
+<p>Sometimes you may need to get an array of every possible color. To do this, use the <code>values()</code> method.</p>
+<p>Example:</p>
+<pre class="language-java"><code>// An array containing every available color is assigned to the colors variable.
+Color[] colors = Color.values();</code></pre>
+<p>Getting a color's index in the color palette is very easy to do — just use the <code>ordinal()</code> method:</p>
+<pre class="language-java"><code>Color color = Color.<span class="text-viola">RED</span>;
+int redIndex = color.ordinal(); // Index of the color red
+
+int blueIndex = Color.<span class="text-viola">BLUE</span>.ordinal(); // Index of the color blue</code></pre>
+<p>You can also easily get a color by its index:</p>
+<pre class="language-java"><code> // The color whose index is 10 in the Color enum is assigned to the color variable.
+Color color = Color.values()[10];</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini05"></div>
+<hr>
+<h2>3. Dialog boxes</h2>
+<p>At the end of the game, we need to let the player know if he or she won or lost. For this and other occasions, the CodeGym game engine has the special <code><span class="text-user">void showMessageDialog(Color cellColor, String message, Color textColor, int textSize)</span></code> method, which displays a dialog box with the <code>message</code> message.<br>
+     The parameters of this method are:</p>
+<ul>
+    <li><code>cellColor</code> is the dialog box's background color</li>
+    <li><code>message</code> is the text of the message</li>
+    <li><code>textColor</code> is the color of the text of the message</li>
+    <li><code>textSize</code> is the size of the text of the message</li>
+</ul>
+<p>The dialog box closes itself if the user presses the space bar or clicks on the dialog box with the mouse.</p>
+<p>Example of calling this method:</p>
+<pre class="language-java"><code>// Display a dialog box with a message
+showMessageDialog(Color.<span class="text-viola">BLACK</span>, <span class="text-green">"EPIC FAIL"</span>, Color.<span class="text-viola">RED</span>, 80);</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.games.minigames.mini06"></div>
+<hr>
+<h2>4. Utility methods</h2>
+<p>When writing games, you'll use random numbers often. To make it easier to get random numbers, you can use the game engine's utility methods:</p>
+<p><code><span class="text-user">int getRandomNumber(int max)</span></code> returns a random number from <code>0</code> to <code>(max–1)</code> inclusive.</p>
+<p><code><span class="text-user">int getRandomNumber(int min, int max)</span></code> returns a random number from <code>min</code> to <code>(max–1)</code> inclusive.</p>
+<hr>
+<h2>5. JDK 11+</h2>
+<p>When running your program from IntelliJ IDEA, a class that inherits the Game class may generate the following error:</p>
+<p><pre><code><span class="text-red">Error: JavaFX runtime components are missing, and are required to run this application</span></code></pre></p>
+In this case, for each such class, you need to perform these steps once:
+<ol>
+    <li>Open <span class="term">Run</span> → <span class="term">EditConfiguration</span></li>
+    <li>For the value of <span class="term">VM options</span>, enter the following:
+		<pre><code>--module-path ./lib/javafx-sdk-16/lib --add-modules=javafx.controls,javafx.fxml,javafx.base</code></pre>
+		<img data-max-width="1024" data-id="d60046b4-f494-47f9-af7c-fbdc762d435c" src="https://cdn.javarush.ru/images/article/d60046b4-f494-47f9-af7c-fbdc762d435c/1024.jpeg" alt="">
+		<p>ATTENTION:</p>
+		<p>In recent versions of IntelliJ IDEA, the "VM options" field is not shown by default. To display it, press <strong>ALT+V</strong>
+	</li>
+    <li>Press: <span class="term">Apply</span> → <span class="term">OK</span></li>
+    <li>Run the game.</li>
+</ol>

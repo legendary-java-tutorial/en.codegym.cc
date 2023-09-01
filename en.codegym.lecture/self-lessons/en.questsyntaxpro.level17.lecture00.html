@@ -1,0 +1,30 @@
+<h2>1. Introduction</h2>
+<p>We want to devote today's lesson to <span class="term text-red">encapsulation</span>. You already know what it is in general terms.</p>
+<img width="1024" src="https://cdn.codegym.cc/images/article/3f3f593a-b926-4641-a43e-441baeec1032/original.jpeg" alt="Encapsulation">
+<p>What are the benefits of encapsulation? There are quite a few of them, but I can single out four that, in my opinion, are the main ones:</p>
+<hr>
+<h2>2. Valid internal state</h2>
+<p>In programs, situations often arise when an object interacts with several other classes. These interactions with the object can corrupt the data inside the object, making it impossible for the object to continue to work as expected.</p>
+<p><span class="text-green">As a result, the object needs to keep track of any changes to its internal data, or better yet, make the changes itself.</span></p>
+<p>If we don't want some variable to be changed by other classes, then we declare it private. Once we do that, only the methods of its own class can access it. If we want the variables to be read-only, then we need to add a <code>public getter</code> for the relevant variables.</p>
+<p>For example, suppose we want everyone to be able to know the number of elements in our collection, but we do not want them to be able to change the collection without our permission. Then we declare a <code>private int count</code> variable and a <code>public getCount()</code> method.</p>
+<p>Proper use of <span class="term text-red">encapsulation</span> ensures that <span class="text-red">no class can directly access our class's internal data, which therefore prevents any changes beyond our control. </span> These changes are only possible through calling the methods of the same class as the variables being changed.</p>
+<p><span class="text-green">It's best to assume that other programmers will always use your classes in the way that is most convenient for them, not the way that is safest for you (for your class). </span> This behavior is the source of both bugs as well as attempts to prevent them.</p>
+<hr>
+<h2>3. Validating method arguments</h2>
+<p>Sometimes we need to validate the arguments passed to our methods. For example, say we have a class that represents a person and lets you set a birthdate. <span class="text-orange">We must check all the input data to ensure it makes sense with the logic of the program and the logic of our class. </span> For example, to disallow a birthdate in a 13th month or on February 30, and so on.</p>
+<p><span class="text-user">Why would someone indicate February 30 for their date of birth?</span> First, this could be a user error when entering the data. Second, a program might have plenty of errors in it before it begins to run like clockwork. For example, the following situation is possible.</p>
+<p>A programmer writes a program that identifies people whose birthday is the day after tomorrow. For example, let's say today is March 3. The program adds the number 2 to the current day of the month and looks for everyone who was born on March 5. It seems that everything is correct.</p>
+<p>But when March 30 comes, the program will not find anyone, because the calendar has no March 32. A program has far fewer errors if we check the data passed to methods.</p>
+<p>Remember when we studied <code>ArrayList</code> and analyzed its code? We saw that <span class="text-orange">the <code>get</code> and <code>set</code> methods checked whether <code>index</code> is greater than or equal to zero and less than the length of the array.</span> <span class="text-red">What's more, these methods throw an exception if the index falls outside the bounds of the array.</span> <span class="text-green">This is a classic example of input validation.</span></p>
+<hr>
+<h2>4. Minimizing errors when changing code</h2>
+<p>Suppose we wrote a super useful class when we were involved in a large project. Everyone liked it so much that other programmers started using it in hundreds of places in their code.</p>
+<p>The class was so useful that you decided to give it some improvements. <span class="text-red">But if you remove any methods from the class, then the code of dozens of people will stop compiling. They will have to rewrite everything. </span> And the more changes you make, the more errors you will create. You will break lots of assemblies and you will be hated.</p>
+<p>But when we change methods that are declared as private, we know that there is not a single other class anywhere that could be calling these methods. <span class="text-green">We can rewrite them, change the number of parameters and their types, and any dependent external code will continue to work. </span> Well, at least it will compile.</p>
+<hr>
+<h2>5. We decide how our object interacts with external objects</h2>
+<p>We can restrict some of the actions that can be performed with our object. For example, suppose we want an object to be instantiated only once. Even if it may be created in several places in the project. And we can do this thanks to encapsulation.</p>
+<img width="1024" src="https://cdn.codegym.cc/images/article/65995984-2db5-42cc-8806-7ef5cd583cf2/original.jpeg" alt="Encapsulation 2">
+<p>Encapsulation lets us add <span class="text-red">additional restrictions</span>, which can be turned into <span class="text-red">additional advantages</span>. For example, the <code>String</code> class is implemented as an <span class="term">immutable</span> object. An object of the <code>String</code> class is immutable from the moment of its creation until the moment of its death. All the methods of the <code>String</code> class (<code>remove</code>, <code>substring</code>, ...), <span class="text-green">return a new string without making any changes to the object on which they are called.</span></p>
+<p>Encapsulation is a very interesting thing.</p>

@@ -1,0 +1,7 @@
+<p>"I'd also like to tell you a couple of interesting things about object lifetime. In Java, it's very difficult to accidentally destroy an object. <span class="text-green">If you have a reference to an object, it is alive.</span></p>
+<p><span class="text-red">You can't change references to an object, and you can't increase or decrease them. Additionally, you can't create a reference to an object.</span> You can only assign a reference or set it to null."</p>
+<p><span class="text-user">"I think I understand, Ellie. So if I erase (or set to null) all references to an object, then I'll never again be able to get a reference to that object or access it, right?"</span></p>
+<p>"That's correct. However, you can also have the situation where the system has too many live objects that are not being used. <span class="text-viola">Programmers often create dozens of objects, store them in various lists for processing, and then never empty these lists.</span></p>
+<p><span class="text-corporate">Objects that programmers don't need are usually simply marked as eligible for garbage collection.</span> Nobody deletes them from lists. As a result, large Java programs often become too big as more and more unused objects remain in memory.</p>
+<p>You won't run into this soon, but every time I'll remind you about these unused objects, as well as the right way to dispose of them."</p>
+<p><span class="text-user">"OK. Thank you, Ellie, for helping me better understand references."</span></p>

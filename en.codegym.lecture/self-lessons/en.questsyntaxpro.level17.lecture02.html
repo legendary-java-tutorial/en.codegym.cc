@@ -1,0 +1,177 @@
+<h2>1. But that's not all.</h2>
+<p>Suppose the <code>Cow</code> class has a <code><span class="text-user">printAll</span>()</code> method that calls two other methods. Then the code will work like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Cow
+{
+   public void <span class="text-user">printAll</span>()
+   {
+      printColor();
+      <span class="text-red">printName</span>();
+   }
+
+   public void printColor ()
+   {
+      System.out.println("<span class="code text-green">I'm a white whale</span>");
+   }
+
+   public void <span class="text-red">printName</span>()
+   {
+      System.out.println("<span class="code text-green">I'm a cow</span>");
+   }
+}
+
+class Whale extends Cow
+{
+   public void <span class="text-red">printName</span>()
+   {
+      System.out.println("<span class="code text-green">I'm a whale</span>");
+   }
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   Whale whale = new Whale ();
+   whale.<span class="text-user">printAll</span>();
+}</code></pre>
+        </td>
+        <td>The screen output will be:
+            <pre><code>I'm a white whale
+I'm a whale</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Note that when the <code><span class="text-user">printAll</span>()</code> method in the <code>Cow</code> class is called <span class="text-green">on a <code><span class="text-green">Whale</span></code> object, the <code><span class="text-green">printName</span></code> method of the <code><span class="text-green">Whale</span></code></span> class is used, not the one in the <code>Cow</code> method.</p>
+<p><span class="text-red">The main thing isn't the class the method is written in, but rather the type (class) of the object on which the method is called.</span></p>
+<p><span class="text-orange">Only non-static methods can be inherited and overridden. Static methods are not inherited and therefore cannot be overridden.</span></p>
+<p>Here's what the <code>Whale</code> class looks like after applying inheritance and method overriding:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Whale
+{
+   public void <span class="text-user">printAll</span>()
+   {
+      printColor();
+      <span class="text-red">printName</span>();
+   }
+
+   public void printColor()
+<span>   {
+</span>      System.out.println("<span class="code text-green">I'm a white whale</span>");
+   }
+
+   public void <span class="text-red">printName</span>()
+   {
+      System.out.println("<span class="code text-green">I'm a whale</span>");
+   }
+}</code></pre>
+        </td>
+        <td>Here's what the <code>Whale</code> class looks like after applying inheritance and method overriding: We don't know about any old <code><span class="text-red">printName</span></code> method.</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. Typecasting</h2>
+<p>There is an even more interesting point here. <span class="text-green">Because a class inherits all the methods and data of its parent class, a reference to an object of the child class can to stored in (assigned to) variables whose type is the same as the parent class</span> (and the parent's parent, etc. — all the way up to the <code>Object</code> class). Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+<span>{
+</span>   Whale whale = new Whale();
+   whale.<span class="text-green">printColor</span>();
+}</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>I'm a white whale</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   <span class="text-red">Cow cow</span> = new Whale();
+   <span class="text-red">cow</span>.<span class="text-green">printColor</span>();
+}</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>I'm a white whale</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   <span class="text-viola">Object o = new Whale();</span>
+   System.out.println(<span class="text-viola">o</span>.toString());
+}</code></pre>
+        </td>
+        <td>
+            The screen output will be:<br>
+            <pre><code>Whale@da435a.</code></pre>
+            <br>
+            The <code>toString()</code> method is inherited from the <code>Object</code> class
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">This is a very valuable property: a little later you will understand how to use it in practice.</span></p>
+<hr>
+<h2>3. Calling a method on an object</h2>
+<p>When a method is called on a variable, the method is actually called on an object. This mechanism is called dynamic method dispatch.</p>
+<p>Here's how it looks:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   Whale whale = new Whale();
+   whale.<span class="text-green">printName</span>();
+}</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>I'm a whale</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public static void main(String[] args)
+{
+   <span class="text-red">Cow cow</span> = new Whale();
+   <span class="text-red">cow</span>.<span class="text-green">printName</span>();
+}</code></pre>
+        </td>
+        <td>The screen output will be:<br>
+            <pre><code>I'm a whale</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Note that the specific implementation of the <code><span class="text-green">printName</span>()</code> method that gets called — the one in the <code>Cow</code> or the one in the <code>Whale</code> class — <span class="text-red">is not determined by the variable's type, but by the type of the object that the variable refers to.</span></p>
+<p><span class="text-green">The <code><span class="text-green">Cow</span></code> variable stores a reference to a <code><span class="text-green">Whale</span></code> object, and the <code><span class="text-green">printName()</span></code> method defined in the <code><span class="text-green">Whale</span></code> class is what is called.</span></p>
+<p>This is not very obvious. Remember the main rule:</p>
+<p><span class="text-orange">The set of methods available to be called on a variable is determined by the variable's type.</span> <span class="text-red">And the specific method implementation that gets called is determined by the type/class of the object referred to by the variable.</span></p>
+<p>You'll encounter this all the time, so the sooner you remember this, the better.</p>

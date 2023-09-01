@@ -1,0 +1,217 @@
+<p>"Greetings, Amigo! I was so carried away by solving logic problems that I didn't notice you come in. Here's one for you: if crocodiles fly, then snow is white. There's a flying crocodile. What's the conclusion?"</p>
+<p><span class="text-user">"Um... So we conclude that snow is white?"</span></p>
+<p>"Excellent! You passed the initiation test. You are ready to master the next topic. It is called 'logical operators'. And we'll start with Boolean logic. Instinctively, you already know it. You're a robot, after all. We just need to tweak your settings to match the Java language."</p>
+<p><span class="text-user">"Boolean logic? I was recently told about the boolean type..."</span></p>
+<p>"Yes, there's a direct connection here. Boolean expressions can only be true or false. And as it happens, this sort of logic is all about expressions that are true or false, and combinations of such expressions. For example, the expression 18 &lt; 25 is always true, and 7 &lt; 5 is always false. The expression (i &lt; 10) depends on the value of i. And if the expression evaluates, for example, to true, then we can ask the program to do something."</p>
+<p><span class="text-user">"Ahh, I get it. Boolean expressions allow us not only to make logical conclusions, but also to create forks in programs."</span></p>
+<p>"Exactly. The main thing is to learn how to write them. For example, in Java you can't just go and write the expression <code><span class="text-red">18 &lt; age &lt;65</span></code>. This would be syntactically incorrect and the program will not compile.</p>
+<p>"But you can write it like this:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present language-java">
+            <code><span class="text-viola">(</span><span class="code"><span class="text-green">18 &lt; age</span></span><span class="text-viola">)</span> <span class="text-red">AND</span> <span class="text-viola">(</span><span class="code"><span class="text-green">age &lt; 65</span></span><span class="text-viola">)</span></code>
+        </pre>
+</div>
+<p>Of course, we don't actually use the ENGLISH word <code><span class="text-red">AND</span></code>. Instead, you need a <span class="term">boolean operator</span>. That is, 'AND' is represented differently.</p>
+<p>"There are three logical operators in Java: <code>AND</code> (&amp;&amp;), <code>OR</code> (||), <code>NOT</code> (!).</p>
+<p>The <span class="text-bold">good news</span> is that you can use <span class="term text-viola">parentheses</span> to construct logical expressions of any complexity.</p>
+<p>The <span class="text-bold">bad news</span> is that Java developers decided to use notation from the <span class="term">C language</span> instead of the words <code class="text-red">and</code>, <code class="text-red">or</code> and <code class="text-red">not</code>.</p>
+<p>Look at the screen:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="33.333%" class="text-center">Logical operator</th>
+        <th width="33.333%" class="text-center">Expectation</th>
+        <th width="33.333%" class="text-center">Reality</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-red">AND</span></code> <span class="text-muted">(∧)</span></td>
+        <td class="text-center"><code class="text-red">and</code></td>
+        <td class="text-center"><code><span class="text-red">&amp;&amp;</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-red">OR</span></code> <span class="text-muted">(∨)</span></td>
+        <td class="text-center"><code class="text-red">or</code></td>
+        <td class="text-center"><code><span class="text-red">||</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-red">NOT</span></code> <span class="text-muted">(¬)</span></td>
+        <td class="text-center"><code class="text-red">not</code></td>
+        <td class="text-center"><code><span class="text-red">!</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"It's actually not that bad... Pretty compact. I've almost memorized them."</span></p>
+<p>"Well, that's marvelous. Here are some examples of using logical operators in Java:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="33.333%" class="text-center">Expression</th>
+        <th width="33.333%" class="text-center">Interpretation</th>
+        <th width="33.333%" class="text-center">Explanation</th>
+    </tr>
+    <tr>
+        <td><code class="code-example code-example--center">(0 &lt; a) <span class="text-red">&amp;&amp;</span> (a &lt; 100)</code></td>
+        <td><code class="code-example code-example--center">(0 &lt; a) <span class="code text-red">and</span> (a &lt; 100)</code></td>
+        <td><code class="code-example code-example--center">(0 &lt; a) <span class="text-red">AND</span> (a &lt; 100)</code></td>
+    </tr>
+    <tr>
+        <td><code class="code-example code-example--center">(<span class="text-red">!</span>a) <span class="text-red">&amp;&amp;</span> (<span class="text-red">!</span>b)</code></td>
+        <td><code class="code-example code-example--center">(<span class="code text-red">not</span> a) <span class="code text-red">and</span> (<span class="code text-red">not</span> b)</code></td>
+        <td><code class="code-example code-example--center">(<span class="text-red">NOT</span> a) <span class="text-red">AND</span> (<span class="text-red">NOT</span> b)</code></td>
+    </tr>
+    <tr>
+        <td><code class="code-example code-example--center"><span class="text-red">!</span>(<span class="text-red">!</span>a <span class="text-red">||</span> <span class="text-red">!</span>b)</code></td>
+        <td><code class="code-example code-example--center"><span class="code text-red">not</span>((<span class="code text-red">not</span> a) <span class="code text-red">or</span> (<span class="code text-red">not</span> b))</code></td>
+        <td><code class="code-example code-example--center"><span class="text-red">NOT</span>((<span class="text-red">NOT</span> a) <span class="text-red">OR</span> (<span class="text-red">NOT</span> b))</code></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task03.task0306"></div>
+<h2>Examples of using comparison operators and boolean variables</h2>
+<p>"Remember, Amigo, wherever you can write a logical expression, you can write a logical variable."</p>
+<p><span class="text-user">"How's that?"</span></p>
+<p>"I mean you can write logical expressions in different ways. For instance:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int <span class="text-red">age</span> = <span class="text-user">35</span>;
+if (<span class="text-red">age </span>&gt;= <span class="text-user">18</span> &amp;&amp; <span class="text-red">age</span> &lt;= <span class="text-user">65</span>)
+   System.out.println(<span class="text-green">"You can work"</span>);</code></pre>
+        </td>
+        <td>If the value of age is between <code>18</code> and <code>65</code>, then the phrase "You can work" is displayed.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int <span class="text-red">age</span> = <span class="text-user">35</span>;
+boolean <span class="text-orange">isYoung</span> = (<span class="text-red">age </span>&lt; <span class="text-user">18</span>);
+if (!<span class="text-orange">isYoung</span> &amp;&amp; <span class="text-red">age</span> &lt;= <span class="text-user">65</span>)
+   System.out.println(<span class="text-green">"You can work"</span>);</code></pre>
+        </td>
+        <td>We created an <code>isYoung</code> variable and moved the first part of the expression into it. We simply replaced <code>age &gt;= 18</code> with <code>age &lt; 18</code>.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>int <span class="text-red">age</span> = <span class="text-user">35;</span>
+boolean <span class="text-orange">isYoung</span> = (<span class="text-red">age</span> &lt; <span class="text-user">18</span>);
+boolean <span class="text-orange">isOld</span> = (<span class="text-red">age</span> &gt; <span class="text-user">65</span>);
+if (!<span class="text-orange">isYoung</span> &amp;&amp; !<span class="text-orange">isOld</span>)
+   System.out.println(<span class="text-green">"You can work"</span>);</code></pre>
+        </td>
+        <td>We created an isOld variable and moved the second part of the expression into it. Additionally, <code>age &lt;= 65</code> was replaced by <code>age &gt; 65</code>.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"These three examples are equivalent. Only in the second example did we move part of the expression from the <code>if</code> statement into a separate boolean variable (<code>isYoung</code>). In the third example, we moved the second part of the expression into a second variable (<code>isOld</code>). By the way, the default value of a boolean variable is <code>false</code>."</p>
+<p><span class="text-user">"I will remember that. I hope."</span></p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task03.task0307"></div>
+<h2>Logical arithmetic</h2>
+<p>"Now let's briefly go through logical operations. They obey very simple and logical (how could it be otherwise!) rules.</p>
+<p>"First, let's see how the <code>OR</code> operator works. It's also known as <code>||</code> or <span class="term">disjunction</span>.</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Expression</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-green">true</span> || <span class="text-green">true</span></code></td>
+        <td class="text-center"><code><span class="text-green">true</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-green">true</span> || <span class="text-red">false</span></code></td>
+        <td class="text-center"><code><span class="text-green">true</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-red">false</span> || <span class="text-green">true</span></code></td>
+        <td class="text-center"><code><span class="text-green">true</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-red">false</span> || <span class="text-red">false</span></code></td>
+        <td class="text-center"><code><span class="text-red">false</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Can you deduce now what the result of the expression <code>a || b</code> is based on the table?"</p>
+<p><span class="text-user">"I see!" The value of an expression is <code>true</code> if at least one term in the expression is <code>true</code>. If both are <code>false</code>, then the result is <code>false</code>.</span></p>
+<p>"That's correct. Since you're so smart, take another look at the table and imagine that <code>false</code> is 0 and <code>true</code> is 1. When you look at it that way, does the <code>||</code> operator's behavior remind you of anything from ordinary arithmetic?"</p>
+<p><span class="text-user">"Um... Well, it's a bit like addition... But when you do addition, 1 + 1 does not equal 1."</span></p>
+<p>"There is a sense in which it is equal if we are only working with 0 and 1. But don't bother with that right now. The important thing is that you noticed the similarity between the <code>||</code> operation and addition. This means you won't be surprised by the fact that this operation is often called 'logical addition'.</p>
+<p><span class="text-user">"Got it."</span></p>
+<p>"Now the <code>AND</code>, aka <code>&amp;&amp;</code>, aka <span class="term">conjunction</span> operator, comes onto the stage.</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Expression</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-green">true</span> &amp;&amp; <span class="text-green">true</span></code></td>
+        <td class="text-center"><code><span class="text-green">true</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-green">true</span> &amp;&amp; <span class="text-red">false</span></code></td>
+        <td class="text-center"><code><span class="text-red">false</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-red">false</span> &amp;&amp; <span class="text-green">true</span></code></td>
+        <td class="text-center"><code><span class="text-red">false</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code><span class="text-red">false</span> &amp;&amp; <span class="text-red">false</span></code></td>
+        <td class="text-center"><code><span class="text-red">false</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"As I understand it, the result of an expression is <code>true</code> only if both values that make up the expression are <code>true</code>. Otherwise, it is always <code>false</code>."</span></p>
+<p>"Well done, Amigo! You're absorbing all this like a sponge. Do you see another similarity with arithmetic?"</p>
+<p><span class="text-user">"Multiplication!"</span></p>
+<p>"Exactly. So here we have a 'logical multiplication'".</p>
+<p>"Next we look at the <code>NOT</code> operator, aka <code>!</code>, aka the <span class="term">logical inverse</span>.</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Expression</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code>!<span class="text-green">true</span></code></td>
+        <td class="text-center"><code><span class="text-red">false</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>!<span class="text-red">false</span></code></td>
+        <td class="text-center"><code><span class="text-green">true</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Well, everything is quite simple here. The operator changes <code>true</code> to <code>false</code> and vice versa."</span></p>
+<p>"Exactly. Here are some useful expressions for you:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Expression</th>
+        <th class="text-center">Result</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code>m &amp;&amp; !m</code></td>
+        <td class="text-center"><code><span class="text-red">false</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>m || !m</code></td>
+        <td class="text-center"><code><span class="text-green">true</span></code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>!(a &amp;&amp; b)</code></td>
+        <td class="text-center"><code>!a || !b</code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>!(a || b)</code></td>
+        <td class="text-center"><code>!a &amp;&amp; !b</code></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task03.task0308"></div>

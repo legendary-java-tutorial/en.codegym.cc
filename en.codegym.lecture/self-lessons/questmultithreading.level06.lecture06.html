@@ -1,0 +1,57 @@
+<p>"Hi, Amigo!"</p>
+<p>"In my previous lessons, I sometimes used the words 'mutex' and 'monitor', now it's time to tell you what they mean."</p>
+<p><span class="text-user">"I'm all ears."</span></p>
+<p>"A <strong>mutex</strong> is a special object for synchronizing threads/processes. It has two possible states: busy and free. Simplying things, a mutex is a boolean variable that can have two values: busy (true) and free (false)."</p>
+<p>"When a thread wants to take ownership of an object, it marks the object's mutex as busy. And when it is finished working with the object, it marks its mutex as free."</p>
+<p><span class="text-user">"In other words, a mutex is like a 'busy/free' sign on the door?"</span></p>
+<p>"Yes. And such a mutex is associated with every object in Java. Only the Java machine has direct access to the mutex. It is hidden from the programmer."</p>
+<p><span class="text-user">"How do we use it then?"</span></p>
+<p>"In Java, we can work with a mutex through a monitor."</p>
+<p>"A monitor is a special mechanism (piece of code) layered on top of a mutex. It guarantees proper interaction with the mutex. It's not enough to mark an object as busy. It's still necessary to ensure that other threads don't try to use the busy object."</p>
+<p>"In Java, monitors are implemented using the keyword synchronized."</p>
+<p>"When you write a synchronized block, the Java compiler replaces it with three pieces of code:"</p>
+<p><strong>1)</strong> At the beginning of the synchronized block, code is added that marks the mutex as busy.</p>
+<p><strong>2)</strong> At the end of the synchronized block, code is added that marks the mutex as free.</p>
+<p><strong>3)</strong> Before the synchronized block, code is added which, if the mutex is busy, causes the thread to wait until the mutex is released.</p>
+<p>"Here's roughly how it works:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>How it works</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">synchronized</span><span class="text-user">(object)</span>
+<span class="text-user">{</span>
+
+object.doJob();
+
+<span class="text-corporate">}</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">while (object.mutex)
+Thread.sleep(1);</span>
+
+<span class="text-user">object.mutex = true;</span>
+
+object.doJob();
+
+<span class="text-corporate">object.mutex = false;</span></code></pre>
+        </td>
+        <td><p><span class="text-green">The thread sleeps as long as the mutex is busy</span><br />
+            <span class="text-green">(we exit the loop when the mutex is released).</span> <span class="text-user">Mark the mutex as busy.</span></p>
+            <p>Execute doTask();</p>
+            <p><span class="text-corporate">Mark the mutex as free</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"In reality, the logic there is different and more complicated. But these are just details."</p>
+<p><span class="text-user">"Can I have the details?"</span></p>
+<p>"Until you learn how to use it properly, there's no point in getting tangled up in the details."</p>
+<p>"A couple of levels back I gave you a list of all thread states with transition arrows and a list of methods that affect this state. Do you remember much?"</p>
+<p><span class="text-user">"Not really. I just forget everything so quickly…"</span></p>
+<p>"The less practice you do, the less you benefit from the theory."</p>
+<p>"By Level 40, you'll learn how to use all of this, and I'll explain how all this actually works. In the meantime, just learn to use it all properly. Got it?"</p>
+<p><span class="text-user">"Yes, thank you, Ellie."</span></p>

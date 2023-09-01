@@ -1,0 +1,221 @@
+<iframe width="1080" height="608" src="https://www.youtube.com/embed/mgtwdH3vyoU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Are you already here, Amigo? I know you have already learned a lot of Java commands. You've almost reached my level!"</p>
+<p><span class="text-user">"Is that true, Diego?"</span></p>
+<p>"Of course not, ha-ha. You still have lots of studying and learning to do. Still, you already know enough to write fairly complex programs. 10, 20, 30 lines of code in a program is not a very big program, right?"</p>
+<p><span class="text-user">"I guess you're right. Especially if you put curly braces on separate lines."</span></p>
+<p>"But a program of 100+ lines, now that's big. Even us robots have quite a difficult time understanding such code. What do you think, is there anything you can do to somehow simplify writing and reading programs that have a lot of code?</p>
+<p><span class="text-user">"I sincerely hope so!"</span></p>
+<p>"Your hopes are not in vain. It is possible to simplify programs, and <span class="text-bold">methods</span> are here to help us with this. They are sometimes called <span class="text-bold">functions</span>.</p>
+<p><span class="text-user">"Functions, methods... Uh, what are they?"</span></p>
+<p>"Putting it very simply, <span class="text-red">a method is a group of commands that has a unique name</span>. In other words, we just put several commands into one group and give it a unique name. And that's it — boom — we have a method. Most often, these commands are grouped according to some rationale in order to solve a small and specific task. For example, 'a method for printing lines from a file'. Or 'a method for raising a number to an exponent'.</p>
+<p><span class="text-user">"So, we split the program into methods?"</span></p>
+<p>"Yes, and it simplifies the code.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Without a method</th>
+        <th>With a method</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;System.out.print("Wi-");
+&nbsp; &nbsp; &nbsp;System.out.println("Fi");
+&nbsp; &nbsp; &nbsp;System.out.print("Wi-");
+&nbsp; &nbsp; &nbsp;System.out.println("Fi");
+
+&nbsp; &nbsp; &nbsp;System.out.print("Wi-");
+&nbsp; &nbsp; &nbsp;System.out.println("Fi");
+&nbsp; &nbsp;}
+}</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp;  <span class="text-red">printWiFi</span>();
+&nbsp; &nbsp;  <span class="text-red">printWiFi</span>();
+&nbsp; &nbsp;  <span class="text-red">printWiFi</span>();
+&nbsp; &nbsp;}
+&nbsp; &nbsp;public static void <span class="text-red">printWiFi</span>()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;System.out.print("Wi-");
+&nbsp; &nbsp; &nbsp;System.out.println("Fi");
+&nbsp; &nbsp;}
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"In the program in the left column, we repeat the same code three times — we did this intentionally to illustrate a point. But in the program on the right, we moved the repeated code into a separate method and gave it a unique name — <code><span class="text-red">printWiFi</span></code>.</p>
+<p>And instead of the relocated code, we call the <code><span class="text-red">printWiFi()</span></code> method 3 times.</p>
+<p>"When the program in the column on the right is run, each time the <code><span class="text-red">printWiFi()</span></code> method is executed, all the commands inside the <code><span class="text-red">printWiFi()</span></code> method are executed. We just created a new command (method), combining several commands into a single group.</p>
+<p>"Any code can be split into separate methods. This is done to simplify things: the idea is that it is better to have many small methods than one large one.</p>
+<p><span class="text-user">"It's a great idea to split a program into methods.</span></p>
+<p>"Soon you'll recall with wonder how you used to write programs without making your own methods."</p>
+<p><span class="text-user">"I'm ready to listen and attempt to write methods! Just tell me how to do it."</span></p>
+<h2>Declaring a method in Java</h2>
+<p>"How can we declare the simplest method? Here's how:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>public static void <span class="text-red">name</span>()
+{
+&nbsp; <span class="text-green">method body</span>
+}</code></pre>
+</div>
+<p>Where <code><span class="text-red">name</span></code> is the unique name of the method and <code><span class="text-green">method body</span></code> represents the commands that make up the method. The meaning of the words <code>public</code>, <code>static</code>, and <code>void</code> will be discussed later.</p>
+<p>"After we've created a method, we can call it in our other methods. A method call looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code><span class="text-red">name</span>();</code></pre>
+</div>
+<p>"Where <code><span class="text-red">name</span></code> is the unique name of the method we want to call, i.e. the method whose commands we want to execute when we arrive at the method call.</p>
+<p>"When the program reaches the method call, it will simply step into the method, execute all its commands, return to the original method, and continue execution.</p>
+<p>"And now, Amigo, look with new eyes at the commands that you have already learned. For example, <code>System.out.<span class="text-bold">println()</span></code>. Does anything come to mind regarding what this really is?"</p>
+<p><span class="text-user">"Are you saying that all these commands are just methods written by other programmers?"</span></p>
+<p>"Not all, but many of them. Yes, exactly! Others wrote them to make our lives easier."</p>
+<p><span class="text-user">"So <code>public static void main(String[] args)</code> is also a method... Now it makes more sense!"</span></p>
+<p>"Of course, it does! It's programming! It turns out that the main method — the alpha and omega of the program — can contain calls to other methods:</p>
+<table>
+    <thead>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp;  <span class="text-red">printWiFi10Times</span>();
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;public static void <span class="text-red">printWiFi10Times</span>()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;for (int i = 0; i &lt; 10; i++)
+&nbsp; &nbsp;&nbsp; &nbsp; <span class="text-viola">printWiFi</span>();
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;public static void <span class="text-viola">printWiFi</span>()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;System.out.print("Wi-");
+&nbsp; &nbsp; &nbsp;System.out.println("Fi");
+&nbsp; &nbsp;}
+}</code></pre>
+        </td>
+        <td><br><br><br><br>We call the <code><span class="text-red">print10TimesWiFi()</span></code> method<br><br><br>
+            We declare the <code><span class="text-red">print10TimesWiFi</span></code> method<br><br><br>
+            We call the <code><span class="text-viola">printWiFi()</span></code>&nbsp;method 10 in a loop<br><br><br>
+            We declare the <code><span class="text-viola">printWiFi</span></code> method<br><br>
+            We display "<code class="terminal">Wi-Fi</code>" on the screen</td>
+    </tr>
+    </tbody>
+</table>
+<h2>Facts about methods</h2>
+<p>"I have set aside some useful facts about methods for you. Here, enjoy:</p>
+<p><span class="text-bold">Fact 1.</span> A method is always part of a class.</p>
+<p>A method can only be declared in a class. A method cannot be declared inside another method. A method cannot be declared outside a class.</p>
+<p><span class="text-bold">Fact 2.</span> A method's name has no sacred meaning</p>
+<p>It doesn't matter what methods are called — that doesn't affect anything. The main method is a method just like all the others. It's just that this name was chosen for the method from which the Java machine will start execution of the program. There is nothing magical about it. All that said, it is better to choose method names that at least make it a little clear what they are for. I'll talk about this a little later.</p>
+<p><span class="text-bold">Fact 3.</span> The order of methods in a class does not matter</p>
+<p>You can write your methods in a class in any order — this will not affect the program's execution in any way. Example:</p>
+<table>
+    <thead>
+    <tr>
+        <th colspan="2">Code</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+&nbsp; &nbsp;public static void <span class="text-red">printWiFi10Times</span>()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;for (int i = 0; i &lt; 10; i++)
+&nbsp; &nbsp; &nbsp;  <span class="text-viola">printWiFi</span>();
+&nbsp; &nbsp;}
+&nbsp; &nbsp;
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp;  <span class="text-red">printWiFi10Times</span>();
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;public static void <span class="text-viola">printWiFi</span>()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;System.out.print("Wi-");
+&nbsp; &nbsp; &nbsp;System.out.println("Fi");
+&nbsp; &nbsp;}
+}</code></pre>
+        </td>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>class Solution
+{
+&nbsp; &nbsp;public static void <span class="text-viola">printWiFi</span>()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;System.out.print("Wi-");
+&nbsp; &nbsp; &nbsp;System.out.println("Fi");
+&nbsp; &nbsp;}
+
+&nbsp; &nbsp;public static void <span class="text-red">printWiFi10Times</span>()
+&nbsp; &nbsp;{
+&nbsp; &nbsp; &nbsp;for (int i = 0; i &lt; 10; i++)
+&nbsp; &nbsp;&nbsp; &nbsp; <span class="text-viola">printWiFi</span>();
+&nbsp; &nbsp;}
+&nbsp; &nbsp;public static void main(String[] args)
+&nbsp; &nbsp;{
+&nbsp; &nbsp;  <span class="text-red">printWiFi10Times</span>();
+&nbsp; &nbsp;}
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-bold">Fact 4.</span> The variables inside one method are not related in any way to the variables of other methods</p>
+<p>What happens in Vegas, stays in Vegas. And the variables declared inside a method stay inside the method.</p>
+<p>Variables with the same names can be declared in two adjacent methods, and these variables are not related to each other in any way.</p>
+<h2>Method names</h2>
+<p>"So... I promised to tell you about method names. It has long been known that the two most difficult problems in programming are choosing the right names for methods and choosing the right names for variables."</p>
+<p><span class="text-user">"I never thought that was so difficult!"</span></p>
+<p>"You just didn't know much about other's vague code, where variables and methods have arbitrary names. Just try to figure out that code. In fact, almost an entire science has emerged regarding how to correctly name methods. And each programming language has its own standards.</p>
+<p>"In Java, it is customary to follow these principles:</p>
+<p><span class="text-bold">Principle 1.</span> A method name should briefly describe what the method does.</p>
+<p>Then another programmer reading your code can rely on the name of the method to guess what the code does. He or she won't need to look at the code of called methods every time. And the purpose of the methods is easier to remember.</p>
+<p>For example, <code>Thread.<span class="text-red">sleep()</span></code> is used to 'put the program to sleep' and <code>Scanner.<span class="text-red">nextInt()</span></code> is used to 'read the next integer'. Convenient, huh?</p>
+<p><span class="text-bold">Principle 2.</span> A method name can be multiple words.</p>
+<p>However, there are several limitations when doing this:</p>
+<ul>
+    <li>You cannot have spaces in a method name: all words are written together.</li>
+    <li>Each word is capitalized, except for the first.</li>
+    <li>A method name always starts with a lowercase letter</li>
+</ul>
+<p>Remember the <code>print10TimesWiFi</code> method. What does that name mean? "Display the word 'WiFi' 10 times". You shouldn't include lots of words in the name of a method: the name should reflect its very essence.</p>
+<p>This standard for naming methods is called CamelCase (The uppercase letters are like the humps of a camel).</p>
+<p><span class="text-bold">Principle 3.</span> A method name starts with a verb.</p>
+<p>A method always does something, so the first word in a method name is always an action.</p>
+<p>Here are some bad names for methods: <code>home</code>, <code>cat</code>, <code>car</code>, <code>train</code>, ...;</p>
+<p>Some good names are: <code>run</code>, <code>execute</code>, <code>print</code>, <code>read</code>, <code>write</code>, ...</p>
+<p><span class="text-bold">Principle 4.</span> A method name uses only Latin letters and numbers.</p>
+<p>Java has excellent support for different languages. You can write the names of variables, methods and classes in Russian as well as Chinese — everything will work!</p>
+<p>But! Imagine how long you would have to study Java, if the <code>System.out.println()</code> method was written in Chinese?</p>
+<p>Much longer than now, right? That's the first point.</p>
+<p>Second, many software development teams are international. A very large number of Java libraries are used by programmers from all over the world.</p>
+<p>Therefore, it is recommended to use only Latin letters and numbers in method names.</p>
+<h2>Important:</h2>
+<p><span class="text-red">The name of a method must begin with a letter (it cannot begin with a number).</span></p>
+<p>"These are all the basic principles that govern method naming in Java. The lesson is over now. Go solve tasks!"</p>
+<p><span class="text-user">"I'm already running, Diego!"</span></p>
+<hr>
+<iframe width="1080" height="608" src="https://www.youtube.com/embed/gehAPTbP1OY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0601"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task06.task0602"></div>

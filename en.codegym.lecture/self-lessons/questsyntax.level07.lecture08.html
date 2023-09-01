@@ -1,0 +1,104 @@
+<img data-max-width="1024" data-id="374f9e5b-7a18-4df8-bb99-386bf8d42611" src="https://cdn.javarush.ru/images/article/374f9e5b-7a18-4df8-bb99-386bf8d42611/1024.jpeg" alt="">
+<p>"How about I start with what's actually useful? You'll now see a couple of ways that ArrayList and generics can be put to work:"</p>
+<p><strong>"Example 1:"</strong></p>
+<div class="code-heading">Read a list of numbers from the keyboard</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+    <span class="text-user">BufferedReader</span> <span class="text-corporate">reader</span> = new <span class="text-user">BufferedReader</span>(new InputStreamReader(System.in) );
+    ArrayList&lt<span class="text-green">Integer</span>&gt <span class="text-green">list</span> = new ArrayList&lt<span class="text-green">Integer</span>&gt() ;
+
+    while (true)
+    {
+        String <span class="text-red">s</span> = <span class="text-corporate">reader</span>.readLine();
+        if (<span class="text-red">s</span>.isEmpty()) break;
+        <span class="text-green">list</span>.add(Integer.parseInt(<span class="text-red">s</span>));
+    }
+}</code></pre>
+<p><strong>"Example 2:"</strong></p>
+<div class="code-heading">Same as above, but even numbers are added to the end of the list, odd – to the beginning of it.</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+    <span class="text-user">BufferedReader</span> <span class="text-corporate">reader</span> = new <span class="text-user">BufferedReader</span>(new InputStreamReader(System.in));
+    ArrayList&lt<span class="text-green">Integer</span>&gt <span class="text-green">list</span> = new ArrayList&lt<span class="text-green">Integer</span>&gt();
+
+    while (true)
+    {
+        String <span class="text-red">s</span> = <span class="text-corporate">reader</span>.readLine();
+        if (<span class="text-red">s</span>.isEmpty()) break;
+
+        int x = Integer.parseInt(<span class="text-red">s</span>);
+        if (x % 2 == 0)  // Check that the remainder is zero when we divide by two
+            <span class="text-green">list</span>.add(x);         // Add to the end
+        else
+            <span class="text-green">list</span>.add(0, x);      // Add to the beginning           
+    }
+}</code></pre>
+<p><strong>"Example 3:"</strong></p>
+<div class="code-heading">Delete all numbers larger than 5:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+    <span class="text-user">BufferedReader</span> <span class="text-corporate">reader</span> = new <span class="text-user">BufferedReader</span>(new InputStreamReader(System.in) );
+    ArrayList&lt<span class="text-green">Integer</span>&gt <span class="text-green">list</span> = new ArrayList&lt<span class="text-green">Integer</span>&gt();
+
+    <span class="text-green">list</span>.add(1);
+    <span class="text-green">list</span>.add(7);
+    <span class="text-green">list</span>.add(11);
+    <span class="text-green">list</span>.add(3);
+    <span class="text-green">list</span>.add(15);
+
+    for (int i = 0; i &lt; <span class="text-green">list</span>.size(); ) // We moved the statement that increases i to inside the loop 
+    { 
+        if (<span class="text-green">list</span>.get(i) &gt; 5)
+            <span class="text-green">list</span>.remove(i);  // Don’t increase i if we deleted the current element   
+        else
+            <span class="text-red">i++</span>;
+    }
+}</code></pre>
+<p><strong>"Example 4:"</strong></p>
+<div class="code-heading">Divide an array into two parts – even and odd numbers</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+    // Static initialization of the array
+    int[] <span class="text-green">data</span> = {1, 5, 6, 11, 3, 15, 7, 8};  
+
+    // Create a list where all elements are Integers 
+    ArrayList&ltInteger&gt <span class="text-corporate">list</span> = new ArrayList&ltInteger&gt ();   
+
+    // Use the array to fill the list
+    for (int i = 0; i &lt; <span class="text-green">data</span>.length; i++) <span class="text-corporate">list</span>.add(<span class="text-green">data</span>[i]);  
+
+    ArrayList&ltInteger&gt <span class="text-viola">even</span> = new ArrayList&ltInteger&gt();  // Even numbers
+    ArrayList&ltInteger&gt <span class="text-neon">odd</span> = new ArrayList&ltInteger&gt();    // Odd numbers
+
+    for (int i = 0; i &lt; <span class="text-corporate">list</span>.size(); i++)
+    {
+        Integer <span class="text-red">x</span> = <span class="text-corporate">list</span>.get(i);
+        if (<span class="text-red">x</span> % 2 == 0)    // If x is even
+            <span class="text-viola">even</span>.add(<span class="text-red">x</span>);   // Add x to the collection of even numbers  
+        else
+            <span class="text-neon">odd</span>.add(<span class="text-red">x</span>);    // Add x to the collection of odd numbers
+    }
+}</code></pre>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task07.task0730"></div>
+<p><strong>"Example 5:"</strong></p>
+<div class="code-heading">Merge lists</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args) throws IOException
+{
+    ArrayList&lt<span class="text-green">Integer</span>&gt <span class="text-corporate">list1</span> = new ArrayList&lt<span class="text-green">Integer</span>&gt();   // Create a list  
+    <span class="text-viola">Collections</span><strong>.addAll</strong>(<span class="text-corporate">list1</span>, 1, 5, 6, 11, 3, 15, 7, 8);   // Fill the list
+
+    ArrayList&lt<span class="text-green">Integer</span>&gt <span class="text-user">list2</span> = new ArrayList&lt<span class="text-green">Integer</span>&gt();
+    <span class="text-viola">Collections</span><strong>.addAll</strong>(<span class="text-user">list2</span>, 1, 8, 6, 21, 53, 5, 67, 18);
+
+    ArrayList&lt<span class="text-green">Integer</span>&gt <span class="text-red">result</span> = new ArrayList&lt<span class="text-green">Integer</span>&gt();
+
+    <span class="text-red">result</span><strong>.addAll</strong>(<span class="text-corporate">list1</span>);   // Add all values from each list to the new list
+    <span class="text-red">result</span><strong>.addAll</strong>(<span class="text-user">list2</span>);
+
+   <strong> for</strong> (Integer x : <span class="text-red">result</span>)   // A fast way to loop over all elements, only for collections
+    {
+        <span class="text-neon">System.out.println</span>(x);
+    }
+}</code></pre>
+<p><span class="text-user">"Cool! Will Diego now give me a truck load of similar exercises?"</span></p>
+<p>"Yes, he will."</p>

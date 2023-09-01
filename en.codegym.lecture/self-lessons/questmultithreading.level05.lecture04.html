@@ -1,0 +1,23 @@
+<p>"Here's a new and interesting topic."</p>
+<p>"It turns out you can start threads in different modes."</p>
+<p><strong>"A standard program (with only one thread) stops running when the main thread finishes its work. The main thread finishes executing, the program terminates, and the JVM frees its memory."</strong></p>
+<p>"If we launch a child thread, the program keeps running, even if the main thread finishes. The JVM does not terminate as long as there is at least one running thread. Once all the running threads are finished, the program closes."</p>
+<p>"Well, large programs often have so-called 'service threads' whose job is to service other parts of the program. On their own, they aren't necessary. For example: removing unused objects (garbage collection), memory dumps and error logging, various reports on the current program status, and so on and so forth."</p>
+<p>"These service threads are needed when the program is running, but they are not needed on their own."</p>
+<p><span class="text-user">"Yes, I understand that."</span></p>
+<p>"Java lets you run a thread as a <strong>daemon</strong>. Such threads function the same as others, but if all the non-daemon threads in a program have terminated and only daemon threads are left, the JVM will close the program."</p>
+<p><span class="text-user">"So declaring a 'service' thread just means that it isn't considered when the program is terminated. Is that all?"</span></p>
+<p>"Uhhhh... Well, you sure said that short and sweet. Essentially, that's what I wanted to tell you."</p>
+<p><span class="text-user">"Brevity is a talent. And talented robots are talented in everything."</span></p>
+<p>"Any questions?"</p>
+<p><span class="text-user">"How do you start a thread as a daemon? Inherit from some DaemonThread class?"</span></p>
+<p>"No, it's much simpler than that. The Thread class has a setDaemon(boolean) method. You just have to pass in true and that's it. You just need to call it before calling the start() method, before the real thread is created. You cannot change a thread's type after it starts running."</p>
+<div class="code-heading">Example:</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">Thread</span> thread = new <span class="text-green">LoggerThread</span>();
+thread.<span class="text-red">setDaemon</span>(true);
+thread.start();</code></pre>
+<p><span class="text-user">"And that's it?"</span></p>
+<p>"Yes."</p>
+<p>"I want to draw your attention once again to the process of creating and starting a thread."</p>
+<p>"Creating a Thread object does not create a thread. A Thread object is not a thread. The JVM creates a thread when the start() method is called. A Thread is a special JVM object that lets you access information about a thread and gives you a little control over it."</p>
+<p><span class="text-user">"I see. Thanks, Ellie."</span></p>

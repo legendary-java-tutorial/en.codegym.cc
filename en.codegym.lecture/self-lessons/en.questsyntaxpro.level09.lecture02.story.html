@@ -1,0 +1,295 @@
+<iframe width="1080" height="608" src="https://www.youtube.com/embed/8y31sw38YGo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>A lecture snippet with a mentor as part of the Codegym University course.<a href="https://landing.codegym.cc/en/university-fundamentals/" target="_blank"> Sign up for the full course.</a></p>
+<hr>
+<p>"Greetings, Amigo. Once upon a time, you learned that in order to write a string of characters in code, you need to wrap them in double quotes."</p>
+<p><span class="text-user">"Yes, and that gives us a <span class="term">string literal</span>. It wasn't very long ago that I found out about this."</span></p>
+<p>"In our profession, that was a long time ago. But that's not the point right now. Instead, please tell me what to do if we need quotation marks inside a string literal?"</p>
+<p><span class="text-user">"Hmm... A string containing quotes — what could be easier. I'm sure there's some way..."</span></p>
+<p>"Yes. Let's say we want to display the text <code>"Friends" was nominated for an "Oscar"</code>. How would we do it?"</p>
+<p><span class="text-user">"To be honest, I have no idea. I can't think of anything."</span></p>
+<p>"You won't be able to get to a solution through logic. Let me just show you what to do.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>String s = <span class="text-green">""Friends" was nominated for an "Oscar"";</span></code></pre>
+        </td>
+        <td><span class="text-red">This option will not work!"</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"This option will not work, because the compiler interprets this as entirely different code:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>String s = ""Friends" was nominated for an "Oscar"";</code></pre>
+        </td>
+        <td><span class="text-red">This option will not work!"</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"After the compiler encounters double quotes in the code, it treats what follows as the beginning of a string literal. The next double quotation mark indicates the end of the string literal."</p>
+<p><span class="text-user">"So how do you write double quotes inside of a literal?"</span></p>
+<p>"There is a way. It is called <span class="term">escaping characters</span>. You just write the quotation marks within the string of text. And before the quotes, you add the <span class="term">\</span> (<span class="term">backslash</span>) symbol.</p>
+<p>"This is what the string literal looks like when written properly:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>String s = "<span class="token keyword">\"</span>Friends<span class="token keyword">\"</span> was nominated for an <span class="token keyword">\"</span>Oscar<span class="token keyword">\"</span>";</code></pre>
+        </td>
+        <td><span class="text-green">This will work!</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"The compiler will interpret everything correctly and will not consider the quotation mark after the <span class="term">backslash</span> as a normal quotation mark.</p>
+<p>"What's more, if you output this string to the screen, the quotes with <span class="term">backslashes</span> will be processed correctly, and the text will be displayed without any backslashes: <code>"Friends" was nominated for an "Oscar"</code></p>
+<p><span class="text-user">"Well, I'm not going to say that this is super convenient..."</span></p>
+<p>"But what can you do, those are the rules. Another important point. A quotation mark preceded by a backslash represents a single character: we're simply using slick notation that doesn't interfere with the compiler's ability to recognize string literals in our code. You can assign quotes to a <code>char</code> variable:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Notes</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>char c = '<span class="token keyword">\"</span>';</code></pre>
+        </td>
+        <td><code><span class="token keyword">\"</span></code> is one character, not two</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>char c = '<span class="text-neon">"</span>';</code></pre>
+        </td>
+        <td>This is also possible: a <span class="text-neon">double quotation mark</span> inside single quotes</td>
+    </tr>
+    </tbody>
+</table>
+<h2>Common situations that occur when escaping characters</h2>
+<img data-id="12a2b8f9-76bc-4a82-b195-d161bdb838bb" src="https://cdn.codegym.cc/images/article/12a2b8f9-76bc-4a82-b195-d161bdb838bb/original.png" class="img-fluid" alt="">
+<p>"In addition to double quotes, there are many other characters that the compiler handles in a special way. For example, a line break.</p>
+<p>"How do we add a line break to a literal? There is also a special combination for this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code><span class="token keyword">\n</span></code></pre>
+    <div class="lesson-example-caption">Line break character</div>
+</div>
+<p>"If you need to add a line break to a string literal, you just add a couple of characters" <code>\n</code>.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="lecture-code language-java line-numbers"><code>System.out.println("Best regards, <span class="token keyword">\n</span> Anonymous");
+            &nbsp;</code></pre>
+        </td>
+        <td><pre><code class="terminal">Best regards,
+Anonymous
+</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"There are a total of 8 special combinations like this, which are also called <span class="term">escape sequences</span>. Here they are:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code>\t</code></td>
+        <td>Insert a <span class="text-red">tab</span> character</td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>\b</code></td>
+        <td>Insert a <span class="text-red">backspace</span> character</td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>\n</code></td>
+        <td>Insert a <span class="text-red">newline</span> character</td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>\r</code></td>
+        <td>Insert a <span class="text-red">carriage return</span> character</td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>\f</code></td>
+        <td>Insert a <span class="text-red">page feed</span> character</td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>\'</code></td>
+        <td>Insert a <span class="text-red">single quotation mark</span></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>\"</code></td>
+        <td>Insert a <span class="text-red">double quotation mark</span></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>\\</code></td>
+        <td>Insert a <span class="text-red"> backslash</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"You already showed me two of them. What do the other 6 mean?"</span></p>
+<p>"I'll explain it all right now.</p>
+<p><span class="text-bold"><code>\t</code> is a tab character</span></p>
+<p>When this text appears in text, it is equivalent to pressing the <code>Tab</code> key while typing. It shifts the text that follows it and makes it possible to align text.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>System.out.println("0<span class="token keyword">\t</span>1<span class="token keyword">\t</span>2<span class="token keyword">\t</span>3");
+System.out.println("0<span class="token keyword">\t</span>10<span class="token keyword">\t</span>20<span class="token keyword">\t</span>30");
+System.out.println("0<span class="token keyword">\t</span>100<span class="token keyword">\t</span>200<span class="token keyword">\t</span>300");</code></pre>
+        </td>
+        <td>
+<pre><code class="terminal">0       1        2        3
+0       10       20       30
+0       100      200      300</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-bold"><code>\b</code> means 'go back one character'</span></p>
+<p>This sequence in a string is equivalent to pressing the <code>Backspace</code> key on the keyboard. It removes the character that precedes it:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("Hello<span class="token keyword">\b\b</span> World");</code></pre>
+        </td>
+        <td><pre><code class="terminal">Hel World</code></pre></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-bold"><code>\r</code> is the carriage return character</span></p>
+<p>This character moves the cursor to the beginning of the current line without changing the text (depends on JDK version). Whatever next is displayed next will overwrite the existing string.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("Greetings<span class="token keyword">\r</span> World!"); </code></pre>
+        </td>
+        <td><code class="terminal">World!ngs</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-bold"><code>\f</code> is a page feed character</span></p>
+<p>This symbol comes down to us from the days of the first dot matrix printers. Outputting this sequence to a printer would cause the printer to simply feeds out the current sheet, without printing any text, until a new page begins.</p>
+<p>Now we would call it a <span class="term">page break</span> or <span class="term">new page</span>.</p>
+<p><code>\\</code> is a backslash</p>
+<p>Everything is straightforward here. If we use a backslash to escape characters in our text, then how do we write a backslash character itself in the string?</p>
+<p>It's simple: add a <span class="term">backslash</span> to the text — you have to write two in a row.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("c:<span class="text-red">\p</span>rojects<span class="text-red">\m</span>y<span class="token keyword">\f</span>irst");</code></pre>
+        </td>
+        <td><span class="text-red">The compiler will yell at you for unknown escaped characters.</span></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("c:<span class="token keyword">\\</span>projects<span class="token keyword">\\</span>my<span class="token keyword">\\</span>first");</code></pre>
+        </td>
+        <td>That's how it's done right!</td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0909"></div>
+<p><span class="text-user">"Using double slashes makes sense. But I haven't immediately been able to memorize everything else. I'll have to rely on your hints."</span></p>
+<p>"Gradually, you'll remember what you need. Don't worry. And for everything else, there's Google.</p>
+<h2>Unicode encoding</h2>
+<p>"You already know that each character displayed on the screen corresponds to a specific numerical code. A standardized set of these codes is called an <span class="term">encoding</span>.</p>
+<p>"Once upon a time, when computers were newly invented, seven bits (less than one byte) were enough to encode every character. The first encoding contained only 128 characters. This encoding was called <span class="term">ASCII</span>."</p>
+<p><span class="text-user">"That's a strange name."</span></p>
+<p>"There's nothing strange about it. It's an abbreviation. <span class="term">ASCII </span> stands for American Standard Code for Information Interchange — a standard American code table for printable characters and some special codes."</p>
+<p>"It consists of 33 non-printable control characters (which affect how text and spaces are processed) and 95 printable characters, including numbers, uppercase and lowercase Latin letters, and several punctuation marks.</p>
+<img data-id="59258fec-f7ac-4994-8f76-f804696096f8" src="https://cdn.codegym.cc/images/article/59258fec-f7ac-4994-8f76-f804696096f8/original.png" class="img-fluid" alt="">
+<p>"As computers grew in popularity, each country began to release its own encoding. Usually, they took ASCII as a starting point and replaced rarely used ASCII characters with symbols from their respective alphabets.</p>
+<p>"Over time, an idea emerged: create a single encoding that contains all the characters of every encoding in the world.</p>
+<img data-max-width="1080" data-id="4379a441-3b51-478e-945d-5e96be265859" src="https://cdn.codegym.cc/images/article/4379a441-3b51-478e-945d-5e96be265859/1080.jpeg" alt="Unicode encoding">
+<p>"Thus, in 1993, the <span class="term">Unicode</span> encoding was created, and the Java language became the first programming language that used this encoding as the standard for storing text. Now Unicode is the standard for the entire IT industry.</p>
+<p>"Although Unicode itself is the standard, it has several representations or Unicode transformation formats (UTF): UTF-8, UTF-16 and UTF-32, etc.</p>
+<p>"Java uses an advanced version of Unicode encoding — UTF-16: each character is encoded in 16 bits (2 bytes). It can accommodate up to 65,536 characters! You can find almost every character of every alphabets in the world in this encoding."</p>
+<p><span class="text-user">"I hope I don't need to know it by heart?"</span></p>
+<p>"If you want to, go for it!"</p>
+<p><span class="text-user">"Okay, fine. I'll use this rule: you can't know everything, but you can Google everything."</span></p>
+<p>"Adopting a rational approach is everything. So, to write a Unicode character in your program using its code, you need to write <code>\u</code> + <span class="term">the code in hexadecimal</span>. For example, <code>\u00A9</code></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code> System.out.println("<span class="token keyword">\u00A9</span> CodeGym");</code></pre>
+        </td>
+        <td><pre><code class="terminal">© CodeGym</code></pre></td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0910"></div>
+<h2>Unicode: code point</h2>
+<p>"640 kilobytes ought to be enough for everyone! Or not". Bill Gates once said that. Or not. At least this quote is attributed to him."</p>
+<p><span class="text-user">"Haha. 640 kilobytes isn't even enough to load a cleaning robot's brain."</span></p>
+<p>"Life is rough, and over time, the UTF-16 encoding began to be inadequate. It turns out that there are a lot of Asian languages, and they have a lot of glyphs. And all these glyphs simply cannot be crammed into 2 bytes."</p>
+<p><span class="text-user">"So what do we do?"</span></p>
+<p>"Use <span class="text-bold">more bytes</span>! But the char type is only 2 bytes and changing it to 4 is not so easy: billions of lines of Java code have been written all over the world, which would break if the char type suddenly becomes 4 bytes a Java machine. So we can't change the char type!</p>
+<p>"There is another approach. Remember how we escape characters by putting a backslash in front of them. Basically, we encoded a single character using multiple characters. Java's creators decided to use the same approach.</p>
+<p>"Some characters that visually appear as a single character are encoded as two <code>char</code>s in a string:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="lecture-code language-java line-numbers"><code>System.out.println("<span class="token keyword">\uD83D\uDD0A</span>");</code></pre>
+        </td>
+        <td><code class="terminal">🔊</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Now your Java program can even output emojis to the console 😎"</p>
+<p><span class="text-user">"I'll definitely use that to have some fun!"</span></p>
+<div class="task-widget-container" showCover="true" taskKey="en.javarush.task.pro.task09.task0911"></div>
