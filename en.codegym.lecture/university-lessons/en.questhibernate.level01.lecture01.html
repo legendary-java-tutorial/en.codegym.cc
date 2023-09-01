@@ -1,0 +1,327 @@
+SQL language
+<p>----------------------------------------</p>
+Familiarization with the SQL language Advanced view of SQL query Comments in SQL queries Pronunciation of SQL
+<p>----------------------------------------</p>
+ve a database (DB), and in it - a table with some data, then the most common task is to find certain data in this table. That's what SQL was invented for 40 years ago.</p>
+<p>SQL stands for <strong>Structured Query Language</strong> .</p>
+<p>The simplest SQL query looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> колонка<span class="token number">1</span><span class="token punctuation">,</span> колонка<span class="token number">2</span><span class="token punctuation">,</span> … колонка<span class="token class-name">N</span> <span class="text-red">FROM</span> table</code></pre>
+</div>
+<p>Let's say you have <strong>an employee table</strong> with a list of your startup's employees:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100,000</td>
+    <td>25</td>
+    <td>2012-06-30</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80,000</td>
+    <td>23</td>
+    <td>2013-08-12</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40,000</td>
+    <td>thirty</td>
+    <td>2014-01-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200,000</td>
+    <td>35</td>
+    <td>2015-05-12</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40,000</td>
+    <td>25</td>
+    <td>2015-10-10</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>cat</td>
+    <td>1,000</td>
+    <td>3</td>
+    <td>2018-01-01</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>You want to write a query that will display <code class="text-green">employee names</code>them as well <code class="text-user">salaries</code>, then you need to write a query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-red">SELECT</span></span> <span class="text-green">name</span><span class="token punctuation">,</span> <span class="text-user">salary</span> <span class="text-red">FROM</span> <span class="text-yellow">employee</span></code></pre>
+</div>
+<p>You will get the query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>name</th>
+    <th>salary</th>
+   </tr>
+   <tr>
+    <td>Ivanov Ivan</td>
+    <td>100,000</td>
+   </tr>
+   <tr>
+    <td>Petrov Petr</td>
+    <td>80,000</td>
+   </tr>
+   <tr>
+    <td>Ivanov Sergey</td>
+    <td>40,000</td>
+   </tr>
+   <tr>
+    <td>Rabinovich Moisha</td>
+    <td>200,000</td>
+   </tr>
+   <tr>
+    <td>Kirienko Anastasia</td>
+    <td>40,000</td>
+   </tr>
+   <tr>
+    <td>Vaska</td>
+    <td>1,000</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>If you want to display <strong>all the columns of your table</strong> , then instead of listing the names of all the columns, you can simply write an asterisk. Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">employee</span></code></pre>
+</div>
+<p>You will get the query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100,000</td>
+    <td>25</td>
+    <td>2012-06-30</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80,000</td>
+    <td>23</td>
+    <td>2013-08-12</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40,000</td>
+    <td>thirty</td>
+    <td>2014-01-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200,000</td>
+    <td>35</td>
+    <td>2015-05-12</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40,000</td>
+    <td>25</td>
+    <td>2015-10-10</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>cat</td>
+    <td>1,000</td>
+    <td>3</td>
+    <td>2018-01-01</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>2.2 Advanced view of SQL query</h2>
+<p>The SQL language was designed as user-friendly as possible.</p>
+<p>First, <strong>the case of the request text does not matter</strong> . You can write SELECT, Select, or select and everything will work. Secondly, <strong>line breaks are not taken into account in any way</strong> . The DBMS will still turn the query into one long string, so you can write it however you like.</p>
+<p>As you probably already guessed, the SELECT and FROM keywords are not limited. Otherwise there wouldn't be so much talk around SQL. The extended view of the SQL query looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> columns
+<span class="text-red">FROM</span> table
+<span class="text-orange">WHERE</span> condition
+<span class="text-orange">GROUP BY</span> columns
+<span class="text-orange">HAVING</span> columns
+<span class="text-orange">ORDER BY</span> sorting</code></pre>
+</div>
+<p>With the help of a keyword, <code>WHERE</code>you can set a condition / filter for the selected rows.</p>
+<p><strong>Example 1</strong> . Let's write a query that will select employees with the profession "Programmer":</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">employee</span> <span class="token class-name"><span class="text-red">WHERE</span></span> <span class="text-user">occupation</span> <span class="token operator">=</span> <span class="token string"><span class="text-green">'Programmer'</span></span></code></pre>
+</div>
+<p>And we get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100,000</td>
+    <td>25</td>
+    <td>2012-06-30</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80,000</td>
+    <td>23</td>
+    <td>2013-08-12</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>As you can see, as a result of the query execution, only rows where the employee's profession is called "Programmer" are displayed.</p>
+<p>The keywords <code>GROUP BY</code>, <code>ORDER BY</code>and <code>HAVING</code>we will cover in the next lectures. And in this we will analyze a couple more examples with the word WHERE.</p>
+<p><strong>Example 2</strong> . Now let's write a query that will show us all employees with a salary greater than 100K. Here's what it will look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">employee</span> <span class="text-red">WHERE</span> <span class="text-user">salary</span> <span class="token operator">&gt;</span> <span class="token number">100000</span></code></pre>
+</div>
+<p>We get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200,000</td>
+    <td>35</td>
+    <td>2015-05-12</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><strong>Example 3</strong> . Now let's try something more difficult. How to display all employees who were hired in 2015? And like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">employee</span> <span class="token class-name"><span class="text-red">WHERE</span></span> <span class="token function"></span><span class="text-user"><span class="token function">YEAR</span><span class="token punctuation">(</span>join_date<span class="token punctuation">)</span></span><span class="token punctuation"></span> <span class="token operator">=</span> <span class="token number">2015</span></code></pre>
+</div>
+<p>We get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200,000</td>
+    <td>35</td>
+    <td>2015-05-12</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40,000</td>
+    <td>25</td>
+    <td>2015-10-10</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>In this query, we use a special function <code>YEAR()</code>that allows us to get the year from a date and then compare the year of the date with the number 2015.</p>
+<h2>2.3 Comments in SQL queries</h2>
+<p>And one more important point is comments in SQL queries. Comments are a very useful thing. Firstly, you can write explanations and / or your ideas in them. Secondly, with the help of comments, you can disable broken code. Or comment out the old version of the code.</p>
+<p>SQL, like Java, has single-line and multi-line comments. Moreover, a multi-line comment looks just like in Java. Its appearance:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present"><code>
+/*
+ 	comment text
+ 	comment text
+ 	comment text
+*/
+        </code></pre>
+</div>
+<p>Of course, it can be used in one line too. Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present"><code>
+/*comment text*/
+        </code></pre>
+</div>
+<p>There is also a type of comment "from the beginning to the end of the line", similar to the Java "//". Only in SQL you need to write <strong>two minus characters and a space</strong> . General view of such a comment:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token operator">--</span> comment text</code></pre>
+</div>
+<p>Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present"><code>
+        <span class="text-red">SELECT</span> * <span class="text-red">FROM</span> <span class="text-yellow">employee</span> <span class="token comment">-- WHERE YEAR(join_date) = 2015 </span>
+        </code></pre>
+</div>
+<p>In the example above, we commented out the query condition, so MySQL will only execute the query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">employee</span></code></pre>
+</div>
+<h2>2.4 SQL pronunciation</h2>
+<p>If you communicate with foreign customers or pass an online interview for an American company, then you may be asked about your experience with the <strong>sequel language</strong> . You will honestly say that you did not work with him and immediately flunk the interview.</p>
+<p>And the thing is that the SQL language was originally called SEQUEL, which is pronounced like <strong>a sequel</strong> (ˈsēkwəl), so very often in the USA and other English-language sources you will hear not “escuel”, but “sequel”. SQL is written, and the sequel is read. Here is such a historical paradox.</p>

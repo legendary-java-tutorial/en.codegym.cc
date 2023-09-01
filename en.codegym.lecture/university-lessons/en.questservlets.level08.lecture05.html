@@ -1,0 +1,110 @@
+VPN
+<p>----------------------------------------</p>
+Introduction to VPN Types of VPN OpenVPN
+<p>----------------------------------------</p>
+<h2>6.1 Introduction to VPN</h2>
+<p><strong>Virtual Private Network</strong> or <strong>VPN</strong> is literally a virtual private network. Most likely,
+    you often heard the word VPN when you wanted to change the country in the browser of your phone or computer. Launch
+    VPN, select a country and you're done.</p>
+<img data-max-width="1024" data-id="4f03d22b-44ac-47e2-afa2-e74011890d2e"
+     src="https://cdn.codegym.cc/images/article/4f03d22b-44ac-47e2-afa2-e74011890d2e/1024.jpeg" alt="">
+<p>Although VPNs, in fact, have nothing to do with countries. The case is a little different.</p>
+<p>Imagine that you work in an office on a computer, and in this office there are various computer equipment with
+    network access: computers, servers, printers, video conferencing equipment.</p>
+<p><strong>Situation 1</strong> : your office has grown, you decided to move to the next floor. You took your computer,
+    moved it to another room, plugged it into another network outlet, and you still have access to all the servers and
+    computers of the company.</p>
+<p>Most likely, your computer is now talking to another router, but all the routers in your company know how to
+    communicate with each other and provide you with all the benefits of being on the same local network. You have no
+    problem accessing any equipment on the corporate network.</p>
+<p><strong>Situation 2</strong> : A pandemic has begun and you decide to work from home. You took your work computer
+    home, but bad luck, there is no access to office servers at home. It seems to be logical, because they stayed at the
+    office at the other end of the city. On the other hand, the question arises: when you transferred the computer in
+    the first case, you still had access to office computers. When you moved the computer in the second case, there is
+    no access. What has changed?</p>
+<p>In the first case, all computers in your office (even those located on different floors) were on the same local
+    network. But in the second case, no. Your computer at home is not connected to the office LAN. Accordingly, you do
+    not have access to the internal resources of the office network.</p>
+<p>As a solution to this problem, a solution was proposed - <strong>a virtual local area network</strong> (VPN). In your
+    office, on each floor, there was a router that sent data to each other and ensured the operation of the local
+    network.</p>
+<p>We need to create two <strong>virtual routers</strong> (in the form of programs), one in your office, the second at
+    home, which will also send encrypted data to each other over the Internet. And there are such programs: one of them
+    is called <strong>VPN server</strong> , and the second is <strong>VPN client</strong> .</p>
+<p>The VPN server is configured by the system administrator in the office, and the VPN client is now in every computer
+    and/or phone.</p>
+<p>You launch a VPN client on your computer and use it to connect to the VPN server, so the computer now thinks that it
+    is inside the local network where the VPN server is located.</p>
+<p>If you now launch your browser, then all data from your browser will go to your local virtual router (VPN client),
+    from it to the company’s virtual router (VPN server), and then further out into the world through the Internet
+    gateway of your office companies.</p>
+<p>The external IP address of your computer will now match the public IP address of your office. And if this office was,
+    for example, in Germany, then the server that your browser accessed will be sure that you are in an office in
+    Germany.</p>
+<h2>6.2 VPN types</h2>
+<p>VPN networks are divided according to their target functions. There are many different ones, but here is a list of
+    typical VPN solutions:</p>
+<h3>Intranet VPN</h3>
+<p>It is used to combine several distributed branches of one organization into a single secure network, exchanging data
+    via open communication channels. This is the first one that started it all.</p>
+<h3>Remote Access VPN</h3>
+<p>It is used to create a secure channel between a corporate network segment (central office or branch office) and a
+    single user who, while working at home, connects to corporate resources from a home computer, corporate laptop,
+    smartphone, or Internet kiosk. This is the option you have if you work from home and connect to the office via a
+    VPN.</p>
+<h3>Extranet VPN</h3>
+<p>Used for networks to which "external" users (for example, customers or clients) connect. The level of trust in them
+    is much lower than in the company's employees, so it is necessary to provide special "frontiers" of protection that
+    prevent or restrict the latter's access to especially valuable, confidential information.</p>
+<h3>Internet VPN</h3>
+<p>Used by providers to provide access to the Internet, usually if several users connect via one physical channel. The
+    PPPoE protocol has become the standard in ADSL connections.</p>
+<p>L2TP was widespread in the mid-2000s in home networks: in those days, intranet traffic was not paid, and external
+    traffic was expensive. This made it possible to control costs: when the VPN connection is turned off, the user does
+    not pay anything.</p>
+<p>Currently, wired Internet is cheap or unlimited, and on the user's side there is often a router on which turning the
+    Internet on and off is not as convenient as on a computer. Therefore, L2TP access is a thing of the past.</p>
+<h3>Client/server VPN</h3>
+<p>Also a popular option. It ensures the protection of transmitted data between two nodes (not networks) of a corporate
+    network. The peculiarity of this option is that the VPN is built between nodes that are usually located in the same
+    network segment, for example, between a workstation and a server. This need very often arises in cases where it is
+    necessary to create several logical networks in one physical network.</p>
+<p>For example, when it is necessary to divide the traffic between the financial department and the human resources
+    department, accessing servers located in the same physical segment. This option is similar to VLAN technology, but
+    instead of separating traffic, it is encrypted.</p>
+<h2>6.3 OpenVPN</h2>
+<p>Remember, we talked about a virtual router on the office side, to which you can connect using VPN clients? So, there
+    is one very popular solution that it will be useful for you to know about. This is OpenVPN.</p>
+<p><strong>OpenVPN</strong> is a free program that implements virtual private network (VPN) technology. It supports two
+    popular modes of operation: client-server and point-to-point, when you need to combine two large networks.</p>
+<p>It maintains a good level of traffic encryption between its participants, and also allows you to establish
+    connections between computers behind NAT and a firewall without having to change their settings.</p>
+<p>To secure the control channel and data flow, OpenVPN uses the <strong>OpenSSL</strong> library . This allows you to
+    use the entire set of encryption algorithms available in this library.</p>
+<p><strong>It can also use HMAC</strong> batch authentication for more security and hardware acceleration to improve
+    encryption performance. This library uses OpenSSL, more specifically, <strong>the SSLv3/TLSv1.2</strong> protocols .
+</p>
+<p>There are implementations of this program for all popular operating systems: Solaris, OpenBSD, FreeBSD, NetBSD,
+    GNU/Linux, Apple Mac OS X, QNX, Microsoft Windows, Android, iOS.</p>
+<p>OpenVPN offers the user <strong>several types of authentication</strong> :</p>
+<ul>
+    <li><strong>The preset key</strong> is the easiest method.</li>
+    <li><strong>Certificate authentication</strong> is the most flexible method in settings.</li>
+    <li>Using <strong>a login</strong> and <strong>password</strong> - can be used without creating a client certificate
+        (a server certificate is still needed).
+    </li>
+</ul>
+<h3>Technical information</h3>
+<p>OpenVPN conducts all network operations over TCP or UDP transport. In general, UDP is preferred because the tunnel
+    will carry network layer traffic and above over OSI if a TUN connection is used, or link layer traffic and above if
+    TAP is used.</p>
+<p>This means that OpenVPN acts as a channel or even physical layer protocol for the client, which means that data
+    transfer reliability can be ensured by higher OSI levels, if necessary.</p>
+<p>Given that we have well analyzed the OSI model, you should understand what is being said here.</p>
+<p>That is why the UDP protocol, in its concept, is closest to OpenVPN, since it, like the protocols of the data link
+    and physical layers, does not provide connection reliability, passing this initiative to higher levels. If you
+    configure the tunnel to work over TCP, the server will typically receive OpenVPN TCP segments that contain other TCP
+    segments from the client.</p>
+<p>Also, which is not unimportant, OpenVPN can work through most of the proxy servers, including HTTP, SOCKS, through
+    NAT and network filters. The server can be configured to assign network settings to the client. For example, IP
+    address, routing settings, and connection parameters. </p>

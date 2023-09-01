@@ -1,0 +1,69 @@
+Introduction to wait, notify, notifyAll methods
+<p>----------------------------------------</p>
+Hello Amigo! Hi Risha! “I will introduce you to the wait, notify, notifyAll methods of the Object class. Today we will just get acquainted with them, but then we will return again and already allocate more time for this. - Fine. — These methods were invented as part of the thread synchronization mechanism. Let me remind you that Java has a built-in control mechanism ...
+<p>----------------------------------------</p>
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Rishi!"</span></p>
+<p>"I'm going to introduce you to the Object class's <strong>wait</strong>, <strong>notify</strong>, and <strong>notifyAll</strong> methods."</p>
+<p>"Today we'll just get acquainted with them, but we'll come back later and spend more time on this."</p>
+<p><span class="text-user">"Okay."</span></p>
+<p>"These methods were invented as part of the thread synchronization mechanism."</p>
+<p>"Let me remind you that Java has a built-in mechanism for controlling access to shared resources (objects) from different threads. A thread can declare that an object is busy, and other threads will have to wait until the busy object is released."</p>
+<p><span class="text-user">"I remember. You do that using the <strong>synchronized</strong> keyword."</span></p>
+<p>"Right. Typically, the code would look something like this:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public void print()
+{
+ Object monitor = getMonitor();
+ synchronized(monitor)
+ {
+  System.out.println("text");
+ }
+<span class="text-green">}</span></code></pre>
+<p>"Remember how that works?"</p>
+<p><span class="text-user">"Yep. If two threads simultaneously call the print() method, one of them will enter the block labeled synchronized and lock the monitor, which makes it so the second thread will wait until the monitor is released."</span></p>
+<p>"Right. Once a thread enters the block labeled synchronized, the monitor object is marked as busy, and other threads will be forced to wait for the monitor object to be released. The same monitor object can be used in various parts of the program."</p>
+<p><span class="text-user">"By the way, why did you choose the name monitor?"</span></p>
+<p>"A monitor is what you usually call an object that stores the busy or free status."</p>
+<p>"And this is where the <strong>wait</strong> and <strong>notify</strong> methods come into play."</p>
+<p>"Actually, these are really the only two methods. The others are just adaptations of these methods."</p>
+<p>"Now let's wrap our heads around <strong>what the wait method is and why we need it.</strong>"</p>
+<p>"Sometimes there are situations in a program where a thread enters a block of synchronized code and locks the monitor, but can't keep going because it is missing some data. For example, a file it needs to process hasn't finished downloading or something like that."</p>
+<p>"We could just wait for the file to be downloaded. You could just check it using a loop. If the file hasn't downloaded yet, then sleep for a second or so, and check again until it is downloaded."</p>
+<p>"Something like this:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>while(!file.isDownloaded())
+{
+ Thread.sleep(1000);
+}
+processFile(file);</code></pre>
+<p>"But in our case, this type of waiting is too expensive. Since our thread locked the monitor, other threads are also forced to wait even though they may already have the data they need."</p>
+<p>"The <strong>wait()</strong> method was invented to solve this problem. This method causes the thread to release the monitor and then «suspends» the thread.</p>
+<p>"You can only call a monitor object's wait method when the monitor is busy, i.e. only inside a <strong>synchronized</strong> block. When this happens, the thread temporarily stops running, and the monitor is released so that other threads can use it."</p>
+<p>"There are often instances where a thread will enter a <strong>synchronized</strong> block and call wait, thus releasing the monitor."</p>
+<p>"Then a second thread will enter and be suspended, then a third, and so on."</p>
+<p><span class="text-user">"And how does a thread get resumed?"</span></p>
+<p>"For that, there is a second method: notify."</p>
+<p>"You can only call a monitor object's <strong>notify</strong>/<strong>notifyAll</strong> methods when the monitor is busy, i.e. only inside a <strong>synchronized</strong> block. The <strong>notifyAll</strong> method wakes up all threads that are waiting on this monitor object."</p>
+<p>"The <strong>notify</strong> method 'unfreezes' one random thread, but the <strong>notifyAll</strong> method unfreezes all of this monitor's «frozen» threads."</p>
+<p><span class="text-user">"Very interesting. Thank you, Rishi."</span></p>
+<p>"There are also adaptations of the wait() method:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>wait() method</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void wait(long timeout)</code></pre>
+        </td>
+        <td>The thread «freezes», but it automatically «unfreezes» after waiting the number of milliseconds passed to the method as an argument.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>void wait(long timeout, int nanos)</code></pre>
+        </td>
+        <td>The thread «freezes», but it automatically «unfreezes» after waiting the number of nanoseconds passed to the method as an argument.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"We also call this a wait with a timeout. The method works like a normal wait, but if the specified time has passed and the thread hasn't been woken up, it wakes itself up."</p>

@@ -1,0 +1,50 @@
+INDEX: indexes
+<p>----------------------------------------</p>
+Causes of Indexes Adding Indexes to a Table
+<p>----------------------------------------</p>
+/h2>
+<p>Another important thing without which there can be no databases is indexes.</p>
+<p>Imagine a situation where there are 10 million users in the <strong>user</strong> table , and you want to display everyone who has a level above 90. This query is very simple to write:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">SELECT</span> <span class="token operator">*</span> <span class="text-brown">FROM</span> <span class="text-yellow">user</span> <span class="text-brown">WHERE</span> <span class="text-green">level</span> <span class="token operator">&gt;</span> <span class="token number">90</span></code></pre>
+</div>
+<p>Great, we wrote the request in less than a minute. And how long will it take to execute this query from the SQL server? To execute such a query, he will have to go through 10 million records, and even if there is only one record, it will take a lot of time.</p>
+<p>How would we do a similar task in Java? We would first sort the collection of users by level, and then we could very quickly find the necessary records using a binary search. I hope I don't need to explain what it is?</p>
+<p>Great, but what if we now need to select users whose registration date was before 2020? Sort again by registration date and use binary search.</p>
+<p>Yeah, <span class="text-green">if we perform a filter on some field, and not just once, but often, then it will be very useful to store the data sorted by this field.</span></p>
+<p>And how to store data sorted simultaneously by different fields?</p>
+<p>And the answer is very simple - you need to store not the data itself, but their indexes in some global table.</p>
+<p>Let's say there are 10 users with id: <code>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}</code>.</p>
+<p>And you decide to sort them by level, then the array of their id will be, for example, like this: <code>{9, 2, 3, 1, 5, 4, 8, 6, 7, 10}</code>.</p>
+<p>And if we sort them by date, then we get, for example: <code>{10, 1, 8, 7, 2, 3, 5, 9, 6}</code>.</p>
+<p><strong>Arrays of these id are called indexes</strong> . The elements themselves are large, we do not touch them. In Java, we do not touch objects, but store their references; in SQL, we do not touch real strings, but store their numbers.</p>
+<p>Let me rewrite this in Java code:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> list <span class="token operator">=</span> <span class="token class-name">List</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token string">"С"</span><span class="token punctuation">,</span> <span class="token string">"B"</span><span class="token punctuation">,</span> <span class="token string">"Z"</span><span class="token punctuation">,</span> <span class="token string">"Сc"</span><span class="token punctuation">,</span> <span class="token string">"Bb"</span><span class="token punctuation">,</span> <span class="token string">"Zz"</span><span class="token punctuation">,</span> <span class="token string">"Y"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//this is a list of objects</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> alphabeticsList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Collections</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>alphabeticsList<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//collection sorted alphabetically</span>
+
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> lengthList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Collections</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>lengthList<span class="token punctuation">,</span> lengthComparator<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//collection sorted by string length</span></code></pre>
+<p>Sorting collections does not mean moving the actual elements. The collection does not store real objects, but links to them. The same is true for SQL tables. Real lines lie to themselves and lie.</p>
+<p>And when we need to frequently make selections for some field, then we <strong>add another index to the table</strong> (analogous to a new collection in Java) and sort the rows of the table, store their sorted order in a special index file.</p>
+<p>I hope the Java comparison helped a little. A little practice - and for you, the use of indexes will also become the most obvious solution.</p>
+<h2>7.2 Adding indexes to a table</h2>
+<p>The index can be specified immediately during the creation of the table, or added after. Most often, it is the second scenario that occurs - indexes are added as the table size grows and data sampling slows down.</p>
+<p>Adding an index to a table is very simple:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">table</span>
+    <span class="text-red">ADD INDEX</span> <span class="text-user">index_name</span> <span class="token punctuation">(</span><span class="text-green">column</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>If you often look up records in multiple columns at the same time, you can specify a composite index: SQL uses multiple columns to compose it.</p>
+<p>Adding a composite index to a table is also very simple:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">table</span>
+    <span class="text-red">ADD INDEX</span> <span class="text-user">index_name</span> <span class="token punctuation">(</span><span class="text-green">column <span class="token number">1</span></span><span class="token number"></span><span class="token punctuation">,</span> <span class="text-green">column <span class="token number">2</span></span><span class="token number"></span><span class="token punctuation">,</span> <span class="text-green">column <span class="token number">3</span></span><span class="token number"></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Indexes take up a lot of disk space, so if you no longer need an index, you can always remove it:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">ALTER TABLE</span> <span class="text-yellow">table</span>
+    <span class="text-red">DROP INDEX</span> <span class="text-user">index_name</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>The indexes themselves are a rather hidden part of the database. They do not affect the format of writing queries in any way. It's just that their presence speeds up data sampling and slows down their addition and backup.</p>
+<p>But considering how important speed is in today's world and how cheap disk space is, feel free to add indexes for all occasions. Forgive me admins...</p>

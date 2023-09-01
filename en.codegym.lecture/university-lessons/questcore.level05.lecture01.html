@@ -1,0 +1,385 @@
+Access modifiers, method overriding, implementation of abstract methods
+<p>----------------------------------------</p>
+Let's delve into the topic of "access modifiers" and find out how they relate to the implementation of abstract methods and interfaces, as well as method overriding. Modifiers, like a kind of watchmen, answer the question "Who can access this method / variable?". Details are in this lecture.
+<p>----------------------------------------</p>
+<p>"I'm going to tell you about «<span class="text-red">access modifiers</span>». I told about them once before, but repetition is a pillar of learning."</p>
+<p>You can control the access (visibility) that other classes have to the methods and variables of your class. An access modifier answers the question «Who can access this method/variable?». You can specify only one modifier for each method or variable.</p>
+<p><strong>1)</strong> «<strong><span class="text-red">public</span></strong>» modifier.</p>
+<p>A variable, method, or class marked with the <strong><span class="text-red">public</span></strong> modifier can be accessed from anywhere in the program. This is the highest degree of openness: there are no restrictions.</p>
+<p><strong>2)</strong> «<strong><span class="text-red">private</span></strong>» modifier.</p>
+<p>A variable, method, or class marked with the <span class="text-red"><strong>private</strong></span> modifier can only be accessed in the class where it's declared. The marked method or variable is hidden from all other classes. This is the highest degree of privacy: accessible only by your class. Such methods are not inherited and cannot be overridden. Additionally, they cannot be accessed in a descendent class.</p>
+<p><strong>3)</strong> «<strong><span class="text-red">Default</span> modifier».</strong></p>
+<p>If a variable or method is not marked with any modifier, then it is considered to be marked with the "default" modifier. Variables and methods with this modifier are visible to all classes in the package where they are declared, and only to those classes. This modifier is also called "<span class="text-red"><strong>package</strong></span>" or "<strong>package private</strong>" access, hinting at the fact that access to variables and methods is open to the entire package that contains the class.</p>
+<p><strong>4)</strong> «<strong><span class="text-red">protected</span></strong>» modifier.</p>
+<p>This level of access is slightly broader than <strong>package</strong>. A variable, method, or class marked with the <span class="text-red"><strong>protected</strong></span> modifier can be accessed from its package (like "package"), and from all inherited classes.</p>
+<p>This table explains it all:</p>
+<table>
+    <tbody>
+    <tr>
+        <th style="text-align: center;" rowspan="2">Type of visibility</th>
+        <th style="text-align: center;" rowspan="2">Keyword</th>
+        <th style="text-align: center;" colspan="4">Access</th>
+    </tr>
+    <tr>
+        <th style="text-align: center;">Your class</th>
+        <th style="text-align: center;">Your package</th>
+        <th style="text-align: center;">Descendent</th>
+        <th style="text-align: center;">All classes</th>
+    </tr>
+    <tr>
+        <td><b>Private</b></td>
+        <td><b>private</b></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-red">No</span></td>
+        <td style="text-align: center;"><span class="text-red">No</span></td>
+        <td style="text-align: center;"><span class="text-red">No</span></td>
+    </tr>
+    <tr>
+        <td><b>Package</b></td>
+        <td>(no modifier)</td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-red">No</span></td>
+        <td style="text-align: center;"><span class="text-red">No</span></td>
+    </tr>
+    <tr>
+        <td><b>Protected</b></td>
+        <td><b>protected</b></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-red">No</span></td>
+    </tr>
+    <tr>
+        <td><b>Public</b></td>
+        <td><b>public</b></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+        <td style="text-align: center;"><span class="text-green">Yes</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>There's a way to easily remember this table. Imagine that you're writing a will. You're dividing all your things into four categories. Who gets to use your things?</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Who has access</th>
+        <th>Modifier</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>Just <span class="red_text text-red"><b>me</b></span></td>
+        <td><b>private</b></td>
+        <td>Personal journal</td>
+    </tr>
+    <tr>
+        <td><span class="text-red">Family</span></td>
+        <td>(no modifier)</td>
+        <td>Family photos</td>
+    </tr>
+    <tr>
+        <td><span class="text-red">Family and heirs</span></td>
+        <td><b>protected</b></td>
+        <td>Family estate</td>
+    </tr>
+    <tr>
+        <td><span class="text-red">Everybody</span></td>
+        <td><b>public</b></td>
+        <td>Memoirs</td>
+    </tr>
+    </tbody>
+</table>
+<p class="amigo"><span class="text-user">"It's a lot like imagining that classes in the same package are part of one family."</span></p>
+<p>"I also want to tell you some interesting nuances about overriding methods."</p>
+<p><b>1) Implicit implementation of an abstract method.</b></p>
+<p>Let's say you have the following code:</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public String <span class="text-red">getName</span>()
+ {
+  return "Oscar";
+ }
+}</code></pre>
+<p>And you decided to create a Tiger class that inherits this class, and add an interface to the new class</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public String <span class="text-user">getName</span>()
+ {
+   return "Oscar";
+ }
+}</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface <span class="text-red">HasName</span>
+{
+ String <span class="text-red">getName</span>();
+ int <span class="text-red">getWeight</span>();
+}</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Tiger <span class="text-user"><strong>extends Cat</strong></span> <span class="text-red">implements HasName</span>
+{
+ public int <span class="text-red">getWeight</span>()
+ {
+  return 115;
+ }
+
+}</code></pre>
+<p>If you just implement all the missing methods that IntelliJ IDEA tells you to implement, later you might end up spending a long time searching for a bug.</p>
+<p>It turns out that the Tiger class has a getName method inherited from Cat, which will be taken as the implementation of the getName method for the HasName interface.</p>
+<p><span class="text-user">"I don't see anything terrible about that."</span></p>
+<p>"It's not too bad, it a likely place for mistakes to creep in."</p>
+<p>But it can be even worse:</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface <span class="text-red">HasWeight</span>
+{
+ <span class="text-red">int getValue();</span>
+}</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface <span class="text-user">HasSize</span>
+{
+ <span class="text-user">int getValue();</span>
+}</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Tiger extends Cat implements <span class="text-red">HasWeight</span>, <span class="text-user">HasSize</span>
+{
+ <span class="text-user">public int get</span><span class="text-red">Value</span>()
+ {
+  return 115;
+ }
+}</code></pre>
+<p>It turns out that you can't always inherit from multiple interfaces. More precisely, you can inherit them, but you can't implement them correctly. Look at the example. Both interfaces require that you implement the getValue() method, but it's not clear what it should return: the weight or the size? This is quite unpleasant to have to deal with.</p>
+<p><span class="text-user">"I agree. You want to implement a method, but you can't. You've already inherited a method with the same name from the base class. It's broken."</span></p>
+<p>"But there's good news."</p>
+<p><strong>2) <span class="text-red">Expanding visibility.</span></strong> When you inherit a type, you can expand the visibility of a method. This is how it looks:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class Cat
+{
+ <span class="text-red">protected</span> String getName()
+ {
+  return "Oscar";
+ }
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class Tiger extends Cat
+{
+ <span class="text-red">public</span> String getName()
+ {
+  return "Oscar Tiggerman";
+ }
+}</code></pre>
+        </td>
+        <td>We've expanded the method's visibility from <code><span class="text-red">protected</span></code> to <code><span class="text-red">public</span></code>.</td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Why this is «legal»</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ Cat cat = new Cat();
+ cat.getName();
+}</code></pre>
+        </td>
+        <td>Everything's great. Here we don't even know that the visibility has been extended in a descendant class.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ Tiger tiger = new Tiger();
+ tiger.getName();
+}</code></pre>
+        </td>
+        <td>Here we call the method whose visibility has been extended.</p>
+            <p>If this weren't possible, we could always declare a method in Tiger:<br />
+                <strong>public</strong> String getPublicName()<br />
+                {<br />
+                super.getName(); //call the protected method<br />
+                }</p>
+            <p>In other words, we're not talking about any security violation.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ Cat catTiger = new Tiger();
+ catTiger.getName();
+}</code></pre>
+        </td>
+        <td>If all the conditions necessary to call a method in a base class (<strong>Cat</strong>) are satisfied, then they are certainly satisfied for calling the method on the descendent type (<strong>Tiger</strong>) . Because the restrictions on the method call were weak, not strong.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I'm not sure I completely understood, but I'll remember that this is possible."</span></p>
+<p><strong>3)</strong> <span class="text-red"><strong>Narrowing the return type.</strong></span></p>
+<p>In an overridden method, we can <span class="text-red"><strong>change the return type</strong></span> to a narrowed reference type.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class <span class="text-red">Cat</span>
+{
+ public Cat parent;
+ public <span class="text-red"><strong>Cat</strong></span> <span class="text-user">getMyParent</span>()
+ {
+  return this.parent;
+ }
+ public void <span class="text-user">setMyParent</span>(<strong>Cat</strong> cat)
+ {
+  this.parent = cat;
+ }
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class <span class="text-red">Tiger</span> extends <strong>Cat</strong>
+{
+ public <span class="text-red">Tiger</span> <span class="text-user">getMyParent</span>()
+ {
+  return (<span class="text-red">Tiger</span>) this.parent;
+ }
+}</code></pre>
+        </td>
+        <td>We overrode the method <code><span class="text-red">getMyParent</span></code>, and now it returns a <code><span class="text-red">Tiger</span></code> object.</td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Why this is «legal»</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ Cat parent = new Cat();
+
+ Cat me = new Cat();
+ me.setMyParent(parent);
+ Cat myParent = me.getMyParent();
+}</code></pre>
+        </td>
+        <td>Everything's great. Here we don't even know that the getMyParent method's return type has been widened in the descendant class.</p>
+            <p>How the «old code» worked and works.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ Tiger parent = new Tiger();
+
+ Tiger me = new Tiger();
+ me.setMyParent(parent);
+ Tiger myParent = me.getMyParent();
+}</code></pre>
+        </td>
+        <td>Here we call the method whose return type has been narrowed.</p>
+            <p>If this weren't possible, we could always declare a method in Tiger:<br />
+                <strong>public Tiger</strong> getMyTigerParent()<br />
+                {<br />
+                return (Tiger) this.parent;<br />
+                }</p>
+            <p>In other words, there are no security violations and/or type casting violations.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ Tiger parent = new Tiger();
+
+<span class="text-red"> Cat me = new Tiger();</span>
+ me.setMyParent(parent);
+<span class="text-red"> Cat myParent = me.getMyParent();</span>
+}</code></pre>
+        </td>
+        <td>And everything works fine here, though we widened the variables' type to the base class (Cat).</p>
+            <p>Because of overriding, the correct setMyParent method is called.</p>
+            <p>And there is nothing to worry about<span class="text-red"> when calling the getMyParent method</span>, because the return value, though of the Tiger class, <span class="text-red">can</span> still be <span class="text-red">assigned to the myParent variable</span> of the <span class="text-red">base class (Cat)</span> without any problems.</p>
+            <p>Tiger objects can be safely stored both in Tiger variables and Cat variables.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Yep. Got it. When <strong>overriding methods, you have to be aware of how all this works if we pass our objects to code that can only handle the base class and doesn't know anything about our class.</strong>"</span></p>
+<p>"Exactly! Then the big question is why can't we narrow the return value's type when overriding a method?"</p>
+<p><span class="text-user">"It's obvious that in this case the code in the base class would stop working:"</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Explanation of the problem</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class Cat
+{
+ public Cat parent;
+ public <strong>Cat</strong> <span class="text-user">getMyParent</span>()
+ {
+  return this.parent;
+ }
+ public void <span class="text-user">setMyParent</span>(<strong>Cat</strong> cat)
+ {
+  this.parent = cat;
+ }
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class Tiger extends Cat
+{
+ public <span class="text-red"><strong>Object</strong></span> <span class="text-user">getMyParent</span>()
+ {
+  if (this.parent != null)
+   return this.parent;
+  else
+   <span class="text-red">return "I'm an orphan";</span>
+ }
+}</code></pre>
+        </td>
+        <td>We overloaded the getMyParent method and narrowed the type of its return value.</p>
+            <p>Everything is fine here.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ Tiger parent = new Tiger();
+
+ Cat me = new Tiger();
+ <span class="text-red">Cat myParent = me.getMyParent();</span>
+}</code></pre>
+        </td>
+        <td>Then this <span class="text-red">code will stop working.</span></p>
+            <p><span class="text-red">The getMyParent method can return any instance of an Object, because it is actually called on a Tiger object.</span></p>
+            <p>And we <span class="text-red">don't have a check before the assignment.</span> Thus, it is entirely possible that <span class="text-red">the Cat-type myParent variable will store a String reference.</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>"Wonderful example, Amigo!"</p>
+<p>In Java, <strong>before a method is called, there is no check whether the object has such a method. All checks occur at runtime.</strong> And a [hypothetical] call to a missing method would most likely cause the program to attempt to execute non-existent bytecode. This would ultimately lead to a fatal error, and the operating system would forcibly close the program.</p>
+<p><span class="text-user">"Whoa. Now I know."</span></p>

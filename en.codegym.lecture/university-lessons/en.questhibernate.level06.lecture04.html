@@ -1,0 +1,64 @@
+Deleting data in a table
+<p>----------------------------------------</p>
+DELETE FROM statement Delete everything in general
+<p>----------------------------------------</p>
+easy to do in SQL is delete data. You can delete absolutely everything very quickly, and no one will even ask you for any confirmation.</p>
+<p>Let's start with the simplest scenario: <strong>how to delete one row in a table</strong> .</p>
+<p>This is the scenario you will see most often, it is usually the deletion of a specific record, and the standard query usually looks like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">DELETE FROM</span> <span class="text-yellow">table</span>
+<span class="token class-name"><span class="text-brown">WHERE</span></span> <span class="text-green">id</span> <span class="token operator">=</span> <span class="token number"><span class="text-viola">133</span></span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>This is the only query where you do not need to specify the names of the columns: after all, the data is deleted immediately in rows.</p>
+<p>The second scenario is <strong>deleting the rows that are specified by the id list</strong> , everything is also quite simple here:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">DELETE FROM</span> <span class="text-yellow">table</span>
+<span class="text-brown">WHERE</span> <span class="text-green">id</span> <span class="text-brown">IN</span> <span class="token punctuation"></span><span class="text-viola"><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> …<span class="token punctuation">)</span></span><span class="token punctuation"></span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>The third scenario is to remove rows that match a certain condition:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">DELETE FROM</span> <span class="text-yellow">table</span>
+<span class="text-brown">WHERE</span> <span class="text-user">condition</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Let's say we want to fire all our programmers, then we need to write a request like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">DELETE FROM</span> <span class="text-yellow">employee</span>
+<span class="token class-name"><span class="text-brown">WHERE</span></span> <span class="text-green">occupation</span> <span class="token operator">=</span> <span class="token string"><span class="text-user">'Programmer'</span></span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>And finally, if you want to delete all records, you can write a query like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">DELETE FROM</span> <span class="text-yellow">table</span></code></pre>
+</div>
+<p>This simple query is enough to remove all records from a table. By the way, there will be no Ctrl + Z in this case. Recordings are simply deleted without the possibility of recovery and that's it. <strong>So make backups, more often</strong> .</p>
+<h2>5.2 Removing everything</h2>
+<p>For quick removal (to add headaches to users), SQL has a few more commands.</p>
+<p>How to quickly delete all data in a table? Use <strong>the operator</strong> <code>TRUNCATE</code> :</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">TRUNCATE TABLE</span> <span class="text-yellow">table</span></code></pre>
+</div>
+<p>One typo in the name of the table - and a couple of days of data recovery are provided to you. Be glad you're not a database admin.</p>
+<p>If you need to delete not just the data in the table, but the table itself, then there is <strong>an operator</strong> <code>DROP</code> for this :</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">DROP TABLE</span> <span class="text-yellow">table</span></code></pre>
+</div>
+<p>By the way, there are similar options with <strong>database schemas</strong> . If you want to delete the database itself, then:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">DROP SCHEME</span> <span class="text-yellow">database</span></code></pre>
+</div>
+<p>or:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">DROP DATABASE</span> <span class="text-yellow">database</span></code></pre>
+</div>
+<p>You can also use DROP to delete:</p>
+<ul>
+ <li>EVENT</li>
+ <li>FUNCTION</li>
+ <li>PROCEDURE</li>
+ <li>INDEX</li>
+ <li>VIEW</li>
+ <li>TRIGGER</li>
+</ul>
+<p>And here are a couple of interesting stories related to data deletion:</p>
+<p><a href="https://techmonitor.ai/technology/software/major-gitlab-backup-failure-wipes-300gb-data" target="_blank" rel="nofollow">Break of the day. GitLab deleted 300 GB of customer data due to sysadmin error</a></p>
+<p><a href="https://sudonull.com/post/73753-sudo-rm-rf-or-Chronicle-of-the-incident-with-the-GitLabcom-database-from-20170131-Southbridge-Blog" target="_blank" rel="nofollow">sudo rm -rf, or Chronicle of the GitLab.com database incident from 2017/01/31</a></p>
+<p><a href="https://www.youtube.com/watch?v=vvDK8tMyCic" target="_blank" rel="nofollow">Silicon Valley "Silicon Valley" - Data Deletion</a></p>

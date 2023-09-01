@@ -1,0 +1,147 @@
+2D arrays
+<p>----------------------------------------</p>
+Two-Dimensional Arrays And one more interesting fact about arrays. Arrays are not only linear, but also two-dimensional. And what does that mean, you ask? This means that array cells can be represented not only as a column (or row), but also as a rectangular table. int[][] name = new int[width]
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="e5de9d1f-8136-4858-bfc7-cfdbbce2cdcb" data-max-width="1024" src="https://cdn.javarush.ru/images/article/e5de9d1f-8136-4858-bfc7-cfdbbce2cdcb/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="eec8c087-8297-4354-9c99-0e2aaee5a351" data-max-width="512" src="https://cdn.javarush.ru/images/article/eec8c087-8297-4354-9c99-0e2aaee5a351/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="bd000b2d-6d9e-4526-bcdc-0ce20ac19a8c" data-max-width="512" src="https://cdn.javarush.ru/images/article/bd000b2d-6d9e-4526-bcdc-0ce20ac19a8c/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Two-dimensional arrays</h2>
+<p>One more interesting fact about arrays. Arrays are not only one-dimensional (linear). They can also be two-dimensional.</p>
+<p>What does that mean, you ask?</p>
+<p>This means that the cells of the array can represent not only a column (or row), but also a rectangular table.</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-orange">int[][]</span> <span class="text-red">name</span> = new <span class="text-viola">int</span>[<span class="text-user">width</span>][<span class="text-user">height</span>];</code></pre>
+</div>
+<p>Where <strong><span class="text-red">name</span></strong> is the name of the array variable, <span class="text-user">width</span> is the table width (in cells), and <span class="text-user">height</span> is the table height. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-orange">int[][]</span> <span class="text-red">data</span> = new <span class="text-viola">int</span>[2][5];
+<span class="text-red">data</span>[1][1] = 5;</code></pre>
+        </td>
+        <td>We create a two-dimensional array: 2 columns and 5 rows.<br>
+            Write 5 to cell (1, 1).
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>This is how it will look in memory:</p>
+<img data-max-width="1024" data-id="4a20db42-53ef-40db-9b6e-caca3c6420fc" src="https://cdn.codegym.cc/images/article/4a20db42-53ef-40db-9b6e-caca3c6420fc/1024.jpeg" alt="Two-dimensional arrays">
+<p>By the way, you can also use fast initialization for two-dimensional arrays:</p>
+<pre class="language-java"><code>// Lengths of months of the year in each quarter
+int[][] <span class="text-red">months</span> = { {31, 28, 31}, {30, 31, 30}, {31, 31, 30}, {31, 30, 31} };</code></pre>
+<p>There are so many places where you, as a programmer, might need a two-dimensional array. Two-dimensional arrays are the foundation of almost every board game, e.g. chess, checkers, tic-tac-toe, and sea battle:</p>
+<img data-max-width="1024" data-id="7f094087-906d-40df-a24a-e1f499f60d23" src="https://cdn.codegym.cc/images/article/7f094087-906d-40df-a24a-e1f499f60d23/1024.jpeg" alt="Two-dimensional arrays 2">
+<p>Two-dimensional arrays are the perfect for chess or sea battle. We only need numbers form cell coordinates. Not 'pawn e2-e4', but 'pawn (5,2) -&gt; (5,4)'. It will be even easier for you as a programmer.</p>
+<hr>
+<h2>2. Arranging elements in arrays: (x, y) or (y, x)</h2>
+<p>By the way, there's an interesting dilemma here:</p>
+<p>When we create an array using <code>new int[2][5];</code>, do we have a table of 'two <span class="text-orange">rows</span> and 5 <span class="text-viola">columns</span>' or is it 'two <span class="text-viola">columns</span> and 5 <span class="text-orange">rows</span>'?" In other words, are we first specifying the width and then the height... or vice versa, first the height and then the width? Well, as we often say, everything is not so simple here.</p>
+<p>Let's start with the question of <strong>how the array is stored in memory</strong>.</p>
+<p>Of course, computer memory doesn't actually have a matrix in it: each location in memory has a sequential numeric address: 0, 1, 2, ... In our case, we speak of a 2 × 5 matrix, but in memory it is just 10 consecutive cells, nothing more. Nothing indicates where the rows and columns are.</p>
+<p><strong>Argument in favor of "width x height".</strong></p>
+<p>The argument in favor of this approach is this that everyone learns math in school, where they learn that coordinate pairs are written as 'x' (that is, the horizontal axis) and then 'y' (the vertical dimension). And this is not just a school standard — it's a generally accepted standard in mathematics. As they say, you can't argue with math. Is that so? First width and then height?</p>
+<p><strong>Argument in favor of "height x width".</strong></p>
+<p>There's also an interesting argument to be made for this position: fast initialization of two-dimensional arrays. Indeed, if we want to initialize our array, then we can write code like this:</p>
+<pre class="language-java"><code>// Matrix of important data
+int[][] <span class="text-red">matrix</span> = { {1, 2, 3, 4, 5}, {1, 2, 3, 4, 5} };</code></pre>
+<p>Don't you notice anything? What if we have this?</p>
+<pre class="language-java"><code>// Matrix of important data
+int[][] <span class="text-red">matrix</span> = {
+  {1, 2, 3, 4, 5},
+  {1, 2, 3, 4, 5}
+};</code></pre>
+<p>If we write our data in the code line by line, then we get a matrix with 2 rows and 5 columns.</p>
+<p><strong>Bottom line</strong></p>
+<p>What can we say? It's up to you to decide which is more convenient for you. The most important thing is that all programmers working on the same project stick to the same approach.</p>
+<p>If you work on a project whose code has lots of initialized two-dimensional arrays, then most likely everything there will be based on fast data initialization, i.e. you'll have the standard 'height x width'.</p>
+<p>If you are lucky enough to find yourself in a project involving a lot of mathematics and working with coordinates (for example, game engines), then the code will most likely adopt the 'width x height' approach.</p>
+<hr>
+<h2>3. How two-dimensional arrays are arranged</h2>
+<p>And now you will learn how two-dimensional arrays are actually arranged. Ready?</p>
+<p>Two-dimensional arrays are actually arrays of arrays!</p>
+<p>In other words, if in the case of an ordinary array an array variable stores a reference to a container that stores array elements, then in the case of two-dimensional arrays the situation explodes a little: a two-dimensional-array variable stores a reference to a container that stores references to one-dimensional arrays. It's better to see it in action once rather than try to explain it a hundred times:</p>
+<img data-max-width="1024" data-id="a56f35a1-c406-4c06-ac20-c85c98e78910" src="https://cdn.codegym.cc/images/article/a56f35a1-c406-4c06-ac20-c85c98e78910/1024.jpeg" alt="How two-dimensional arrays are arranged">
+<p>On the <strong>left</strong>, we have a two-dimensional-array variable, which stores a reference to a two-dimensional-array object. In the <strong></strong><strong>middle</strong> we have a two-dimensional array object whose cells store one-dimensional arrays, which are the rows of a two-dimensional array. And on the <strong>right</strong>, you can see four one-dimensional arrays — the rows of our two-dimensional array.</p>
+<p>This is how two-dimensional arrays actually work. And this approach gives the Java programmer several advantages:</p>
+<p><strong>First</strong>, since a 'container of containers' stores references to 'arrays of rows', we can very quickly and easily swap rows. To get a 'container of containers', you just need to specify one index instead of two. Example:</p>
+<pre class="language-java"><code><span class="text-orange">int[][]</span> <span class="text-red">data</span> = new <span class="text-viola">int</span>[2][5];
+<span class="text-orange">int[]</span> <span class="text-red">row1</span> = data[0];
+<span class="text-orange">int[]</span> <span class="text-red">row2</span> = data[1];</code></pre>
+<p>This code lets you swap rows:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>// Matrix of important data
+int[][] <span class="text-red">matrix</span> = {
+  {1, 2, 3, 4, 5},
+  {5, 4, 3, 2, 1}
+};
+
+int[] <span class="text-green">tmp</span> = <span class="text-red">matrix</span>[0];
+matrix[0] = <span class="text-red">matrix</span>[1];
+matrix[1] = <span class="text-green">tmp</span>;</code></pre>
+        </td>
+        <td>Two-dimensional array<br><br><br><br><br><br>
+            <code>matrix[0]</code> stores a reference to the first row.<br>
+            We swap the references.<br><br>
+            As a result, the <code>matrix</code> array looks like this:<br>
+            <pre><code>{
+  {5, 4, 3, 2, 1},
+  {1, 2, 3, 4, 5}
+};</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If you refer to a cell of a two-dimensional array, but you only specify one index after the name of the array, then you are referring to a container of containers whose cells store references to ordinary one-dimensional arrays.</p>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0509"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="b4c92a3b-84ee-4230-8b8a-354741699764" data-max-width="1024" src="https://cdn.javarush.ru/images/article/b4c92a3b-84ee-4230-8b8a-354741699764/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="8530f589-918c-4e32-9ab8-2ac4cce6205f" data-max-width="1024" src="https://cdn.javarush.ru/images/article/8530f589-918c-4e32-9ab8-2ac4cce6205f/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="05f5f769-0e7f-4cc4-88de-d0ef5a9fe4f0" data-max-width="512" src="https://cdn.javarush.ru/images/article/05f5f769-0e7f-4cc4-88de-d0ef5a9fe4f0/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="df4f43d0-2a1c-4e88-90d7-b88c98e67a8d" data-max-width="512" src="https://cdn.javarush.ru/images/article/df4f43d0-2a1c-4e88-90d7-b88c98e67a8d/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="beba3437-fe31-4617-8402-5d2c7b9d7024" data-max-width="512" src="https://cdn.javarush.ru/images/article/beba3437-fe31-4617-8402-5d2c7b9d7024/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="cd12822a-8727-4691-a891-8a83f6dc1977" data-max-width="512" src="https://cdn.javarush.ru/images/article/cd12822a-8727-4691-a891-8a83f6dc1977/original.png" alt="">
+        </div>
+    </div>
+</div>

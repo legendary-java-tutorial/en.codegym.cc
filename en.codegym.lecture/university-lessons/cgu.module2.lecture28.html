@@ -1,0 +1,185 @@
+XML data format
+<p>----------------------------------------</p>
+Text formats are convenient for storing information because they can be created and processed by both programs and humans. Text files (files in text format) can be opened, read and edited in large numbers...
+<p>----------------------------------------</p>
+<h2>Why are text formats needed?</h2>
+
+    <p>Text formats are convenient for storing information because they can be created and processed by both programs and humans.</p>
+
+    <p>Text files (files in text format) can be opened, read and edited in a wide variety of text editors.</p>
+
+    <p>Many programs use text-based configuration files, even if the format contains numbers and binary (yes/no) values. </p>
+
+    <p>This makes the programs somewhat more complicated due to the need to convert from text to an internal format and vice versa, but it makes it possible to edit the configuration manually without using a configuration tool in the program itself.</p>
+
+    <h2>Where is XML used now?</h2>
+
+    <p>XML is used in various areas of IT. It can be configuration files (with program settings) or files used to transfer data between programs. In Java, one of the most common use cases is configuring Maven, a build automation tool.</p>
+
+    <h2>Structure of an XML document</h2>
+
+    <p>The physical and logical structures of an XML document are kept separate. In terms of the physical structure, the document consists of entities that can refer to other entities. </p>
+
+    <p>The sole root element is the document entity. An entity is the smallest part in a document. All entities have a name and contain characters.</p>
+
+    <p>In turn, characters belong to one of two categories: character data or markup. </p>
+
+    <p>Markup includes:</p>
+
+    <ul>
+        <li>tags, which denote element boundaries;</li>
+        <li>declarations and processing instructions, including their attributes;</li>
+        <li>entity references;</li>
+        <li>comments;</li>
+        <li>character sequences wrapping CDATA sections.</li>
+    </ul>
+
+    <p>Logically, the document consists of elements, comments, declarations, entity references, and processing instructions. Markup is used to create all of this structure in a document.</p>
+
+    <p>All the constituent parts of a document are divided into a prolog and a root element. The root element the mandatory, essential part of an XML document, while the prolog may not exist at all. The root element can consist of nested elements, character data, and comments. A document's elements must be nested correctly: any element that starts inside another element must also end inside that element.</p>
+
+    <h2>Markup symbols</h2>
+
+    <p>Markup always starts with <span class="code">&lt;</span> and ends with <span class="code">&gt;</span>.</p>
+
+    <p>The <span class="code">&lt;</span> and <span class="code">&gt;</span> (angle brackets) and <span class="code">&amp;</span> (ampersand) symbols are play a special role. Angle brackets indicate the boundaries of elements, processing instructions, and some other sequences. And the ampersand helps us replace text with entities.</p>
+
+    <h2>XML declaration</h2>
+
+    <p>An XML declaration specifies the version of the language used to write the document. The XML specification says to start a document with an XML declaration because the proper interpretation of the document contents depends on the version of the language. </p>
+
+    <p>In the language's first version (1.0), this declaration was optional, but it is mandatory in later versions. A missing declaration is assumed to mean version 1.0. The declaration may also contain information about the document encoding.</p>
+
+    <p>Example:</p>
+
+    <div class="terminal">&lt;?XML version="1.1" encoding="UTF-8" ?&gt;</div>
+
+    <h2>Tags</h2>
+
+    <p>A tag is a markup construct that contains the name of an element. There are start tags and end tags. There are also empty-element tags that combine start and end elements.</p>
+
+    <p>Examples:</p>
+
+    <ul>
+        <li><p>Start tag: <span class="code">&lt;tag1&gt;</span></p></li>
+        <li><p>End tag: <span class="code">&lt;/tag1&gt;</span></p></li>
+        <li><p>Empty-element tag: <span class="code">&lt;empty_tag1 /&gt;</spam></p></li>
+    </ul>
+
+    <h2>Attributes</h2>
+
+    <p>Another part of XML elements are attributes. An element can have multiple unique attributes. Attributes let us specify more information about an element. Or more accurately, attributes define the properties of elements. </p>
+
+    <p>An attribute is always a name-value pair:</p>
+
+    <div class="terminal">name = "value"</div>
+
+    <p>Example of an attribute in a tag:</p>
+
+    <div class="terminal">&lt;tag1 name = "value"&gt;element&lt;/tag1&gt;</div>
+
+    <p>The value of an attribute must be wrapped in double quotes (<span class="code">"</span>) or single quotes (<span class="code">'</span>). Attributes are only used in start tags and the empty-element tags.</p>
+
+    <h2>Escaping five special characters (&lt;, &gt;, ', ”, &amp;)</h2>
+
+    <p>Obviously, the <span class="code">&lt;</span>, <span class="code">&gt;</span> and <span class="code">&amp;</span> symbols cannot be used as such in character data and attribute values. You need to special escape sequences to represent them. Special sequences are also used when writing apostrophes and quotation marks inside attribute values:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Symbol</th>
+                <th>Replacement</th>
+            </tr>
+            <tr>
+                <td>&lt;</td>
+                <td>&amp;lt;</td>
+            </tr>
+            <tr>
+                <td>&gt;</td>
+                <td>&amp;gt;</td>
+            </tr>
+            <tr>
+                <td>&amp;</td>
+                <td>&amp;amp;</td>
+            </tr>
+            <tr>
+                <td>'</td>
+                <td>&amp;apos;</td>
+            </tr>
+            <tr>
+                <td>"</td>
+                <td>&amp;quot;</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Also, to write the <span class="code">\</span> character, you need to use <span class="code">\\</span>.</p>
+
+    <h2>CDATA section</h2>
+
+    <p>A CDATA section is not a logical unit of text. This type of section can occur where XML syntax lets us place character data in the document. </p>
+
+    <p>The section starts with <span class="code">&lt;![CDATA[</span> and ends with <span class="code">]]&gt;</span>. Character data is placed between these bits of markup, and the <span class="code">&lt;</span>, <span class="code">&gt;</span>, and <span class="code">&amp;</span> symbols can be used in their direct form.</p>
+    
+    <h2>Comments</h2>
+
+    <p>Comments are not considered character data. A comment begins with <span class="code">&lt;!--</span> and ends with <span class="code">--&gt;</span>. The character sequence <span class="code">--</span> cannot be used inside a comment. Also, inside a comment, the ampersand character is not denote markup.</p>
+
+    <p>Example:</p>
+
+    <div class="terminal">&lt;!-- this is a comment --&gt;</div>
+
+    <h2>Names</h2>
+
+    <p>In XML, all names can contain only letters in the Unicode character table, Arabic numerals, periods, colons, hyphens, and underscores. Names can start with a letter, colon, or underscore. Note that a name cannot begin with the string <span class="code">XML</span>.</p>
+
+    <h4>Example</h4>
+
+    <p>Let's look at a Java class and an object of that class. Then we will try to serialize the object in XML format. Class code:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Book {
+   private String title;
+   private String author;
+   private Integer pageCount;
+   private List&lt;String&gt; chapters;
+
+   public Book(String title, String author, Integer pageCount, List&lt;String&gt; chapters) {
+       this.title = title;
+       this.author = author;
+       this.pageCount = pageCount;
+       this.chapters = chapters;
+   }
+// Getters/setters
+}
+</code></pre>
+
+    <p>and creation of objects:</p>
+
+    <pre class='language-java line-numbers'><code>
+Book book = new Book("My Favorite Book", "Amigo", 999, Arrays.asList("Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"));
+</code></pre>
+
+    <p>Here is an example of a valid XML representation of a Java object that contains 4 fields, one of which is a collection (see the Java code above):</p>
+
+    <div class="terminal">&lt;Book&gt;<br />
+&nbsp;&nbsp;&lt;title&gt;My Favorite Book&lt;/title&gt;<br />
+&nbsp;&nbsp;&lt;author&gt;Amigo&lt;/author&gt;<br />
+&nbsp;&nbsp;&lt;pageCount&gt;999&lt;/pageCount&gt;<br />
+&nbsp;&lt;chapters&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;chapters&gt;Chapter 1&lt;/chapters&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;chapters&gt;Chapter 2&lt;/chapters&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;chapters&gt;Chapter 3&lt;/chapters&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;chapters&gt;Chapter 4&lt;/chapters&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;chapters&gt;Chapter 5&lt;/chapters&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;chapters&gt;Chapter 6&lt;/chapters&gt;<br />
+&nbsp;&lt;/chapters&gt;<br />
+&lt;/Book&gt;</div>
+
+    <h2>XML schema</h2>
+
+    <p>An XML schema is description of the structure of an XML document. The corresponding specification (XML Schema Definition, or XSD) is a W3C recommendation.</p>
+
+    <p>XSD was designed to express the rules that an XML document must follow. But the most interesting thing for us is that XSD was designed to be used when developing software that processes XML documents. It lets us check the correctness of an XML document programmatically.</p>
+
+    <p>Files containing an XML schema have the .xsd extension. Designing an XML schema is beyond the scope of this lesson, so for now just be aware that the possibility exists.</p>

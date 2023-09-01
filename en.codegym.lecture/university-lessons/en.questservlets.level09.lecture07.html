@@ -1,0 +1,55 @@
+Introduction to REST
+<p>----------------------------------------</p>
+Remote API Approach REST Approach Stateless Interface Consistency Caching
+<p>----------------------------------------</p>
+<h2>8.1 Remote API Approach</h2>
+<p>All programmers make the same mistake when building a client-server architecture. <span class="text-viola">They begin to treat requests to the server as method calls</span> .</p>
+<p>You want to start the report generation process on the server, why not send it a request like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java">http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>server<span class="token punctuation">.</span>com<span class="token operator">/</span><span class="text-red">startDocumentGeneration</span><span class="token operator">?</span>params</code></pre>
+</div>
+<p>And how to download the report after it completes? To do this, we will write another method:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java">http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>server<span class="token punctuation">.</span>com<span class="token operator">/</span><span class="text-red">getDocument</span></code></pre>
+</div>
+<p>The server in <code>HttpSession</code>stores information on our document, and as soon as the document is generated, the server will give it back.</p>
+<p>Great approach. Or not?</p>
+<p>The approach is really terrible. The thing is that the server must remember the document number. In other words, in order to properly process new method calls, the server must remember the results of calling previous methods.</p>
+<p>On the web, this is a big problem. The Internet may disappear, the browser may close. The page can be reloaded or accidentally clicked on a link, and so on. And the server will continue to store megabytes of data from previous user requests ...</p>
+<p>For comfortable work with the server, you cannot expect that you will always have the data of previous requests to the server at hand.</p>
+<p>How then to call methods of the server? The correct answer would be terrible: no way!</p>
+<h2>8.2 REST approach</h2>
+<p>The programmers went back to basics and remembered that initially the request contained the path to the file on the server:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java">http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>server<span class="token punctuation">.</span>com<span class="token operator">/</span><span class="text-red">path</span><span class="token operator">?</span>params</code></pre>
+</div>
+<p>And we decided to use this approach to the maximum.</p>
+<p>Now <span class="text-green">the server is considered as a repository of data</span> that is <span class="text-viola">visible to the outside in the form of a tree</span> .</p>
+<p>If you want to get a list of all users, call the query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java">http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>server<span class="token punctuation">.</span>com<span class="token operator">/</span><span class="text-red">users</span></code></pre>
+</div>
+<p>If you want to get data on user 113, run the query:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java">http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>server<span class="token punctuation">.</span>com<span class="token operator">/</span><span class="text-red">users<span class="token operator">/</span><span class="token number">113</span></span><span class="token number"></span></code></pre>
+</div>
+<p>And so on, all in the same vein.</p>
+<p>Once again, the server is seen as a repository of data that is visible to the outside in the form of a tree.</p>
+<p><strong>Data can be received - GET</strong> requests , modified - <strong>POST</strong> request and deleted - <strong>DELETE</strong> request .</p>
+<h2>8.3 No state</h2>
+<p>The REST protocol of interaction between the client and the server requires the following condition: during the period between requests from the client, no information about the state of the client is stored on the server.</p>
+<p>All requests from the client must be crafted in such a way that the server receives <strong>all the information it needs to fulfill the request</strong> each time . The session state is saved on the client side.</p>
+<p>During the processing of client requests, the client is considered to be in a transitional state. Each individual application state is represented by links that can be invoked the next time the client hits.</p>
+<h2>8.4 Interface uniformity</h2>
+<p>All paths used to retrieve objects from the server are standardized. This is very convenient, especially if you are getting data from other REST servers.</p>
+<p>All object interfaces must comply with three conditions:</p>
+<p><strong>Resource identification</strong></p>
+<p>All resources are identified in requests using a URI. The resources inside the server are separate from the views that are returned to the clients. For example, a server may send data from a database as HTML, XML, or JSON, neither of which is a storage type within the server.</p>
+<p><strong>Manipulating Resources Through a View</strong></p>
+<p>If the client stores a representation of the resource, including metadata, then it has enough information to modify or delete the resource on the server.</p>
+<p><strong>"Self-describing" messages</strong></p>
+<p>Each message contains enough information to understand how to handle it. For example, if you need information about the user, then the server will return you a JSON object, where there will be name, address fields.</p>
+<p>There should not be a situation where the client needs to know that the first number in the response is the age, and the second is the date of birth.</p>
+<h2>8.5 Caching</h2>
+<p>The REST approach assumes that data requests are made via the HTTP protocol. Therefore, objects are obtained by calling a GET request. This means that they, like all resources received via a GET request, are subject to all the rules for caching HTTP resources.</p>
+<p>That is, data received via the REST API is cached in the same way as any static resources on web servers. Beauty :)</p>

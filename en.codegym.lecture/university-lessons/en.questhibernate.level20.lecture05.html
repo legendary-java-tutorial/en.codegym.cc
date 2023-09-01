@@ -1,0 +1,159 @@
+BigData: HBase
+<p>----------------------------------------</p>
+Who invented HBase and why. data model. Supported operations. Architecture. Ways to work with HBase. Some features of working with HBase. Alternatives.
+<p>----------------------------------------</p>
+this lecture, we will talk about such a wonderful tool as Hbase, which has recently gained great popularity: for example, Facebook uses it as the basis of its messaging system, and this already says a lot.</p>
+<p>The lecture will talk about the concept of Big Table and its free implementation, features of work and difference from both classical relational databases (such as MySQL and Oracle) and key-value storages such as Redis, Aerospike and memcached. As usual, let's start with the history of the issue. Like many other BigData projects, Hbase was born from a concept that was developed by Google. The principles behind Hbase were described in the <a href="http://static.googleusercontent.com/media/research.google.com/ru/archive/bigtable-osdi06.pdf" target="_blank" rel="nofollow">Bigtable: A Distributed Storage System for Structured Data</a> article .</p>
+<p>As we discussed in previous lectures, ordinary files are quite well suited for batch data processing using the MapReduce paradigm. On the other hand, information stored in files is rather inconvenient to update; Files are also deprived of the possibility of random access. For quick and convenient work with random access, there is a class of nosql systems such as key-value storage, such as Aerospike, Redis, Couchbase, Memcached. However, batch processing is usually very inconvenient in these systems. Hbase is an attempt to combine the convenience of batch processing with the convenience of updating and random access.</p><img data-max-width="512" data-id="03325dc1-1ff2-4679-bbae-54fe916d9429" alt="" src="https://cdn.javarush.com/images/article/03325dc1-1ff2-4679-bbae-54fe916d9429/512.jpeg" style="width: 512px;">
+<h2>6.2 Data model</h2>
+<p>HBase is a distributed, column-oriented, multiversion key-value database.</p>
+<ul>
+ <li>The data is organized into tables indexed by a primary key called RowKey in Hbase.</li>
+ <li>For each RowKey key, an unlimited set of attributes (or columns) can be stored.</li>
+ <li>Columns are organized into groups of columns called Column Family. As a rule, columns that have the same usage and storage pattern are combined into one Column Family.</li>
+ <li>For each attribute, several different versions can be stored. Different versions have different timestamp.</li>
+</ul>
+<p>Records are physically stored in RowKey sorted order. In this case, the data corresponding to different Column Family is stored separately, which allows, if necessary, to read data only from the desired column family.</p>
+<p>When a certain attribute is deleted, it is not physically deleted immediately, but is only marked with a special tombstone flag. The physical deletion of the data will occur later, when the Major Compaction operation is performed.</p>
+<p>Attributes belonging to the same column group and corresponding to the same key are physically stored as a sorted list. Any attribute can be absent or present for each key, and if the attribute is absent, this does not cause the overhead of storing empty values.</p>
+<p>The list and column group names are fixed and have a clear layout. At the column group level, parameters such as time to live (TTL) and the maximum number of stored versions are set. If the difference between the timestamp for a particular version and the current time is greater than TTL, the entry is marked for deletion. If the number of versions for a certain attribute exceeds the maximum number of versions, the record is also marked for deletion.</p><img data-max-width="512" data-id="38a31201-f909-4a45-9792-a5d72225f060" alt="" src="https://cdn.javarush.com/images/article/38a31201-f909-4a45-9792-a5d72225f060/512.jpeg" style="width: 512px;">
+<p>The Hbase data model can be remembered as a key-value match:</p>
+<pre><code>&lt;table, RowKey, Column Family, Column, timestamp&gt; -&gt; Value
+</code></pre>
+<h2>6.3 Supported operations</h2>
+<p>The list of supported operations in hbase is quite simple. 4 main operations are supported:</p>
+<ul>
+ <li><strong>Put</strong> : add a new entry to hbase. The timestamp of this entry can be set by hand, otherwise it will be set automatically to the current time.</li>
+ <li><strong>Get</strong> : Get data for a specific RowKey. You can specify the Column Family from which we will take the data and the number of versions we want to read.</li>
+ <li><strong>Scan</strong> : read records one by one. You can specify the record from which we start reading, the record to which to read, the number of records to be read, the Column Family from which the reading will be performed and the maximum number of versions for each record.</li>
+ <li><strong>Delete</strong> : Mark a specific version for deletion. There will be no physical deletion, it will be postponed until the next Major Compaction (see below).</li>
+</ul>
+<h2>6.4 Architecture</h2>
+<p>HBase is a distributed database that can run on dozens or hundreds of physical servers, ensuring uninterrupted operation even if some of them fail. Therefore, the architecture of HBase is quite complex compared to classic relational databases.</p><img data-max-width="1024" data-id="5bae086c-b213-47db-be33-a23d854a1543" alt="" src="https://cdn.javarush.com/images/article/5bae086c-b213-47db-be33-a23d854a1543/1024.jpeg" style="width: 1024px;">
+<p>HBase uses two main processes for its work:</p>
+<p><strong>1. Region Server</strong> - Serves one or more regions. A region is a range of records corresponding to a specific range of consecutive RowKeys. Each region contains:</p>
+<ul>
+ <li><strong>Persistent Storage</strong> is the main data storage in HBase. The data is physically stored on HDFS, in a special HFile format. Data in HFile is stored in RowKey sorted order. One pair (region, column family) corresponds to at least one HFIle.</li>
+ <li><strong>MemStore</strong> - write buffer. Since the data is stored in HFile d in sorted order, it is quite expensive to update the HFile per record. Instead, when writing, data enters a special MemStore memory area, where it accumulates for some time. When the MemStore is filled to some critical value, the data is written to a new HFile.</li>
+ <li><strong>BlockCache</strong> - cache for reading. Allows you to significantly save time on data that is read frequently.</li>
+ <li><strong>Write Ahead Log (WAL)</strong> . Since the data is written to the memstore, there is some risk of data loss due to a crash. In order to prevent this from happening, all operations before the actual implementation of the manipulations fall into a special log file. This allows you to recover data after any failure.</li>
+</ul>
+<p><strong>2. Master Server</strong> - the main server in the HBase cluster. The Master manages the distribution of regions among Region Servers, maintains a register of regions, manages the launch of regular tasks, and does other useful work.</p>
+<p>To coordinate actions between services, HBase uses Apache ZooKeeper, a special service designed to manage configurations and synchronize services.</p>
+<p>When the amount of data in a region increases and reaches a certain size, Hbase starts split, an operation that splits the region by 2. To avoid constant divisions of regions, you can pre-set the boundaries of the regions and increase their maximum size.</p>
+<p>Since data for one region can be stored in several HFiles, Hbase periodically merges them together to speed up the work. This operation is called compaction in Hbase. Compactions are of two types:</p>
+<ul>
+ <li><strong>Minor compaction</strong> . Starts automatically, runs in the background. Has a low priority compared to other Hbase operations.</li>
+ <li><strong>Major compaction</strong> . It is launched by hand or upon the occurrence of certain triggers (for example, by a timer). It has a high priority and can significantly slow down the cluster. Major Compactions are best done at a time when the load on the cluster is small. Major Compaction also physically deletes data previously marked with tombstone.</li>
+</ul>
+<h2>6.5 Ways to work with HBase</h2>
+<h4>HBase Shell</h4> The easiest way to get started with Hbase is to use the hbase shell utility. It is available immediately after installing hbase on any hbase cluster node. <img data-max-width="512" data-id="e1bc7480-e6e9-4358-9632-9349e4bd5a02" alt="" src="https://cdn.javarush.com/images/article/e1bc7480-e6e9-4358-9632-9349e4bd5a02/512.jpeg" style="width: 512px;">
+<p>Hbase shell is a jruby console with built-in support for all basic Hbase operations. The following is an example of creating a users table with two column families, doing some manipulations on it, and dropping the table at the end in hbase shell:</p>
+<pre><code>create 'users', {NAME =&gt; 'user_profile', VERSIONS =&gt; 5}, {NAME =&gt; 'user_posts', VERSIONS =&gt; 1231231231} 
+put 'users', 'id1', 'user_profile:name', 'alexander' 
+put 'users', 'id1', 'user_profile:second_name', 'alexander' 
+get 'users', 'id1' 
+put 'users', 'id1', 'user_profile:second_name', 'kuznetsov' 
+get 'users', 'id1' 
+get 'users', 'id1', {COLUMN =&gt; 'user_profile:second_name', VERSIONS =&gt; 5} 
+put 'users', 'id2', 'user_profile:name', 'vasiliy' 
+put 'users', 'id2', 'user_profile:second_name', 'ivanov' 
+scan 'users', {COLUMN =&gt; 'user_profile:second_name', VERSIONS =&gt; 5} 
+delete 'users', 'id1', 'user_profile:second_name' 
+get 'users', 'id1' 
+disable 'users' 
+drop 'users'
+</code></pre>
+<h4>Native API</h4>
+<p>Like most other hadoop-related projects, hbase is implemented in java, so the native api is available in Java. The Native API is pretty well documented on the official website. Here is an example of using the Hbase API taken from there:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>hadoop<span class="token punctuation">.</span>hbase<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>hadoop<span class="token punctuation">.</span>hbase<span class="token punctuation">.</span>client<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>hadoop<span class="token punctuation">.</span>hbase<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Bytes</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyLittleHBaseClient</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+	<span class="token class-name">Configuration</span> config <span class="token operator">=</span> <span class="token class-name">HBaseConfiguration</span><span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token class-name">Connection</span> connection <span class="token operator">=</span> <span class="token class-name">ConnectionFactory</span><span class="token punctuation">.</span><span class="token function">createConnection</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">try</span> <span class="token punctuation">{</span>
+  	<span class="token class-name">Table</span> table <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">getTable</span><span class="token punctuation">(</span><span class="token class-name">TableName</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token string">"myLittleHBaseTable"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	<span class="token keyword">try</span> <span class="token punctuation">{</span>
+    	<span class="token class-name">Put</span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Put</span><span class="token punctuation">(</span><span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"myLittleRow"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	p<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"myLittleFamily"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"someQualifier"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    	<span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"Some Value"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	table<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    	<span class="token class-name">Get</span> g <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Get</span><span class="token punctuation">(</span><span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"myLittleRow"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">Result</span> r <span class="token operator">=</span> table<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>g<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token keyword">byte</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> value <span class="token operator">=</span> r<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"myLittleFamily"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      	<span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"someQualifier"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    	<span class="token class-name">String</span> valueStr <span class="token operator">=</span> <span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"GET: "</span> <span class="token operator">+</span> valueStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    	<span class="token class-name">Scan</span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Scan</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	s<span class="token punctuation">.</span><span class="token function">addColumn</span><span class="token punctuation">(</span><span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"myLittleFamily"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">Bytes</span><span class="token punctuation">.</span><span class="token function">toBytes</span><span class="token punctuation">(</span><span class="token string">"someQualifier"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">ResultScanner</span> scanner <span class="token operator">=</span> table<span class="token punctuation">.</span><span class="token function">getScanner</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token keyword">try</span> <span class="token punctuation">{</span>
+       	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Result</span> rr <span class="token operator">=</span> scanner<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> rr <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> rr <span class="token operator">=</span> scanner<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Found row: "</span> <span class="token operator">+</span> rr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       	<span class="token punctuation">}</span>
+     	<span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+       	scanner<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     	<span class="token punctuation">}</span>
+   	<span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+     	<span class="token keyword">if</span> <span class="token punctuation">(</span>table <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> table<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   	<span class="token punctuation">}</span>
+ 	<span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+   	connection<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 	<span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h4>Thrift, REST and support for other programming languages</h4>
+<p>To work from other programming languages, Hbase provides Thrift API and Rest API. Based on them, clients are built for all major programming languages: python, PHP, Java Script, etc.</p>
+<h2>6.6 Some features of working with HBase</h2>
+<ol>
+ <li>
+  <p>Hbase integrates out of the box with MapReduce, and can be used as input and output using the special TableInputFormat and TableOutputFormat.</p></li>
+ <li>
+  <p>It is very important to choose the right RowKey. RowKey must provide a good even distribution across regions, otherwise there is a risk of so-called "hot regions" - regions that are used much more often than others, which leads to inefficient use of system resources.</p></li>
+ <li>
+  <p>If the data is not uploaded singly, but immediately in large batches, Hbase supports a special BulkLoad mechanism that allows you to upload data much faster than using single Puts. BulkLoad is essentially a two-step operation:</p>
+  <ul>
+   <li>Formation of HFile without the participation of puts using a special MapReduce job</li>
+   <li>Inserting these files directly into Hbase</li>
+  </ul></li>
+ <li>
+  <p>Hbase supports outputting its metrics to the Ganglia monitoring server. This can be very helpful when administering Hbase to get to the bottom of hbase issues.</p></li>
+</ol>
+<h4>row key</h4>
+<p>The RowKey is the user ID, which is a GUUID, a string specially generated to be unique worldwide. GUUIDs are distributed evenly, which gives a good distribution of data across servers.</p>
+<h4>Column Family</h4>
+<p>Our storage uses two column families:</p>
+<ul>
+ <li>data. This group of columns stores data that is no longer relevant for advertising purposes, such as the fact that a user has visited certain URLs. The TTL for this Column Family is set to 2 months, the limit on the number of versions is 2000.</li>
+ <li>longdata. This group of columns stores data that does not lose its relevance over time, such as gender, date of birth, and other “eternal” user characteristics.</li>
+</ul>
+<h4>speakers</h4>
+<p>Each type of user facts is stored in a separate column. For example, the Data:_v column stores the URLs visited by the user, and the LongData:gender column stores the user's gender.</p>
+<p>The time stamp of this fact is stored as a timestamp. For example, in the Data:_v column, the timestamp is the time the user visited a specific URL.</p>
+<p>This user data storage structure fits very well with our usage pattern and allows you to quickly update user data, quickly get all the necessary information about users, and, using MapReduce, quickly process data about all users at once.</p>
+<h2>6.7 Alternatives</h2>
+<p>HBase is quite complex to administer and use, so before using HBase it makes sense to look at the alternatives:</p>
+<ul>
+ <li>
+  <p><strong>Relational Databases</strong> . A very good alternative, especially in the case when the data fit on one machine. Also, first of all, you should think about relational databases in the case when transactions of indexes other than the primary are important.</p></li>
+ <li>
+  <p><strong>Key-Value storage</strong> . Storages like Redis and Aerospike are better suited when latency is needed and batch processing is less important.</p></li>
+ <li>
+  <p><strong>Files and their processing with MapReduce</strong> . If the data is only added and rarely updated/changed, then it is better not to use HBase, but simply store the data in files. To simplify the work with files, you can use tools such as Hive, Pig and Impala.</p></li>
+</ul>
+<p>The use of HBase is justified when:</p>
+<ul>
+ <li>There is a lot of data, and they do not fit on one computer / server</li>
+ <li>Data is frequently updated and deleted</li>
+ <li>There is an explicit “key” in the data, to which it is convenient to bind everything else</li>
+ <li>Need batch processing</li>
+ <li>Need random access to data by specific keys</li>
+</ul>

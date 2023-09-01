@@ -1,0 +1,151 @@
+switch expression
+<p>----------------------------------------</p>
+Repetition is the mother of learning. Although we have already talked about switches in Java earlier, today we will recall the basics and analyze some new information. Java has 2 variants of switch - these are switch statement and switch expression. Switch expression was officially in Java in version 14, having before that 2 modifications in versions 12 and 13...
+<p>----------------------------------------</p>
+<p>Repetition is the mother of learning. Although we already talked about Java's <span class="text-viola">switch</span> keyword earlier, today we will review the basics and dig into some new information.</p>
+
+<p>Java has two types of <span class="text-viola">switch</span> constructs: the switch statement and the switch expression. The switch expression became official in Java 14, having existed in two unofficial "preview" variants in versions 12 and 13.</p>
+
+<p>But let's start from the beginning. Let's recall what a good old switch looked like before version 12:</p>
+
+<pre class='language-java line-numbers'><code>
+public String getProductTypeByName(String product) {
+    String productType = "";
+
+    switch (product) {
+        case "Apple":
+            productType = "Fruit";
+            break;
+
+        case "Peach":
+            productType = "Fruit";
+            break;
+
+        case "Raspberry":
+            productType = "Berry";
+            break;
+
+        case "Cherry":
+            productType = "Berry";
+            break;
+
+        case "Tomato":
+            productType = "Vegetable";
+            break;
+
+        default:
+            productType = "other";
+            break;
+    }
+        
+    return productType;
+}
+</code></pre>
+
+<p>A switch statement is a set of constructs that will be executed one after another. It does not let you return a value. The main problem with using a switch statement is that you can add an infinite number of <span class="text-viola">case</span> expressions, and this ability is often abused by programmers. </p>
+
+<p>Java 12 saw the addition of an experimental feature: a new version of switch — not a switch statement, but a switch expression — which can yield a value, use functional programming internally, and merge case statements that have a common value, thereby making the construct compact.</p>
+
+<p>In Java 12, you can rewrite the <span class="code text-orange">getProductTypeByName()</span> method as follows:</p>
+
+<pre class='language-java line-numbers'><code>
+public String getProductTypeByName(String product) {
+    return switch (product) {
+        case "Apple", "Peach" -&gt; "Fruit";
+        case "Raspberry", "Cherry" -&gt; "Berry";
+        case "Tomato" -&gt; "Vegetable";
+        default -&gt; "other";
+
+    };
+}
+</code></pre>
+
+<p>Now the code looks cleaner. The arrow syntax from functional programming lets us return values without the <span class="text-user"><span class="text-bold">break</span></span> keyword, and in general, the result of executing the <span class="text-viola">switch</span> can now be saved to a variable or returned via the <span class="text-viola">return</span> keyword.</p>
+
+<p>If we need to not only return a result, but also have multiple lines of code, then our <span class="text-viola">switch</span> would look like this:</p>
+
+<pre class='language-java line-numbers'><code>
+public String getProductTypeByName(String product) {
+    var result = switch (product) {
+        case "Apple", "Peach" -&gt; {
+            System.out.println("This is a Fruit");
+            break "Fruit";
+        }
+        case "Raspberry", "Cherry" -&gt; {
+            System.out.println("This is a Berry");
+            break "Berry";
+        }
+        case "Tomato" -&gt; {
+            System.out.println("This is a Vegetable");
+            break "Vegetable";
+        }
+        default -&gt; {
+            break "other";
+        }
+
+    };
+     return result;
+}
+</code></pre>
+
+<p>In Java 13, the switch expression was still an experimental feature. To make it available, just as in Java 12, you need to use the <em>--enable-preview</em> command when compiling and running. The main, and essentially only, "innovation" of the <span class="text-viola">switch</span> in Java 13 is the <span class="text-user"><span class="text-bold">yield</span></span> keyword, which replaced <span class="text-viola">break</span>.</p>
+
+<pre class='language-java line-numbers'><code>
+public String getProductTypeByName(String product) {
+    var result = switch (product) {
+        case "Apple", "Peach" -&gt; {
+            System.out.println("This is a Fruit");
+            yield "Fruit";
+        }
+        case "Raspberry", "Cherry" -&gt; {
+            System.out.println("This is a Berry");
+            yield "Berry";
+        }
+        case "Tomato" -&gt; {
+            System.out.println("This is a Vegetable");
+            yield "Vegetables";
+        }
+        default -&gt; {
+            System.out.println("Other");
+            yield "other";
+        }
+
+    };
+    return result;
+}
+</code></pre>
+
+<p>The main difference between <span class="text-user"><span class="text-bold">yield</span></span> and <span class="text-viola">break</span> is that <span class="text-viola">break</span> returns execution control from a <span class="text-viola">case</span> statement, but <span class="text-user"><span class="text-bold">yield</span></span> returns the result of the entire <span class="text-viola">switch</span>, acting like an internal <span class="text-viola">return</span> statement.</p>
+
+<p>In Java 14, the <span class="text-viola">instanceof</span> operator has changed and can now be used like this:</p>
+
+<pre class='language-java line-numbers'><code>
+if (o instanceof String s) {
+s.toLowerCase();
+}
+</code></pre>
+
+<p>Instead of the somewhat ugly old way where you had to not only check the variable using <span class="text-viola">instanceof</span>, but also cast it to a specific type.</p>
+
+<pre class='language-java line-numbers'><code>
+if(s instanceof String) {
+((String) s).toLowerCase();
+}
+</code></pre>
+
+<p>These changes are part of the Amber project, which aims to add pattern matching support to Java.</p>
+
+<p>Thanks to the change in the <span class="text-viola">instanceof</span> operator in version 14 and an extension in version 16, pattern matching did make it into version 17 after all. True, it exists only as a preview for now. You can try it out with <em>--enable-preview</em>:</p>
+
+<pre class='language-java line-numbers'><code>
+public String getObjectType(Object object) {
+    return switch (object) {
+        case Integer i -&gt; "Integer";
+        case Long l -&gt; "Long";
+        case String s -&gt; "String";
+        default -&gt; object.toString();
+    };
+}
+</code></pre>
+
+<p>In general, each new version brings more and more interesting features into the language, which makes Java development even cooler. </p>

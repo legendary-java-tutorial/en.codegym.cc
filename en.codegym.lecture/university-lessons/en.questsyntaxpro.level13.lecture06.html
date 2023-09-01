@@ -1,0 +1,233 @@
+Multiple choice operator in Java: switch
+<p>----------------------------------------</p>
+The Multiple Choice Operator - switch Java has another interesting operator inherited from its grandmother (C++ language) - the switch operator. It is also called the multiple choice operator. It looks a bit cumbersome: switch(expression) { case value1: code1;
+ &nbsp;&nbsp;
+<p>----------------------------------------</p>
+<h2>1. The multiple-choice operator: <code>switch</code></h2>
+<p><img data-max-width="1024" data-id="5d94e3aa-cd9b-4e35-bd4a-a6829cbcb53b" src="https://cdn.codegym.cc/images/article/5d94e3aa-cd9b-4e35-bd4a-a6829cbcb53b/1024.jpeg" alt=""></p>
+<p>Java has another interesting operator that it inherited from its grandpappy (C++). We're talking about the <code>switch</code> statement. We could also call it a multiple-choice operator. It looks a little cumbersome:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>switch(<span class="text-green">expression</span>)
+{
+   case <span class="text-user">value1</span>: <span class="text-viola">code1</span>;
+   case <span class="text-user">value2</span>: <span class="text-viola">code2</span>;
+   case <span class="text-user">value3</span>: <span class="text-viola">code3</span>;
+}</code></pre>
+</div>
+<p>An expression or variable is indicated within the parentheses. If the value of the expression is <code><span class="text-user">value1</span></code>, the Java machine starts executing <code><span class="text-viola">code1</span></code>. If the expression is equal to <code><span class="text-user">value2</span></code>, execution jumps to <code><span class="text-viola">code2</span></code>. If the expression is equal to <code><span class="text-user">value3</span></code>, then <code><span class="text-viola">code3</span></code> is executed.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-user">temperature</span> = 38;
+
+switch(<span class="code text-user">temperature</span>)
+{
+   case 36: System.out.println("Low");
+   case 37: System.out.println("Normal");
+   case 38: System.out.println("High");
+} </code></pre>
+        </td>
+        <td>
+            <pre><code>High</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>2. <code>break</code> statement in <code>switch</code></h2>
+<p>An important feature of a <code>switch</code> statement is that the program simply jumps to the required line (to the required code block) and then executes all the blocks of code until the end of the <code>switch</code>. Not only the block of code corresponding to the value in the <code>switch</code>, but all the blocks of code until the end of the <code>switch</code>.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-user">temperature</span> = 36;
+
+switch(<span class="code text-user">temperature</span>)
+{
+   case 36: System.out.println("Low");
+   case 37: System.out.println("Normal");
+   case 38: System.out.println("High");
+} </code></pre>
+        </td>
+        <td>
+                <pre><code>Low
+Normal
+High</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Given a temperature of 36, the program will enter the <code>switch</code> statement, jump to and execute the first block of code (the first case), and then cheerfully execute the rest of the blocks of code.</p>
+<p>If you want to execute <span class="text-red">only one block of code</span> — the block of code associated with the matched case — then you need to end the block with a <code>break</code> statement;</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-user">temperature</span> = 36;
+
+switch(<span class="code text-user">temperature</span>)
+{
+   case 36:
+      System.out.println("Low");
+      break;
+   case 37:
+      System.out.println("Normal");
+      break;
+   case 38:
+      System.out.println("High");
+}</code></pre>
+        </td>
+        <td>
+            <pre><code>Low</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>You can omit the <code>break</code> in the last case of the <code>switch</code> statement, since that block is the last with or without a break statement.</p>
+<hr>
+<h2>3. Default action: <code>default</code></h2>
+<p>Another important point. What happens if none of the cases listed in the <code>switch</code> match the expression in the parentheses?</p>
+<p>If a matching case is not found, then the rest of the <code>switch</code> statement is skipped, and the program will continue execution after the curly brace ending the <code>switch</code> statement.</p>
+<p>That said, you can also make a <code>switch</code> statement behave like the else branch in an <code>if-else</code> statement. To do this, use the <code>default</code> keyword.</p>
+<p>If none of the <code>case</code>s in the <code>switch</code> block match the value of the expression and the <code>switch</code> has a <code>default</code> block, the default block will be executed. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-user">temperature</span> = <span class="text-red">40</span>;
+switch(<span class="code text-user">temperature</span>)
+{
+   case 36:
+      System.out.println("Low");
+      break;
+   case 37:
+      System.out.println("Normal");
+      break;
+   case 38:
+      System.out.println("High");
+      break;
+   <span class="code"><span class="token keyword">default</span></span>:
+      System.out.println("Call an ambulance");
+}</code></pre>
+        </td>
+        <td>
+            <pre><code>Call an ambulance</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>4. Comparing <code>switch</code> and <code>if-else</code></h2>
+<p>The <code>switch</code> statement is somewhat similar to an <code>if-else</code> statement, only more complicated.</p>
+<p>You can always rewrite the code of a <code>switch</code> statement as multiple <code>if</code> statements. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code with switch</th>
+        <th>Code with if-else</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="code text-user">temperature</span> = <span class="text-red">40</span>;
+switch(<span class="code text-user">temperature</span>)
+{
+   case 36:
+      System.out.println("Low");
+      break;
+   case 37:
+      System.out.println("Normal");
+      break;
+   case 38:
+      System.out.println("High");
+      break;
+   default:
+      System.out.println("Call an ambulance");
+} </code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>int <span class="code text-user">temperature</span> = <span class="text-red">40</span>;
+
+if (<span class="code text-user">temperature</span> == 36)
+{
+   System.out.println("Low");
+}
+else if (<span class="code text-user">temperature</span> == 37)
+{
+   System.out.println("Normal");
+}
+else if (<span class="code text-user">temperature</span> == 38)
+{
+   System.out.println("High");
+}
+else
+{
+   System.out.println("Call an ambulance");
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The code on the left will work exactly the same as the code on the right.</p>
+<p>A chain of multiple <code>if-else</code> statements is preferable when an <code>if</code> statement contains various complex expressions in each separate case.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1320"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1321"></div>
+<hr>
+<h2>5. What expressions can be used in a <code>switch</code> statement?</h2>
+<p>Not all types can be used as <code>case</code> labels in a <code>switch</code> statement. You can use literals of the following types:</p>
+<ul>
+    <li><span class="text-green">integer types: <code><span class="text-green">byte</span></code>, <code><span class="text-green">short</span></code>, <code><span class="text-green">int</span></code>, <code><span class="text-green">long</span></code></span></li>
+    <li><span class="text-viola"><code>char</code></span></li>
+    <li><span class="text-user"><code>String</code></span></li>
+    <li><span class="text-red">any <code><span class="text-red">enum</span></code> type</span></li>
+</ul>
+<p>You <span class="text-red">cannot</span> use any other types as case labels.</p>
+<p>Example of using an <code>enum</code> inside a <code>switch</code> statement:</p>
+<pre class="language-java"><code><span class="text-viola">Day</span> <span class="text-orange">day</span> = Day.<span class="text-user">MONDAY</span>;
+switch (<span class="text-orange">day</span>)
+{
+   case <span class="text-user">MONDAY</span>:
+      System.out.println("Monday");
+      break;
+   case <span class="text-user">TUESDAY</span>:
+      System.out.println("Tuesday");
+      break;
+   case <span class="text-user">WEDNESDAY</span>:
+      System.out.println("Wednesday");
+      break;
+   case <span class="text-user">THURSDAY</span>:
+      System.out.println("Thursday");
+      break;
+   case <span class="text-user">FRIDAY</span>:
+      System.out.println("Friday");
+      break;
+   case <span class="text-user">SATURDAY</span>:
+      System.out.println("Saturday");
+      break;
+   case <span class="text-user">SUNDAY</span>:
+      System.out.println("Sunday");
+      break;
+}</code></pre>
+<p>Note: If you use an <code>enum</code> inside a <code>switch</code> statement, you don't need to write the class name in front of each value in the <code>case</code> labels. It is enough to just write the value.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1322"></div>

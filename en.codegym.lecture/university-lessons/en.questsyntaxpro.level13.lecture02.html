@@ -1,0 +1,523 @@
+Helper class Collections
+<p>----------------------------------------</p>
+List of Methods Remember that the Java developers wrote a whole helper class, Arrays, to make it easier to work with arrays? For collections, they did the same. Java has the java.util.Collections class, which has a lot of methods that are useful when working with collections. Below we present only the most
+<p>----------------------------------------</p>
+<h2>1. List of methods</h2>
+<p>Remember that Java's creators wrote a whole helper class called <code>Arrays</code> for our convenience when working with arrays?</p>
+<p>They did the same thing for collections. Java has a <code>java.util.Collections</code> class that has a lot of methods that are useful for working with collections. Here are just the most interesting ones:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">addAll</span>(<span class="text-user">colls</span>, e1, e2, e3, ...)</code></pre>
+        </td>
+        <td>Adds the elements <code>e1</code>, <code>e2</code>, <code>e3</code>, ... to the <code><span class="text-user">colls</span></code> collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">fill</span>(list, obj)</code></pre>
+        </td>
+        <td>Replaces all the elements in the passed list with <code>obj</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">nCopies</span>(n, obj)</code></pre>
+        </td>
+        <td>Returns a list of <code>n</code> copies of the <code>obj</code> object</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">replaceAll</span>(list, oldVal, newVal)</code></pre>
+        </td>
+        <td>Replaces all instances of <code>oldVal</code> with <code>newVal</code> in the <code>list</code> list</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">copy</span>(dest, src)</code></pre>
+        </td>
+        <td>Copies all elements from the <code>src</code> list to the <code>dest</code> list</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">reverse</span>(list)</code></pre>
+        </td>
+        <td>Reverses the list.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">sort</span>(list)</code></pre>
+        </td>
+        <td>Sorts the list in ascending order</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">rotate</span>(list, n)</code></pre>
+        </td>
+        <td>Cyclically shifts the elements of the <code>list</code> list by <code>n</code> elements</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">shuffle</span>(list)</code></pre>
+        </td>
+        <td>Randomly shuffles the elements in the list</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">min</span>(colls)</code></pre>
+        </td>
+        <td>Finds the minimum element in the <code>colls</code> collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">max</span>(colls)</code></pre>
+        </td>
+        <td>Finds the maximum element in the <code>colls</code> collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">frequency</span>(colls, obj)</code></pre>
+        </td>
+        <td>Determines how many times the <code>obj</code> element occurs in the <code>colls</code> collection</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">binarySearch</span>(list, key)</code></pre>
+        </td>
+        <td>Searches for <code>key</code> in a sorted list and returns the corresponding index.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">disjoint</span>(colls1, colls2)</code></pre>
+        </td>
+        <td>Returns <code>true</code> if the collections have no elements in common</td>
+    </tr>
+    </tbody>
+</table>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Important:</div>
+        <div class="lesson-note__content">
+            <p>Many of these methods don't use the <code>ArrayList</code>, <code>HashSet</code> and <code>HashMap</code> classes per se, but with the corresponding interfaces: <code>Collection&lt;T&gt;</code>, <code>List&lt;T&gt;</code>, <code>Map&lt;K, V&gt;</code>.</p>
+            <p>This is not a problem: if a method accepts a <code>List&lt;T&gt;</code>, you can always pass it an <code>ArrayList&lt;Integer&gt;</code>, but the assignment operator does not work in the opposite direction.</p>
+        </div>
+    </div>
+</div>
+<hr>
+<h2>2. Creating and modifying collections</h2>
+<p><strong><code>Collections.addAll(Collection&lt;T&gt; colls, T e1, T e2, T e3, ...)</code> method</strong></p>
+<p>The <code>addAll()</code> method adds the elements <code>e1</code>, <code>e2</code>, <code>e3</code>, ... to the <code>colls</code> collection Any number of elements can be passed.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 1, 2, 3, 4, 5);
+
+for (int i: <span class="code text-user">list</span>)
+   System.out.println(i);</code></pre>
+        </td>
+        <td>
+                <pre><code>1
+2
+3
+4
+5</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.fill(List&lt;T&gt; list, T obj)</code> method</strong></p>
+<p>The <code>fill()</code> method replaces all the elements of the <code>list</code> collection with the <code>obj</code> element.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="code text-user">list</span>.<span class="text-red">add</span>(1);
+<span class="code text-user">list</span>.<span class="text-red">add</span>(2);
+<span class="code text-user">list</span>.<span class="text-red">add</span>(3);
+
+<span class="text-neon">Collections</span>.<span class="text-red">fill</span>(<span class="code text-user">list</span>, 10);
+
+for (int i: <span class="code text-user">list</span>)
+   System.out.println(i);</code></pre>
+        </td>
+        <td>
+                <pre><code>10
+10
+10</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.nCopies(int n, T obj)</code> method</strong></p>
+<p>The <code>nCopies()</code> method returns a list of <code>n</code> copies of the <code>obj</code> element. Note that the returned list is immutable, which means you cannot change it! You can only use it to read values:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>List&lt;<span class="text-green">String</span>&gt; <span class="code text-orange">immutableList</span> = <span class="text-neon">Collections</span>.<span class="text-red">nCopies</span>(5, "Hello");
+
+ArrayList&lt;<span class="text-green">String</span>&gt; <span class="code text-user">list</span> = new ArrayList&lt;String&gt;(<span class="code text-orange">immutableList</span>);
+
+for(<span class="text-green">String</span> s: <span class="code text-user">list</span>)
+   System.out.println(s);</code></pre>
+        </td>
+        <td>Create an immutable list of 5 <code><span class="text-green">Hello</span></code> strings<br>
+            Create a mutable <code><span class="text-user">list</span></code> and fill it with the values from the <code><span class="text-orange">immutableList</span></code> list.<br><br>
+            Console output:<br>
+            <pre><code>Hello
+Hello
+Hello
+Hello
+Hello</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.replaceAll (List&lt;T&gt; list, T oldValue, T newValue)</code> method</strong></p>
+<p>The <code>replaceAll()</code> method replaces all the elements in the <code>list</code> collection equal to <code>oldValue</code> with <code>newValue</code>.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="code text-user">list</span>.add(1);
+<span class="code text-user">list</span>.add(2);
+<span class="code text-user">list</span>.add(3);
+
+<span class="text-neon">Collections</span>.<span class="text-red">replaceAll</span>(<span class="code text-user">list</span>, <span class="code">2</span>, <span class="code">20</span>);
+
+for (int i: <span class="code text-user">list</span>)
+   System.out.println(i);</code></pre>
+        </td>
+        <td>
+                <pre><code>1
+20
+3</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.copy (List&lt;T&gt; dest, List&lt;T&gt; src)</code> method</strong></p>
+<p>The <code>copy()</code> method copies all the elements of the <code>src</code> collection into the <code>dest</code> collection.</p>
+<p>If the <code>dest</code> collection starts out longer than the <code>src</code> collection, then the remaining elements of the <code>dest</code> collection will remain intact.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Important:</div>
+        <div class="lesson-note__content">
+            The <code>dest</code> collection must be at least as long as the <code>src</code> collection (otherwise, an <code>IndexOutOfBoundsException</code> will be thrown).
+        </div>
+    </div>
+</div>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-green">srcList</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-green">srcList</span>, 99, 98, 97);
+
+ArrayList&lt;Integer&gt; <span class="code text-user">destList</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">destList</span>, 1, 2, 3, 4, 5, 6, 7);
+
+<span class="text-neon">Collections</span>.<span class="text-red">copy</span>(<span class="code text-user">destList</span>, <span class="code text-green">srcList</span>);
+
+for (int i: <span class="code text-user">destList</span>)
+   System.out.println(i);</code></pre>
+        </td>
+        <td>
+                <pre><code>99
+98
+97
+4
+5
+6
+7</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1306"></div>
+<hr>
+<h2>3. Order of the elements</h2>
+<p><strong><code>Collections.reverse(List&lt;T&gt; list)</code> method</strong></p>
+<p>The <code>reverse()</code> method reverses the order of the elements of the passed list.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 1, 2, 3, 4, 5);
+
+<span class="text-neon">Collections</span>.<span class="text-red">reverse</span>(<span class="code text-user">list</span>);
+
+for (int i: <span class="code text-user">list</span>)
+   System.out.println(i);</code></pre>
+        </td>
+        <td>
+                <pre><code>5
+4
+3
+2
+1</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.sort(List&lt;T&gt; list)</code> method</strong></p>
+<p>The <code>sort()</code> method sorts the passed list in ascending order.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 11, 2, 23, 4, 15);
+
+<span class="text-neon">Collections</span>.<span class="text-red">sort</span>(<span class="code text-user">list</span>);
+
+for (int i: <span class="code text-user">list</span>)
+   System.out.println(i);</code></pre>
+        </td>
+        <td>
+                <pre><code>2
+4
+11
+15
+23</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.rotate(List&lt;T&gt; list, int distance)</code> method</strong></p>
+<p>The <code>rotate()</code> method cyclically shifts the elements of the passed list by <code>distance</code> positions forward.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+<span class="text-neon">Collections</span>.<span class="text-red">rotate</span>(<span class="code text-user">list</span>, 3); // Shift by 3 positions
+
+for (int i: <span class="code text-user">list</span>)
+   System.out.println(i);</code></pre>
+        </td>
+        <td>
+                <pre><code>7
+8
+9
+1
+2
+3
+4
+5
+6</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.shuffle(List&lt;T&gt; list)</code> method</strong></p>
+<p>The <code>shuffle()</code> method randomly shuffles all the elements of the passed list. The result is different every time.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 1, 2, 3, 4, 5);
+
+<span class="text-neon">Collections</span>.<span class="text-red">shuffle</span>(<span class="code text-user">list</span>); // Shuffle the elements
+
+for (int i: <span class="code text-user">list</span>)
+   System.out.println(i);</code></pre>
+        </td>
+        <td>
+                <pre><code>5
+2
+4
+3
+1</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1307"></div>
+<hr>
+<h2>4. Finding elements in collections</h2>
+<p><strong><code>Collections.min(Collection&lt;T&gt; colls)</code> method</strong></p>
+<p>The <code>min()</code> method returns the minimum element in the collection.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.addAll(<span class="code text-user">list</span>, 11, 2, 23, 4, 15);
+
+int <span class="code text-green">min</span> = <span class="text-neon">Collections</span>.<span class="text-red">min</span>(<span class="code text-user">list</span>);
+
+System.out.println(<span class="code text-green">min</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>2</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.max(Collection&lt;T&gt; colls)</code> method</strong></p>
+<p>The <code>max()</code> method returns the maximum element in the collection.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 11, 2, 23, 4, 15);
+
+int <span class="code text-green">max</span> = <span class="text-neon">Collections</span>.<span class="text-red">max</span>(<span class="code text-user">list</span>);
+
+System.out.println(<span class="code text-green">max</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>23</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.frequency(Collection&lt;T&gt; colls, T obj)</code> method</strong></p>
+<p>The <code>frequency()</code> method counts the number of times the <code>obj</code> element occurs in the <code>colls</code> collection</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 11, 2, 23, 4, 15, 4, 2, 4);
+
+int <span class="code text-green">count</span> = <span class="text-neon">Collections</span>.<span class="text-red">frequency</span>(<span class="code text-user">list</span>, 4);
+
+System.out.println(<span class="code text-green">count</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>3</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.binarySearch(Collection&lt;T&gt; colls, T obj)</code> method</strong></p>
+<p>The <code>binarySearch()</code> method searches for the <code>obj</code> element in the <code>colls</code> collection. Returns the index of the found element. Returns a negative number if the element is not found.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Important:</div>
+        <div class="lesson-note__content">
+            Before calling the <code>binarySearch()</code> method, the collection must be sorted (use <code>Collections.sort()</code>).
+        </div>
+    </div>
+</div>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 11, 2, 23, 5, 15, 4, 2, 4);
+
+Collections.sort(<span class="code text-user">list</span>);  // 2, 2, 4, 4, 5, 11, 15, 23
+
+int <span class="code text-green">index</span> = <span class="text-neon">Collections</span>.<span class="text-red">binarySearch</span>(<span class="code text-user">list</span>, 5);    // 4
+System.out.println(<span class="code text-green">index</span>);
+
+int <span class="code text-green">index2</span> = <span class="text-neon">Collections</span>.<span class="text-red">binarySearch</span>(<span class="code text-user">list</span>, 15);  // 6
+System.out.println(<span class="code text-green">index2</span>);
+
+int <span class="code text-green">index3</span> = <span class="text-neon">Collections</span>.<span class="text-red">binarySearch</span>(<span class="code text-user">list</span>, 16); // The element doesn't exist
+System.out.println(<span class="code text-green">index3</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>4
+6
+-8</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>Collections.disjoint(Collection&lt;T&gt; coll1, Collection&lt;T&gt; coll2)</code> method</strong></p>
+<p>The <code>disjoint()</code> method returns <code>true</code> if the passed collections do not have any elements in common.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>ArrayList&lt;Integer&gt; <span class="code text-user">list</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-user">list</span>, 1, 2, 3, 4, 5, 6, 7);
+
+ArrayList&lt;Integer&gt; <span class="code text-green">list2</span> = new ArrayList&lt;Integer&gt;();
+<span class="text-neon">Collections</span>.<span class="text-red">addAll</span>(<span class="code text-green">list2</span>, 99, 98, 97);
+
+boolean <span class="code text-orange">isDifferent</span> = <span class="text-neon">Collections</span>.disjoint(<span class="code text-user">list</span>, <span class="code text-green">list2</span>);
+System.out.println(<span class="code text-orange">isDifferent</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>true</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task13.task1308"></div>

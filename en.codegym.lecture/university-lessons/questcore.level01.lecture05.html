@@ -1,0 +1,212 @@
+Inheritance. Advantage of Inheritance
+<p>----------------------------------------</p>
+There lived a horse. He plucked the grass, galloped at a gallop, did not touch anyone. Then a programmer came, and the horse had an heir - Pegasus, a horse with wings. Favorite muses concurrently. He looked like a horse, knew how to pluck grass and gallop. Also, he could fly. This is how children appear in Java. Details are in the lecture.
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! Now here's a topic I think you'll use a lot. I'm talking about <span class="text-red">inheritance.</span>"</p>
+<p><span class="text-green">For the uninitiated, programming is like magic. </span>So let me start with an analogy…</p>
+<p>Suppose you are a magician who wants to create a flying horse. You could try conjuring a Pegasus. But since flying horses aren't naturally occurring, you'll have a really hard time. You'd have a lot of work to do. <span class="text-corporate">It would be much easier to start with a horse and summon some wings.</span></p>
+
+<img  alt="Inheritance. Advantages of inheritance - 1" src="https://cdn.codegym.cc/images/article/d1382452-77d6-4e97-96e1-8afedea95b08/original.jpeg">
+
+<p><span class="text-green">In programming, we call this process «inheritance»</span>. Suppose you need to write a very complex class. You could spend a long time writing code from scratch, and then perform lengthy testing to find bugs. But why do it the hard way? It's better to look around and see if the class you're looking for already exists?</p>
+<p>Let's say you find a class that implements 80% of the functionality you need. You can just copy its code into your class. But that would have several drawbacks:</p>
+<p><span class="text-corporate">1) The class you find might already be compiled into bytecode. You might not have access to its source code.</span></p>
+<p><span class="text-red">2) You might have the source code for the class, but also work at a company that could be sued for a couple of billion if you use even 6 lines of someone else's code. And then they will sue you.</span></p>
+<p><span class="text-user">3) This leads to the unnecessary duplication of lots of code. And if the author of the other class finds a bug and fixes it, you still have the bug.</span></p>
+<p>There is a more elegant solution that doesn't require getting legal permission to the code of the original class. <span class="text-green">In Java, you can simply declare the other class as the parent of your class.</span> This is equivalent to adding that class's code to your own class. All the data and methods of the parent class will appear in your class. For example, you could inherit from a «horse», add «wings», and get a «Pegasus».</p>
+
+<img  alt="Inheritance. Advantages of inheritance - 2" src="https://cdn.codegym.cc/images/article/90a5aa73-76bf-4d1f-aa6f-dc63a9044dd8/original.jpeg">
+
+
+<p><span class="text-user">"Very interesting. Please go on."</span></p>
+<p>"Inheritance has other uses too. Suppose you have ten classes that are very similar. They have matching data and methods. You could create a special <a href='https://codegym.cc/groups/posts/12-base-class-constructors--' target='_blank'>base class</a>, move the data (and associated methods) to <span class="text-green">the base class</span>, and have those ten classes inherit from it. In other words, for each class, you indicate that it has a parent class, also known as a base class."</p>
+<p>"Just as <span class="text-red">the advantages of abstraction are only truly revealed in connection with encapsulation, the advantages of inheritance are magnified by polymorphism.</span> But I'll tell you about that tomorrow. Today let's look at a few examples of inheritance."</p>
+<p>"Suppose we're writing a chess program. We'll need classes for the chess pieces. Which classes would you suggest, Amigo?"</p>
+<p><span class="text-user">"King, Queen, Bishop, Knight, Rook, and Pawn."</span></p>
+<p>"Very good. You didn't miss a thing."</p>
+<p><span class="text-user">"And what data would you suggest storing in these classes?"</span></p>
+<p>"Each piece's board position (x and y) and worth. After all, some pieces are more valuable than others."</p>
+<p><span class="text-user">"And what are the differences between these classes?"</span></p>
+<p>"They differ in how they move the pieces. In their behavior."</p>
+<p>"Yes. You could define them as classes like this:"</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class King
+{
+int x;
+int y;
+int worth;
+void kingMove()
+{
+//code that defines,
+//how the king moves
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Queen
+{
+int x;
+int y;
+int worth;
+void queenMove()
+{
+//code that defines,
+//how the queen moves
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Rook
+{
+int x;
+int y;
+int worth;
+void rookMove()
+{
+//code that defines,
+//how the rook moves
+}
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Knight
+{
+int x;
+int y;
+int worth;
+void knightMove()
+{
+//code that defines,
+//how the knight moves
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Bishop
+{
+int x;
+int y;
+int worth;
+void bishopMove()
+{
+//code that defines,
+//how the bishop moves
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Pawn
+{
+int x;
+int y;
+int worth;
+void pawnMove()
+{
+//code that defines,
+//how the pawn moves
+}
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task11.task1124"></div>
+<p><span class="text-user">"Yes, that's exactly how I would write it."</span></p>
+<p>"But look at how you could use inheritance to write less code. We can move identical methods and data into a common class. Let's call it ChessItem. <span class="text-corporate">It doesn't make sense to create ChessItem objects, since they don't correspond to any chess piece.</span> But the class would be extremely helpful:"</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class King <span class="text-red">extends ChessItem</span>
+{
+void kingMove()
+{
+//code that defines,
+//how the king moves
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Queen <span class="text-red">extends ChessItem</span>
+{
+void queenMove()
+{
+//code that defines,
+//how the queen moves
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Rook <span class="text-red">extends ChessItem</span>
+{
+void rookMove()
+{
+//code that defines,
+//how the rook moves
+}
+}</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code> class <span class="text-red">ChessItem</span>
+{
+int x;
+int y;
+int worth;
+}
+ </code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Knight <span class="text-red">extends ChessItem</span>
+{
+void knightMove()
+{
+//code that defines,
+//how the knight moves
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Bishop <span class="text-red">extends ChessItem</span>
+{
+void bishopMove()
+{
+//code that defines,
+//how the bishop moves
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Pawn <span class="text-red">extends ChessItem</span>
+{
+void pawnMove()
+{
+//code that defines,
+//how the pawn moves
+}
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task11.task1125"></div>
+<p><span class="text-user">"How interesting!"</span></p>
+<p>"Absolutely! The benefit is especially large in projects containing thousands of different objects and hundreds of classes. In this case, properly chosen classes can not only significantly simplify the logic, but also reduce the required code by a factor of ten."</p>
+<p><span class="text-user">"So what do you have to do to inherit a class?"</span></p>
+<p>"After declaring a class, we use the keyword '<span class="text-red">extends</span>', followed by the name of the parent class. <span class="text-red">You can only inherit from one class.</span>"</p>
+<img data-id="ea2c4fae-7a0d-4acf-a008-a737642dada9" data-max-width="850" alt="Inheritance. Advantages of inheritance - 3" src="https://cdn.codegym.cc/images/article/ea2c4fae-7a0d-4acf-a008-a737642dada9/original.jpeg">
+<p>The picture shows a "cow" that has inherited from a «pig». The «Pig» inherits from the «chicken», and the «chicken» inherits from the «egg». <span class="text-red">Each class has only one parent!</span> Such inheritance is not always logical. If you only have a pig, but you really need a cow, programmers often can't resist the desire to make a «cow» out of the «pig».</p>
+<p><span class="text-user">"But what if I want to inherit from two classes? Is there anything I can do?!"</span></p>
+<p>"Not really. Java classes do not support multiple inheritance of implementation: a class can only have a single parent class. But there is multiple inheritance of type, which means that a class can implement more than one interface. This slightly mitigates the problem."</p>
+<p><span class="text-user">"I see. And what is an interface?"</span></p>
+<p>"I'll tell you about interfaces tomorrow. For now, let's continue delving into inheritance."</p>

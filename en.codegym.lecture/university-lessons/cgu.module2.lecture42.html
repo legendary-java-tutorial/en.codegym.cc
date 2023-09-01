@@ -1,0 +1,207 @@
+UDP socket
+<p>----------------------------------------</p>
+Speaking of networking, we cannot fail to mention the OSI model. Today, in this model, we are most interested in the transport layer (4) ...
+<p>----------------------------------------</p>
+<p>When we speak of networking, we cannot fail to mention the OSI model. </p>
+
+<img data-max-width="512" data-id="34b21fc6-913b-48a1-b47b-a53e57db7a7d" src="https://cdn.codegym.cc/images/article/34b21fc6-913b-48a1-b47b-a53e57db7a7d/512.jpeg" alt="">
+
+    <p>In terms of this model, today we are most interested in the transport layer (4).</p>
+
+    <p>This is the level at which we work with data moving "from point A to point B". The main task of the transport layer is to ensure that a message is delivered to the destination, while maintaining the correct sequence. The two most common transport layer protocols are: TCP and UDP. They work conceptually in different ways, but each has its own advantages that allow them to solve specific problems. </p>
+
+    <table>
+<tbody>
+<tr>
+<th>Layer</th>
+<th>Data type (PDU)</th>
+<th>Functions</th>
+<th>Examples</th>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Segment / Datagram</td>
+<td>Direct communication between endpoints and reliability</td>
+<td>TCP, UDP, SCTP, Ports</td>
+</tr>
+</tbody>
+</table>
+
+    <p>First, let's look at how TCP works.</p>
+
+    <p>TCP (Transmission Control Protocol) is a network protocol that ensures that a connection between hosts is established before data is exchanged. </p>
+
+<img data-max-width="512" data-id="589ab4e3-6b3f-4fd1-a8d0-8caf3ab41e9f" src="https://cdn.codegym.cc/images/article/589ab4e3-6b3f-4fd1-a8d0-8caf3ab41e9f/512.jpeg" alt="">
+
+    <p>This is a very reliable protocol, because every time it sends another data packet, it must check that the previous packet was received. </p>
+
+    <p>The transmitted packets are ordered, and if there are problems with a certain packet (i.e. the receiving party does not confirm that the packet has arrived), then the packet is sent again. As a result, the transfer rate is relatively low, because more time is required for the strict monitoring and for ensuring the correct ordering. </p>
+
+    <p>This is where its "brother", the UDP protocol, comes in. Unlike TCP, UDP doesn't really care about the order and status of each packet. It simply sends data without delivery confirmation. What's more, it doesn't establish a connection and doesn't depend on a connection status in any way. </p>
+
+<img data-max-width="512" data-id="255c2fa7-0601-4bbe-8282-53d2c49560b7" src="https://cdn.codegym.cc/images/article/255c2fa7-0601-4bbe-8282-53d2c49560b7/512.jpeg" alt="">
+
+    <p>Its purpose is simply to send data to an address. And this gives rise to the protocol's main disadvantage, low reliability, since it can simply lose pieces of data. Additionally, the recipient must be prepared for the fact that the data may arrive out of order. That said, the protocol also has an advantage, a higher transfer rate, due to the fact that the protocol is limited to sending data.</p>
+
+    <p>There are also differences in how the data itself is transmitted. In TCP, data is streamed, which means that the data has no boundaries. In UDP, data is transmitted as datagrams and has boundaries, and the recipient checks the integrity of the data, but only if the message is successfully received. </p>
+
+    <p>Let's summarize: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>TCP is a reliable and accurate protocol that prevents out data loss. A message will always be delivered with maximum accuracy, or not delivered at all. The recipient doesn't need logic for ordering data, since incoming data will already be ordered. </td>
+                <td>UDP is not as reliable, but it is a faster data transfer protocol. The sending and receiving parties need some additional logic in order to work with this protocol. But let's take a look at how it works using the example of a computer game or mobile game played over the network. We may no longer care about what should have arrived 5 seconds ago, and we can skip a couple of packets if they don't arrive on time — the game may lag, but you can still play!</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>In Java, to work with datagrams transmitted over UDP, we use objects of the <span class="code"><span class="text-green">DatagramSocket</span></span> and <span class="code"><span class="text-green">DatagramPacket</span></span> classes.</p>
+
+    <p>To exchange data, the sender and receiver create datagram sockets, i.e. instances of the <span class="code"><span class="text-green">DatagramSocket</span></span> class. The class has several constructors. The difference between them is where the created socket will connect: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramSocket ()</span></span></td>
+                <td>Connects to any available port on the local machine</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramSocket (int port) </span></span></td>
+                <td>Connects to the specified port on the local machine</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramSocket(int port, InetAddress addr)</span></span></td>
+                <td>Connects to the specified port at an address on the local machine (addr)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>The class contains many methods for accessing and managing the socket parameters (we will look at them a little later), as well as methods for receiving and sending datagrams: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="code text-orange">send(DatagramPacket pack)</span></td>
+                <td>Sends datagrams packed into packets</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">receive (DatagramPacket pack)</span></td>
+                <td>Receives datagrams packed into packets</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><span class="code"><span class="text-green">DatagramPacket</span></span> is a class that represents a datagram package. Datagram packets are used to implement a connectionless packet delivery service. Each message is routed from one machine to another based solely on the information contained in that packet. Multiple packets sent from one machine to another may be routed differently and may arrive in any order. Delivery of packets is not guaranteed.</p>
+
+    <p>Constructors: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramPacket(byte[] buf, int length)</span></span></td>
+                <td>Creates a <span class="code"><span class="text-green">DatagramPacket</span></span> to accept packets of length <span class="text-green">length</span>.</td>
+            <tr>
+            </tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramPacket(byte[] buf, int length, InetAddress address, int port)</span></span></td>
+                <td>Creates a datagram packet to send packets of length <span class="text-green">length</span> to the specified port number on the specified host.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramPacket(byte[] buf, int offset, int length)</span></span></td>
+                <td>Creates a <span class="code"><span class="text-green">DatagramPacket</span></span> to accept packets of length <span class="text-green">length</span>, specifying an offset in the buffer.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramPacket(byte[] buf, int offset, int length, InetAddress address, int port)</span></span></td>
+                <td>Creates a datagram packet to send packets of length <span class="text-green">length</span> with offset <span class="text-green">offset</span> to the specified port number on the specified host.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramPacket(byte[] buf, int offset, int length, SocketAddress address)</span></span></td>
+                <td>Creates a datagram packet to send packets of length <span class="text-green">length</span> with offset <span class="text-green">offset</span> to the specified port number on the specified host.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange"><span class="text-bold">DatagramPacket(byte[] buf, int length, SocketAddress address)</span></span></td>
+                <td>Creates a datagram packet to send packets of length <span class="text-green">length</span> to the specified port number on the specified host.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>We recall that the UDP approach does not establish a connection. The packets are sent off on the hopes that the recipient is expecting them. But you can establish a connection using the <span class="code text-orange">connect(InetAddress addr, int port)</span> method of the <span class="code"><span class="text-green">DatagramSocket</span></span> class.</p>
+
+    <p>A one-way connection is established with the host based on an address and port: either to send or receive datagrams. The connection can be terminated using the <span class="code text-orange">disconnect()</span> method.</p>
+
+    <p>Let's try to write server code based on <span class="code"><span class="text-green">DatagramSocket</span></span> to receive data:</p>
+
+    <pre class='language-java line-numbers'><code>
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
+class Recipient {
+
+   public static void main(String[] args) {
+       try {
+           DatagramSocket ds = new DatagramSocket(1050);
+
+           while (true) {
+               DatagramPacket pack = new DatagramPacket(new byte[5], 5);
+               ds.receive(pack);
+               System.out.println(new String(pack.getData()));
+           }
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+   }
+}
+</code></pre>
+
+    <p>We create a <span class="code"><span class="text-green">DatagramSocket</span></span> object to listen on port 1050. When it receives a message, it prints it to the console. We will transmit the word "Hello", so we limit the buffer size to five bytes.</p>
+
+    <p>Now we'll create the sender class:</p>
+
+    <pre class='language-java line-numbers'><code>
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
+class Sender {
+   private String host;
+   private int port;
+
+   Sender(String host, int port) {
+       this.host = host;
+       this.port = port;
+   }
+
+   private void sendMessage(String mes) {
+       try {
+           byte[] data = mes.getBytes();
+           InetAddress address = InetAddress.getByName(host);
+           DatagramPacket pack = new DatagramPacket(data, data.length, address, port);
+           DatagramSocket ds = new DatagramSocket();
+           ds.send(pack);
+           ds.close();
+       } catch (IOException e) {
+           System.err.println(e);
+       }
+   }
+
+   public static void main(String[] args) {
+   Sender sender = new Sender("localhost", 1050);
+   String message = "Hello";
+
+   Timer timer = new Timer();
+   timer.scheduleAtFixedRate(new TimerTask() {
+       @Override
+       public void run() {
+           sender.sendMessage(message);
+       }
+   }, 1000, 1000);
+}
+
+}
+</code></pre>
+
+    <p>In the <span class="code text-orange">sendMessage</span> method, we create a <span class="code"><span class="text-green">DatagramPacket</span></span> and <span class="code"><span class="text-green">DatagramSocket</span></span>, and send our message. Note that the <span class="code text-orange">close()</span> method is used to close the <span class="code"><span class="text-green">DatagramSocket</span></span> after the message is sent. </p>
+
+    <p>Each second the recipient's console displays the incoming "Hello" message sent by the sender. This means that our communication is all working correctly.</p>

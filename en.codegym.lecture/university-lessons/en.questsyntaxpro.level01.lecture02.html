@@ -1,0 +1,155 @@
+Output on display
+<p>----------------------------------------</p>
+Parameters of the println() method The body of the method consists of commands. You can even say that a method is a group of commands that have been given a name (method name). And so it will be true. Teams are different. The Java language has commands for all occasions. Each command describes a specific
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="e853ac9a-bbbc-4108-a4c1-5e0842459509" data-max-width="1024" alt="" src="https://cdn.javarush.ru/images/article/e853ac9a-bbbc-4108-a4c1-5e0842459509/original.png">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="b8b5ced3-3baf-4167-9efd-104991e965fa" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/b8b5ced3-3baf-4167-9efd-104991e965fa/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="cab220a4-7b01-4f13-b10d-b7477c8cc0a8" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/cab220a4-7b01-4f13-b10d-b7477c8cc0a8/original.png">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Parameters of the <code>println()</code> method</h2>
+<p>A <span class="term text-green">method body</span> consists of <span class="term text-yellow">commands</span>. You could even say that a <span class="term text-green">method</span> is a group of <span class="term text-yellow">commands</span> that has been given a name, i.e. the method name. Either perspective is accurate.</p>
+<p>There are different kinds of commands. The Java language has a command for every occasion. Each command defines some specific action. A <span class="term text-viola">semicolon</span> goes at the end of each command.</p>
+<p>Examples of commands:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="52%">Command</th>
+        <th>Description (what it does)</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="code text-yellow">System.out.println</span><span class="text-red">(</span><span class="code text-neon">1</span><span class="text-red">)</span><span class="code text-viola">;</span></code></pre>
+        </td>
+        <td>
+            Displays a number on the screen:
+            <pre><code><span class="text-green">1</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="code text-yellow">System.out.println</span><span class="text-red">(</span><span class="code text-neon">"Amigo"</span><span class="text-red">)</span><span class="code text-viola">;</span></code></pre>
+        </td>
+        <td>
+            Displays text on the screen:
+            <pre><code><span class="text-green">Amigo</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="code text-yellow">System.out.println</span><span class="text-red">(</span><span class="code text-neon">"Risha &amp; Amigo"</span><span class="text-red">)</span><span class="code text-viola">;</span></code></pre>
+        </td>
+        <td>
+            Displays text on the screen:
+            <pre><code><span class="text-green">Risha &amp; Amigo</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Actually, this is just one command — <code class="text-yellow">System.out.println</code>. The <span class="term text-neon">arguments</span> passed to it are contained in the <span class="term text-red">parentheses</span>. Depending&nbsp;on the value of the parameters, a command can perform various actions. This is super convenient.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Important:</div>
+        <div class="lesson-note__content">
+            <p>In Java, size matters in terms whether the letters in a method are <span class="text-viola">uppercase</span> or <span class="text-viola">lowercase</span>. The <code><span class="text-viola">S</span>ystem.out.println()</code> command <span class="text-green">will work</span>, but <code><span class="text-viola">s</span>ystem.out.println()</code> <span class="text-red">will not</span>.</p>
+        </div>
+    </div>
+</div>
+<p>If you want to display text, you need to mark it on both sides with <span class="term text-user">double quotes</span>.</p>
+<p>A single quote looks like this <code class="text-orange">'</code>, and a double quote looks like this <code class="text-user">"</code>. A double quote is not two single quotes: please don't get confused by that.</p>
+<p>The <span class="term text-user">double quotes</span> symbol is the one next to the <span class="term">Enter</span> key. </p>
+<hr>
+<h2>2. Differences between <code>println()</code> and <code>print()</code></h2>
+<p>There are two variations of the command for screen output: <code>System.out.<span class="text-red">println</span>()</code> and <code>System.out.<span class="text-viola">print</span>()</code></p>
+<p>If you write the <code>System.out.<span class="text-red">println</span>()</code> command several times, each time the passed text will be displayed <span class="term text-red">on&nbsp;a new line</span>. If you use <code>System.out.<span class="text-viola">print</span>()</code>, then the text will be displayed <span class="term text-viola">on the same line</span>. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Commands</th>
+        <th>What will be displayed</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>System.out.<span class="code text-red">println</span>("Amigo");
+System.out.<span class="code text-red">println</span>("IsThe");
+System.out.<span class="code text-red">println</span>("Best");</code></pre>
+        </td>
+        <td>
+                <pre><code><span class="text-green">Amigo</span>
+<span class="text-green">IsThe</span>
+<span class="text-green">Best</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>System.out.<span class="code text-viola">print</span>("Amigo");
+System.out.<span class="code text-red">println</span>("IsThe");
+System.out.<span class="code text-viola">print</span>("Best");</code></pre>
+        </td>
+        <td>
+                <pre><code><span class="text-green">AmigoIsThe</span>
+<span class="text-green">Best</span></code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>System.out.<span class="code text-viola">print</span>("Amigo");
+System.out.<span class="code text-viola">print</span>("IsThe");
+System.out.<span class="code text-viola">print</span>("Best");</code></pre>
+        </td>
+        <td>
+            <pre><code><span class="text-green">AmigoIsTheBest</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>A small note. The <code class="text-red">println()</code> command does not display the text on a new line. Instead, it displays text on the current line — the next text that is displayed will appear on a new line.</p>
+<p>The <code class="text-red">println()</code> command displays text and then adds a special invisible <span class="term text-red">newline</span> character. As&nbsp;a result, the next text will be displayed <span class="term text-red">at the beginning of a new line</span>.</p>
+<p>This is what the fully written program will look like, along with a declaration of an <code>Amigo</code> class and a <code>main</code> method. Keep your eyes on the screen:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>public class <span class="code">Amigo</span>
+{
+   public static void <span class="code">main</span> (String[] args)
+   {
+      System.out.print("Amigo ");
+      System.out.print("The ");
+      System.out.print("Best");
+   }
+}</code></pre>
+    <div class="lesson-example-caption">Program with a declaration of the <code>Amigo</code> class and <code>main</code> method</div>
+</div>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.task01.task0101"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="7c187f38-e6e4-4871-8602-73bb5119394f" data-max-width="1024" alt="" src="https://cdn.javarush.ru/images/article/7c187f38-e6e4-4871-8602-73bb5119394f/original.png">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="365bf367-29cb-4715-b21a-9ccf52d7ebf3" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/365bf367-29cb-4715-b21a-9ccf52d7ebf3/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="16037cfe-99d9-47a9-9358-283e7782958b" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/16037cfe-99d9-47a9-9358-283e7782958b/original.png">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,184 @@
+Multithreading Issues: Accessing a Shared Resource
+<p>----------------------------------------</p>
+Threads, of course, are cool and open up a world of incredible possibilities and ... a heap of complexities for programmers. Different threads change the state of different objects in accordance with the task that each of them performs. And, of course, they can interfere with each other! But the worst happens deep inside the Java machine... Sounds intriguing?
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! Yesterday we discussed the benefits and conveniences of multithreading. Now it's time to look at the disadvantages. And, unfortunately, they are not small."</p>
+<p><strong>Previously, we looked at a program as a set of objects that call each other's methods.</strong> Now everything gets a little more complicated. A program is more like a set of objects that has several "small robots" (threads) crawling through it and executing the commands contained in the methods.</p>
+<p>This new interpretation doesn't cancel the first. They are still objects, and they still call each other's methods. <span class="text-red">But we have to remember that there are several threads, and each thread does its own job or task.</span></p>
+<p>A program is becoming more complicated. <span class="text-red">Different threads change the state of different objects based on the tasks they perform. And they can step on each other's toes.</span></p>
+<p>But the worst stuff happens deep inside the Java machine. As I've said already, the apparent simultaneity of threads is achieved by the fact that the processor constantly switches from one thread to another. It switches to a thread, works for 10 milliseconds, switches to the next thread, works for 10 milliseconds, and so on. And herein lies the problem: these switches can occur at the most inopportune moments. Consider this example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code of the first thread</th>
+        <th>Code of the second thread</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">System.out.print ("Nick is");
+System.out.print ("");
+System.out.print ("15");
+System.out.print ("");
+System.out.print ("years old");</span>
+<span class="text-green">System.out.println ();</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-user">System.out.print ("Lena is");
+System.out.print ("");
+System.out.print ("21");
+System.out.print ("");
+System.out.print ("years old");</span>
+<span class="text-user">System.out.println ();</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>What we expected to be displayed</th>
+    </tr>
+    <tr>
+        <td><span class="text-green">Nick is 15 years old</span><br />
+            <span class="text-user">Lena is 21 years old</span></td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>Actual code execution</th>
+        <th>Code of the first thread</th>
+        <th>Code of the second thread</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">System.out.print ("Nick is");</span>
+<span class="text-user">System.out.print ("Lena is");
+System.out.print (" ")</span>;
+<span class="text-green">System.out.print (" ");
+System.out.print ("15");</span>
+<span class="text-user">System.out.print ("21");
+System.out.print (" ");</span>
+<span class="text-green">System.out.print (" ");
+System.out.print ("years old");
+System.out.println ();</span>
+<span class="text-user">System.out.print ("years old");
+System.out.println ();</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">System.out.print ("Nick is");</span>
+//other thread is running
+//other thread is running
+<span class="text-green">System.out.print (" ");
+System.out.print ("15");
+</span>//other thread is running
+//other thread is running
+<span class="text-green">System.out.print (" ");
+System.out.print ("years old");
+System.out.println ();</span>
+//other thread is running
+//other thread is running</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>//other thread is running
+<span class="text-user">System.out.print ("Lena is");
+System.out.print (" ");</span>
+//other thread is running
+//other thread is running
+<span class="text-user">System.out.print ("21");
+System.out.print (" ");</span>
+//other thread is running
+//other thread is running
+//other thread is running
+<span class="text-user">System.out.print ("years old");
+System.out.println ();</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>What is actually displayed</th>
+    </tr>
+    <tr>
+        <td><span class="text-green">Nick is</span> <span class="text-user">Lena is</span>  <span class="text-green">15</span> <span class="text-user">21</span> <span class="text-green">years old</span><br />
+            <span class="text-user">years old</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>And here's another example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyClass
+{
+private String <span class="text-green">name1</span> = "Ally";
+private String <span class="text-user">name2</span> = "Lena";
+public void <span class="text-red">swap()</span>
+{
+String s = name1;
+name1 = name2;
+name2 = s;
+}
+}</code></pre>
+        </td>
+        <td>The swap method <code><span class="text-red">swap</span></code> the values of the <code><span class="text-green">name1</span></code> and <code><span class="text-user">name2</span></code> variables.</p>
+            <p>What might happen if it is called from two threads at the same time?</td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>Actual code execution</th>
+        <th>Code of the first thread</th>
+        <th>Code of the second thread</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">String s1 = name1;</span> //Ally
+<span class="text-green">name1 = name2;</span> //Lena
+<span class="text-user">String s2 = name1;</span> <span class="text-red">//Lena(!)</span>
+<span class="text-user">name1 = name2;</span> //Lena
+<span class="text-green">name2 = s1;</span> //Ally
+<span class="text-user">name2 = s2;</span> //Lena</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">String s1 = name1;
+name1 = name2;</span>
+//other thread is running
+//other thread is running
+<span class="text-green">name2 = s1;</span>
+//other thread is running</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>//other thread is running
+//other thread is running
+<span class="text-user">String s2 = name1;
+name1 = name2;</span>
+//other thread is running
+<span class="text-user">name2 = s2;</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>The bottom line</th>
+    </tr>
+    <tr>
+        <td><span class="text-red">Both variables have the value «Lena».</span><br />
+            The «Ally» object didn't make it. It's lost.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Who would have guessed that errors like this are possible with such a simple assignment operation?!"</span></p>
+<p>"Yes, this problem has a solution. But we'll talk about this a little later - my throat is dry."</p>

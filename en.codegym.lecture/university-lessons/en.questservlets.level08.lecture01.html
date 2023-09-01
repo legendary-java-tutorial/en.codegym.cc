@@ -1,0 +1,134 @@
+OSI model
+<p>----------------------------------------</p>
+Introduction to OSI. OSI protocol stack. TCP/IP protocol stack. transport layer.
+<p>----------------------------------------</p>
+<h2>Introducing OSI</h2>
+
+<p>When ARPA-network was just being developed, we really wanted to make it as smart as possible. But the more complex
+    the network, the more difficult it is to develop and maintain. As a solution, it was proposed to divide all network
+    functions into logical layers.</p>
+<p>The network operation model is referred to as the network model of the ISO/OSI Open Systems Interconnection Base
+    Reference Model. Briefly - <span class="text-bold">the OSI model</span> (Open Systems Interconnection).</p>
+<img data-max-width="512" data-id="3effcdd0-5b89-4574-b154-c2c1c65d945d"
+     src="https://cdn.codegym.cc/images/article/3effcdd0-5b89-4574-b154-c2c1c65d945d/512.jpeg" alt="">
+<p>In total, there are 7 levels in this model. The interaction of levels is strictly standardized and minimized. The
+    lower level has no idea about the presence of higher levels and their structure.</p>
+<p>The lowest layer can just <span class="text-bold">send bits</span> . Not even transmit, namely send. He has no idea
+    if they will or not. Sent and forgotten.</p>
+<p>A higher level already operates with groups of bits - <span class="text-bold">frames</span> , and knows a little
+    about the physical device of the network, understands MAC addresses and the like.</p>
+<p>The next level is batch. He is even smarter and knows how to operate with network IP addresses. And so on.</p>
+<p>Why is all this necessary? To maximize flexibility.</p>
+<p>Imagine that each layer is a Java interface and it can have several different implementations. So here too. At the
+    physical level, you can send bits over the wire, send over the air (Wi-Fi), send via satellite, and all other levels
+    will not even know anything about it. And everything will work as intended.</p>
+<h2>OSI protocol stack</h2>
+<p>You can study the protocol stack in more detail <a href="https://en.wikipedia.org/wiki/OSI_model" target="_blank">in
+    the picture below</a> :</p>
+<img data-max-width="1024" data-id="a3054303-bdec-4665-a79d-628f1837eb50"
+     src="https://cdn.codegym.cc/images/article/a3054303-bdec-4665-a79d-628f1837eb50/1024.jpeg" alt="">
+<p>But if you are not a system administrator, then you do not need such detailing of protocols. More interesting may be
+    the study of the TCP (Transmission Control Protocol) / IP (Internet Protocol) protocol stack.</p>
+<p>The top three layers in the OSI model, i.e., the application layer, the presentation layer, and the session layer,
+    are not separately distinguished in the TCP/IP model, which has only an application layer above the transport
+    layer:</p>
+<h3>Distribution of protocols by layers of the OSI model</h3>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th>TCP/IP</th>
+            <th>OSI</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td rowspan="3">Applied</td>
+            <td>Applied</td>
+            <td>HTTP, SMTP, SNMP, FTP, Telnet, SSH, SCP, SMB, NFS, RTSP, BGP</td>
+        </tr>
+        <tr>
+            <td>Representation</td>
+            <td>XDR, AFP, TLS, SSL</td>
+        </tr>
+        <tr>
+            <td>session</td>
+            <td>ISO 8327 / CCITT X.225, RPC, NetBIOS, PPTP, L2TP, ASP</td>
+        </tr>
+        <tr>
+            <td>Transport</td>
+            <td>Transport</td>
+            <td>TCP, UDP, SCTP, SPX, ATP, DCCP, GRE</td>
+        </tr>
+        <tr>
+            <td>network</td>
+            <td>network</td>
+            <td>IP, ICMP, IGMP, CLNP, OSPF, RIP, IPX, DDP</td>
+        </tr>
+        <tr>
+            <td rowspan="2">ducted</td>
+            <td>ducted</td>
+            <td>Ethernet, Token ring, HDLC, PPP, X.25, Frame relay, ISDN, ATM, SPB, MPLS, ARP/td&gt;</td>
+        </tr>
+        <tr>
+            <td>Physical</td>
+            <td>electrical wires, radio communication, fiber optic wires, infrared radiation</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<h2>TCP/IP protocol stack</h2>
+<p>The TCP/IP protocol stack includes four layers:</p>
+<ul>
+    <li><span class="text-bold">Application</span> Layer</li>
+    <li><span class="text-bold">Transport</span> Layer</li>
+    <li><span class="text-bold">Internet layer</span> (Network layer) (Internet Layer)</li>
+    <li><span class="text-bold">Link layer</span> (Network Access Layer)</li>
+</ul>
+<p>The protocols of these layers fully implement all the functionality of the OSI model. All user interaction in IP
+    networks is built on the TCP / IP protocol stack.</p>
+<p>The TCP/IP protocol stack is independent of the physical hardware, which, among other things, ensures completely
+    transparent interaction between wired and wireless networks.</p>
+<p>The Application layer is where most network applications run.</p>
+<h3>Application layer</h3>
+<p>For the interaction of programs, there are high-level protocols for the exchange of information. For example,
+    browsers work using the HTTP protocol, mail is sent using the SMTP protocol, Telegram works using its own encrypted
+    protocol.</p>
+<p>But we are not very interested in private protocols. Most often, you will encounter bulk protocols such as an ftp
+    client for FTP (file transfer), SSH (secure connection to a remote machine), DNS (character to IP address
+    translation), and many others.</p>
+<p>Almost all of these protocols run on top of TCP, although some run over UDP (User Datagram Protocol) to speed things
+    up. But, importantly, these protocols have default ports. Example:</p>
+<ul>
+    <li>20 FTP to TCP port 20 (for data transfer) and 21 (for control commands)</li>
+    <li>22-SSH</li>
+    <li>23 - Telnet</li>
+    <li>53 - DNS queries</li>
+    <li>80-HTTP</li>
+    <li>443 - HTTPS</li>
+</ul>
+<p>These ports are defined by the Naming Assignment and Unique Parameters Agency (IANA).</p>
+<p>There are several other popular application layer protocols: Echo, Finger, Gopher, HTTP, HTTPS, IMAP, IMAPS, IRC,
+    NNTP, NTP, POP3, POPS, QOTD, RTSP, SNMP, SSH, Telnet, XDMCP.</p>
+<h3>transport layer</h3>
+<p>Transport layer protocols are designed to solve the problem of guaranteed message delivery.</p>
+<p>A message (data packet) can be sent and lost somewhere on the network. In this case, it is up to the transport layer
+    to monitor these situations and resend the message if necessary.</p>
+<p>Another important task of the transport layer protocol is to control the order in which messages arrive. It often
+    happens that messages were sent in one order and arrived in another. And if you put together a big message from such
+    pieces, you get nonsense.</p>
+<p>To prevent this from happening, the transport layer either enumerates messages or does not send a new one until it
+    has received confirmation of receipt of the previous one. The automatic routing protocols that are logically present
+    at this layer (because they run on top of IP) are actually part of the network layer protocols.</p>
+<p><span class="text-bold">The TCP protocol</span> is a “guaranteed” connection-pre-established transport mechanism that
+    provides an application with a reliable data flow, ensures that received data is error-free, re-requests data in
+    case of loss, and eliminates duplication of data.</p>
+<p>TCP allows you to regulate the load on the network, as well as reduce the waiting time for data when transmitted over
+    long distances. Moreover, TCP guarantees that the received data was sent in exactly the same sequence. This is its
+    main difference from UDP.</p>
+<p><span class="text-bold">UDP</span> is a connectionless datagram protocol. It is also called an “unreliable” transfer
+    protocol, in the sense of the inability to verify the delivery of a message to the addressee, as well as the
+    possible mixing of packets. Applications that require guaranteed data transmission use the TCP protocol.</p>
+<p>UDP is typically used in applications such as video streaming and gaming where packet loss is tolerated and retrying
+    is difficult or unjustified, or in challenge-response applications (such as DNS queries) where establishing a
+    connection takes more resources than Resending.</p>
+<p>Both TCP and UDP use a number called a port to define the upper layer protocol.</p>

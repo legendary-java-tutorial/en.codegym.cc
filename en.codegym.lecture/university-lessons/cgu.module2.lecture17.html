@@ -1,0 +1,344 @@
+Callable and Future
+<p>----------------------------------------</p>
+You are already familiar with the Runnable interface and the Thread class that implements it. Let's remember what this interface looks like...
+<p>----------------------------------------</p>
+<h2>The Runnable problem</h2>
+
+    <p>You are already familiar with the <span class="text-neon"><span class="text-bold"><em>Runnable</em></span></span> interface and the <span class="code"><span class="text-green">Thread</span></span> class that implements it. Let's recall what this interface looks like:</p>
+
+    <pre class='language-java line-numbers'><code>
+public interface Runnable {
+	public abstract void run();
+}
+</code></pre>
+
+    <p>Note that the <span class="code text-orange">run</span> method's return type is <span class="text-orange">void</span>. But what if we need our thread to return some result of its work in the form of a number, a string, or some other object? Then we must come up with a workaround. Something like this:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Fibonacci implements Runnable {
+ 
+ 
+ 
+	private final int index;
+ 
+	private int result;
+ 
+ 
+ 
+	public Fibonacci(int index) {
+ 
+    		this.index = index;
+ 
+	}
+ 
+ 
+ 
+	@Override
+ 
+	public void run() {
+ 
+    		int first = 0;
+ 
+    		int second = 1;
+ 
+    		if (index == 1) {
+ 
+        			result = first;
+ 
+    		} else if (index == 2) {
+ 
+        			result = second;
+ 
+    		} else {
+ 
+        			for (int i = 0; i &lt; index - 2; i++) {
+ 
+            				int temp = second;
+ 
+            				second += first;
+ 
+            				first = temp;
+ 
+        			}
+ 
+ 
+ 
+            			result = second;
+ 
+    		}
+ 
+	}
+ 
+ 
+ 
+	public static void printByIndex(int index) throws InterruptedException {
+ 
+    		Fibonacci fibonacci = new Fibonacci(index);
+ 
+    		Thread thread = new Thread(fibonacci);
+ 
+    		thread.start();
+ 
+    		thread.join();
+ 
+    		System.out.println("Fibonacci number " + index + ": " + fibonacci.result);
+ 
+	}
+ 
+}
+</code></pre>
+ 
+    <p>Let's run the following <span class="code text-orange">main</span> method:</p>
+
+    <pre class='language-java line-numbers'><code>
+	public static void main(String[] args) throws Exception {
+    		Fibonacci.printByIndex(10);
+	}
+</code></pre>
+
+    <p>The console will display:</p>
+
+    <div class="terminal">Fibonacci number 10: 34</div>
+
+    <p>This code has several drawbacks. For example, as a result of the call to the <span class="code text-orange">join</span> method, the main thread will block while the <span class="code text-orange">printByIndex</span> method is executed.</p>
+ 
+    <h2>Callable interface</h2>
+
+    <p>Now let's look at the interface that Java provides us out of the box, which can be used as an alternative to <span class="text-neon"><span class="text-bold"><em>Runnable</em></span></span>. This is the <span class="text-neon"><span class="text-bold"><em>Callable</em></span></span> interface:</p>
+
+    <pre class='language-java line-numbers'><code>
+public interface Callable&lt;V&gt; {
+ 
+	V call() throws Exception;
+ 
+}
+</code></pre>
+ 
+    <p>As you can see, just like <span class="text-neon"><span class="text-bold"><em>Runnable</em></span></span>, it has only one method. This method serves the same purpose as the <span class="code text-orange">run</span> method — it contains the code that will be executed in a parallel thread. As for differences, take a look at the return value. Now it can be any type that you specify when implementing the interface:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class CurrentDate implements Callable&lt;Long&gt; {
+ 
+	@Override
+ 
+	public Long call() {
+ 
+    		return new Date().getTime();
+ 
+	}
+ 
+}
+</code></pre>
+
+<p>Another example:</p>
+
+    <pre class='language-java line-numbers'><code>
+Callable&lt;String&gt; task = () -&gt; {
+ 
+	Thread.sleep(100);
+ 
+	return "Done";
+ 
+};
+</code></pre>
+ 
+    <p>Here's something else useful — the <span class="code text-orange">call</span> method can throw an <span class="text-red"><span class="text-bold">Exception</span></span>. That means that, unlike the <span class="code text-orange">run</span> method, in the <span class="code text-orange">call</span> method we don't have to handle the checked exceptions that occur inside the method:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <pre class='language-java line-numbers'><code>
+public class Sleep implements Runnable {
+
+	@Override
+
+	public void run() {
+
+    	    try {
+
+        	        Thread.sleep(1000);
+
+    	    } catch (InterruptedException ignored) {
+
+    	    }
+
+	}
+
+}
+</code></pre>
+                </td>
+                <td>
+                    <pre class='language-java line-numbers'><code>
+public class Sleep implements Callable {
+
+	@Override
+
+	public Object call() throws InterruptedException {
+
+    	    Thread.sleep(1000);
+
+    	    return null;
+
+	}
+
+}
+</code></pre>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Future interface</h2>
+
+    <p>Another interface that works closely with <span class="text-neon"><span class="text-bold"><em>Callable</em></span></span> is <span class="text-neon"><span class="text-bold"><em>Future</em></span></span>. <span class="text-neon"><span class="text-bold"><em>Future</em></span></span> represents the result of asynchronous (parallel) computations (the value returned by the <span class="code text-orange">call</span> method). It lets you check whether the calculations are done, wait for the calculations to finish, get the result of the calculations, and more.</p>
+
+    <h2>Methods of the Future interface</h2>
+
+    <ul>
+        <li><p><span class="code text-orange">boolean isDone()</span> — this method returns <span class="text-green"><em>true</em></span> if this task (computation) is done. Tasks that ended normally, ended with an exception, or were canceled are considered done.</p></li>
+        <li><p><span class="code text-orange">V get()</span> — if necessary, this method blocks the thread that called it, and returns the result of the calculations when they are done.</p></li>
+        <li><p><span class="code text-orange">V get(long timeout, TimeUnit unit)</span> — like the previous method, this method blocks the thread that called it, waiting for the result, but only for the time specified by the method parameters.</p></li>
+        <li><p><span class="code text-orange">boolean cancel(boolean mayInterruptIfRunning)</span> — this method tries to stop the execution of the task. If the task has not started running yet, it will never run. If the task was in progress, then the <span class="text-green">mayInterruptIfRunning</span> parameter determines whether an attempt will be made to interrupt the thread executing the task. After the <span class="code text-orange">cancel</span> method is called, the <span class="code text-orange">isDone</span> method will always return <span class="text-green"><em>true</em></span>.</p></li>
+        <li><p><span class="code text-orange">boolean isCancelled()</span> — this method returns <span class="text-green"><em>true</em></span> if the task is canceled before it finishes normally. The method will always return <span class="text-green"><em>true</em></span> if the <span class="code text-orange">cancel</span> method was previously called and returned <span class="text-green"><em>true</em></span>.</p></li>
+    </ul>
+
+    <h2>Example of code using Callable and Future</h2>
+
+    <pre class='language-java line-numbers'><code>
+import java.util.HashMap;
+ 
+import java.util.Map;
+ 
+import java.util.concurrent.*;
+ 
+ 
+ 
+public class Fibonacci implements Callable&lt;Integer&gt; {
+ 
+ 
+ 
+	private final int index;
+ 
+ 
+ 
+	public Fibonacci(int index) {
+ 
+    		this.index = index;
+ 
+	}
+ 
+ 
+ 
+	@Override
+ 
+	public Integer call() {
+ 
+    		int first = 0;
+ 
+    		int second = 1;
+ 
+    		if (index == 1) {
+ 
+        			return first;
+ 
+    		} else if (index == 2) {
+ 
+        			return second;
+ 
+    		} else {
+ 
+        		for (int i = 0; i &lt; index - 2; i++) {
+ 
+            			int temp = second;
+ 
+            			second += first;
+ 
+            			first = temp;
+ 
+        		}
+ 
+ 
+ 
+        			return second;
+ 
+    		}
+ 
+	}
+ 
+ 
+ 
+	public static Future&lt;Integer&gt; calculateAsync(int index) throws Exception {
+ 
+    		Fibonacci fibonacci = new Fibonacci(index);
+ 
+ 
+ 
+    		// The future object will represent the result of running the fibonacci task.
+ 
+    		FutureTask&lt;Integer&gt; future = new FutureTask&lt;&gt;(fibonacci);
+ 
+ 
+ 
+    		// Because the FutureTask class implements both the Future interface and the Runnable interface,
+ 
+	 	// you can pass instances of it to the Thread constructor
+ 
+    		Thread thread = new Thread(future);
+ 
+    		thread.start();
+ 
+ 
+ 
+    		return future;
+ 
+	}
+ 
+}
+</code></pre>
+ 
+    <p>Let's run the following <span class="code text-orange">main</span> method:</p>
+
+    <pre class='language-java line-numbers'><code>
+	public static void main(String[] args) throws Exception {
+    		Map&lt;Integer, Future&lt;Integer&gt;&gt; tasks = new HashMap&lt;&gt;();
+    		for (int i = 10; i &lt; 20; i++) {
+        			tasks.put(i, Fibonacci.calculateAsync(i));
+    		}
+ 
+    		for (Map.Entry&lt;Integer, Future&lt;Integer&gt;&gt; entry : tasks.entrySet()) {
+        			Future&lt;Integer&gt; task = entry.getValue();
+        			int index = entry.getKey();
+        			int result;
+        			// Check whether the task is done
+        			if (task.isDone()) {
+            				// Get the result of the calculations
+            				result = task.get();
+        			} else {
+            				try {
+                				// Wait another 100 milliseconds for the result of the calculations
+                				result = task.get(100, TimeUnit.MILLISECONDS);
+            				} catch (TimeoutException e) {
+                				// Interrupt the task
+                				task.cancel(true);
+                				System.out.println("Fibonacci number " + index + " could not be calculated in the allotted time.");
+                				return;
+            				}
+        			}
+        			System.out.println("Fibonacci number " + index + ": " + result);
+    		}
+	}
+</code></pre>
+ 
+    <p>The console will display:</p>
+
+    <div class="terminal">Fibonacci number 16: 610<br />
+Fibonacci number 17: 987<br />
+Fibonacci number 18: 1597<br />
+Fibonacci number 19: 2584<br />
+Fibonacci number 10: 34<br />
+Fibonacci number 11: 55<br />
+Fibonacci number 12: 89<br />
+Fibonacci number 13: 144<br />
+Fibonacci number 14: 233<br />
+Fibonacci number 15: 377</div>

@@ -1,0 +1,77 @@
+Enum Singleton
+<p>----------------------------------------</p>
+Recently, you and I figured out what Singleton is, how to implement it in Java, and what it is for. But what if I tell you that Java already has its own singleton out of the box? Interesting? Then let's find out...
+<p>----------------------------------------</p>
+<p>You recently delved into the <a href="https://codegym.cc/quests/lectures/cgu.module1.lecture26" target="_blank">singleton design pattern</a>, how to implement it in Java, and what it is for. But what if I tell you that Java comes with its own singleton out of the box? Intrigued? Then let's dive in.</p>
+
+    <p>You probably already know about the <a href="https://codegym.cc/groups/posts/154-how-to-use-the-enum-class" target="_blank">Enum class</a>. It has a special feature that you should be aware of. Specifically, <span class="code"><span class="text-green">Enum</span></span> implements the singleton design pattern. This option is almost the same as the singleton approach involving a <span class="code">public</span> field. </p>
+
+    <h4>Singleton as enum:</h4>
+
+    <pre class='language-java line-numbers'><code>
+public enum Device {   
+    PRINTER	
+} 
+    </code></pre>
+
+    <h4>Singleton as a public variable:</h4>
+
+    <pre class='language-java line-numbers'><code>
+public class Printer {   
+    public static final Printer PRINTER = new Printer();   
+    private Printer() {
+    }
+//…
+}
+    </code></pre>
+ 
+    <p>The <span class="code"><span class="text-green">enum</span></span> approach is more compact than the public-field approach, since we don't need to write our own implementation. Most importantly, enums have no problems with serialization. </p>
+
+    <p>Serialization of enums works differently than it does for ordinary objects: only the value of the enum name is serialized. During deserialization, the method is used with the deserialized name to get an instance. Additionally, <span class="code"><span class="text-green">enum</span></span> can protect you against <span class="text-bold">reflection attacks</span>. </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>You'll learn more about reflection in the lessons in the second module, where we will explore the <span class="text-bold">Reflection API</span>.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Java prohibits instantiating enums —a limitation baked into the implementation of the <span class="code"><span class="text-green">Constructor</span></span> class's <span class="code text-orange">newInstance</span> method, which is often called when creating objects through reflection.</p>
+  
+    <p><span class="text-bold">Excerpt of code from</span> <span class="code text-orange">Constructor.newInstance</span><span class="text-bold">. Used to create an</span> <span class="code"><span class="text-green">enum</span></span>: </p>
+
+    <pre class='language-java line-numbers'><code>
+if ((clazz.getModifiers() &amp; Modifier.ENUM) != 0)
+    throw new IllegalArgumentException("Cannot reflectively create enum objects");
+    </code></pre>
+ 
+    <p><span class="text-bold">The disadvantages of using an</span> <span class="code"><span class="text-green">enum</span></span> <span class="text-bold">to create a singleton include:</span></p>
+
+    <ul>
+        <li><p>Lack of lazy initialization, since the object is created immediately and initialization cannot be delayed.</p></li>
+        <li><p>Other classes cannot be extended. That is, in cases where you need to inherit another class, it won't work to use an <span class="code"><span class="text-green">enum</span></span> as a singleton. In such cases, we need to turn to the other implementation options already familiar to us: a static method or a public variable.</p></li>
+        <li><p>When using enum as a singleton, you can only use one <span class="code"><span class="text-green">enum</span></span> field.</p></li>
+    </ul>
+  
+    <pre class='language-java line-numbers'><code>
+public enum Device extends Electricity { 
+    PRINTER 
+}
+    </code></pre>
+ 
+    <p>This code will give us a compilation error:</p>
+
+    <div class="terminal">No extends clause allowed for enum</div>
+
+    <p>But if we need to implement an interface, there is no problem, since <span class="code"><span class="text-green">enum</span></span> can implement interfaces:</p>
+
+    <pre class='language-java line-numbers'><code>
+public enum Device implements Electricity { 
+    PRINTER 
+}
+    </code></pre>
+ 
+    <p>If you don't need to use inheritance, it's best to implement the singleton pattern via <span class="code"><span class="text-green">enum</span></span>. We aren't alone in recommending this — <a href="https://sites.google.com/site/io/effective-java-reloaded" target="_blank">Joshua Bloch himself does as well</a>. </p>
+
+    </p>This implementation approach gives you convenience, compactness, serialization out of the box, protection from reflection attacks, and uniqueness — everything that a good singleton needs!</p>

@@ -1,0 +1,312 @@
+Setting up a test environment in JUnit
+<p>----------------------------------------</p>
+Annotations @BeforeEach, @AfterEach. Annotations @BeforeAll, @AfterAll.
+<p>----------------------------------------</p>
+<h2>3.1 Annotations @BeforeEach, @AfterEach</h2>
+
+<p>Note that in the previous example, in each method we had to write code to create an object
+    <mark class="green">calculator</mark>
+    .
+</p>
+<p>Of course, this is just one line, but if we test real systems, we will often have a situation where we need to create
+    and configure several objects, which can take several dozen lines of code. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token comment">//Create an HttpClient object</span>
+   <span class="token class-name">HttpClient</span> client <span class="token operator">=</span> <span
+            class="token class-name">HttpClient</span><span class="token punctuation">.</span><span
+            class="token function">newBuilder</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span>
+    	<span class="token punctuation">.</span><span class="token function">version</span><span
+            class="token punctuation">(</span><span class="token class-name">Version</span><span
+            class="token punctuation">.</span>HTTP_1_1<span class="token punctuation">)</span>
+    	<span class="token punctuation">.</span><span class="token function">followRedirects</span><span
+            class="token punctuation">(</span><span class="token class-name">Redirect</span><span
+            class="token punctuation">.</span>NORMAL<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">connectTimeout</span><span
+            class="token punctuation">(</span><span class="token class-name">Duration</span><span
+            class="token punctuation">.</span><span class="token function">ofSeconds</span><span
+            class="token punctuation">(</span><span class="token number">20</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span>
+    	<span class="token punctuation">.</span><span class="token function">proxy</span><span
+            class="token punctuation">(</span><span class="token class-name">ProxySelector</span><span
+            class="token punctuation">.</span><span class="token function">of</span><span
+            class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InetSocketAddress</span><span
+            class="token punctuation">(</span><span class="token string">"proxy.example.com"</span><span
+            class="token punctuation">,</span> <span class="token number">80</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">authenticator</span><span
+            class="token punctuation">(</span><span class="token class-name">Authenticator</span><span
+            class="token punctuation">.</span><span class="token function">getDefault</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+    	<span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+
+   <span class="token comment">//Create an HttpRequest object</span>
+  <span class="token class-name">HttpRequest</span> request <span class="token operator">=</span> <span
+            class="token class-name">HttpRequest</span><span class="token punctuation">.</span><span
+            class="token function">newBuilder</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span>
+     <span class="token punctuation">.</span><span class="token function">uri</span><span
+            class="token punctuation">(</span><span class="token keyword">new</span> <span
+            class="token function">URI</span><span class="token punctuation">(</span><span class="token string">"https://codegym.cc"</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span>
+     <span class="token punctuation">.</span><span class="token function">headers</span><span class="token punctuation">(</span><span
+            class="token string">"Content-Type"</span><span class="token punctuation">,</span> <span
+            class="token string">" application/octet-stream"</span><span class="token punctuation">)</span>
+     <span class="token punctuation">.</span><span class="token function">POST</span><span
+            class="token punctuation">(</span> <span class="token class-name">HttpRequest<span
+            class="token punctuation">.</span>BodyPublishers</span><span class="token punctuation">.</span> ofInputStream <span
+            class="token punctuation">(</span> <span class="token punctuation">(</span><span
+            class="token punctuation">)</span> <span class="token operator">-&gt;</span> is<span
+            class="token punctuation">;</span> <span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+     <span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+
+   <span class="token comment">//Call the send() method</span>
+   <span class="token class-name">HttpResponse</span><string> response <span class="token operator">=</span> client<span
+            class="token punctuation">.</span><span class="token function">send</span><span
+            class="token punctuation">(</span>request<span class="token punctuation">,</span> <span
+            class="token class-name">BodyHandlers</span><span class="token punctuation">.</span><span
+            class="token function">ofString</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span
+                class="token punctuation">.</span><span class="token function">println</span><span
+                class="token punctuation">(</span>response<span class="token punctuation">.</span><span
+                class="token function">statusCode</span><span class="token punctuation">(</span><span
+                class="token punctuation">)</span><span class="token punctuation">)</span><span
+                class="token punctuation">;</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span
+                class="token punctuation">.</span><span class="token function">println</span><span
+                class="token punctuation">(</span>response<span class="token punctuation">.</span><span
+                class="token function">body</span><span class="token punctuation">(</span><span
+                class="token punctuation">)</span><span class="token punctuation">)</span><span
+                class="token punctuation">;</span>
+</string></code></pre>
+<p>In the example above, we have created and configured an object
+    <mark class="green">HttpClient</mark>
+    and want to test the <span class="code text-orange">send()</span> method .
+</p>
+<p>So that each time in the test method not to write the creation of an object
+    <mark class="green">HttpClient</mark>
+    , it can be moved to a separate method and given a special <span class="text-yellow"><span class="text-bold">@BeforeEach</span></span>
+    annotation . Then Junit will call this method before each test method. Example:
+</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token keyword">class</span> <span
+        class="token class-name">HttpClientTest</span> <span class="token punctuation">{</span>
+     	<span class="token keyword">public</span> <span class="token class-name">HttpClient</span> client<span
+            class="token punctuation">;</span>
+
+   	<span class="token annotation punctuation">@BeforeEach</span>
+    	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">init</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">{</span>
+   	   client <span class="token operator">=</span> <span class="token class-name">HttpClient</span><span
+            class="token punctuation">.</span><span class="token function">newBuilder</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span>
+   	        <span class="token punctuation">.</span><span class="token function">version</span><span
+            class="token punctuation">(</span><span class="token class-name">Version</span><span
+            class="token punctuation">.</span>HTTP_1_1<span class="token punctuation">)</span>
+   	        <span class="token punctuation">.</span><span class="token function">followRedirects</span><span
+            class="token punctuation">(</span><span class="token class-name">Redirect</span><span
+            class="token punctuation">.</span>NORMAL<span class="token punctuation">)</span>
+   	        <span class="token punctuation">.</span><span class="token function">connectTimeout</span><span
+            class="token punctuation">(</span><span class="token class-name">Duration</span><span
+            class="token punctuation">.</span><span class="token function">ofSeconds</span><span
+            class="token punctuation">(</span><span class="token number">20</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span>
+   	        <span class="token punctuation">.</span><span class="token function">proxy</span><span
+            class="token punctuation">(</span><span class="token class-name">ProxySelector</span><span
+            class="token punctuation">.</span><span class="token function">of</span><span
+            class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InetSocketAddress</span><span
+            class="token punctuation">(</span><span class="token string">"proxy.example.com"</span><span
+            class="token punctuation">,</span> <span class="token number">80</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+   	        <span class="token punctuation">.</span><span class="token function">authenticator</span><span
+            class="token punctuation">(</span><span class="token class-name">Authenticator</span><span
+            class="token punctuation">.</span><span class="token function">getDefault</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span>
+   	        <span class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+    	<span class="token punctuation">}</span>
+
+   	<span class="token annotation punctuation">@Test</span>
+    	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">send200</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span
+            class="token class-name">Exception</span> <span class="token punctuation">{</span>
+     	   <span class="token comment">//Create an HttpRequest() object</span>
+         	<span class="token class-name">HttpRequest</span> request <span class="token operator">=</span> <span
+            class="token class-name">HttpRequest</span><span class="token punctuation">.</span><span
+            class="token function">newBuilder</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span
+            class="token function">URI</span><span class="token punctuation">(</span><span class="token string">"https://codegym.cc"</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">.</span><span class="token function">build</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+
+     	   <span class="token comment">//Call the send() method</span>
+     	   <span class="token class-name">HttpResponse</span><string> response <span class="token operator">=</span> client<span
+            class="token punctuation">.</span><span class="token function">send</span><span
+            class="token punctuation">(</span>request<span class="token punctuation">,</span> <span
+            class="token class-name">BodyHandlers</span><span class="token punctuation">.</span><span
+            class="token function">ofString</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+        	<span class="token function">assertEquals</span><span class="token punctuation">(</span><span
+                class="token number">200</span><span class="token punctuation">,</span> response<span
+                class="token punctuation">.</span><span class="token function">statusCode</span><span
+                class="token punctuation">(</span><span class="token punctuation">)</span><span
+                class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+   	<span class="token annotation punctuation">@Test</span>
+    	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">send404</span><span
+                class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span
+                class="token class-name">Exception</span> <span class="token punctuation">{</span>
+     	   <span class="token comment">//Create an HttpRequest() object</span>
+         	<span class="token class-name">HttpRequest</span> request <span class="token operator">=</span> <span
+                class="token class-name">HttpRequest</span><span class="token punctuation">.</span><span
+                class="token function">newBuilder</span><span class="token punctuation">(</span><span
+                class="token keyword">new</span> <span class="token function">URI</span><span class="token punctuation">(</span><span
+                class="token string">"https://codegym.cc/unknown"</span><span class="token punctuation">)</span><span
+                class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">build</span><span
+                class="token punctuation">(</span><span class="token punctuation">)</span><span
+                class="token punctuation">;</span>
+
+     	   <span class="token comment">//Call the send() method</span>
+     	   <span class="token class-name">HttpResponse</span><string> response <span class="token operator">=</span> client<span
+                class="token punctuation">.</span><span class="token function">send</span><span
+                class="token punctuation">(</span>request<span class="token punctuation">,</span> <span
+                class="token class-name">BodyHandlers</span><span class="token punctuation">.</span><span
+                class="token function">ofString</span><span class="token punctuation">(</span><span
+                class="token punctuation">)</span><span class="token punctuation">)</span><span
+                class="token punctuation">;</span>
+        	<span class="token function">assertEquals</span><span class="token punctuation">(</span><span
+                    class="token number">404</span><span class="token punctuation">,</span> response<span
+                    class="token punctuation">.</span><span class="token function">statusCode</span><span
+                    class="token punctuation">(</span><span class="token punctuation">)</span><span
+                    class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</string></string></code></pre>
+<p>You can also create a special method that will be called every time after the next test method, and <span
+        class="text-red">clean up the used resources</span> , write something to the log, etc. Such a method must be
+    marked with the <span class="text-yellow"><span class="text-bold">@AfterEach</span></span> annotation .</p>
+<p>If you have 3 test methods <span class="code text-orange">test1()</span> , <span
+        class="code text-orange">test2()</span> and <span class="code text-orange">test3()</span> , then the call order
+    will be:</p>
+<ul>
+    <li><span class="text-green">beforeEach method</span></li>
+    <li><span class="text-green">test1()<span></span></span></li>
+    <li><span class="text-green">AfterEach method</span></li>
+    <li><span class="text-neon">beforeEach method</span></li>
+    <li><span class="text-neon">test2()</span></li>
+    <li><span class="text-neon">AfterEach method</span></li>
+    <li><span class="text-orange">beforeEach method</span></li>
+    <li><span class="text-orange">test3()</span></li>
+    <li><span class="text-orange">AfterEach method</span></li>
+</ul>
+<h2>3.2 Annotations @BeforeAll, @AfterAll</h2>
+<p>JUnit also allows you to add a method that will be called <span class="text-red">once before all test methods</span>
+    . Such a method should be annotated with <span class="text-yellow"><span class="text-bold">@BeforeAll</span></span>
+    . It also has a paired <span class="text-yellow"><span class="text-bold">@AfterAll</span></span> annotation . The
+    method marked with it will be called by JUnit after all test methods.</p>
+<p>Let's write a special example that allows you to better understand how it all works. Let's take testing of our
+    calculator as a basis:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token keyword">class</span> <span
+        class="token class-name">CalculatorTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name"> Calculator</span> calc <span
+            class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Calculator</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@BeforeAll</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span
+            class="token keyword">void</span> <span class="token function">init</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span
+            class="token punctuation">.</span><span class="token function">println</span><span
+            class="token punctuation">(</span><span class="token string">"BeforeAll init() method called"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@BeforeEach</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initEach</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span
+            class="token punctuation">.</span><span class="token function">println</span><span
+            class="token punctuation">(</span><span
+            class="token string">"BeforeEach initEach() method called"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span
+            class="token function">add</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span
+            class="token punctuation">.</span><span class="token function">println</span><span
+            class="token punctuation">(</span><span class="token string">"Testing Addition"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span
+            class="token function">sub</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span
+            class="token punctuation">.</span><span class="token function">println</span><span
+            class="token punctuation">(</span><span class="token string">"Testing Subtraction"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span
+            class="token function">mul</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span
+            class="token punctuation">.</span><span class="token function">println</span><span
+            class="token punctuation">(</span><span class="token string">"Testing Multiplication"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span
+            class="token function">div</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span
+            class="token punctuation">.</span><span class="token function">println</span><span
+            class="token punctuation">(</span><span class="token string">"Testing Division"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This test will print the following text to the console:</p>
+<pre><code>
+BeforeAll init() method called
+BeforeEach initEach() method called
+Testing Addition
+ 
+BeforeEach initEach() method called
+Testing Subtraction
+ 
+BeforeEach initEach() method called
+Testing Multiplication
+ 
+BeforeEach initEach() method called
+Testing Division
+</code></pre>

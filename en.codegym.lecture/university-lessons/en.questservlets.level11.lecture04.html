@@ -1,0 +1,42 @@
+Adding Tomcat to IDEA
+<p>----------------------------------------</p>
+Adding Tomcat to IDEA Creating the First Web Application Creating the First Maven Based Web Application
+<p>----------------------------------------</p>
+p><strong>Step one. </strong>Create a local Tomcat configuration. Run-Edit Configurations-</p><img data-max-width="512" data-id="1643d406-e057-4365-abbc-a5c520f0ac1d" alt="Tomcat in IDEA Ultimate" src="https://cdn.javarush.com/images/article/1643d406-e057-4365-abbc-a5c520f0ac1d/512.jpeg" style="width: 512px;">
+<p><strong>Step two. </strong>Then select the local Tomcat.</p><img data-max-width="512" data-id="8790ca01-6411-44ea-a9bb-b62285fd9d1a" alt="Tomcat in IDEA Ultimate 2" src="https://cdn.javarush.com/images/article/8790ca01-6411-44ea-a9bb-b62285fd9d1a/512.jpeg" style="width: 512px;">
+<p><strong>Step three. </strong>Configuring Tomcat. By clicking on strong&gt;configure add the path to the Tomcat folder</p><img data-max-width="1024" data-id="c1d59706-bbe1-417d-8ef0-bf822ef10bbe" alt="Tomcat in IDEA Ultimate 3" src="https://cdn.javarush.com/images/article/c1d59706-bbe1-417d-8ef0-bf822ef10bbe/1024.jpeg" style="width: 1024px;">
+<p>Here you can specify:</p>
+<ul>
+ <li><code>HTTP port</code>- the port on which Tomcat will run</li>
+ <li><code>JRE</code>- you can choose the JRE on which Tomcat will run</li>
+ <li><code>VM options</code>- virtual machine settings for Tomcat</li>
+ <li><code>URL</code>- this link will be opened by IDEA after starting the server with its help</li>
+</ul>
+<p><strong>Step four. </strong>We add our project as an artifact to Tomcat.</p>
+<p>To do this, go to the Deployment tab and click the + button on the right.</p><img data-max-width="1024" data-id="b51e6a7b-108c-4b72-b0e3-2865ea272784" alt="Tomcat in IDEA Ultimate 4" src="https://cdn.javarush.com/images/article/b51e6a7b-108c-4b72-b0e3-2865ea272784/1024.jpeg" style="width: 1024px;">
+<p>That's all!</p>
+<h2>5.2 Creating the first web application</h2>
+<p>If you don't have any web application yet, then you can create it in IDEA in two ways. A Maven based project and just a native JavaEE project.</p>
+<p>If you want to create a native web project from IDEA, then follow this simple instruction:</p>
+<p><strong>Step 1</strong> . Create a new project ( <code>menu File -&gt; New Project</code>), then select:</p>
+<ul>
+ <li>Project Type - <strong>Java Enterprise</strong></li>
+ <li>Application template - <strong>Web Application</strong></li>
+ <li>Application Server - <strong>The currently configured Tomcat Server</strong> . If it has not been added yet, then there is a button on the right <code>New</code>.</li>
+ <li>JDK - your current Java JDK</li>
+</ul><img data-max-width="800" data-id="777ab02f-52d0-4e8d-9e2c-35335cfe1882" alt="Tomcat in IDEA Ultimate 5" src="https://cdn.javarush.com/images/article/777ab02f-52d0-4e8d-9e2c-35335cfe1882/800.jpeg" style="width: 800px;">
+<p><strong>Step 2</strong> . Further, IDEA will ask you to specify various dependencies, do not add anything.</p><img data-max-width="800" data-id="5007c71f-8a59-443a-8088-52a92593fdd5" alt="Tomcat in IDEA Ultimate 6" src="https://cdn.javarush.com/images/article/5007c71f-8a59-443a-8088-52a92593fdd5/800.jpeg" style="width: 800px;">
+<p><strong></strong>Step <strong>3 </strong>If Tomcat has been configured correctly, then you will see your application:</p><img data-max-width="1024" data-id="1eb0fddd-6d1e-4d4b-9494-193df98342f4" alt="Tomcat in IDEA Ultimate 7" src="https://cdn.javarush.com/images/article/1eb0fddd-6d1e-4d4b-9494-193df98342f4/1024.jpeg" style="width: 1024px;">
+<p><strong>Step</strong> 4 Your project is ready, you can run it with the Run or Debug button.</p>
+<h2>5.3 Building Your First Maven Web Application</h2>
+<p>If you want to create a web application based on a Maven project, then the instructions will be even simpler.</p>
+<p><strong>Step 1</strong> . Create a new project ( <code>menu File -&gt; New Project</code>), then select:</p>
+<ul>
+ <li>Project Type - <strong>Maven Archetype</strong></li>
+ <li>JDK - set <strong>the JDK of the project</strong></li>
+ <li>Archetype (project template) - set <strong>maven-archetype-webapp</strong></li>
+</ul><img data-max-width="800" data-id="42511caf-a079-4aa3-90f5-4ab1cc6bf729" alt="Maven based web application" src="https://cdn.javarush.com/images/article/42511caf-a079-4aa3-90f5-4ab1cc6bf729/800.jpeg" style="width: 800px;">
+<p><strong>Step 2</strong> . We get a project like this:</p><img data-max-width="1024" data-id="15de0a8d-5d73-49b9-8f1e-9b089be09285" alt="Maven based web application 1" src="https://cdn.javarush.com/images/article/15de0a8d-5d73-49b9-8f1e-9b089be09285/1024.jpeg" style="width: 1024px;">
+<p>The project has been generated, but Tomcat has not yet been configured. To be able to run or debug a project, you need to set up Tomcat and add your project to it as an artifact. How exactly to do this, we have already considered earlier.</p>
+<p><strong></strong>Step <strong>3 </strong>If Tomcat is configured correctly, then your settings page should look something like this:</p><img data-max-width="1024" data-id="0f95822e-fccc-4dae-8741-3d405a808457" alt="Maven 3 based web application" src="https://cdn.javarush.com/images/article/0f95822e-fccc-4dae-8741-3d405a808457/1024.jpeg" style="width: 1024px;">
+<p><strong>Step</strong> 4 Your project is ready, you can run it with the Run or Debug button.</p>

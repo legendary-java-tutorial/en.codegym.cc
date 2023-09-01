@@ -1,0 +1,33 @@
+The nuances of work
+<p>----------------------------------------</p>
+Hello Amigo! And a couple more details. That is to say, practical advice. Suppose you have a method that waits for something and falls asleep until the condition is met. If the collection is empty, then wait public synchronized Runnable getJob() { if (jobs.size()==0) this.wait(); return jobs.remove(0); } The Java documentation strongly advises calling the wait method in a loop: If a collection ...
+<p>----------------------------------------</p>
+<p>"Hi, Amigo!"</p>
+<p>"And a couple more details. Let's call it practical advice."</p>
+<p>"Suppose you have a method that's waiting for something and falls asleep until a condition is satisfied."</p>
+<div class="code-heading">If the collection is empty, then we wait</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public synchronized</strong> Runnable getJob()
+{
+ <strong>if</strong> (jobs.size() == 0)
+  <span class="text-red">this.wait();</span>
+
+ return jobs.remove(0);
+}</code></pre>
+<p>"The Java documentation very insistently recommends calling the wait method in a loop:"</p>
+<div class="code-heading">If the collection is empty, then we wait</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>public synchronized</strong> Runnable getJob()
+{
+ <strong>while</strong> (jobs.size() == 0)
+  <span class="text-red">this.wait();</span>
+
+ return jobs.remove(0);
+}</code></pre>
+<p>"Why? The thing is that if the thread wakes up, that doesn't mean that the condition is satisfied. Maybe there were twenty such sleeping threads. All of them woke up, but only one can take the task."</p>
+<p>"Roughly speaking, there can be 'false alarms'. A good developer must take this into account."</p>
+<p><span class="text-user">"I see. Isn't it easier to just use notify?"</span></p>
+<p>"Well, what if there was more than one task in the list? Notify is usually recommended to use for the sake of optimization. In all other cases, it's recommended to use the notifyAll method."</p>
+<p><span class="text-user">"OK."</span></p>
+<p>"But there's more. First, there may be a situation where someone inherits your class, adds their own methods, and also uses wait/notifyAll. In other words, there may be a situation where independent wait/notifyAll pairs wait on the same object and don't know about each other. So what should you do?"</p>
+<p><span class="text-user">"Always call wait in a loop and check that the loop's termination condition is true!"</span></p>
+<p>"Right. And to make it quite clear that you can't escape this, many developers point out that sometimes threads wake up by themselves. Threads that are guaranteed to not be awakened accidentally. This seems to be side effect of code optimization in a running Java machine."</p>
+<p><span class="text-user">"Whoa. Got it. Without a loop, the wait method is no good."</span></p>

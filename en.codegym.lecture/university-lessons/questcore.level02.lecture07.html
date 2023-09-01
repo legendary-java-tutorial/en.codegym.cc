@@ -1,0 +1,148 @@
+Interfaces
+<p>----------------------------------------</p>
+The interface is the legitimate child of Abstraction and Polymorphism. An interface is very similar to an abstract class, in which all methods are abstract. It is declared in the same way as a class, only the interface keyword is used. And why they are needed, how and when they are used, you will learn from this lecture.
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! Today you're going to make some discoveries. <span class="text-green">The topic for today—drum roll, please—is interfaces.</span>"</p>
+<p><span class="text-user">"Yep. A day so wonderful that I'm heading home to take a bath."</span></p>
+<p>"<strong><span class="text-red">An interface</span></strong> is the child of Abstraction and Polymorphism. The interface is very much like an abstract class where all the methods are abstract. It is declared the same way as a class, but with the keyword <code><span class="text-red">interface</span></code>. Here are some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description and facts</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">interface</span> Drawable
+{
+void draw();
+}
+<span class="text-red">interface</span> HasValue
+{
+int getValue();
+}</code></pre>
+        </td>
+        <td>1) Instead of the word <code>class</code>, we write <code>interface</code>.</p>
+            <p><span class="text-corporate">2) It contains only abstract methods (no need to add the word abstract).</span></p>
+            <p><span class="text-green">3) In fact, all methods on interfaces are public.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface Element <span class="text-red">extends Drawable, HasValue</span>
+{
+int getX();
+int getY();
+}</code></pre>
+        </td>
+        <td><span class="text-red">An interface can only inherit other interfaces.</span></p>
+            <p><span class="text-red">You can have many parent interfaces.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class abstract ChessItem <span class="text-red">implements Drawable, HasValue</span>
+{
+private int x, y, value;
+
+public int getValue()
+{
+return value;
+}
+
+public int getX()
+{
+return x;
+}
+
+public int getY()
+{
+return y;
+}
+
+}</code></pre>
+        </td>
+        <td>A class can inherit several interfaces (and only one class). To show this inheritance, we use the keyword <code><span class="text-red">implements</span></code>.</p>
+            <p>The <code><span class="text-green">ChessItem </span></code><span class="text-green"> class was declared abstract: it implemented all inherited methods except draw.</span></p>
+            <p>In other words, <code>ChessItem</code> contains one abstract method: <code>draw()</code>.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Interesting. But why do we need interfaces? When are they used?"</span></p>
+<p>"Interfaces have two strong advantages over classes:"</p>
+<h3>1) Separation of "method definitions" from method implementations.</h3>
+<p>I previously told you that <span class="text-green">if you want to allow other classes to call the methods of your class, then you need to mark them as </span><code><span class="text-green">public</span></code>. If you want certain methods to be called only from your own class, then they must be marked <code>private</code>. In other words, we're dividing the class's methods into two categories: «for everybody» and «just for me».</p>
+<p>We can use interfaces to strengthen this separation even more. We will make a special "class for everybody" that will inherit a second "just-for-me class". That would look about like this:</p>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Before</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-green">Student</span>
+{
+ private String name;
+
+ public Student(String name)
+ {
+  this.name = name;
+ }
+
+ public String getName()
+ {
+  return this.name;
+ }
+
+ private void setName(String name)
+ {
+  this.name = name;
+ }</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">After</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>interface <span class="text-red">Student</span>
+{
+ public String getName();
+}
+
+class <span class="text-user"><strong>StudentImpl</strong></span> implements <span class="text-red">Student</span>
+{
+ private String name;
+ public StudentImpl(String name)
+ {
+  this.name = name;
+ }
+ public String getName()
+ {
+  return this.name;
+ }
+ private void setName(String name)
+ {
+  this.name = name;
+ }
+}</code></pre>
+    </div>
+</div>
+<div class="row compare">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">Before</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ <span class="text-green">Student</span> student =
+               new <span class="text-green">Student</span>("Alibaba");
+ System.out.println(student.getName());
+}</code></pre>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="code-heading">After</div>
+        <pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+ <span class="text-red">Student</span> student =
+               new <span class="text-user">StudentImpl</span>("Ali");
+ System.out.println(student.getName());
+}</code></pre>
+    </div>
+</div>
+<p>We split our class into two pieces: <span class="text-red">an interface</span> and <span class="text-user">a class that implements the interface.</span></p>
+<p><span class="text-user">&#34;So what's the advantage?&#34;</span></p>
+<p>"The same interface can be implemented by (inherit) different classes. And each class can have its own behavior. Just like <span class="text-corporate"><strong>ArrayList</strong> and <strong>LinkedList</strong>  are two different implementations of the List interface.</span>"</p>
+<p>Thus, <span class="text-green">we're hiding not only the different implementations, but also the classes that contain the implementations (we can just use interfaces everywhere in the code). </span>This lets us very flexibly replace some objects with other objects while the program is running, changing an object’s behavior without the knowledge of any of the classes using it.</p>
+<p>In combination with polymorphism, this is a very powerful technique. At the moment, it's far from obvious why we would need to do this. You must first encounter programs consisting of dozens or hundreds of classes to appreciate how interfaces can greatly simplify your life.</p>
+<h3>2) Multiple inheritance.</h3>
+<p>In Java, each class can have only one parent class. In other programming languages, classes can often have several parent classes. This is very convenient, but it also creates lots of problems.</p>
+<p>Java offers a compromise:  <span class="text-viola">you cannot inherit multiple classes, but you can implement multiple interfaces.</span> <span class="text-green">An interface can have several parent interfaces.</span> <span class="text-corporate">A class can implement multiple interfaces and inherit only one parent class.</span></p>

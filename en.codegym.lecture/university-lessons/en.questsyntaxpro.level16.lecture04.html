@@ -1,0 +1,245 @@
+Contemporary work with time
+<p>----------------------------------------</p>
+The LocalTime class The LocalTime class is designed for cases where you only need to work with time without a date. For example, you are writing an alarm clock application. The time is important to you, but the date is not. The LocalTime class is very similar to the LocalDate class - its objects cannot be changed after creation either. Getting the current 
+<p>----------------------------------------</p>
+<h2>1. <code>LocalTime</code> class</h2>
+<p>The <code><span class="text-neon">LocalTime</span></code> class was created for cases where you need to work with time but without a date. For example, suppose you're writing an alarm clock application. You care about the time, but not the date.</p>
+<p>The <code><span class="text-neon">LocalTime</span></code> class is very similar to the <code><span class="text-neon">LocalDate</span></code> class — its objects similarly cannot be changed after creation.</p>
+<p><strong>Getting the current time</strong></p>
+<p>To create a new <code><span class="text-neon">LocalTime</span></code> object, you need to use the static <code><span class="text-red">now</span>()</code> method. Example:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">time</span> = <span class="text-neon">LocalTime</span>.<span class="text-red">now</span>();</code></pre>
+</div>
+<p>Where <code class="text-user">time</code> is a <code><span class="text-neon">LocalTime</span></code> variable, and <code><span class="text-neon">LocalTime</span>.<span class="text-red">now</span>()</code> is a call to the static <code><span class="text-red">now</span>()</code> method of the <code><span class="text-neon">LocalTime</span></code> class.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">time</span> = <span class="text-neon">LocalTime</span>.<span class="text-red">now</span>();
+System.out.println("Now = " + <span class="code text-user">time</span>);</code></pre>
+        </td>
+        <td><pre><code>
+Now = <span class="text-red">09:13:13.</span>642881600</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The dot is followed by the current number of nanoseconds.</p>
+<h2>2. Getting a specific time</h2>
+<p>To get a specific time, you need to use the static <code><span class="text-red">of</span>()</code> method. Example:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">time</span> = LocalTime.<span class="text-red">of</span>(<span class="text-user">hours</span>, <span class="text-user">minutes</span>, <span class="text-user">seconds</span>, <span class="text-user">nanoseconds</span>);</code></pre>
+</div>
+<p>You pass in the hours, minutes, seconds and nanoseconds.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">time</span> = <span class="text-neon">LocalTime</span>.<span class="text-red">of(</span>12, 15, 0, <span class="text-green">100</span>);
+System.out.println("Now = " + <span class="code text-user">time</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>Now = <span class="text-red">12:15:00</span>.000000<span class="text-green">100</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>By the way, there are two more variations of this method:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">time</span> = LocalTime.<span class="text-red">of</span>(<span class="text-user">hours</span>, <span class="text-user">minutes</span>, <span class="text-user">seconds</span>);</code></pre>
+</div>
+<p class="text-center">and</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">time</span> = LocalTime.<span class="text-red">of</span>(<span class="text-user">hours</span>, <span class="text-user">minutes</span>);</code></pre>
+</div>
+<p>So you can use whichever is more convenient for you.</p>
+<p><strong>Getting a time based on the index of a second</strong></p>
+<p>You can also get the time by the index of a second in a day. To do this, we have the static <code><span class="text-red">ofSecondOfDay</span>()</code> method:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">time</span> = <span class="text-neon">LocalTime</span>.<span class="text-red">ofSecondOfDay</span>(<span class="text-user">seconds</span>);</code></pre>
+</div>
+<p>Where <strong>seconds</strong> is the number of seconds since the beginning of the day.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">time</span> = <span class="text-neon">LocalTime</span>.<span class="text-red">ofSecondOfDay</span>(<span class="text-user">10000</span>);
+System.out.println(<span class="code text-user">time</span>);</code></pre>
+        </td>
+        <td><pre><code>
+02:46:40</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Yes, 10,000 seconds is a little less than three hours. It's all correct.</p>
+<h2>3. Getting elements of time</h2>
+<p>To get the value of a specific element of time from a <code><span class="text-neon">LocalTime</span></code> object, we have these methods:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getHour()</code></pre>
+        </td>
+        <td>Returns the hours</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getMinute()</code></pre>
+        </td>
+        <td>Returns the minutes</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getSecond()</code></pre>
+        </td>
+        <td>Returns the seconds</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getNano()</code></pre>
+        </td>
+        <td>Returns the nanoseconds</td>
+    </tr>
+    </tbody>
+</table>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">LocalTime</span> <span class="code text-user">now</span> = <span class="text-neon">LocalTime</span>.<span class="text-red">now</span>();
+System.out.println(<span class="code text-user">now</span>.getHour());
+System.out.println(<span class="code text-user">now</span>.getMinute());
+System.out.println(<span class="code text-user">now</span>.getSecond());
+System.out.println(<span class="code text-user">now</span>.getNano());</code></pre>
+        </td>
+        <td>
+                <pre><code>
+2
+46
+40
+0</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h2>4. Changing the time in a <code>LocalTime</code> object</h2>
+<p>The <code><span class="text-neon">LocalTime</span></code> class also has methods that let you work with time. The implementation of these methods is analogous to the methods of the <code><span class="text-neon">LocalDate</span></code> class: they do not change the existing <code><span class="text-neon">LocalTime</span></code> object, but instead return a new one with the desired data.</p>
+<p>Here are the methods of the <code><span class="text-neon">LocalTime</span></code> class:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusHours</span>(int hours)</code></pre>
+        </td>
+        <td>Adds hours</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusMinutes</span>(int minutes)</code></pre>
+        </td>
+        <td>Adds minutes</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusSeconds</span>(int seconds)</code></pre>
+        </td>
+        <td>Adds seconds</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusNanos</span>(int nanos)</code></pre>
+        </td>
+        <td>Adds nanoseconds</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusHours</span>(int hours)</code></pre>
+        </td>
+        <td>Subtracts hours</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusMinutes</span>(int minutes)</code></pre>
+        </td>
+        <td>Subtracts minutes</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusSeconds</span>(int seconds)</code></pre>
+        </td>
+        <td>Subtracts seconds</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusNanos</span>(int nanos)</code></pre>
+        </td>
+        <td>Subtracts nanoseconds</td>
+    </tr>
+    </tbody>
+</table>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>LocalTime time = LocalTime.now();
+LocalTime <span class="text-green">time2</span> = time.<span class="text-green">plusHours</span>(2);
+LocalTime <span class="text-red">time3</span> = time.<span class="text-red">minusMinutes</span>(40);
+LocalTime <span class="text-user">time4</span> = time.<span class="text-user">plusSeconds</span>(3600);
+
+System.out.println(time);
+System.out.println(<span class="text-green">time2</span>);
+System.out.println(<span class="text-red">time3</span>);
+System.out.println(<span class="text-user">time4</span>);</code></pre>
+        </td>
+        <td>
+                <pre><code>
+
+
+
+
+10:33:55.978012200
+<span class="text-green">12</span>:33:55.978012200
+<span class="text-red">09:53</span>:55.978012200
+<span class="text-user">11:33:55</span>.978012200</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Note that in each case we get a new time that is relative to the original <code>time</code> object. If you add <code>3600 seconds</code> to a time, then you add exactly <code>1hour</code>.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1610"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1611"></div>

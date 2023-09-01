@@ -1,0 +1,96 @@
+dynamic proxy
+<p>----------------------------------------</p>
+Hello, Amigo. Hello, Amigo. - Hello, Risha. - Today I will tell you a new and very interesting topic - dynamic proxies. In Java, there are several ways to change the functionality of the desired class ... The first way is inheritance. The easiest way to change the behavior of some class is to create a new class, inherit it from the original (base class) and override its methods. ...
+<p>----------------------------------------</p>
+<p>"Hi, Amigo."</p>
+<p class="text-user">"Hello, Rishi."</p>
+<p>"Today I will explain a new and very interesting topic to you: <strong>dynamic proxies"</strong>.</p>
+<p>"Java has several ways to change the functionality of a particular class…"</p>
+<p><b>"The first method is inheritance."</b></p>
+<p>"The easiest way to change a class's behavior is to create a new class that inherits the original (base) class, and override its methods. Then, instead of using the original class, you use the derived class. For example:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Reader <span class="text-red">reader</span> = new <span class="text-viola">UserCustomReader</span>();</code></pre>
+<p><strong>"The second method is to use a wrapper class."</strong></p>
+<p>"<span class="text-corporate"><strong>BufferedReader</strong></span> is an example of this type of class. First, it inherits <strong>Reader</strong>. In other words, it can be used instead of Reader. Second, it redirects all calls to the original <span class="text-red"><strong>Reader</strong> object, which must be passed to the BufferedReader object's constructor</span>. For example:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Reader <span class="text-green">readerOriginal</span> = new <span class="text-viola">UserCustomReader</span>();
+Reader <span class="text-red">reader</span> = new <span class="text-corporate">BufferedReader</span>(<span class="text-green">readerOriginal</span>);</code></pre>
+<p><strong>"The third method is to create a dynamic proxy (Proxy)."</strong></p>
+
+<p>"There is a special class in Java (java.lang.reflect.Proxy) that actually lets <span class="text-red"><strong>you construct an object during program execution (dynamically), without creating a separate class for it."</strong></span></p>
+<p>"This is very easy to do:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Reader <span class="text-red">reader</span> = <strong>(Reader)</strong>Proxy.newProxyInstance();</code></pre>
+<p><span class="text-user">"That's already something new to me!"</span></p>
+<p>"But of course, we don't need an object with no methods. We need the object to have methods, and we need them to do what we want. Java uses a special interface for this called <strong>InvocationHandler</strong>, which can <strong><span class="text-red">intercept all method calls associated </span></strong>with the proxy object. A proxy object can only be created using interfaces."</p>
+<p>"<span class="text-user"><strong>Invoke</strong></span> – is the standard name for a method or class whose primary task is to simply call some method."</p>
+<p>"<span class="text-red"><strong>Handler</strong></span> – is the standard name for a class that handles some event. For example, a class that handles mouse clicks would be called MouseClickHandler, etc."</p>
+<p>"The InvocationHandler interface has a single <strong><span class="text-red">invoke method, to which all calls to the proxy object are directed</span></strong>. For example:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-red">Reader</span> <strong><span class="text-red">reader</span></strong> = (<span class="text-red">Reader</span>)<strong>Proxy.newProxyInstance</strong>(<span class="text-user">new CustomInvocationHandler</span>());
+<strong><span class="text-red">reader</span></strong>.<span class="text-corporate">close</span>();</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> CustomInvocationHandler implements InvocationHandler
+{
+ <strong>public</strong> Object <span class="text-user">invoke</span>(Object proxy, Method method, Object[] args) throws Throwable
+ {
+  <strong>System.out.println</strong>("<span class="text-green">yes!</span>");
+  <strong>return</strong> null;
+ }
+}</code></pre>
+<p>"When calling the <span class="text-red">reader</span>.<span class="text-corporate">close</span>() method, the <strong><span class="text-user">invoke</span></strong> method will be called, and the screen will display 'yes!'"</p>
+<p><span class="text-user">"So, we declared a <strong>CustomInvocationHandler,</strong> class, and implemented the <strong>InvocationHandler</strong> interface and its <strong>invoke</strong> method. When the invoke method is called, it displays 'yes!'. Then we created a <strong>CustomInvocationHandler</strong> object, and passed it to the <strong>newProxyInstance</strong> method when creating a proxy object."</span></p>
+<p>"Yes, that's all correct."</p>
+<p>"This is a very powerful tool. Usually, these proxies are created to simulate <span class="text-corporate">objects in programs that are physically running on another computer.</span> Or to control access."</p>
+<p>"You can check the current user's permissions, handle errors, log errors, and much more in this method."</p>
+<p>"Here's an example where the invoke method also calls the original object's methods:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">Reader original</span> = new <span class="text-viola">UserCustomReader</span>();
+
+Reader</span> <strong><span class="text-red">reader</span></strong> = (<span class="text-red">Reader</span>)<strong>Proxy.newProxyInstance</strong>(new <span class="text-user">CustomInvocationHandler</span>(<span class="text-green">original</span>));
+<span class="text-red">reader</span>.<span class="text-corporate">close</span>();</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> <span class="text-user">CustomInvocationHandler</span> <strong>implements</strong> <span class="text-user">InvocationHandler
+{
+</span> <strong>private</strong> Reader <span class="text-green">readerOriginal</span>;
+
+</span> <span class="text-user">CustomInvocationHandler</span>(Reader <span class="text-green">readerOriginal</span>)
+ {
+  this.<span class="text-green">readerOriginal</span> = <span class="text-green">readerOriginal</span>;
+</span> }
+
+ <span class="text-user">public</span> Object invoke(Object proxy, <span class="text-user"><strong>Method</strong></span> method, Object[] args) throws Throwable
+ {
+  <strong>if</strong> (method.<strong>getName</strong>().equals("<span class="text-green">close</span>"))
+  {
+   <strong>System.out.println</strong>("<span class="text-green">Reader closed!</span>");
+  }
+
+  // This calls the readerOriginal object's close method.
+  // The method's name and a description of its parameters are stored in the method variable.
+  return <span class="text-user">method</span>.<strong>invoke</strong>(<span class="text-green">readerOriginal</span>, args);
+ }
+}</code></pre>
+<p>"This example has two special features."</p>
+<p>"First, the «original» <span class="text-green"><strong>Reader</strong></span> object is passed to the constructor, and a reference to it is saved inside the <span class="text-user">CustomInvocationHandler</span>."</p>
+<p>"Second, we call this same method again in the invoke method, but on the «original» object this time."</p>
+<p><span class="text-user">"Ah. In other words, this last line calls the same method, but on the original object:"</span></p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>return <span class="text-user">method</span>.<strong>invoke</strong>(<span class="text-green">readerOriginal</span>, args);</code></pre>
+<p>"Yep."</p>
+<p><span class="text-user">"I wouldn't say that it's super obvious, but it's still understandable. Or so it seems."</span></p>
+<p>"Great. Then one more thing. In the newProxyInstance method, you need to pass a little more housekeeping information to create a proxy object. But since we aren't creating monstrous proxy objects, this information is easily obtained from the original class itself."</p>
+<p>"Here's another example:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green"><strong>Reader</strong> original</span> = new UserCustomReader();
+
+ClassLoader <span class="text-corporate">classLoader</span> = <span class="text-green">original</span>.getClass().<span class="text-corporate">getClassLoader</span>();
+Class&lt;?&gt;[] <span class="text-viola">interfaces</span> = <span class="text-green">original</span>.getClass().<span class="text-viola">getInterfaces</span>();
+CustomInvocationHandler <span class="text-user">invocationHandler</span> = new CustomInvocationHandler(<span class="text-green">original</span>);
+
+<span class="text-red">Reader <strong>reader</strong></span> = (<span class="text-red">Reader</span>)<strong>Proxy.newProxyInstance</strong>(<span class="text-corporate">classLoader</span>, <span class="text-viola">interfaces,</span> <span class="text-green">invocationHandler</span>);</code></pre>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> <span class="text-user">CustomInvocationHandler</span> implements <span class="text-user">InvocationHandler</span>
+{
+ <strong>public</strong> Object invoke(Object proxy, Method method, Object[] args) throws Throwable
+ {
+  <strong>return</strong> null;
+ }
+}</code></pre>
+<p><span class="text-user">"Ah. ClassLoader and list of interfaces. This is something from Reflection, isn't it?"</span></p>
+<p>"Yep."</p>
+<p><span class="text-user">"I see. Well, I think I can create a primitive, super simple proxy object if I ever need one."</span></p>
+<p>"Then go check in with Diego."</p>

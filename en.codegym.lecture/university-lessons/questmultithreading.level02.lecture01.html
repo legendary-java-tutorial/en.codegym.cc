@@ -1,0 +1,55 @@
+What are mutable/immutable objects and what are they for?
+<p>----------------------------------------</p>
+Hello Amigo! Hello Bilaabo! — Today Bilaabo will tell you about mutable and immutable objects. Objects that can be changed after creation are called mutable or mutable. Objects that cannot be changed after they are created are called immutable or immutable. — What determines whether an object can be changed or not? - A person who writes a new class can do ...
+<p>----------------------------------------</p>
+<a href='https://cdn.codegym.cc/images/article/812d0f09-3d24-4e4f-8777-f998c2fbd3aa/original.jpeg' target='_blank'><img data-id="812d0f09-3d24-4e4f-8777-f998c2fbd3aa" data-max-width="850" alt="What are mutable/immutable objects, and what are they for? - 1" src="https://cdn.codegym.cc/images/article/812d0f09-3d24-4e4f-8777-f998c2fbd3aa/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi, Bilaabo!"</span></p>
+<p>"Today Bilaabo will tell you about <strong>mutable</strong> and <strong>immutable</strong> objects.</p>
+<p>"Objects you can change after they are created are called <strong>mutable</strong>."</p>
+<p>"Objects that cannot be changed after they are created are called <strong>immutable</strong>."</p>
+<p><span class="text-user">"What determines whether I can change an object?"</span></p>
+<p>"The author of a new class can make objects of that class immutable. For example, if you make all of the setters private, then an object will only have a constructor and getters; that means it will be impossible to change after it is created."</p>
+<p><span class="text-user">"And what would be the point of that?"</span></p>
+<p>"Immutable objects have many useful properties, but I'll highlight two that are common to almost all immutable objects:"</p>
+<p><strong>1) Immutable objects are much easier to implement than mutable objects.</strong></p>
+<p><strong>2) Immutable objects can be freely used across multiple threads simultaneously.</strong></p>
+<p>"When a developer decides to write an immutable class, he usually makes both a mutable and immutable version of the class."</p>
+<p><span class="text-user">"But what's the point of writing two classes instead of one?"</span></p>
+<p>"Sometimes it's worth it when an immutable version of an object will be far simpler/faster than a mutable one. So, they make two versions. It's kind of like ArrayList and LinkedList: both are lists, but one is optimized for specific purposes, and the second for others."</p>
+<p><span class="text-user">"That makes more sense already."</span></p>
+<p>"There are also purely immutable classes, which don't have a mutable version."</p>
+<p><span class="text-user">"But what if I need to change something in one of those objects? What can you actually do with an immutable object?"</span></p>
+<p>"Usually, immutable classes contain various methods that act like they change the object, but these methods simply create a new object and return it, instead of changing the object itself."</p>
+<p>"Here are some examples:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>String s = "london";
+String s2 = s.toUpperCase();</code></pre>
+        </td>
+        <td>As a result, s contains the string «london» and s2 contains «LONDON»</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>Integer i = 1;
+Integer j = i;
+j++;</code></pre>
+        </td>
+        <td>Here's what really happens:<br />
+            Integer i = new Integer(1);<br />
+            Integer j = i;<br />
+            j = new Integer(i.getInt()+1);</td>
+    </tr>
+    </tbody>
+</table>
+<p>"The String class is an immutable class. All String objects are immutable, but that doesn't keep us from working with them. For example, the <strong>toUpperCase</strong>() method of the <strong>String</strong> class converts a String to uppercase (i.e. replaces all small letters with capital letters). However, <strong>this method doesn't change the String itself,</strong> instead it returns a new String. This new String is identical to the first except all the characters are uppercase (capital letters)."</p>
+<p>"The Integer class is also an immutable class. All Integer objects are immutable. Every time we change an Integer object, we are actually creating a new object."</p>
+<p><span class="text-user">"How interesting! Hooray, Bilaabo."</span></p>
+<p>"Hooray for me! Hooray for Bilaabo!"</p>

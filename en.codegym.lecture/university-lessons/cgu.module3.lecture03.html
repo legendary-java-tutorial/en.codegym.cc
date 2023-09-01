@@ -1,0 +1,669 @@
+Related project: JSP and Servlets
+<p>----------------------------------------</p>
+Related project: JSP and Servlets
+<p>----------------------------------------</p>
+ng servlets and JSP.</h2>
+<p>This project will be a little different from the previous ones. It will contain not only tasks, but also explanations of how to do them. That is, it will be a project from the "HOW TO ..." series.</p>
+<p>Instruction:</p>
+<ol>
+ <li>Fork from the repository: <a href="https://github.com/CodeGymCC/project-servlet.git" target="_blank">https://github.com/CodeGymCC/project-servlet.git</a></li>
+ <li>Download your version of the project to your computer.</li>
+ <li>Set up application launch in IDEA:</li>
+ <ul>
+  <li>Alt + Shift + F9 -&gt; Edit Configurations… -&gt; Alt + insert -&gt; tom (into the search bar) -&gt; Local.</li>
+  <li>After that, you need to click “CONFIGURE” and indicate where the archive with Tomcat was downloaded and unpacked.</li>
+  <li>In the “Deployment” tab: Alt + insert -&gt; Artifact… -&gt; tic-tac-toe:war exploded -&gt; OK.</li>
+  <li>In the “Application context” field: leave only “/” (slash).</li>
+  <li>Press "APPLY".</li>
+  <li>Close the settings window.</li>
+  <li>Make the first test run of the customized configuration. If everything is done correctly, your default browser will open, in which it will be:</li><img data-max-width="512" data-id="83128ce5-d310-4f23-b1d4-f2d65f21ca68" alt="" src="https://cdn.javarush.com/images/article/83128ce5-d310-4f23-b1d4-f2d65f21ca68/512.jpeg" style="width: 512px;">
+ </ul>
+ <li>Open the <strong>"pom.xml"</strong> file . There are 2 dependencies in the <strong>“dependencies”</strong> block .</li>
+ <ul>
+  <li><code>javax.servlet-api</code>is responsible for the specification of servlets. Scope <strong>"provided"</strong> is needed during development, but not needed at runtime (Tomcat already has this dependency in the lib folder).</li>
+  <li><code>jstl</code>– can be considered as a template engine.</li>
+ </ul>
+ <li>There are 3 files in the <strong>“webapp”</strong> folder :</li>
+ <ul>
+  <li><code>index.jsp</code>- this is our template (similar to the HTML page). It will contain markup and scripts. It is the file called <strong>“index”</strong> that is given as the initial page, if there are no configurations, which we saw in step 3.</li>
+  <li><code>/static/main.css</code>- file for styles. As in the previous project, everything here is up to you, paint as you wish.</li>
+  <li><code>/static/jquery-3.6.0.min.js</code>- frontend dependency that our server will distribute as static.</li>
+ </ul>
+ <li><strong>The "com.tictactoe"</strong> package will contain all the Java code. Right now there are 2 classes:</li>
+ <ul>
+  <li><code>Sign</code>- enum, which is responsible for <strong>the "cross / zero / void"</strong> .</li>
+  <li><code>Field</code>is our field. This class has a <strong>"field"</strong> map . The principle of data storage will be as follows: the cells of the tic-tac-toe field are numbered from zero. In the first line 0, 1 and 2. In the second: 3, 4 and 5. And so on. There are also 3 methods. <strong>“getEmptyFieldIndex”</strong> looks for the first empty cell (yes, our opponent will not be very smart). "checkWin" checks if the game is over. If there is a row of three crosses, it returns a cross; if there is a row of three zeroes, it returns a zero. Otherwise, it's empty. <strong>"getFieldData"</strong> - returns the values ​​of the <strong>"field"</strong> map as a list sorted in ascending index order.</li>
+ </ul>
+ <li>The explanations about the template are finished, now you can start the task. Let's start by drawing a 3 by 3 table. To do this, add the following code to <strong>“index.jsp”</strong> : 
+  <pre class="line-numbers"><code>
+&lt;table&gt; 
+	&lt;tr&gt; 
+		&lt;td&gt;0&lt;/td&gt; 
+		&lt;td&gt;1&lt;/td&gt; 
+		&lt;td&gt;2&lt;/td&gt; 
+	&lt;/tr&gt; 
+	&lt;tr&gt; 
+		&lt;td&gt;3&lt;/td&gt; 
+		&lt;td&gt;4&lt;/td&gt; 
+		&lt;td&gt;5&lt;/td&gt; 
+	&lt;/tr&gt; 
+	&lt;tr&gt; 
+		&lt;td&gt;6&lt;/td&gt; 
+		&lt;td&gt;7&lt;/td&gt; 
+		&lt;td&gt;8&lt;/td&gt; 
+	&lt;/tr&gt; 
+&lt;/table&gt; 	
+				</code></pre> We will then remove the numbers in the table and replace them with a cross, zero or an empty field. Also, inside the “head” tag, include the style file. To do this, add a line:<code>&lt;link href="static/main.css" rel="stylesheet"&gt;</code>
+  <p></p> The content of the style file is up to you. I used this one: 
+  <pre class="line-numbers"><code>
+td { 
+    border: 3px solid black; 
+    padding: 10px; 
+    border-collapse: separate; 
+    margin: 10px; 
+    width: 100px; 
+    height: 100px; 
+    font-size: 50px; 
+    text-align: center; 
+    empty-cells: show; 
+} 
+		</code></pre> After running, my result looks like this: <img data-max-width="512" data-id="960b8e58-7f83-4a79-b7c0-a517bbbc1823" alt="" src="https://cdn.javarush.com/images/article/960b8e58-7f83-4a79-b7c0-a517bbbc1823/512.jpeg" style="width: 512px;"></li>
+ <li>Now let's add the following functionality: when a cell is clicked, a request will be sent to the server, in which we will pass the index of the cell that was clicked as a parameter. This task can be divided into two parts: send a request from the front, accept a request on the server. Let's start at the front for a change. 
+  <p></p>Let's add an <strong>"onclick" parameter to each </strong><strong>"d"</strong> tag . In the value, we indicate the change of the current page to the specified URL. The servlet that will be responsible for the logic will have the URL <strong>“/logic”</strong> . And it will take a parameter called <strong>“click”</strong> . So we will pass the index of the cell that the user clicked on. <strong></strong><strong></strong><strong></strong>
+  <pre class="line-numbers"><code>
+&lt;table&gt; 
+    &lt;tr&gt; 
+        &lt;td onclick="window.location='/logic?click=0'"&gt;0&lt;/td&gt; 
+        &lt;td onclick="window.location='/logic?click=1'"&gt;1&lt;/td&gt; 
+        &lt;td onclick="window.location='/logic?click=2'"&gt;2&lt;/td&gt; 
+    &lt;/tr&gt; 
+    &lt;tr&gt; 
+        &lt;td onclick="window.location='/logic?click=3'"&gt;3&lt;/td&gt; 
+        &lt;td onclick="window.location='/logic?click=4'"&gt;4&lt;/td&gt; 
+        &lt;td onclick="window.location='/logic?click=5'"&gt;5&lt;/td&gt; 
+    &lt;/tr&gt; 
+    &lt;tr&gt; 
+        &lt;td onclick="window.location='/logic?click=6'"&gt;6&lt;/td&gt; 
+        &lt;td onclick="window.location='/logic?click=7'"&gt;7&lt;/td&gt; 
+        &lt;td onclick="window.location='/logic?click=8'"&gt;8&lt;/td&gt; 
+    &lt;/tr&gt; 
+&lt;/table&gt; 			
+
+		</code></pre> You can check that everything is done correctly through the developer panel in the browser. For example, in Chrome, it opens with the <strong>F12</strong> button . As a result of clicking on a cell with index 4, the picture will be as follows: <img data-max-width="1080" data-id="37b6d7b2-1f49-493c-b052-c8fb6bd63784" alt="" src="https://cdn.javarush.com/images/article/37b6d7b2-1f49-493c-b052-c8fb6bd63784/1080.jpeg" style="width: 1080px;"> We get an error because we have not yet created a servlet that can send the server to the address <strong>“logic”</strong> .</li>
+ <p></p>
+ <li>In the package "com.tictactoe" create a class <strong>"LogicServlet"</strong> which should be derived from the class <strong>"javax.servlet.http.HttpServlet"</strong> . In the class, override the <strong>“doGet”</strong> method . 
+  <p></p> And let's add a method that will get the index of the cell that was clicked. You also need to add a mapping (the address at which this servlet will intercept the request). I suggest doing this through an annotation (but if you like difficulties, you can also use web.xml). General servlet code: 
+  <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>tictactoe</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+
+
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"LogicServlet"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"/logic"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogicServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+	<span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token function">getSelectedIndex</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        resp<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">getSelectedIndex</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">String</span> click <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getParameter</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">boolean</span> isNumeric <span class="token operator">=</span> click<span class="token punctuation">.</span><span class="token function">chars</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">allMatch</span><span class="token punctuation">(</span><span class="token class-name">Character</span><span class="token operator">::</span><span class="token function">isDigit</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> isNumeric <span class="token operator">?</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>click<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span></code></pre> Now, when clicking on any cell, we will get the index of this cell on the server (you can make sure by running the server in debug). And there will be a redirect to the same page from which the click was made.</li>
+ <p></p>
+ <li>Now we can click, but it's not a game yet. In order for the game to have logic, you need to save the state of the game (where the crosses are, where the zeros are) between requests. The easiest way to do this is to store this data in the session. With this approach, the session will be stored on the server, and the client will receive a session ID in a cookie named <strong>“JSESSIONID”</strong> . But the session does not need to be created every time, but only at the beginning of the game. Let's start another servlet for this, which we will call <strong>"InitServlet"</strong> . <strong>We will override the “doGet”</strong> method in it , in which we will create a new session, create a playing field, put this playing field and a list of type Sign in the session attributes, and send <strong>“forward”</strong> to the index.jsp page. Code: 
+  <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>tictactoe</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpSession</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Map</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"InitServlet"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"/start"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">InitServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Create a new session</span>
+        <span class="token class-name">HttpSession</span> currentSession <span class="token operator">=</span> req<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Create a playing field</span>
+        <span class="token class-name">Field</span> field <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Field</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> fieldData <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Get a list of field values</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Adding field parameters to the session (needed to store state between requests)</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// and field values &ZeroWidthSpace;&ZeroWidthSpace;sorted by index (required for drawing crosses and zeroes)</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Redirect request to index.jsp page via server</span>
+        <span class="token function">getServletContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRequestDispatcher</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forward</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> resp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre> And not to forget, let's change the start page that opens in the browser after starting the server to <strong>“/start”</strong> : <img data-max-width="800" data-id="b2ad55cf-7d01-4938-a468-e1f647fb6238" alt="" src="https://cdn.javarush.com/images/article/b2ad55cf-7d01-4938-a468-e1f647fb6238/800.jpeg" style="width: 800px;"> Now after restarting the server and clicking on any cell of the field in the browser developer menu in the <strong>“Request Headers”</strong> section , there will be a cookie with the session ID : <img data-max-width="1080" data-id="ca94ddd6-cc0f-4356-a0c3-c8985d64587d" alt="" src="https://cdn.javarush.com/images/article/ca94ddd6-cc0f-4356-a0c3-c8985d64587d/1080.jpeg" style="width: 1080px;"></li>
+ <li>When we have a repository in which we can store state between requests from the client (browser), we can start writing game logic. The logic we have is in <strong>“LogicServlet”</strong> . We need to work with the <strong>“doGet”</strong> method . Let's add this behavior to the method: 
+  <ul>
+   <li><strong>we will get the “field”</strong> object of the Field type from the session (we will take it out to the <strong>“extractField”</strong> method ).</li>
+   <li>put a cross where the user clicked (so far without any checks).</li>
+  </ul>
+  <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Get the current session</span>
+    <span class="token class-name">HttpSession</span> currentSession <span class="token operator">=</span> req<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Get the playfield object from the session</span>
+    <span class="token class-name">Field</span> field <span class="token operator">=</span> <span class="token function">extractField</span><span class="token punctuation">(</span>currentSession<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// get the index of the cell that was clicked</span>
+    <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token function">getSelectedIndex</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// put a cross in the cell that the user clicked on</span>
+    field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> <span class="token class-name">Sign</span><span class="token punctuation">.</span>CROSS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Read the list of icons</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Update field object and icon list in session</span>
+    currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    resp<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+
+<span class="token keyword">private</span> <span class="token class-name">Field</span> <span class="token function">extractField</span><span class="token punctuation">(</span><span class="token class-name">HttpSession</span> currentSession<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">Object</span> fieldAttribute <span class="token operator">=</span> currentSession<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Field</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token operator">!=</span> fieldAttribute<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">invalidate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"Session is broken, try one more time"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">Field</span><span class="token punctuation">)</span> fieldAttribute<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre> The behavior has not changed yet, but if you start the server in debug and set a breakpoint on the line where the redirect is sent, you can see the “innards” of the “ <strong>data”</strong> object . <strong>There, indeed , “CROSS”</strong> appears under the index that was clicked.</li>
+ <p></p>
+ <li>Now it's time to display the cross on the frontend. To do this, we will work with the <strong>“index.jsp”</strong> file and the <strong>“JSTL”</strong> technology . 
+  <ul>
+   <li>In the &lt;head&gt; section add:<code>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt; </code></li>
+   <li>In the table inside each &lt;td&gt; block, change the index to a construct that allows you to calculate values. For example, for index zero: <code> &lt;td onclick="window.location='/logic?click=0'"&gt;${data.get(0).getSign()}&lt;/td&gt; </code> Now, when you click on a cell, a cross will appear there: <img data-max-width="512" data-id="190bd8aa-8c1b-495c-8aaf-2a595e42058c" alt="" src="https://cdn.javarush.com/images/article/190bd8aa-8c1b-495c-8aaf-2a595e42058c/512.jpeg" style="width: 512px;"></li>
+  </ul></li>
+ <li>We have made our move, now it's the turn for the "zero". And let's add a couple of checks here, so that the signs are not placed in already occupied cells.</li>
+ <ul>
+  <li>You need to check that the cell that was clicked is empty. Otherwise, we do nothing and send the user to the same page without changing the session parameters.</li>
+  <li>Since the number of cells on the field is odd, it is possible that a cross was placed, but there is no room for a zero. Therefore, after we put a cross, we try to get the index of an unoccupied cell (the getEmptyFieldIndex method of the Field class). If the index is not negative, then put a zero there. <img data-max-width="512" data-id="29c1b5b8-762a-4f48-9a0f-37ee498670e8" alt="" src="https://cdn.javarush.com/images/article/29c1b5b8-762a-4f48-9a0f-37ee498670e8/512.jpeg" style="width: 512px;"> Code: 
+   <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>tictactoe</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">RequestDispatcher</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpSession</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"LogicServlet"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"/logic"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogicServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Get the current session</span>
+        <span class="token class-name">HttpSession</span> currentSession <span class="token operator">=</span> req<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Get the playfield object from the session</span>
+        <span class="token class-name">Field</span> field <span class="token operator">=</span> <span class="token function">extractField</span><span class="token punctuation">(</span>currentSession<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// get the index of the cell that was clicked</span>
+        <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token function">getSelectedIndex</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Sign</span> currentSign <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Check if the clicked cell is empty.</span>
+        <span class="token comment">// Otherwise, we do nothing and send the user to the same page without changes</span>
+        <span class="token comment">// parameters in the session</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Sign</span><span class="token punctuation">.</span>EMPTY <span class="token operator">!=</span> currentSign<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">RequestDispatcher</span> dispatcher <span class="token operator">=</span> <span class="token function">getServletContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRequestDispatcher</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            dispatcher<span class="token punctuation">.</span><span class="token function">forward</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> resp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// put a cross in the cell that the user clicked on</span>
+        field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> <span class="token class-name">Sign</span><span class="token punctuation">.</span>CROSS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Get an empty field cell</span>
+        <span class="token keyword">int</span> emptyFieldIndex <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getEmptyFieldIndex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>emptyFieldIndex <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>emptyFieldIndex<span class="token punctuation">,</span> <span class="token class-name">Sign</span><span class="token punctuation">.</span>NOUGHT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// Read the list of icons</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Update field object and icon list in session</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        resp<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">getSelectedIndex</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">String</span> click <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getParameter</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">boolean</span> isNumeric <span class="token operator">=</span> click<span class="token punctuation">.</span><span class="token function">chars</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">allMatch</span><span class="token punctuation">(</span><span class="token class-name">Character</span><span class="token operator">::</span><span class="token function">isDigit</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> isNumeric <span class="token operator">?</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>click<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Field</span> <span class="token function">extractField</span><span class="token punctuation">(</span><span class="token class-name">HttpSession</span> currentSession<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Object</span> fieldAttribute <span class="token operator">=</span> currentSession<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Field</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token operator">!=</span> fieldAttribute<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            currentSession<span class="token punctuation">.</span><span class="token function">invalidate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"Session is broken, try one more time"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">Field</span><span class="token punctuation">)</span> fieldAttribute<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></li>
+ </ul>
+ <li>At this stage, you can put crosses, AI answers with zeros. But there is no check when to stop the game. This can be in three cases: 
+  <ul>
+   <li>after the next move of the cross, a line of three crosses was formed;</li>
+   <li>after the next return move with a zero, a line of three zeros was formed;</li>
+   <li>after the next move of the cross, empty cells ended.</li>
+  </ul> Let's add a method that checks if there are three crosses / zeroes in a row: 
+  <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">/**
+ * The method checks if there are three X/O's in a row.
+ * returns true/false
+ */</span>
+<span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">checkWin</span><span class="token punctuation">(</span><span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">HttpSession</span> currentSession<span class="token punctuation">,</span> <span class="token class-name">Field</span> field<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+    <span class="token class-name">Sign</span> winner <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">checkWin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Sign</span><span class="token punctuation">.</span>CROSS <span class="token operator">==</span> winner <span class="token operator">||</span> <span class="token class-name">Sign</span><span class="token punctuation">.</span>NOUGHT <span class="token operator">==</span> winner<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Add a flag to indicate that someone has won</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"winner"</span><span class="token punctuation">,</span> winner<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Read the list of icons</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Update this list in session</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// helmet redirect</span>
+        response<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre> The peculiarity of this method is that if the winner is found, we add another parameter to the session, using which we will change the display in <strong>“index.jsp”</strong> in the following paragraphs.</li>
+ <p></p>
+ <li><strong>Let's add a call to the “checkWin</strong> ” method twice to the “doGet” method . The first time after setting the cross, the second - after setting the zero. 
+  <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// Check if the cross won after adding the user's last click</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">checkWin</span><span class="token punctuation">(</span>resp<span class="token punctuation">,</span> currentSession<span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+  <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">if</span> <span class="token punctuation">(</span>emptyFieldIndex <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>emptyFieldIndex<span class="token punctuation">,</span> <span class="token class-name">Sign</span><span class="token punctuation">.</span>NOUGHT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// Check if the zero won after adding the last zero</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">checkWin</span><span class="token punctuation">(</span>resp<span class="token punctuation">,</span> currentSession<span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></li>
+ <p></p>
+ <li>In terms of behavior, almost nothing has changed (except that if one of the signs wins, zeros are no longer placed. Let's use the <strong>“winner” parameter in </strong><strong>“index.jsp”</strong> and display the winner. We use directives after the table: <strong></strong><code>c:set</code><code>c:if</code>
+  <pre class="line-numbers"><code>
+&lt;hr&gt; 
+&lt;c:set var="CROSSES" value="&lt;%=Sign.CROSS%&gt;"/&gt; 
+&lt;c:set var="NOUGHTS" value="&lt;%=Sign.NOUGHT%&gt;"/&gt; 
+ 
+&lt;c:if test="${winner == CROSSES}"&gt; 
+    &lt;h1&gt;CROSSES WIN!&lt;/h1&gt; 
+&lt;/c:if&gt; 
+&lt;c:if test="${winner == NOUGHTS}"&gt; 
+    &lt;h1&gt;NOUGHTS WIN!&lt;/h1&gt; 
+&lt;/c:if&gt; 
+</code></pre> If crosses win, the message <strong>“CROSSES WIN!” </strong>, if the zeros are <strong>“NOUGHTS WIN!” </strong>. As a result, we can get one of two inscriptions: <img data-max-width="800" data-id="20218ef6-d6b8-4697-bab9-18d1c71f238e" alt="" src="https://cdn.javarush.com/images/article/20218ef6-d6b8-4697-bab9-18d1c71f238e/800.jpeg" style="width: 800px;"></li>
+ <li>If there is a winner, you need to be able to take revenge. To do this, you need a button that will send a request to the server. And the server will invalidate the current session and redirect the request back to <strong>“/start”</strong> . 
+  <ul>
+   <li>In <strong>“index.jsp”</strong> in the <strong>“head”</strong> section , write the script <strong>“jquery”</strong> . Using this library, we will send a request to the server. 
+    <pre class="line-numbers"><code>
+&lt;script src="&lt;c:url value="/static/jquery-3.6.0.min.js"/&gt;"&gt;&lt;/script&gt; 
+</code></pre></li>
+   <li>In <strong>“index.jsp”</strong> in the <strong>“script”</strong> section , add a function that can send a POST request to the server. We will make the function synchronous, and when the response comes from the server, it will reload the current page. 
+    <pre class="line-numbers"><code>
+&lt;script&gt; 
+    function restart() { 
+        $.ajax({ 
+            url: '/restart', 
+            type: 'POST', 
+            contentType: 'application/json;charset=UTF-8', 
+            async: false, 
+            success: function () { 
+                location.reload(); 
+            } 
+        }); 
+    } 
+&lt;/script&gt; 
+</code></pre></li>
+   <li>Inside the <strong>“c:if”</strong> blocks , add a button that, when clicked, calls the function we just wrote: 
+    <pre class="line-numbers"><code>
+&lt;c:if test="${winner == CROSSES}"&gt; 
+    &lt;h1&gt;CROSSES WIN!&lt;/h1&gt; 
+    &lt;button onclick="restart()"&gt;Start again&lt;/button&gt; 
+&lt;/c:if&gt; 
+&lt;c:if test="${winner == NOUGHTS}"&gt; 
+    &lt;h1&gt;NOUGHTS WIN!&lt;/h1&gt; 
+    &lt;button onclick="restart()"&gt;Start again&lt;/button&gt; 
+&lt;/c:if&gt; 
+</code></pre></li>
+   <li>Let's create a new servlet that will serve the <strong>"/restart"</strong> URL . 
+    <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>tictactoe</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"RestartServlet"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"/restart"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RestartServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doPost</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        req<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">invalidate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        resp<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/start"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre> After the victory, the <strong>“Start again”</strong> button will appear . After clicking on it, the field will be completely cleared, and the game will start over. <img data-max-width="800" data-id="b323597b-bedd-46ce-a0e1-d66bda1747a9" alt="" src="https://cdn.javarush.com/images/article/b323597b-bedd-46ce-a0e1-d66bda1747a9/800.jpeg" style="width: 800px;"></li>
+  </ul></li>
+ <li>It remains to consider the last situation. What if the user put a cross, there was no victory, and there is no place for a zero? Then this is a draw, and we will process it now: 
+  <ul>
+   <li>In the <strong>"LogicServlet"</strong> session, add another parameter <strong>"draw" , update the </strong><strong>"data"</strong> field and send a redirect to <strong>"index.jsp"</strong> : 
+    <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// If such a cell exists</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>emptyFieldIndex <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    …
+<span class="token punctuation">}</span>
+<span class="token comment">// If there is no empty cell and no one wins, then it's a draw</span>
+<span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Add a flag to the session that signals that a draw has occurred</span>
+    currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"draw"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Read the list of icons</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Update this list in session</span>
+    currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// helmet redirect</span>
+    response<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></li>
+   <li>In <strong>"index.jsp"</strong> we will process this parameter: 
+    <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token operator">&lt;</span>c<span class="token operator">:</span><span class="token keyword">if</span> test<span class="token operator">=</span><span class="token string">"${draw}"</span><span class="token operator">&gt;</span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>h1<span class="token punctuation">&gt;</span></span>IT'<span class="token class-name">S</span> <span class="token class-name">A</span> DRAW<span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>br<span class="token punctuation">&gt;</span></span>
+    <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span><span class="token string">"restart()"</span><span class="token operator">&gt;</span><span class="token class-name">Start</span> again<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>c<span class="token operator">:</span><span class="token keyword">if</span><span class="token operator">&gt;</span></code></pre> As a result of a draw, we will receive the corresponding message and an offer to start over: <img data-max-width="512" data-id="1d9847b6-3a6c-4b50-955d-2ef167708dc8" alt="" src="https://cdn.javarush.com/images/article/1d9847b6-3a6c-4b50-955d-2ef167708dc8/512.jpeg" style="width: 512px;"></li>
+  </ul></li>
+</ol>
+<p>This completes the writing of the game.</p>
+<p></p>
+<h2>Code of classes and files with which they worked</h2>
+<p><strong>InitServlet</strong></p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>tictactoe</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpSession</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Map</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"InitServlet"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"/start"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">InitServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Create a new session</span>
+        <span class="token class-name">HttpSession</span> currentSession <span class="token operator">=</span> req<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Create a playing field</span>
+        <span class="token class-name">Field</span> field <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Field</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> fieldData <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Get a list of field values</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Adding field parameters to the session (needed to store state between requests)</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// and field values &ZeroWidthSpace;&ZeroWidthSpace;sorted by index (required for drawing crosses and zeroes)</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Redirect request to index.jsp page via server</span>
+        <span class="token function">getServletContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRequestDispatcher</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forward</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> resp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p></p>
+<p><strong>LogicServlet</strong></p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>tictactoe</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">RequestDispatcher</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpSession</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"LogicServlet"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"/logic"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogicServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Get the current session</span>
+        <span class="token class-name">HttpSession</span> currentSession <span class="token operator">=</span> req<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Get the playfield object from the session</span>
+        <span class="token class-name">Field</span> field <span class="token operator">=</span> <span class="token function">extractField</span><span class="token punctuation">(</span>currentSession<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// get the index of the cell that was clicked</span>
+        <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token function">getSelectedIndex</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Sign</span> currentSign <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Check if the clicked cell is empty.</span>
+        <span class="token comment">// Otherwise, we do nothing and send the user to the same page without changes</span>
+        <span class="token comment">// parameters in the session</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Sign</span><span class="token punctuation">.</span>EMPTY <span class="token operator">!=</span> currentSign<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name">RequestDispatcher</span> dispatcher <span class="token operator">=</span> <span class="token function">getServletContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRequestDispatcher</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            dispatcher<span class="token punctuation">.</span><span class="token function">forward</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> resp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// put a cross in the cell that the user clicked on</span>
+        field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> <span class="token class-name">Sign</span><span class="token punctuation">.</span>CROSS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Check if the cross has won after adding the user's last click</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">checkWin</span><span class="token punctuation">(</span>resp<span class="token punctuation">,</span> currentSession<span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// Get an empty field cell</span>
+        <span class="token keyword">int</span> emptyFieldIndex <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getEmptyFieldIndex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>emptyFieldIndex <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            field<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>emptyFieldIndex<span class="token punctuation">,</span> <span class="token class-name">Sign</span><span class="token punctuation">.</span>NOUGHT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// Check if the zero won after adding the last zero</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">checkWin</span><span class="token punctuation">(</span>resp<span class="token punctuation">,</span> currentSession<span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// If there is no empty cell and no one wins, then it's a draw</span>
+        <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment">// Add a flag to the session that signals that a draw has occurred</span>
+            currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"draw"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// Read the list of icons</span>
+            <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// Update this list in session</span>
+            currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// helmet redirect</span>
+            resp<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// Read the list of icons</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Update field object and icon list in session</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">,</span> field<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        resp<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * The method checks if there are three X/O's in a row.
+     * returns true/false
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">checkWin</span><span class="token punctuation">(</span><span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">HttpSession</span> currentSession<span class="token punctuation">,</span> <span class="token class-name">Field</span> field<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Sign</span> winner <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">checkWin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Sign</span><span class="token punctuation">.</span>CROSS <span class="token operator">==</span> winner <span class="token operator">||</span> <span class="token class-name">Sign</span><span class="token punctuation">.</span>NOUGHT <span class="token operator">==</span> winner<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// Add a flag to indicate that someone has won</span>
+            currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"winner"</span><span class="token punctuation">,</span> winner<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// Read the list of icons</span>
+            <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Sign</span><span class="token punctuation">&gt;</span></span> data <span class="token operator">=</span> field<span class="token punctuation">.</span><span class="token function">getFieldData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// Update this list in session</span>
+            currentSession<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// helmet redirect</span>
+            response<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/index.jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">getSelectedIndex</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">String</span> click <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getParameter</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">boolean</span> isNumeric <span class="token operator">=</span> click<span class="token punctuation">.</span><span class="token function">chars</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">allMatch</span><span class="token punctuation">(</span><span class="token class-name">Character</span><span class="token operator">::</span><span class="token function">isDigit</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> isNumeric <span class="token operator">?</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>click<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Field</span> <span class="token function">extractField</span><span class="token punctuation">(</span><span class="token class-name">HttpSession</span> currentSession<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Object</span> fieldAttribute <span class="token operator">=</span> currentSession<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">"field"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Field</span><span class="token punctuation">.</span><span class="token keyword">class</span> <span class="token operator">!=</span> fieldAttribute<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            currentSession<span class="token punctuation">.</span><span class="token function">invalidate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"Session is broken, try one more time"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">Field</span><span class="token punctuation">)</span> fieldAttribute<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p></p>
+<p><strong>RestartServlet</strong></p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>tictactoe</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServlet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"RestartServlet"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"/restart"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RestartServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doPost</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> req<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> resp<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">{</span>
+        req<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">invalidate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        resp<span class="token punctuation">.</span><span class="token function">sendRedirect</span><span class="token punctuation">(</span><span class="token string">"/start"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>index.jsp</strong> _</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token operator">&lt;</span><span class="token operator">%</span>@ page <span class="token keyword">import</span><span class="token operator">=</span><span class="token string">"com.tictactoe.Sign"</span> <span class="token operator">%</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">%</span>@ page contentType<span class="token operator">=</span><span class="token string">"text/html;charset=UTF-8"</span> language<span class="token operator">=</span><span class="token string">"java"</span> <span class="token operator">%</span><span class="token operator">&gt;</span>
+
+<span class="token operator">&lt;</span><span class="token operator">!</span>DOCTYPE html<span class="token operator">&gt;</span>
+<span class="token generics"><span class="token punctuation">&lt;</span>html<span class="token punctuation">&gt;</span></span>
+<span class="token generics"><span class="token punctuation">&lt;</span>head<span class="token punctuation">&gt;</span></span>
+    <span class="token operator">&lt;</span>link href<span class="token operator">=</span><span class="token string">"static/main.css"</span> rel<span class="token operator">=</span><span class="token string">"stylesheet"</span><span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span><span class="token operator">%</span>@ taglib prefix<span class="token operator">=</span><span class="token string">"c"</span> uri<span class="token operator">=</span><span class="token string">"http://java.sun.com/jsp/jstl/core"</span> <span class="token operator">%</span><span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">"&lt;c:url value="</span><span class="token operator">/</span><span class="token keyword">static</span><span class="token operator">/</span>jquery<span class="token operator">-</span><span class="token number">3.6</span><span class="token number">.0</span><span class="token punctuation">.</span>min<span class="token punctuation">.</span>js<span class="token string">"/&gt;"</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">&gt;</span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>title<span class="token punctuation">&gt;</span></span><span class="token class-name">Tic</span><span class="token operator">-</span><span class="token class-name">Tac</span><span class="token operator">-</span><span class="token class-name">Toe</span><span class="token operator">&lt;</span><span class="token operator">/</span>title<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>head<span class="token operator">&gt;</span>
+<span class="token generics"><span class="token punctuation">&lt;</span>body<span class="token punctuation">&gt;</span></span>
+<span class="token generics"><span class="token punctuation">&lt;</span>h1<span class="token punctuation">&gt;</span></span><span class="token class-name">Tic</span><span class="token operator">-</span><span class="token class-name">Tac</span><span class="token operator">-</span><span class="token class-name">Toe</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span>
+
+<span class="token generics"><span class="token punctuation">&lt;</span>table<span class="token punctuation">&gt;</span></span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>tr<span class="token punctuation">&gt;</span></span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=0'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=1'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=2'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>tr<span class="token operator">&gt;</span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>tr<span class="token punctuation">&gt;</span></span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=3'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=4'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=5'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>tr<span class="token operator">&gt;</span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>tr<span class="token punctuation">&gt;</span></span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=6'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=7'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span>td onclick<span class="token operator">=</span><span class="token string">"window.location='/logic?click=8'"</span><span class="token operator">&gt;</span>$<span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>tr<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>table<span class="token operator">&gt;</span>
+
+<span class="token generics"><span class="token punctuation">&lt;</span>hr<span class="token punctuation">&gt;</span></span>
+<span class="token operator">&lt;</span>c<span class="token operator">:</span>set <span class="token keyword">var</span><span class="token operator">=</span><span class="token string">"CROSSES"</span> value<span class="token operator">=</span><span class="token string">"&lt;%=Sign.CROSS%&gt;"</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>c<span class="token operator">:</span>set <span class="token keyword">var</span><span class="token operator">=</span><span class="token string">"NOUGHTS"</span> value<span class="token operator">=</span><span class="token string">"&lt;%=Sign.NOUGHT%&gt;"</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+
+<span class="token operator">&lt;</span>c<span class="token operator">:</span><span class="token keyword">if</span> test<span class="token operator">=</span><span class="token string">"${winner == CROSSES}"</span><span class="token operator">&gt;</span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>h1<span class="token punctuation">&gt;</span></span>CROSSES WIN<span class="token operator">!</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span><span class="token string">"restart()"</span><span class="token operator">&gt;</span><span class="token class-name">Start</span> again<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>c<span class="token operator">:</span><span class="token keyword">if</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>c<span class="token operator">:</span><span class="token keyword">if</span> test<span class="token operator">=</span><span class="token string">"${winner == NOUGHTS}"</span><span class="token operator">&gt;</span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>h1<span class="token punctuation">&gt;</span></span>NOUGHTS WIN<span class="token operator">!</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span><span class="token string">"restart()"</span><span class="token operator">&gt;</span><span class="token class-name">Start</span> again<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>c<span class="token operator">:</span><span class="token keyword">if</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span>c<span class="token operator">:</span><span class="token keyword">if</span> test<span class="token operator">=</span><span class="token string">"${draw}"</span><span class="token operator">&gt;</span>
+    <span class="token generics"><span class="token punctuation">&lt;</span>h1<span class="token punctuation">&gt;</span></span>IT'<span class="token class-name">S</span> <span class="token class-name">A</span> DRAW<span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span><span class="token string">"restart()"</span><span class="token operator">&gt;</span><span class="token class-name">Start</span> again<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>c<span class="token operator">:</span><span class="token keyword">if</span><span class="token operator">&gt;</span>
+
+<span class="token generics"><span class="token punctuation">&lt;</span>script<span class="token punctuation">&gt;</span></span>
+    function <span class="token function">restart</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        $<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            url<span class="token operator">:</span> <span class="token string">'/restart'</span><span class="token punctuation">,</span>
+            type<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span>
+            contentType<span class="token operator">:</span> <span class="token string">'application/json;charset=UTF-8'</span><span class="token punctuation">,</span>
+            async<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+            success<span class="token operator">:</span> function <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                location<span class="token punctuation">.</span><span class="token function">reload</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">&gt;</span>
+
+<span class="token operator">&lt;</span><span class="token operator">/</span>body<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>html<span class="token operator">&gt;</span></code></pre>
+<p></p>
+<p><strong>main.css</strong> _</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">td <span class="token punctuation">{</span>
+    border<span class="token operator">:</span> <span class="token number">3</span>px solid black<span class="token punctuation">;</span>
+    padding<span class="token operator">:</span> <span class="token number">10</span>px<span class="token punctuation">;</span>
+    border<span class="token operator">-</span>collapse<span class="token operator">:</span> separate<span class="token punctuation">;</span>
+    margin<span class="token operator">:</span> <span class="token number">10</span>px<span class="token punctuation">;</span>
+    width<span class="token operator">:</span> <span class="token number">100</span>px<span class="token punctuation">;</span>
+    height<span class="token operator">:</span> <span class="token number">100</span>px<span class="token punctuation">;</span>
+    font<span class="token operator">-</span>size<span class="token operator">:</span> <span class="token number">50</span>px<span class="token punctuation">;</span>
+    text<span class="token operator">-</span>align<span class="token operator">:</span> center<span class="token punctuation">;</span>
+    empty<span class="token operator">-</span>cells<span class="token operator">:</span> show<span class="token punctuation">;</span>
+   <span class="token punctuation">}</span></code></pre>

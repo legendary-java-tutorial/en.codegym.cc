@@ -1,0 +1,358 @@
+Date class
+<p>----------------------------------------</p>
+The Date Class and Unix Time Ever since the dawn of the Java language, there has been a special class for manipulating time and date, the Date class. Over time, several more classes for working with dates appeared, but the Date class continues to be used by programmers to this day. The point is that he is very
+<p>----------------------------------------</p>
+<h2>1. <code>Date</code> class and Unix time</h2>
+<p>From the very beginning of Java, the language has had a special class for working with times and dates — <code>Date</code>. Over time, several more classes for working with dates appeared, but programmers continue to use the <code>Date</code> class even today.</p>
+<p>This is because it is very simple and convenient. And as a programmer, <span class="text-bold">you will definitely encounter it in any real project.</span> Whether to use it or not is your choice, but you must know it. So give it a few minutes of your precious time.</p>
+<p>What makes the <code>Date</code> class so good? Its simplicity.</p>
+<p>The <code>Date</code> class stores date and time information as <span class="text-bold">the number of milliseconds that have elapsed since January 1, 1970.</span> That's is a lot of milliseconds, so the <code>long</code> type is used to store them.</p>
+<div class="lesson-note lesson-note--info">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Interesting.</div>
+        <div class="lesson-note__content">
+            <p>Why since 1970 specifically? This is so-called <span class="term">Unix time</span>: it is how the Unix operating system, which is the grandfather of all modern operating systems, keeps time.</p>
+        </div>
+    </div>
+</div>
+<p>But you can very easily find out how much time has passed between two dates: just subtract one date from the other, and you get the time difference between the dates to the nearest millisecond.</p>
+<p>Here are some useful examples of working with the <code>Date</code> class.</p>
+<hr>
+<h2>2. Getting the current date</h2>
+<p>To get the current time and date, simply create a <code>Date</code> object. Each new object stores the time when it was created. It looks very simple:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">Date</span> <span class="code text-user">current</span> = new <span class="text-neon">Date</span>();</code></pre>
+</div>
+<p>After executing this command, the <code>current</code> variable will store a reference to the created <code>Date</code> object, which will internally store the time of its creation — the number of milliseconds that have elapsed since January 1, 1970.</p>
+<p><strong>Displaying the current date on the screen</strong></p>
+<p>To display the current date, simply: a) create a new <code>Date</code> object, b) print it to the screen using the <code>System.out.println()</code> method.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Date</span> <span class="code text-user">current</span> = new <span class="text-neon">Date</span>();
+<span>System.out.println(<span class="code text-user">current</span>);</span></code></pre>
+        </td>
+        <td>
+            <pre><code>Thu Feb 21 14:01:34 EET 2019</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Here's what the console output means:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Text</th>
+        <th>Interpretation</th>
+    </tr>
+    <tr>
+        <td><strong><span class="text-red">Thu</span>rsday</strong></td>
+        <td>Thursday</td>
+    </tr>
+    <tr>
+        <td><strong><span class="text-red">Feb</span>ruary 21</strong></td>
+        <td>February 21</td>
+    </tr>
+    <tr>
+        <td><strong>14:01:34</strong></td>
+        <td>hours : minutes : seconds</td>
+    </tr>
+    <tr>
+        <td><strong>EET</strong></td>
+        <td>Time zone: East European Time</td>
+    </tr>
+    <tr>
+        <td><strong>2019</strong></td>
+        <td>Year</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>3. Setting a specific date</h2>
+<p>We figured out how to get the current time, but how do we create a <code>Date</code> object that stores a different date or time?</p>
+<p>Again, everything is simple here. To set a specific date, you need to write code like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-neon">Date</span> <span class="code text-user">birthday</span> = new <span class="text-neon">Date</span>(<span class="text-red">year</span>, <span class="text-red">month</span>, <span class="text-red">day</span>);</code></pre>
+</div>
+<p>Everything is simple and obvious, but there are two nuances to be aware of:</p>
+<ol>
+    <li>The year must be counted from 1900.</li>
+    <li>Months are numbered from zero.</li>
+</ol>
+<div class="lesson-note lesson-note--info">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Interesting.</div>
+        <div class="lesson-note__content">
+            <p>This is another legacy of the Unix operating system: on Unix, programmers denoted the year using two digits. Instead of 1977, they simply wrote 77. So 77 is the correct year if we count from 1900.</p>
+        </div>
+    </div>
+</div>
+<p>For example, I was born on March 21, 1989. March is the third month, so I need to write:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Date</span> <span class="code text-user">current</span> = new <span class="text-neon">Date</span>(<span class="text-red">89</span>, <span class="text-red">2</span>, <span class="text-red">21</span>);
+<span>System.out.println(<span class="code text-user">current</span>);</span></code></pre>
+        </td>
+        <td>
+            <pre><code>Tue <span class="text-red">Mar</span> <span class="text-red">21</span>&nbsp;00:00:00 EET <span class="text-red">1989</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Months are numbered from zero, but days are not That's a little strange, right?</p>
+<p><span class="text-viola">We think true programmers should have prevailed and numbered the days of the month from zero too. Oh, these conformists 🙂</span></p>
+<p><strong>Setting a specific time</strong></p>
+<p>Setting a specific time is also quite simple: for this, you need to write a statement like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-neon">Date</span> <span class="code text-user">birthday</span> = new <span class="text-neon">Date</span>(year, month, day, <span class="text-red">hour</span>, <span class="text-red">minutes</span>, <span class="text-red">seconds</span>);</code></pre>
+</div>
+<p>Hours, minutes and seconds are numbered from zero: let the programmer inside you breathe a sigh of relief.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Date</span> <span class="code text-user">current</span> = new <span class="text-neon">Date</span>(<span class="text-orange">105</span>, <span class="text-orange">5</span>, <span class="text-orange">4</span>, <span class="text-red">12</span>, <span class="text-red">15</span>, <span class="text-red">0</span>);
+<span>System.out.println(<span class="code text-user">current</span>);</span></code></pre>
+        </td>
+        <td>
+            <pre><code>Sat <span class="text-orange">Jun</span> <span class="text-orange">04</span> <span class="text-red">12:15:00</span> EEST <span class="text-orange">2005</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>We set the time <span class="text-red">12:15</span> and the date <span class="text-orange">June 4, 2005</span>. This is a little difficult for a non-programmer to read, but it works as it should.</p>
+<hr>
+<h2>4. Working with elements of a date</h2>
+<p>You can do more with a <code>Date</code> object than just display it. It has <span class="text-red">methods</span> that let you get individual elements of the internally stored date:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">getYear</span>()</code></pre>
+        </td>
+        <td>Returns the year of the date relative to 1900.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">getMonth</span>()</code></pre>
+        </td>
+        <td>Returns the month of the date (months are numbered from zero)</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">getDate</span>()</code></pre>
+        </td>
+        <td>Returns the day of the month</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">getDay</span>()</code></pre>
+        </td>
+        <td>Returns the day of the week</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">getHours</span>()</code></pre>
+        </td>
+        <td>Returns the hours</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">getMinutes</span>()</code></pre>
+        </td>
+        <td>Returns the minutes</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>int <span class="text-red">getSeconds</span>()</code></pre>
+        </td>
+        <td>Returns the seconds</td>
+    </tr>
+    </tbody>
+</table>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">Date</span> <span class="code text-user">current</span> = new <span class="text-neon">Date</span>(<span class="text-orange">105</span>, <span class="text-orange">5</span>, <span class="text-orange">4</span>, <span class="text-red">12</span>, <span class="text-red">15</span>, <span class="text-red">0</span>);
+System.out.println(<span class="code text-user">current</span>.<span class="text-user">getYear()</span>);
+System.out.println(<span class="code text-user">current</span>.<span class="text-user">getMonth()</span>);
+System.out.println(<span class="code text-user">current</span>.<span class="text-user">getDate()</span>);
+System.out.println(<span class="code text-user">current</span>.<span class="text-user">getDay()</span>);</code></pre>
+        </td>
+        <td><pre><code>
+105
+5
+4
+6</code></pre>
+        </td>
+        <td><br>2005<br>
+            June<br>
+            day of the month<br>
+            Saturday
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>By the way, a <code>Date</code> object not only lets you get individual elements of a date, but also change them:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <code>void <span class="text-red">setYear</span>(int year)</code>
+        </td>
+        <td>Changes the year of the date. The year is indicated relative to 1900.</td>
+    </tr>
+    <tr>
+        <td>
+            <code>void <span class="text-red">setMonth</span>(int month)</code>
+        </td>
+        <td>Changes the month of the date (months are numbered from zero)</td>
+    </tr>
+    <tr>
+        <td>
+            <code>void <span class="text-red">setDate</span>(int date)</code>
+        </td>
+        <td>Changes the day of the month</td>
+    </tr>
+    <tr>
+        <td>
+            <code>void <span class="text-red">setHours</span>(int hours)</code>
+        </td>
+        <td>Changes hours</td>
+    </tr>
+    <tr>
+        <td>
+            <code>void <span class="text-red">setMinutes</span>(int minutes)</code>
+        </td>
+        <td>Changes minutes</td>
+    </tr>
+    <tr>
+        <td>
+            <code>void <span class="text-red">setSeconds</span>(int seconds)</code>
+        </td>
+        <td>Changes seconds</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>5. Milliseconds</h2>
+<p>As we said previously, the <code>Date</code> object stores the number of milliseconds that have elapsed since January 1, 1970.</p>
+<p>If we need that number, we can get it from the <code>Date</code> object:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>long <span class="code text-user">time</span> = date.<span class="text-red">getTime</span>();</code></pre>
+</div>
+<p>The <code><span class="text-red">getTime()</span></code> method returns the number of milliseconds stored inside the <code>Date</code> object.</p>
+<p>Not only can you get the number of milliseconds, but you can also change that number in an existing object:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present language-java"><code>Date <span class="code text-viola">date</span> = new Date();
+<span class="code text-viola">date</span>.<span class="text-red">setTime</span>(<span class="text-user">1117876500000L</span>);</code></pre>
+</div>
+<p>By the way, you can write this even more concisely by passing the time to the <code>Date</code> object right when it is created:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>Date <span class="code text-viola">date</span> = new Date(<span class="text-user">1117876500000L</span>);</code></pre>
+</div>
+<hr>
+<h2>6. Comparing dates</h2>
+<p>If you want to compare two dates and find out which one came first, you have three options</p>
+<p>The <span class="text-bold">first way</span> is to simply compare the number of milliseconds they each store:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>if (<span class="code text-user">date1</span>.getTime() <span class="text-red">&lt;</span> <span class="code text-green">date2</span>.getTime())</code></pre>
+</div>
+<p>The <span class="text-bold">second way</span> is to use the <code>before()</code> method of a <code>Date</code> object:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>if (<span class="code text-user">date1</span>.before(<span class="code text-green">date2</span>))</code></pre>
+</div>
+<p>It reads like this: if <code class="text-user">date1</code> comes before <code class="text-green">date2</code>, then...</p>
+<p>The <span class="text-bold">third way</span> is to use the <code>after()</code> method of a <code>Date</code> object:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>if (<span class="code text-green">date2</span>.after(<span class="code text-user">date1</span>))</code></pre>
+</div>
+<p>It reads like this: if <code class="text-green">date2</code> is after <code class="text-user">date1</code>, then...</p>
+<hr>
+<h2>7. <code>DateFormat</code> class</h2>
+<p>Remember, when we displayed the date on the screen, we saw something like this: <code>Thu Feb 21 14:01:34 EET 2019</code>. Everything seems correct, but the format is more how a date would be displayed for programmers rather than normal humans. We want to display the date more clearly for users. Something like <code>Tuesday, February 21</code>.</p>
+<p>And without the year. Or with a year, if necessary. In general, we want to be able to display the date in different ways.</p>
+<p>There is a special class for this: <code>SimpleDateFormat</code>.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Date <span class="code text-user">current</span> = new Date(105, 5, 4, 12, 15, 0);
+<span class="text-neon">SimpleDateFormat</span> <span class="code text-red">formatter</span> = new <span class="text-neon">SimpleDateFormat</span>("MMM-dd-YYYY");
+String <span class="code text-viola">message</span> = <span class="code text-red">formatter</span>.format(<span class="code text-user">current</span>);
+System.out.println(<span class="code text-viola">message</span>);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>Jun-04-2005</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Look at what the program displayed: <code>Jun-04-2005</code>. That's not at all what it used to be.</p>
+<p>The difference is that we displayed not the <code>Date</code> object itself, but a special string obtained by calling the <code>format()</code> method on a <code><span class="text-neon">SimpleDateFormat</span></code> object. But that's not even the main point here.</p>
+<p>When the <code><span class="text-neon">SimpleDateFormat</span></code> object was created, we passed in the string <code><span class="text-green">"MMM-dd-YYYY"</span></code> as a parameter. It is this string that conveys the date format that we ultimately saw in the console output.</p>
+<ul>
+    <li>MMM indicates to display the name of the month, abbreviated using three letters</li>
+    <li>dd indicates to display the day of the month</li>
+    <li>YYYY indicates to display the year using four digits</li>
+</ul>
+<p>If we want to output the month as numbers, then instead of <span class="text-green"><code>MMM</code></span>, we need to write <span class="text-green"><code>MM</code></span>, which yields the pattern <code><span class="text-green">"MM-dd-YYYY"</span></code>. The screen output will be <code>06-04-2005</code></p>
+<p>We will discuss this class in more detail later.</p>
+<hr>
+<h2>8. <code>Date.parse</code> method</h2>
+<p>The <code>Date</code> class can do something else interesting and useful — it can get a date from a string. Or, as programmers say, it can parse a string.</p>
+<p>It has the special <code>parse()</code> method for this. Parsing looks like this:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present-sm language-java"><code>Date <span class="code text-viola">date</span> = new Date();
+<span class="code text-viola">date</span>.setTime( <span class="text-neon">Date</span>.<span class="text-red">parse</span>(<span class="text-green">"Jul 06 12:15:00 2019"</span>) );</code></pre>
+</div>
+<p>By the way, this code can be written more compactly:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code>Date <span class="code text-viola">date</span> = new Date(<span class="text-green">"Jul 06 12:15:00 2019"</span>);</code></pre>
+</div>
+<p>We'll consider the <span class="term">parsing of strings</span> in more detail in other lessons.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1601"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1602"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1603"></div>

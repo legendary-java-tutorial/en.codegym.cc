@@ -1,0 +1,24 @@
+Servlets, web applications and their containers
+<p>----------------------------------------</p>
+Introduction to web applications Introduction to web servers
+<p>----------------------------------------</p>
+<p>Today we are starting to learn how to write our own <strong>web applications</strong> . Large, complex server-side web applications are where Java dominates. And where do Java programmers make the most money :)</p>
+<p>So what exactly are these web applications? A web application is a program that has a web interface instead of a graphical interface that can be opened in a browser like a regular website. Thus, a large and complex program runs on the server, and can be accessed from any browser.</p>
+<p>What is the difference between a website and a web application? There is no hard border. The site is more designed for storing and displaying content. A web application, on the other hand, does large and complex tasks on the server.</p>
+<p>For example, you have a web application that, through a simple interface, allows you to edit video on the server. It is difficult to call such an application a website.</p>
+<p>Go, for example, to the GitLab service and try to say that this is <a href="https://about.gitlab.com/features/?stage=manage" target="_blank">a "site"</a></p><img data-max-width="800" data-id="cc873f34-91f4-431a-a012-4e3158841ce2" alt="" src="https://cdn.javarush.com/images/article/cc873f34-91f4-431a-a012-4e3158841ce2/800.jpeg" style="width: 800px;">
+<h2>1.2 Introduction to web servers</h2>
+<p>Back in the 90s, when the first web applications appeared, they came up with the idea of ​​dividing them into two parts: the web application itself and the <strong>web server</strong> .</p>
+<p>The web server took over all the routine work of working with the HTTP protocol:</p>
+<ul>
+ <li>Serving static files such as HTML, CSS, JavaScript;</li>
+ <li>Management of access rights to resources;</li>
+ <li>Management of loading, operation and unloading of web applications;</li>
+ <li>Logging, error logging;</li>
+ <li>Ensuring the interaction of web applications with each other and the like.</li>
+</ul>
+<p>The business logic of the application was moved to the web application, and everything that all web applications have in common was moved to the web server. This made it possible to develop a web server independently of a web application, and to use one web server in thousands of applications.</p>
+<p>As a result, the web server has become a platform for web applications. It even has its own API that web applications can call.</p>
+<p>But most importantly, due to the fact that one server was used thousands of times, it was very profitable to spend the efforts of the Java community to add features to a common web server, and not to everyone in their own web application.</p>
+<p>This is how the most popular web server for web applications written in Java, Apache Tomcat, was born. The official page of the project is <a href="https://tomcat.apache.org/" target="_blank">https://tomcat.apache.org/</a></p><img data-max-width="256" data-id="dadca0ad-d045-42d5-8ed9-8381546be43e" alt="" src="https://cdn.javarush.com/images/article/dadca0ad-d045-42d5-8ed9-8381546be43e/256.jpeg" style="width: 256px;">
+<p>This is a very powerful web server and can be configured very flexibly. It is already over 20 years old and its 9th version is now available. In fact, it's an industry standard, so you need to learn how to work with it.</p>

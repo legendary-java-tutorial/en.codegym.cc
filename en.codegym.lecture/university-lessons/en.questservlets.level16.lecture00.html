@@ -1,0 +1,125 @@
+Design patterns
+<p>----------------------------------------</p>
+Introduction to Patterns List of Patterns Diagram of Patterns
+<p>----------------------------------------</p>
+entioned earlier, a programmer begins work on a program by designing its model: compiling a list of entities that the program will operate on. And the more entities in the program, the more complex the program.</p>
+<p>Therefore, in order to reduce the complexity of the program, they try to standardize the interactions of objects. <strong>And this is where design patterns</strong> or design <strong>patterns</strong> help the programmer a lot . From English design <strong>pattern</strong> .</p>
+<p><strong>Important! </strong>In Russian, the word design usually means graphic design, in English this is not the case. The English word design is closer in meaning to the word “design” and / or “device”. For example, the design of an engine is not its appearance, but its internal structure.</p>
+<p>Therefore, a design pattern is exactly a design pattern/pattern. I recommend that you stop using the word design in the sense of “appearance” altogether. You are the future Software Engineer, and for you design is exactly design.</p>
+<p>So what is this design pattern? First of all, a design pattern is <strong>a standard solution to a standard problem</strong> . A good, effective and time-tested solution.</p>
+<p>Let's say you were asked to design a bicycle, you can make it two wheels, three or even five. So by the way, at the dawn of design, it was. But the time-tested approach is two wheels. But the current obvious approach went through pain and mistakes:</p><img data-max-width="800" data-id="5d016cef-bd5d-42a7-8874-07e416f7f55f" alt="" src="https://cdn.javarush.com/images/article/5d016cef-bd5d-42a7-8874-07e416f7f55f/800.jpeg" style="width: 800px;">
+<p>Typically, a template is not a complete solution that can be directly converted to code, it is just an example of a good solution to a problem that can be used in various situations.</p>
+<p>Object-oriented patterns <strong>show relationships and interactions between classes or objects</strong> , without specifying which final classes or application objects will be used.</p>
+<h2>1.2 History of design patterns</h2>
+<p>Back in the 70s, programmers were faced with the need to develop large programs that had to be worked on by entire development teams. Various methods of organizing work were tried, but the construction industry influenced the development the most.</p>
+<p>To organize the work of a large group of people, practices and approaches from the construction industry were used. By the way, it was from there that such terms as assembly (build), Software Developer (builder), and the concept of architecture came into programming.</p>
+<p>And as you might guess, the design pattern idea was also taken from the construction industry. The concept of patterns was first described by Christopher Alexander in The Pattern Language. Cities. Building. Construction". In this book, a special language, patterns, has been used to describe the processes of city design.</p>
+<p>Patterns in construction described typical time-tested decisions: how high windows should be, how many floors should be in the building, how much area in the microdistrict should be allocated for trees and lawns.</p>
+<p>Therefore, it is not surprising that in 1994 the book “Techniques of Object-Oriented Design. Design Patterns”, which includes 23 patterns that solve various problems of object-oriented design.</p>
+<p>The book was written by 4 authors: Erich Gamma, Richard Helm, Ralph Johnson and John Vlissides. The title of the book was too long for anyone to remember. Therefore, soon everyone began to call it “book by the gang of four”, that is, <strong>“a book from a gang of four”</strong> , and then even “GoF book”.</p>
+<p>And since then, other design patterns have been discovered. The “pattern” approach has become popular in all areas of programming, so now you can find all sorts of patterns outside of object design.</p>
+<p><strong>Important! </strong>Patterns are not some super-original solutions, but, on the contrary, frequently encountered, typical solutions to the same problem. Good proven solutions.</p>
+<h2>1.3 List of patterns</h2>
+<p>Many programmers have not learned a single pattern in their entire lives, which, however, does not prevent them from using them. As we said before, patterns are good time-tested solutions, and if the programmer is not a fool, then with experience he himself finds such solutions.</p>
+<p>But why, through dozens of trials and errors, come to optimal solutions when there are people who have already gone this way and have written books with the quintessence of their experience and life wisdom?</p>
+<p>You can hammer a nail with a wrench, but why? You can even use a drill if you try hard. But a good conscious possession of the instrument is precisely what distinguishes a professional from an amateur. And the professional knows that the main feature of the drill is not at all in this. So, why do you need to know patterns?</p>
+<ul>
+ <li>Proven solutions. You spend less time using off-the-shelf solutions instead of reinventing the wheel. Some decisions you could think of yourself, but many may be a discovery for you.</li>
+ <li>Code standardization. You make fewer miscalculations when designing, using typical unified solutions, since all the hidden problems in them have long been found.</li>
+ <li>General programming dictionary. You say the name of the pattern instead of spending an hour explaining to other programmers what a cool design you came up with and what classes are needed for this.</li>
+</ul>
+<h3>What are the patterns?</h3>
+<p>Patterns differ in the level of complexity, detail, and coverage of the system being designed. Drawing an analogy with construction, you can increase the safety of an intersection by putting up a traffic light, or you can replace the intersection with a whole car interchange with underpasses.</p>
+<p>The most low-level and simple patterns are idioms. They are not universal, since they are applicable only within the framework of one programming language.</p>
+<p>The most versatile are architectural patterns that can be implemented in almost any language. They are needed to design the entire program, and not its individual elements.</p>
+<p>But the main thing is that the patterns differ in purpose. The patterns that we will get acquainted with can be divided into three main groups:</p>
+<ul>
+ <li><strong>Creation patterns</strong> take care of the flexible creation of objects without introducing unnecessary dependencies into the program.</li>
+ <li><strong>Structural patterns</strong> show different ways of building relationships between objects.</li>
+ <li><strong>Behavioral patterns</strong> take care of efficient communication between objects.</li>
+</ul>
+<h2>1.4 Introduction to UML</h2>
+<p>Let's start by looking at the same 23 patterns that were described in the Gang of Four book. Both the patterns themselves and their names are familiar things even for a novice programmer. I will introduce you to them, but I strongly recommend reading that very book about patterns.</p>
+<p>Design patterns are not tied to a specific programming language, so the UML is usually used to describe them. It was very popular 20 years ago, but even now it is sometimes used. And by the way, the description of patterns is just the place where the use of UML is the standard.</p>
+<p>With UML, you can describe relationships between different entities. In our case, these are objects and classes.</p>
+<p>Relations between classes are described by four types of arrows:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th width="200"></th>
+    <th></th>
+   </tr>
+   <tr>
+    <td><img data-max-width="256" data-id="44c7f5c6-dfbe-4e88-932c-4e2cac65f11b" alt="" src="https://cdn.javarush.com/images/article/44c7f5c6-dfbe-4e88-932c-4e2cac65f11b/256.jpeg" style="width: 256px;"></td>
+    <td><strong>composition (composition)</strong> - a subspecies of aggregation in which "parts" cannot exist separately from the "whole".</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td><img data-max-width="256" data-id="eb023a81-2235-42ed-933d-924a939b754f" alt="" src="https://cdn.javarush.com/images/article/eb023a81-2235-42ed-933d-924a939b754f/256.jpeg" style="width: 256px;"></td>
+    <td><strong>aggregation</strong> - describes the relationship "part" - "whole", in which the "part" can exist separately from the "whole". The rhombus is indicated from the “whole” side.</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td><img data-max-width="256" data-id="90c1a1ca-7e72-4b02-bdb3-56ab481e1262" alt="" src="https://cdn.javarush.com/images/article/90c1a1ca-7e72-4b02-bdb3-56ab481e1262/256.jpeg" style="width: 256px;"></td>
+    <td><strong>dependency</strong> - a change in one entity (independent) can affect the state or behavior of another entity (dependent). An independent entity is indicated on the side of the arrow.</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td><img data-max-width="256" data-id="93837811-6d75-4992-ae1c-608677eb7114" alt="" src="https://cdn.javarush.com/images/article/93837811-6d75-4992-ae1c-608677eb7114/256.jpeg" style="width: 256px;"></td>
+    <td><strong>generalization</strong> - the relationship of inheritance or implementation of an interface. On the side of the arrow is the superclass or interface.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>In fact, everything is very simple here. The last arrow actually means that one class is inherited from another class. And the first and second arrows are that one object stores a link to the second object. And it's all.</p>
+<p>If the link diamond is black, then the link is weak: objects can exist without each other. If the diamond is white, then the objects are strongly related, such as a class <code>HttpRequest</code>and its child class <code>HttpRequest.Builder</code>.</p>
+<h2>1.5 List of patterns</h2>
+<p>Types of patterns will be denoted by different colors and letters:</p>
+<p><mark class="green">B</mark>- behavioral (behavioral);</p>
+<p><mark class="user">C</mark>- generating (creational);</p>
+<p><mark class="orange">S</mark>- structural (structural).</p>
+<p>And finally, a list of 23 design patterns:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>
+     <p><mark class="user">C</mark> — Abstract Factory</p>
+     <p><mark class="orange">S</mark> — Adapter</p>
+     <p><mark class="orange">S</mark> — Bridge</p>
+     <p><mark class="user">C</mark> — Builder</p>
+     <p><mark class="green">B</mark> — Chain of Responsibilities</p>
+     <p><mark class="green">B</mark> — Team</p>
+     <p><mark class="orange">S</mark> — Linker</p>
+     <p><mark class="orange">S</mark> — Decorator</p></td>
+    <td>
+     <p><mark class="orange">S</mark> — Facade</p>
+     <p><mark class="user">C</mark> — factory method</p>
+     <p><mark class="orange">S</mark> — opportunist</p>
+     <p><mark class="green">B</mark> — Interpreter</p>
+     <p><mark class="green">B</mark> — Iterator</p>
+     <p><mark class="green">B</mark> — Intermediary</p>
+     <p><mark class="green">B</mark> — The keeper</p>
+     <p><mark class="user">C</mark> — Prototype</p></td>
+    <td>
+     <p><mark class="orange">S</mark> — Proxy</p>
+     <p><mark class="green">B</mark> — Observer</p>
+     <p><mark class="user">C</mark> — Loner</p>
+     <p><mark class="green">B</mark> — State</p>
+     <p><mark class="green">B</mark> — Strategy</p>
+     <p><mark class="green">B</mark> — Template method</p>
+     <p><mark class="green">B</mark> — Visitor</p></td>
+   </tr>
+  </tbody>
+ </table>
+</div>

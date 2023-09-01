@@ -1,0 +1,59 @@
+Testing in the life of a programmer
+<p>----------------------------------------</p>
+Why do programmers need testing? Test automation. Types of testing.
+<p>----------------------------------------</p>
+<h2>Why programmers need testing</h2>
+
+<p>The next couple of levels will be devoted to testing in the way that <span class="text-bold">programmers</span> need it . But first, let's find out what testing is and why it is needed.</p>
+<p>With regard to software, we can say that the task of testing is to check that the program:</p>
+<ul>
+ <li>does what she has to do</li>
+ <li>doesn't do what she shouldn't do</li>
+</ul>
+<p>The second point, by the way, is no less important than the first, but more on that later.</p>
+<p>Let's start with the first point. What does "the program does what it is supposed to do" mean?</p>
+<p>First, <span class="text-neon">someone needs to make a list of all the use cases for the program. </span> <span class="text-green">Secondly, they need to describe how the program should work, how the user should behave, and what results are expected. </span>You can not continue further.</p>
+<p>As soon as we wrote “how the user should behave”, the whole idea of ​​writing good documentation fell apart. People are not machines, moreover, <span class="text-red">people very often behave with software as they please</span> . No one begins their acquaintance with technology by studying the instructions. It is a fact.</p>
+<p>Therefore, we get a new fact: the peculiarity of the software is that it has a lot of different work scenarios. Some of them are obvious, others can be documented, others can be assumed, others can be guessed, and the other 50% will not even occur to you.</p>
+<p>From a programmer's point of view, most bugs aren't bugs at all. An error is when a program does not work as it should or as expected. And there are a lot of situations when it is not clear how the program should work, or scenarios that contradict each other ...</p>
+<p>There are an infinite number of scenarios, and there will always be cases in the product when the program does not behave as expected (the programmer wrote the code for only a couple of dozen scenarios). Therefore, it can be argued that <span class="text-red"><span class="text-bold">there are always bugs in any program</span></span> and <span class="text-green"><span class="text-bold">any product can be improved endlessly</span></span> .</p>
+<p>After that, it all comes down to expediency. First, the programmer fixes the biggest bugs, then the smaller bugs, and so on. And finally, there comes a stage when the owner of the product believes that it is not economically feasible to continue working on it.</p>
+<p>But back to the errors that everyone recognizes as errors: the program obviously does something wrong, fell, broke something, etc. Such errors can be conditionally divided into 3 categories: large, medium and small.</p>
+<p>And very often it happens that a programmer is working on fixing medium or even small bugs, although there are still a lot of more serious problems in the project. <span class="text-bold">He just didn't find them</span> , so he's working on the biggest ones he knows about.</p>
+<p>Therefore, in any project there should be testers. <span class="text-green">These people specifically learn to look at the product from different angles. </span>So you can see more scenarios of the program. Their task is to find errors and write them down (so as not to find the same error several times).</p>
+<p><span class="text-bold">Testing is a process aimed at finding errors. </span>These bugs should be found, described and prioritized. Only after the prioritization of errors can we talk about an effective software improvement process.</p>
+<p>Remember, <span class="text-bold">the first step to solving a problem is to acknowledge that there is a problem</span> . You can't fix a mistake you don't know about.</p>
+<h2>Test Automation</h2>
+<p>I think we all agreed that testing is important, so let's look at testing like programmers. How do programmers view testing? Programmers automate the work of other people. The last profession to disappear will be the programming profession.</p>
+<p>We automate any processes we encounter. So testing needs to be automated. And how to automate the search for errors? Short answer: no. But here again the fact that we are programmers comes to our aid.</p>
+<p>The software development process consists of constant changes to it. just in the process of constantly making changes, programmers very often break something that worked fine until recently.</p>
+<p>And testers, instead of looking for new errors, are forced to constantly check whether we have broken something that has been working well for a long time. The so-called regression testing. It is this type of testing that can and should be automated.</p>
+<p>Here all software can be divided into two parts:</p>
+<ul>
+ <li>the program interacts with the person</li>
+ <li>program interacts with another program</li>
+</ul>
+<p>The first option is more difficult to automate, it requires special automator testers, they are also called QA Automation or Software Test Engineer.</p>
+<p>But the second option can and should be automated independently. If you have a piece of software that:</p>
+<ul>
+ <li>works well</li>
+ <li>already tested</li>
+ <li>implemented as a separate module or logical block</li>
+ <li>not planning to change</li>
+ <li>other modules or programs depend on it</li>
+ <li>functional failure is costly</li>
+</ul>
+<p>I recommend taking the time to write tests for it that capture key aspects of its current functionality. <span class="text-bold">It would be reasonable to allocate 5% of your working time</span> for this , or 1 day per month.</p>
+<p><span class="text-bold">No need to write tests for the sake of tests.</span></p>
+<p>No one will support your tests. Not other programmers, not yourself. Nobody does that. 99% of all written tests are abandoned and/or disabled. If you can not write tests - do not write. Write only if you absolutely cannot do without them.</p>
+<h2>Types of testing</h2>
+<p>Each programmer, if he has not undergone special training, will be able to tell in his own words what testing is: checking whether the program does what it should. However, professionals in this field distinguish whole areas (types) of testing.</p>
+<p>All testing really revolves around the reliability and availability of software, but to better understand the direction of testing, let's look at a few examples.</p>
+<p>Let's say you're testing a typical online store. Then the areas of testing can be divided into the following types: performance testing, functional testing, integration testing and unit testing.</p>
+<p>If the site owner decides to launch a serious advertising campaign, then a lot of users will come to the site at the same time. It may well be that the site will not fall, but some of its sections may be slow or even stop working.</p>
+<p>In order to prevent this from happening, you need to identify such problems in advance and take steps to eliminate them. This is done using <span class="text-bold">load testing</span> , or it is also called performance testing.</p>
+<p>You may also want to test how your backend API works and test every function of it: registration, login, add to cart, payment processing, database writes, etc. Everything should work according to the TOR. In this case, you need to perform <span class="text-bold">functional testing</span> .</p>
+<p>Your online store is most likely integrated with third-party services: sending letters and SMS, payment systems, online support chats, collecting feedback from users, advertising systems, etc. To make sure that all this works as intended, you need to <span class="text-bold">integration testing</span> .</p>
+<p>Finally, complex products are often broken down into independent modules. From such modules, you can assemble the final product, as from a constructor. If you are developing such a module or interacting with such modules, then you will need to do <span class="text-bold">unit testing</span> .</p>
+<p>Summing up, we can say that functional testing is needed to test each individual function of the site. Integration - for testing the interaction of large modules and systems of your product. Modular - to test a separate module, well, performance testing - to check the operation of your site under load.</p>
+<p>There can be even more types of testing: the more complex the product, the more aspects of its development need to be controlled.</p>

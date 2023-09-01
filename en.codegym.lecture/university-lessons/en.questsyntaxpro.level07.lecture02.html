@@ -1,0 +1,178 @@
+Reference Variables in Java
+<p>----------------------------------------</p>
+Reference Variables There are two kinds of variables in the Java language: primitive type variables and all others. That's about "everyone else" we'll talk now. In fact, it would be more correct to say that there are primitive type variables (primitive typevariables) and reference variables (refer
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="35297677-17a3-42ad-963e-88407198b228" src="https://cdn.javarush.ru/images/article/35297677-17a3-42ad-963e-88407198b228/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="61a85e83-2c2d-4070-a470-a38af5cff744" src="https://cdn.javarush.ru/images/article/61a85e83-2c2d-4070-a470-a38af5cff744/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="24a222a7-a402-49ef-b29f-db4892691416" src="https://cdn.javarush.ru/images/article/24a222a7-a402-49ef-b29f-db4892691416/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Reference variables</h2>
+<p>In the Java language, there are two kinds of variables: primitive variables and everything else. As it happens, we're going to talk about "everything else" now.</p>
+<p>In fact, it would be more correct to say that there are <strong>primitive variables</strong> and <strong>reference variables</strong>. So what are these reference variables?</p>
+<p>Unlike primitive types, whose variables store values directly, reference variables store <strong>references to objects.</strong> That is, there is an object somewhere in memory, and the reference variable simply stores the address of this object in memory (a reference to the object).</p>
+<p><span class="text-green">Only primitive types</span> store values directly inside variables. <strong>All</strong> other types store only an <span class="text-user">object reference</span>. By the way, you have already encountered two such types of variables — <code>String</code> variables and <span class="term">array</span> variables.</p>
+<p>Both an array and a string are objects stored somewhere in memory. <code>String</code> variables and array variables store only references to objects.</p>
+<p><img data-max-width="1024" data-id="338bbad0-f664-49c6-9646-f1a69a556d07" src="https://cdn.codegym.cc/images/article/338bbad0-f664-49c6-9646-f1a69a556d07/1024.jpeg" alt="Reference variables in Java"></p>
+<p><code>int a, int b and double d</code> are primitive variables that store their values inside themselves.</p>
+<p>A <code>String str</code> variable is a reference and stores the address (reference) to a <code>String</code> object in memory.</p>
+<p>When assigning a primitive value to a variable of a primitive type, its value is copied (duplicated). When assigning a reference variable, <span class="text-green">only the address of the object is copied</span> — <span class="text-orange">the object itself</span> <span class="text-red">is not copied</span>.</p>
+<hr>
+<h2>2. What are references all about?</h2>
+<p>What's the fundamental difference between reference variables and primitive variables?</p>
+<p>A primitive variable is like a box: you can store some value in it. A reference variable is more like a piece of paper with a phone number on it.</p>
+<p><strong>A car vs keys to the car</strong></p>
+<p>Imagine you decide to give your friend a car for his birthday. You won't wrap it in a box and carry it with you: the car is too big for that.</p>
+<p>It is much more convenient to present just the car keys in a box large enough to contain them. Your friend will understand everything when he gets the keys out of the box. There's no need to carry the entire car with you when you can simply hand over the keys.</p>
+<p><strong>A person vs her phone number</strong></p>
+<p>Or here's another comparison: a person and her phone number. A phone number is not the person, but a phone number can be used to call her, ask her for some information, or provide instructions.</p>
+<p>Similarly, a reference is used to interact with an object. All objects interact with each other using references. Instead of "exchanging people", we simply exchange phone numbers.</p>
+<p>When assigning a value to a primitive variable, its value is copied (duplicated). When assigning a value to a reference variable, only the address (phone number) of the object is copied — the object itself is not copied.</p>
+<p>A reference offers one more advantage: you can pass an object reference to some method, and the method will be able to modify (change) the object by using the reference to it, calling its methods and accessing data inside the object.</p>
+<hr>
+<h2>3. Assigning references</h2>
+<p>When assigning reference variables, only the object's address in memory is assigned. Objects themselves do not appear or disappear.</p>
+<p>This approach avoids copying large amounts of memory. If you need to pass a very large object to a method, we just pass the object reference and that's it. The reference takes up much less space.</p>
+<p><img data-max-width="1024" data-id="2f86b0d4-a386-4925-8ac1-7b90a171f2b6" src="https://cdn.codegym.cc/images/article/2f86b0d4-a386-4925-8ac1-7b90a171f2b6/1024.jpeg" alt="Assigning references"></p>
+<p>The size of all reference variables (regardless of their type) is the same — 4 bytes (like an int). But! If your application is running on a 64-bit Java machine, then all references will be 8 bytes (64 bits) in size.</p>
+<p>What's more, references can only be assigned to each other. You cannot change references or assign arbitrary values to reference variables:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-user">hello</span> = "Hello";
+String <span class="text-viola">s</span> = <span class="text-user">hello</span>;</code></pre>
+        </td>
+        <td>This is <span class="text-green">allowed</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-red">hello</span> = "Hello";
+<span class="text-red">hello</span>++;</code></pre>
+        </td>
+        <td>But this is <span class="text-red">not allowed</span></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>String <span class="text-red">hello = 0x1234</span>;</code></pre>
+        </td>
+        <td>And this is <span class="text-red">not allowed</span></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>4. A <code>null</code> reference</h2>
+<p>And what does a reference variable store if nothing has been assigned to it yet?</p>
+<p>It stores a <span class="text-red">null</span> reference. <code>null</code> is a special Java keyword meaning the absence of a reference (an empty reference). The <code>null</code> value can be assigned to any reference variable.</p>
+<p>All reference variables are <code>null</code> unless they have had some kind of reference assigned them.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Person
+{
+   public static <span class="text-red">String name</span>;
+   public static int age;
+}</code></pre>
+        </td>
+        <td><br><br>The <code><span class="text-red">String name</span></code> variable has a default value: <code>null</code>.<br>
+            The <code>int age</code> variable has a default value: <code>0</code>.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Local variables that have not been assigned a value are considered uninitialized for both primitive and reference types.</p>
+<p>If a variable stores a reference to some object, and you want to clear the variable's value, then just assign it a null reference.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code>String <span class="text-red">s</span> = null;
+<span class="text-red">s</span> = "Hello";
+<span class="text-red">s</span> = null;</code></pre>
+        </td>
+        <td><code><span class="text-red">s</span></code> stores <code>null</code>.<br>
+            <code><span class="text-red">s</span></code> stores a reference to a string object<br>
+            <code><span class="text-red">s</span></code> stores <code>null</code>.</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>5. Passing references to methods</h2>
+<p>If a method has parameters that are <span class="term">reference types</span>, then values are passed to the method in the same way as when working with non-reference variables. The parameter is simply assigned the value of the other variable.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>class Solution
+{
+   public static void <span class="text-red">fill</span>(String[] <span class="text-orange">array</span>, String <span class="text-green">value</span>)
+   {
+      for (int i = 0; i &lt; <span class="text-orange">array</span>.length; i++)
+        <span class="text-orange">array</span>[i] = <span class="text-green">value</span>;
+   }
+
+   public static void main(String[] args)
+   {
+     String[] <span class="text-user">data</span> = new String[<span class="text-user">10</span>];
+     <span class="text-red">fill</span>(<span class="text-user">data</span>, <span class="text-green">"Hello"</span>);
+   }
+}</code></pre>
+        </td>
+        <td><br><br>The <code><span class="text-red">fill</span></code> fills the passed array (<code><span class="text-orange">array</span></code>) with the passed value (<code><span class="text-green">value</span></code>).</td>
+    </tr>
+    </tbody>
+</table>
+<p>When the <code><span class="text-red">fill</span></code> method is called, the <code><span class="text-orange">array</span></code> parameter is assigned a reference to the <code><span class="text-user">data</span></code> array. The <code><span class="text-green">value</span></code> variable is assigned a reference to the string object ("Hello").</p>
+<p>This is what memory looks like <strong>before calling the</strong> <code><span class="text-red">fill</span></code> method:</p>
+<p><img data-max-width="1024" data-id="e0055e14-3c20-4206-80ab-c5e6d3573d1d" src="https://cdn.codegym.cc/images/article/e0055e14-3c20-4206-80ab-c5e6d3573d1d/1024.jpeg" alt="Passing references to methods"></p>
+<p><span>This is what memory looks like <strong>when the</strong> <code><span class="text-red">fill</span></code> <strong>method is running</strong></span><span>:</span></p>
+<img data-max-width="1024" data-id="d166f66d-bde1-44c6-99de-d075bfca89d0" src="https://cdn.codegym.cc/images/article/d166f66d-bde1-44c6-99de-d075bfca89d0/1024.jpeg" alt="Passing references to methods 2">
+<p>The <code><span class="text-user">data</span></code> and <code><span class="text-orange">array</span></code> variables refer to (store references to) the same container in memory.</p>
+<p>The <code><span class="text-green">value</span></code> variable stores a reference to the string object (<code>"Hello"</code>).</p>
+<p>The cells of the array also just store references to the <code>"Hello"</code> object.</p>
+<p>In fact, no objects are duplicated — only references are copied.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task07.task0710"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task07.task0711"></div>
+<hr>
+<h2>6. Comparison with the C/C ++ language</h2>
+<p>In interviews, sometimes Java programmers are asked how data is passed to methods in Java? And sometimes the question is whether data is passed by reference or by value?</p>
+<p>This question comes from C++, but <span class="text-orange">isn't very meaningful in Java</span>. In Java, parameters are always simply assigned the values of the arguments. So the correct answer would be "<span class="text-red">by value</span>".</p>
+<p>But be prepared to <strong>explain your position</strong>, since you may immediately hear the retort: "primitive types are passed by value, and reference types are passed by reference."</p>
+<p>This origin of this issue stems from the fact that many Java programmers were C++ programmers in the past. In that programming language, the question of how parameters are passed to methods was very important.</p>
+<p>In Java, everything is unambiguous: primitive types store values and reference types also store a value — a reference. It's a question of whether a variable is considered a <strong>value</strong>.</p>
+<p>In C++, a variable could store both a reference to an object and the object itself. The same was true about primitive types: a primitive variable could store a value or declare the variable as a reference to an <code>int</code>. So, to avoid confusion, C++ programmers always refer to the <span class="term">object to a reference</span> as a <span class="term">reference</span>, and the object itself — as a value.</p>
+<p>In C++, you could easily have the situation where one variable contains an object, but the other contains a reference to that object. Accordingly, the question of what a variable stores — the object itself or just a reference to it — was very important. When an object was passed to a method, it was copied (if passed by value), and not copied (if passed by reference).</p>
+<p>In Java, this duality does not exist, so the correct answer is: <strong>arguments are passed to Java methods by value</strong>. It's just that when we're talking about reference variables, this value is a reference.</p>

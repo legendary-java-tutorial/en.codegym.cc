@@ -1,0 +1,54 @@
+Introduction to databases
+<p>----------------------------------------</p>
+The history of the emergence of databases: DB and DBMS. Popular DBMS and MySQL. Tables in a database: columns and columns.
+<p>----------------------------------------</p>
+2>
+<p>A long time ago in one American country, in a large IT company, the task of storing very large amounts of data once arose. What's so hard about that, you ask? After all, large companies have money, which means you can buy more hard drives - and that's it.</p>
+<p>Great idea, but as they say, the devil is in the details. Large amounts of data had to be not only stored, but also changed, and various samples were made from them. Moreover, you need to select different data from different places, and also do it quickly and beautifully.</p>
+<p>In general, everything is as usual: customers wanted something that does not exist, and the decision to buy hard drives did not work this time.</p><img data-max-width="512" data-id="9b901b7f-6eec-41da-946d-7883d2115dbb" alt="" src="https://cdn.javarush.com/images/article/9b901b7f-6eec-41da-946d-7883d2115dbb/512.jpeg" style="width: 512px;">
+<p>Therefore, the programmers of this IT company knocked out a bigger budget for themselves, carried out research work, and when the budget was over, they presented a presentation where it was proposed to store data in the form of a Database. <strong>In a database, all data is stored in tables, and each table is stored in a separate file. </strong>Everything ingenious is simple and everything works.</p>
+<p>But such a presentation did not suit the customers, and nit-picking continued:</p><img data-max-width="512" data-id="0b0f18f2-dd22-4bd5-94aa-016eed3fc472" alt="" src="https://cdn.javarush.com/images/article/0b0f18f2-dd22-4bd5-94aa-016eed3fc472/512.jpeg" style="width: 512px;">
+<ul>
+ <li>Where's the money, Lebowski?</li>
+ <li>Why is the Database better than the good old storage of data in the form of a set of files?</li>
+ <li>We need a really good solution, not that's it!</li>
+ <li>And it took the entire budget?</li>
+</ul>
+<p>There was dead silence in the presentation room. However, unexpectedly for everyone, the situation was saved by a junior developer, who said that a special program was attached to the database - a <strong>DBMS</strong> (Database Management System), which can:</p>
+<ul>
+ <li>Create, modify and delete databases</li>
+ <li>Make changes to databases, namely: add new records, delete old ones and change them</li>
+ <li>And also super fast to perform various selections of any data</li>
+</ul>
+<p>And programmers are even finishing designing a special super-language for filtering data - <strong>SQL</strong> . And they say that with the help of this magical SQL language, any manager can easily filter and get any data from the database.</p><img data-max-width="512" data-id="216e75d9-299a-44a8-9e0a-0cc1d26717a8" alt="" src="https://cdn.javarush.com/images/article/216e75d9-299a-44a8-9e0a-0cc1d26717a8/512.jpeg" style="width: 512px;">
+<p>The programmers just <strong>haven't finished designing the language yet</strong> , so there's not a word about SQL and DBMS in the presentation.</p>
+<p>To everyone's joy, the customers were impressed by the explanation they heard, expressed several conflicting ideas about what this new language should be like, and even allocated a budget for its refinement.</p>
+<p>Managers and the Technical Director began to congratulate each other on the successful completion of the project, and immediately went to celebrate this event, not fully realizing that the junior programmer in this whole story is the most important person ...</p>
+<h2>Popular DBMS and MySQL</h2>
+<p>At the moment (summer 2022) there are hundreds of popular DBMS, so it will be useful for you to learn about some of them. What should I start with…</p>
+<p>On the one hand, the enterprise DBMS market has been around for decades. Therefore, it has both recognized leaders and promising newcomers. On the other hand, business requirements are constantly growing, so approaches to building IT infrastructures of companies are constantly changing.</p>
+<p>Now you won’t surprise anyone with a database from a cluster of a couple of thousand servers with horizontal and vertical sharding, distributed transactions, as well as an IT department of a couple of dozen system administrators who go and change server hard drives according to a predetermined schedule.</p>
+<p>In general, if you work for a large company, then most likely they pay a lot of money for their databases, and use something like this:</p>
+<h3>Oracle Database</h3><img data-max-width="800" data-id="8a53ac38-0a59-466a-9597-f3e6bf618a43" alt="" src="https://cdn.javarush.com/images/article/8a53ac38-0a59-466a-9597-f3e6bf618a43/800.jpeg" style="width: 800px;">
+<p>Oracle released its first database back in 1979 (43 years ago). She immediately bore the name Oracle 2.0 to convince customers that the product is not new, but time-tested.</p>
+<p>The current version of the database is Oracle 21 <strong>c</strong> , where the letter <strong>c</strong> is from the word <strong>cloud</strong> , which, as it were, hints that Oracle is keeping up with the times and its solutions are perfectly compatible with all cloud technologies.</p>
+<h3>Microsoft SQL Server</h3><img data-max-width="512" data-id="532a4cde-2214-4bec-96db-bff84eb41af6" alt="" src="https://cdn.javarush.com/images/article/532a4cde-2214-4bec-96db-bff84eb41af6/512.jpeg" style="width: 512px;">
+<p>Microsoft makes a lot of money selling not Windows, but server solutions for medium and large businesses. Microsoft Office, Microsoft SharePoint, Microsoft Server, etc. And, of course, all this requires a good database. Therefore, a lot of companies, using Microsoft products and solutions, are forced to use its database.</p>
+<p>Microsoft's DBMS is simply called <strong>SQL Server</strong> , so if you hear the question “Have you worked with SQL Server?” at an interview, then know that this is not an abstract DBMS, but Microsoft SQL Server.</p>
+<h3>PostgreSQL</h3><img data-max-width="512" data-id="b31cfc41-69af-488e-8079-5433fa502551" alt="" src="https://cdn.javarush.com/images/article/b31cfc41-69af-488e-8079-5433fa502551/512.jpeg" style="width: 512px;">
+<p>This is a good free DBMS, which is often used not only by small and medium-sized companies, but also by large corporations. This is one of the databases that Amazon AWS offers as a DB-as-service.</p>
+<h3>MySQL</h3><img data-max-width="512" data-id="0ea0a78a-41d2-43c3-8cd0-b4c72d4c142a" alt="" src="https://cdn.javarush.com/images/article/0ea0a78a-41d2-43c3-8cd0-b4c72d4c142a/512.jpeg" style="width: 512px;">
+<p>MySQL is a very popular free and open source database. It is well documented, works fast, and supports a wide range of features. To date, the 8th version of this DBMS is available.</p>
+<p>In 2008, it was bought by Sun, which was bought by Oracle in 2009. And it only benefited her - the product is constantly developing and improving.</p>
+<p>We will learn how to work with databases using <strong>MySQL Community Server 8.0</strong> as an example .</p>
+<h2>Tables in a database: columns and columns</h2>
+<p>Different DBMS can store data in different formats, so we will take the simplest and most classic option - the MySQL DBMS.</p>
+<p>And immediately the question is: how to store, for example, any accounting documents? The easiest option is to store each document as an Excel file. Then all related documents can be stored in one folder. This is how MySQL works.</p>
+<p>Another analogy: in the Java language, you have <strong>classes and packages</strong> in your project , but at the same time, classes and packages are represented on disk as <strong>files and folders</strong> . Something similar exists in MySQL.</p>
+<p>MySQL data is stored in the form of <strong>tables</strong> , which are combined into <strong>databases</strong> , but at the same time, tables and the database are presented on disk as <strong>files and folders</strong> . The database is a folder, and the files in it are tables.</p>
+<p>Each table consists of <strong>columns</strong> and <strong>rows</strong> . Example:</p><img data-max-width="512" data-id="ef9c797e-174d-4b27-a109-ff88a837ac5a" alt="" src="https://cdn.javarush.com/images/article/ef9c797e-174d-4b27-a109-ff88a837ac5a/512.jpeg" style="width: 512px;">
+<p><strong>Important! </strong>Each column has <span class="text-green"><strong>a name</strong></span> and <span class="text-neon">a data type</span> , so <span class="text-red">all cells in the same column must store values ​​of the same type</span> .</p>
+<p>An analogy can be drawn between a table in MySQL and a class in Java. A table is a class, a table, like a class, has a unique name. Table columns are class fields; columns, like fields, have a unique name and type. Table rows are class instances in Java.</p>
+<p>A class can exist without objects, and a table can exist without rows. In Java, you can create a new object, and in MySQL, you can add a new row to a table. You can change the field values ​​of an object, and in MySQL you can change the values ​​in a row.</p>
+<p>It is even more correct to say that a table is not a class, but a collection of objects of a certain class. If in MySQL we have <strong>an Employee table</strong> with data on employees, then in Java we would use the <span class="text-neon"><span class="text-bold">ArrayList collection<employee></employee></span></span>.</p>
+<p>And, of course, the question immediately arises: how to get certain data from this collection?</p>

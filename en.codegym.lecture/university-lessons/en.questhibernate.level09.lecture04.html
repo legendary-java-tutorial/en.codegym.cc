@@ -1,0 +1,163 @@
+Hibernate Configuration
+<p>----------------------------------------</p>
+Automatic data schema creation Query logging SQL dialects Popular settings
+<p>----------------------------------------</p>
+<p>When you first configure Hibernate, you can enable a lot of interesting settings. I did not bring them before, so as not to spray. But at the end of the level I think about some of them to tell.</p>
+<p>The first such setting is the <code>hbm2ddl.auto</code>. It can have 5 different values:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>validate</strong></td>
+    <td>Validation: Hibernate will check if the column and field names and types match in the database and in the annotations. This is the most common mode.</td>
+   </tr>
+   <tr>
+    <td><strong>update</strong></td>
+    <td>Update: Hibernate will update the tables in the database if they or their columns are different than expected.</td>
+   </tr>
+   <tr>
+    <td><strong>create</strong></td>
+    <td>Recreate: Hibernate will delete all tables in the database and recreate them based on the data from the annotations.</td>
+   </tr>
+   <tr>
+    <td><strong>create-drop</strong></td>
+    <td>Creation-deletion. At the beginning of the work, Hibernate will create all the tables, at the end of the work, it will delete them after itself.</td>
+   </tr>
+   <tr>
+    <td><strong>none</strong></td>
+    <td>Hibernate won't do anything at all. If somewhere the base does not match the expectation, then errors will be thrown during the execution of queries.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>5.2 Logging requests</h2>
+<p>The second very useful setting of Hibernate is the logging of all its requests to the database: all requests to the database are duplicated in the console. This is a very useful feature if you are making changes to Hibernate related code.</p>
+<p>First, you will better understand how your queries are converted to SQL. Secondly, it is easier and earlier you will be able to find errors. And they definitely will. Hibernate doesn't always work the way we expect. This is especially often associated with annotations: you understand them in your own way, and Hibernate in your own way.</p>
+<p>The setting that enables logging is called <code>hibernate.show_sql</code>. If you set its value to true, then queries to the database will be written to the console. The parameter is also used in conjunction with it <code>hibernate.format_sql</code>, which allows you to set a convenient SQL query format in the log.</p>
+<p>Another way to log requests to the database is <strong>to use the standard logger</strong> . Everything gave in the fact that Hibernate already writes its queries to the standard logger, but only with the scope - DEBUG. You need to change two properties in your standard logger:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java">logging<span class="token punctuation">.</span>level<span class="token punctuation">.</span>org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>SQL<span class="token operator">=</span>debug
+<span class="token class-name"><span class="token namespace">logging<span class="token punctuation">.</span>level<span class="token punctuation">.</span>org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>type<span class="token punctuation">.</span>descriptor<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span>BasicBinder</span><span class="token operator">=</span>trace</code></pre>
+<p>Changing the level of <strong>BasicBinder</strong> to <code>trace</code>will add query parameters to us, however, in a slightly unusual form - sequential enumeration after the query itself.</p>
+<p>The third approach is <strong>to use a special proxy driver for the database</strong> .</p>
+<p>For example, <code>log4jdbc</code>or <code>p6spy</code>. Both proxies are working and have starters, although <code>log4jdbc</code>there were no commits for a long time at the time of writing.</p>
+<pre class="line-numbers"><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;com.integralblue&lt;/groupId&gt;
+    &lt;artifactId&gt;log4jdbc-spring-boot-starter&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.github.gavlyukovskiy&lt;/groupId&gt;
+    &lt;artifactId&gt;p6spy-spring-boot-starter&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>I will not go into details, I just want you to know that this is possible.</p>
+<h2>5.3 SQL dialects</h2>
+<p>And some more background information.</p>
+<p>Hibernate supports a very large number of DBMSs. Each of them implements a standard set of SQL functions and some more of their own. Or different versions of SQL. Therefore, to work with these DBMS, you need to tell Hibernate which dialect of the SQL language to use.</p>
+<p>Here is a list of the most popular dialects:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>PostgreSQL</strong></td>
+    <td>org.hibernate.dialect.PostgreSQLDialect</td>
+   </tr>
+   <tr>
+    <td><strong>SAP DB</strong></td>
+    <td>org.hibernate.dialect.SAPDBDialect</td>
+   </tr>
+   <tr>
+    <td><strong>Sybase</strong></td>
+    <td>org.hibernate.dialect.SybaseDialect</td>
+   </tr>
+   <tr>
+    <td><strong>Informix</strong></td>
+    <td>org.hibernate.dialect.InformixDialect</td>
+   </tr>
+   <tr>
+    <td><strong>Microsoft SQL Server 2008</strong></td>
+    <td>org.hibernate.dialect.SQLServer2008Dialect</td>
+   </tr>
+   <tr>
+    <td><strong>MySQL</strong></td>
+    <td>org.hibernate.dialect.MySQLDialect</td>
+   </tr>
+   <tr>
+    <td><strong>Oracle (any version)</strong></td>
+    <td>org.hibernate.dialect.OracleDialect</td>
+   </tr>
+   <tr>
+    <td><strong>Oracle 11g</strong></td>
+    <td>org.hibernate.dialect.Oracle10gDialect</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Of course, there can be any number of such dialects. You can write your own DBMS and your own dialect for it.</p>
+<p>Why is it important to specify the correct dialect?</p>
+<p>Each database may have slightly different data types. Therefore, in order for Hibernate to work perfectly exactly the way you expect from it, you need to tell it which dialect of the SQL language it needs to use.</p>
+<p>Here is an interesting picture that shows how everything is connected in reality:</p><img data-max-width="1024" data-id="805f68c6-5663-418f-bd17-74caf9f8c128" alt="" src="https://cdn.javarush.com/images/article/805f68c6-5663-418f-bd17-74caf9f8c128/1024.jpeg" style="width: 1024px;">
+<h2>5.4 Popular settings</h2>
+<p>To make your life easier, here is a complete list of several settings:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>MySQL 8.0</th>
+   </tr>
+   <tr>
+    <td>
+     <pre><code>hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+hibernate.connection.driver_class=com.mysql.cj.jdbc.Driver
+hibernate.connection.url=jdbc:mysql://<span class="text-user">localhost:3306</span>/<span class="text-brown">test</span>
+hibernate.connection.username=root
+hibernate.connection.password=secret
+hibernate.show_sql=true
+hibernate.hbm2ddl=validate
+</code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>MySQL 5.0</th>
+   </tr>
+   <tr>
+    <td>
+     <pre><code>hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+hibernate.connection.driver_class=com.mysql.jdbc.Driver
+hibernate.connection.url=jdbc:mysql://<span class="text-user">localhost:3306</span>/<span class="text-brown">test</span>
+hibernate.connection.username=root
+hibernate.connection.password=secret
+hibernate.show_sql=true
+hibernate.hbm2ddl=validate
+</code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>PostgreSQL</th>
+   </tr>
+   <tr>
+    <td>
+     <pre><code>hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+hibernate.connection.driver_class= org.postgresql.Driver
+hibernate.connection.url= jdbc:postgresql://<span class="text-user">localhost</span>/<span class="text-brown">test</span>
+hibernate.connection.username=root
+hibernate.connection.password=secret
+hibernate.show_sql=true
+hibernate.hbm2ddl=validate
+</code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>MySQL 8.0 supports more features than MySQL 5.0, so if you want Hibernate to make the most of all of them, then specify the correct dialect.</p>
+<p>The H2 database is usually stored in memory, so <code>mem:test</code>is both the name of the SQL server and the name of the schema you will be working with.</p>

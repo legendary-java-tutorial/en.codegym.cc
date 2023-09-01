@@ -1,0 +1,32 @@
+Strategies for Avoiding DeadLock
+<p>----------------------------------------</p>
+Hello Amigo! I want to tell you about a couple of strategies for avoiding deadlocks. The best strategy is a well-thought-out architecture and a set of rules for when locks can be used (mutex acquisition) and in what order. The classic way to deal with the problem is to develop a lock hierarchy, establishing a rule that some locks can never be acquired in a state in which they are already acquired ...
+<p>----------------------------------------</p>
+<a href='https://cdn.codegym.cc/images/article/158ba8c7-aeae-4274-807c-623e176794ef/original.jpeg' target='_blank'><img data-id="158ba8c7-aeae-4274-807c-623e176794ef" data-max-width="850" alt="Strategies to avoid deadLock - 1" src="https://cdn.codegym.cc/images/article/158ba8c7-aeae-4274-807c-623e176794ef/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"I want to tell you about a couple strategies for avoiding deadlocks."</p>
+<p>"The best strategy is a thoughtful architecture and a set of rules governing when and in what order you can use locks (acquire mutexes). The classic approach to the problem is to develop a lock hierarchy and establish the rule that certain locks can never be acquired in a state where certain other locks have already been acquired."</p>
+<p>"For example, sometimes locks are assigned levels, and a thread is required to acquire locks in order from higher levels to lower levels (but acquiring locks in the other direction is not allowed). Additionally, acquiring multiple locks with the same level is not allowed."</p>
+<p>"For example, in the previous example with knights, we could add a unique number (id) to each knight and require that locks be acquired from the larger id to the smaller id."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><strong>class</strong> KnightUtil
+{
+ <strong>public</strong> <strong>static</strong> void kill(Knight knight1, Knight knight2)
+ {
+  Knight knightMax = knight1.id &gt; knight2.id ? knight1: knight2;
+  Knight knightMin = knight1.id &gt; knight2.id ? knight2: knight1;
+
+  <strong>synchronized</strong>(knightMax)
+  {
+   <strong>synchronized</strong>(knightMin)
+   {
+    knight2.live = 0;
+    knight1.experience +=100;
+   }
+  }
+ }
+}</code></pre>
+<p><span class="text-user">"That'a beautiful solution."</span></p>
+<p>"It's a very simple solution, but I like it. I hope it will be useful to you when you're thinking about how to solve potential deadlock problems."</p>
+<p><span class="text-user">"Thanks, Ellie."</span></p>

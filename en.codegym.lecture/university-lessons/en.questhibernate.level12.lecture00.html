@@ -1,0 +1,428 @@
+Mapping primitive data types
+<p>----------------------------------------</p>
+Supported data types. Manual type assignments - @Type annotation. List of Hibernate types for databases.
+<p>----------------------------------------</p>
+revious three levels, we got a little familiar with Hibernate. It's time for the second round. Now we will begin to study the same thing, only deeper. And we will start by mapping the fields of the Entity class to the columns of the tables in the database.</p>
+<p>As you already know, mapping a field in an Entity class to a column is done using the <span class="text-yellow"><span class="text-bold">@Column</span></span> annotation . And now the question is: what types of fields can be mapped with such an annotation?</p>
+<p>All data types in Java can be divided into three groups:</p>
+<ul>
+ <li>The type is quite simple and <strong>easy to store in a database</strong> .</li>
+ <li>The type is complex and you need to <strong>write a special converter</strong> for it .</li>
+ <li>The type is very complex and <strong>needs a separate table</strong> to store its values .</li>
+</ul>
+<p>Simple types that Hibernate knows how to store include:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Types in Java</th>
+    <th>package</th>
+    <th>Class examples</th>
+   </tr>
+   <tr>
+    <td><strong>Primitive Java Types</strong></td>
+    <td></td>
+    <td><span class="code"><span class="text-green">boolean</span></span> ,<span class="code"><span class="text-green"> int</span></span> ,<span class="code"><span class="text-green"> double</span></span> , etc.</td>
+   </tr>
+   <tr>
+    <td><strong>Wrappers over primitives</strong></td>
+    <td>java.lang</td>
+    <td><span class="code"><span class="text-green">Boolean</span></span> ,<span class="code"><span class="text-green"> Integer</span></span> ,<span class="code"><span class="text-green"> Double</span></span> , etc.</td>
+   </tr>
+   <tr>
+    <td><strong>Strings</strong></td>
+    <td>java.lang</td>
+    <td><span class="code"><span class="text-green">String</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>"Advanced" numbers</strong></td>
+    <td>java.math</td>
+    <td><span class="code"><span class="text-green">BigInteger</span></span> and<span class="code"><span class="text-green"> BigDecimal</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>date and time</strong></td>
+    <td>java.time</td>
+    <td><span class="code"><span class="text-green">LocalDate</span></span> ,<span class="code"><span class="text-green"> LocalTime</span></span> ,<span class="code"><span class="text-green"> LocalDateTime</span></span> ,<span class="code"><span class="text-green"> OffsetTime</span></span> ,<span class="code"><span class="text-green"> OffsetDateTime</span></span> ,<span class="code"><span class="text-green"> Instant</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>Various date and time variations</strong></td>
+    <td>java.util</td>
+    <td><span class="code"><span class="text-green">date</span></span> and<span class="code"><span class="text-green"> calendar</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>Old date and time formats</strong></td>
+    <td>java.sql</td>
+    <td><span class="code"><span class="text-green">Date</span></span> ,<span class="code"><span class="text-green"> Time</span></span> ,<span class="code"><span class="text-green"> Timestamp</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>Array of bytes or characters</strong></td>
+    <td></td>
+    <td><span class="code"><span class="text-green">byte[]</span></span> or<span class="code"><span class="text-green"> Byte[]</span></span> ,<span class="code"><span class="text-green"> char[]</span></span> or<span class="code"><span class="text-green"> Character[]</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>Enums</strong></td>
+    <td></td>
+    <td>Any enum</td>
+   </tr>
+   <tr>
+    <td><strong>Serializable objects</strong></td>
+    <td></td>
+    <td>Any implementation of java.io.Serializable</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>All of these types have their counterparts in the SQL language, so Hibernate knows how to store and load them from the database.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"name"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"level"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> level<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_date"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Manual type assignments - @Type annotation</h2>
+<p>Sometimes you may want to tamper with Hibernate's policy and explicitly tell it what type to store data in the database. For example, you have a field in your Entity class of type Integer, but in the base there is a column for it with type VARCHAR.</p>
+<p>There is a special annotation for this - <span class="text-yellow"><span class="text-bold">@Type</span></span> . It looks very simple:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token annotation punctuation">@Type</span><span class="token punctuation">(</span>type<span class="token operator">=</span><span class="token string">"type-name"</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>Let's, for example, ask Hibernate to make the field<mark>createdDate</mark><span class="code"><span class="text-green">of our User</span></span> class was stored in the database as a string:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_date"</span><span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@Type</span><span class="token punctuation">(</span>type<span class="token operator">=</span><span class="token string">"org.hibernate.type.StringType"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>If Hibernate figured out how to convert the Date type to your new type, then it would just do it. If it does not understand, then you will need to specify a special type converter. But more on that later.</p>
+<h2>List of Hibernate types for databases</h2>
+<p>By the way, did you notice that we specified the type <strong>org.hibernate.type.StringType</strong> , not <strong>String</strong> . This is because we have chosen one of the types supported by the DBMS and not by the Java language. They each have their own type system. It's just that the Hibernate developers came up with convenient Java-style names instead of these VARCHARs.</p>
+<p>By the way, this list is not so small. I'll give part of it here:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Hibernate type (org.hibernate.type package)</th>
+    <th>JDBC type</th>
+    <th>Java type</th>
+    <th>BasicTypeRegistry key(s)</th>
+   </tr>
+   <tr>
+    <td><strong>StringType</strong></td>
+    <td>VARCHAR</td>
+    <td>java.lang.string</td>
+    <td>string, java.lang.string</td>
+   </tr>
+   <tr>
+    <td><strong>materialized clob</strong></td>
+    <td>CLOB</td>
+    <td>java.lang.string</td>
+    <td>materialized_clob</td>
+   </tr>
+   <tr>
+    <td><strong>Text Type</strong></td>
+    <td>LONGVARCHAR</td>
+    <td>java.lang.string</td>
+    <td>text</td>
+   </tr>
+   <tr>
+    <td><strong>character type</strong></td>
+    <td>CHAR</td>
+    <td>char, java.lang.Character</td>
+    <td>char, java.lang.Character</td>
+   </tr>
+   <tr>
+    <td><strong>BooleanType</strong></td>
+    <td>bit</td>
+    <td>boolean, java.lang.Boolean</td>
+    <td>boolean, java.lang.Boolean</td>
+   </tr>
+   <tr>
+    <td><strong>NumericBooleanType</strong></td>
+    <td>INTEGER, 0 is false, 1 is true</td>
+    <td>boolean, java.lang.Boolean</td>
+    <td>numeric_boolean</td>
+   </tr>
+   <tr>
+    <td><strong>YesNoType</strong></td>
+    <td>CHAR, 'N'/'n' is false, 'Y'/'y' is true. The uppercase value is written to the database.</td>
+    <td>boolean, java.lang.Boolean</td>
+    <td>yes_no</td>
+   </tr>
+   <tr>
+    <td><strong>TrueFalseType</strong></td>
+    <td>CHAR, 'F'/'f' is false, 'T'/'t' is true. The uppercase value is written to the database.</td>
+    <td>boolean, java.lang.Boolean</td>
+    <td>true_false</td>
+   </tr>
+   <tr>
+    <td><strong>ByteType</strong></td>
+    <td>TINYINT</td>
+    <td>byte, java.lang.Byte</td>
+    <td>byte, java.lang.Byte</td>
+   </tr>
+   <tr>
+    <td><strong>short type</strong></td>
+    <td>SMALLINT</td>
+    <td>short, java.lang.Short</td>
+    <td>short, java.lang.Short</td>
+   </tr>
+   <tr>
+    <td><strong>IntegerTypes</strong></td>
+    <td>INTEGER</td>
+    <td>int, java.lang.Integer</td>
+    <td>int, java.lang.Integer</td>
+   </tr>
+   <tr>
+    <td><strong>long type</strong></td>
+    <td>BIGINT</td>
+    <td>long, java.lang.Long</td>
+    <td>long, java.lang.Long</td>
+   </tr>
+   <tr>
+    <td><strong>float type</strong></td>
+    <td>FLOAT</td>
+    <td>float, java.lang.Float</td>
+    <td>float, java.lang.Float</td>
+   </tr>
+   <tr>
+    <td><strong>double type</strong></td>
+    <td>DOUBLE</td>
+    <td>double, java.lang.Double</td>
+    <td>double, java.lang.Double</td>
+   </tr>
+   <tr>
+    <td><strong>BigIntegerType</strong></td>
+    <td>NUMERIC</td>
+    <td>java.math.BigInteger</td>
+    <td>big_integer, java.math.BigInteger</td>
+   </tr>
+   <tr>
+    <td><strong>BigDecimalType</strong></td>
+    <td>NUMERIC</td>
+    <td>java.math.BigDecimal</td>
+    <td>big_decimal, java.math.bigDecimal</td>
+   </tr>
+   <tr>
+    <td><strong>TimestampType</strong></td>
+    <td>TIMESTAMP</td>
+    <td>java.sql.timestamp</td>
+    <td>timestamp, java.sql.timestamp</td>
+   </tr>
+   <tr>
+    <td><strong>TimeType</strong></td>
+    <td>TIME</td>
+    <td>java.sql.Time</td>
+    <td>time, java.sql.Time</td>
+   </tr>
+   <tr>
+    <td><strong>date type</strong></td>
+    <td>DATE</td>
+    <td>java.sql.date</td>
+    <td>date, java.sql.date</td>
+   </tr>
+   <tr>
+    <td><strong>CalendarType</strong></td>
+    <td>TIMESTAMP</td>
+    <td>java.util.Calendar</td>
+    <td>calendar, java.util.Calendar</td>
+   </tr>
+   <tr>
+    <td><strong>CalendarDateType</strong></td>
+    <td>DATE</td>
+    <td>java.util.Calendar</td>
+    <td>calendar_date</td>
+   </tr>
+   <tr>
+    <td><strong>CurrencyType</strong></td>
+    <td>java.util.Currency</td>
+    <td>VARCHAR</td>
+    <td>currency, java.util.Currency</td>
+   </tr>
+   <tr>
+    <td><strong>LocaleType</strong></td>
+    <td>VARCHAR</td>
+    <td>java.util.locale</td>
+    <td>locale, java.utility.locale</td>
+   </tr>
+   <tr>
+    <td><strong>TimeZoneType</strong></td>
+    <td>VARCHAR, using the TimeZone ID</td>
+    <td>java.util.TimeZone</td>
+    <td>timezone, java.util.TimeZone</td>
+   </tr>
+   <tr>
+    <td><strong>UrlType</strong></td>
+    <td>VARCHAR</td>
+    <td>java.net.URL</td>
+    <td>url, java.net.URL</td>
+   </tr>
+   <tr>
+    <td><strong>class type</strong></td>
+    <td>VARCHAR(class FQN)</td>
+    <td>java.lang.Class</td>
+    <td>class, java.lang.Class</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The table, of course, is large, but very useful. For example, it is clear from it that the Boolean type can be stored in the database in at least six different ways. Don't you need that much? And who said that you choose the way to save?</p>
+<p>There is no Boolean type in SQL and it is often stored like this:</p>
+<ul>
+ <li>1 or 0</li>
+ <li>'F' or 'T'</li>
+ <li>'Y' or 'N'</li>
+</ul>
+<p>Therefore, it is very good when Hibernate understands all these troubles. Or, for example, let's take the storage of data arrays in the database. There are a bunch of different options, and Hibernate knows how to work with them all:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Hibernate type (org.hibernate.type package)</th>
+    <th>JDBC type</th>
+    <th>Java type</th>
+    <th>BasicTypeRegistr</th>
+   </tr>
+   <tr>
+    <td><strong>blob type</strong></td>
+    <td>BLOB</td>
+    <td>java.sql.blob</td>
+    <td>blog, java.sql.blob</td>
+   </tr>
+   <tr>
+    <td><strong>clobtype</strong></td>
+    <td>CLOB</td>
+    <td>java.sql.clob</td>
+    <td>clob, java.sql.clob</td>
+   </tr>
+   <tr>
+    <td><strong>BinaryType</strong></td>
+    <td>VARBINARY</td>
+    <td>byte[]</td>
+    <td>binary, byte[]</td>
+   </tr>
+   <tr>
+    <td><strong>MaterializedBlobType</strong></td>
+    <td>BLOB</td>
+    <td>byte[]</td>
+    <td>materized_blob</td>
+   </tr>
+   <tr>
+    <td><strong>Image Type</strong></td>
+    <td>LONGVARBINARY</td>
+    <td>byte[]</td>
+    <td>image</td>
+   </tr>
+   <tr>
+    <td><strong>WrapperBinaryType</strong></td>
+    <td>VARBINARY</td>
+    <td>java.lang.Byte[]</td>
+    <td>wrapper-binary, Byte[], java.lang.Byte[]</td>
+   </tr>
+   <tr>
+    <td><strong>CharArrayType</strong></td>
+    <td>VARCHAR</td>
+    <td>char[]</td>
+    <td>characters, char[]</td>
+   </tr>
+   <tr>
+    <td><strong>CharacterArrayType</strong></td>
+    <td>VARCHAR</td>
+    <td>java.lang.Character[]</td>
+    <td>wrapper-characters, Character[], java.lang.Character[]</td>
+   </tr>
+   <tr>
+    <td><strong>UUIDBinaryType</strong></td>
+    <td>BINARY</td>
+    <td>java.util.UUID</td>
+    <td>uuid-binary, java.util.UUID</td>
+   </tr>
+   <tr>
+    <td><strong>UUIDCharType</strong></td>
+    <td>CHAR, can also read VARCHAR</td>
+    <td>java.util.UUID</td>
+    <td>uuid-char</td>
+   </tr>
+   <tr>
+    <td><strong>PostgreSQLUUIDType</strong></td>
+    <td>PostgreSQL UUID, through Types#OTHER, which complies to the PostgreSQL JDBC driver definition</td>
+    <td>java.util.UUID</td>
+    <td>pg-uuid</td>
+   </tr>
+  </tbody>
+ </table>
+</div> And since the release of JDK 8, Hibernate has added a few more time-related types. All to make your life easier. You no longer have to wonder if all these newfangled types are supported. The creators of Hibernate have already added their support for you: 
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Hibernate type (org.hibernate.type package)</th>
+    <th>JDBC type</th>
+    <th>Java type</th>
+    <th>BasicTypeRegistr</th>
+   </tr>
+   <tr>
+    <td><strong>DurationType</strong></td>
+    <td>BIGINT</td>
+    <td>java.time.Duration</td>
+    <td>Duration, java.time.Duration</td>
+   </tr>
+   <tr>
+    <td><strong>instant type</strong></td>
+    <td>TIMESTAMP</td>
+    <td>java.time.Instant</td>
+    <td>Instant, java.time.Instant</td>
+   </tr>
+   <tr>
+    <td><strong>LocalDateTimeType</strong></td>
+    <td>TIMESTAMP</td>
+    <td>java.time.LocalDateTime</td>
+    <td>LocalDateTime, java.time.LocalDateTime</td>
+   </tr>
+   <tr>
+    <td><strong>LocalDateType</strong></td>
+    <td>DATE</td>
+    <td>java.time.LocalDate</td>
+    <td>LocalDate, java.time.LocalDate</td>
+   </tr>
+   <tr>
+    <td><strong>LocalTimeType</strong></td>
+    <td>TIME</td>
+    <td>java.time.LocalTime</td>
+    <td>LocalTime, java.time.LocalTime</td>
+   </tr>
+   <tr>
+    <td><strong>OffsetDateTimeType</strong></td>
+    <td>TIMESTAMP</td>
+    <td>java.time.OffsetDateTime</td>
+    <td>OffsetDateTime, java.time.OffsetDateTime</td>
+   </tr>
+   <tr>
+    <td><strong>OffsetTimeType</strong></td>
+    <td>TIME</td>
+    <td>java.time.OffsetTime</td>
+    <td>OffsetTime, java.time.OffsetTime</td>
+   </tr>
+   <tr>
+    <td><strong>OffsetTimeType</strong></td>
+    <td>TIMESTAMP</td>
+    <td>java.time.ZonedDateTime</td>
+    <td>ZonedDateTime, java.time.ZonedDateTime</td>
+   </tr>
+  </tbody>
+ </table>
+</div>

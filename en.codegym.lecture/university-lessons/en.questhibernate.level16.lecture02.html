@@ -1,0 +1,92 @@
+NativeQuery
+<p>----------------------------------------</p>
+Introduction to Entity mapping DTO mapping
+<p>----------------------------------------</p>
+hing I would like to talk about is <strong>NativeQuery</strong> . As you already know, using NativeQuery, you can write queries in native SQL. However, what's even more interesting is that you don't have to use class mapping when getting the query result.</p>
+<p>I'd rather show you an example:</p>
+<pre><code>List&lt;Object[]&gt; <span class="text-user">persons</span> = <span class="text-brown">session.createNativeQuery</span>(<span class="text-green">"SELECT * FROM Person"</span>).list();
+</code></pre>
+<p>In this example, we don't pass a class that matches the query result rows, instead we just use an array of Object objects.</p>
+<p>This can be useful if you want to select just a couple of columns in a table. Example:</p>
+<pre class="line-numbers"><code>
+List&lt;Object[]&gt; <span class="text-user">persons</span> = session.<span class="text-brown">createNativeQuery</span>(<span class="text-green">"SELECT id, name FROM Person"</span>).list();
+ 
+for(Object[] person : <span class="text-user">persons</span>) {
+    Number <span class="token keyword">id</span> = (Number) <span class="text-user">person</span>[0];
+    String <span class="token keyword">name</span> = (String) <span class="text-user">person</span>[1];
+}
+</code></pre>
+<p>This is somewhat similar to the JDBC approach when you get a ResultSet object and read data from its rows.</p>
+<p>However, Hibernate offers different ways to make this more reliable. For example, you can specify the type of columns you want to subtract. Example:</p>
+<pre class="line-numbers"><code>
+Query&lt;Object[]&gt; <span class="text-yellow">query</span> = session.createNativeQuery(<span class="text-green">"SELECT id, name FROM Person"</span>);
+<span class="text-yellow">query</span>.addScalar(<span class="text-green">"id"</span>, StandardBasicTypes.<span class="text-viola">LONG</span>);
+<span class="text-yellow">query</span>.addScalar(<span class="text-green">"name"</span>, StandardBasicTypes.<span class="text-viola">STRING</span>);
+List&lt;Object[]&gt; <span class="text-user">persons</span> = <span class="text-yellow">query</span>.list();
+ 
+for(Object[] person : <span class="text-user">persons</span>) {
+    Long <span class="token keyword">id</span> = (Long) <span class="text-user">person</span>[0];
+    String <span class="token keyword">name</span> = (String) <span class="text-user">person</span>[1];
+}
+</code></pre>
+<h2>3.2 Entity mapping</h2>
+<p>You can also explicitly specify the class that Hibernate should use when parsing the result of <strong>NativeQuery</strong> . This can be done in different ways.</p>
+<pre class="line-numbers"><code>
+Query&lt;Person&gt; <span class="text-yellow">query</span> = session.<span class="text-brown">createNativeQuery</span>(<span class="text-green">"SELECT * FROM Person"</span>)
+    .addEntity(Person.class);
+    .list();
+</code></pre>
+<p>And of course, the good old format you know:</p>
+<pre class="line-numbers"><code>
+Query&lt;Person&gt; <span class="text-yellow">query</span> = session.<span class="text-brown">createNativeQuery</span>(<span class="text-green">"SELECT * FROM Person"</span>, Person.class).list();
+</code></pre>
+<p>The first approach is the native Hibernate approach and the second is the JPA approach. The JPA approach is more convenient and concise, since this standard was invented after Hibernate existed for many years. And Hibernate evolved and was forced to support old approaches in order to maintain compatibility with its old versions.</p>
+<p>By the way, thanks to its approach, Hibernate allows you to connect not one class to the query result mapping, but several classes. Example:</p>
+<pre class="line-numbers"><code>
+List&lt;Phone&gt; <span class="text-yellow">results</span> = <span class="text-brown">session.createNativeQuery</span>(
+    <span class="text-green">"SELECT {ph.*}, {pr.*}"</span> +
+    <span class="text-green">"FROM Phone ph"</span> +
+    <span class="text-green">"JOIN Person pr ON ph.person_id = pr.id"</span>)
+.addEntity(<span class="text-green">"ph"</span>, <span class="text-user">Phone</span>.class)
+.addJoin(<span class="text-green">"pr"</span>, <span class="text-green">"ph.person"</span>)
+.list();
+ 
+for (<span class="text-user">Phone</span>. phone : <span class="text-yellow">results</span>) {
+           	assertNotNull( phone.getPerson().getName() );
+}
+</code></pre>
+<p>This approach using <strong>NativeQuery</strong> can be used to speed up the selection of data from the database. If you know that you don't need some columns, you can leave them out in the request.</p>
+<p>You can also load all child entities at once, even if Hibernate wants to use <strong>Cache</strong> or the <strong>LazyLoading</strong> mechanism . In addition, your child entities may have many columns in the database, and you can select only some of them.</p>
+<h2>3.3 DTO mapping</h2>
+<p>Hibernate also allows you to use non-Entity classes for mapping the result. Classes that do not have any annotations and are not mapped to any tables.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name"><span class="text-brown">PersonSummaryDTO</span></span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">Number</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">Number</span> <span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> id<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setId</span><span class="token punctuation">(</span><span class="token class-name">Number</span> id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setName</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name"><span class="text-brown">PersonSummaryDTO</span></span><span class="token punctuation">&gt;</span></span> dtos <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createNativeQuery</span><span class="token punctuation">(</span>
+    <span class="token string"><span class="text-green">"SELECT p.id as \"id\", p.name as \"name\" FROM Person p"</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token function"><span class="text-red">setResultTransformer</span></span><span class="token punctuation">(</span><span class="token class-name"><span class="text-user">Transformers</span></span><span class="token punctuation">.</span><span class="token function"><span class="text-neon">aliasToBean</span></span><span class="token punctuation">(</span><span class="token class-name"><span class="text-brown">PersonSummaryDTO</span></span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Since there are no annotations in the PersonSummaryDTO class, the names of the columns in the SQL query must exactly match the names of the fields of the PersonSummaryDTO class.</p>
+<p>This can be very useful if you are reading data from an external database to which your application is connected only in read-only mode. That is, you were given access to tables that have 50+ columns, they store data in a denormalized form to speed up the selection.</p>
+<p>Or let's say that someone decided to store the class hierarchy in one table, and in five years this table has grown so much that the devil will break his leg. You need to select a couple of columns from this table (Id and username) and give them to the client.</p>
+<p>I think you understand, but if you want to dive deeper into this topic, you can read more at the link:</p>
+<p><a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#sql" target="_blank" rel="nofollow">Native SQL Queries</a></p><a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#sql" target="_blank" rel="nofollow"> </a>

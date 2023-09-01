@@ -1,0 +1,111 @@
+Transactions when working with a database
+<p>----------------------------------------</p>
+Why are transactions needed? Transactions in JDBC. Save points.
+<p>----------------------------------------</p>
+often, when working with a database, a situation arises when you need to perform many different actions, but they only make sense together.</p>
+<p>For example, we are writing banking software that should do three things:</p>
+<ul>
+ <li>Withdraw money from customer's account</li>
+ <li>Add money to the recipient's account</li>
+ <li>Record the posting data in the “posting log”</li>
+</ul>
+<p>If an error occurs during the execution of any of these actions, then the other two must also be canceled. It is impossible to write off money from the client and not add it to the recipient? Well, or add to the recipient, but not write off from the client?</p>
+<p>So, such a logical grouping of different actions into one is called <strong>a transaction</strong> . In other words, a transaction is <span class="text-green">a group of actions that must be performed only all together</span> . If any action failed or was executed with an error, then all other actions must be canceled.</p>
+<p>A transaction usually has three states:</p>
+<ul>
+ <li>initial state - the state of the system before executing a group of actions</li>
+ <li>success state - state after the action group is completed</li>
+ <li>failed state - something went wrong</li>
+</ul><img data-max-width="512" data-id="62f3d27f-6517-4f3f-8734-7da74fb223d7" alt="" src="https://cdn.javarush.com/images/article/62f3d27f-6517-4f3f-8734-7da74fb223d7/512.jpeg" style="width: 512px;">
+<p>In this case, there are usually three commands:</p>
+<ul>
+ <li><strong>begin/start</strong> - executed before the start of the logical group of actions</li>
+ <li><strong>commit</strong> - executed after the transaction action group</li>
+ <li><strong>rollback</strong> - starts the process of returning the system from failed state to initial state</li>
+</ul>
+<p>It works like this.</p>
+<p>First you need to open a transaction - call <span class="code text-orange">the begin()</span> or <span class="code text-orange">start()</span> method . Calling this method indicates the state of the system to which we will try to return if something goes wrong.</p>
+<p>Then all actions are performed, which are combined into a logical group - a transaction.</p>
+<p>Then the <span class="code text-orange">commit()</span> method is called . Its call marks the end of a logical group of actions, and also usually starts the process of putting these actions into practice.</p>
+<p>Recall how we wrote something in FileWriter: first, everything we wrote is stored in memory, and then when the <span class="code text-orange">flush ()</span> method is called , all the data from the buffer in memory is written to disk. This <span class="code text-orange">flush()</span> is the transaction commit.</p>
+<p>Well, if an error occurred during the operation of the transaction, then you need to initiate the process of returning to the starting state. This process is called <span class="code text-orange">rollback()</span> , and the method of the same name is usually responsible for it.</p>
+<p>Roughly speaking, there are 2 ways to complete a transaction:</p>
+<ul>
+ <li><strong>COMMIT</strong> - we confirm all the changes made</li>
+ <li><strong>ROLLBACK</strong> - roll back all changes made</li>
+</ul>
+<h2>Transactions in JDBC</h2>
+<p>Almost every DBMS can work with transactions. So JDBC also has support for this case. Everything is implemented very simply.</p>
+<p>First, each call to the <span class="code text-orange">execute()</span> method of the Statement object is executed in a separate transaction. To do this, Connection has an <span class="code text-orange">AutoCommit</span> parameter . If it is set to <em>true</em> , then <span class="code text-orange">commit()</span> will be called after each call to the <span class="code text-orange">execute()</span> method .</p>
+<p>Secondly, if you want to execute several commands in one transaction, then you can do it like this:</p>
+<ul>
+ <li>disable <span class="text-green">AutoCommit</span></li>
+ <li>calling our teams</li>
+ <li>call the <span class="code text-orange">commit()</span> method explicitly</li>
+</ul>
+<p>It looks very simple:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">connection<span class="token punctuation">.</span><span class="token function">setAutoCommit</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Statement</span> statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> rowsCount1 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> rowsCount2 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> rowsCount3 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+connection<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>If an error occurs on the server while the <span class="code text-orange">commit()</span> method is running , then the SQL server will cancel all three actions.</p>
+<p>But there are situations when the error still occurs on the client side, and we never got to the <span class="code text-orange">commit()</span> method call :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">connection<span class="token punctuation">.</span><span class="token function">setAutoCommit</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Statement</span> statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> rowsCount1 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> rowsCount2 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> rowsCount3 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE multiple typos will result in an exception"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+connection<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>If an error occurs during the execution of one <span class="code text-orange">executeUpdate()</span> , then the <span class="code text-orange">commit()</span> method will not be called. To roll back all actions taken, you need to call the <span class="code text-orange">rollback()</span> method . It usually looks like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">try</span><span class="token punctuation">{</span>
+  	connection<span class="token punctuation">.</span><span class="token function">setAutoCommit</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  	<span class="token class-name">Statement</span> statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	<span class="token keyword">int</span> rowsCount1 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	<span class="token keyword">int</span> rowsCount2 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	<span class="token keyword">int</span> rowsCount3 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE multiple typos will result in an exception"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	  connection<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+ <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   connection<span class="token punctuation">.</span><span class="token function">rollback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Savepoints</h2>
+<p>With the advent of JDBC 3.0, it became possible to work more efficiently with transaction rollback. Now you can set save points - save points, and when you call the <span class="code text-orange">rollback ()</span> operation , roll back to a specific save point.</p>
+<p>In order to save, you need to create a savepoint, this is done with the command:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-user">Savepoint</span></span> <span class="text-green">save</span> <span class="token operator">=</span> <span class="text-red">connection</span><span class="token punctuation">.</span><span class="token function"><span class="text-red">setSavepoint</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Reverting to a savepoint is done with the command:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">connection</span><span class="token punctuation">.</span><span class="token function"><span class="text-red">rollback</span></span><span class="token punctuation">(</span><span class="text-green">save</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Let's try adding a savepoint before our problematic command:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">try</span><span class="token punctuation">{</span>
+  	connection<span class="token punctuation">.</span><span class="token function">setAutoCommit</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  	<span class="token class-name">Statement</span> statement <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	<span class="token keyword">int</span> rowsCount1 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	<span class="token keyword">int</span> rowsCount2 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  	<span class="token class-name">Savepoint</span> save <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">setSavepoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 	 <span class="token keyword">try</span><span class="token punctuation">{</span>
+      	<span class="token keyword">int</span> rowsCount3 <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE multiple typos will result in an exception"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 	 <span class="token punctuation">}</span>
+ 	 <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	   connection<span class="token punctuation">.</span><span class="token function">rollback</span><span class="token punctuation">(</span>save<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 	 <span class="token punctuation">}</span>
+
+	  connection<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span>
+ <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   connection<span class="token punctuation">.</span><span class="token function">rollback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We organized nested transactions by adding <strong>a save-point</strong> before calling the problematic method, and returning to the saved state by calling the <span class="code text-orange">rollback(save)</span> method .</p>
+<p>Yes, it's very similar to save/load in games.</p>

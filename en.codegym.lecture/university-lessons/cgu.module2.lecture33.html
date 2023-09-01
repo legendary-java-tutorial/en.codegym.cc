@@ -1,0 +1,694 @@
+Getting Data with Reflection
+<p>----------------------------------------</p>
+The Field class provides information and dynamic access to a single field of a class or interface. Field also allows transformation expansion during a get or set access...
+<p>----------------------------------------</p>
+<h2>java.lang.reflect.Field class</h2>
+
+    <p>The <span class="code"><span class="text-green">Field</span></span> class provides information about and dynamic access to a single field of a class or interface. <span class="code"><span class="text-green">Field</span></span> also allows a widening type conversion during a get or set access operation, but throws an <span class="text-red"> <span class="text-bold">IllegalArgumentException</span></span> if narrowing would occur.</p>
+
+    <p>To get a <span class="code"><span class="text-green">Field</span></span> object, we'll first write a class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Person {
+    private String name;
+    private int age;
+    
+    public boolean isMale;
+    
+    protected String address;
+    
+    public static final int MAX_AGE = 120;
+    public static final int MIN_AGE = 0;
+}
+</code></pre>
+
+    <p>And here's our code for working with that class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Main {
+    public static void main(String[] args) {
+        Field[] fields = Person.class.getDeclaredFields();
+        List&lt;Field&gt; actualFields = getFieldNames(fields);
+        System.out.println(actualFields);
+    }
+
+    static List&lt;Field&gt; getFieldNames(Field[] fields) {
+        return List.of(fields);
+    }
+}
+</code></pre>
+
+    <p>This is how we get the list of the fields of our class, which we will work with later. Here's the result:</p>
+
+    <div class="terminal">[private java.lang.String com.company.Person.name, private int com.company.Person.age, public boolean com.company.Person.isMale, protected java.lang.String com.company.Person.address, public static final int com.company.Person.MAX_AGE, public static final int com.company.Person.MIN_AGE]</div>
+
+    <p>Now let's figure out what we can do with this data. Let's talk about the methods of the <span class="code"><span class="text-green">Field</span></span> class:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Method</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getType()</span></td>
+                <td>Returns a Class object that identifies the declared type of the field represented by this <mark class="green">Field</mark> object.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getAnnotatedType()</span></td>
+                <td>Returns an <mark class="green">AnnotatedType</mark> object that represents the use of a type to specify the declared type of the field represented by this Field.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getGenericType()</span></td>
+                <td>Returns a <mark class="green">Type</mark> object that represents the declared type of the field represented by this <mark class="green">Field</mark> object.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getName()</span></td>
+                <td>Returns the name of the field represented by this <mark class="green">Field</mark> object.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getModifiers()</span></td>
+                <td>Returns an int encoding the Java language modifiers for the field represented by this <mark class="green">Field</mark> object.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getAnnotations()</span></td>
+                <td>Returns the annotations for this field. If there are no annotations, it returns an empty array.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>getType(), getName(), and getModifiers() methods</h2>
+
+    <p>We can use the <span class="code text-orange">getType()</span> method to can get the type of our field. Let's write a method:</p>
+
+    <pre class='language-java line-numbers'><code>
+static void printTypes(List&lt;Field&gt; fields){
+      fields.forEach(e -&gt; System.out.println(e.getType()));
+  }
+</code></pre>
+
+    <p>And we get this result:</p>
+
+    <div class="terminal">class java.lang.String<br />
+int<br />
+boolean<br />
+class java.lang.String<br />
+int<br />
+int</div>
+
+    <p>Now let's add a method to our class to get the name of a field. This will make it easier to navigate the fields of our class.</p>
+
+    <pre class='language-java line-numbers'><code>
+static void printTypesAndNames(List&lt;Field&gt; fields){
+   fields.forEach(e -&gt; System.out.printf("Field type - %s\nField name - %s\n\n", e.getType(), e.getName()));
+}
+</code></pre>
+
+    <p>Now the result is more understandable:</p>
+
+    <div class="terminal">Field type - class java.lang.String<br />
+Field name - name<br />
+ <br />
+Field type - int<br />
+Field name - age<br />
+ <br />
+Field type - boolean<br />
+Field name - isMale<br /> 
+ <br />
+Field type - class java.lang.String<br />
+Field name - address<br />
+ <br />
+Field type - int<br />
+Field name - MAX_AGE<br />
+ <br />
+Field type - int<br />
+Field name - MIN_AGE</div>
+
+    <p>Great! Let's modify our method some more! We'll add access modifiers here</p>
+
+    <pre class='language-java line-numbers'><code>
+static void printFieldInfo(List&lt;Field&gt; fields){
+   fields.forEach(e -&gt; System.out.printf("Field type - %s\nField name - %s\nModifiers - %s\n\n", e.getType(), e.getName(), Modifier.toString(e.getModifiers())));
+}
+</code></pre>
+
+    <p>And let's look at what <span class="code text-orange">e.getModifiers()</span> returns. This method returns an <span class="text-orange">int</span> that lets us determine the state our field's access modifiers. The <span class="code"><span class="text-green">Modifier</span></span> class contains static variables responsible for each specific modifier of the field.</p>
+
+    <img data-max-width="800" data-id="3f20ce0b-dbef-450b-b6d1-31324ee45efa" src="https://cdn.javarush.ru/images/article/3f20ce0b-dbef-450b-b6d1-31324ee45efa/original.png" alt="">
+
+    <p>Let's wrap our return value in <span class="code text-orange">Modifier.toString()</span> and immediately get its value as text:</p>
+
+    <div class="terminal">Field type - class java.lang.String<br />
+Field name - name<br />
+Modifiers - private<br />
+ <br />
+Field type - int<br />
+Field name - age<br />
+Modifiers - private<br />
+ <br />
+Field type - boolean<br />
+Field name - isMale<br />
+Modifiers - public<br /> 
+ <br />
+Field type - class java.lang.String<br />
+Field name - address<br />
+Modifiers - protected<br />
+ <br />
+Field type - int<br />
+Field name - MAX_AGE<br />
+Modifiers - public static final<br />
+ <br />
+Field type - int<br />
+Field name - MIN_AGE<br />
+Modifiers - public static final</div>
+
+    <p>Here's what it looks like without <span class="code text-orange">Modifier.toString()</span>:</p>
+
+    <div class="terminal">Field type - class java.lang.String<br />
+Field name - name<br />
+Modifiers - 2<br /> 
+ <br />
+Field type - int<br />
+Field name - age<br />
+Modifiers - 2<br />
+ <br />
+Field type - boolean<br />
+Field name - isMale<br />
+Modifiers - 1<br />
+ <br />
+Field type - class java.lang.String<br />
+Field name - address<br />
+Modifiers - 4<br />
+ <br />
+Field type - int<br />
+Field name - MAX_AGE<br />
+Modifiers - 25<br />
+ <br />
+Field type - int<br />
+Field name - MIN_AGE<br />
+Modifiers - 25</div>
+
+    <h2>getAnnotations(), getAnnotatedType(), and getGenericType() methods</h2>
+
+    <p>Let's modify the <span class="code"><span class="text-green">Person</span></span> class to work with these methods. We'll write our own annotation and apply it to our fields. And we'll add a few more fields.</p>
+
+    <p>Let's create two annotations. We will pass the variable name in Pig Latin to one, and we will use the second for elements:</p>
+
+    <pre class='language-java line-numbers'><code>
+@Target(value=ElementType.FIELD)
+@Retention(value= RetentionPolicy.RUNTIME)
+public @interface Name {
+    String name();
+}
+</code></pre>
+
+    <pre class='language-java line-numbers'><code>
+@Target({ ElementType.TYPE_USE })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Number {
+}
+</code></pre>
+
+    <p>And we'll change our main class and the <span class="code"><span class="text-green">Person</span> class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Person {
+    @Name(name = "Ame-nay")
+    private String name;
+
+    @Name(name = "User nicknames")
+    List&lt;String&gt; nicknames;
+
+    private final Class&lt;Object&gt; type;
+
+    private int @Number[] number;
+
+    public Person(Class&lt;Object&gt; type) {
+        this.type = type;
+    }
+}
+</code></pre>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+    Field[] fields = Person.class.getDeclaredFields();
+    List&lt;Field&gt; actualFields = getFieldNames(fields);
+    
+    printAdditionalInfo(actualFields);
+}
+
+static void printAdditionalInfo(List&lt;Field&gt; fields) {
+   System.out.println("\ngetAnnotatedType:");
+   fields.forEach(e -&gt; System.out.println(e.getAnnotatedType()));
+
+   System.out.println("\ngetGenericType:");
+   fields.forEach(e -&gt; System.out.println(e.getGenericType()));
+
+   System.out.println("\ngetAnnotations:");
+   fields.forEach(e -&gt; System.out.println(Arrays.toString(e.getAnnotations())));
+}
+</code></pre>
+
+    <p>It's time to look at the results of our methods and figure out what they are for:</p>
+
+    <div class="terminal">getAnnotatedType:<br />
+java.lang.Class&lt;java.lang.Object&gt;<br />
+java.util.List&lt;java.lang.String&gt;<br />
+java.lang.String<br />
+int @Number()[]<br />
+ <br />
+getGenericType:<br />
+java.lang.Class&lt;java.lang.Object&gt;<br />
+java.util.List&lt;java.lang.String&gt;<br />
+class java.lang.String<br />
+class [I<br />
+ <br />
+getAnnotations:<br />
+[]<br />
+[@Name(name="\u0055\u0073\u0065\u0072\u0020\u006e\u0069\u0063\u006b\u006e\u0061\u006d\u0065\u0073")]<br />
+[@Name(name="\u0041\u006d\u0065\u002d\u006e\u0061\u0079")]<br />
+[]</div>
+
+    <ul>
+        <li><p><span class="code text-orange">getAnnotatedType</span> returns the annotation for the given field, if any. We get the annotation for the field and we can see it perfectly.</p></li>
+        <li><p><span class="code text-orange">getGenericType</span> lets you correctly display a parameterized type.</p></li>
+        <li><p><span class="code text-orange">getAnnotations</span> returns the annotations applied to our object.</p></li>
+    </ul>
+
+    <p>This is how we can easily get all the data about each field in our class, as well as its access modifiers, annotations and data types.</p>
+
+    <h2>java.lang.reflect.Method class</h2>
+
+    <p>Super! We've talked about the fields of our class. Now it's time to talk about the methods.</p>
+
+    <p>To get a <span class="code"><span class="text-green">Method</span></span> object, we call the <span class="code text-orange">getMethod</span> method, passing it the name of our method. This is the basic way to get a <span class="code"><span class="text-green">Method</span></span> object:</p>
+
+    <pre class='language-java line-numbers'><code>
+Method getNameMethod =  Person.class.getMethod("getName");
+</code></pre>
+
+    <p>We'll continue to work with our class. Let's add getters and setters, and hashCode, <span class="code text-orange">equals</span> and <span class="code text-orange">toString</span> methods:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Person {
+    private String name;
+    private int age;
+
+    public boolean isMale;
+
+    protected String address;
+
+    public static final int MAX_AGE = 120;
+    public static final int MIN_AGE = 0;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public boolean isMale() {
+        return isMale;
+    }
+
+    public void setMale(boolean male) {
+        isMale = male;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", isMale=" + isMale +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return age == person.age &amp;&amp; isMale == person.isMale &amp;&amp; Objects.equals(name, person.name) &amp;&amp; Objects.equals(address, person.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age, isMale, address);
+    }
+}
+</code></pre>
+
+    <p>Now let's prepare a set of methods that we will examine using the <span class="code"><span class="text-green">Method</span></span> class. Here is a list of the most important methods:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Method</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getName()</span></td>
+                <td>Returns the name of the method.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getModifiers()</span></td>
+                <td>Returns the access modifier of this method.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getReturnType()</span></td>
+                <td>Returns the return type of the method.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getGenericReturnType()</span></td>
+                <td>Returns the return type of the method, accounting for generic methods.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getParameterTypes()</span></td>
+                <td>Returns an array of method parameters.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getGenericParameterTypes()</span></td>
+                <td>Returns an array of method parameters, accounting for generic methods.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getExceptionTypes()</span></td>
+                <td>Returns the exceptions that the method can throw.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getGenericExceptionTypes()</span></td>
+                <td>Returns the exceptions that the method can throw, accounting for parameterized types.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getAnnotations()</span></td>
+                <td>Returns the annotations for the method, including parent annotations.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getDeclaredAnnotations()</span></td>
+                <td>Returns the annotations for the method, excluding parent annotations.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>To get an array of the methods of our class will, we can call this method:</p>
+
+    <pre class='language-java line-numbers'><code>
+Method[] methods = Person.class.getDeclaredMethods();
+</code></pre>
+
+    <p>It will give us all the methods in our class. </p>
+
+    <h2>getName() and getModifiers() methods </h2>
+
+    <p>We can use <span class="code text-orange">getName</span> to get the name of each method:</p>
+
+    <pre class='language-java line-numbers'><code>
+static List&lt;String&gt; getMethodsName(Method[] methods) {
+    return Arrays.asList(methods)
+            .stream()
+            .map(Method::getName)
+            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+}
+</code></pre>
+
+    <p>Now to get the modifiers, let's write a method that uses <span class="code text-orange">getModifiers</span>:</p>
+
+    <pre class='language-java line-numbers'><code>
+static List&lt;String&gt; getModifiers(Method[] methods) {
+    return Arrays
+            .stream(methods)
+            .map(Method::getModifiers)
+            .map(String::valueOf)
+            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+}
+</code></pre>
+
+    <p>Here's our <span class="code text-orange">main</span> method:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+    Method[] methods = Person.class.getDeclaredMethods();
+
+    System.out.println(getMethodsName(methods));
+    System.out.println(getModifiers(methods));
+}
+</code></pre>
+
+    <p>Our result:</p>
+
+    <div class="terminal">[getName, equals, toString, hashCode, setName, getAddress, isMale, getAge, setAge, setMale, setAddress]<br />
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]</div>
+
+    <p>All of our methods have the <span class="code">public</span> modifier, so the last method returns an array of ones. If we modify our code, we will see our the modifiers themselves:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+    Method[] methods = Person.class.getDeclaredMethods();
+
+    System.out.println(getMethodsName(methods));
+    System.out.println(modifyModifiers(getModifiers(methods)));
+}
+</code></pre>
+
+    <div class="terminal">[getName, equals, toString, hashCode, setName, getAddress, isMale, getAge, setAge, setMale, setAddress]<br />
+[public, public, public, public, public, public, public, public, public, public, public]</div>
+
+    <h2>getReturnedType()</h2>
+
+    <p>This method lets us get the return type of the method:</p>
+
+    <pre class='language-java line-numbers'><code>
+static void getReturnedType(Method[] methods) {
+    Arrays.stream(methods)
+            .map(Method::getReturnType)
+            .forEach(System.out::println);
+}
+</code></pre>
+
+    <div class="terminal">class java.lang.String<br />
+boolean<br />
+class java.lang.String<br />
+int<br />
+void<br />
+class java.lang.String<br />
+boolean<br />
+int<br />
+void<br />
+void<br />
+void</div>
+
+    <h2>getGenericReturnType()</h2>
+
+    <p>Let's give our <span class="code"><span class="text-green">Person</span></span> class a method that returns the type wrapped in a parameterized type, and try to get its return value:</p>
+
+    <pre class='language-java line-numbers'><code>
+public List&lt;String&gt; someMethod() {
+    // Very useful and important method
+    return null;
+}
+</code></pre>
+
+    <p>And we'll update our main method:</p>
+
+    <pre class='language-java line-numbers'><code>
+static void getGenericReturnType(Method[] methods) {
+    Arrays.stream(methods)
+            .map(Method::getGenericReturnType)
+            .forEach(System.out::println);
+}
+</code></pre>
+
+    <p>Result of our method:</p>
+
+    <div class="terminal">class java.lang.String<br />
+boolean<br />
+class java.lang.String<br />
+int<br />
+void<br />
+class java.lang.String<br />
+boolean<br />
+int<br />
+void<br />
+void<br />
+void<br />
+java.util.List&lt;java.lang.String&gt;</div>
+
+    <h2>getParameterTypes() and getGenericParameterTypes() methods</h2>
+
+    <p>We continue to modify our <span class="code"><span class="text-green">Person</span></span> class, adding two more methods:</p>
+
+    <pre class='language-java line-numbers'><code>
+public List&lt;String&gt; someMethod(List&lt;String&gt; list, String s) {
+    // Very useful and important method
+    return null;
+}
+</code></pre>
+
+    <p>The first one will let us get the parameters of our methods, and the second one will give us parameterized types as well.</p>
+
+    <pre class='language-java line-numbers'><code>
+static void getParameterTypes(Method[] methods) {
+    Class&lt;?&gt;[] types = method.getParameterTypes();
+        for (Class&lt;?&gt; type : types) {
+            System.out.println(type);
+        }
+}
+
+static void getGenericParameterTypes(Method[] methods) {
+   Type[] types = method.getGenericParameterTypes();
+        for (Type type : types) {
+            System.out.println(type);
+        }
+}
+</code></pre>
+
+    <p>We will access only one of our methods. To access a method by a specific name, we call <span class="code text-orange">getMethod</span> and pass in the name and parameters of the method we want:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws NoSuchMethodException {
+    Method currentMethod = Person.class.getMethod("someMethod", List.class, String.class);
+
+    getParameterTypes(currentMethod);
+    System.out.println();
+    getGenericParameterTypes(currentMethod);
+}
+</code></pre>
+
+    <p>Running our code, we will see how the methods differ and what they return:</p>
+
+    <div class="terminal">interface java.util.List<br />
+class java.lang.String<br />
+ <br />
+java.util.List&lt;java.lang.String&gt;<br />
+class java.lang.String</div>
+
+    <h2>getExceptionTypes() and getGenericExceptionTypes() methods </h2>
+
+    <p>We can use these methods to get an array of exceptions that our method can throw, as well as exceptions with parameterized types (if any). Let's use a new example that has a hidden static class:</p>
+
+    <pre class='language-java line-numbers'><code>
+private static class Processor {
+    private void init() {}
+
+    private void process() throws IOException {}
+}
+</code></pre>
+
+    <p>And we'll call methods on our <span class="code"><span class="text-green">Processor</span> class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String... args) throws NoSuchMethodException {
+    Method method = Processor.class.getDeclaredMethod("process");
+    Type[] type = method.getExceptionTypes();
+    System.out.println(Arrays.toString(type));
+}
+</code></pre>
+
+    <p>Now we can see our exception:</p>
+
+    <div class="terminal">[class java.io.IOException]</div>
+
+    <p>Now let's parameterize the type. We'll modify our main class:</p>
+
+    <pre class='language-java line-numbers'><code>
+private static class Processor&lt;E extends IOException&gt; {
+
+    private void process() throws E {
+    }
+}
+</code></pre>
+
+    <p>And the code of the <span class="code"><span class="text-green">main</span> method:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String... args) throws NoSuchMethodException {
+    Method m = Processor.class.getDeclaredMethod("process");
+    Type[] t = m.getGenericExceptionTypes();
+    System.out.println(Arrays.toString(t));
+
+    for (Type type : t) {
+        if (type instanceof TypeVariable) {
+            for (Type type1 : ((TypeVariable) type).getBounds()) {
+                System.out.println(type1);
+            }
+        }
+    }
+}
+</code></pre>
+
+    <p>Inside this method, we got a <span class="text-neon"><span class="text-bold"><em>TypeVariables</em></span></span> object, which is a generic parent interface for type variables. And inside that, we can now get the internal parameter, namely our nested exception:</p>
+
+    <div class="terminal">[E]<br />
+class java.io.IOException</div>
+
+    <h2>getAnnotations() and getDeclaredAnnotations() methods</h2>
+
+    <p>Let's continue using this new class and add a couple of annotations to it. We'll create our own <span class="text-yellow">Annotation</span> annotation:</p>
+
+    <pre class='language-java line-numbers'><code>
+@Retention(RetentionPolicy.RUNTIME)
+@interface Annotation {
+
+    public String key();
+    public String value();
+}
+</code></pre>
+
+    <p>And apply it to our method:</p>
+
+    <pre class='language-java line-numbers'><code>
+@Annotation(key = "key", value = "value")
+private void process() throws E{
+
+}
+</code></pre>
+
+    <p>And of course we'll add a method to display all of our annotations:</p>
+
+    <pre class='language-java line-numbers'><code>
+static void getMethodAnnotations(Class&lt;?&gt; clazz) {
+    Method[] methods = clazz.getDeclaredMethods();
+    for (Method method : methods) {
+        System.out.println(method.getName());
+        System.out.println(Arrays.toString(method.getAnnotations()));
+        System.out.println();
+    }
+}
+</code></pre>
+
+    <p>Implementation of our <span class="code"><span class="text-green">main</span></span> method:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String... args) {
+    Class clazz = Processor.class;
+    getMethodAnnotations(clazz);
+}
+</code></pre>
+
+    <p>The resulting screen output is:</p>
+
+    <div class="terminal">process<br />
+[@com.company.Main&amp;Annotation(key="key", value="value")]</div>
+
+    <p>This is how we can get the annotations that have been applied to our methods, and the <span class="code text-orange">getAnnotations</span> method lets us access the parent annotations of the class as well.</p>
+
+    <p>Today we got acquainted with how reflection can work with methods and fields, and what data we can get with it!</p>

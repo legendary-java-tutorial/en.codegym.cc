@@ -1,0 +1,187 @@
+Shaping Servlet Responses
+<p>----------------------------------------</p>
+HttpServletResponse redirect() class getWriter() method
+<p>----------------------------------------</p>
+er calling <code>service()</code>your servlet method, the web container will generate a response to the client based on the <code>HttpServletResponse</code>. So if you want to somehow influence the response to the client, then you should modify this object.</p>
+<p>The server response consists of three parts:</p>
+<ul>
+ <li>Status line (for example: 200 OK)</li>
+ <li>Headers</li>
+ <li>Response body</li>
+</ul>
+<p>And class methods <code>HttpServletResponse</code>are also divided into 3 groups? Almost:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th width="400">Methods</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><code>void setStatus(int sc)</code></td>
+    <td>Sets the response status code.</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><code>void sendError(int sc)</code></td>
+    <td>Sends an error to the client with the specified code.</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><code>void sendError(int sc, String msg)</code></td>
+    <td>Sends an error with the specified code and a message to the client.</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><code>void addHeader(String name, String value)</code></td>
+    <td>Adds a header to the list of response headers.</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><code>void setHeader(String name, String value)</code></td>
+    <td>Changes the header in the list of response headers.</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td><code>boolean containsHeader(String name)</code></td>
+    <td>Checks if the header already exists.</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td><code>void addCookie(Cookie cookie)</code></td>
+    <td>Adds a Cookie to the response.</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td><code>void sendRedirect(String location)</code></td>
+    <td>Redirects the client to a different URL.</td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td><code>String encodeRedirectURL(String url)</code></td>
+    <td>Encodes the specified URL for use in the sendRedirect method.</td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td><code>String encodeURL(String url)</code></td>
+    <td>Encodes the specified URL, including the session ID.</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td><code>void setContentType(String type)</code></td>
+    <td>Sets the MimeType of the result.</td>
+   </tr>
+   <tr>
+    <td>12</td>
+    <td><code>void setContentLength(int len)</code></td>
+    <td>Sets the length of the response body.</td>
+   </tr>
+   <tr>
+    <td>13</td>
+    <td><code>void setCharacterEncoding(String charset)</code></td>
+    <td>Sets the response encoding set.</td>
+   </tr>
+   <tr>
+    <td>14</td>
+    <td><code>void setBufferSize(int size)</code></td>
+    <td>Sets the buffer size for the response body.</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>15</td>
+    <td><code>boolean isCommitted()</code></td>
+    <td>Checks if the buffer has already been written to the response.</td>
+   </tr>
+   <tr>
+    <td>16</td>
+    <td><code>void flushBuffer()</code></td>
+    <td>Writes the contents of the buffer to the response.</td>
+   </tr>
+   <tr>
+    <td>17</td>
+    <td><code>void reset()</code></td>
+    <td>Resets all data that is stored in the buffer, headers and response codes.</td>
+   </tr>
+   <tr>
+    <td>18</td>
+    <td><code>void resetBuffer()</code></td>
+    <td>Clears the response buffer.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The methods here are quite trivial. But I'll give you a few highlights below.</p>
+<p><strong>Buffer</strong> . Your servlet's response is written to a buffer, not immediately sent to the user. Therefore, at some stage (if, for example, an error occurs), you can reset (erase) everything that is written to the buffer. You can even call the reset() method and erase not only the contents of the buffer, but also the headers with the response code.</p>
+<h2>3.2 redirect()</h2>
+<p>The second important point is the redirect. If your servlet decides to redirect the client to another URL, then you need to somehow send this URL to the client. This can be done using the <code>sendRedirect</code>.</p>
+<p>But there is an important nuance. The URI can contain a wider range of characters than allowed in the response body. Therefore, the URL must first be encoded into a valid character set before calling the method <code>sendRedirect()</code>. There is a special method for this <code>encodeRedirectURL(String url)</code>. Use it.</p>
+<p>Redirect example:</p>
+<pre class="line-numbers"><code>
+public class <span class="text-orange">RedirectServlet</span> extends <span class="text-red">HttpServlet</span> {
+    protected void doGet(<span class="text-green">HttpServletRequest request</span>, <span class="text-user">HttpServletResponse response</span>) throws Exception {
+        String <span class="text-yellow">newUrl</span> = <span class="text-green">"http://google.com?q=Learn to google!"</span>;
+        String <span class="text-viola">redirectUrl</span> = <span class="text-user">response</span>.<span class="text-red">encodeRedirectURL</span>(<span class="text-yellow">newUrl</span>);
+        <span class="text-user">response</span>.<span class="text-red">sendRedirect</span>(<span class="text-viola">redirectUrl</span>);
+    }
+}
+</code></pre>
+<h2>3.3 getWriter() method</h2>
+<p>And now we will learn how to write our text as a response body. To do this, the class <code>HttpServletResponse</code>has a special method <code>getWriter()</code>that returns an object <code>PrintStream</code>. If anyone forgot, this is the type of field with the name <code>System.out</code>.</p>
+<p>In order to write some text as a servlet response, you need:</p>
+<ul>
+ <li>Get the PrintStream object by calling the <code>response.getWriter()</code>.</li>
+ <li>Write whatever you think is necessary to the PrintStream object (all data will be written to the buffer).</li>
+ <li>Send the buffer to the user by calling the method <code>close()</code>on the PrintStream.</li>
+</ul>
+<p>Let's write a servlet that adds two numbers <code>a</code>and <code>b</code>returns the result to the user:</p>
+<pre class="line-numbers"><code>
+
+public class <span class="text-orange">CalculatorServlet</span> extends <span class="text-red">HttpServlet</span> {
+    protected void <span class="text-red">doGet</span>(<span class="text-green">HttpServletRequest request</span>, <span class="text-user">HttpServletResponse response</span>) throws Exception {
+         // Getting the parameter “a” и “b” from request
+        String a = <span class="text-green">request</span>.getParameter(<span class="text-green">"a"</span>);
+        String b = <span class="text-green">request</span>.getParameter(<span class="text-green">"b"</span>);
+ 
+        try {
+            // Convert strings to numbers and calculate sum
+            int <span class="text-viola">sum</span> = Integer.parseInt(<span class="text-viola">a</span>) + Integer.parseInt(<span class="text-viola">b</span>);
+ 
+            // Печатаем HTML в качестве ответа для браузера
+            <span class="text-user">response</span>.setContentType(<span class="text-green">"text/html;charset=UTF-8"</span>);
+            PrintWriter <span class="text-yellow">out</span> = <span class="text-user">response</span>.getWriter();
+ 
+            <span class="text-yellow">out</span>.println(<span class="text-green">"&lt;html&gt;"</span>);
+            <span class="text-yellow">out</span>.println(<span class="text-green">"&lt;head&gt; &lt;title&gt; CalculatorServlet &lt;/title&gt; &lt;/head&gt;"</span>);
+            <span class="text-yellow">out</span>.println(<span class="text-green">"&lt;body&gt;"</span>);
+            <span class="text-yellow">out</span>.println(<span class="text-green">"&lt;h1&gt; Sum == " + <span class="text-viola">sum</span> + "&lt;/h1&gt;"</span>);
+            <span class="text-yellow">out</span>.println(<span class="text-green">"&lt;/body&gt;"</span>);
+            <span class="text-yellow">out</span>.println(<span class="text-green">"&lt;/html&gt;"</span>);
+        } finally {
+            <span class="text-yellow">out</span>.close();
+        }
+    }
+}
+<span class="text-green">
+
+</span></code></pre>

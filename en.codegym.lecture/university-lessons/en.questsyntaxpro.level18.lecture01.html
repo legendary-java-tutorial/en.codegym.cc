@@ -1,0 +1,80 @@
+functional method
+<p>----------------------------------------</p>
+Functional Methods If an interface has only one method, then a variable of that interface-type can be assigned the value given by a lambda expression (lambda function). Such interfaces became known as functional interfaces (after Java added support for lambda functions). For example, in Ja
+<p>----------------------------------------</p>
+<h2>1. Function methods</h2>
+<p>If <strong>an interface has only one method</strong>, a variable of that interface type can be assigned a value given by a <span class="term">lambda expression</span> (lambda function). Such interfaces became known as <span class="term">functional interfaces</span> (after Java added support for lambda functions).</p>
+<p>For example, Java has the <code>Consumer&lt;Type&gt;</code> interface, which has the <code>accept(Type obj)</code> method. Why is this interface needed?</p>
+<p>In Java 8, collections have a <code class="text-viola">forEach()</code> method, which lets you <span class="term text-yellow">perform some action</span> <span class="term text-viola">for each</span> <span class="term text-red">element</span> of the <span class="term text-user">collection</span>. And here the <code>Consumer&lt;T&gt;</code> functional interface is used to pass the action to the <code class="text-viola">forEach()</code> method.</p>
+<p>Here's how you can <span class="term text-yellow">display</span> all <span class="term text-red">elements</span> of a <span class="term text-user">collection</span>:</p>
+<div class="lesson-example">
+        <pre class="language-java"><code>ArrayList&lt;String&gt; <span class="text-user">list</span> = new ArrayList&lt;&gt;();
+Collections.addAll(<span class="text-user">list</span>, "Hello", "how's", "life?");
+
+<span class="code text-user">list</span>.<span class="code text-viola">forEach</span>( (<span class="code text-red">s</span>) -&gt; <span class="code text-yellow">System.out.println(s)</span> );</code></pre>
+    <div class="lesson-example-caption">Displaying all elements of a collection (using a lambda expression)</div>
+</div>
+<p>The compiler will convert the code above to the code below:</p>
+<div class="lesson-example">
+    <pre class="language-java"><code>ArrayList&lt;String&gt; <span class="text-user">list</span> = new ArrayList&lt;&gt;();
+Collections.addAll(<span class="text-user">list</span>, "Hello", "how's", "life?");
+
+<span class="code text-user">list</span>.<span class="code text-viola">forEach</span>(new Consumer&lt;String&gt;()
+{
+   public void accept(String <span class="code text-red">s</span>)
+   {
+      <span class="code text-yellow">System.out.println(s)</span>);
+   }
+});</code></pre>
+    <div class="lesson-example-caption">Displaying all elements of a collection (using an anonymous class)</div>
+</div>
+<p>The first version is definitely shorter than the second. And while code with lambda expressions is hard to read, code with anonymous inner classes is sometimes even harder to read.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1806"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1807"></div>
+<hr>
+<h2>2. Method reference</h2>
+<p>However, our <span class="term">lambda expression</span> code can be written even shorter.</p>
+<p>First, you can omit the <span class="text-green">parentheses</span> around the <code class="text-red">s</code> parameter:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>list.forEach( <span class="text-green">(</span><span class="code text-red">s</span><span class="text-green">)</span> -&gt; System.out.println(s) );</code></pre>
+    <div class="lesson-example-caption">Before</div>
+</div>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>list.forEach( <span class="code text-red">s</span> -&gt; System.out.println(s) );</code></pre>
+    <div class="lesson-example-caption">After</div>
+</div>
+<p>This can only be done only if there is one <span class="term text-red">parameter</span>. If there are <span class="text-green">multiple</span> parameters, then you must use <span class="text-green">parentheses</span>.</p>
+<p>And second, you can write it like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>list.forEach( System.out::<span class="text-viola">println</span> );</code></pre>
+    <div class="lesson-example-caption">Most compact notation</div>
+</div>
+<p>This is the exact same notation. Note that there are no parentheses after the <code><span class="text-viola">println</span></code>.</p>
+<p>Here we have the same code — a method call:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">object</span><span class="text-red">::</span><span class="text-viola">method</span></code></pre>
+</div>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>x -&gt; <span class="text-green">object</span>.<span class="text-viola">method</span>(x)</code></pre>
+</div>
+<p>Think about it: we wanted to perform some action for each element of the <code>list</code> collection. If the action is a single function call (such as <code>println()</code>), then it make senses to simply pass the function to the method as a parameter.</p>
+<p>But how do we explain to the compiler that we want to pass the method rather than call it? To do this, instead of the dot operator, we use <span class="text-red">two colons</span> before the method name. A single colon is already used to indicate the ternary operator.</p>
+<p>This is the simplest and most compact notation.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1808"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1809"></div>
+<hr>
+<h2>3. Constructor</h2>
+<p>Method references with double colons are very handy when we work with I/O streams. You will see this a little later.</p>
+<p>In the meantime, let's talk about 3 popular ways to pass a method reference:</p>
+<p><strong>Reference to a method of an object</strong></p>
+<p>To pass a reference to a method of an object, you need to write something like <code><span class="text-green">object</span>::<span class="text-viola">method</span></code>.<br>This code is equivalent to <code>x -&gt; <span class="text-green">object</span>.<span class="text-viola">method</span>(x)</code>.</p>
+<p>The special <code>this</code> and <code>super</code> variables can be used as the object.</p>
+<p><strong>Reference to a method of a class</strong></p>
+<p>To pass a reference to a static method, you need to write something like <code><span class="text-green">class</span>::<span class="text-viola">method</span></code>. This code gets converted to code like <code>x -&gt; <span class="text-green">class</span>.<span class="text-viola">method</span>(x);</code></p>
+<p><strong>Reference to a constructor</strong></p>
+<p>A constructor behaves similarly to a static class method, so you can also pass a reference to a constructor. This is how it looks: <code><span class="text-green">class</span>::<span class="text-viola">new</span></code>.</p>
+<p>For example, you can get around type erasure for collections and pass the <code>toArray()</code> method a reference to a constructor that will create the desired array: <code>toArray(<span class="text-green">int</span>[]::<span class="text-viola">new</span>);</code></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task18.task1810"></div>

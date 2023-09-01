@@ -1,0 +1,92 @@
+Working with SQL Server
+<p>----------------------------------------</p>
+SQL is everything. Creating a schema in a database. Select current scheme. Creating View.
+<p>----------------------------------------</p>
+ably already guess, all commands to the SQL server can be given through SQL queries. Everything.</p>
+<p>These teams are officially divided into 4 groups:</p>
+<ul>
+ <li>
+  <p><strong>data definition</strong> statements (Data Definition Language, <strong>DDL</strong> ):</p>
+  <ul>
+   <li><span class="text-red"><strong>CREATE</strong></span> creates a database object (database itself, table, view, user, and so on)</li>
+   <li><span class="text-red"><strong>ALTER</strong></span> changes an object</li>
+   <li><span class="text-red"><strong>DROP</strong></span> removes an object</li>
+  </ul></li>
+ <li>
+  <p><strong>data manipulation</strong> operators (Data Manipulation Language, <strong>DML</strong> ):</p>
+  <ul>
+   <li><span class="text-green"><strong>SELECT</strong></span> selects data that satisfies given conditions</li>
+   <li><span class="text-green"><strong>INSERT</strong></span> adds new data</li>
+   <li><span class="text-green"><strong>UPDATE</strong></span> changes existing data</li>
+   <li><span class="text-green"><strong>DELETE</strong></span> removes data</li>
+  </ul></li>
+ <li>
+  <p><strong>data access definition</strong> operators (Data Control Language, <strong>DCL</strong> ):</p>
+  <ul>
+   <li><span class="text-user"><strong>GRANT</strong></span> grants a user (group) permissions to perform certain operations on an object</li>
+   <li><span class="text-user"><strong>REVOKE</strong></span> revokes previously issued permissions</li>
+   <li><span class="text-user"><strong>DENY</strong></span> sets a ban that takes precedence over a permit</li>
+  </ul></li>
+ <li>
+  <p><strong>Transaction Control</strong> Language ( <strong>TCL</strong> ) statements :</p>
+  <ul>
+   <li><span class="text-viola"><strong>COMMIT</strong></span> applies a transaction</li>
+   <li><span class="text-viola"><strong>ROLLBACK</strong></span> rolls back all changes made in the context of the current transaction</li>
+   <li><span class="text-viola"><strong>SAVEPOINT</strong></span> divides a transaction into smaller sections</li>
+  </ul></li>
+</ul>
+<p>And the first two levels, we studied only varieties of the SELECT statement. Imagine how many interesting things await us in the future.</p>
+<p>But we are preparing here primarily about Java programmers, so we will study those scenarios that you will definitely encounter at work.</p>
+<p>The system administrator on the project will most likely create all the databases, but you will definitely have to make a selection from the data yourself many times.</p>
+<p>Moreover, sometimes your code will not write all the data to the database or write it in the wrong way, so you will often have to climb into it with pens and see what is actually stored there.</p>
+<p>Let's go over the things we touched on in previous lectures again.</p>
+<h2>Creating a schema in a database</h2>
+<p>To create a new schema in the DBMS, you need to run the command:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">CREATE SCHEMA</span> <span class="text-green">Name</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>This is the easiest option. Also, when creating a new schema, you can specify the data encoding format and other parameters.</p>
+<p>If you want to delete the schema, but you are not sure if it exists, then you need to run the command:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">DROP SCHEMA IF EXIST</span> <span class="text-green">Name</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>You will often see these commands in files with backups of different databases, that's why I bring them here.</p>
+<h2>Selecting the current scheme</h2>
+<p>If you have a lot of schemas in your DBMS, then it can easily happen that different schemas have the same tables. To avoid confusion, you can do two things:</p>
+<ul>
+ <li>Always put the schema name before the table name</li>
+ <li>Specify default schema</li>
+</ul>
+<p>Let's write a query that will select data from <span class="text-orange"><strong>the user table</strong></span> , which is in <span class="text-viola"><strong>the test schema</strong></span> . It will look something like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-viola">test</span><span class="token punctuation">.</span><span class="text-orange">user</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>This is simply indispensable if you need to join (JOIN) several tables from different schemas in one query.</p>
+<p>By the way, in the Java language we often do something similar: if in the code we need to use classes with the same name from different packages, we add the package name before the class name.</p>
+<p>The second way is to <strong>specify the default schema</strong> . If the query specifies a table name but no schema, the default schema is used. To do this, use <strong>the USE statement</strong> :</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">USE</span> <span class="text-green">name <span class="token operator">-</span> schemes</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>Let's rewrite the previous query using the USE statement:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-red">USE</span></span> <span class="text-viola">test<span class="token punctuation">;</span>
+<span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="token class-name"><span class="text-red">FROM</span></span> <span class="text-orange">user</span><span class="token punctuation">;</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<h2>Creating a View</h2>
+<p>In addition to tables with real data, SQL allows you to store something like virtual tables, where data is pulled from real tables. Such virtual tables are called VIEW.</p>
+<p>Such a table cannot store real data, and each time it is accessed, it pulls data from real tables. The content of such a VIEW is specified using an SQL query.</p>
+<p>You can create a VIEW from any SELECT query with a command like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">CREATE VIEW</span> <span class="text-green">Name</span> <span class="text-red">AS</span>
+SELECT<span class="token operator">-</span>request<span class="token punctuation">;</span></code></pre>
+</div> Let's write a query that will create a public_employee virtual table based on the employee table, where employee salary information will be hidden: 
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">CREATE VIEW</span> <span class="text-green">public_employee</span> <span class="text-red">AS</span>
+<span class="token class-name"><span class="text-red">SELECT</span></span> <span class="text-green">id</span><span class="token punctuation">,</span> <span class="text-green">name</span> <span class="text-red">FROM</span> <span class="text-orange">employee</span></code></pre>
+</div>
+<p>In the above example, our table (VIEW) public_employee will only contain employee IDs and their names, but not information about their salary. You can use such Views in the same place as real tables.</p>
+<p>Why are Views needed? They have a number of advantages:</p>
+<p><strong>Flexible control of access to information</strong> . You can give certain users access only to VIEW, but not to give access to tables. And in View, take out only public information from tables. In addition, if new columns with important information are added to the tables in the future, it will not accidentally get into the View.</p>
+<p><strong>Data denormalization</strong> . For convenience of storage, data is often divided into hundreds and thousands of tables, but it is not very convenient for an ordinary person to work with such data - you have to write too complex queries. With View, you can create virtual tables that display data from dozens of different tables in a single table.</p>
+<p><strong>Polymorphism and Encapsulation</strong> . You can change the structures of your database. At the same time, users of the program who work with your Views will not guess that something has changed. And there will be no need to rewrite the code of programs that have access to View. You will just need to tweak the SQL script that is related to VIEW.</p>
+<p><strong>Read only</strong> . View can only be set with a SELECT query, so working with View cannot change the data in real tables in any way. By the way, this is another plus in favor of query caching. But more on that next time.</p>

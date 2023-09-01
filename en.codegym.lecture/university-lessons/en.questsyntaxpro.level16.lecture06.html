@@ -1,0 +1,269 @@
+Time Zones
+<p>----------------------------------------</p>
+The ZoneDateTime Class There is another very interesting class in the Date Time API. This is the ZoneDateTime class - its main purpose is to work comfortably with dates in different time zones. LocalDate is great for describing dates, such as birthdays: my birthday is March 15, regardless of whether 
+<p>----------------------------------------</p>
+<h2>1. <code>ZonedDateTime</code> class</h2>
+<p>There is another very interesting class in the Date Time API: the <code>ZonedDateTime</code> class. Its main purpose is to make it convenient to work with dates in different time zones.</p>
+<p><code>LocalDate</code> is great for representing dates. For example, birthdays. My birthday is March 15th no matter where I am. This is an example of a date.</p>
+<p><code>LocalTime</code> is great to describe time, like the time set on an alarm clock: I set the alarm for 5:00 am and it doesn't matter where I am. 5:00 am is 5:00 am. This is an example of working with time.</p>
+<p>Now let's say that we're writing an application that books flights. Planes take off and arrive based on the local time. The plane is in the air for a fixed time, but the time zones can change.</p>
+<p><strong>Time zones</strong></p>
+<p>By the way, time zones are a real mess. And if you think that there are 24 time zones, you are greatly mistaken.</p>
+<p>For example, the time in India differs from Greenwich Mean Time by five and a half hours: <code>GMT+5:30</code>. Some countries switch to daylight saving time, and others do not. What's more, different countries switch to summer time at different times of the year.</p>
+<p>And some countries pass laws that cancel daylight saving time, or reintroduce it, or cancel it again.</p>
+<p>In any event, the world has time zones, and within each time zone there is one time. Time in different zones may coincide during certain periods of the year, and then differ during other periods. Time zones are usually named after major cities located in them: <code>Europe/Monaco</code>, <code>Asia/Singapore</code>, but there are also exceptions — <code>US/Pacific</code>.</p>
+<p><span class="text-viola">Officially, there are 599 time zones at the moment. Think about it: 599. That's far from 24. Welcome to the global world.</span></p>
+<p>The <code>ZoneId</code> class from the <code>java.time</code> package is used to store a time zone in Java.</p>
+<p>By the way, it has a static <code><span class="text-red">getAvailableZoneIds</span>()</code> method, which returns the set of all currently known time zones. To get a list of all zones, you need to write the following code:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output (partial)</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>for (String s: <span class="text-neon">ZoneId</span>.<span class="text-red">getAvailableZoneIds</span>())
+   System.out.println(s);</code></pre>
+        </td>
+        <td>
+                <pre><code>Asia/Aden
+America/Cuiaba
+Etc/GMT+9
+Etc/GMT+8</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>To get a <code>ZoneId</code> object by its name, you need to use the static <code><span class="text-red">of</span>()</code> method;</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-neon">ZoneId</span> zone = <span class="text-neon">ZoneId</span>.<span class="text-red">of</span>(<span class="text-green">"Africa/Cairo"</span>);</code></pre>
+        </td>
+        <td>
+            <pre><code>Cairo</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1616"></div>
+<hr>
+<h2>2. Creating a <code>ZonedDateTime</code> object</h2>
+<p>When creating a <code>ZonedDateTime</code> object, you need to call the class's static <code>now()</code> method and pass a <code>ZoneId</code> object to it.</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-neon">ZoneId</span> <span class="text-user">zone</span> = <span class="text-neon">ZoneId</span>.<span class="text-red">of</span>(<span class="text-user">"Africa/Cairo"</span>);
+<span class="text-orange">ZonedDateTime</span> <span class="text-viola">time</span> = <span class="text-orange">ZonedDateTime</span>.now(<span class="text-user">zone</span>);
+System.out.println(<span class="text-viola">time</span>);</code></pre>
+        </td>
+        <td><pre><code>
+
+2019-02-22T11:37:58.074816+02:00[Africa/Cairo]</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If you don't pass a <code>ZoneId</code> object to the <code>now()</code> method (and that is allowed), then the time zone is determined automatically based on the settings of the computer that is running the program.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code><span class="text-orange">ZonedDateTime</span> <span class="text-viola">time</span> = <span class="text-orange">ZonedDateTime</span>.now();
+<span>System.out.println(<span class="text-viola">time</span>);</span></code></pre>
+        </td>
+        <td><pre><code>
+2019-02-22T13:39:05.70842+02:00[Europe/Helsinki]</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Converting a global date to a local one</strong></p>
+<p>One of the interesting features of <code>ZonedDateTime</code> is its ability to convert to a local date and time. Example:</p>
+<pre class="language-java"><code><span class="text-neon">ZoneId</span> <span class="text-user">zone</span> = <span class="text-neon">ZoneId</span>.<span class="text-red">of</span>("Africa/Cairo");
+ZonedDateTime <span class="text-orange">cairoTime</span> = ZonedDateTime.now(<span class="text-user">zone</span>);
+
+<span class="text-neon">LocalDate</span> localDate = <span class="text-orange">cairoTime</span>.<span class="text-red">toLocalDate</span>();
+<span class="text-neon">LocalTime</span> localTime = <span class="text-orange">cairoTime</span>.<span class="text-red">toLocalTime</span>();
+<span class="text-neon">LocalDateTime</span> localDateTime = <span class="text-orange">cairoTime</span>.<span class="text-red">toLocalDateTime</span>();</code></pre>
+<hr>
+<h2>3. Working with time</h2>
+<p>Like the <code><span class="text-neon">LocalDateTime</span></code> class, the <code>ZonedDateTime</code> class has lots of ways to get individual elements of a date and time. Here is a list of these methods:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int getYear()</code></pre>
+        </td>
+        <td>Returns the year of a specific date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>Month <span class="text-red">getMonth</span>()</code></pre>
+        </td>
+        <td>Returns the date's month: one of several constants — <code>JANUARY, FEBRUARY, ...;</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">getMonthValue</span>()</code></pre>
+        </td>
+        <td>Returns the index of the date's month. January == 1</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">getDayOfMonth</span>()</code></pre>
+        </td>
+        <td>Returns the index of the day of the month</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>DayOfWeek <span class="text-red">getDayOfWeek</span>()</code></pre>
+        </td>
+        <td>Returns the day of the week: one of several constants — <code>MONDAY, TUESDAY, ...;</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">getDayOfYear</span>()</code></pre>
+        </td>
+        <td>Returns the index of the day of the year</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">getHour</span>()</code></pre>
+        </td>
+        <td>Returns the hours</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">getMinute</span>()</code></pre>
+        </td>
+        <td>Returns the minutes</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">getSecond</span>()</code></pre>
+        </td>
+        <td>Returns the seconds</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code>int <span class="text-red">getNano</span>()</code></pre>
+        </td>
+        <td>Returns the nanoseconds</td>
+    </tr>
+    </tbody>
+</table>
+<p>All the methods are perfectly analogous to the methods of the <code><span class="text-neon">LocalDateTime</span></code> class. And, of course, the <code>ZonedDateTime</code> class has methods that let you work with dates and times. That said, the object on which the methods are called does not change. Instead, they return a new <code>ZonedDateTime</code> object:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Methods</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusYears</span>(int)</code></pre>
+        </td>
+        <td>Adds years to the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusMonths</span>(int)</code></pre>
+        </td>
+        <td>Adds months to the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusDays</span>(int)</code></pre>
+        </td>
+        <td>Adds days to the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusHours</span>(int)</code></pre>
+        </td>
+        <td>Adds hours</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusMinute</span><span class="text-red">s</span>(int)</code></pre>
+        </td>
+        <td>Adds minutes</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusSeconds</span>(int)</code></pre>
+        </td>
+        <td>Adds seconds</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">plusNanos</span>(int)</code></pre>
+        </td>
+        <td>Adds nanoseconds</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusYears</span>(int)</code></pre>
+        </td>
+        <td>Subtracts years from the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusMonths</span>(int)</code></pre>
+        </td>
+        <td>Subtracts months from date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusDays</span>(int)</code></pre>
+        </td>
+        <td>Subtracts days from the date</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusHours</span>(int)</code></pre>
+        </td>
+        <td>Subtracts hours</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusMinutes</span>(int)</code></pre>
+        </td>
+        <td>Subtracts minutes</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusSeconds</span>(int)</code></pre>
+        </td>
+        <td>Subtracts seconds</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-red">minusNanos</span>(int)</code></pre>
+        </td>
+        <td>Subtracts nanoseconds</td>
+    </tr>
+    </tbody>
+</table>
+<p>We won't provide any examples, since we think everything here is clear by analogy with the classes we just considered.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1617"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task16.task1618"></div>

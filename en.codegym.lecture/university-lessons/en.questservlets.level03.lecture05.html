@@ -1,0 +1,244 @@
+JUnit Assertions
+<p>----------------------------------------</p>
+asserts. assertEquals, assertTrue, assertFalse methods. assertAll method. assertTimeout method. assertThrows method.
+<p>----------------------------------------</p>
+<h2>6.1 asserts</h2>
+
+<p>Asserts — are <span class="text-bold">special checks</span>, that can be inserted at different places in the code.
+    Their task is to determine that something went wrong. Or rather, to check that everything is going as it should.
+    This is “as needed” and they allow you to set it in various ways.</p>
+<p>You have already encountered some assertions in the code above. The first one is checking objects for equality. If
+    the objects are not equal, an exception will be thrown and the test will fail.</p>
+<p><span class="text-green">The order of comparison is important</span> here , because JUnit in the final report will
+    write something like “value 1 received, but 3 was expected”. The general format for such a check is:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token function"></span><span class="text-red"><span class="token function">assertEquals</span><span
+            class="token punctuation">(</span></span><span class="token punctuation"></span><span class="text-neon">standard <span
+            class="token punctuation">,</span></span><span class="token punctuation"></span> <span class="text-green">meaning</span><span
+            class="token punctuation"><span class="text-red">)</span></span></code></pre>
+</div>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> whenAssertingEquality <span
+            class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token punctuation">{</span>
+    <span class="token class-name">String</span> expected <span class="token operator">=</span> <span
+            class="token string">"3.1415"</span><span class="token punctuation">;</span>
+    <span class="token class-name">String</span> actual <span class="token operator">=</span> <span
+            class="token string">"3"</span><span class="token punctuation">;</span>
+
+    <span class="token function">assertEquals</span><span class="token punctuation">(</span>expected<span
+            class="token punctuation">,</span> actual<span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>6.2 Methods assertEquals, assertTrue, assertFalse</h2>
+<p>Below I will list the most popular methods - assertions. By their names it is quite possible to guess how they work.
+    But I'll write a short explanation anyway:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th>assertEquals</th>
+            <td>Checks that two objects are equal</td>
+        </tr>
+        <tr>
+            <th>assertArrayEquals</th>
+            <td>Checks if two arrays contain equal values</td>
+        </tr>
+        <tr>
+            <th>assertNotNull</th>
+            <td>Checks if the argument is not null</td>
+        </tr>
+        <tr>
+            <th>assertNull</th>
+            <td>Checks if the argument is null</td>
+        </tr>
+        <tr>
+            <th>assertNotSame</th>
+            <td>Check that the two arguments are not the same object</td>
+        </tr>
+        <tr>
+            <th>assertSame</th>
+            <td>Check that the two arguments are the same object</td>
+        </tr>
+        <tr>
+            <th>assertTrue</th>
+            <td>Checks if the argument is <em><span class="text-green">true</span></em></td>
+        </tr>
+        <tr>
+            <th>assertFalse</th>
+            <td>Checks if the argument is <em><span class="text-green">false</span></em></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>Some of these methods seem redundant. Why use <span class="code text-orange">assertSame(a, b)</span> when you can
+    just write <span class="code text-orange">assertTrue(a == b)</span> ?</p>
+<p>The point is that <span class="code text-orange">assert</span> is a very smart method. It does a lot of useful
+    things, including <span class="text-green">writing error information to the log</span> . In the first case, it will
+    write that object A was expected, but object B was received. In the second case, it will simply write that <em><span
+            class="text-green">true</span></em> was expected .</p>
+<p>When you have hundreds of tests, especially those running on a dedicated test server, having detailed logs can be
+    super helpful. I think you understand what I mean.</p>
+<p>Array comparison example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenAssertingArraysEquality</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token punctuation">{</span>
+    <span class="token keyword">char</span><span class="token punctuation">[</span><span
+            class="token punctuation">]</span> expected <span class="token operator">=</span> <span
+            class="token punctuation">{</span><span class="token string">'J'</span><span
+            class="token punctuation">,</span><span class="token string">'u'</span><span
+            class="token punctuation">,</span><span class="token string">'n'</span><span
+            class="token punctuation">,</span><span class="token string">'i'</span><span
+            class="token punctuation">,</span><span class="token string">'t'</span><span
+            class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">char</span><span class="token punctuation">[</span><span
+            class="token punctuation">]</span> actual <span class="token operator">=</span> <span class="token string">"Junit"</span><span
+            class="token punctuation">.</span><span class="token function">toCharArray</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+
+    <span class="token function">assertArrayEquals</span><span class="token punctuation">(</span>expected<span
+            class="token punctuation">,</span> actual<span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>6.3 assertAll method</h2>
+<p>As mentioned above, the <span class="code text-orange">assert</span> method not only performs a check, but also
+    writes a lot of information about comparable objects to the log.</p>
+<p>Let's make a comparison:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">Address</span> address <span
+        class="token operator">=</span> unitUnderTest<span class="token punctuation">.</span><span
+        class="token function">methodUnderTest</span><span class="token punctuation">(</span><span
+        class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token string">"Washington"</span><span
+            class="token punctuation">,</span> address<span class="token punctuation">.</span><span
+            class="token function">getCity</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+<span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token string">"Oracle Parkway"</span><span
+            class="token punctuation">,</span> address<span class="token punctuation">.</span><span
+            class="token function">getStreet</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+<span class="token function">assertEquals</span><span class="token punctuation">(</span><span
+            class="token string">"500"</span><span class="token punctuation">,</span> address<span
+            class="token punctuation">.</span><span class="token function">getNumber</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>But if one of the parameters does not match, then the rest will not be checked. But I would like them to still occur
+    and their results be recorded in the log. But at the same time, if at least one check failed, then the test still
+    failed.</p>
+<p>There is a special method for this - <span class="code text-orange">assertAll()</span> . As the first argument, it
+    takes a comment to be written to the log, and then any number of assert functions.</p>
+<p>Here is how our example would be rewritten with it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token class-name">Address</span> address <span
+        class="token operator">=</span> unitUnderTest<span class="token punctuation">.</span><span
+        class="token function">methodUnderTest</span><span class="token punctuation">(</span><span
+        class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">assertAll</span><span class="token punctuation">(</span><span class="token string">"Complex address comparison script"</span><span
+            class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token operator">-&gt;</span> <span class="token function">assertEquals</span><span
+            class="token punctuation">(</span><span class="token string">"Washington"</span><span
+            class="token punctuation">,</span> address<span class="token punctuation">.</span><span
+            class="token function">getCity</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token operator">-&gt;</span> <span class="token function">assertEquals</span><span
+            class="token punctuation">(</span><span class="token string">"Oracle Parkway"</span><span
+            class="token punctuation">,</span> address<span class="token punctuation">.</span><span
+            class="token function">getStreet</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token operator">-&gt;</span> <span class="token function">assertEquals</span><span
+            class="token punctuation">(</span><span class="token string">"500"</span><span
+            class="token punctuation">,</span> address<span class="token punctuation">.</span><span
+            class="token function">getNumber</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Then if the address is incorrect, something like this will be written to the log:</p>
+<pre><code>	Complex scenario comparison address (3 failures)
+	expected: &lt;Washington&gt; but was: &lt;Seattle&gt;
+    expected: &lt;Oracle Parkway&gt; but was: &lt;Main Street&gt;
+    expected: &lt;500&gt; but was: &lt;5772&gt;
+</code></pre>
+<h2>6.4 assertTimeout method</h2>
+<p>Remember the <span class="text-yellow"><span class="text-bold">@Timeout</span></span> annotation ? It allowed to
+    control the execution time of the entire method. But sometimes it is useful to set restrictions on the execution of
+    some part of the code inside the method. You can use <span class="code text-orange">assertTimeout()</span> for this
+    .</p>
+<p>The time is passed as the first parameter, and the code (function) that must be executed within the specified time is
+    passed as the second. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenAssertingTimeout</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token punctuation">{</span>
+    <span class="token function">assertTimeout</span><span class="token punctuation">(</span>
+  	<span class="token function">ofSeconds</span><span class="token punctuation">(</span><span
+            class="token number">2</span><span class="token punctuation">)</span><span
+            class="token punctuation">,</span>
+  	<span class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+    	<span class="token comment">// pause for one second</span>
+    	<span class="token class-name">Thread</span><span class="token punctuation">.</span><span
+            class="token function">sleep</span><span class="token punctuation">(</span><span
+            class="token number">1000</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+  	<span class="token punctuation">}</span>
+	<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><span class="code"><span class="text-green">The Assert</span></span> class has 12 variants of the <span
+        class="code text-orange">assertTimeout()</span> method . If you want to learn more about them, welcome to <a
+        href="https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html" target="_blank">the
+    official documentation</a> .</p>
+<h2>6.5 assertThrows method</h2>
+<p>Very often there are situations when you need to make sure that in a certain situation the code throws the right
+    exception: it detects an error and throws the right exception. This is a very common situation.</p>
+<p>In this case, there is another useful <span class="code text-orange">assert</span> method - this is <span
+        class="code text-orange">assertThrows()</span> . The general format of its call is:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="token function"></span><span class="text-red"><span class="token function">assertThrows</span><span
+            class="token punctuation">(</span></span><span class="token punctuation"></span><span class="text-neon">exception <span
+            class="token punctuation">,</span></span><span class="token punctuation"></span> <span class="text-green">code</span><span
+            class="token punctuation"><span class="text-red">)</span></span></code></pre>
+</div>
+<p>Basically, it is very similar to the <span class="code text-orange">assertTimeout()</span> method , only it checks
+    that the specified code throws the right exception. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">whenAssertingException</span><span
+            class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token punctuation">{</span>
+    <span class="token class-name">Throwable</span> exception <span class="token operator">=</span> <span
+            class="token function">assertThrows</span><span class="token punctuation">(</span>
+  	<span class="token class-name">IllegalArgumentException</span><span class="token punctuation">.</span><span
+            class="token keyword">class</span><span class="token punctuation">,</span>
+  	<span class="token punctuation">(</span><span class="token punctuation">)</span> <span
+            class="token operator">-&gt;</span> <span class="token punctuation">{</span>
+      	<span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span
+            class="token punctuation">(</span><span class="token string">"Exception message"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+  	<span class="token punctuation">}</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assertEquals</span><span class="token punctuation">(</span><span class="token string">"Exception message"</span><span
+            class="token punctuation">,</span> exception<span class="token punctuation">.</span><span
+            class="token function">getMessage</span><span class="token punctuation">(</span><span
+            class="token punctuation">)</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>

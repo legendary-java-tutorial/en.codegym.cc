@@ -1,0 +1,243 @@
+Abstract classes in Java with concrete examples
+<p>----------------------------------------</p>
+Let's talk about abstract classes in Java. Why are classes called "abstract"?
+<p>----------------------------------------</p>
+<p>Hi! Let's talk about <strong>abstract classes</strong> in Java.</p>
+
+<h2>Why are classes called "abstract"?</h2>
+
+<p>You probably remember what abstraction is — we discussed it earlier :) If you forgot, no worries. Remember, <em>it is an OOP principle</em> that says, when designing classes and creating objects, you should represent only the entity's main properties and discard secondary ones.</p>
+
+<p>For example, if we're designing a <code>SchoolTeacher</code> class, <em>height</em> is probably not going to be a necessary property of a teacher. Indeed, this characteristic is not important for a teacher. But if we're creating a <code>BasketballPlayer</code> class, then <em>height</em> will be one of the most important characteristics.</p>
+
+<p>Well, an <strong>abstract class</strong> is the most abstract, "rough workpiece" for a group of future classes. The workpiece cannot be used directly — it's too "rough". But it defines certain characteristic state and behavior that future classes — the descendants of the abstract class — will have.</p>
+
+<h2>Examples of abstract classes in Java</h2>
+
+<p>Consider a simple example with cars:</p>
+
+<pre class="lang-java line-numbers"><code>
+public abstract class Car {
+
+   private String model;
+   private String color;
+   private int maxSpeed;
+  
+   public abstract void gas();
+
+   public abstract void brake();
+
+   public String getModel() {
+       return model;
+   }
+
+   public void setModel(String model) {
+       this.model = model;
+   }
+
+   public String getColor() {
+       return color;
+   }
+
+   public void setColor(String color) {
+       this.color = color;
+   }
+
+   public int getMaxSpeed() {
+       return maxSpeed;
+   }
+
+   public void setMaxSpeed(int maxSpeed) {
+       this.maxSpeed = maxSpeed;
+   }
+}
+</code></pre>
+
+<p>This is what the simplest abstract class looks like. As you can see, nothing special :)</p>
+
+<p>Why might we need this?</p>
+
+<p>First, it provides the most abstract description of the entity we need — a car. The <strong>abstract</strong> keyword means something here. In the real world, there's no such thing as "just a car". There are trucks, race cars, sedans, coupes, and SUVs.</p>
+
+<p><strong>Our abstract class is simply a "blueprint" that we will later use to create specific car classes.</strong></p>
+
+<pre class="lang-java line-numbers"><code>
+public class Sedan extends Car {
+  
+   @Override
+   public void gas() {
+       System.out.println("The sedan is accelerating!");
+   }
+
+   @Override
+   public void brake() {
+       System.out.println("The sedan is slowing down!");
+   }
+  
+}
+</code></pre>
+
+<p>In many ways, this is similar to what we talked about in the lessons on inheritance. Only in that case we had a <code>Car</code> class whose methods were not abstract. But such a solution has several disadvantages that are fixed in abstract classes.</p>
+
+<p>First and foremost, <strong>an instance of an abstract class cannot be created:</strong></p>
+
+<pre class="lang-java line-numbers"><code>
+public class Main {
+
+   public static void main(String[] args) {
+
+       Car car = new Car(); // Error! The Car class is abstract!
+   }
+}
+</code></pre>
+
+<p>Java's creator's made this "feature" on purpose. Once again, remember: <em>an abstract class is just a blueprint for future "regular" classes</em>. You don't need copies of a blueprint, right? Similarly, there is no need to create instances of an abstract class :)</p>
+
+<p>And if the <code>Car</code> class were not abstract, then we could easily create instances of it:</p>
+
+<pre class="lang-java line-numbers"><code>
+public class Car {
+
+   private String model;
+   private String color;
+   private int maxSpeed;
+  
+   public void go() {
+       // ...some logic
+   }
+
+   public  void brake() {
+       // ...some logic
+   }
+}
+
+
+public class Main {
+
+   public static void main(String[] args) {
+
+       Car car = new Car(); // This is okay. The car is created.
+   }
+}
+</code></pre>
+
+<p>At present, our program has some kind of incomprehensible car. It's not a truck, not a race car, and not a sedan, but it's not really clear what it is. It's the "just a car" that doesn't exist in reality.</p>
+
+<p>The same example can be given with animals. Imagine if your program had <code>Animal</code> objects ("<em>just animals</em>"). It's not clear what kind it is, what family it belongs to, or what characteristics it has. It would be strange to see one in a program. There are no "just animals" in nature. Only dogs, cats, foxes, moles, etc.</p>
+
+<p>Abstract classes save us from "<em>just objects</em>". They give us baseline state and behavior. For example, all cars must have a <em>model</em>, <em>color</em> and <em>top speed</em>, and they must also be able to apply the <em>gas</em> and <em>brake</em>. That's it. It's a general abstract blueprint that you will use later to design the classes you need.</p>
+
+<p><em>Note:</em> the two methods in the abstract class are also <strong>abstract</strong>, which means they have no implementation at all. The reason is the same: abstract classes don't create "default behaviors" for "just cars". They just indicate what every car must be able to do.</p>
+
+<p>That said, if you do need default behavior, you can implement methods in an abstract class. Java does not forbid this:</p>
+
+<pre class="lang-java line-numbers"><code>
+public abstract class Car {
+
+   private String model;
+   private String color;
+   private int maxSpeed;
+
+   public void gas() {
+       System.out.println("Accelerating!");
+   }
+
+   public abstract void brake();
+  
+   // Getters and setters
+}
+
+
+public class Sedan extends Car {
+
+   @Override
+   public void brake() {
+       System.out.println("The sedan is slowing down!");
+   }
+
+}
+
+public class Main {
+
+   public static void main(String[] args) {
+
+       Sedan sedan = new Sedan();
+       sedan.gas();
+   }
+}
+</code></pre>
+
+<p>Console output:</p>
+
+<pre><code>Accelerating!</code></pre>
+
+<p>As you can see, we implemented one method in the abstract class, but not the other.</p>
+
+<p>As a result, the behavior of our <code>Sedan</code> class is divided into two parts: if we call its <code>gas()</code> method, the behavior is "pulled up" from the abstract <code>Car</code> parent class, and we implement the <code>brake()</code> method in the <code>Sedan</code> class. That's super convenient and flexible.</p>
+
+<p>But <strong>our class isn't so abstract now, is it</strong>? After all, it actually implemented half of the methods.</p>
+
+<p>The fact is — and this is a very important feature — <strong>a class is abstract if even one of its methods is abstract</strong>. One method of two, or one of a thousand — it doesn't matter.</p>
+
+<p>We could even implement all the methods, leaving none abstract. The result would be an abstract class without any abstract methods. This is possible in principle — the compiler won't generate any errors — but it's better not to do this, since it deprives the word abstract of its meaning. Your fellow programmers will also be very surprised to see this :/</p>
+
+<p>That said, <strong>if a method is marked as abstract, each descendant class must implement it or be declared as abstract. Otherwise, the compiler will throw an error</strong>.</p>
+
+<p>Of course, each class can only inherit one abstract class, so there is no difference between abstract and regular classes in terms of inheritance. It doesn't matter if we inherit an abstract class or a regular one — there can be only one parent class.</p>
+
+<h2>Why Java doesn't have multiple class inheritance</h2>
+
+<p>We have already said that there is no multiple inheritance in Java, but we did not really delve into why. Let's try to do that now.</p>
+
+<p>The fact is that if Java did have multiple inheritance, then child classes would not be able to decide which behavior to choose.</p>
+
+<p>Let's say we have two classes: <code>Toaster</code> and <code>NuclearBomb</code>:</p>
+
+<pre class="lang-java line-numbers"><code>
+public class Toaster {
+  
+  
+ public void on() {
+
+       System.out.println("The toaster is on. We're toasting!");
+   }
+  
+   public void off() {
+
+       System.out.println("The toaster is off!");
+   }
+}
+
+
+public class NuclearBomb {
+
+   public void on() {
+
+       System.out.println("Boom!");
+   }
+}
+</code></pre>
+
+<p>As you can see, both classes have an <code>on()</code> method. For the toaster, the method starts making toast, but in the case of the nuclear bomb, it sets off an explosion.</p>
+
+<p>Uh-oh :/</p>
+
+<p>Now imagine that you've decided (don't ask me why!) to create something in between. Here's your class: <code>MysteriousDevice</code>!</p>
+
+<p>This code won't work, of course. We present it simply as an example of "what might have been":</p>
+
+<pre class="lang-java line-numbers"><code>
+public class MysteriousDevice extends Toster, NuclearBomb {
+
+   public static void main(String[] args) {
+      
+       MysteriousDevice mysteriousDevice = new MysteriousDevice();
+       mysteriousDevice.on(); // And what should happen here? Will we get toast or a nuclear apocalypse?
+   }
+}
+</code></pre>
+<p>Let's see what we've got. The mysterious device derives from both Toaster and NuclearBomb at the same time. Both have an <code>on()</code> method. As a result, it is not clear which implementation should be executed if we call <code>on()</code> on a <code>MysteriousDevice</code> object. The object won't understand.</p>
+
+<p>And to top it all off, NuclearBomb does not have an <code>off()</code> method, so if we don't guess correctly, then it will be impossible to turn off the device.</p>
+
+<p>This "misunderstanding", when it is unclear which behavior should be executed, is precisely the reason why Java's creators rejected multiple inheritance. That said, you will learn that Java classes can implement many interfaces.</p>

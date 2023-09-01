@@ -1,0 +1,58 @@
+Dependencies in a Maven project
+<p>----------------------------------------</p>
+dependency How to search for libraries in Maven Repository dependency repository
+<p>----------------------------------------</p>
+<h2>4.1 dependency</h2>
+<p>Let's look at another thing that made maven so popular - dependency management.</p>
+<p>If you want to add some library to your Maven project, you just <span class="text-green">need to add it to the pom file, in the dependencies section</span> . It looks to the point of being simple.</p>
+<p>Let's add the latest version of Spring and Hibernate to our project. Here's what it will look like:</p>
+<pre class=""><code>&lt;dependencies&gt;
+ 
+  &lt;dependency&gt;
+<span class="text-green">    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+	&lt;version&gt;5.3.18&lt;/version&gt; </span>
+  &lt;/dependency&gt;
+
+  &lt;dependency&gt;
+<span class="text-user">    &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+    &lt;version&gt;6.0.0.Final&lt;/version&gt;</span>
+  &lt;/dependency&gt;
+
+&lt;/dependencies&gt;
+</code></pre>
+<p>That's it, <span class="text-red">you don't need to do anything else</span> . If you add these lines to your project, IDEA will immediately download the required libraries. A few seconds after that, you can use their classes in your code.</p>
+<p>An important point: if you upload the project to GitHub or send it to someone as an archive, this person is guaranteed to be able to build it. All information on libraries, dependencies and build scripts is already hardwired into the project.</p>
+<h2>4.2 How to search for libraries in the Maven Repository</h2>
+<p>By the way, I added the XML of these two libraries to my pom.xml in less than a minute. Not bad, right? Now I will teach you how to quickly add any library to the project.</p>
+<p>First, there is <strong>a central public Maven repository</strong> on the Internet , which stores millions of libraries. It is located at the link <a data-savepage-href="https://mvnrepository.com" href="https://mvnrepository.com/" target="_blank">https://mvnrepository.com/</a> , you can search for the library you need directly in it.</p><img data-max-width="1024" data-id="0e152cf9-cbd4-4a41-a2ca-517cfd94a32b" alt="Maven" src="https://cdn.javarush.com/images/article/0e152cf9-cbd4-4a41-a2ca-517cfd94a32b/1024.jpeg" style="width: 1024px;">
+<p>Secondly, it can be even simpler - immediately write to Google <strong>"maven hibernate"</strong> , follow the first link and you will get:</p><img data-max-width="1024" data-id="0d39a8c7-6860-401b-b272-9090248bc5c0" alt="Maven 2" src="https://cdn.javarush.com/images/article/0d39a8c7-6860-401b-b272-9090248bc5c0/1024.jpeg" style="width: 1024px;">
+<p>Select the desired version and click on it. Sometimes the latest version contains the Beta suffix, then go for something older.</p>
+<p>I chose version 6.0.0.Final and went to the last page.</p><img data-max-width="1024" data-id="a2d7e84e-abfb-4134-ab32-8d9105c2520d" alt="" src="https://cdn.javarush.com/images/article/a2d7e84e-abfb-4134-ab32-8d9105c2520d/1024.jpeg" style="width: 1024px;">
+<p>The green box here is the code that you need to copy into your pom.xml. All.</p>
+<h2>4.3 dependency repository</h2>
+<p>When building a project, your Maven will first look for the specified library (artifact) in your local repository. If he does not find it there, then he will look in the global Maven repository. And then upload it to your local repository - to speed up the next build.</p>
+<p>But besides these two repositories, there are others.</p>
+<p>First, many large companies have maven repositories with their own libraries.</p>
+<p>Secondly, before the invention of Docker, many projects were simply put into the corporate Maven repository after being built. And what? Great place to store everything. And versioning is again supported.</p>
+<p>In general, if you suddenly decide to connect a third-party repository to your project, then this can be done as simply as adding dependencies:</p>
+<pre class=""><code>&lt;repositories&gt;
+ 
+  &lt;repository&gt;
+<span class="text-green">  	&lt;id&gt;public-codegym-repo&lt;/id&gt;
+  	&lt;name&gt;Public CodeGym Repository&lt;/name&gt;
+  	&lt;url&gt;http://maven.codegym.cc&lt;/url&gt;</span>
+  &lt;/repository&gt;
+ 
+  &lt;repository&gt;
+<span class="text-user">  	&lt;id&gt;private-codegym-repo&lt;/id&gt;
+  	&lt;name&gt;Private CodeGym Repository&lt;/name&gt;
+  	&lt;url&gt;http://maven2.codegym.cc&lt;/url&gt;</span>
+  &lt;/repository&gt;
+ 
+&lt;/repositories&gt;
+</code></pre>
+<p>Each repository has 3 things: <strong>Key/ID, Name</strong> and <strong>URL</strong> . You can specify any name - it is for your convenience, ID is also for your internal needs, in fact, you only need to specify the URL.</p>
+<p>If this is a public repository, then this information is easily googled, if it is a corporate one, then they will give it to you when they give access to such a repository.</p>
+<p>The creators of Maven know how to standardize, you can't refuse them.</p>

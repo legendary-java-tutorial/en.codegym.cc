@@ -1,0 +1,36 @@
+Workbench installation
+<p>----------------------------------------</p>
+Loading. Installation. We connect to the database. Server status. How to view the list of databases.
+<p>----------------------------------------</p>
+ith the database through the console, but this does not mean that he should do so. There are many great clients for working with SQL servers. For example, I like SQLYog. Someone hardcore continues to work through the console, and many - immediately through Intellij IDEA.</p>
+<p>Yes, she also knows how to personally work with SQL servers. But since we are studying MySQL here, at the same time we will learn how to use the MySQL Client, which often comes with it in tandem. It's called MySQL Workbench.</p>
+<p><strong>Step 1. Let's follow </strong><a href="https://www.mysql.com/downloads/" target="_blank" rel="nofollow">the link</a> again and then select the link at the very bottom. As a result, you should see something like this:</p><img data-max-width="512" data-id="93d4d683-ce4f-4cbf-a7fa-67f4bd7ac4cc" alt="" src="https://cdn.javarush.com/images/article/93d4d683-ce4f-4cbf-a7fa-67f4bd7ac4cc/512.jpeg" style="width: 512px;">
+<p><strong>Step 2.</strong> Select MySQL Workbench and get the opportunity to choose a version for any operating system:</p><img data-max-width="800" data-id="444e135f-28e2-4a1e-aae4-ab1daeefa187" alt="" src="https://cdn.javarush.com/images/article/444e135f-28e2-4a1e-aae4-ab1daeefa187/800.jpeg" style="width: 800px;">
+<p>Download it and run the installation.</p>
+<h2>Installation</h2>
+<p><strong>Step 1.</strong> We start the installation and see the standard window, click Next:</p><img data-max-width="512" data-id="aa9b3bdb-fb8f-4720-88c9-88a9ad1bf68a" alt="" src="https://cdn.javarush.com/images/article/aa9b3bdb-fb8f-4720-88c9-88a9ad1bf68a/512.jpeg" style="width: 512px;">
+<p><strong>Step 2.</strong> Select a directory to install the program.</p><img data-max-width="512" data-id="495e8ce5-a66e-4381-826c-0e2d03ced2d8" alt="" src="https://cdn.javarush.com/images/article/495e8ce5-a66e-4381-826c-0e2d03ced2d8/512.jpeg" style="width: 512px;">
+<p><strong>Step 3.</strong> Choose a standard configuration:</p><img data-max-width="512" data-id="a8c95029-cd21-4c1c-8b5e-e8b90b9f38f4" alt="" src="https://cdn.javarush.com/images/article/a8c95029-cd21-4c1c-8b5e-e8b90b9f38f4/512.jpeg" style="width: 512px;">
+<p><strong>Step 4.</strong> Install:</p><img data-max-width="512" data-id="56426643-6d46-4c3d-be96-bbe06a1370ef" alt="" src="https://cdn.javarush.com/images/article/56426643-6d46-4c3d-be96-bbe06a1370ef/512.jpeg" style="width: 512px;">
+<p><strong>Step 5.</strong> In case of successful installation, you will see a window:</p><img data-max-width="512" data-id="9e5db0f2-1ae2-4a0c-85d6-226998d5f066" alt="" src="https://cdn.javarush.com/images/article/9e5db0f2-1ae2-4a0c-85d6-226998d5f066/512.jpeg" style="width: 512px;">
+<p>You will also receive an offer to launch Workbench. Let's see what's behind this...</p>
+<h2>Connecting to the database</h2>
+<p>I launched Workbench and it showed me the standard window:</p><img data-max-width="800" data-id="5caa4999-bbd4-4f7f-9659-d916df84a865" alt="" src="https://cdn.javarush.com/images/article/5caa4999-bbd4-4f7f-9659-d916df84a865/800.jpeg" style="width: 800px;">
+<p>At the bottom of the page, MySQL Workbench displays a list of your most recent connections to various databases. If you want to create a new connection, then click the “plus sign in a circle” or use the top menu: Database-&gt; Connect to Database.</p><img data-max-width="800" data-id="9c78179c-d908-4f2f-8d06-f6141d3dace7" alt="" src="https://cdn.javarush.com/images/article/9c78179c-d908-4f2f-8d06-f6141d3dace7/800.jpeg" style="width: 800px;">
+<p>Even if you decide to use an already configured connection, you may still be asked for a password:</p><img data-max-width="512" data-id="23d59134-cbcc-4018-b874-4a036f7200c0" alt="" src="https://cdn.javarush.com/images/article/23d59134-cbcc-4018-b874-4a036f7200c0/512.jpeg" style="width: 512px;">
+<p>If you decide to create a new connection, you will see a panel like this:</p><img data-max-width="800" data-id="8574b7ab-99e8-4961-82e2-df3e81c4e100" alt="" src="https://cdn.javarush.com/images/article/8574b7ab-99e8-4961-82e2-df3e81c4e100/800.jpeg" style="width: 800px;">
+<p>With Workbench, you can connect to any SQL server in the world, so you need to specify:</p>
+<ul>
+ <li>its address: host &amp; port</li>
+ <li>username</li>
+ <li>password (you will be prompted to specify later)</li>
+</ul>
+<p>Actually, you need to choose a name for the connection - you can write whatever you like, and also choose the Database Scheme.</p>
+<p>Tables in a database are organized into groups called schemas. In a sense, these are databases. That is, one schema is one database.</p>
+<p>On the other hand, tables from one schema can refer to tables from another schema, they can be JOINed, and the like. So a schema is still a group of tables. Basically, like package in Java. Classes within one package are more strongly related to each other, but at the same time, nothing prevents them from referring to classes from other packages.</p>
+<h2>Server Status</h2>
+<p>After logging in, you will most likely see a window with general information and information about the server you connected to:</p><img data-max-width="800" data-id="e77ab056-5913-4ab6-a808-88401e4828ca" alt="" src="https://cdn.javarush.com/images/article/e77ab056-5913-4ab6-a808-88401e4828ca/800.jpeg" style="width: 800px;">
+<p>There is not much value for us here, but if you click on the Server Status link in the upper left corner, you will see some details:</p><img data-max-width="1024" data-id="26d4f668-a98d-4253-b1f0-463365abac16" alt="" src="https://cdn.javarush.com/images/article/26d4f668-a98d-4253-b1f0-463365abac16/1024.jpeg" style="width: 1024px;">
+<h2>How to view a list of databases</h2>
+<p>Let's open the list of databases (schemas) on the server we've connected to. To do this, open <strong>the Schemas tab</strong> :</p><img data-max-width="1080" data-id="f13beead-aa80-4d76-8cfb-a4d1279d3e0a" alt="" src="https://cdn.javarush.com/images/article/f13beead-aa80-4d76-8cfb-a4d1279d3e0a/1080.jpeg" style="width: 1080px;">
+<p>If you don't have any scheme yet, you can always create one.</p>

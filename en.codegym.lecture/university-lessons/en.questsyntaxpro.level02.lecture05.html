@@ -1,0 +1,364 @@
+Keyboard input
+<p>----------------------------------------</p>
+Reading from the Console, System.in In the previous lessons, we got acquainted with the screen output commands. To do this, we used the System.out object, and its print() and println() methods. Simple and convenient. But, as you probably already guess, one output to the screen is not enough. The goal of most programs is to
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="4d0c6191-ce70-4bca-954d-9d64dd31032e" data-max-width="1024" src="https://cdn.javarush.ru/images/article/4d0c6191-ce70-4bca-954d-9d64dd31032e/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="890b93bd-dd17-4ea7-b2ab-1a6281b2fceb" data-max-width="512" src="https://cdn.javarush.ru/images/article/890b93bd-dd17-4ea7-b2ab-1a6281b2fceb/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="118345e6-094f-42e6-b0d4-96c661b64a4d" data-max-width="512" src="https://cdn.javarush.ru/images/article/118345e6-094f-42e6-b0d4-96c661b64a4d/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Reading from the console using <code>System.in</code></h2>
+<p>In the previous lessons, we got acquainted with the commands for displaying information on the screen. To do this, we have used the <code>System.out</code> object and its <code>print()</code> and <code>println()</code> methods. It's simple and convenient.</p>
+<p>But, as you probably already guessed, displaying information on the screen isn't enough for us. The purpose of most programs is to do something useful for the user. That means that it's very often necessary for the user to be able to enter data from the keyboard.</p>
+<p>Just as was the case for output, we also have a special object for data input — <code class="text-green">System.in</code>. But, unfortunately for us, it isn't as convenient as we would like. It lets us read data from the keyboard <span class="text-viola">one character</span> at a time.</p>
+<p>To improve on this, we will use another class that, when paired with the <code class="text-green">System.in</code> object, will give us everything we need. For a long time now, Java has had classes to suit every occasion. And we'll get to know one of them now.</p>
+<hr>
+<h2>2. <code>Scanner</code> class</h2>
+<p>The <code class="text-viola">Scanner</code> class (full name: <code class="text-brown">java.util.Scanner</code>) can read data from different sources, e.g. the console, files, and the Internet. If we want it to read data from the keyboard, then we must pass in the <code class="text-green">System.in</code> object as an argument that will serve as the data source. And then the Scanner object will figure out what to do with it.</p>
+<p>Reading from the keyboard using a <code class="text-viola">Scanner</code> object would look something like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>Scanner <span class="text-viola">console</span> = new <span class="code text-viola">Scanner</span>(<span class="code text-green">System.in</span>);
+String <span class="text-user">name</span> = <span class="text-viola">console</span>.<span class="code text-user">nextLine</span>();
+int <span class="text-red">age</span> = <span class="text-viola">console</span>.<span class="code text-red">nextInt</span>();</code></pre>
+        </td>
+        <td>We create a <code class="text-viola">Scanner</code> object.<br>
+            We read <span class="term text-user">a line of text</span> from the keyboard.<br>
+            We read a <span class="term text-red">number</span> from the keyboard.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>It looks easy, but is it really that simple?</p>
+<p>I think you must have a bunch of questions, and now we will answer them.</p>
+<p>But first, let's demonstrate an example of a complete program that uses the <code class="text-viola">Scanner</code> class:</p>
+<pre class="language-java"><code>import <span class="code text-brown">java.util.Scanner</span>;
+public class Solution {
+   public static void main(String[] args)
+   {
+      Scanner <span class="text-viola">console</span> = new <span class="code text-viola">Scanner</span>(<span class="code text-green">System.in</span>);
+      String <span class="text-user">name</span> = <span class="text-viola">console</span>.<span class="code text-user">nextLine</span>();
+      int <span class="text-red">age</span> = <span class="text-viola">console</span>.<span class="code text-red">nextInt</span>();
+
+      System.out.println("Name: " + <span class="text-user">name</span>);
+      System.out.println("Age: " + <span class="text-red">age</span>);
+   }
+}</code></pre>
+<hr>
+<h2>3. Creating a <code>Scanner</code> object</h2>
+<p>The first question is what is this line <code>Scanner console = new Scanner (System.in);</code>?</p>
+<p>This line may be confusing, but you will see similar things all the time. So we think it's important to explain what is going on here.</p>
+<p>Recall how we usually create a variable with text:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-user">String</span> <span class="code text-user">str</span> = <span class="code text-green">"text"</span>;</code></pre>
+    <div class="lesson-example-caption">Declaring and initializing a string variable</div>
+</div>
+<p>First, we write the variable's type (<code>String</code>), then its name (<code>str</code>), and finally, after the equals sign, we write the value.</p>
+<p>Our bewildering line is actually the same:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present-sm language-java"><code><span class="text-viola">Scanner</span> <span class="code text-viola">console</span> = <span class="code text-green">new Scanner(System.in)</span>;</code></pre>
+    <div class="lesson-example-caption">Declaring and initializing a <code>Scanner</code> variable</div>
+</div>
+<p>Everything to the left of the <span class="term">equals sign</span> is the declaration of a variable named <code class="text-viola">console</code> whose type is <code><span class="text-viola">Scanner</span></code>. You could instead call it <code class="text-viola">s</code>&nbsp;or<code class="text-viola">scanner</code> or even <code class="text-viola">keyboard</code>. Then the code would look like this:</p>
+<pre class="language-java"><code><span class="text-viola">Scanner</span> <span class="code text-viola">s</span> = <span class="code text-green">new Scanner(System.in)</span>;
+String <span class="text-user">name</span> = <span class="code text-viola">s</span>.<span class="text-user">nextLine</span>();
+int <span class="text-red">age</span> = <span class="code text-viola">s</span>.<span class="text-red">nextInt</span>();</code></pre>
+<pre class="language-java"><code><span class="text-viola">Scanner</span> <span class="code text-viola">scanner</span> = <span class="code text-green">new Scanner(System.in)</span>;
+String <span class="text-user">name</span> = <span class="code text-viola">scanner</span>.<span class="text-user">nextLine</span>();
+int <span class="text-red">age</span> = <span class="code text-viola">scanner</span>.<span class="text-red">nextInt</span>();</code></pre>
+<pre class="language-java"><code><span class="text-viola">Scanner</span> <span class="code text-viola">keyboard</span> = <span class="code text-green">new Scanner(System.in)</span>;
+String <span class="text-user">name</span> = <span class="code text-viola">keyboard</span>.<span class="text-user">nextLine</span>();
+int <span class="text-red">age</span> = <span class="code text-viola">keyboard</span>.<span class="text-red">nextInt</span>();</code></pre>
+<p>I think that makes everything much clearer.</p>
+<p>But the code to the right of the <span class="term">equals sign</span> is a little more complicated. I'm now referring to <code class="text-green">new Scanner(System.in);</code>&nbsp;That said, there is nothing supernatural happening here either.</p>
+<p>In this code, we tell the Java machine: create a new object (the <code>new</code> keyword) whose type is <code>Scanner</code>&nbsp;, passing in the <code>System.in</code> object as the data source for the newly created <code>Scanner</code> object.</p>
+<p>After executing this whole line, we will have a <code><span class="text-viola">Scanner</span></code> variable named <code class="text-viola">console</code>&nbsp;that our program will use to read data from the keyboard.</p>
+<hr>
+<h2>4. List of methods</h2>
+<p>In the example above, our <code>Scanner</code> <code>console</code> variable stores a reference to a <code>Scanner</code> object.</p>
+<p>To call methods on an object referenced by a variable, you write a period after the name of the variable, followed by the method name and any arguments. The general appearance of the command is as follows:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="code text-viola">variable</span>.<span class="code text-red">method</span>(<span class="code text-green">arguments</span>);</code></pre>
+    <div class="lesson-example-caption">Calling a method on an object referenced by a variable</div>
+</div>
+<p>Examples:</p>
+<pre class="language-java"><code><span class="code text-viola">System.out</span>.<span class="code text-red">println</span>(<span class="code text-green">"Hello"</span>);</code></pre>
+<pre class="language-java"><code><span class="code text-viola">System.out</span>.<span class="code text-red">println</span>(<span class="code text-green">1</span>);</code></pre>
+<p>If you don't plan to pass arguments to a function, then you just write empty parentheses:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="code text-viola">variable</span>.<span class="code text-red">method</span>();</code></pre>
+    <div class="lesson-example-caption">Calling a method without passing arguments</div>
+</div>
+<p>Example:</p>
+<pre class="language-java"><code><span class="code text-viola">System.out</span>.<span class="code text-red">println</span>();</code></pre>
+<hr>
+<h2>5. Console input</h2>
+<p>When we have a <code class="text-viola">Scanner</code> object, it's easy to get data from the keyboard.</p>
+<p>To <span class="term text-user">read a line from the keyboard</span>, you need this command:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>String <span class="text-user">str</span> = <span class="code text-viola">console</span>.<span class="code text-user">nextLine</span>();</code></pre>
+</div>
+<p>When execution of the program reaches this line, it will pause and wait for the user to enter data and press enter. Then everything that the user entered is stored in the variable <code><span class="text-user">str</span></code>.</p>
+<p>To <span class="term text-red">read a number from the keyboard</span>, you need this command:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>int <span class="text-red">number</span> = <span class="code text-viola">console</span>.<span class="code text-red">nextInt</span>();</code></pre>
+</div>
+<p>Everything here is like the previous command. When execution of the program reaches this line, it will pause and wait for the user to enter data and press enter. After that, everything that the user entered is converted to a number and stored in the <code><span class="text-red">number</span></code> variable.</p>
+<p>If the user entered data that cannot be converted to an integer, the program will generate an error and exit.</p>
+<p>To <span class="term text-neon">read a fractional number from the keyboard</span>, you need this command:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>double <span class="text-neon">number</span> = <span class="code text-viola">console</span>.<span class="code text-neon">nextDouble</span>();</code></pre>
+</div>
+<p>This statement is very similar to the one with the <code class="text-red">nextInt()</code> method, only it checks that the entered data can be converted to a <code class="text-neon">double</code> number.</p>
+<p>Example of a program that reads two numbers from the keyboard and displays their sum on the screen:</p>
+<pre class="language-java"><code>import <span class="code text-brown">java.util.Scanner</span>;
+public class Solution {
+   public static void main(String[] args)
+   {
+      Scanner <span class="code text-viola">console</span> = new <span class="text-viola">Scanner</span>(<span class="code text-green">System.in</span>);
+      int <span class="text-red">a</span> = <span class="code text-viola">console</span>.<span class="code text-red">nextInt</span>();
+      int <span class="text-red">b</span> = <span class="code text-viola">console</span>.<span class="code text-red">nextInt</span>();
+
+      System.out.println(<span class="text-red">a</span> + <span class="text-red">b</span>);
+   }
+}</code></pre>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Note</div>
+        <div class="lesson-note__content">
+            <p>The user can enter several numbers on a single line, separating them with spaces: the methods of the <code><span class="text-viola">Scanner</span></code> class know how to handle this. That said, the program reads the numbers only after the user presses <code>Enter</code>.</p>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0214"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0215"></div>
+<hr>
+<h2>6. Other methods of the <code>Scanner</code> class</h2>
+<p>By the way, the methods above are not all that the <code>Scanner</code> class has to offer. The complete list of methods looks something like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>nextByte()</code></pre>
+        </td>
+        <td>Reads data and converts it to a <code>byte</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>nextShort()</code></pre>
+        </td>
+        <td>Reads data and converts it to a <code>short</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>nextInt()</code></pre>
+        </td>
+        <td>Reads data and converts it to an <code>int</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>nextLong()</code></pre>
+        </td>
+        <td>Reads data and converts it to a <code>long</code></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>nextFloat()</code></pre>
+        </td>
+        <td>Reads data and converts it to a <code>float</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>nextDouble()</code></pre>
+        </td>
+        <td>Reads data and converts it to a <code>double</code></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>nextBoolean()</code></pre>
+        </td>
+        <td>Reads data and converts it to a <code>boolean</code></td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>next()</code></pre>
+        </td>
+        <td>Reads one "token". Tokens are separated by spaces or presses of the enter key</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>nextLine()</code></pre>
+        </td>
+        <td>Reads an entire line</td>
+    </tr>
+    </tbody>
+</table>
+<p>There are also methods that let you check the next token in the input without actually fetching it (in order to know which method to use to read it).</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNextByte()</code></pre>
+        </td>
+        <td>Is there a <code>byte</code>? Can the input be converted to a <code>byte</code>?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNextShort()</code></pre>
+        </td>
+        <td>Is there a <code>short</code>? Can the input be converted to a <code>short</code>?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNextInt()</code></pre>
+        </td>
+        <td>Is there an <code>int</code>? Can the input be converted to an <code>int</code>?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNextLong()</code></pre>
+        </td>
+        <td>Is there a <code>long</code>? Can the input be converted to a <code>long</code>?</td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNextFloat()</code></pre>
+        </td>
+        <td>Is there a <code>float</code>? Can the input be converted to a <code>float</code>?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNextDouble()</code></pre>
+        </td>
+        <td>Is there a <code>double</code>? Can the input be converted to a <code>double</code>?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNextBoolean()</code></pre>
+        </td>
+        <td>Is there a <code>boolean</code>? Can the input be converted to a <code>boolean</code>?</td>
+    </tr>
+    <tr class="row-separator">
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNext()</code></pre>
+        </td>
+        <td>Is there another token?</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code>hasNextLine()</code></pre>
+        </td>
+        <td>Is there another line?</td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>7. Reading data from a string</h2>
+<p>We previously mentioned that the <code class="text-viola">Scanner</code> class can read data from various sources. One of those sources is a <span class="term text-user">string of text</span>.</p>
+<p>It looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+        <pre class="lecture-code lecture-code--present language-java"><code>String <span class="text-user">str</span> = "<span class="code text-user">text</span>";
+Scanner <span class="text-viola">scanner</span> = new <span class="code text-viola">Scanner</span>(<span class="text-user">str</span>);</code></pre>
+</div>
+<p>When creating the <code class="text-viola">Scanner</code> object, we pass in the string <code><span class="text-user">str</span></code> instead of the <code>System.in</code> object. And now the <code><span class="text-viola">scanner</span></code> object will read data from the string. Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Program code:</th>
+        <th>Explanation:</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>import <span class="code text-brown">java.util.Scanner</span>;
+public class Solution {
+   public static void main(String[] args)
+   {
+      String <span class="text-user">str</span> = "<span class="code text-user">10 20 40 60</span>";
+      Scanner <span class="text-viola">scanner</span> = new <span class="code text-viola">Scanner</span>(<span class="text-user">str</span>);
+      int <span class="text-red">a</span> = <span class="text-viola">scanner</span>.<span class="code text-red">nextInt</span>();
+      int <span class="text-red">b</span> = <span class="text-viola">scanner</span>.<span class="code text-red">nextInt</span>();
+
+      System.out.println(<span class="text-red">a</span> + <span class="text-red">b</span>);
+   }
+}</code></pre>
+        </td>
+        <td>
+                <pre>
+
+
+
+
+
+
+<span class="token comment">// a == 10;</span>
+<span class="token comment">// b == 20;</span>
+The screen output will be: <code>30</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task02.task0218"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="8b2f4643-c428-41c5-b665-40c5ab539415" data-max-width="1024" alt="" src="https://cdn.javarush.ru/images/article/8b2f4643-c428-41c5-b665-40c5ab539415/original.png">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="5b52e030-bf6b-4e98-a760-057e21441adf" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/5b52e030-bf6b-4e98-a760-057e21441adf/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="4f5887d6-ee90-4512-9ce2-1896ba820211" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/4f5887d6-ee90-4512-9ce2-1896ba820211/original.png">
+        </div>
+    </div>
+</div>

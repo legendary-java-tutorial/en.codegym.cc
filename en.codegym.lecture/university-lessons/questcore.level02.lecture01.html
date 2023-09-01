@@ -1,0 +1,371 @@
+Polymorphism and redefinition
+<p>----------------------------------------</p>
+After this lecture, you will learn what polymorphism is and solve the problem of fathers and children, understanding what needs to be done if the heir already wants to use the method in the way his ancestor did. That is, the situation that a whale is such a cow, only without horns, without bells and swims, will not confuse you. You can even program it.
+<p>----------------------------------------</p>
+<p>"Amigo, do you like whales?"</p>
+<p><span class="text-user">"Whales? Nope, never heard of them."</span></p>
+<p>"It's like a cow, only bigger and it swims. Incidentally, whales came from cows. Uh, or at least they share a common ancestor. It doesn't matter."</p>
+<a href='https://cdn.codegym.cc/images/article/6cea91f8-acd3-46f7-b3e0-5f70ab825b9c/original.jpeg' target='_blank'><img data-id="6cea91f8-acd3-46f7-b3e0-5f70ab825b9c" data-max-width="850" alt="Polymorphism and overriding - 1" src="https://cdn.codegym.cc/images/article/6cea91f8-acd3-46f7-b3e0-5f70ab825b9c/original.jpeg"></a>
+<p>"Listen up. I want to tell you about another very powerful tool of OOP: <strong><span class="text-red">polymorphism</span></strong>. It has four features."</p>
+<h3>1) Method overriding.</h3>
+<p>Imagine that you've written a "Cow" class for a game. It has lots of member variables and methods. Objects of this class can do various things: walk, eat, sleep. Cows also ring a bell when they walk. Let's say you've implemented everything in the class down to the smallest detail.</p>
+<a href='https://cdn.codegym.cc/images/article/f08d80dc-5504-400e-8147-294fd945fddc/original.jpeg' target='_blank'><img data-id="f08d80dc-5504-400e-8147-294fd945fddc" data-max-width="1024" alt="Polymorphism and overriding - 2" src="https://cdn.codegym.cc/images/article/f08d80dc-5504-400e-8147-294fd945fddc/original.jpeg"></a>
+<p>Then suddenly the customer says he wants to release a new level of the game, where all actions take place in the sea, and the main character is a whale.</p>
+<p>You started to design the Whale class and realize that it's only slightly different than the Cow class. Both classes use very similar logic, and you decide to use inheritance.</p>
+<p>The Cow class is ideally suited to be the parent class: it already has all the necessary variables and methods. All you need to do is add the whale's ability to swim. But there's a problem: your whale has legs, horns, and a bell. After all, the Cow class implements this functionality. What can you do?</p>
+<a href='https://cdn.codegym.cc/images/article/98b727d2-5da6-42fc-a996-5a831ddecf75/original.jpeg' target='_blank'><img data-id="98b727d2-5da6-42fc-a996-5a831ddecf75" data-max-width="850" alt="Polymorphism and overriding - 3" src="https://cdn.codegym.cc/images/article/98b727d2-5da6-42fc-a996-5a831ddecf75/original.jpeg"></a>
+<p><strong>Method overriding</strong> comes to the rescue. If we inherit a method that does not do exactly what we need in our new class, we can replace the method with another one.</p>
+<a href='https://cdn.codegym.cc/images/article/6217f1ca-600d-42f6-beb6-35b6aa1e9d35/original.jpeg' target='_blank'><img data-id="6217f1ca-600d-42f6-beb6-35b6aa1e9d35" data-max-width="850" alt="Polymorphism and overriding - 4" src="https://cdn.codegym.cc/images/article/6217f1ca-600d-42f6-beb6-35b6aa1e9d35/original.jpeg"></a>
+<p>How is this done? <span class="text-red">In our descendant class, we declare <strong>the method that we want to change (with the same method signature as in the parent class)</strong></span>. Then we write new code for the method. <span class="text-green">That's it. It's as if the parent class's old method doesn't exist.</span></p>
+<p>Here's how it works:</p>
+<table class="table_example">
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cow
+{
+public void printColor()
+{
+System.out.println("I'm white");
+}
+public void <span class="text-red"><strong>printName</strong></span>()
+{
+System.out.println("I'm a cow");
+}
+}class Whale extends Cow
+{
+public void <span class="text-red"><strong>printName</strong></span>()
+{
+System.out.println("I'm a whale");
+}
+}</code></pre>
+        </td>
+        <td>Here we define two classes: <code>Cow</code> and <code>Whale</code>. <code>Whale</code> inherits <code>Cow</code>.</p>
+            <p>The <code>Whale</code> class overrides the <code>printName();</code> method.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+Cow cow = new Cow();
+cow.<span class="text-red"><strong>printName</strong></span>();
+}</code></pre>
+        </td>
+        <td>This code displays «<span class="text-green">I'm a cow</span>» on the screen.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+Whale whale = new Whale();
+whale.<span class="text-red"><strong>printName</strong></span>();
+}</code></pre>
+        </td>
+        <td>This code displays «<span class="text-green">I'm a whale</span>» on the screen</td>
+    </tr>
+    </tbody>
+</table>
+<p>After it inherits <code>Cow</code> and overrides <code>printName</code>, the <code>Whale</code> class actually has the following data and methods:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Whale
+{
+public void <strong>printColor</strong>()
+{
+System.out.println("I'm white");
+}
+public void <strong>printName</strong>()
+{
+System.out.println("I'm a whale");
+}
+}</code></pre>
+        </td>
+        <td>We know nothing about any old method.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Honestly, that's what I was expecting."</span></p>
+<h3>2) But that's not all.</h3>
+<p>"Suppose the <code>Cow</code> class has a <code>printAll</code>, method that calls the two other methods. Then the code would work like this:"</p>
+<p>The screen will show:<br>I'm white<br>I'm a whale</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cow
+{
+public void <span class="text-user"><strong>printAll</strong></span>()
+{
+<strong>printColor</strong>();
+<span class="text-red"><strong>printName</strong></span>();
+}
+public void <strong>printColor</strong>()
+{
+System.out.println("I'm white");
+}
+public void <span class="text-red"><strong>printName</strong></span>()
+{
+System.out.println("I'm a cow");
+}
+}
+
+class Whale extends Cow
+{
+public void <span class="text-red"><strong>printName</strong></span>()
+{
+System.out.println("I'm a whale");
+}
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+Whale whale = new Whale();
+whale.<span class="text-user"><strong>printAll</strong></span>();
+}</code></pre>
+        </td>
+        <td>The screen will show:<br />
+            <span class="green_text text-green">I'm white</span><br />
+            <span class="green_text text-green">I'm a whale</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>Note that when the Cow class's printAll () method is called on a Whale object, <span class="text-green">the Whale's printName() method will be used,</span> not the Cow's.</p>
+<p><span class="text-red">The important thing is not the class the method is written in, but rather type (class) of the object on which the method is called.</span></p>
+<p><span class="text-user">"I see."</span></p>
+<p><span class="text-red">"You can only inherit and override non-static methods. Static methods are not inherited and therefore cannot be overridden."</span></p>
+<p>Here's what the Whale class looks like after we apply inheritance and override the methods:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Whale
+{
+public void <span class="text-user"><strong>printAll</strong></span>()
+{
+<strong>printColor</strong>();
+<span class="text-red"><strong>printName</strong></span>();
+}
+public void <strong>printColor</strong>()
+{
+System.out.println("I'm white");
+}
+public void <span class="text-red"><strong>printName</strong></span>()
+{
+System.out.println("I'm a whale");
+}
+}</code></pre>
+        </td>
+        <td>Here's what the Whale class looks like after we apply inheritance and override the method. We know nothing about any old <code>printName</code> method.</td>
+    </tr>
+    </tbody>
+</table>
+<h3>3) Type casting.</h3>
+<p>Here's an even more interesting point. <span class="text-green">Because a class inherits all the methods and data of its parent class, an object of this class can be referenced by variables of the parent class</span> (and the parent of the parent, etc., right up to the Object class). Consider this example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+Whale whale = new Whale();
+whale.<span class="text-green">printColor</span>();
+}</code></pre>
+        </td>
+        <td>The screen will show:<br>
+            I'm white.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-red">Cow cow</span> = new Whale();
+<span class="text-red">cow</span>.<span class="text-green">printColor</span>();
+}</code></pre>
+        </td>
+        <td>The screen will show:<br>
+            I'm white.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-corporate">Object o = new Whale();</span>
+System.out.println(o.toString());
+}</code></pre>
+        </td>
+        <td>The screen will show:<br>
+            Whale@da435a.<br />
+            The toString() method is inherited from the Object class.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">&#34;Good stuff. But why would you need this?&#34;</span></p>
+<p>&#34;It's a valuable feature. You'll understand later that it is very, very valuable.&#34;</p>
+<h3>4) Late binding (dynamic dispatch).</h3>
+<p>Here's what it looks like:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+Whale whale = new Whale();
+whale.<span class="text-green">printName</span>();
+}</code></pre>
+        </td>
+        <td>The screen will show:<br>
+            I'm a whale.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-red">Cow cow</span> = new Whale();
+<span class="text-red">cow</span>.<span class="text-green">printName</span>();
+}</code></pre>
+        </td>
+        <td>The screen will show:<br>
+            <span class="text-red">I'm a whale.</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>Note that it is not the type of the variable that determines which specific <strong>printName</strong> method we call (that of the Cow or the Whale class), <span class="text-red">but rather the type of object referenced by the variable.</span></p>
+<p><span class="text-green">The <strong>Cow</strong> variable stores a reference to a <strong>Whale</strong> object, and the <strong>printName</strong> method defined in the <strong>Whale</strong> class will be called.</span></p>
+<p><span class="text-user">"Well, they didn't add that for the sake of clarity."</span></p>
+<p>"Yeah, it's not that obvious. Remember this important rule:"</p>
+<p><span class="text-red">The set of methods you can call on a variable is determined by the variable's type. But which specific method/implementation gets called is determined by the type/class of the object referenced by the variable.</span></p>
+<p><span class="text-user">"I'll try."</span></p>
+<p>"You'll run into this constantly, so you'll quickly understand it and never forget."</p>
+<h3>5) Type casting.</h3>
+<p><span class="text-corporate">Casting works differently for reference types, i.e. classes, than it does for primitive types. However, <strong>widening and narrowing conversions</strong> also apply to reference types. Consider this example:</span></p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Widening conversion</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java" data-line="" data-start=""><code>Cow <span class="text-viola">cow</span> = new Whale();</code></pre>
+        </td>
+        <td><p><span class="text-red">A classic widening conversion.</span> Now you can only call methods defined in the Cow class on the Whale object.</p>
+            <p>The compiler will let you use <span class="text-viola">the cow variable</span> only to call those methods defined by the Cow type.</td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Narrowing conversion</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Cow <span class="text-viola">cow</span> = new Whale();
+if (cow <span class="text-corporate">instanceof</span> Whale)
+{
+Whale whale = <span class="text-red">(Whale)</span> cow;
+}</code></pre>
+        </td>
+        <td><span class="text-green">A classic narrowing conversion with</span> a type check. The <span class="text-viola">cow</span> variable of type Cow stores a reference to a Whale object.<br />
+            <span class="text-corporate">We check that this is the case</span>, and then perform the (widening) type conversion. This is also called <span class="text-red">type casting</span>.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>Cow <span class="text-viola">cow</span> = new Cow();
+Whale whale = <span class="text-red">(Whale)</span> cow; //exception</code></pre>
+        </td>
+        <td>You can also perform a narrowing conversion of a reference type without type-checking the object.<br />
+            In this case, if the <span class="text-viola">cow</span> variable is pointing at something other than a Whale object, an exception (InvalidClassCastException) will be thrown.</td>
+    </tr>
+    </tbody>
+</table>
+<h3>6) And now for something tasty. Calling the original method.</h3>
+<p>Sometimes when overriding an inherited method you don't want to entirely replace it. Sometimes you just want to add a little bit to it.</p>
+<p>In this case, you really want the new method's code to call the same method, but on the base class. And Java let's you do this. This is how it's done: <code>super.method()</code>.</p>
+<p>Here are some examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class <span class="text-corporate">Cow</span>
+{
+public void <span class="text-user">printAll</span>()
+{
+printColor();
+<span class="text-red">printName</span>();
+}
+public void printColor()
+{
+System.out.println("I'm white");
+}
+public void <span class="text-red">printName</span>()
+{
+System.out.println("I'm a cow");
+}
+}
+
+class <span class="text-viola">Whale</span> extends <span class="text-corporate">Cow</span>
+{
+public void <span class="text-red">printName</span>()
+{
+System.out.print("This is false: ");
+<span class="text-red">super.printName();</span>
+
+System.out.println("I'm a whale");
+}
+}</code></pre>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-viola">Whale</span> whale = new <span class="text-viola">Whale</span>();
+whale.<span class="text-user">printAll</span>();
+}</code></pre>
+        </td>
+        <td>The screen will show:<br />
+            <span class="text-green">I'm white</span><br />
+            <span class="text-green"> This is false: I'm a cow</span><br />
+            <span class="text-green"> I'm a whale</span></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"Hmm. Well, that was some lesson. My robot ears almost melted."</span></p>
+<p>"Yes, this isn't simple stuff. It's some of the most difficult material you'll encounter. The professor promised to provide links to materials from other authors, so that if you still don't understand something, you can fill in the gaps."</p>

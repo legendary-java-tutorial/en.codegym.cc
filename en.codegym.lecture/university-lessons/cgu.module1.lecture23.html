@@ -1,0 +1,233 @@
+Queue
+<p>----------------------------------------</p>
+For many people, the word "queue" causes very few pleasant associations. But today we are talking about other queues - in Java. In Java, a queue is anything that inherits the Queue interface, which in turn extends Collection...
+<p>----------------------------------------</p>
+<p>For most people, the word "queue" brings to mind very few pleasant associations. But today we're talking about different queues — Java queues. In Java, a queue is anything that inherits the <span class="text-neon"><span class="text-bold"><em>Queue</em></span></span> interface, which in turn extends the <span class="text-neon"><span class="text-bold">Collection</span></span> interface. That means that queues can be treated like collections.</p>
+
+    <p>Queues in Java support two operating principles: <span class="text-bold">FIFO</span> and <span class="text-bold">LIFO</span>.</p>
+
+    <p>The <span class="text-bold">FIFO</span> (First In, First Out) principle governs a regular queue — the first element added to the queue is the first to leave it.</p>
+
+    <p>The <span class="text-bold">LIFO</span> (Last In, First Out) principle describes the behavior of a stack — the last element added to the queue is the first to leave it. For example, this is how you work with a deck of cards: you take cards off of the top one at a time until you reach the bottom of the deck.</p>
+
+    <p>The <span class="text-neon"><span class="text-bold"><em>Queue</em></span></span> hierarchy in Java looks like this:</p>
+
+    <img data-max-width="512" data-id="1c41b778-8fb9-4b35-821a-cfd83dc8e1c9" src="https://cdn.codegym.cc/images/article/1c41b778-8fb9-4b35-821a-cfd83dc8e1c9/original.png" alt="">
+
+    <p>Here you can see that <span class="text-neon"><span class="text-bold"><em>Queue</em></span></span> has 3 implementation classes: <span class="code"><span class="text-green">LinkedList</span></span>, <span class="code"><span class="text-green">ArrayDeque</span></span> and <span class="code"><span class="text-green">PriorityQueue</span></span>. <span class="code"><span class="text-green">LinkedList</span></span> and <span class="code"><span class="text-green">ArrayDeque</span></span> directly inherit not <span class="text-neon"><span class="text-bold"><em>Queue</em></span></span>, but <span class="text-neon"><span class="text-bold"><em>Deque</em></span></span>. </p>
+
+    <p><span class="text-neon"><span class="text-bold"><em>Deque</em></span></span> is an interface that was added in Java 6. It includes several methods that are useful for queues and allows a queue to function as a double-ended (or bidirectional) queue. That means it can be <span class="text-bold">FIFO</span> and <span class="text-bold">LIFO</span>. </p>
+
+    <p>One of the <span class="text-neon"><span class="text-bold"><em>Deque</em></span></span> interface's two descendants is <span class="code"><span class="text-green">ArrayDeque</span></span>. It supports a doubled-ended queue that lets you insert and remove elements from both ends. It is also a dynamic array that automatically grows in size.<p>
+
+    <p>There is also a <span class="code"><span class="text-green">PriorityQueue</span></span> class, which is a direct descendant of <span class="text-neon"><span class="text-bold"><em>Queue</em></span></span>: it behaves differently than the classes that implement <span class="text-neon"><span class="text-bold"><em>Deque</em></span></span>. </p>
+
+    <p><span class="code"><span class="text-green">PriorityQueue</span></span> is a priority queue that organizes elements according to their natural ordering by default. Here the sorting uses the <span class="text-neon"><span class="text-bold"><em>Comparable</em></span></span> and <span class="text-neon"><span class="text-bold"><em>Comparator</em></span></span> interfaces. The principle is the same as with <span class="code"><span class="text-green">TreeSet</span></span> or <span class="code"><span class="text-green">TreeMap</span></span> — classes that use the <span class="text-neon"><span class="text-bold"><em>Comparable</em></span></span> interface and have their own sort order.</p>
+
+    <pre class='language-java line-numbers'><code>
+PriorityQueue&lt;String&gt; priorityQueue = new PriorityQueue&lt;&gt;(Comparator.comparingInt(String::length));
+
+priorityQueue.add("Andrew");
+priorityQueue.add("John");
+priorityQueue.add("Rob");
+
+while (!priorityQueue.isEmpty()) {
+   System.out.println(priorityQueue.remove());
+}
+</code></pre>
+
+    <p>If you run this example, here's what you'll see in the console: </p>
+
+    <div class="terminal">Rob<br />
+John<br />
+Andrew</div>
+
+    <p>Since we are working with queues and not regular collections, we need to remove the elements from the list. To do this, we use this construct:</p>
+
+    <pre class='language-java line-numbers'><code>
+while (!priorityQueue.isEmpty()) {
+            System.out.println(priorityQueue.remove());
+}
+</code></pre>
+
+    <p>The <span class="text-neon"><span class="text-bold"><em>Deque</em></span></span> interface inherits the <span class="text-neon"><span class="text-bold"><em>Queue</em></span></span> methods and adds several of its own interesting methods:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="code text-orange">void addFirst(Е obj)</span></td>
+                <td>Adds the <span class="code">obj</span> element to the front of the queue</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void addLast(Е obj)</span></td>
+                <td>Adds the <span class="code">obj</span> element to the end of the queue</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E getFirst() </span></td>
+                <td>Returns the first element from the queue</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E getLast()</span></td>
+                <td>Returns the last element from the queue</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">boolean offerFirst(Е obj)</span></td>
+                <td>Adds the <span class="code">obj</span> element to the front of the queue, and returns <span class="text-bold">true</span> if the element is added. Otherwise, returns <span class="text-bold">false</span>.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">boolean offerLast(E obj) </span></td>
+                <td>Adds the <span class="code">obj</span> element to the end of the queue, and returns <span class="text-bold">true</span> if the element is added. Otherwise, returns <span class="text-bold">false</span>.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E рор() </span></td>
+                <td>Gets the first element from the queue and removes it</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">void push(Е obj)</span></td>
+                <td>Adds the <span class="code">obj</span> element to the front of the queue</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E peekFirst() </span></td>
+                <td>Returns (but does not remove) the first element from the queue</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E peekLast()</span></td>
+                <td>Returns (but does not remove) the last element from the queue</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E pollFirst()</span></td>
+                <td>Returns and removes the first element from the queue. Returns <span class="text-bold">null</span> if there are no elements.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E pollLast()</span></td>
+                <td>Returns and removes the last element from the queue. Returns <span class="text-bold">null</span> if there are no elements.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E removeLast()</span></td>
+                <td>Returns and removes the first element of the queue. Throws an exception if there are no elements.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">E removeFirst() </span></td>
+                <td>Returns and removes the last element of the queue. Throws an exception if there are no elements.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">boolean removeFirstOccurrence(Object obj) </span></td>                                    
+                <td>Removes the first occurrence of <span class="code">obj</span> from the queue</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">boolean removeLastOccurrence(Object obj)</span></td>
+                <td>Removes the last occurrence of <span class="code">obj</span> from the queue</td>
+            </tr>
+            <tr>
+        </tbody>
+    </table>
+
+
+    <p>Let's now look at a few of these methods in practice.</p>
+
+    <p>First, let's add an element to a queue:</p>
+
+    <pre class='language-java line-numbers'><code>
+Deque&lt;String&gt; deque = new ArrayDeque&lt;&gt;();
+
+        deque.add("Apple"); // Adds "Apple" to the end of the queue
+        deque.addFirst("Orange"); // Adds "Orange" to the front of the queue
+        deque.addLast("Pineapple"); // Adds "Pineapple" to the end of the queue
+  
+        System.out.println(deque);
+    </code></pre>
+
+    <div class="terminal">[Orange, Apple, Pineapple]</div>
+
+    <p>Now let's get values from a queue:</p>
+
+    <pre class='language-java line-numbers'><code>
+	Deque&lt;String&gt; deque = new ArrayDeque&lt;&gt;();
+
+	deque.add("Apple"); 
+        deque.addFirst("Orange"); 
+        deque.addLast("Pineapple"); 
+
+         
+        System.out.println("The first element is: "+ deque.getFirst());
+                          
+        System.out.println("The last element is: " + deque.getLast());
+                          
+    }
+    </code></pre>
+
+    <p>This code displays the first and last element of the queue.
+
+    <div class="terminal">The first element is: Orange<br />
+The last element is: Pineapple</div>
+
+    <p></p>
+
+    <pre class='language-java line-numbers'><code>
+         Deque&lt;String&gt; deque = new ArrayDeque&lt;&gt;();
+
+        deque.add("Apple"); 
+        deque.addFirst("Orange"); 
+        deque.addLast("Pineapple"); 
+        deque.add("Lemon");
+
+System.out.println(deque.pop()); // Get and remove the first element of the queue
+System.out.println(deque.poll()); // Get and remove the first element of the queue
+
+System.out.println(deque);
+    </code></pre>
+
+    <p>Running this code, we get:</p>
+
+    <div class="terminal">Orange<br />
+Apple<br />
+<br >
+[Pineapple, Lemon]</div>
+
+    <p>The difference between <span class="code text-orange">pop()</span> and <span class="code text-orange">poll()</span> is that <span class="code text-orange">pop()</span> will throw a <span class="text-red"><span class="text-bold">NoSuchElementException</span></span> if the list is empty list, but <span class="code text-orange">poll()</span> will return <span class="text-bold">null</span>.</p>
+
+    <p>Now we'll consider the <span class="code text-orange">pollFirst()</span> and <span class="code text-orange">pollLast()</span> methods.</p>
+
+    <pre class='language-java line-numbers'><code>
+Deque&lt;String&gt; deque = new ArrayDeque&lt;&gt;();
+
+        deque.add("Apple"); 
+        deque.addFirst("Orange"); 
+        deque.addLast("Pineapple"); 
+        deque.add("Lemon");
+
+System.out.println(deque.pollFirst()); // Get and remove the first element of the queue
+System.out.println(deque.pollLast()); // Get and remove the last element of the queue.
+System.out.println(deque);
+    </code></pre>
+
+    <div class="terminal">Orange<br />
+Lemon<br />
+[Apple, PineApple]</div>
+
+    <p>Both methods return and remove a value from the queue.</p>
+
+    <p>Here's an example of using the <span class="code text-orange">peekFirst()</span> and <span class="code text-orange">peekLast()</span> methods:</p>
+
+    <pre class='language-java line-numbers'><code>
+Deque&lt;String&gt; friends = new ArrayDeque&lt;&gt;();
+
+friends.add("John");
+friends.add("Rob");
+friends.add("Greg");
+friends.add("Max");
+friends.add("Oliver");
+
+System.out.println("The first element is: " + friends.peekFirst());
+System.out.println("The last element is: " + friends.peekLast());
+
+System.out.println(friends);
+    </code></pre>
+
+    <div class="terminal">The first element is: John<br />
+The last element is: Oliver<br />
+[John, Rob, Greg, Max, Oliver]</div>
+
+    <p>Both methods return the first/last element from the queue and do not remove them. If the queue is empty, <span class="text-bold">null</span> will be returned.</p>
+
+    <p>Well done! Today we learned how to work with queues in Java. Now you know how to use them in practice.</p>

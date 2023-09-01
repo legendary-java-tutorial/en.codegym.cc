@@ -1,0 +1,328 @@
+Type casting in Java
+<p>----------------------------------------</p>
+Type Casting Variables of primitive types (with the exception of the boolean type) are used to store different types of numbers. And although the types of variables are always immutable, there is a place where type conversion can be performed. And this place is assignment. You can assign variables to each other
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="d357f103-ce69-4779-8bfd-fe0c8e8109b4" src="https://cdn.javarush.ru/images/article/d357f103-ce69-4779-8bfd-fe0c8e8109b4/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="13bfd5ac-5165-444e-aaf0-e8036ce62d64" src="https://cdn.javarush.ru/images/article/13bfd5ac-5165-444e-aaf0-e8036ce62d64/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="f71740d6-5af2-4a28-b28b-fbef4c919b88" src="https://cdn.javarush.ru/images/article/f71740d6-5af2-4a28-b28b-fbef4c919b88/original.png" alt="">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Typecasting</h2>
+<p><img data-max-width="1024" data-id="1f583fbb-06e0-4437-8b0a-f1a8f487d6f9" src="https://cdn.codegym.cc/images/article/1f583fbb-06e0-4437-8b0a-f1a8f487d6f9/1024.jpeg" alt="Typecasting in Java"></p>
+<p>Variables of primitive types (with the exception of the <code>boolean</code> type) are used to store various types of numbers. Although the types of variables never changed, there is a place where you can convert from one type to another. And that place is <span class="term">assignment</span>.</p>
+<p>Variables of different types can be assigned to each other. When you do this the value of a variable of one type is converted to a value of another type and assigned to the second variable. In this regard, we can identify two kinds of type conversion: widening and narrowing.</p>
+<p><strong>Widening</strong> is like to moving a value from a small basket to a large one: this operation is seamless and painless. <strong>Narrowing</strong> happens when you move a value from a large basket to a small one: there may not be enough space, and you will have to throw something away.</p>
+<p>Here are the types, sorted by basket size:</p>
+<p><img data-max-width="1024" data-id="ccdd12ad-b9e5-4c46-b01f-2438955ff7ed" src="https://cdn.codegym.cc/images/article/ccdd12ad-b9e5-4c46-b01f-2438955ff7ed/1024.jpeg" alt="Typecasting in Java 2"></p>
+<hr>
+<h2>2. Widening type conversions</h2>
+<p>It's often necessary to assign a variable of one numeric type to a variable of another numeric type. How do you do that?</p>
+<p>Java has 4 integer types:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Type</th>
+        <th class="text-center">Size</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code>byte</code></td>
+        <td class="text-center"><code>1 byte</code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>short</code></td>
+        <td class="text-center"><code>2 bytes</code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>int</code></td>
+        <td class="text-center"><code>4 bytes</code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>long</code></td>
+        <td class="text-center"><code>8 bytes</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-green">Variable stored in smaller baskets can always be assigned to variables stored in larger baskets.</span></p>
+<p><code>int</code>, <code>short</code> and <code>byte</code> variables can be easily assigned to <code>long</code> variables. <code>short</code> and <code>byte</code> variables can be assigned to <code>int</code> variables. And <code>byte</code> variables can be assigned to <code>short</code> variables.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>byte <span class="text-red">a</span> = 5;
+short <span class="text-green">b</span> = <span class="text-red">a</span>;
+int <span class="text-viola">c</span> = <span class="text-red">a</span> + <span class="text-green">b</span>;
+long <span class="text-neon">d</span> = <span class="text-viola">c</span> * <span class="text-viola">c</span>;</code></pre>
+        </td>
+        <td style="vertical-align: middle">This code will compile just fine.</td>
+    </tr>
+    </tbody>
+</table>
+<p>Such a conversion, from a smaller to a larger type, is called a <span class="term"><span class="text-green">widening</span></span> type conversion.</p>
+<p><strong>What about real numbers?</strong></p>
+<p>With them, everything is the same — size matters:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Type</th>
+        <th class="text-center">Size</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code>float</code></td>
+        <td class="text-center"><code>4 bytes</code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>double</code></td>
+        <td class="text-center"><code>8 bytes</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><code>float</code> variables can be assigned to <code>double</code> variables without any problems. But things are more interesting with the integer types.</p>
+<p>You can assigned any integer variable to a <code>float</code> variable. Even the <code>long</code> type, which is 8&nbsp;bytes long. And you can assign whatever you want — any integer variable or <code>float</code> variable — to a <code>double</code> variable:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code>long <span class="text-green">a</span> = 1234567890;
+float <span class="text-neon">b</span> = <span class="text-green">a</span>;
+double <span class="text-viola">c</span> = <span class="text-green">a</span>;</code></pre>
+        </td>
+        <td>
+                <pre><code>
+b == 1.234567<span class="text-red">94</span><span class="text-orange">E9</span>
+c == 1.23456789<span class="text-orange">E9</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Note that converting to a real type may result in loss of precision due to the lack of sufficient significant digits.</p>
+<p>When converting from integers to floating-point numbers, the lower order parts of numbers may be discarded. But since fractional numbers are understood to store approximate values, such assignment operations are permitted.</p>
+<hr>
+<h2>3. Narrowing type conversions</h2>
+<p>What about the other possibilities? What if you need to assign a <code>long</code> value to an <code>int</code> variable?</p>
+<p>Imagine a variable as a basket. We have baskets of various sizes: 1, 2, 4 and 8 bytes. It's not a problem to transfer apples from a smaller basket to a larger one. But when shifting from a larger basket to a smaller one, some of the apples may be lost.</p>
+<p>This transformation — from a larger type to a smaller type — is called a <span class="term"><span class="text-red">narrowing type conversion</span></span>. When performing an assignment operation like this, part of a number may simply not fit into the new variable and may therefore be discarded.</p>
+<p>When narrowing a type, we must explicitly tell the compiler that we are not making a mistake, that we are deliberately discarding part of the number. The typecast operator is used for this. It is a <strong>type name in parentheses</strong>.</p>
+<p>In such situations, the <span class="term">Java compiler</span> requires the programmer to specify the typecast operator. In general, it looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code>(<span class="text-red">type</span>) <span class="text-green">expression</span></code></pre>
+</div>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>long <span class="text-green">a</span> = 1;
+int <span class="text-green">b</span> = (<span class="text-red">int</span>) <span class="text-green">a</span>;
+short <span class="text-green">c</span> = (<span class="text-red">short</span>) <span class="text-green">b</span>;
+byte <span class="text-green">d</span> = (<span class="text-red">byte</span>)<span class="text-green"> c</span>;</code></pre>
+        </td>
+        <td style="vertical-align: middle;">Each time the typecast operator must be indicated explicitly</td>
+    </tr>
+    </tbody>
+</table>
+<p>Here <code><span class="text-green">a</span></code> is equal to <code>1</code>, and perhaps the typecast operator seems like overkill. But what if <code><span class="text-green">a</span></code> were bigger?</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>long <span class="text-green">a</span> = 1000000;
+int <span class="text-green">b</span> = (<span class="text-red">int</span>) <span class="text-green">a</span>;
+short <span class="text-green">c</span> = (<span class="text-red">short</span>) <span class="text-green">b</span>;
+byte <span class="text-green">d</span> = (<span class="text-red">byte</span>) <span class="text-green">c</span>;</code></pre>
+        </td>
+        <td>
+                <pre><code>a == 1000000
+b == 1000000
+c == 16960
+d == 64</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>One million fits perfectly into a <code>long</code> and into an <code>int</code>. But when assigning one million to a <code>short</code> variable, the first two bytes are discarded, and only the last two bytes are retained. And when assigning to a <code>byte</code>, the only thing that remains is the last byte.</p>
+<p>How the numbers are arranged in memory:</p>
+<table>
+    <tbody>
+    <tr>
+        <th class="text-center">Type</th>
+        <th class="text-right">Binary notation</th>
+        <th class="text-center">Decimal notation</th>
+    </tr>
+    <tr>
+        <td class="text-center"><code>int</code></td>
+        <td style="text-align: right;">0b<span class="text-viola">00000000</span><span class="text-user">00001111</span><span class="text-orange">01000010</span><span class="text-green">01000000</span></td>
+        <td class="text-center"><code>1000000</code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>short</code></td>
+        <td style="text-align: right;">0b<span class="text-orange">01000010</span><span class="text-green">01000000</span></td>
+        <td class="text-center"><code>16.960</code></td>
+    </tr>
+    <tr>
+        <td class="text-center"><code>byte</code></td>
+        <td style="text-align: right;">0b<span class="text-green">01000000</span></td>
+        <td class="text-center"><code>64</code></td>
+    </tr>
+    </tbody>
+</table>
+<p><strong><code>char</code></strong> type</p>
+<p>A <code>char</code>, like a <code>short</code>, occupies two bytes, but to convert one to another, you always need to use a typecast operator. The issue here is that the <code>short</code> type is signed and can contain values from <code>-32,768</code> to <code>+32,767</code>, but the <code>char</code> type is unsigned and can contain values from <code>0</code> to <code>65,535</code>.</p>
+<p>Negative numbers cannot be stored in a <code>char</code>, but they can be stored in a <code>short</code>. And a <code>short</code> cannot store numbers larger than <code>32,767</code>, but such numbers can be stored in a <code>char</code>.</p>
+<hr>
+<h2>4. Type of an expression</h2>
+<p>What if variables of different types are used in the same expression? Logically, we understand that they first need to be converted to a common type. But which one?</p>
+<p><strong>To the larger one, of course.</strong></p>
+<p>Java always converts to the larger type. Roughly speaking, one of the type is first widened and only then is the operation performed using values of the same type.</p>
+<p>If an <code>int</code> and a <code>long</code> are involved in an expression, the value of the <code>int</code> will be converted to a <code>long</code> and only then will the operation proceed:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int <span class="text-red">a</span> = 1;
+long <span class="text-green">b</span> = 2;
+long <span class="text-viola">c</span> = <span class="text-red">a</span> + <span class="text-green">b</span>;</code></pre>
+        </td>
+        <td style="vertical-align: middle"><code><span class="text-red">a</span></code> will be widened to a <code>long</code> and then the addition will occur.</td>
+    </tr>
+    </tbody>
+</table>
+<p><strong>Floating-point numbers</strong></p>
+<p>If an integer and a floating-point number (<code>float</code> or <code>double</code>) are involved in an expression, the integer will be converted to a floating-point number (<code>float</code> or <code>double</code>), and only then will the operation be performed.</p>
+<p>If the operation involves a <code>float</code> and a <code>double</code>, then the <code>float</code> will be converted to a <code>double</code>. Which is actually expected.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Surprise</div>
+        <div class="lesson-note__content">
+            <p>The <code>byte</code>, <code>short</code>, and <code>char</code> types are always converted to <code>int</code> when interacting with each other. There's&nbsp;a good reason why the <code>int</code> type is considered the standard integer type.</p>
+        </div>
+    </div>
+</div>
+<p>If you multiply a <code>byte</code> by a <code>short</code>, you get an <code>int</code>. If you multiply a <code>byte</code> by a <code>byte</code>, you get an <code>int</code>. Even if you add a <code>byte</code> and a <code>byte</code>, you get an <code>int</code>.</p>
+<p>There are several reasons for this. Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>byte <span class="text-red">a</span> = 110;
+byte <span class="text-green">b</span> = 120;
+byte <span class="text-viola">c</span> = <span class="text-red">a</span> * <span class="text-green">b</span>; <span class="text-red"> // Error</span></code></pre>
+        </td>
+        <td style="vertical-align: middle"><code>110 * 120</code> is <code>13,200</code>, which is slightly greater than the maximum value of the <code>byte</code> type: <code>127</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>byte <span class="text-red">a</span> = 110;
+byte <span class="text-green">b</span> = 120;
+byte <span class="text-viola">c</span> = <span class="text-red">a</span> + <span class="text-green">b</span>; <span class="text-red">// Error</span></code></pre>
+        </td>
+        <td style="vertical-align: middle"><code>110 + 120</code> is <code>230</code>, which is also slightly greater than the maximum value of the <code>byte</code> type: <code>127</code></td>
+    </tr>
+    </tbody>
+</table>
+<p>In general, when multiplying an 8-bit (1 byte) number by an 8-bit (1 byte) number, we get a number that occupies 16-bits&nbsp;bits (2 bytes)</p>
+<p>As a result, all operations with integer types that are smaller than <code>int</code> are always immediately converted to <code>int</code>s. And that means that if you want to store the result of the calculation in a variable of a type that is smaller than an <code>int</code>, then you will always need to explicitly specify the typecast operator.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>byte <span class="text-red">a</span> = 110;
+byte <span class="text-green">b</span> = 120;
+byte <span class="text-viola">c</span> = (<span class="text-orange">byte</span>) (<span class="text-red">a</span> * <span class="text-green">b</span>);</code></pre>
+        </td>
+        <td style="vertical-align: middle">The <code>byte * byte</code> expression will be an <code>int</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>byte <span class="text-red">a</span> = 110;
+byte <span class="text-green">b</span> = 120;
+byte <span class="text-viola">c</span> = (<span class="text-orange">byte</span>) (<span class="text-red">a</span> + <span class="text-green">b</span>);</code></pre>
+        </td>
+        <td style="vertical-align: middle">The <code>byte + byte</code> expression will be an <code>int</code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>byte <span class="text-red">a</span> = 1;
+byte <span class="text-green">b</span> = (<span class="text-orange">byte</span>) (<span class="text-red">a</span> + 1);</code></pre>
+        </td>
+        <td style="vertical-align: middle">The <code>byte + int</code> expression will be an <code>int</code><br>
+            The literal one is an <code>int</code>.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<h2>5. An important nuance</h2>
+<p><span class="text-orange">The typecast operator has a fairly high priority.</span></p>
+<p>That means that if an expression contains, for example, addition and a typecast operator, the typecast will be performed before the addition.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>byte a = 1;
+byte b = 2;
+byte c = <span class="text-red">(byte) a</span> * b;</code></pre>
+        </td>
+        <td style="vertical-align: middle">The typecast operator will only be applied to the <code><span class="text-red">a</span></code> variable, which is already a <code>byte</code>. This code will not compile.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>byte a = 1;
+byte b = 2;
+byte c = <span class="text-orange">(byte) (a * b)</span>;</code></pre>
+        </td>
+        <td style="vertical-align: middle">This is the correct way.</td>
+    </tr>
+    </tbody>
+</table>
+<p>If you want to convert the entire expression to a specific type, and not just one component of the expression, then <span class="text-green">wrap the entire expression in parentheses and put the typecast operator in front.</span></p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task07.task0708"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task07.task0709"></div>

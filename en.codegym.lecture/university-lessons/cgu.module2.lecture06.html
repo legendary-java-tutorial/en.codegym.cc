@@ -1,0 +1,21 @@
+Association: composition and aggregation
+<p>----------------------------------------</p>
+Today we will study other types of relationships between classes - composition and aggregation
+<p>----------------------------------------</p>
+<h2>Composition and aggregation</h2>
+<p>Classes and objects can be related to each other. Inheritance describes an "IS A" relationship. A lion IS AN animal. This relationship is easily expressed using inheritance, where <code>Animal</code> would be the parent class and <code>Lion</code> would be the child. </p>
+<p>But not every relationship in the world is properly described this way. For example, a keyboard definitely has some relationship with a computer, but <strong>it isn't a computer</strong>. Hands have some relationship with a person, but they are not a person. These cases represent a different type of relationship — not "IS A", but "HAS A". Hands are not a person, but a person HAS hands. 
+<p>A keyboard is not a computer, but a computer HAS A keyboard. "HAS A" relationships can be described in code using <strong>composition</strong> and <strong>aggregation</strong>. The difference between these concepts lies in the "strictness" of the relationships. </p>
+
+<p>Let's take a simple example:</p> 
+<ul>
+	<li>We have a <code>Car</code>. </li>
+	<li>Every car has an engine. Additionally, every car can carry passengers. </li>
+</ul>
+<p>What is the fundamental difference between the <code>Engine engine</code> and <code>Passenger[] passengers</code> fields? If passenger <code>A</code> is sitting inside a car, that doesn't mean that passengers <code>B</code> and <code>C</code> cannot also be in the car.</p>
+
+<p>One car can accommodate multiple passengers. What's more, all the passengers may get out of the car, yet it will continue to function smoothly. The relationship between the <code>Car</code> class and the <code>Passenger[] passengers</code> array is less strict. It is called <em>aggregation</em>.</p>
+<p>Here's a good article on this topic: <a href="http://java-course.ru/begin/relations/" rel="nofollow" target="_blank">Relationships between classes (objects)</a>. </p>
+<p>It provides another good example of aggregation. Let's say we have a <code>Student</code> class that represents a student, and a <code>StudentGroup</code> that represents a group of students. A student can be a member of a physics club, a Star Wars student fan club, or a comedy club.</p>
+<p><em>Composition</em> is a stricter type of relationship. When using composition, an object has another object, but it cannot belong to another object of the same type. The simplest example is a car engine. If a car has an engine, then that engine cannot belong to another car. As you can see, that relationship is much stricter than that of <code>Car</code> and <code>Passengers</code>. </p>
+<img data-max-width="800" data-id="f113892f-dc7f-4030-88df-483b8f97669a" src="https://cdn.codegym.cc/images/article/f113892f-dc7f-4030-88df-483b8f97669a/800.jpeg" alt="">

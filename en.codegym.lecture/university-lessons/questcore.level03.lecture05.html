@@ -1,0 +1,72 @@
+Multiple inheritance of interfaces
+<p>----------------------------------------</p>
+They say that there is no multiple inheritance in Java ... It seems to be absent, but it is. There is no multiple inheritance of classes due to some problems (more on them later). But multiple inheritance of interfaces in Java quite exists, and this interesting and powerful tool helps a lot to write rational code.
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! We've finally come to something truly interesting. Today I'm going to tell you about <strong><span class="text-red">multiple inheritance</span></strong>. Multiple inheritance is indeed a very fascinating and powerful tool. And if it weren't for several problems, then Java would support multiple inheritance of classes. But it doesn't, so we must be content with <span class="text-red"><strong>multiple inheritance of interfaces</strong></span>. Which is also pretty awesome."</p>
+<a href='https://cdn.codegym.cc/images/article/bcb735e2-8522-48c1-b6e1-a1fce14f7fc6/original.jpeg' target='_blank'><img data-id="bcb735e2-8522-48c1-b6e1-a1fce14f7fc6" data-max-width="850" alt="Inheriting multiple interfaces - 1" src="https://cdn.codegym.cc/images/article/bcb735e2-8522-48c1-b6e1-a1fce14f7fc6/original.jpeg"></a>
+<p>Imagine you're writing a computer game. And its characters (your objects) must behave in very complex ways: walk about a map, collect items, perform quests, communicate with other characters, kill someone, save someone else. Let's say you've been able to divide up all the objects into 20 categories. This means that, if you're lucky, you'll be able to get by with only 20 classes to define your objects. But here's the catch: how many unique forms of interaction will these objects have? Each type of object can have unique interactions with 20 other types of objects (we're also counting interactions with objects of the same type). In other words, you'll need to write code for 20 x 20 = 400 interactions! And if the number of unique object types is not 20, but 100, then the number of interactions could be 10,000!</p>
+<p><span class="text-user">"Whoa! Now I understand why programming is such difficult work."</span></p>
+<p>"It's simple. Thanks to lots of abstractions. And with no small thanks to multiple inheritance of interfaces."</p>
+<p>We can often simplify object interaction if roles and/or abilities interact rather than the objects themselves. And as we already know, abilities can easily be added to a class when it implements some interface.</p>
+<p>When writing a large program, developers usually do this from the very start:</p>
+<p><strong>1)</strong> Identify all abilities/roles.</p>
+<p><strong>2)</strong> Define the interaction between these roles.</p>
+<p><strong>3)</strong> Then simply assign roles to all the classes.</p>
+<p><span class="text-user">"Maybe an example?"</span></p>
+<p>"Of course. Let's look at roles in the cartoon «Tom and Jerry»."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface Moveable
+{}</code></pre>
+        </td>
+        <td>&#8212; Role/ability to move.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface Eatable
+{}</code></pre>
+        </td>
+        <td>&#8212; Role/ability to be eaten.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>interface Eat
+{}</code></pre>
+        </td>
+        <td>&#8212; Role/ability to eat someone.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Tom <span class="text-user">extends Cat</span> <span class="text-red">implements Moveable, Eatable, Eat</span>
+{}</code></pre>
+        </td>
+        <td>Tom is a cat that has three roles:<br />
+            1) He can move<br />
+            2) He can eat someone<br />
+            3) He can be eaten by someone (a dog)</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Jerry <span class="text-user">extends Mouse</span> <span class="text-red">implements Moveable, Eatable</span>
+{}</code></pre>
+        </td>
+        <td>Jerry is a mouse who has two roles:<br />
+            1) He can move<br />
+            2) He can be eaten by someone</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Killer <span class="text-user">extends Dog</span> <span class="text-red">implements Moveable, Eat</span>
+{}</code></pre>
+        </td>
+        <td>Killer is a dog with two roles: 1) He can move 2) He can eat someone</td>
+    </tr>
+    </tbody>
+</table>
+<p>Knowing only these three roles (interfaces), you can write a program and describe the correct interaction between these roles. For example, an object will chase (via the Moveable interface) after the «one you can eat» and run away from the «one who can eat you». And all this without knowing about specific objects. If you add more objects (classes) to the program and keep these roles, it will still work beautifully, controlling the behavior of your objects.</p>

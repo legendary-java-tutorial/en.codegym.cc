@@ -1,0 +1,364 @@
+Design patterns. Decorator
+<p>----------------------------------------</p>
+We have already gone through the use of a class object as Singleton, but you may not yet suspect that this is one of the design patterns, and one of the most used ...
+<p>----------------------------------------</p>
+<p>We have already reviewed use of a singleton object, but you may not yet realize that this strategy is a design pattern, and one of the most used at that. </p>
+
+    <p>In fact, there are a lot of these patterns, and they can be classified according to their specific purpose. </p>
+
+    <h2>Pattern classification</h2>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Pattern type</th>
+                <th>Application</th>
+            </tr>
+            <tr>
+                <td>Creational</td>
+                <td>A type that solves the object creation problem</td>
+            </tr>
+            <tr>
+                <td>Structural</td>
+                <td>Patterns that let us build a correct and extensible class hierarchy in our architecture</td>
+            </tr>
+            <tr>
+                <td>Behavioral</td>
+                <td>This cluster of patterns facilitates safe and convenient interaction between objects in a program.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Typically, a pattern is characterized by the problem it solves. Let's take a look at a few patterns that we encounter most often when working with Java: </p>
+
+    <table>
+        <tbody>
+            </tr>
+                <th>Pattern</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>Singleton</td>
+                <td>We are already familiar with this pattern — we use it to create and access a class that cannot have more than one instance.</td>
+            </tr>
+            <tr>
+                <td>Iterator</td>
+                <td>We are also familiar with this one. We know that this pattern lets us iterate over a collection object without revealing its internal representation. It is used with collections.</td>
+            </tr>
+            <tr>
+                <td>Adapter</td>
+                <td>This pattern connects incompatible objects so that they can work together. I think the name of the adapter pattern helps you imagine exactly what this it does. Here's a simple example from real life: a USB adapter for a wall outlet.</td>
+            </tr>
+            <tr>
+                <td>Template method</td>
+                <td>
+                    <p>A behavioral programming pattern that solves the integration problem and allows you to change algorithmic steps without changing the structure of an algorithm.</p>
+                    <p>Imagine that we have a car assembly algorithm in the form of an sequence of assembly steps:</p>
+                    <p>Chassis -&gt; Body -&gt; Engine -&gt; Cabin Interior</p>
+                    <p>If we put in a reinforced frame, a more powerful engine, or an interior with additional lighting, we don't have to change the algorithm, and the abstract sequence remains the same.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>Decorator</td>
+                <td>This pattern creates wrappers for objects to give them useful functionality. We will consider it as part of this article.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>In Java.io, the following classes implement patterns:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Pattern</th>
+                <th>Where it is used in java.io</th>
+            </tr>
+            <tr>
+                <td>Adapter</td>
+                <td>
+                    <ul>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/InputStreamReader.html#InputStreamReader-java.io.InputStream-" target="_blank">java.io.InputStreamReader(InputStream)</a> (returns a <span class="text-green"><span class="text-bold">Reader</span></span>)</li>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/OutputStreamWriter.html#OutputStreamWriter-java.io.OutputStream-" target="_blank">java.io.OutputStreamWriter(OutputStream)</a> (returns a <span class="text-green"><span class="text-bold">Writer</span></span>)</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Template method</td>
+                <td>
+                    <ul>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html" target="_blank">java.io.InputStream</a></li>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html" target="_blank">java.io.OutputStream</a></li>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/Reader.html" target="_blank">java.io.Reader</a></li>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/Writer.html" target="_blank">java.io.Writer</a></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Decorator</td>
+                <td>
+                    <ul>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html" target="_blank">java.io.InputStream</a></li>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html" target="_blank">OutputStream</a></li>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/Reader.html" target="_blank">Reader</a></li>
+                        <li><a href="http://docs.oracle.com/javase/8/docs/api/java/io/Writer.html" target="_blank">Writer</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+ 
+    <h2>Decorator pattern</h2>
+
+    <p>Let's imagine that we are describing a model for a home design.</p>
+
+    <p>In general, the approach looks like this:</p>
+
+    <p>Initially, we have a choice of several types of houses. The minimum configuration is one floor with a roof. Then we use all sorts of decorators to change additional parameters, which naturally affects the price of the house. </p>
+
+    <p>We create an abstract House class: </p>
+
+    <pre class='language-java line-numbers'><code>
+public abstract class House {
+	String info;
+ 
+	public String getInfo() {
+    	return info;
+	}
+ 
+	public abstract int getPrice();
+}
+    </code></pre>
+ 
+    <p>Here we have 2 methods:</p>
+
+    <ul>
+        <li><span class="code text-orange">getInfo()</span> returns information about the name and features of our house;</li>
+        <li><span class="code text-orange">getPrice()</span> returns the price of the current house configuration.</li>
+    </ul>
+
+    <p>We also have standard House implementations — brick and wooden: </p>
+
+    <pre class='language-java line-numbers'><code>
+public class BrickHouse extends House {
+ 
+	public BrickHouse() {
+    	info = "Brick House";
+	}
+ 
+	@Override
+	public int getPrice() {
+    	return 20_000;
+	}
+}
+ 
+public class WoodenHouse extends House {
+ 
+	public WoodenHouse() {
+    	info = "Wooden House";
+	}
+ 
+	@Override
+	public int getPrice() {
+    	return 25_000;
+	}
+}
+    </code></pre>
+
+    <p>Both classes inherit the <span class="code"><span class="text-green">House</span></span> class and override its price method, setting a custom price for a standard house. We set the name in the constructor. </p>
+
+    <p>Next, we need to write decorator classes. These classes will also inherit the <span class="code"><span class="text-green">House</span></span> class. To do this, we create an abstract decorator class.</p>
+
+    <p>That's where we'll put additional logic for changing an object. Initially, there will be no additional logic and the abstract class will be empty. </p>
+
+    <pre class='language-java line-numbers'><code>
+abstract class HouseDecorator extends House {
+}
+    </code></pre>
+
+    <p>Next, we create decorator implementations. We will create several classes that let us add additional features to the house: </p>
+
+    <pre class='language-java line-numbers'><code>
+public class SecondFloor extends HouseDecorator {
+	House house;
+ 
+	public SecondFloor(House house) {
+    	this.house = house;
+	}
+ 
+	@Override
+	public int getPrice() {
+    	return house.getPrice() + 20_000;
+	}
+ 
+	@Override
+	public String getInfo() {
+    	return house.getInfo() + " + second floor";
+	}
+}
+    </code></pre>
+ 
+    <table>
+        <tbody>
+            <tr>
+                <td>A decorator that adds a second floor to our house</td>
+            </tr>
+        </tbody>
+    </table>
+
+     <p>The decorator constructor accepts a house that we will "decorate", i.e. add modifications. And we override the <span class="code text-orange">getPrice()</span> and <span class="code text-orange">getInfo()</span> methods, returning information about the new updated house based on the old one. </p>
+
+    <pre class='language-java line-numbers'><code>
+public class Garage extends HouseDecorator {
+ 
+	House house;
+	public Garage(House house) {
+    	this.house = house;
+	}
+ 
+	@Override
+	public int getPrice() {
+    	return house.getPrice() + 5_000;
+	}
+ 
+	@Override
+	public String getInfo() {
+    	return house.getInfo() + " + garage";
+	}
+}
+    </code></pre>
+ 
+    <table>
+        <tbody>
+            <tr>
+                <td>A decorator that adds a garage to our house</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Now we can update our house with decorators. To do this, we need to create a house:</p>
+
+    <pre class='language-java line-numbers'><code>
+House brickHouse = new BrickHouse();
+    </code></pre>
+
+    <p>Next, we set our <mark class="user">house</mark> variable equal to a new decorator, passing in our house:</p>
+
+    <pre class='language-java line-numbers'><code>
+brickHouse = new SecondFloor(brickHouse); 
+    </code></pre>
+
+    <p>Our <mark class="user">house</mark> variable is now a house with a second floor.</p>
+
+    <p>Let's look at use cases involving decorators: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Example code</th>
+                <th>Output</th>
+            </tr>
+            <tr>
+                <td>
+                    <pre class='language-java line-numbers'><code>
+House brickHouse = new BrickHouse(); 
+
+  System.out.println(brickHouse.getInfo());
+  System.out.println(brickHouse.getPrice());
+                    </code></pre>
+                </td> 
+                <td>
+                    <div class="terminal">
+                        <p>Brick House</p>
+                        <p>20000</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <pre class='language-java line-numbers'><code>
+House brickHouse = new BrickHouse(); 
+
+  brickHouse = new SecondFloor(brickHouse); 
+
+  System.out.println(brickHouse.getInfo());
+  System.out.println(brickHouse.getPrice());
+                    </code></pre>
+                </td>
+                <td>
+                    <div class="terminal">
+                        <p>Brick House + second floor</p>
+                        <p>40000</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <pre class='language-java line-numbers'><code>
+House brickHouse = new BrickHouse();
+ 
+
+  brickHouse = new SecondFloor(brickHouse);
+  brickHouse = new Garage(brickHouse);
+
+  System.out.println(brickHouse.getInfo());
+  System.out.println(brickHouse.getPrice());
+                    </code></pre>
+                </td>
+                <td> 
+                    <div class="terminal">
+                        <p>Brick House + second floor + garage</p>
+                        <p>45000</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <pre class='language-java line-numbers'><code>
+House woodenHouse = new SecondFloor(new Garage(new WoodenHouse())); 
+
+  System.out.println(woodenHouse.getInfo());
+  System.out.println(woodenHouse.getPrice());
+                    </code></pre>
+                </td>
+                <td>
+                    <div class="terminal">
+                        <p>Wooden House + garage + second floor</p>
+                        <p>50000</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <pre class='language-java line-numbers'><code>
+House woodenHouse = new WoodenHouse(); 
+
+  House woodenHouseWithGarage = new Garage(woodenHouse);
+
+  System.out.println(woodenHouse.getInfo());
+  System.out.println(woodenHouse.getPrice());
+
+  System.out.println(woodenHouseWithGarage.getInfo());
+  System.out.println(woodenHouseWithGarage.getPrice());
+                    </code></pre>
+                </td>
+                <td>
+                    <div class="terminal">
+                         <p>Wooden House</p>
+                         <p>25000</p>
+                         <p>Wooden House + garage</p>
+                         <p>30000</p>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+     </table>
+
+    <p>This example illustrates the benefit of upgrading an object with a decorator. So we didn't change the <mark class="green">woodenHouse</mark> object itself, but instead created a new object based on the old one. Here we can see that the advantages come with disadvantages: we create a new object in memory each time, increasing memory consumption. </p>
+
+    <p>Look at this UML diagram of our program:</p>
+ 
+    <img data-max-width="800" data-id="4572e343-6153-4ef5-9c57-f9cde1d47994" src="https://cdn.codegym.cc/images/article/4572e343-6153-4ef5-9c57-f9cde1d47994/original.png" alt="">
+
+    <p>A decorator has a super simple implementation and dynamically changes objects, upgrading them. Decorators can be recognized by their constructors, which take as parameters objects of the same abstract type or interface as the current class. In Java, this pattern is widely used in I/O classes.</p>
+
+    <p>For example, as we already noted, all subclasses of <span class="code"><span class="text-green">java.io.InputStream</span></span>, <span class="code"><span class="text-green">OutputStream</span></span>, <span class="code"><span class="text-green">Reader</span></span> and <span class="code"><span class="text-green">Writer</span></span> have a constructor that accepts objects of the same classes.</p>

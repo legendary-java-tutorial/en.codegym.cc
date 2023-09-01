@@ -1,0 +1,66 @@
+Lazy Loading when mapping collections
+<p>----------------------------------------</p>
+fetch parameter Default value @LazyCollection annotation
+<p>----------------------------------------</p>
+f Hibernate have known about the problem with loading child entities for a long time. So the first thing they did was add a special <strong>fetch</strong> parameter to the annotations <code>@OneToMany</code>, <code>@ManyToMany</code>.</p>
+<p>This parameter can take two values:</p>
+<ul>
+ <li><strong>EAGER</strong></li>
+ <li><strong>LAZY</strong></li>
+</ul>
+<p>Example:</p>
+<pre><code>@OneToMany(<span class="text-brown">fetch</span> = <span class="text-brown">FetchType.LAZY</span>, mappedBy = "user")
+</code></pre>
+<p>If <strong>the fetch parameter is equal to EAGER</strong> , then when the parent entity is loaded, all its child entities will also be loaded. Also, Hibernate will try to do it in one SQL query, generating a hefty query and fetching all the data at once.</p>
+<p>If the <strong>fetch parameter takes the value LAZY</strong> , then when the parent entity is loaded, the child entity will not be loaded. Instead, a proxy object will be created.</p>
+<p>With the help of this proxy object, Hibernate will track the access to this child entity and load it into memory the first time it is accessed.</p>
+<p>If we recall our situation with comments:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>="user"<span class="text-brown">)</span>
+class User {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   <span class="text-brown">@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   @JoinColumn(name = "user_id")</span>
+   public List&lt;<span class="token keyword">Comment</span>&gt; <span class="text-user">comments</span>;
+}
+</code></pre>
+<p>Then you have a “chic choice”:</p>
+<p>If <code>fetch = FetchType.EAGER</code>, then Hibernate will load all comments on the 1st line of code:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token class-name">User</span> user <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//load all comments here</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Comment</span><span class="token punctuation">&gt;</span></span> comments <span class="token operator">=</span> user<span class="token punctuation">.</span><span class="token function">getComments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>If <code>fetch = FetchType.LAZY</code>, then Hibernate will load all the comments on the 2nd line of code:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token class-name">User</span> user <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Comment</span><span class="token punctuation">&gt;</span></span> comments <span class="token operator">=</span> user<span class="token punctuation">.</span><span class="token function">getComments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//load all comments here</span></code></pre>
+<p>As you can already guess, you have no option when it does not load all the comments :)</p>
+<h2>2.2 Default value</h2>
+<p>If you don't specify a fetch option for the <code>@ManyTo</code>... annotation, then Hibernate will use the default values.</p>
+<p>They are slightly different for different annotation types. For annotations <code>@OneToOne</code>and <code>@ManyToOne</code>is EAGER, for annotations <code>@OneToMany</code>and <code>@ManyToMany</code>is LAZY. It's easy to remember - if we refer to one object, then it will be loaded completely. If we refer to a collection, then it will be loaded the first time it is accessed.</p>
+<h2>2.3 @LazyCollection annotation</h2>
+<p>As you have already seen, the fetch parameter does not help much when working with collections. The creators of Hibernate tried to fix this by adding a special annotation <code>@LazyCollection</code>. It is usually written like this:</p>
+<pre><code><span class="text-brown">@LazyCollection(LazyCollectionOption.TRUE)</span>
+</code></pre>
+<p>You need to specify it when mapping collection fields:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>="user"<span class="text-brown">)</span>
+class User {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   @OneToMany(cascade = CascadeType.ALL)
+   <span class="text-red">@LazyCollection(LazyCollectionOption.TRUE)</span>
+   public List&lt;<span class="token keyword">Comment</span>&gt; <span class="text-user">comments</span>;
+}
+</code></pre>
+<p>This annotation has a value parameter that can take one of three values:</p>
+<ul>
+ <li>LazyCollectionOption. <strong>TRUE</strong></li>
+ <li>LazyCollectionOption. <strong>FALSE</strong></li>
+ <li>LazyCollectionOption. <strong>EXTRA</strong></li>
+</ul>
+<p>The first two options are very similar to the fetch option.</p>
+<p>If the parameter is set to <code>LazyCollectionOption.TRUE</code>, it means that the values ​​of the comments field <strong>will not be</strong> loaded from the database when the parent User object is loaded. Objects of type Comment will be loaded the first time the comments field is accessed. In fact, this is the equivalent of the parameter<code>FetchType.LAZY</code></p>
+<p>If the parameter is set to <code>LazyCollectionOption.FALSE</code>, it means that the values ​​of the comments field <strong>will be</strong> loaded from the database at the time of loading the parent User object. Objects of type Comment will be loaded the first time the comments field is accessed. In fact, this is the equivalent of the <code>FetchType.EAGER</code>.</p>

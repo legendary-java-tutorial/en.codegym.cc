@@ -1,0 +1,96 @@
+Method overloading | part 2
+<p>----------------------------------------</p>
+Method overloading should not lead to brain overload. That's why the teachers of the secret JavaRush center give you knowledge on a particular topic in small portions. You have already heard that each class method must be unique, and it is unique when there is no method in the class with the same name and parameter type, where the order of the parameters matters. Let's delve into the topic!
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! A couple of days ago I told you about overloading methods. Did you understand everything?"</p>
+<p><span class="text-user">"Yes. I remember. Each class method must be unique. A member method is unique if the class has no other method with the same name and parameter types (and the order of the parameters matters)."</span></p>
+<p>"Very good! I see you've learned that lesson well. Today I want to expand your knowledge in this topic just a bit. What method do you think will be called in each case?"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public static void print(<span class="text-red">int</span> n)
+ {
+  System.out.println(n);
+ }
+ public static void print(<span class="text-red">short</span> n)
+ {
+  System.out.println(n);
+ }
+ public static void print(<span class="text-red">Integer</span> n)
+ {
+  System.out.println(n);
+ }
+ public static void print(<span class="text-red">String</span> s)
+ {
+  System.out.println(s);
+ }
+public static void main(String[] args)
+{
+  Cat.print(<span class="text-red">1</span>);
+  Cat.print(<span class="text-red">(byte)1</span>);
+  Cat.print(<span class="text-red">"1"</span>);
+  Cat.print(<span class="text-red">null</span>);
+ }
+}</code></pre>
+<p><span class="text-user">"It's hard to say."</span></p>
+<p>&#34;In the first case, 1 is an <strong>int</strong>. We have a 100% match with the method that takes an int. The first <strong>void print(int n).</strong> will be called.</p>
+<p>In the second case, we don't have a method that takes a byte. But there are two methods that take a short and an int. Based on type widening rules, a byte will first be widened to a short, and then widened to an int. Thus, the verdict is that the <strong>void print(short n).</strong> will be called.</p>
+<p>In the third case, we have a 100% match with the method that takes a String. The <strong>void print(String s).</strong> method will be called.</p>
+<p>The fourth case is ambiguous. <span class="text-red">null doesn't have a specific type. The compiler will refuse to compile this code</span>. In this case, we need to write <strong>Cat.print((Integer)null)</strong> to call the third method and <strong>Cat.print((String)null)</strong> to call the fourth.&#34;</p>
+<p><span class="text-user">"That was very informative. Thank you."</span></p>
+<p>"I'd like to point out that when determining the correct method to call, types can only widen. They cannot narrow. Consider this example:"</p>
+<div class="code-heading">Code</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Cat
+{
+ public static void print(<span class="text-red">short</span> n)
+ {
+  System.out.println(n);
+ }
+ public static void print(<span class="text-red">Integer</span> n)
+ {
+  System.out.println(n);
+ }
+
+ public static void main(String[] args)
+ {
+  Cat.print(<span class="text-red">(byte)1</span>);
+  Cat.print(<span class="text-red">1</span>);
+ }
+}</code></pre>
+<p>In the first case, the byte type will be widened to a short and the first method will be called: <strong>void print(short n).</strong>.</p>
+<p>In the second case, there will be an implicit widening conversion from int to Integer, and then the second method will be called: <strong>void print(Integer n).</strong>.</p>
+<p><span class="text-user">"I didn't expect that."</span></p>
+<p>"No, here's the real surprise:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code> class Cat
+{
+ public static void print(<span class="text-red">Object</span> o)
+ {
+  System.out.println(o);
+ }
+ public static void print(<span class="text-red">String</span> s)
+ {
+  System.out.println(s);
+ }
+
+ public static void main(String[] args)
+ {
+  Cat.print(<span class="text-red">1</span>);
+  Cat.print(<span class="text-red">null</span>);
+ }
+}</code></pre>
+        </td>
+        <td>In the first case, int will be extended to Integer. Because there is no method for Integer, the most suitable method (and the one called) is <strong>void print(Object o)</strong></p>
+            <p>In the second case, there won't be any compilation errors and <strong>void print(String s)</strong> will be called, which is somewhat not obvious.</td>
+    </tr>
+    </tbody>
+</table>
+<p>&#34;Amigo, I hope you understand that in such cases it's best to specify a type cast operator (as in we did with «(byte)») in order to know exactly which method will be called.&#34;</p>
+<p><span class="text-user">"I never expected any problems would come from overloading methods. But then you come along. Thanks, Rishi. I'll keep up my guard on this point."</span></p>

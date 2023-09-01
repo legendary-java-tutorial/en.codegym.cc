@@ -1,0 +1,28 @@
+Multithreading or multithreading
+<p>----------------------------------------</p>
+Imagine the game "Space Races": you fly, dodging meteorites and patrol cruisers, and next to them are the same starships. The game application must track control commands, move starships, calculate their trajectories and collision consequences, draw all this on the user's screen ... How to do this? Answer: multithreading.
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! We have a new and very difficult topic. I'm sorry. It is often considered one of the most complex topics not only in Java, but also in programming in general. I'm talking about <em><strong><span class="text-red">multithreading</span></strong></em>."</p>
+<p>Imagine a typical computer game, for example, a spaceship racing game. You're flying through the expanses of the cosmos, dodging meteorites and patrol cruisers. Two dozen others are participating with you in these illegal races.</p>
+<p>Let's say you decide to write such a game. Your program will have to keep track of commands (keyboard input), move the spaceships, calculate their trajectories, determine the consequences of any collisions, and draw all this on the user's screen. This is very complex work.</p>
+<p>Remember how we solved «problem of great complexity» in the example about the growing shipping company?</p>
+<p><span class="text-user">We divided it into independent departments and rigidly specified (standardized) how they could interact.</span></p>
+<p><strong>"But what do we do when the independent parts have to perform some work in parallel with the other parts?!  The answer to this question is <span class="text-red">threads</span>."</strong></p>
+<p><strong><em>Try to imagine a program as <span class="text-red">a small robot</span> that <span class="text-red">runs around the code and executes commands</span>. First, it executes a command on one line, then moves to the next, and so on.</em></strong></p>
+<p><span class="text-user">"I can see it in my mind. Piece of cake!"</span></p>
+<p>"Very good. And now imagine that you have several of these robots. While one is handling user input, a second is updating objects based on that input. A third executes the code to displaying these objects on the screen. Several times a second, a fourth checks whether any ships have collided and, if they have, calculates the results of the collision."</p>
+<p>Thus, we can not only divide the program into independent parts/objects, but also make it so these parts can perform their work independently of each other. The less interaction between the individual parts, the less complex the program.</p>
+<p>Imagine that <strong>you were able <span class="text-red">to replace the manager with a script</span></strong> <strong>that sends letters</strong>. And the other company departments weren't even able to tell there had been a change. This sort of thing happened as early as the 26th century with excellent results. <strong><em>Most managers, and even top executives, can be successfully replaced by a script of average complexity.</em></strong> Only after the «office plankton union» intervened did the mass layoffs of managers come to an end. But I digress.</p>
+<p><span class="text-user">"How interesting!"</span></p>
+<p>"Not only can there be several of these " little robots" executing code, they can also communicate with each other and spawn new robots."</p>
+<p><span class="text-user">"Spawn new robots?"</span></p>
+<p>"Yes, to perform new tasks. Sometimes it's advantageous to create another robot (another thread) to perform some action at the same time as the current thread (robot)."</p>
+<p>"<span class="text-user">This sounds like a good thing, but I can't think of where I would use it.</span>"</p>
+<p><span class="text-user">And why do we call them «<strong>threads</strong>»?</span></p>
+<p>"Imagine that each robot is a different color, and marks commands with its color as it performs them. The path taken by the small robot is like the line left behind by a pencil. This path strings along behind the robot, like <strong>a thread</strong> behind a needle."</p>
+<p>Each «small robot» has a task that it was created to perform. You can think of a thread is the set of commands executed while performing this task.</p>
+<p>Let's say you're flying on a spaceship to deliver cargo. Then «deliver cargo» is your task, and you're in the middle of performing it. And your flight path is your thread. We could say that each new task, each task not yet completed, has its own thread (a path that still needs to be traversed).</p>
+<p><span class="text-user">"In other words, there is a task and a "little robot" that executes it. And a thread is just the path taken by the robot while it completes its task?"</span></p>
+<p>"Exactly."</p>
+<p>That's how it all works deep inside. Because the computer has only one processor, it can only execute one command at a time. So here's what happens: the processor constantly switches between threads. It switches to a new thread, executes a few commands, then switches to the next thread, executes a few commands, and so on. <span class="text-red">But since switching between threads occurs hundreds of times per second, it seems to us that all the threads are running simultaneously.</span></p>
+<a href='https://cdn.codegym.cc/images/article/73cd26b8-2e11-4139-bef2-04f3943673fd/original.jpeg' target='_blank'><img data-id="73cd26b8-2e11-4139-bef2-04f3943673fd" data-max-width="850" alt="Multithreading - 1" src="https://cdn.codegym.cc/images/article/73cd26b8-2e11-4139-bef2-04f3943673fd/original.jpeg"></a>

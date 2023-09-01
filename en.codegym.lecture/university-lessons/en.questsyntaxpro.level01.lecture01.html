@@ -1,0 +1,130 @@
+Teams and first program
+<p>----------------------------------------</p>
+Commands A program is a set (list) of commands. The first command is executed first, then the second, then the third, and so on. When all commands are executed, the program ends. Which commands can be in the list depends on who executes them: what commands the performer knows (and understands). Soba
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="a4745527-2c5e-4c3f-919d-a2c93ff12911" data-max-width="1024" alt="" src="https://cdn.javarush.ru/images/article/a4745527-2c5e-4c3f-919d-a2c93ff12911/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="f7528aea-6e71-4f46-a538-e9b6811b3571" data-max-width="1024" alt="" src="https://cdn.javarush.ru/images/article/f7528aea-6e71-4f46-a538-e9b6811b3571/original.png">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="8d9d19e1-736e-4308-b44e-73020382d94e" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/8d9d19e1-736e-4308-b44e-73020382d94e/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="5deeee7e-a53c-44f1-9a5f-b40de3998b08" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/5deeee7e-a53c-44f1-9a5f-b40de3998b08/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="0ae031ad-bfcf-4de5-b2a7-d0ac8388966d" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/0ae031ad-bfcf-4de5-b2a7-d0ac8388966d/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="4c70532b-7eee-4076-bb4a-f8b0b6c5927b" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/4c70532b-7eee-4076-bb4a-f8b0b6c5927b/original.png">
+        </div>
+    </div>
+</div>
+<hr>
+<h2>1. Commands</h2>
+<p>A <span class="term text-user">program</span> is a set (list) of commands. First, the first command is executed, then the second, the third, and so on. When all the commands have been executed, the program ends.</p>
+<p>The specific commands that are allowed in the list depend on <span class="term text-viola">who is performing the command</span>, i.e. what commands does the <span class="term text-viola">performer</span> know or understand. You can command a dog to "Sit" or "Speak", a cat to "Shoo", a human to "Stop! Or I'll shoot!", and a robot to "Work! Work, you robot scum!"</p>
+<p>Programs written in the Java language are executed by the <span class="term text-viola">Java virtual machine</span> <span class="term text-viola">(JVM)</span>. The <span class="term text-viola">JVM</span>&nbsp;&nbsp; is a special program that can execute programs written in the Java language.</p>
+<p>The list of commands it knows is quite extensive.
+    <br>For example, the following <span class="term text-yellow">command</span> tells the JVM to display <span class="code text-green">Robots are friends to humans</span>:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="code text-yellow">System.out.println</span>("<span class="code text-green">Robots are friends to humans</span>");</code></pre>
+    <div class="lesson-example-caption">The simplest command</div>
+</div>
+<p>But we won't start with commands. Instead, let's begin with a couple of simple principles. <i>Knowledge of a few principles replaces knowledge of many facts.</i></p>
+<p><b>Principle 1:</b> in Java, it is customary to write each command <span class="text-red">on a new line</span>. A <span class="term text-viola">semicolon</span> goes at the end of each command.</p>
+<p>Let's say we want to <span class="term text-yellow">display</span> the phrase <span class="code text-green">Robots are friends to humans</span> 3 times. This is how the code would look:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="code text-yellow">System.out.println</span>("<span class="code text-green">Robots are friends to humans</span>")<span class="code text-viola">;</span>
+<span class="code text-yellow">System.out.println</span>("<span class="code text-green">Robots are friends to humans</span>")<span class="code text-viola">;</span>
+<span class="code text-yellow">System.out.println</span>("<span class="code text-green">Robots are friends to humans</span>")<span class="code text-viola">;</span></code></pre>
+    <div class="lesson-example-caption">A program consisting of three commands</div>
+</div>
+<p><b>Principle 2:</b> a program <span class="text-red">cannot</span> consist of only commands. Java commands must be inside functions, and functions must be inside classes.</p>
+<p>Imagine a sofa. A sofa cannot exist on its own. It exists in a room somewhere. And a room also cannot exist on its own. A room is located in some house. Or, you could say that the house is divided into rooms, and those rooms contain things.</p>
+<p>So, commands are like furniture. In the Java programming language, a command cannot be by itself: it is part of a function (in Java, functions are also called methods). A <span class="term text-green">method</span> (function) is part of a <span class="term text-user">class</span>. In other words, a <span class="term text-user">class</span> is divided into <span class="term text-green">methods</span>, and <span class="term text-green">methods</span> contain <span class="term text-yellow">commands</span>.</p>
+<p>Java programs are made up of classes, classes contain methods, and methods contain commands.</p>
+<hr>
+<h2>2. Structure of a typical program</h2>
+<p>Java programs are composed of <span class="term text-user">classes</span>. There might be tens of thousands of classes. The smallest program has a single class. For each class, we create a separate file whose name coincides with the name of the class.</p>
+<p>Let's say you decide to create a class to represent a house. Then you need to create a <code class="text-viola">House</code> class contained in a <code>House.java</code> file.</p>
+<p>Now suppose you want to represent a cat in your program. You need to create a <code>Cat.java</code> file and define the <code>Cat</code> class in it, and so on.</p>
+<p>The files contain text — code written in the <strong>Java programming language</strong>. The code of a class usually consists of a <span class="term text-viola">class&nbsp;name</span> and a <span class="term text-user">class&nbsp;body</span>. The <span class="term text-user">body of a class</span> is enclosed in <span class="term text-red">curly braces</span>. This is what the <code class="text-viola">House</code> class might look like:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>public class <span class="code text-viola">House</span>
+<span class="code text-red">{</span>
+    <span class="code code--demo text-user">Class body</span>
+<span class="code text-red">}</span></code></pre>
+    <div class="lesson-example-caption"><code>House.java</code> file</div>
+</div>
+<p>The body of the class can contain <span class="term text-neon">variables</span> (also called fields) and <span class="term text-green">methods</span> (functions). It looks something like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code>public class <span class="code text-viola">House</span>
+{
+    <span class="code code--demo text-neon">Variable A</span>
+
+    <span class="code code--demo text-neon">Variable Z</span>
+
+    <span class="code code--demo text-green">Method 1</span>
+
+    <span class="code code--demo text-green">Method N</span>
+}</code></pre>
+    <div class="lesson-example-caption"><code>House.java</code> file</div>
+</div>
+<p>And here's a specific example:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>public class <span class="code text-viola">House</span> {
+
+   <div class="code-fragment code-fragment--neon">int <span class="text-neon">a</span>;
+int <span class="text-neon">b</span>;</div>
+
+   <div class="code-fragment code-fragment--green">public static void <span class="text-green">main</span> (String[] args)
+{
+ System.out.print(1);
+}</div>
+
+   <div class="code-fragment code-fragment--green">public static double <span class="text-green">pi</span> ()
+{
+   return 3.14;
+}</div>
+
+}</code></pre>
+    <div class="lesson-example-caption"><code>House.java</code> file</div>
+</div>
+<p>In the example above, <code class="text-neon">a</code> and <code class="text-neon">b</code> are variables, and <code class="text-green">main</code> and <code class="text-green">pi</code> are methods.</p>
+<hr>
+<h2>3. <code>main()</code> method</h2>
+<p>Classes can have variables and methods, but they don't have to. There can be classes without variables and classes without methods. There can even be classes with neither methods nor variables. Although such classes would make little sense.</p>
+<p>A minimal program must consist of <span class="text-red">at least one</span> <span class="term text-viola">class</span>, which must have <span class="text-red">at least one</span> <span class="term text-green">method</span> (function) that marks the program's starting point. This method must be named <code class="text-green">main</code>.
+    <br>A minimal program looks like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>public class <span class="code text-viola">House</span>
+{
+   public static void <span class="code text-green">main</span> (String[] args)
+   {
+   }
+}</code></pre>
+    <div class="lesson-example-caption">Minimal program</div>
+</div>
+<p>Note that the <code class="text-green">main</code> method in the example above does not contain commands. That's right: the minimal program does not have a single command. That's precisely what makes it minimal.</p>
+<p>The class that contains the program's starting point can have <span class="term text-viola">any name</span>, but the <code>main</code> method, where the program starts executing, <span class="text-red">always takes the same form</span>:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present-sm language-java"><code>public class <span class="code text-viola">House</span>
+{
+    <span style="box-shadow: 0 2px 0 red">public static void main (String[] args)</span>
+    {
+        <span class="code code--demo text-green">Method code</span>
+    }
+}</code></pre>
+    <div class="lesson-example-caption">The part highlighted in red — the declaration of the <code>main</code> method — is immutable</div>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.task01.task0142"></div>

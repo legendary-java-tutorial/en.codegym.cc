@@ -1,0 +1,439 @@
+Creating objects with reflection
+<p>----------------------------------------</p>
+Imagine: you are faced with a task: you need to create an object using reflection. Are we getting started? Let's start with the initial class we want to get...
+<p>----------------------------------------</p>
+<h2>Example of creating an object using Class.newInstance()</h2>
+
+    <p>Imagine you are assigned to create an object using reflection. Shall we get started?</p>
+
+    <p>We'll start by writing the code for the class we want to instantiate:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Employee {
+    private String name;
+    private String lastName;
+    private int age;
+
+    {
+        age = -1;
+        name = "Rob";
+        surname = "Stark";
+    }
+
+    public Employee(String name, String surname, int age) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return lastName;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+</code></pre>
+
+    <p>This will be our class — with several fields, a constructor with parameters, getters and setters, a <span class="code text-orange">toString()</span> method, and an initialization block. Now let's move on to the second part: creating an object using reflection. The first approach we'll look at will use <span class="code text-orange">Class.newInstance()</span>.</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Main {
+    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
+        Employee employee = Employee.class.newInstance();
+        System.out.println("age is " + employee.getAge());
+    }
+}
+</code></pre>
+
+    <p>Excellent! Let's run our code and watch for the age to be displayed. But we get an error about a missing default constructor. It turns out that this method only lets us get an object created using a default constructor. Let's add a default constructor for our class and test the code again. </p>
+
+    <p>Error message:</p>
+
+<img data-max-width="1080" data-id="217f2884-4ba7-4884-a7be-08d837c2eaec" src="https://cdn.codegym.cc/images/article/217f2884-4ba7-4884-a7be-08d837c2eaec/1080.jpeg" alt="">
+
+    <p>Code of the new constructor</p>
+
+    <pre class='language-java line-numbers'><code>
+public Employee() { }
+</code></pre>
+
+    <p>After adding the constructor, here's the output:</p>
+
+    <div class="terminal">age is 1</div>
+
+    <p>Great! We figured out how this method works. Now let's take a look under the hood. Cracking open the documentation, we see that our method is already <em>deprecated</em>:</p>
+
+<img data-max-width="1080" data-id="33c0cd23-1278-4ef2-8988-3250596cf390" src="https://cdn.codegym.cc/images/article/33c0cd23-1278-4ef2-8988-3250596cf390/1080.jpeg" alt="">
+
+    <p>It can also throw <span class="text-red"><span class="text-bold">InstantiationException</span></span> and <span class="text-red"><span class="text-bold">IllegalAccessException</span></span>. Accordingly, the documentation suggests that we use the other way of creating an object, namely <span class="code text-orange">Constructor.newInstance()</span>. Let's analyze in detail how the <span class="code"><span class="text-green">Constructor</span></span> class works.</p>
+
+    <h2>getConstructors and getDeclaredConstructors methods</h2>
+
+    <p>To work with the <span class="code"><span class="text-green">Constructor</span></span> class, we first need to get an instance. We have two methods for this: <span class="code text-orange">getConstructors</span> and <span class="code text-orange">getDeclaredConstructors</span>. </p>
+
+    <p>The first returns an array of public constructors, and the second returns an array of all class constructors.</p>
+
+    <p>Let's give our class some privacy, or rather, let's create some private constructors to help demonstrate how these methods work.</p>
+
+    <p>Let's add some private constructors:</p>
+
+    <pre class='language-java line-numbers'><code>
+private Employee(String name, String surname) {
+    this.name = name;
+    this.lastName = lastName;
+}
+</code></pre>
+
+    <p>Looking at the code, note that one of the constructors is private:</p>
+
+<img data-max-width="512" data-id="006e7a94-70f3-494a-a86b-230b326b57e6" src="https://cdn.codegym.cc/images/article/006e7a94-70f3-494a-a86b-230b326b57e6/512.jpeg" alt="">
+
+    <p>Let's test our methods:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Main {
+	  public static void main(String[] args) {
+	      Class employeeClass = Employee.class;
+	
+	      System.out.println("getConstructors:");
+	      printAllConstructors(employeeClass);
+	
+	      System.out.println("\n" +"getDeclaredConstructors:");
+	      printDeclaredConstructors(employeeClass);
+	  }
+	
+	  static void printDeclaredConstructors(Class&lt;?&gt; c){
+	      for (Constructor&lt;?&gt; constructor : c.getDeclaredConstructors()) {
+	          System.out.println(constructor);
+	      }
+	  }
+	
+	  static void printAllConstructors(Class&lt;?&gt; c){
+	      for (Constructor&lt;?&gt; constructor : c.getConstructors()) {
+	          System.out.println(constructor);
+	      }
+	  }
+}
+</code></pre>
+
+    <p>And we get this result: </p>
+
+    <div class="terminal">getConstructors:<br />
+public ru.javarush.Employee(java.lang.String,java.lang.String,int)<br />
+public.ru.javarush.Employee()<br />
+ <br />
+getDeclaredConstructors:<br />
+private ru.javarush.Employee(java.lang.String,java.lang.String)<br />
+public ru.javarush.Employee(java.lang.String,java.lang.String,int)<br />
+public ru.javarush.Employee()</div>
+
+    <p>Okay, this is how we get access to the <span class="code"><span class="text-green">Constructor</span></span> object. Now we can talk about what it can do.</p>
+
+    <h2>The java.lang.reflect.Constructor class and its most important methods</h2>
+
+    <p>Let's take a look at the most important methods and how they work:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Method</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getName()</span></td>
+                <td>Returns the name of this constructor as a string.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getModifiers()</span></td>
+                <td>Returns the Java access modifiers encoded as a number.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getExceptionTypes()</span></td>
+                <td>Returns an array of Class objects that represent the types of exceptions declared by the constructor.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getParameters()</span></td>
+                <td>Returns an array of <span class="text-neon">Parameter</span> objects representing all the parameters. Returns an array of length 0 if the constructor has no parameters.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getParameterTypes()</span></td>
+                <td>Returns an array of Class objects that represent the formal parameter types in declaration order.</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getGenericParameterTypes()</span></td>
+                <td>Returns an array of Type objects that represent the formal parameter types in declaration order.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>getName() &amp; getModifiers()</h3>
+
+    <p>Let's wrap our array in a <span class="text-neon"><span class="text-bold"><em>List</em></span></span> to make it convenient to work with. We'll also write <span class="code text-orange">getName</span> and <span class="code text-orange">getModifiers</span> methods:</p>
+
+    <pre class='language-java line-numbers'><code>
+static List&lt;Constructor&lt;?&gt;&gt; getAllConstructors(Class&lt;?&gt; c) {
+    return new ArrayList&lt;&gt;(Arrays.asList(c.getDeclaredConstructors()));
+}
+
+static List&lt;String&gt; getConstructorNames(List&lt;Constructor&lt;?&gt;&gt; constructors) {
+    List&lt;String&gt; result = new ArrayList&lt;&gt;();
+    for (Constructor&lt;?&gt; constructor : constructors) {
+        result.add(constructor.toString());
+    }
+    return result;
+}
+
+static List&lt;String&gt; getConstructorModifiers(List&lt;Constructor&lt;?&gt;&gt; constructors) {
+    List&lt;String&gt; result = new ArrayList&lt;&gt;();
+    for (Constructor&lt;?&gt; constructor : constructors) {
+        result.add(Modifier.toString(constructor.getModifiers()));
+    }
+    return result;
+}
+</code></pre>
+
+    <p>And our <span class="code text-orange">main</span> method, where we will call everything:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+    Class employeeClass = Employee.class;
+    var constructors = getAllConstructors(employeeClass);
+    var constructorNames = getConstructorNames(constructors);
+    var constructorModifiers = getConstructorModifiers(constructors);
+
+    System.out.println("Employee class:");
+    System.out.println("Constructors :");
+    System.out.println(constructorNames);
+    System.out.println("Modifiers :");
+    System.out.println(constructorModifiers);
+}
+</code></pre>
+
+    <p>And now we see all the information we want:</p>
+
+    <div class="terminal">Employee class:<br />
+Constructors :<br />
+[private ru.javarush.Employee(java.lang.String), public <br />ru.javarush.Employee(java.lang.String,java.lang.String,int), public ru.javarush.Employee()]<br />
+Modifiers :<br />
+[private, public, public]</div>
+
+    <h3>getExceptionTypes()</h3>
+
+    <p>This method lets us get an array of the exceptions that our constructor may throw. Let's modify one of our constructors and write a new method.</p>
+
+    <p>Here we change our current constructor slightly:</p>
+
+    <pre class='language-java line-numbers'><code>
+private Employee(String name, String surname) throws Exception {
+    this.name = name;
+    this.lastName = lastName;
+}
+</code></pre>
+
+    <p>And here we have a method for getting exception types and add it to <span class="code text-orange">main</span>:</p>
+
+    <pre class='language-java line-numbers'><code>
+static List&lt;Class&lt;?&gt;&gt; getConstructorExceptionTypes(Constructor&lt;?&gt; c) {
+      return new ArrayList&lt;&gt;(Arrays.asList(c.getExceptionTypes()));
+}
+
+
+var constructorExceptionTypes = getConstructorExceptionTypes(constructors.get(0));
+System.out.println("Exception types :");
+System.out.println(constructorExceptionTypes);
+</code></pre>
+
+    <p>Above, we accessed the first constructor in our list. We'll discuss how to get a specific constructor a little later.</p>
+
+    <p>And look at the output after we add <span class="text-user"><span class="text-bold">throws Exception</span></span>:</p>
+
+    <div class="terminal">Exception types :<br />
+[class java.lang.Exception]</div>
+
+    <p>And before adding the exception:</p>
+
+    <div class="terminal">Exception types :<br />
+[]</div>
+
+    <p>Everything is wonderful, but how do we see what parameters are required by our constructors? Let's figure out this as well.</p>
+
+    <h3>getParameters() &amp; getParameterTypes() &amp; getGenericParameterTypes()</h3>
+
+    <p>Let's start again by refining our private constructor. Now it will look like this:</p>
+
+    <pre class='language-java line-numbers'><code>
+private Employee(String name, String surname, List&lt;String&gt; list) {
+    this.name = name;
+    this.lastName = lastName;
+}
+</code></pre>
+
+    <p>And we have three additional methods: <span class="code text-orange">getParameters</span> for getting the order of parameters and their types, <span class="code text-orange">getParameterTypes</span> for getting the parameter types, and <span class="code text-orange">getGenericParameterTypes</span> for getting types wrapped in <span class="text-neon"><span class="text-bold"><em>generics</em></span></span>.</p>
+
+    <pre class='language-java line-numbers'><code>
+static List&lt;Parameter&gt; getConstructorParameters(Constructor&lt;?&gt; c) {
+    return new ArrayList&lt;&gt;(Arrays.asList(c.getParameters()));
+}
+
+static List&lt;Class&lt;?&gt;&gt; getConstructorParameterTypes(Constructor&lt;?&gt; c) {
+    return new ArrayList&lt;&gt;(Arrays.asList(c.getParameterTypes()));
+}
+
+static List&lt;Type&gt; getConstructorParametersGenerics(Constructor&lt;?&gt; c) {
+    return new ArrayList&lt;&gt;(Arrays.asList(c.getGenericParameterTypes()));
+}
+</code></pre>
+
+    <p>And we add some more information to our already not so small <span class="code text-orange">main</span> method:</p>
+
+    <pre class='language-java line-numbers'><code>
+var constructorParameterTypes = getConstructorParameterTypes(constructors.get(0));
+var constructorParameters = getConstructorParameters(constructors.get(0));
+var constructorParametersGenerics = getConstructorParametersGenerics(constructors.get(0));
+
+System.out.println("Constructor parameters :");
+System.out.println(constructorParameters);
+
+System.out.println("Parameter types :");
+System.out.println(constructorParameterTypes);
+
+System.out.println("Constructor parameter types :");
+System.out.println(constructorParametersGenerics);
+</code></pre>
+
+    <p>Looking at the output, we see very detailed information about the parameters of our constructors:</p>
+
+    <div class="terminal">Constructor parameters :<br />
+[java.lang.String arg0, java.lang.String arg1, java.util.List&lt;java.lang.String&gt; arg2]<br />
+Parameter types :<br />
+[class java.lang.String, class java.lang.String, interface java.util.List]<br />
+Constructor parameter types :<br />
+[class java.lang.String, class java.lang.String, java.util.List&lt;java.lang.String&gt;]</div>
+
+    <p>This clearly demonstrates the difference between each method. We see that we have separate options to get information on parameter types, wrapped types, and everything in general. Super! Now that we're acquainted with the <span class="code"><span class="text-green">Constructor</span></span> class, we can return to the main topic of our article — creating objects.</p>
+
+    <h2>Creating an object using Constructor.newInstance()</h2>
+
+    <p>The second way to create objects is to call the <span class="code text-orange">newInstance</span> method on the constructor. Let's take a look at a working example and see how we can get a particular constructor.</p>
+
+    <p>If you want to get a single constructor, you should use the <span class="code text-orange">getConstructor</span> method (not to be confused with <span class="code text-orange">getConstructors</span>, which returns an array of all the constructors). The <span class="code text-orange">getConstructor</span> method returns the default constructor.</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws NoSuchMethodException {
+    Class employeeClass = Employee.class;
+    Constructor&lt;?&gt; employeeConstructor = employeeClass.getConstructor();
+    System.out.println(employeeConstructor);
+}
+</code></pre>
+
+    <div class="terminal">public ru.javarush.Employee()</div>
+
+    <p>And if we want to get a specific constructor, we need to pass the constructor's parameter types to this method.</p>
+
+    <p>Don't forget that we can only get our private constructor using the <span class="code text-orange">getDeclaredConstructor</span> method.</p>
+
+    <pre class='language-java line-numbers'><code>
+Constructor&lt;?&gt; employeeConstructor2 = employeeClass.getDeclaredConstructor(String.class, String.class, List.class);
+System.out.println(employeeConstructor2);
+</code></pre>
+
+    <p>This is how we can get a specific constructor. Now let's try to create objects using private and public constructors.</p>
+
+    <p>Public constructor:</p>
+
+    <pre class='language-java line-numbers'><code>
+Class employeeClass = Employee.class;
+Constructor&lt;?&gt; employeeConstructor = employeeClass.getConstructor(String.class, String.class, int.class);
+System.out.println(employeeConstructor);
+
+Employee newInstance = (Employee) employeeConstructor.newInstance("Rob", "Stark", 10);
+System.out.println(newInstance);
+</code></pre>
+
+    <p>The result is an object that we can work with:</p>
+
+    <div class="terminal">public ru.javarush.Employee(java.lang.String,java.lang.String,int)<br />
+Employee{name='Rob' surname='Stark', age=10}</div>
+
+    <p>Everything works great! Now we'll try with a private constructor:</p>
+
+    <pre class='language-java line-numbers'><code>
+Constructor&lt;?&gt; declaredConstructor = employeeClass.getDeclaredConstructor(String.class, String.class, List.class);
+System.out.println(declaredConstructor);
+
+Employee newInstance2 = (Employee) declaredConstructor.newInstance("Rob", "Stark", new ArrayList&lt;&gt;());
+System.out.printf(newInstance2.toString());
+</code></pre>
+
+    <p>The result is an error about the privacy of our constructor:</p>
+
+<img data-max-width="1080" data-id="2146ce5a-dbdc-4925-8904-af52a946958e" src="https://cdn.codegym.cc/images/article/2146ce5a-dbdc-4925-8904-af52a946958e/1080.jpeg" alt="">
+
+    <p>Java couldn't create an object using this constructor, but there is actually something magical we can do in the <span class="code text-orange">main</span> method. We can our constructor's access level, making it possible to create objects of our class:</p>
+
+    <pre class='language-java line-numbers'><code>
+declaredConstructor.setAccessible(true);
+</code></pre>
+
+    <p>Result of creating an object</p>
+
+    <div class="terminal">private ru.javarush.Employee(java.lang.String,java.lang.String,java.util.List)<br />
+Employee{name='Rob', surname='Stark', age=-1}</div>
+
+    <p>We don't set the age in our constructor, so it stays the same as when it was initialized.</p>
+
+    <p>Wonderful, let's sum up!</p>
+
+    <h2>Benefits of creating objects using Constructor.newInstance()</h2>
+
+    <p>Both methods share the same name, but there are differences between them:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th><span class="code text-orange">Class.newInstance()</span></th>
+                <th><span class="code text-orange">Constructor.newInstance()</span></th>
+            </tr>
+            <tr>
+                <td>Can only call a <span class="code text-orange"><span class="text-bold">no-arg</span></span> constructor.</td>
+                <td>Can call any constructor regardless of the number of parameters.</td>
+            </tr>
+            <tr>
+                <td>Requires the constructor to be visible.</td>
+                <td>Can also call private constructors under certain circumstances.</td>
+            </tr>
+            <tr>
+                <td>Throws any exception (checked or not) that is declared by the constructor.</td>
+                <td>Always wraps a thrown exception with <span class="text-red"><span class="text-bold">InvocationTargetException</span></span>.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>For these reasons, <span class="code text-orange">Constructor.newInstance()</span> is preferred over <span class="code text-orange">Class.newInstance()</span>, and is the method used by various frameworks and APIs such as Spring, Guava, Zookeeper, Jackson, Servlet, etc.</p>

@@ -1,0 +1,185 @@
+Comparing strings by content
+<p>----------------------------------------</p>
+String Comparison This is great. But you can see that the lines s1 and s2 are actually the same - they contain the same text. How to tell the program that when comparing strings, it does not look at the addresses of String objects, but at the contents of these objects? For this, in Java, the String type has a special 
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="fea73f72-714e-4131-891b-d46f1f23a8ab" data-max-width="1024" src="https://cdn.javarush.ru/images/article/fea73f72-714e-4131-891b-d46f1f23a8ab/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="6e49126a-ce7a-4473-94fd-89a8d32fa3f6" data-max-width="512" src="https://cdn.javarush.ru/images/article/6e49126a-ce7a-4473-94fd-89a8d32fa3f6/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="830fd5ee-107d-430f-b77a-3b9424ceb078" data-max-width="512" src="https://cdn.javarush.ru/images/article/830fd5ee-107d-430f-b77a-3b9424ceb078/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Comparing strings</h2>
+<p>This is all well and good. But you can see that the <code>s1</code> and <code>s2</code> strings are actually the same, meaning that they contain the same text. When comparing strings, how do you tell the program to look not at the addresses of <code>String</code> objects, but at their content?</p>
+<p>To help us with this, Java's <code>String</code> class has the <code>equals</code> method. Calling it looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">string1</span>.equals(<span class="text-green">string2</span>)</code></pre>
+    <div class="lesson-example-caption">Comparing two strings</div>
+</div>
+<p>This method returns <code>true</code> if the strings are the same, and <code>false</code> if they are not the same.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="50%">Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-red">s1</span> = <span class="text-green">"Hello"</span>;
+String <span class="text-red">s2</span> = <span class="text-green">"HELLO"</span>;
+String <span class="text-red">s3</span> = <span class="text-red">s1</span>.toUpperCase();
+
+System.out.println(<span class="text-red">s1</span>.equals(<span class="text-red">s2</span>));
+System.out.println(<span class="text-red">s1</span>.equals(<span class="text-red">s3</span>));
+System.out.println(<span class="text-red">s2</span>.equals(<span class="text-red">s3</span>));</code></pre>
+        </td>
+        <td><pre><code><span class="text-muted">// Hello</span>
+<span class="text-muted">// HELLO</span>
+<span class="text-muted">// HELLO</span>
+
+<span class="text-red">false</span> <span class="text-muted">// They are different</span>
+<span class="text-red">false</span> <span class="text-muted">// They are different</span>
+<span class="text-green">true</span> <span class="text-muted">// They are the same, even though the addresses are different</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>More examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="text-green">"Hello"</span>.equals(<span class="text-green">"HELLO"</span>)</code></pre>
+        </td>
+        <td><code><span class="text-red">false</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-red">s</span> = <span class="text-green">"Hello"</span>;
+<span class="text-green">"Hello"</span>.equals(<span class="text-red">s</span>);</code></pre>
+        </td>
+        <td><code><span class="text-green">true</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-red">s </span>= <span class="text-green">"Hel"</span>;
+<span class="text-green">"Hello"</span>.equals(<span class="text-red">s</span> + <span class="text-green">"lo"</span>);</code></pre>
+        </td>
+        <td><code><span class="text-green">true</span></code></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-red">s </span>= <span class="text-green">"H"</span>;
+(<span class="text-red">s</span> + <span class="text-green">"ello"</span>).equals(<span class="text-red">s</span> + <span class="text-green">"ello"</span>);</code></pre>
+        </td>
+        <td><code><span class="text-green">true</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0312"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0313"></div>
+<hr>
+<h2>2. Case-insensitive string comparison</h2>
+<p>In the last example, you saw that the comparision <code><span class="text-green">"Hello"</span>.equals(<span class="text-green">"HELLO"</span>)</code> yields <code>false</code>. Indeed, the strings are not equal. But...</p>
+<p>Clearly, the strings are not equal. That said, their content has the same letters and only differs by the case of the letters. Is there any way to compare them and disregard the case of the letters? That is, so that <code><span class="text-green">"Hello"</span>.equals(<span class="text-green">"HELLO"</span>)</code> yields <code>true</code>?</p>
+<p>And the answer to this question is yes. In Java, the <code>String</code> type has another special method: <code>equalsIgnoreCase</code>. Calling it looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-green">string1</span>.equalsIgnoreCase(<span class="text-green">string2</span>)</code></pre>
+</div>
+<p>The name of the method translates roughly as <span class="term">compare but ignore case</span>. The letters in the method's name include two vertical lines: the first is a lowercase <code>L</code>, and the second is an uppercase <code>i</code>. Don't let that confuse you.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th width="65%">Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="lecture-code language-java line-numbers"><code>String <span class="text-red">s1</span> = <span class="text-green">"Hello"</span>;
+String <span class="text-red">s2</span> = <span class="text-green">"HELLO"</span>;
+String <span class="text-red">s3</span> = <span class="text-red">s1</span>.toUpperCase();
+
+System.out.println(<span class="text-red">s1</span>.equalsIgnoreCase(<span class="text-red">s2</span>));
+System.out.println(<span class="text-red">s1</span>.equalsIgnoreCase(<span class="text-red">s3</span>));
+System.out.println(<span class="text-red">s2</span>.equalsIgnoreCase(<span class="text-red">s3</span>));  </code></pre>
+        </td>
+        <td>
+                <pre><code><span class="text-muted">// Hello</span>
+<span class="text-muted">// HELLO</span>
+<span class="text-muted">// HELLO</span>
+
+<span class="text-green">true</span>
+<span class="text-green">true</span>
+<span class="text-green">true</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0314"></div>
+<hr>
+<h2>3. Example of string comparison</h2>
+<p>Let's give just one simple example: suppose you need to enter two lines from the keyboard and determine whether they are the same. This is what the code will look like:</p>
+<pre class="language-java"><code>Scanner <span class="text-orange">console</span> = new Scanner(System.in);
+String <span class="text-red">a</span> = <span class="text-orange">console</span>.nextLine();
+String <span class="text-red">b</span> = <span class="text-orange">console</span>.nextLine();
+String <span class="text-red">result</span> = <span class="text-red">a</span>.equals(<span class="text-red">b</span>) ? <span class="text-green">"Same<span class="text-green">"</span></span> : <span class="text-green">"Different"</span>;
+System.out.println(<span class="text-red">result</span>);</code></pre>
+<hr>
+<h2>4. An interesting nuance of string comparison</h2>
+<p>There is one important nuance that you need to be aware of.</p>
+<p>If the <span class="term">Java compiler</span> finds multiple identical strings in your code (specifically in your code), then it will create only a single object for them in order to save memory.</p>
+<pre class="language-java"><code>String <span class="text-user">text</span> = <span class="text-green">"This is a very important message"</span>;
+String <span class="text-orange">message</span> = <span class="text-green">"This is a very important message"</span>;</code></pre>
+<p>And here's what memory will contain as a result:</p>
+<img data-max-width="1024" data-id="7d91fcc8-2d46-4763-afcb-2db05197da81" src="https://cdn.codegym.cc/images/article/7d91fcc8-2d46-4763-afcb-2db05197da81/1024.jpeg" alt="string comparison">
+<p>And if you compare <code>text == message</code> here, then you get <code>true</code>. So don't be surprised by that.</p>
+<p>If for some reason you really need the references to be different, then you can write this:</p>
+<pre class="language-java"><code>String <span class="text-red">text</span> = <span class="text-green">"This is a very important message"</span>;
+String <span class="text-red">message</span> = new String (<span class="text-green">"This is a very important message"</span>);</code></pre>
+<p>Or this:</p>
+<pre class="language-java"><code>String <span class="text-red">text</span> = <span class="text-green">"This is a very important message"</span>;
+String <span class="text-red">message</span> = new String (<span class="text-red">text</span>);</code></pre>
+<p>In both of these cases, the <code>text</code> and <code>message</code> variables point to different objects that contain the same text.</p>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0321"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="8efd10fe-b13d-4439-aace-760fb213f1a1" data-max-width="1024" src="https://cdn.javarush.ru/images/article/8efd10fe-b13d-4439-aace-760fb213f1a1/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="0d194c94-43b7-4e81-953f-00d6b1054c4c" data-max-width="512" src="https://cdn.javarush.ru/images/article/0d194c94-43b7-4e81-953f-00d6b1054c4c/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="fa240432-50ed-46e9-95d5-55d6d92ce8ac" data-max-width="512" src="https://cdn.javarush.ru/images/article/fa240432-50ed-46e9-95d5-55d6d92ce8ac/original.png" alt="">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+LazyCollectionOption.EXTRA
+<p>----------------------------------------</p>
+Getting to know LazyCollectionOption.EXTRA. The strongest advantage of LazyCollectionOption.EXTRA. N+1 problem.
+<p>----------------------------------------</p>
+</h2>
+<p>But of greatest interest is the LazyCollectionOption.EXTRA value. If you specify it as the value of the <span class="text-yellow"><span class="text-bold">@LazyCollection</span></span> annotation , then Hibernate will delay loading the elements of the collection for as long as possible.</p>
+<p>If you try to get the number of elements in a collection:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">User</span> user <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Comment</span><span class="token punctuation">&gt;</span></span> comments <span class="token operator">=</span> user<span class="token punctuation">.</span><span class="token function">getComments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> count <span class="token operator">=</span> commetns<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Then for all this code, Hibernate will execute only one query:</p>
+<pre><code><strong><span class="text-red">SELECT</span> COUNT(<span class="text-green">id</span>) <span class="text-red">FROM</span> <span class="text-orange">comment</span> <span class="text-red">WHERE</span> <span class="text-green">user_id</span> = 1;</strong>
+</code></pre>
+<p>However, if you want to get one comment from the collection, for example number 3:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">User</span> user <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Comment</span><span class="token punctuation">&gt;</span></span> comments <span class="token operator">=</span> user<span class="token punctuation">.</span><span class="token function">getComments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Comment</span> comment <span class="token operator">=</span> commetns<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Then the question arises: how is Hibernate supposed to know that the element is the third without loading all the elements into memory?</p>
+<p>To solve this problem, it is proposed to make an additional column in the comment table, which will store the ordinal number of the comment in the collection of comments. And also for this you need a special annotation - <span class="text-yellow"><span class="text-bold">@OrderColumn</span></span> .</p>
+<p>Here's what that solution would look like:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span>”user”<span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span>”id”<span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@OneToMany</span><span class="token punctuation">(</span>cascade <span class="token operator">=</span> <span class="token class-name">CascadeType</span><span class="token punctuation">.</span>ALL<span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@LazyCollection</span><span class="token punctuation">(</span><span class="token class-name">LazyCollectionOption</span><span class="token punctuation">.</span>EXTRA<span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@OrderColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"order_id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Comment</span><span class="token punctuation">&gt;</span></span> comments<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>The main advantage of LazyCollectionOption.EXTRA</h2>
+<p>We see the strongest advantage of LazyCollectionOption.EXTRA when we specify it with the <span class="text-yellow"><span class="text-bold">@ManyToMany</span></span> annotation . Let's take our old case where we have an Employee, a Task, and we can assign many tasks to one user.</p>
+<p>Our Java classes look like this:</p>
+<p><strong>Employee class</strong> :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span>”employee”<span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span>”id”<span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@ManyToMany</span><span class="token punctuation">(</span>cascade <span class="token operator">=</span> <span class="token class-name">CascadeType</span><span class="token punctuation">.</span>ALL<span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@JoinTable</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"employee_task"</span><span class="token punctuation">,</span>
+       	joinColumns<span class="token operator">=</span>  <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"employee_id"</span><span class="token punctuation">,</span> referencedColumnName<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+       	inverseJoinColumns<span class="token operator">=</span> <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"task_id"</span><span class="token punctuation">,</span> referencedColumnName<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@LazyCollection</span><span class="token punctuation">(</span><span class="token class-name">LazyCollectionOption</span><span class="token punctuation">.</span>EXTRA<span class="token punctuation">)</span>
+   <span class="token keyword">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">EmployeeTask</span><span class="token punctuation">&gt;</span></span> tasks <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">EmployeeTask</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span></code></pre>
+<p>And <strong>the EmployeeTask class</strong> :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span>”task”<span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">EmployeeTask</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span>”id”<span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@ManyToMany</span><span class="token punctuation">(</span>cascade <span class="token operator">=</span> <span class="token class-name">CascadeType</span><span class="token punctuation">.</span>ALL<span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@JoinTable</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"employee_task"</span><span class="token punctuation">,</span>
+       	joinColumns<span class="token operator">=</span>  <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"task_id"</span><span class="token punctuation">,</span> referencedColumnName<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+       	inverseJoinColumns<span class="token operator">=</span> <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">" employee_id"</span><span class="token punctuation">,</span> referencedColumnName<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@LazyCollection</span><span class="token punctuation">(</span><span class="token class-name">LazyCollectionOption</span><span class="token punctuation">.</span>EXTRA<span class="token punctuation">)</span>
+   <span class="token keyword">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> employees <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span></code></pre>
+<p>And to add a task to the director, you need to write something like this code:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Employee</span> director <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">EmployeeTask</span> task <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">EmployeeTask</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">101</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+task<span class="token punctuation">.</span>employees<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>director<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+session<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+session<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>So, if the employees field in the Task class has the LazyCollectionOption.EXTRA annotation, then the employees collection (of the Task class) and the task collection (of the Employee class) <strong>will never be loaded from the database at all</strong> .</p>
+<p>When this code is executed, only one record will be inserted into the employee_task service table, which, as you remember, looks something like this:</p><strong>employee_task table</strong> : 
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>employee_id</th>
+    <th>task_id</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>3</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>5</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>7</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>8</td>
+   </tr>
+   <tr>
+    <td><span class="text-green">4</span></td>
+    <td><span class="text-green">101</span></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The added line is highlighted in green. To add this line, you do not need to load collections from the database - Hibernate will do without it. This is exactly the case when LazyCollectionOption.EXTRA greatly speeds up the work with the database.</p>
+<h2>N+1 problem</h2>
+<p>But, of course, this mode also has a downside. For example, the LazyCollectionOption.EXTRA annotation generates an <strong>N+1 Problem</strong> .</p>
+<p>If you decide to go through all of your user's comments:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">User</span> user <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span><span class="token class-name">User</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Comment</span><span class="token punctuation">&gt;</span></span> comments <span class="token operator">=</span> user<span class="token punctuation">.</span><span class="token function">getComments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Comment</span> comment <span class="token operator">:</span> comments<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>comment<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Then Hibernate will execute on a separate request for each Comment object. And also one more additional query to get the count of all comments. This can significantly slow down the code.</p>
+<p>If your user has 1000 comments, then Hibernate will make 1001 queries to the database to execute this code, although it could do with one. If you knew in advance that you would need all the objects of this class.</p>

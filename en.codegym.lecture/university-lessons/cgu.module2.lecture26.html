@@ -1,0 +1,339 @@
+ThreadLocal, ThreadLocalRandom
+<p>----------------------------------------</p>
+In this lecture, we'll talk about working with the java.lang.ThreadLocal&lt;&gt; class in general and how to work with it in a multithreaded environment. The ThreadLocal class is used to store variables. This class features...
+<p>----------------------------------------</p>
+<p>In this lesson, we'll talk generally about working with the <span class="code"><span class="text-green">java.lang.ThreadLocal&lt;&gt;</span></span> class and how to use it in a multithreaded environment.</p>
+
+<p>The <span class="code"><span class="text-green">ThreadLocal</span></span> class is used to store variables. A distinctive feature of this class is that it keeps a separate independent copy of a value for each thread using it.</p>
+
+<img data-max-width="512" data-id="d5d874c1-49dd-439a-9aae-f7fa482c4b3f" src="https://cdn.codegym.cc/images/article/d5d874c1-49dd-439a-9aae-f7fa482c4b3f/512.jpeg" alt="">
+
+<p>Delving deeper into the operation of the class, we can imagine a <span class="text-neon"><span class="text-bold"><em>Map</em></span></span> that maps threads to values, from which the current thread takes the appropriate value when it needs to use it.</p>
+
+<h2>ThreadLocal class constructor</h2>
+
+<table>
+<tbody>
+<tr>
+<th>Constructor</th>
+<th>Action</th>
+</tr>
+<tr>
+<td><span class="code"><span class="text-green">ThreadLocal()</span></span></td>
+<td>Creates an empty variable in Java</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Methods</h2>
+
+<table>
+<tbody>
+<tr>
+<th>Method</th>
+<th>Action</th>
+</tr>
+<tr>
+<td><span class="code text-orange">get()</span></td>
+<td>Returns the value of the current thread's local variable</td>
+</tr>
+<tr>
+<td><span class="code text-orange">set()</span></td>
+<td>Sets the value of the local variable for the current thread</td>
+</tr>
+<tr>
+<td><span class="code text-orange">remove()</td>
+<td>Removes the value of the local variable of the current thread</td>
+</tr>
+<tr>
+<td><span class="code text-orange">ThreadLocal.withInitial()</span></td>
+<td>Additional factory method that sets the initial value</td>
+</tr>
+</tbody>
+</table>
+
+<h3>get() &amp; set()</h3>
+
+<p>Let's write an example where we create two counters. The first, an ordinary variable, will be for counting the number of threads. The second we will wrap in a <span class="code"><span class="text-green">ThreadLocal</span></span>. And we'll see how they work together. First, let's write a <span class="code"><span class="text-green">ThreadDemo</span></span> class that inherits <span class="text-neon"><span class="text-bold"><em>Runnable</em></span></span> and contains our data and the all-important <span class="code text-orange">run()</span> method. We'll also add a method for displaying the counters on the screen:</p>
+
+<pre class='language-java line-numbers'><code>
+class ThreadDemo implements Runnable {
+
+    int counter;
+    ThreadLocal&lt;Integer&gt; threadLocalCounter = new ThreadLocal&lt;&gt;();
+
+    public void run() {
+        counter++;
+
+        if(threadLocalCounter.get() != null) {
+            threadLocalCounter.set(threadLocalCounter.get() + 1);
+        } else {
+            threadLocalCounter.set(0);
+        }
+        printCounters();
+    }
+
+    public void printCounters(){
+        System.out.println("Counter: " + counter);
+        System.out.println("threadLocalCounter: " + threadLocalCounter.get());
+    }
+}
+</code></pre>
+
+<p>With each run of our class, we increase the <mark class="user">counter</mark> variable call the <span class="code text-orange">get()</span> method to get data from the <span class="code"><span class="text-green">ThreadLocal</span></span> variable. If the new thread has no data, then we will set it to 0. If there is data, we will increase it by one. And let's write our <span class="code"><span class="text-green">main</span></span> method:</p>
+
+<pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+    ThreadDemo threadDemo = new ThreadDemo();
+
+    Thread t1 = new Thread(threadDemo);
+    Thread t2 = new Thread(threadDemo);
+    Thread t3 = new Thread(threadDemo);
+
+    t1.start();
+    t2.start();
+    t3.start();
+
+}
+</code></pre>
+
+<p>Running our class, we see that the <span class="code"><span class="text-green">ThreadLocal</span></span> variable remains the same regardless of the thread that accesses it, but the number of threads grows.</p>
+
+<div class="terminal">Counter: 1<br />
+Counter: 2<br />
+Counter: 3<br />
+threadLocalCounter: 0<br />
+threadLocalCounter: 0<br />
+threadLocalCounter: 0<br />
+ <br />
+<span class="text-user">Process finished with exit code 0</span></div>
+
+<h3>remove()</h3>
+
+<p>To understand how the <span class="code text-orange">remove</span> method works, we'll just slightly change the code in the <span class="code"><span class="text-green">ThreadDemo</span></span> class:</p>
+
+<pre class='language-java line-numbers'><code>
+if(threadLocalCounter.get() != null) {
+      threadLocalCounter.set(threadLocalCounter.get() + 1);
+  } else {
+      if (counter % 2 == 0) {
+          threadLocalCounter.remove();
+      } else {
+          threadLocalCounter.set(0);
+      }
+  }
+</code></pre>
+
+<p>In this code, if the thread counter is an even number, then we will call the <span class="code text-orange">remove()</span> method on our <span class="code"><span class="text-green">ThreadLocal</span></span> variable. Result:</p>
+
+<div class="terminal">Counter: 3<br />
+threadLocalCounter: 0<br />
+Counter: 2<br />
+threadLocalCounter: null<br />
+Counter: 1<br />
+threadLocalCounter: 0<br />
+ <br />
+<span class="text-user">Process finished with exit code 0</span></div>
+
+<p>And here we easily see that the <span class="code"><span class="text-green">ThreadLocal</span></span> variable in the second thread is <strong>null</strong>.</p>
+
+<h3>ThreadLocal.withInitial()</h3>
+
+<p>This method creates a thread-local variable.</p>
+
+<p>Implementation of the <span class="code"><span class="text-green">ThreadDemo</span></span> class:</p>
+
+<pre class='language-java line-numbers'><code>
+class ThreadDemo implements Runnable {
+
+    int counter;
+    ThreadLocal&lt;Integer&gt; threadLocalCounter = ThreadLocal.withInitial(() -&gt; 1);
+
+    public void run() {
+        counter++;
+        printCounters();
+    }
+
+    public void printCounters(){
+        System.out.println("Counter: " + counter);
+        System.out.println("threadLocalCounter: " + threadLocalCounter.get());
+    }
+}
+</code></pre>
+
+<p>And we can look at the result of our code:</p>
+
+<div class="terminal">Counter: 1<br />
+Counter: 2<br />
+Counter: 3<br />
+threadLocalCounter: 1<br />
+threadLocalCounter: 1<br />
+threadLocalCounter: 1<br />
+ <br />
+<span class="text-user">Process finished with exit code 0</span></div>
+
+<p>Why should we use such variables?</p>
+
+<p><span class="code"><span class="text-green">ThreadLocal</span></span> provides an abstraction over local variables in relation to the thread of execution <span class="code"><span class="text-green">java.lang.Thread</span></span>.</p>
+
+<p><span class="code"><span class="text-green">ThreadLocal</span></span> variables differ from ordinary ones in that each thread has its own, individually initialized instance of the variable, which is accessed via the <span class="code text-orange">get()</span> and <span class="code text-orange">set()</span> methods.</p>
+
+<p>Each thread, i.e. instance of the <span class="code"><span class="text-green">Thread</span></span> class, has a map of <span class="code"><span class="text-green">ThreadLocal</span></span> variables associated with it. The map's keys are references to <span class="code"><span class="text-green">ThreadLocal</span></span> objects, and the values are references to "acquired" <span class="code"><span class="text-green">ThreadLocal</span></span> variables.</p>
+
+<h2>Why is the Random class not suitable for generating random numbers in multithreaded applications?</h2>
+
+<p>We use the <span class="code"><span class="text-green">Random</span></span> class to get random numbers. But does it work just as well in a multithreaded environment? Actually, no. <span class="code"><span class="text-green">Random</span></span> is not suitable for multithreaded environments, because when multiple threads access a class at the same time, performance suffers.</p>
+
+<p>To address this problem, JDK 7 introduced the <span class="code"><span class="text-green">java.util.concurrent.ThreadLocalRandom</span></span> class to generate random numbers in a multithreaded environment. It consists of two classes: <span class="code"><span class="text-green">ThreadLocal</span></span> and <span class="code"><span class="text-green">Random</span></span>.</p>
+
+<p>The random numbers received by one thread are independent of other threads, but <span class="code"><span class="text-green">java.util.Random</span></span> provides globally random numbers. Also, unlike <span class="code"><span class="text-green">Random</span></span>, <span class="code"><span class="text-green">ThreadLocalRandom</span></span> does not support explicit seeding. Instead, it overrides the <span class="code text-orange">setSeed()</span> method inherited from <span class="code"><span class="text-green">Random</span></span>, so that it always throws an <span class="text-red"><span class="text-bold">UnsupportedOperationException</span></span> when called.</p>
+
+<p>Let's look at the methods of the <span class="code"><span class="text-green">ThreadLocalRandom</span></span> class:</p>
+
+<table>
+<tbody>
+<tr>
+<th>Method</th>
+<th>Action</th>
+</tr>
+<tr>
+<td><span class="code text-orange">ThreadLocalRandom current()</span></td>
+<td>Returns the ThreadLocalRandom of the current thread.</td>
+</tr>
+<tr>
+<td><span class="code text-orange">int next(int bits)</span></td>
+<td>Generates the next pseudo-random number.</td>
+</tr>
+<tr>
+<td><span class="code text-orange">double nextDouble(double least, double bound)</span></td> 
+<td>Returns a pseudorandom number from a uniform distribution between <span class="code">least</span> (inclusive) and <span class="code">bound</span> (exclusive). </td>
+</tr>
+<tr>
+<td><span class="code text-orange">int nextInt(int least, int bound)</span></td>
+<td>Returns a pseudorandom number from a uniform distribution between least (inclusive) and bound (exclusive). </td>
+</tr>
+<tr>
+<td><span class="code text-orange">long nextLong(long n)</span></td>
+<td>Returns a pseudorandom number from a uniform distribution between 0 (inclusive) and the specified value (exclusive). </td>
+</tr>
+<tr>
+<td><span class="code text-orange">long nextLong(long least, long bound) </span></td>
+<td>Returns a pseudorandom number from a uniform distribution between least (inclusive) and bound (exclusive). </td>
+</tr>
+<tr>
+<td><span class="code text-orange">void setSeed(long seed) </span></td>
+<td>Throws <span class="text-red"><span class="text-bold">UnsupportedOperationException</span></span>. This generator does not support seeding.</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Getting random numbers using ThreadLocalRandom.current()</h3>
+
+<p><span class="code"><span class="text-green">ThreadLocalRandom</span></span> is a combination of the <span class="code"><span class="text-green">ThreadLocal</span></span> and <span class="code"><span class="text-green">Random</span></span> classes. It achieves better performance in a multithreaded environment by simply avoiding any concurrent access to instances of the <span class="code"><span class="text-green">Random</span></span> class.</p>
+
+<p>Let's implement an example involving multiple threads and see our application does with the <span class="code"><span class="text-green">ThreadLocalRandom</span></span> class:</p>
+
+<pre class='language-java line-numbers'><code>
+import java.util.concurrent.ThreadLocalRandom;
+
+class RandomNumbers extends Thread {
+
+    public void run() {
+        try {
+            int bound = 100;
+            int result = ThreadLocalRandom.current().nextInt(bound);
+            System.out.println("Thread " + Thread.currentThread().getId() + " generated " + result);
+        }
+        catch (Exception e) {
+            System.out.println("Exception");
+        }
+    }
+
+    public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
+
+				for (int i = 0; i &lt; 10; i++) {
+            RandomNumbers randomNumbers = new RandomNumbers();
+            randomNumbers.start();
+        }
+
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("Time taken: " + (endTime - startTime));
+    }
+}
+</code></pre>
+
+<p>Result of our program:</p>
+
+<div class="terminal">Time taken: 1<br />
+Thread 17 generated 13<br />
+Thread 18 generated 41<br />
+Thread 16 generated 99<br />
+Thread 19 generated 25<br />
+Thread 23 generated 33<br />
+Thread 24 generated 21<br />
+Thread 15 generated 15<br />
+Thread 21 generated 28<br />
+Thread 22 generated 97<br />
+Thread 20 generated 33</div>
+
+<p>And now let's change our <span class="code"><span class="text-green">RandomNumbers</span></span> class and use <span class="code"><span class="text-green">Random</span></span> in it:</p>
+
+<pre class='language-java line-numbers'><code>
+int result = new Random().nextInt(bound);
+</code></pre>
+
+<div class="terminal">Time taken: 5<br />
+Thread 20 generated 48<br />
+Thread 19 generated 57<br />
+Thread 18 generated 90<br />
+Thread 22 generated 43<br />
+Thread 24 generated 7<br />
+Thread 23 generated 63<br />
+Thread 15 generated 2<br />
+Thread 16 generated 40<br />
+Thread 17 generated 29<br />
+Thread 21 generated 12</div>
+
+<table>
+<tbody>
+<tr>
+<td>
+<p>Take note! In our tests, sometimes the results were the same and sometimes they were different. But if we use more threads (say, 100), the result will look like this:</p>
+
+<div class="terminal">Random — 19-25 ms<br />
+ThreadLocalRandom — 17-19 ms</div>
+
+<p>Accordingly, the more threads in our application, the greater the performance hit when using the <span class="code"><span class="text-green">Random</span></span> class in a multithreaded environment.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>To sum up and reiterate the differences between the <span class="code"><span class="text-green">Random</span> and <span class="code"><span class="text-green">ThreadLocalRandom</span> classes:</p>
+
+<table>
+<tbody>
+<tr>
+<th><span class="code"><span class="text-green">Random</span></span></th>
+<th><span class="code"><span class="text-green">ThreadLocalRandom</span></span></th>
+</tr>
+<tr>
+<td>If different threads use the same instance of <span class="code"><span class="text-green">Random</span></span>, there will be conflicts and performance will suffer.</td>
+<td>There are no conflicts or problems, because the generated random numbers are local to the current thread.</td>
+</tr>
+<tr>
+<td>Uses a linear congruential formula to change the initial value.</td>
+<td>The random number generator is initialized using an internally generated seed.</td>
+</tr>
+<tr>
+<td>Useful in applications where each thread uses its own set of <span class="code"><span class="text-green">Random</span></span> objects.</td>
+<td>Useful in applications where multiple threads use random numbers in parallel in thread pools.</td>
+</tr>
+<tr>
+<td>This is a parent class.</td>
+<td>This is a child class.</td>
+</tr>
+</tbody>
+</table>

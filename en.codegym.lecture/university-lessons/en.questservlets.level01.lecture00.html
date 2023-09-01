@@ -1,0 +1,61 @@
+maven installation
+<p>----------------------------------------</p>
+Large Programs Introduction to Maven Downloading and Installing Maven Environment Variables Local Maven Repository
+<p>----------------------------------------</p>
+<h2>1.1 Big programs</h2>
+<p>We already learned how to write small programs, so now we will learn how to write large ones. As you know, the larger and more complex the program, the more money is paid for its development :) And let's start with a little background ...</p>
+<p>As programs grow in size, developers face two new challenges:</p>
+<ul>
+ <li><span class="text-red">A large number of people are working on the same program.</span></li>
+ <li><span class="text-red">There is no such person who would know the entire code of the program.</span></li>
+</ul>
+<p>Very often, situations began to arise when a programmer fixed a bug in one place of the program and at the same time broke something in another. The release documentation even has this joke:</p>
+<p>List of changes:</p>
+<ul>
+ <li><span class="text-green">Fixed old bugs :)</span></li>
+ <li><span class="text-green">Added new ones :(</span></li>
+</ul>
+<p>Then they came up with two approaches to solving this problem: technical and managerial.</p>
+<p>The technical approach was that programs were broken into parts: <strong>libraries and modules</strong> . Each such module was a small brick from which large projects were then built. Libraries are such universal components that can be used in different programs.</p>
+<p>The managerial approach was even more interesting - they limited the number of people who could work on one project/library. Empirically, they even came up with a rule: <span class="text-green">the team should be so large that "it could be fed with two pizzas</span> . " This usually means that if there are more than <strong>8 people</strong> working on a project , then it needs to be split into two projects.</p>
+<p>It has become popular in the Java developer community to write libraries for all occasions and make them publicly available. Thus, Java programmers could not write the same code again (which was often raw and contained bugs), but use ready-made and <strong>proven solutions</strong> .</p>
+<p>An additional incentive was the fact that the Java language gained great popularity when writing server-side solutions (it worked on the backend). First, server software has higher requirements for reliability, <span class="text-green">and using time-tested libraries is always preferable to writing your own code.</span></p>
+<p>Secondly, servers have practically no limits on the size of the code. The developer of a mobile application tries to cram it into 10 megabytes, a desktop application - into 100 megabytes. And a Java backend developer can cram several tens of gigabytes of libraries into a project and no one will say a word to him :)</p>
+<p>By the way, this is not a joke. You can easily come across a backend project with several dozen modules and a couple of hundred libraries. But it has become extremely difficult to describe (and change!) build scripts for such projects.</p>
+<p>And then Maven appeared.</p>
+<h2>1.2 Introduction to Maven</h2><strong>Maven</strong> is a special "framework" for project build management. It standardizes 3 things: 
+<ul>
+ <li>Description of the project;</li>
+ <li>Project build scripts;</li>
+ <li>Dependencies between libraries.</li>
+</ul>
+<p>Maven's predecessor was <strong>Ant</strong> , and its successor is <strong>Gradle</strong> . But it was Maven that developed and perfected the three listed standards, and also regulated their interaction. It was he who brought the work of Java communities to a new level. Let's look at it in more detail.</p><img data-max-width="1024" data-id="e90f5737-4078-4468-9225-c4c4487c931d" alt="Maven" src="https://cdn.javarush.com/images/article/e90f5737-4078-4468-9225-c4c4487c931d/1024.jpeg" style="width: 1024px;">
+<p>Technically, Maven is a special program / service, the main purpose of which is <strong>to manage the process of building</strong> projects. It can be simply downloaded as an archive and unpacked to any directory. You don't need a special installer for this.</p>
+<p>She does not have a graphical interface - <strong>all commands are given to her using the console</strong> . To make it even more comfortable to work with it, it is recommended to register special environment variables in your OS.</p>
+<p>Maven also has a special <strong>repository</strong> (directory / folder) where it stores the libraries that it uses when building projects. You will need to select some folder on the disk and assign it as a repository.</p>
+<p>Another interesting thing is the presence of a global Maven repository for all libraries, but we will talk about this a little later.</p>
+<h2>1.3 Download and install Maven</h2>
+<p>Maven has an official site <a href="https://maven.apache.org/" target="_blank">maven.apache.org</a> . There is a lot of documentation on the project, so if you have any difficulties or additional questions - come in, do not be shy.</p>
+<p>Also on the downloads page ( <a href="https://maven.apache.org/download.cgi" target="_blank">https://maven.apache.org/download.cgi</a> ) you can download the maven archive (apache-maven-3.8.5-bin.zip). The unpacked archive will take somewhere around 10 MB, although the local maven repository will eventually require several hundred megabytes of memory.</p>
+<p>Maven is written in Java and requires a JRE of at least version 7, as well as defined JAVA_HOME environment variables.</p>
+<p>Just create a folder for Maven on your computer, for example, <span class="text-orange">d:\devtools</span> , and extract the archive with Maven into it. As a result, you should get a folder like <span class="text-orange">d:\devtools\maven\bin</span> , where the main binaries of the project will be located.</p>
+<h2>1.4 Environment variables</h2>
+<p>After that, you need to add the path to the bin folder from the unpacked archive to the PATH environment variable.</p>
+<p>To set the environment variable in Windows 10, you need to go to Control Panel - System - Advanced system settings. Then click "Environment Variables", find PATH and select "Edit", then add the path <span class="text-orange">d:\devtools\maven\bin</span> to the end of the line. Pay attention, the path must lead exactly to the bin folder.</p>
+<p>On a Unix-based OS, the environment variable can be added with a console command:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">export PATH<span class="token operator">=</span><span class="token operator">/</span>opt<span class="token operator">/</span>apache<span class="token operator">-</span>maven<span class="token operator">-</span><span class="token number">3.8</span><span class="token number">.5</span><span class="token operator">/</span>bin<span class="token operator">:</span>$PATH</code></pre>
+<p>If you did everything correctly, then in the console you need to type the command: "mvn -v". In response, you will see something like:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">C</span><span class="token operator">:</span>\<span class="token class-name">Users</span>\<span class="token class-name">Zapp</span><span class="token operator">&gt;</span>mvn <span class="token operator">-</span>v
+<span class="token class-name">Apache</span> <span class="token class-name">Maven</span> <span class="token number">3.0</span><span class="token number">.5</span> <span class="token punctuation">(</span>r01de14724cdef164cd33c7c8c2fe155faf9602da<span class="token punctuation">;</span> <span class="token number">2013</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">19</span> <span class="token number">15</span><span class="token operator">:</span><span class="token number">51</span><span class="token operator">:</span><span class="token number">28</span><span class="token operator">+</span><span class="token number">0200</span><span class="token punctuation">)</span>
+<span class="token class-name">Maven</span> home<span class="token operator">:</span> <span class="token class-name">T</span><span class="token operator">:</span>\apache<span class="token operator">-</span>maven<span class="token operator">-</span><span class="token number">3.0</span><span class="token number">.5</span>\bin\<span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token class-name">Java</span> version<span class="token operator">:</span> <span class="token number">1.8</span><span class="token number">.0_65</span><span class="token punctuation">,</span> vendor<span class="token operator">:</span> <span class="token class-name">Oracle</span> <span class="token class-name">Corporation</span>
+<span class="token class-name">Java</span> home<span class="token operator">:</span> <span class="token class-name">C</span><span class="token operator">:</span>\<span class="token class-name">Program</span> <span class="token class-name">Files</span>\<span class="token class-name">Java</span>\jdk1<span class="token punctuation">.</span><span class="token number">8.0_65</span>\jre
+<span class="token class-name">Default</span> locale<span class="token operator">:</span> en_US<span class="token punctuation">,</span> platform encoding<span class="token operator">:</span> <span class="token class-name">Cp1251</span>
+OS name<span class="token operator">:</span> <span class="token string">"windows 7"</span><span class="token punctuation">,</span> version<span class="token operator">:</span> <span class="token string">"6.1"</span><span class="token punctuation">,</span> arch<span class="token operator">:</span> <span class="token string">"amd64"</span><span class="token punctuation">,</span> family<span class="token operator">:</span> <span class="token string">"dos"</span></code></pre>
+<h2>1.5 Local Maven Repository</h2>
+<p>You can also set a special folder where Maven will store jar libraries that it will use when building projects. This folder is called <strong>the local maven repository</strong> .</p>
+<p>If no such folder is specified, Maven will create it in the current user's home directory. My directory is: <span class="text-orange">C:\Users\Zapp\.m2</span></p>
+<p>The folder has a rather specific name “.m2”. Although it does not scare Linux users - there it is a fairly common approach to naming various "repositories" and / or any other storage of service information.</p>
+<p><strong>Important! </strong>Do not place Maven in system folders, as it will need write permissions to these folders during operation, which may be of unhealthy interest to the antivirus or operating system.</p>
+<p>Maven prior to version 3.5 required an environment variable called M2_HOME, but this is no longer necessary.</p>
+<p>You can read more about configuring Maven at the link: <a href="https://maven.apache.org/configure.html" target="_blank">https://maven.apache.org/configure.html</a></p>

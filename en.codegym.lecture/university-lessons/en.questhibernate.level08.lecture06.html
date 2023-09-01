@@ -1,0 +1,177 @@
+Working with the thread pool
+<p>----------------------------------------</p>
+Connection pool DataSource interface and ConnectionPoolDataSource JNDI interface Examples of Connection Pools
+<p>----------------------------------------</p>
+learn how to work with the database even more professionally. And now we'll talk about the thread pool, or <strong>connection pool</strong> in English.</p>
+<p>Connecting to the database takes some time. Especially if the database is remote. If we make a connection to the database for each request, then the response of our application will be incredibly slow in speed. Not to mention the resources it will consume.</p>
+<p>As a solution to such problems, it was proposed to store connections to the base in some set, which is called the thread pool.</p>
+<p>When we request a new connection, the connection pool creates it, and when closed, it does not close it, but saves it in the connection pool. And if we request a connection from the connection pool again, it will give us one of the old ones instead of creating a new one.</p>
+<p>In fact, the application works through a special driver, which is a wrapper for a regular JDBC driver and which has additional functionality for working with the pool. This situation can be represented as follows:</p><img data-max-width="512" data-id="e78b46ca-34d3-4730-81b4-96d4fd7e018c" alt="connection pool" src="https://cdn.javarush.com/images/article/e78b46ca-34d3-4730-81b4-96d4fd7e018c/512.jpeg" style="width: 512px;">
+<p>The programmer can set the settings for the connection pool manually: the number of active connections, the timeout, etc.</p>
+<p>For especially extreme situations, you can write your own connection pool: a class that will have a list of connections. It will override the close function, which will return the connection back to the list, and there will be many other goodies like the open connection timer. When there is no connection for a long time, the connection is closed.</p>
+<h2>7.2* Interface DataSource and ConnectionPoolDataSource</h2>
+<p>The thread pool usually works in tandem with the DataSource object. This object can be thought of as an abstraction of a remote database. The very name Data Source can be literally translated as Data Source. Which is kind of hinting.</p>
+<p>DataSource objects are used to obtain a physical connection to a database and are an alternative to DriverManager. There is no need to register the JDBC driver. You only need to set the appropriate parameters to establish a connection and<mark class="green">execute the getConnection() method</mark>.</p>
+<p>When creating an object of the DataSource type locally (directly in the application), the connection parameters are set by the appropriate methods provided by the JDBC driver provider. These methods are not defined by the DataSource interface, since the parameters for connecting to DBMS from different vendors may differ both in type and in number (for example, not all DBMS require the type of driver or network protocol to be specified).</p>
+<p>Thus, when working with the Oracle DBMS, to use the corresponding set and get methods, it is necessary to obtain an object of the OracleDataSource type, which is an instance of the class of the same name that implements the DataSource interface. Therefore, this way of creating objects of the DataSource type makes your code less portable and less dependent on the specific implementation of the driver.</p>
+<p>The following is a code example illustrating the local use of objects of type DataSource.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">oracle<span class="token punctuation">.</span>jdbc<span class="token punctuation">.</span>driver<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">oracle<span class="token punctuation">.</span>jdbc<span class="token punctuation">.</span>pool<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DataSource</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">try</span> <span class="token punctuation">{</span>
+        	<span class="token class-name">OracleDataSource</span> ods <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OracleDataSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        	<span class="text-brown">ods</span><span class="token punctuation">.</span><span class="token function">setUser</span><span class="token punctuation">(</span><span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="text-brown">ods</span><span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token string">"secret"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="text-brown">ods</span><span class="token punctuation">.</span><span class="token function">setDriverType</span><span class="token punctuation">(</span><span class="token string">"thin"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="text-brown">ods</span><span class="token punctuation">.</span><span class="token function">setDatabaseName</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="text-brown">ods</span><span class="token punctuation">.</span><span class="token function">setServerName</span><span class="token punctuation">(</span><span class="token string">"localhost"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="text-brown">ods</span><span class="token punctuation">.</span><span class="token function">setPortNumber</span><span class="token punctuation">(</span><span class="token number">1521</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        	<span class="token class-name">Connection</span> connection <span class="token operator">=</span> ods<span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connection successful!!!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    	<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">SQLException</span> se<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        	se<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token punctuation">}</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Goodbye!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>7.3* JNDI Interface</h2>
+<p>The full capabilities of objects of type DataSource are manifested in combination with the use of the JNDI interface. JNDI is a special service (something like a directory) for large server applications that allows one service to establish a connection with another.</p>
+<p>Using the name and directory service allows you to store objects of the DataSource type previously created by the system administrator with predefined connection parameters. The following are some of the standard property (parameter) names developed by Sun:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Property name</th>
+    <th>Java data type</th>
+    <th>Purpose</th>
+   </tr>
+   <tr>
+    <td><strong>databaseName</strong></td>
+    <td>String</td>
+    <td>Database name</td>
+   </tr>
+   <tr>
+    <td><strong>serverName</strong></td>
+    <td>String</td>
+    <td>Server name</td>
+   </tr>
+   <tr>
+    <td><strong>user</strong></td>
+    <td>String</td>
+    <td>Username (ID)</td>
+   </tr>
+   <tr>
+    <td><strong>password</strong></td>
+    <td>String</td>
+    <td>User password</td>
+   </tr>
+   <tr>
+    <td><strong>portNumber</strong></td>
+    <td>int</td>
+    <td>DBMS server port number</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The combination of DataSource and JNDI interfaces plays a key role in the development of multi-tier enterprise applications based on J2EE component technology.</p>
+<p>If you use a combination of the DataSource and JNDI interfaces in your application code, you only need to request an object of type DataSource from the naming and directory service. In this case, the details of the connection and the program code dependent on a particular implementation of the driver are hidden from the application in the object stored in the name and directory service.</p>
+<p>Thus, the sharing of objects of type DataSource and JNDI involves two steps that are performed independently of each other:</p>
+<ol>
+ <li>You must store the named object of type DataSource in the naming and directory service using <code>Context.bind()</code>the <code>javax.naming</code>.</li>
+ <li>Request an object of type DataSource from the naming and directory service in the application using the <code>Context.lookup()</code>. After that, you can use its method <code>DataSource.getConnection()</code>to get a connection to the database.</li>
+</ol>
+<p>The following is an example of using the JNDI interface and an object of type OracleDataSource together.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// Create a key JNDI object</span>
+<span class="token class-name">Hashtable</span> <span class="text-user">env</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Hashtable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-user">env</span><span class="token punctuation">.</span>put <span class="token punctuation">(</span><span class="token class-name">Context</span><span class="token punctuation">.</span>INITIAL_CONTEXT_FACTORY<span class="token punctuation">,</span> <span class="token string">"com.sun.jndi.fscontext.RefFSContextFactory"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-user">env</span><span class="token punctuation">.</span>put <span class="token punctuation">(</span><span class="token class-name">Context</span><span class="token punctuation">.</span>PROVIDER_URL<span class="token punctuation">,</span> <span class="token string">"file:JNDI"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Context</span> <span class="text-viola">ctx</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">InitialContext</span><span class="token punctuation">(</span><span class="text-user">env</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Get the DataSource object by its name</span>
+<span class="token class-name">DataSource</span> <span class="text-brown">ods</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">DataSource</span><span class="token punctuation">)</span> <span class="text-viola">ctx</span><span class="token punctuation">.</span><span class="token function"><span class="text-red">lookup</span></span><span class="token punctuation">(</span><span class="token string">"myDatabase"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Get the Connection from the DataSource object</span>
+<span class="token class-name">Connection</span> <span class="text-user">connection</span> <span class="token operator">=</span> <span class="text-brown">ods<span class="token punctuation">.</span><span class="token function">getConnection</span></span><span class="token function"></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Connection successful!!!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We will not analyze the work of JNDI. This is outside the scope of this course. I just want you to know that this approach is very common in large applications. Don't get lost if you see code like this in the future.</p>
+<p>It doesn't matter how it works. You just need to know that with a JNDI service you can get the proxy object of any service registered in the service directory. This is how you get the DataSource object and use it to work with the database.</p>
+<h2>7.4 Connection Pool Examples</h2>
+<p>Let's get back to where we started - connection pools.</p><img data-max-width="800" data-id="06bf9536-2834-4e06-98f2-d2c2902a901d" alt="" src="https://cdn.javarush.com/images/article/06bf9536-2834-4e06-98f2-d2c2902a901d/800.jpeg" style="width: 800px;">
+<p>Java programmers in their programs very often use libraries that contain various implementations of connection pools. Among them there are three most popular:</p>
+<ul>
+ <li><strong>Apache Commons DBCP</strong></li>
+ <li><strong>C3PO</strong></li>
+ <li><strong>HikariCP</strong></li>
+</ul>
+<p>The Apache project was the first to create a good connection pool, it is also used inside the Tomcat web server. An example of working with it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DBCPDataSource</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name"><span class="text-green">BasicDataSource</span></span> <span class="text-orange">ds</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="text-green">BasicDataSource</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+    	<span class="text-orange">ds</span><span class="token punctuation">.</span><span class="token function">setUrl</span><span class="token punctuation">(</span><span class="token string">"jdbc:h2:mem:test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">ds</span><span class="token punctuation">.</span><span class="token function">setUsername</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">ds</span><span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">ds</span><span class="token punctuation">.</span><span class="token function">setMinIdle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">ds</span><span class="token punctuation">.</span><span class="token function">setMaxIdle</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">ds</span><span class="token punctuation">.</span><span class="token function">setMaxOpenPreparedStatements</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name"></span><span class="text-brown"><span class="token class-name">Connection</span> <span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token punctuation"></span> <span class="token keyword">throws</span> <span class="token class-name">SQLException</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> <span class="text-orange">ds</span><span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token class-name"><span class="text-user">DBCPDataSource</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The second very popular pool is <strong>C3PO</strong> . Strange names, I agree. The name C3PO is a reference to the c3po robot from Star Wars. And also CP is short for Connection Pool.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name"><span class="text-user">C3p0DataSource</span></span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name"><span class="text-green">ComboPooledDataSource</span></span> <span class="text-orange">cpds</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="text-green">ComboPooledDataSource</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">try</span> <span class="token punctuation">{</span>
+        	<span class="text-orange">cpds</span><span class="token punctuation">.</span><span class="token function">setDriverClass</span><span class="token punctuation">(</span><span class="token string">"org.h2.Driver"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="text-orange">cpds</span><span class="token punctuation">.</span><span class="token function">setJdbcUrl</span><span class="token punctuation">(</span><span class="token string">"jdbc:h2:mem:test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="text-orange">cpds</span><span class="token punctuation">.</span><span class="token function">setUser</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="text-orange">cpds</span><span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">PropertyVetoException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// handle the exception</span>
+    	<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name"></span><span class="text-brown"><span class="token class-name">Connection</span> <span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token punctuation"></span> <span class="token keyword">throws</span> <span class="token class-name">SQLException</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> <span class="text-orange">cpds</span><span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token class-name"><span class="text-user">C3p0DataSource</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Documentation for it can be found on <a href="https://www.mchange.com/projects/c3p0/" target="_blank" rel="nofollow">the official page</a> .</p>
+<p>And finally, the most popular Connection Pool in our time is <strong>HikariCP</strong> :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HikariCPDataSource</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name"><span class="text-green">HikariConfig</span></span> <span class="text-orange">config</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HikariConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name"></span><span class="text-green"><span class="token class-name">HikariDataSource</span> ds</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+    	<span class="text-orange">config</span><span class="token punctuation">.</span><span class="token function">setJdbcUrl</span><span class="token punctuation">(</span><span class="token string">"jdbc:h2:mem:test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">config</span><span class="token punctuation">.</span><span class="token function">setUsername</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">config</span><span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">config</span><span class="token punctuation">.</span><span class="token function">addDataSourceProperty</span><span class="token punctuation">(</span><span class="token string">"cachePrepStmts"</span><span class="token punctuation">,</span> <span class="token string">"true"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">config</span><span class="token punctuation">.</span><span class="token function">addDataSourceProperty</span><span class="token punctuation">(</span><span class="token string">"prepStmtCacheSize"</span><span class="token punctuation">,</span> <span class="token string">"250"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-orange">config</span><span class="token punctuation">.</span><span class="token function">addDataSourceProperty</span><span class="token punctuation">(</span><span class="token string">"prepStmtCacheSqlLimit"</span><span class="token punctuation">,</span> <span class="token string">"2048"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="text-green">ds</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="text-green">HikariDataSource</span></span><span class="token punctuation">(</span><span class="text-orange">config</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Connection</span> <span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">SQLException</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> <span class="text-green">ds</span><span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token class-name"><span class="text-user">HikariCPDataSource</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p><a href="https://github.com/brettwooldridge/HikariCP" target="_blank" rel="nofollow">Here is his official GitHub</a> page .</p>
+<p>And <a href="https://www.baeldung.com/hikaricp" target="_blank" rel="nofollow">a good article</a> on configuration.</p>

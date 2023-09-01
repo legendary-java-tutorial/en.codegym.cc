@@ -1,0 +1,92 @@
+Adding body to HttpRequest
+<p>----------------------------------------</p>
+BodyPublishers ofString() fromFile() ofByteArray() ofInputStream()
+<p>----------------------------------------</p>
+<h2>3.1 BodyPublishers</h2>
+<p>I hope, you've not forgotten that in addition to <strong>GET requests</strong> , there are also <strong>PUT</strong>
+    and <strong>POST requests</strong> , when you also need to add to the request <code>request body</code>, that is,
+    the request body.</p>
+<p><code>HttpRequest</code>The class has a special inner class for this <code>BodyPublisher</code>. Although it is
+    technically an interface that has multiple implementations, which we will discuss below</p>
+<p>And we will start with the simplest - the absence of a request body. Yes, it happens.</p>
+<pre class="line-numbers"><code>
+HttpRequest request = HttpRequest.newBuilder()
+   .uri(new URI(<span class="text-green">"https://codegym.cc"</span>))
+   .POST(<span class="text-red">HttpRequest.BodyPublishers.</span><span class="text-orange">noBody()</span>)
+   .build();
+</code></pre>
+<p>Simple and beautiful.</p>
+<h2>3.2 ofString()</h2>
+<p>The second most common option is to pass some string as the request body. This is done very simply:</p>
+<pre class="line-numbers"><code>
+HttpRequest request = HttpRequest.newBuilder()
+   .uri(new URI(<span class="text-green">"https://codegym.cc"</span>))
+   .headers("Content-Type", <span class="text-yellow">"text/plain;charset=UTF-8"</span>)
+   .POST(<span class="text-red">HttpRequest.BodyPublishers.</span><span class="text-orange">ofString(</span><span
+        class="text-green">"Hello"</span><span class="text-orange">)</span>)
+   .build();
+</code></pre>
+<p>By the way, you can set the encoding of the transmitted string. It can be very useful if the http server to which the
+    request is sent does not work on UTF8.</p>
+<pre class="line-numbers"><code>
+HttpRequest request = HttpRequest.newBuilder()
+   .uri(new URI("https://codegym.cc"))
+   .POST(<span class="text-red">HttpRequest.BodyPublishers.</span><span class="text-orange">ofString(</span><span
+        class="text-green">"Hello"</span>, <span class="text-user">Charset. US-ASCII</span>)<span
+        class="text-orange">)</span>)
+   .build();
+</code></pre>
+<h2>3.3 ofFile()</h2>
+<p>Finally, you may want to attach a file to <strong>the POST request</strong> . This is how your avatars are usually
+    uploaded to the server. To do this, you need to call the method <code>ofFile()</code>, where to transfer
+    <code>Path</code>the local file:</p>
+<pre class="line-numbers"><code>
+Path avatar = Path.of("c://avatar.jpeg");
+ 
+<span class="text-user">HttpRequest request = HttpRequest.newBuilder()</span>
+   .uri(new URI(<span class="text-green">"https://codegym.cc"</span>))
+   .headers("Content-Type", <span class="text-yellow">"image/jpeg"</span>)
+   .POST(<span class="text-red">HttpRequest.BodyPublishers.</span><span class="text-orange">ofFile(</span><span
+        class="text-user">avatar</span><span class="text-orange">)</span>)
+   .build();
+</code></pre>
+<h2>3.4 ofByteArray()</h2>
+<p>Another common scenario is to send a set of bytes to the server. For example, you serialized some object as a set of
+    bytes, encrypted something, or just want to send some data buffer. This requires a method
+    <code>.ofByteArray()</code>.</p>
+<p>This method takes an array of bytes as a parameter. Example:</p>
+<pre class="line-numbers"><code>
+byte[] <span class="text-viola">data</span> = <span class="text-green">"My Secret Message"</span>.getBytes();
+byte[] <span class="text-user">dataEncripted</span> = SuperEncriptor.encript(<span class="text-viola">data</span>);
+ 
+HttpRequest request = HttpRequest.newBuilder()
+   .uri(new URI(<span class="text-green">"https://codegym.cc"</span>))
+   .headers("Content-Type", <span class="text-yellow">"application/octet-stream"</span>)
+   .POST(<span class="text-red">HttpRequest.BodyPublishers.</span><span class="text-orange">ofByteArray(</span><span
+        class="text-user">dataEncripted</span><span class="text-orange">)</span>)
+   .build();
+</code></pre>
+<h2>3.5 ofInputStream()</h2>
+<p>Finally, the last but not least interesting scenario is attaching <code>InputStream</code>to <strong>a POST
+    request</strong> .</p>
+<p>There is a special function for this <code>ofInputStream()</code>. And she is very smart. It allows you to organize
+    the transfer of data from stream to stream, attach a data stream to <strong>a POS request</strong> that is not even
+    open yet.</p>
+<p>You need to pass a function to the function <code>ofInputStream()</code>, which will return a stream as a result
+    <code>InputStream</code>.</p>
+<p>Example:</p>
+<pre class="line-numbers"><code>
+byte[] <span class="text-viola">data</span> = <span class="text-green">"My Secret Message"</span>.getBytes();
+//wrapping an array of bytes into a stream.
+InputStream <span class="text-user">is</span> = new ByteArrayInputStream(<span class="text-viola">data</span>);
+ 
+HttpRequest request = HttpRequest.newBuilder()
+   .uri(new URI(<span class="text-green">"https://codegym.cc"</span>))
+   .headers("Content-Type", "<span class="text-yellow">application/octet-stream"</span>)
+   .POST(<span class="text-red">HttpRequest.BodyPublishers.</span><span class="text-orange">ofInputStream (</span><span
+        class="text-user">() -&gt; is;</span><span class="text-orange">)</span>)
+   .build();
+</code></pre>
+<p>I didn’t bother to fence the garden here, but I think you understand the principle. Why did they do that? You can
+    almost always use the <code>ofByteArray()</code>. But if you want to send data asynchronously or you need to
+    implement some particularly complex scenario, then you can use this method.</p>

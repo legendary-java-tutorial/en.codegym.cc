@@ -1,0 +1,292 @@
+StringUtils class from Apache Commons
+<p>----------------------------------------</p>
+Introduction to StringUtils StringUtils.isEmpty() and StringUtils.isBlank() StringUtils.equals() StringUtils.compare() Checking if a string contains another substring Working with substrings
+<p>----------------------------------------</p>
+ng>StringUtils</strong> is the most used Apache Commons class. It contains various utilities and methods that help developers avoid writing boilerplate or simply unwieldy code for basic operations.</p>
+<p>Many of the methods in the <span class="code"><span class="text-green">StringUtils</span></span> class have their <strong>java.lang.String</strong> equivalents but, unlike the <strong>java.lang.String</strong> methods , are null-safe. This means that a NullPointerException <span class="text-red"><span class="text-bold">is</span></span> not thrown at the most unexpected moment.</p>
+<p>Apache Commons contains a number of methods, and we'll look at some of the most commonly used.</p>
+<p>List of StringUtils methods:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><span class="code text-orange">isEmpty()</span></td>
+    <td>Checks if a string is empty</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">equals()</span></td>
+    <td>Compares strings</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">compare()</span></td>
+    <td>Compares strings</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">indexOf()</span></td>
+    <td>Finding a substring in a string</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">lastIndexOf()</span></td>
+    <td>Finding a substring in a string</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">contains()</span></td>
+    <td>Checks if a substring is in a string</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">containsIgnoreCase()</span></td>
+    <td>Checks for the occurrence of a substring in a string, ignoring case</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">containsAny()</span></td>
+    <td>Checks if a substring occurs anywhere in a string</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">containsNone()</span></td>
+    <td>Checks if a substring occurs anywhere in a string</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">containsOnly()</span></td>
+    <td>Checks if a substring is in a string</td>
+   </tr>
+   <tr>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">substring()</span></td>
+    <td>Getting a substring</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">split()</span></td>
+    <td>Splitting a string into substrings</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">join()</span></td>
+    <td>concatenate substrings</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">remove()</span></td>
+    <td>Removing a substring</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">replace()</span></td>
+    <td>Replace substring</td>
+   </tr>
+   <tr>
+    <td><span class="code text-orange">countMatches()</span></td>
+    <td>Counting the number of matches</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>StringUtils.isEmpty() and StringUtils.isBlank()</h2>
+<p>Both methods are used to check if a string contains any text. They return true if the string is really empty. Additionally, <span class="code text-orange">isBlank()</span> will also return <span class="text-green"><em>true</em></span> if the string only contains spaces.</p>
+<p>They also have their own inverse methods: <span class="code text-orange">isNotEmpty()</span> and <span class="code text-orange">isNotBlank()</span> .</p>
+<p>Let's see how you can use <span class="code text-orange">isEmpty()</span> along with its <span class="code text-orange">java.lang.String.isEmpty()</span> counterpart , as well as <span class="code text-orange">isBlank()</span> :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> nullValue <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> emptyValue <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> blankValue <span class="token operator">=</span> <span class="token string">"\n \t   \n"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>emptyValue<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"emptyValue is emptyValue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isBlank</span><span class="token punctuation">(</span>blankValue<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"blankValue is blankValue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>nullValue<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"nullString isn't null"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>There are three variables of type <span class="text-orange">String</span> here . One points to <em><strong>null</strong></em> , the second is not <em><strong>null</strong></em> but has no content (an empty string), and the third is not empty but will print an empty result.</p>
+<p>Running this code results in:</p>
+<pre><code>emptyValue is emptyValue
+blankValue is blankValue
+Exception in thread "main" java.lang.NullPointerException
+</code></pre>
+<p><span class="code text-orange">The isEmpty()</span> method built into <strong>java.lang.String is not </strong><em><strong>null</strong></em> safe . You'll easily get <span class="text-red"><span class="text-bold">a NullPointerException</span></span> if you try to check if it's empty, because you call the method on a <em><strong>null</strong></em> reference . It will be necessary to check in advance whether the reference is null:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> nullValue <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> emptyValue <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> blankValue <span class="token operator">=</span> <span class="token string">"\n \t   \n"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>emptyValue<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"emptyValue is emptyValue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isBlank</span><span class="token punctuation">(</span>blankValue<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"blankValue is blankValue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span>nullValue <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>nullValue<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"nullString isn't null"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Now this results in:</p>
+<pre><code>emptyValue is emptyValue
+blankValue is blankValue
+</code></pre>
+<p>And if we test these methods on<mark class="user">nullString</mark>:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> nullValue <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>nullValue<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"nullValue is emptyValue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isBlank</span><span class="token punctuation">(</span>nullValue<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"nullValue is blankValue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Then we get:</p>
+<pre><code>nullValue is emptyValue
+nullValue is blankValue
+</code></pre>
+<p><span class="code"><span class="text-green">The StringUtils</span></span> methods are <em><strong>null</strong></em> safe and produce the expected result even if they are passed <em><strong>null</strong></em> .</p>
+<h2>StringUtils.equals()</h2>
+<p>This method compares two strings and returns <span class="text-green"><em>true</em></span> if they are identical or if both references point to <em><strong>null</strong></em> , but be aware that this method is case sensitive.</p>
+<p>Let's see how it works:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">"some information"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"some information"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"some information"</span><span class="token punctuation">,</span>  <span class="token string">"some information"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"some additional information"</span><span class="token punctuation">,</span> <span class="token string">"some information"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Result:</p>
+<pre><code>true
+false
+false
+true
+false
+</code></pre>
+<p>To compare the <span class="code text-orange">equals()</span> method from <span class="code"><span class="text-green">StringUtils</span></span> with <span class="code text-orange">java.lang.String.equals()</span> :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> nullValue <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>nullValue<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>nullValue<span class="token punctuation">,</span> <span class="token string">"some information"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>nullValue<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>nullValue<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"some information"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>This brings you back to:</p>
+<pre><code>true
+false
+Exception in thread "main" java.lang.NullPointerException
+</code></pre>
+<p>Again, calling a method on a <em><strong>null</strong></em> reference results in <span class="text-red"><span class="text-bold">a NullPointerException</span></span> , and you will need to check if the reference variable is <em><strong>null</strong></em> before using it.</p>
+<h2>StringUtils.compare()</h2>
+<p>The declaration of this method looks like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">compare</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">String</span> str1<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token class-name">String</span> str2<span class="token punctuation">)</span></code></pre>
+<p><span class="code text-orange">This method compares two strings lexicographically, as the java.lang.String.compareTo()</span> method does , returning:</p>
+<ul>
+ <li>0 if str1 is equal to str2 (or both are null)</li>
+ <li>The value is less than 0 if str1 is less than str2</li>
+ <li>Value greater than 0 if str1 is greater than str2</li>
+</ul>
+<p>The lexicographical order is the dictionary order. Let's see how we can use this in our program:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">compare</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">compare</span><span class="token punctuation">(</span><span class="token keyword">null</span> <span class="token punctuation">,</span> <span class="token string">"codeGym"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">compare</span><span class="token punctuation">(</span><span class="token string">"codeGym"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">compare</span><span class="token punctuation">(</span><span class="token string">"codeGym"</span><span class="token punctuation">,</span> <span class="token string">"CODEGYM"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">compare</span><span class="token punctuation">(</span><span class="token string">"codeGym"</span><span class="token punctuation">,</span> <span class="token string">"codeGym"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We get:</p>
+<pre><code>0
+-1
+1
+32
+0
+</code></pre>
+<p>Note: A <em><strong>null</strong></em> value is considered less than a non- <em><strong>null</strong></em> value . <em><strong>Two null</strong></em> values ​​are considered equal.</p>
+<h2>Checking if a string contains another substring</h2>
+<p>To do this, <span class="code"><span class="text-green">StringUtils</span></span> has 5 methods:</p>
+<ul>
+ <li><span class="code text-orange">contains()</span></li>
+ <li><span class="code text-orange">containsIgnoreCase()</span></li>
+ <li><span class="code text-orange">containsAny()</span></li>
+ <li><span class="code text-orange">containsNone()</span></li>
+ <li><span class="code text-orange">containsOnly()</span></li>
+</ul>
+<p><span class="code text-orange">The contains()</span> method returns <span class="text-green"><em>true</em></span> or <span class="text-red"><em>false</em></span> depending on whether the search sequence is contained in another sequence or not.</p>
+<p>If <em><strong>null</strong></em> is passed to such a method , it will return <span class="text-red"><em>false</em></span> . If non- <em><strong>null</strong></em> is passed , the method will simply call <span class="code text-orange">java.lang.String.indexOf(String str)</span> on the passed object.</p>
+<p>Examples:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> value <span class="token operator">=</span> <span class="token string">"CodeGym is cool"</span><span class="token punctuation">;</span>
+
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> <span class="token string">"CodeGym"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> <span class="token string">"C++"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> <span class="token string">"codegym"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>The method is case sensitive, so the last call will also return <span class="text-red"><em>false</em></span> :</p>
+<pre><code>false
+true
+false
+false
+</code></pre>
+<p><span class="code text-orange">The containsAny()</span> method returns <span class="text-green"><em>true</em></span> if the string passed as the first argument contains at least one of the substrings passed in the 2-N arguments.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> value <span class="token operator">=</span> <span class="token string">"CodeGym is cool"</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">containsAny</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> <span class="token string">"cool"</span><span class="token punctuation">,</span> <span class="token string">"c00l"</span><span class="token punctuation">,</span> <span class="token string">"bro"</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Will display:</p>
+<pre><code>true
+</code></pre>
+<p>This method is also case sensitive.</p>
+<h4>containsNone() method</h4>
+<p>When you need to check that a certain string does not contain anything from the list, you can use the <span class="code text-orange">containsNone()</span> method . The first parameter is a string, and the following parameters are strings that should not be in the target sink.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> s <span class="token operator">=</span> <span class="token string">"CodeGym is cool"</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">containsNone</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">'g'</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Console output:</p>
+<pre><code>false
+</code></pre>
+<h2>Working with substrings</h2>
+<p>Working with substrings is similar to working with methods of the <span class="code"><span class="text-green">String</span></span> class :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token function">substring</span><span class="token punctuation">(</span><span class="token class-name">String</span> str<span class="token punctuation">,</span> <span class="token keyword">int</span> start<span class="token punctuation">)</span>
+substring <span class="token punctuation">(</span><span class="token class-name">String</span> str<span class="token punctuation">,</span> <span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> end<span class="token punctuation">)</span></code></pre>
+<p>These methods return a substring from the string <span class="code">str</span> . The string is given by two indices: <strong>start</strong> and <strong>end</strong> . And as usual in Java, the last character of the range is <strong>end-1</strong> . What is the advantage of these methods?</p>
+<p>If you pass <em><strong>null</strong></em> to such a method , it will simply return <em><strong>null</strong></em> instead of throwing an exception. These methods support negative index values. In this case, the string is considered as a closed loop. The last character is followed by the first, and so on.</p>
+<p>Let's see how we can use it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token string">"lets java"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token string">"lets java"</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Running the code above gives us:</p>
+<pre><code>ts j
+ets java
+null
+</code></pre>
+<h3>StringUtils.split()</h3>
+<p>A method that allows you to split a string into substrings using a special delimiter character. If there is one in the target string, then the method will return an array of substrings. If there is no character, an empty array will be returned. Well, if <em><strong>null</strong></em> is passed to the method , it will return <em><strong>null</strong></em> . Let's take a look at this code and how the method works:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> myData <span class="token operator">=</span> <span class="token string">"Address, City, State, Zip, Phone, Email, Password"</span><span class="token punctuation">;</span>
+
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span>myData<span class="token punctuation">,</span> <span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">'.'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">,</span> <span class="token string">'.'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Result:</p>
+<pre><code>[Address,  City,  State,  Zip,  Phone,  Email,  Password]
+null
+[]
+</code></pre>
+<h3>StringUtils.join()</h3>
+<p><span class="code text-orange">The join()</span> method allows you to concatenate an array of strings into a single string. At the same time, a special separator character can be passed to it, which will be added between substrings in the resulting string. And if <em><strong>null</strong></em> is passed to the method , then it will return <em><strong>null</strong></em> .</p>
+<p>This method is the exact opposite of the <span class="code text-orange">split()</span> method . Let's look at this simple example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> myData <span class="token operator">=</span> <span class="token string">"Address, City, State, Zip, Phone, Email, Password"</span><span class="token punctuation">;</span>
+
+<span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> myString <span class="token operator">=</span>  <span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span>myData<span class="token punctuation">,</span> <span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>myString<span class="token punctuation">,</span> <span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Running the code above gives us:</p>
+<pre><code>Address- City- State- Zip- Phone- Email- Password
+</code></pre>
+<h4>StringUtils.replace()</h4>
+<p>Searches for a string within a string, finds it if it exists, and replaces all occurrences of it with a new string.</p>
+<p>The declaration of this method looks like this:</p>
+<pre><code>public static String replace(final String text, final String searchString, final String replacement)
+</code></pre>
+<p>If the search string is not found in the text, then nothing will happen and the text will remain the same. Following the same logic, if the text is <em><strong>null</strong></em> , this method returns <em><strong>null</strong></em> . If you are looking for <em><strong>a null</strong></em> string or replacing a substring with <em><strong>null</strong></em> , then the method will return the original string.</p>
+<p>Let's try this method:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> value <span class="token operator">=</span> <span class="token string">"CodeGym is the best"</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> <span class="token string">"best"</span><span class="token punctuation">,</span> <span class="token string">"cool"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Result:</p>
+<pre><code>CodeGym is the cool
+</code></pre>
+<ul>
+ <li><a href="https://stackabuse.com/guide-to-apache-commons-stringutils-class-in-java/" target="_blank">Guide to Apache Commons' StringUtils Class in Java</a></li>
+</ul>

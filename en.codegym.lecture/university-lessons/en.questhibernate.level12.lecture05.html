@@ -1,0 +1,56 @@
+Object Mapping
+<p>----------------------------------------</p>
+We store files on the server We store pictures directly in the XML and JSON database
+<p>----------------------------------------</p>
+etimes binary objects need to be saved to the database. For example, files. If the file is large, then it is most reasonable to store it in a separate folder on the disk, and store its paths in the database. Example:</p>
+<pre><code>c:\db-files\users\12355\avatar.jpg
+</code></pre>
+<p>And in the database we store just a relative path to the file:</p>
+<pre><code>\12355\avatar.jpg
+</code></pre>
+<p>It is convenient to store a relative path in the database, since it is then easy to get a URL from it:</p>
+<pre><code>https://storage.codegym.cc/users/12355/avatar.jpg
+</code></pre>
+<p>We just paste the relative path to the server name and we're done.</p>
+<h2>6.2 Store images directly in the database</h2>
+<p>However, if the pictures are small, they can be stored directly in the database and given to the client as a set of bytes. For such cases, SQL has a special <strong>BLOB</strong> data type - Binary Large Object. Or rather, there are even two of them:</p>
+<ul>
+ <li><strong>CLOB</strong> - Character Large Object,</li>
+ <li><strong>BLOB</strong> - Binary Large Object.</li>
+</ul>
+<p>CLOB is used to store very large texts. A BLOB is for storing binary data, such as small pictures, videos, and the like.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> id<span class="token punctuation">;</span>
+
+	<span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"name"</span><span class="token punctuation">,</span> columnDefinition<span class="token operator">=</span><span class="token string">"VARCHAR(128)"</span><span class="token punctuation">)</span></span><span class="token punctuation"></span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+	<span class="token annotation punctuation"><span class="text-brown">@Lob</span></span>
+	<span class="token annotation punctuation"></span><span class="text-brown"><span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"photo"</span><span class="token punctuation">,</span> columnDefinition<span class="token operator">=</span><span class="token string">"BLOB"</span><span class="token punctuation">)</span></span><span class="token punctuation"></span>
+    <span class="token keyword">private</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> photo<span class="token punctuation">;</span>
+
+	<span class="token comment">// ...</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The annotation <code>@Lob</code>tells Hibernate that <strong>a Large Object</strong> is stored in the field . And <code>columnDefinition="BLOB"</code>already talks about how to save it all in the database.</p>
+<p>Let's write an example code that saves a new user and his photo to the database:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="text-USER">imageBuffer</span> <span class="token operator">=</span> <span class="token class-name">Files</span><span class="token punctuation">.</span><span class="token function">readAllBytes</span><span class="token punctuation">(</span><span class="token class-name">Paths</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"C:/temp/avatar.png"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token class-name">User</span> <span class="text-brown">user</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-brown">user</span><span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-brown">user</span><span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">"Zapp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-brown">user</span><span class="token punctuation">.</span><span class="token function">setPhoto</span><span class="token punctuation">(</span><span class="text-user">imageBuffer</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+session<span class="token punctuation">.</span><span class="token function">persist</span><span class="token punctuation">(</span><span class="text-brown">user</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>6.3 XML and JSON</h2>
+<p>Hibernate has interesting support for JSON as a data type. It allows you to store a HashMap of strings as a single JSON object. If the DBMS can work with JSON, then it looks like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@JdbcTypeCode</span></span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-red"><span class="token class-name">SqlTypes</span><span class="token punctuation">.</span>JSON</span><span class="token punctuation">)</span>
+<span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name"></span><span class="text-user"><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span></span><span class="token class-name"></span><span class="token punctuation">&gt;</span></span> properties<span class="token punctuation">;</span></code></pre>
+<p>Hibernate takes care that the type object <code>Map&lt;String, String&gt;</code>is serialized into a single JSON object. Also, when reading an object from the database, it turns the JSON object into a set of <code>Map&lt;String, String&gt;</code>.</p>
+<p>Hibernate can do something similar with XML:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@JdbcTypeCode</span></span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-red"><span class="token class-name">SqlTypes</span><span class="token punctuation">.</span>SQLXML</span><span class="token punctuation">)</span>
+<span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name"><span class="text-user">String</span></span><span class="token punctuation">,</span> <span class="token class-name"><span class="text-viola">String</span></span><span class="token punctuation">&gt;</span></span> properties<span class="token punctuation">;</span></code></pre>

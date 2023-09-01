@@ -1,0 +1,51 @@
+Popular databases (DBMS)
+<p>----------------------------------------</p>
+Oracle. MySQL. PostgreSQL. NoSQL.
+<p>----------------------------------------</p>
+ular database, but it is the most famous one. Although it can be argued that the most popular. <strong>See how to count</strong> . If you just look at the number of companies, then MySQL is the most popular database: it's pretty good and completely free :)</p>
+<p>But it can also be considered differently. If there is <span class="text-green">one company with a million customers</span> that uses Oracle and <span class="text-user">5 companies with a hundred customers</span> that use MySQL, then Oracle has a million customers and MySQL only 500 people.</p>
+<p>In general, if you take large companies that have money and look at which DBMS they choose, then about a third of all companies in the world are sitting on Oracle. Something like this.</p>
+<p>As a programmer, you are more likely to work in the future on Oracle than on MySQL. There is an excellent video on the Internet that demonstrates how the popularity of DBMS has changed over the past 20 years.</p><jr-widget-youtube videoid="thuG2PXVbBU"></jr-widget-youtube>
+<h2>MySQL</h2>
+<p>The second most popular among all DBMS is MySQL. And it is the first in popularity among all free DBMS. Now you understand why we learn SQL from her example. Hype is hype, and business is quite conservative in the choice of infrastructure.</p>
+<p>In principle, we have already talked about MySQL. Once they were bought by <strong>Sun</strong> , then by <strong>Oracle</strong> . Which, well, it is very difficult to call a corporation of goodness.</p><img data-max-width="512" data-id="f113c042-33f4-4e19-8b7d-d1541eea673f" alt="" src="https://cdn.javarush.com/images/article/f113c042-33f4-4e19-8b7d-d1541eea673f/512.jpeg" style="width: 512px;">
+<p>It is they who, after the acquisition of Sun, are constantly trying to make Java paid.</p>
+<p>Yes, Sun owned both Java and MySQL before Oracle bought them.</p>
+<p>This fact and the reputation of Oracle scared the MySQL developers a little, who decided to fork the MySQL project and call it MariaDB.</p>
+<p><strong>MariaDB</strong> is actually <strong>a clone of MySQL</strong> with some implementation quirks that allow you to get around the nuances of patents and licenses.</p>
+<p>However, Oracle is also not fools. To prevent customers and developers from leaking to MariaDB, Oracle continues to fund the development and development of MySQL, which continues to be free.</p>
+<p><strong>And to sit on two chairs, a paid MySQL Enterprise</strong> was released for corporate clients , which is no different from <strong>MySQL Community Edition</strong> , but whose licenses are better suited for business.</p>
+<h2>PostgreSQL</h2>
+<p>Another interesting DBMS is PostgreSQL (pronounced "postgres cue").</p><img data-max-width="256" data-id="bb819d00-8f5d-416a-bb47-645f0702ae8d" alt="" src="https://cdn.javarush.com/images/article/bb819d00-8f5d-416a-bb47-645f0702ae8d/256.jpeg" style="width: 256px;">
+<p>This is another free DBMS that has been gaining popularity very quickly in recent years. Although it is still far from MySQL.</p>
+<p>PostgreSQL is primarily focused on distributed work. Its strengths are:</p>
+<ul>
+ <li>High-performance and reliable transaction and replication mechanisms</li>
+ <li>Extensible system of built-in programming languages: PL SQL, PL JS, PL Python, …</li>
+ <li>Table inheritance</li>
+ <li>Ability to index geometric (in particular, geographical) objects</li>
+ <li>Built-in support for semi-structured data in JSON format with the ability to index them</li>
+ <li>Extensibility (the ability to create new data types, index types, programming languages, extension modules, connect any external data sources)</li>
+</ul>
+<p>Do you know why it's called that? Here is how it was…</p>
+<p>About 50 years ago, in the early 70s, the University of Berkeley began to develop its own relational DBMS and called it <strong>Ingres</strong> .</p>
+<p>In the early 80s, Professor Michael Stonebreaker left the project and decided to write his own DBMS with blackjack and courtesans. He and his students started writing their own DBMS, which they called simply <strong>Post Ingres</strong> , shortened to <strong>Postgres</strong> in the future .</p>
+<p>And since the name Postgres did not mean anything to anyone, it was decided to add the SQL suffix to it. This is how PostgreSQL turned out, which immediately lost the double S, and began to be written as PostgreSQL. But you say the name, you need to read it like PostgresQL.</p>
+<h2>NoSQL</h2>
+<p>If you are interested in databases, then you have definitely heard about <strong>NoSQL databases</strong> . I hasten to upset you: NoSQL is purely <strong>a marketing name</strong> , and SQL is there. He's just truncated.</p>
+<p>What does it look like? Imagine a nice web page written in HTML, CSS and JavaScript... that was opened in a 1995 browser. It works on the strength of 10% of CSS and does not support JavaScript at all. And this new stripped-down standard is called… <strong>NoHtml</strong> .</p>
+<p>For example, JOINs between tables may not be supported in NoSQL, and then you have to either emulate this at the level of Java code in the program, or store all the data of related tables in one huge table.</p>
+<p>And if in the case of NoHtml, we seem to have rolled back 20 years ago, then in the case of NoSQL, the rollback occurs somewhere around 40 years.</p>
+<p><strong>Take, for example, the Cassandra</strong> NoSQL database that <strong>Facebook</strong> uses to store the data of billions of users. Actually, they developed it and then posted it as an OpenSource project.</p>
+<p>Let's start with the most interesting - <strong>all the DBMS code is written in Java</strong> . The C++ code would probably run faster, but there would be more bugs. And Java code is easier to maintain and develop.</p>
+<p>The general format of requests to the Casandra DBMS looks very familiar:</p>
+<pre><code>  <strong><span class="text-red">SELECT</span> <span class="text-green">columns</span>  
+  <span class="text-red">FROM</span> <span class="text-orange">table</span> 
+  <span class="text-red">WHERE</span> <span class="text-user">condition</span>
+  <span class="text-red">GROUP BY</span> columns 
+  <span class="text-red">ORDER BY</span> sorting 
+  <span class="text-red">LIMIT</span> <span class="text-user">quantity</span></strong>
+</code></pre>
+<p>As you can see, SQL is there. Do you know what's missing here? <strong>JOIN</strong> ! You can only select data from one table :)</p>
+<p>Here is a quote from the official documentation:</p>
+<p><em><span class="text-red">You cannot perform <strong>joins</strong> in Cassandra</span> . If you have designed a data model and find that you need something like a join, you'll have to either <span class="text-green">do the work on the client side</span> , or <span class="text-user">create a denormalized second table</span> that represents the join results for you.</em></p><img data-max-width="512" data-id="a353be26-fa52-4001-aa6f-064f9fd7e33f" alt="" src="https://cdn.javarush.com/images/article/a353be26-fa52-4001-aa6f-064f9fd7e33f/512.jpeg" style="width: 512px;">

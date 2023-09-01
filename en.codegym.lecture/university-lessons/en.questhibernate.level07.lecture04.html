@@ -1,0 +1,144 @@
+Working with time
+<p>----------------------------------------</p>
+The current state of affairs over time. Modern problems require modern solutions. Getting a date. Setting the time zone in MySQL.
+<p>----------------------------------------</p>
+>
+<p>Since the time when JDBC was invented and its interfaces were standardized, 20 years have passed, and during this time a lot of things have changed.</p>
+<p>Firstly, the world has become global and now one server can serve users from all over the world. The internet speed is up. Therefore, <strong>another data type was added to SQL</strong> to work with time. Now the types look like this:</p>
+<ul>
+ <li><strong>DATE</strong> - stores the date: year, month, day.</li>
+ <li><strong>TIME</strong> - stores time: hours, minutes, seconds.</li>
+ <li><strong>TIMESTAMP</strong> - stores a specific point in time: date, time and milliseconds.</li>
+ <li><span class="text-red"><span class="text-bold">TIMESTAMP WITH TIME ZONE</span></span> - TIMESTAMP and time zone (zone name or offset).</li>
+</ul>
+<p>Secondly, Java introduced the DateTime API for global time management. It has the following classes:</p>
+<ul>
+ <li><strong>Date and time</strong> : 
+  <ul>
+   <li><span class="code"><span class="text-green">LocalDate</span></span></li>
+   <li><span class="code"><span class="text-green">LocalTime</span></span></li>
+  </ul></li>
+ <li><strong>Exact moment</strong> : 
+  <ul>
+   <li><span class="code"><span class="text-green">java.time.Instant</span></span></li>
+   <li><span class="code"><span class="text-green">java.time.LocalDateTime</span></span></li>
+   <li><span class="code"><span class="text-green">java.time.OffsetDateTime</span></span></li>
+   <li><span class="code"><span class="text-green">java.time.ZonedDateTime</span></span></li>
+  </ul></li>
+ <li><strong>Time with time zone</strong> : 
+  <ul>
+   <li><span class="code"><span class="text-green">java.time.OffsetDateTime</span></span></li>
+   <li><span class="code"><span class="text-green">java.time.ZonedDateTime</span></span></li>
+  </ul></li>
+</ul>
+<p>The third interesting point is that <span class="text-green">many SQL clients would like to receive time from the server already in their local zone</span> . Of course, you can convert time on the fly, but it's not convenient, and there are mistakes.</p>
+<p>For example, I want to get all the tasks for today from the database. SQL Server has a <strong>CURDATE()</strong> function for this. Only here the server is in the USA, and I am in Japan. And I would like him to return all the records for “my today”, and not “his today”.</p>
+<p>In general, the SQL server must also be able to work smartly with clients in different time zones.</p>
+<h2>Modern problems require modern solutions</h2>
+<p>In principle, new types from the Java DateTime API and types from SQL can be conveniently mapped. To represent the <strong><span class="text-red">DATE</span></strong><strong> type<span class="text-red"></span></strong> in Java, you need to use the <span class="code"><span class="text-green">java.time.LocalDate</span></span> class from the JDK 8 DateTime API.</p>
+<p>The TIME type from the database can be represented by two types from Java: <span class="code"><span class="text-green">java.time.LocalTime</span></span> and <span class="code"><span class="text-green">java.time.OffsetTime</span></span> . Nothing complicated either.</p>
+<p>A specific point in time, represented by the <strong><span class="text-red">TIMESTAMP</span></strong> type in the database, can be represented in Java by 4 types:</p>
+<ul>
+ <li><span class="code"><span class="text-green">java.time.Instant</span></span></li>
+ <li><span class="code"><span class="text-green">java.time.LocalDateTime</span></span></li>
+ <li><span class="code"><span class="text-green">java.time.OffsetDateTime</span></span></li>
+ <li><span class="code"><span class="text-green">java.time.ZonedDateTime</span></span></li>
+</ul>
+<p>And finally, <strong><span class="text-red">TIMESTAMP WITH TIME ZONE</span></strong> can be represented by two types:</p>
+<ul>
+ <li><span class="code"><span class="text-green">java.time.OffsetDateTime</span></span></li>
+ <li><span class="code"><span class="text-green">java.time.ZonedDateTime</span></span></li>
+</ul>
+<p>Since you are already familiar with the DateTime API, remembering this matter will not be difficult for you :)</p>
+<p>I will write it in the form of a table, so it will be easier:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th><strong>SQL TYPE</strong></th>
+    <th>Java Type</th>
+   </tr>
+   <tr>
+    <td><strong>DATE</strong></td>
+    <td><span class="code"><span class="text-green">java.time.LocalDate</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>TIME</strong></td>
+    <td><span class="code"><span class="text-green">java.time.LocalTime </span></span><br><span class="code"><span class="text-green">java.time.OffsetTime</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>TIMESTAMP</strong></td>
+    <td><span class="code"><span class="text-green">java.time.Instant </span></span><br><span class="code"><span class="text-green">java.time.LocalDateTime </span></span><br><span class="code"><span class="text-green">java.time.OffsetDateTime </span></span><br><span class="code"><span class="text-green">java.time.ZonedDateTime</span></span></td>
+   </tr>
+   <tr>
+    <td><strong>TIMESTAMP WITH TIME ZONE</strong></td>
+    <td><span class="code"><span class="text-green">java.time.OffsetDateTime </span></span><br><span class="code"><span class="text-green">_</span></span></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>Getting the date</h2>
+<p>I have a good news for you. First in a long time. <span class="text-green">We can get around the limitation of the <span class="code text-orange">getDate()</span> method , which returns a java.sql Date type.</span></p>
+<p>The point is that the object<mark class="green">result set</mark>there is another interesting method - <span class="code text-orange">getObject()</span> . This method takes two parameters: a column and a type, and returns the value of the column converted to the given type. The general form of the method is as follows:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-user">ClassName</span> <span class="text-green">Name</span> <span class="token operator">=</span> <span class="token function"><span class="text-red">getObject</span></span><span class="token punctuation">(</span><span class="text-orange">column</span><span class="token punctuation">,</span> <span class="text-user">ClassName</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</div>
+<p>And if you want to convert the <strong>DATE</strong> type to the <span class="code"><span class="text-green">java.time.LocalDate</span></span> type , then you need to write something like:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token class-name">LocalDate</span> localDate <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token class-name">LocalDate</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>And any TIMESTAMP in general can be converted to a bunch of types:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>Instant</span> instant <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>Instant</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>LocalDateTime</span> local <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span> LocalDateTime</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>OffsetDateTime</span> offset <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span> OffsetDateTime</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span>ZonedDateTime</span> zoned <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>time<span class="token punctuation">.</span></span> ZonedDateTime</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Important! </strong> <span class="text-red">This code will not work if you have an outdated MySQL JDBC Driver</span> . Pay attention to the version of "mysql-connector-java" written in your pom.xml, or added to the Libraries in the project settings.</p>
+<p>By the way, in the same way, you can get around the inability to store null for primitive types. If a table column is of type INT, then there are a couple of ways to get null from it. See example below:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Integer</span> id1 <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    	 <span class="token comment">// this will work</span>
+<span class="token class-name">Integer</span> id2 <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                 <span class="token comment">//this will also work</span>
+<span class="token keyword">int</span> id3 <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span>  <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>            	<span class="token comment">//method will return null, JVM will throw NPE</span>
+<span class="token keyword">int</span> id4 <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span>  <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                    	<span class="token comment">//method will return null, JVM will throw NPE</span></code></pre>
+<h2>Timezone setting in MySQL</h2> A lot of interesting things happened with MySQL too. As you know, when creating a MySQL connection, you can add various <strong>parameters</strong> to it : 
+<pre><code><span class="text-red">mysql</span>://<span class="text-green">localhost</span>:<span class="text-neon">3306</span>/<span class="text-viola">db_scheme</span>?<span class="text-green">Name</span>=<span class="text-user">meaning</span>&amp;<span class="text-green">Name</span>=<span class="text-user">meaning</span>
+</code></pre>
+<p>So, three parameters have been added to work with time zones in MySQL. You can pass these parameters when you establish a connection to the server.</p>
+<p>Below I will give a table with them:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Parameter</th>
+    <th>Values</th>
+    <th>Default value</th>
+   </tr>
+   <tr>
+    <td><span class="text-green">connectionTimeZone</span></td>
+    <td>LOCAL | SERVER | user-zone</td>
+    <td>SERVER</td>
+   </tr>
+   <tr>
+    <td><span class="text-green">forceConnectionTimeZoneToSession</span></td>
+    <td>true | false</td>
+    <td>true</td>
+   </tr>
+   <tr>
+    <td><span class="text-green">preserveInstants</span></td>
+    <td>true | false</td>
+    <td>false</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Using the <span class="text-green">connectionTimeZone</span> parameter , we select the time zone (time zone) in which all requests will be executed. From the client's point of view, the server is running in the specified time zone.</p>
+<p><span class="text-green">The forceConnectionTimeZoneToSession</span> parameter causes the session time_zone variable to be ignored and replaced with connectionTimeZone.</p>
+<p>Finally, <span class="text-green">the preserveInstants</span> parameter controls the exact-time-conversion between the JVM's timeZone and connectionTimeZone.</p>
+<p>The most common configurations are:</p>
+<ul>
+ <li>
+  <p><strong>connectionTimeZone=LOCAL &amp; forceConnectionTimeZoneToSession=false</strong> - corresponds to the old MySQL JDBC driver version 5.1 with useLegacyDatetimeCode=true.</p></li>
+ <li>
+  <p><strong>connectionTimeZone=LOCAL &amp; forceConnectionTimeZoneToSession=true</strong> is a new mode that provides the most natural way to handle date and time values.</p></li>
+ <li>
+  <p><strong>connectionTimeZone=SERVER &amp; preserveInstants=true</strong> - Corresponds to the old MySQL JDBC driver version 5.1 with useLegacyDatetimeCode=false.</p></li>
+ <li>
+  <p><strong>connectionTimeZone=user_defined &amp; preserveInstants=true</strong> - Helps overcome the situation where the server's time zone cannot be recognized by the connector because it is set as a generic abbreviation such as CET/CEST.</p></li>
+</ul>
+<p>Yes, dates are an interesting topic and there are many problems with them. As the saying goes: it's scary, of course, but I'm not pissed either! :)</p>

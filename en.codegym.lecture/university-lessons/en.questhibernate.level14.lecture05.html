@@ -1,0 +1,102 @@
+Configuring the Second Level Cache
+<p>----------------------------------------</p>
+Parallel Access Strategies. Storing data in a cache. CacheMode.
+<p>----------------------------------------</p>
+enable second-level caching in Hibernate, you need to explain to Hibernate which Entity objects we want to cache and how.</p>
+<p>To do this, Hibernate has a special annotation for Entity classes - <span class="text-yellow"><span class="text-bold">@Cache</span></span> . Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token annotation punctuation"></span><span class="text-red"><span class="token annotation punctuation">@Cache</span><span class="token punctuation">(</span>usage <span class="token operator">=</span> <span class="token class-name">CacheConcurrencyStrategy</span><span class="token punctuation">.</span>READ_WRITE<span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p>This annotation needs to be written for each Entity entity for which we want to use the second level cache. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"employee"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Cache</span><span class="token punctuation">(</span>usage <span class="token operator">=</span> <span class="token class-name">CacheConcurrencyStrategy</span><span class="token punctuation">.</span>READ_WRITE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">&gt;</span></span> tasks<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Hibernate has 4 possible access strategies for a cached entity if it is accessed from different threads:</p>
+<ul>
+ <li>read-only</li>
+ <li>read-write</li>
+ <li>nonstrict-read-write</li>
+ <li>transactional</li>
+</ul>
+<p><strong>Read</strong> -only. A data-appropriate concurrency strategy that never changes. Hibernate will simply store these objects in its memory. Use it for reference data only.</p>
+<p>Databases store a lot of information that never changes. For example, a table keeps a list of events that are only added but never changed or removed. If you need to work with this table through Hibernate, then the read-only caching strategy will suit you.</p>
+<p><strong>Read-write</strong> (read-write). Use this strategy for data that is primarily readable. However, Hibernate will track attempts to change this data, although it expects them to be very infrequent.</p>
+<p>You need to cache mainly those objects that rarely change and are often read / requested. If you have such objects, then you need to use the read-write strategy for them.</p>
+<p><strong>Nonstrict-read-write</strong> . This strategy does not guarantee consistency between the cache and the database. Use this strategy if the data almost never changes and a small chance of stale data is not a critical issue.</p>
+<p>Unlike the read-write strategy, this strategy assumes that mutable data is not locked for reading. This can result in the object being changed in one place, while in another, someone is reading the old version of it.</p>
+<p>For example, a user has changed his comment, but other users still see his old version for some time. If this is not a problem for you, then use the nonstrict-read-write strategy.</p>
+<p><strong>Transactional</strong> . Use this strategy for primarily read-only data where it is important to prevent stale data in concurrent transactions on the rare occasion of an update.</p>
+<h2>Storing data in a cache</h2>
+<p>Another important detail about the second level cache that you should remember is that Hibernate does not store the objects of your classes themselves. It stores information as arrays of strings, numbers, etc.</p>
+<p>And the object identifier acts as a pointer to this information. Conceptually, this is something like a Map, in which the id of the object is the key, and the data arrays are the value. You can imagine it like this:</p>
+<pre><code>1 -&gt; { "Ivanов", 1, null , {1,2,5} }
+2 -&gt; { "Peterов", 2, null , {1,2,5} }
+3 -&gt; { "Сидоров", 3, null , {1,2,5} }</code></pre>
+<p>Which is very reasonable considering how much extra memory each object takes up.</p>
+<p>In addition to the above, you should remember that the dependencies of your Entity class are also not cached by default. For example, if we consider the class above, <span class="code"><span class="text-green">Employee</span></span> , then when fetching, the tasks collection will be <span class="text-green">retrieved from the database</span> , and <span class="text-red">not from the second-level cache</span> .</p>
+<p>If you want to cache dependencies as well, then the class should look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"employee"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Cache</span><span class="token punctuation">(</span>usage <span class="token operator">=</span> <span class="token class-name">CacheConcurrencyStrategy</span><span class="token punctuation">.</span>READ_WRITE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Cache</span><span class="token punctuation">(</span>usage <span class="token operator">=</span> <span class="token class-name">CacheConcurrencyStrategy</span><span class="token punctuation">.</span>READ_WRITE<span class="token punctuation">)</span>
+   <span class="token keyword">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">&gt;</span></span> tasks<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And the last detail - reading from the second-level cache occurs only if the desired object was not found in the first-level cache.</p>
+<h2>CacheMode</h2>
+<p>Hibernate allows for very flexible caching management. You can set the cache mode for each individual session or even for each database request.</p>
+<p>There are five such modes:</p>
+<ul>
+ <li><strong>GET</strong></li>
+ <li><strong>IGNORE</strong></li>
+ <li><strong>NORMAL</strong></li>
+ <li><strong>PUT</strong></li>
+ <li><strong>REFRESH</strong></li>
+</ul>
+<p>The table below describes their work:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>CacheMode</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>GET</td>
+    <td>Data is read from the cache but not added to it.</td>
+   </tr>
+   <tr>
+    <td>IGNORE</td>
+    <td>The session does not interact with the cache.</td>
+   </tr>
+   <tr>
+    <td>NORMAL</td>
+    <td>Data is read from the cache and added to it.</td>
+   </tr>
+   <tr>
+    <td>PUT</td>
+    <td>Data is never taken from the cache, but added to it.</td>
+   </tr>
+   <tr>
+    <td>REFRESH</td>
+    <td>Data is never taken from the cache, but added to it. In this mode, the hibernate.cache.use_minimal_puts setting is additionally used.</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>An example of setting the cache mode for a session:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java">session<span class="token punctuation">.</span><span class="token function">setCacheMode</span><span class="token punctuation">(</span><span class="token class-name">CacheMode</span><span class="token punctuation">.</span>GET<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Employee</span> director <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"from Employee where id = 4"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">uniqueResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>And also an example of setting the mode for the session and the request:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java">session<span class="token punctuation">.</span><span class="token function">setCacheMode</span><span class="token punctuation">(</span><span class="token class-name">CacheMode</span><span class="token punctuation">.</span>GET<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Query</span> query <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"from Employee where id = 4"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+query<span class="token punctuation">.</span><span class="token function">setCacheMode</span><span class="token punctuation">(</span><span class="token class-name">CacheMode</span><span class="token punctuation">.</span>IGNORE<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Ignore cache work for this request</span>
+<span class="token class-name">Employee</span> director <span class="token operator">=</span> query<span class="token punctuation">.</span><span class="token function">uniqueResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>

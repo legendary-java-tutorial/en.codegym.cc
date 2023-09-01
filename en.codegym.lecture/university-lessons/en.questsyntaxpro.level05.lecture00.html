@@ -1,0 +1,131 @@
+Arrays
+<p>----------------------------------------</p>
+An array is a container of elements You've probably heard that computers can process vast amounts of information. The conditional statement (if-else) and loops (for, while) certainly help with this. But you won't get far with them. After all, the processed data needs to be stored somehow. For this case in Java,
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="2221a492-4856-4bf5-9860-de89c0d1c0e6" data-max-width="1024" src="https://cdn.javarush.ru/images/article/2221a492-4856-4bf5-9860-de89c0d1c0e6/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="d7873f4a-6f9e-4a1d-9a8b-9cdfe7e4dfdc" data-max-width="1024" src="https://cdn.javarush.ru/images/article/d7873f4a-6f9e-4a1d-9a8b-9cdfe7e4dfdc/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="a6ba674d-a986-480a-af4c-b23eb55b4deb" data-max-width="1024" src="https://cdn.javarush.ru/images/article/a6ba674d-a986-480a-af4c-b23eb55b4deb/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="ac9797a0-65d4-4efc-bc13-0c5920fb92d9" data-max-width="512" src="https://cdn.javarush.ru/images/article/ac9797a0-65d4-4efc-bc13-0c5920fb92d9/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="37f0d9ad-6362-4b14-b40a-859cf03bced0" data-max-width="512" src="https://cdn.javarush.ru/images/article/37f0d9ad-6362-4b14-b40a-859cf03bced0/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="954aa5e4-1b07-4c24-a17c-f04eb81803fc" data-max-width="512" src="https://cdn.javarush.ru/images/article/954aa5e4-1b07-4c24-a17c-f04eb81803fc/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="23121bbb-c933-4985-a9bb-93f56f2a7d82" data-max-width="512" src="https://cdn.javarush.ru/images/article/23121bbb-c933-4985-a9bb-93f56f2a7d82/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="fdcf8d34-2025-4501-83c2-45a6eb787f77" data-max-width="512" src="https://cdn.javarush.ru/images/article/fdcf8d34-2025-4501-83c2-45a6eb787f77/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="5e362ea9-7743-4b61-807c-6ba3047234c2" data-max-width="512" src="https://cdn.javarush.ru/images/article/5e362ea9-7743-4b61-807c-6ba3047234c2/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. An array is a container of elements</h2>
+<p>You've probably heard that computers can process huge amounts of information. Of course, conditional statements (<code>if-else</code>) and loops (<code>for</code>, <code>while</code>) are a big help here. But they can only take you so far. After all, the data you process needs to be stored somehow.</p>
+<p>Like almost all programming languages, Java facilitates data processing by providing this great thing called an <span class="term text-viola">array</span> (<code>Array</code> class). They are also sometimes called tables.</p>
+<p>An <span class="term text-viola">array</span> is a special object that lets you store not one value, but <span class="text-green">several</span>.</p>
+<p><img data-max-width="1024" data-id="e490555a-b33d-4968-9d5b-62f1ef2b4e4c" src="https://cdn.codegym.cc/images/article/e490555a-b33d-4968-9d5b-62f1ef2b4e4c/1024.jpeg" alt="Java Arrays"></p>
+<p>Earlier we compared a variable to a box (in which you can store any value). Continuing that analogy, we can think of an array as a box that has internal compartments. Each compartment in the "box" (array) has a number. Of course, the numbering starts from zero...</p>
+<p>Or we can make another analogy. Let's compare an ordinary house and a high-rise apartment building. An ordinary house is occupied by a single family, but a high-rise apartment building is divided into apartments. If you want to send a letter to a family that lives in an ordinary house, you indicate the unique address of the house. And to send a letter to a family that lives in an apartment, you indicate the unique address of the building as well as the apartment number.</p>
+<p>An array variable is like a high-rise variable. It can store not one but many values. Such a variable has several apartments (cells). Each of them can be addressed by their number (index).</p>
+<p>To do this, after the name of the variable, you indicate the index of the cell you want to address, wrapping the index in square brackets. This is pretty simple:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="text-red">array</span>[<span class="text-green">index</span>] = <span class="text-user">value</span>;</code></pre>
+</div>
+<p>Where <code><span class="text-red">array</span></code> is the name of the array variable, <code><span class="text-green">index</span></code> is the cell number in the array, and <code><span class="text-user">value</span></code> is the value that we want to put into the specified cell.</p>
+<p>But to start, let's out how to create arrays.</p>
+<hr>
+<h2>2. Creating an array of elements in Java</h2>
+<p><img data-max-width="1024" data-id="3dd144b9-3f7c-4f6d-86e9-d9691e827998" src="https://cdn.codegym.cc/images/article/3dd144b9-3f7c-4f6d-86e9-d9691e827998/1024.jpeg" alt="Creating an array of elements in Java"></p>
+<p>Let's say your program needs to store <code>100</code> integers somewhere. An array would be a good candidate for this. And how do you create one?</p>
+<p>If we wanted to store a single integer, the <code>int</code> type would suit us. But if we want to store <code>100</code> integers, we probably need an <span class="term"><span class="text-orange">array</span></span> of <code><span class="text-viola">int</span></code>s. This is how the code to create one would look:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span><span class="text-orange">int[]</span> <span class="text-red">array</span> </span><span>= new <span class="text-viola">int</span>[<span class="text-user">100</span>];</span></code></pre>
+</div>
+<p>Let's explore this statement.</p>
+<p>As you might have guessed, to the left of the equal sign we have the declaration of a variable named <code><span class="text-red">array</span></code> whose type is <code><span class="text-orange">int[]</span></code>. The <code><span class="text-orange">int</span></code> type is followed by square brackets, which hints that "boxes" of this type can store not one but several values.</p>
+<p>To the right of the equal sign, we have an example of "object creation" (the <code>new</code> keyword) to get <code><span class="text-user">100</span></code> elements (cells) whose type is int. Nothing too difficult here.</p>
+<p>Similarly, if we wanted to create an array of <span class="text-user">20</span> cells to store real numbers, then our code would look something like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span><span class="text-orange">double[]</span> <span class="text-red">vals</span></span> <span>= new <span class="text-viola">double</span>[<span class="text-user">20</span>];</span></code></pre>
+</div>
+<p>The number of cells in an array is called the <span class="text-orange">size of the array</span> or the <span class="text-orange">length of the array</span>. And because arrays can store many values, they are also called containers.</p>
+<p>Here's an important fact: <span class="text-red">you cannot change the size of an array after it is created</span>.</p>
+<p>You can create a new one, but the length of the existing container cannot be changed.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0501"></div>
+<hr>
+<h2>3. Working with the cells of an array</h2>
+<p><img data-max-width="1024" data-id="095c6fc9-2e53-4658-8de9-1ea1bd15223b" src="https://cdn.codegym.cc/images/article/095c6fc9-2e53-4658-8de9-1ea1bd15223b/1024.jpeg" alt="Working with the cells of an array"></p>
+<p>Okay, we've learned how to create arrays. Now how do we work with them?</p>
+<p>Well, in almost the same way as with ordinary variables. The only difference is that after the name of the array variable, we have to indicate the number of the cell that we are working with.</p>
+<p><span class="text-red">The numbering of cells in an array always starts from zero.</span> If we have an array of <code>10</code> elements, then the numbers (indices) of its cells are <code>0..9</code>. If the array contains <code>200</code> elements, then the indices are <code>0..199</code>. And so on by analogy.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Explanation</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>int[] <span class="text-red">a</span> = new int[10];
+<span class="text-red">a</span>[2] = 4;
+<span class="text-red">a</span>[7] = 9;
+<span class="text-red">a</span>[9] = <span class="text-red">a</span>[2] + <span class="text-red">a</span>[5];</code></pre>
+        </td>
+        <td>Create an array of <code>10</code> <code>int</code> elements.<br>
+            Assign the value <code>4</code> to the cell with index <code>2</code>.<br>
+            Assign the value <code>9</code> to the cell with index <code>7</code>.<br>
+            In the cell with index <code>9</code>, write the sum of the values that are stored in cells <code>2</code> (which stores the value <code>4</code>) and <code>5</code> (which stores the value <code>0</code>).
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>This is what will be stored in memory after this code is executed:</p>
+<p><img data-max-width="1024" data-id="2d4019ff-277c-4e6b-9224-d1183d365311" src="https://cdn.codegym.cc/images/article/2d4019ff-277c-4e6b-9224-d1183d365311/1024.jpeg" alt="Working with the cells of an int array 2"></p>
+<p>The column on the left (in gray) represents the cell numbers (indices). The cells store the assigned values: <code>4</code>, <code>9</code> and <code>4</code>. When the array is created its cells are all filled with zeros.</p>
+<p>This is important. All cells in an array have the same data type. If we create an array of <code>String</code>s, only strings can be stored in its cells. An array's data type is specified when it is created. Neither the data type nor the length of the array can be changed later.</p>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0502"></div>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0503"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="dc061a3a-cfec-4648-86b6-8e1364b79e20" data-max-width="1024" src="https://cdn.javarush.ru/images/article/dc061a3a-cfec-4648-86b6-8e1364b79e20/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="9a11225d-02ac-4d6f-9e2f-843c1273b5ed" data-max-width="512" src="https://cdn.javarush.ru/images/article/9a11225d-02ac-4d6f-9e2f-843c1273b5ed/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="69b5c868-7220-40f9-87ca-09a04c1c9cff" data-max-width="512" src="https://cdn.javarush.ru/images/article/69b5c868-7220-40f9-87ca-09a04c1c9cff/original.png" alt="">
+        </div>
+    </div>
+</div>

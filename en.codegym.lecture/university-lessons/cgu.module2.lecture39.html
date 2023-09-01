@@ -1,0 +1,146 @@
+Annotation options
+<p>----------------------------------------</p>
+The main benefit of annotations is not to use those that are already in the JDK. At the same time, the need to create your own annotation appears infrequently. For example, if we are developing a large system or dedicating a separate library...
+<p>----------------------------------------</p>
+<p>The main benefit of annotations doesn't come from using the standard ones that are already in the JDK. At the same time, there is rarely a need to create your own annotation. But if we're developing a large system or creating a separate library, then at the architectural level, implementing our own annotation will definitely yield dividends.</p>
+
+    <p>Let's try to create an annotation. </p>
+
+    <p>To do this, create a file, but instead of writing <span class="code">class</span> or <span class="code">interface</span>, write <span class="code">@interface</span>. This will be the file for our annotation. The internal structure of an annotation is similar to that of an interface. </p>
+
+    <pre class='language-java line-numbers'><code>
+public @interface Sum {
+   int sum() default 0;
+}
+</code></pre>
+
+    <p><span class="code">@interface</span> indicates that this is an annotation,<br />
+<span class="code">default</span> says that the parameter will have a specific default value.</p>
+
+    <p>Ta-da! We created an annotation! Theoretically we can use it already, but first it would be better to configure it. </p>
+
+    <p>Without configuration, our annotation can be applied to anything (to classes, methods, attributes, etc.), so it makes little sense to use it at this point. Strange as it may seem, our annotation needs to be annotated with other annotations!</p>
+
+    <p>Let's start with <span class="text-yellow"><span class="text-bold">@Target</span></span>.</p>
+
+    <p>The <span class="text-yellow"><span class="text-bold">@Target</span></span> annotation (relevant since Java 1.5) restricts the ability to apply an annotation. To limit usage to a certain level, we need to pass an argument to the <span class="text-yellow"><span class="text-bold">@Target</span></span> annotation to indicate which types it can be applied to. Here are some of the commonly used types:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Target(ElementType.PACKAGE)</span></span></td>
+                <td>for packages</td>
+            </tr>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Target(ElementType.TYPE)</span></span></td>
+                <td>for classes</td>
+            </tr>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Target(ElementType.CONSTRUCTOR)</span></span></td>
+                <td>for constructors</td>
+            </tr>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Target(ElementType.METHOD)</span></span></td>
+                <td>for methods</td>
+            </tr>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Target(ElementType.FIELD)</span></span></td>
+                <td>for attributes (variables) in a class</td>
+            </tr>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Target(ElementType.PARAMATER)</span></span></td>
+                <td>for method parameters</td>
+            </tr>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Target(ElementType.LOCAL_VARIABLE)</span></span></td>
+                <td>for local variables</td>
+            </tr>
+        </tbody>
+    </table>
+ 
+    <p>If you need an annotation for several types, then you can pass several arguments as an array:</p>
+
+    <pre class='language-java line-numbers'><code>
+@Target({ ElementType.PARAMETER, ElementType.LOCAL_VARIABLE })
+</code></pre>
+ 
+    <p>The next important part of configuration is the <span class="text-yellow"><span class="text-bold">@Retention</span></span> annotation.</p>
+
+    <p>This annotation indicates the parts of the code life cycle in which our annotation will be available: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td><span class="code">RetentionPolicy.SOURCE</span></td>
+                <td>Annotations marked with the <span class="text-bold">SOURCE</span> retention policy are discarded at run time.</td>
+            </tr>
+            <tr>
+                <td><span class="code">RetentionPolicy.CLASS</span></td>
+                <td>Annotations marked with the <span class="text-bold">CLASS</span> retention policy are written to the <span class="code">.class</span> file, but are removed at run time.</td>
+            </tr>
+            <tr>
+                <td><span class="code">RetentionPolicy.RUNTIME</span></td>
+                <td>Annotations marked with the <span class="text-bold">RUNTIME</span> retention policy persist at run time and can be accessed in our program at run time.</td>
+            </tr>
+        </tbody>
+    </table>
+ 
+    <p>There are a few more annotations you can use for configuration: </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Annotation</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Inherited</span></span></td>
+                <td>Indicates that a derived class inherits a parent class's implementation of the annotation.</td>
+            </tr>
+            <tr>
+                <td><span class="text-yellow"><span class="text-bold">@Documented</span></span></td>
+                <td>This indicates that the annotation will be included in the generated Javadoc documentation.</td>
+            </tr>
+        </tbody>
+    </table>
+ 
+    <p>Now let's try to create our own annotation.</p>
+
+    <p>We'll create an annotation that is for classes and methods and contains information about the code's author and version:</p>
+
+<pre class='language-java line-numbers'><code>
+    @Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Info {
+   String author() default "Author";
+   String version() default "0.0";
+}
+</code></pre>
+
+    <p>We can apply our annotation to methods and classes. Our annotation's metadata will be available at run time. Pay attention to our annotation's parameters: We can supply two arguments (author and version), or we can omit them. If we omit them, then the specified default values (<span class="code">default "Author"</span> and <span class="code">default "0.0"</span>) will be used.</p>
+ 
+    <p>It is worth noting that we don't have to specify a default value for parameters. In this case, the parameter becomes mandatory. </p>
+
+    <p>When passing arguments, we must specify the corresponding parameter using the notation <span class="code">value = "value"</span>. The parameter must always be named explicitly, even if the annotation has a single parameter.</p>
+
+    <p>Let's apply our annotation to a few classes: </p>
+
+    <pre class='language-java line-numbers'><code>
+@Info
+public class MyClass1 {
+   @Info
+   public void myClassMethod() {}
+}
+ 
+@Info(version = "2.0")
+public class MyClass2 {
+   @Info(author = "Anonymous")
+   public void myClassMethod() {}
+}
+ 
+@Info(author = "Anonymous", version = "2.0")
+public class MyClass3 {
+   @Info(author = "Anonymous", version = "4.0")
+   public void myClassMethod() {}
+}
+</code></pre>

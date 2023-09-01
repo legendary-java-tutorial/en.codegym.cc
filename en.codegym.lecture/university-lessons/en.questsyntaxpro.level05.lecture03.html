@@ -1,0 +1,151 @@
+Advanced Arrays
+<p>----------------------------------------</p>
+Array of type String Well, I would like to briefly tell you about an array of type String. As we said above, an array can be of any type. So you can create an array of type String. This is what the code would look like if we were to write a program that "enters 10 lines from the keyboard and outputs and
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="929ac525-b321-443b-98af-3df82d661e69" data-max-width="1024" src="https://cdn.javarush.ru/images/article/929ac525-b321-443b-98af-3df82d661e69/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="14ea71ce-3575-4ca0-a557-310303d03296" data-max-width="512" src="https://cdn.javarush.ru/images/article/14ea71ce-3575-4ca0-a557-310303d03296/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="78a1f12b-8f10-4d4b-9e4e-bf4675a4f28c" data-max-width="512" src="https://cdn.javarush.ru/images/article/78a1f12b-8f10-4d4b-9e4e-bf4675a4f28c/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. <code>String</code> array</h2>
+<p>I'd like to give you a brief overview about <code>String</code> arrays.</p>
+<p>As we said previously, an array can be of any type. This means you can create an array of <code>String</code>s. If we wanted to write a program that "reads 10 lines from the keyboard and displays them in reverse order," here's what the code would look like:</p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>Scanner <span class="text-orange">console</span> = new Scanner(<span class="text-viola">System.in</span>);
+String[] <span class="text-red">array</span> = new String[10];
+for (int <span class="text-green">i</span> = 0; <span class="text-green">i</span> &lt; 10; <span class="text-green">i</span>++)
+{
+   <span class="text-red">array</span>[<span class="text-green">i</span>] = <span class="text-orange">console</span>.nextLine();
+}
+for (int <span class="text-green">i</span> = 9; <span class="text-green">i</span> &gt;= 0; <span class="text-green">i</span>--)
+{
+   System.out.println(<span class="text-red">array</span>[<span class="text-green">i</span>]);
+}</code></pre>
+        </td>
+        <td>
+            Create a <code>Scanner</code> object<br>
+            Create a 10-element array object<br>
+            Loop from 0 to 9<br><br>
+            Read a string from the keyboard and save it in the next cell of the array<br>
+            Loop from 9 to 0<br><br>
+            Display the next cell in the array<br><br>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The code barely changed! We only had to replace <code>int</code> with <code>String</code> when creating the array. Well, and when reading the string from the keyboard, we also replaced the <code>nextInt()</code> method with <code>nextLine()</code>.</p>
+<hr>
+<h2>2. <code>String</code> array in memory</h2>
+<p>And one more useful fact. Let's consider 3 pictures:</p>
+<p><strong>Picture 1.</strong> How a <code>String</code> object is arranged in memory:</p>
+<p><img data-max-width="1024" data-id="4b34dfcc-52e3-48cf-8e93-121b9a964416" src="https://cdn.codegym.cc/images/article/4b34dfcc-52e3-48cf-8e93-121b9a964416/1024.jpeg" alt="String array in memory"></p>
+<p>This picture was taken from previous lessons.</p>
+<p>Please note that the text of the string is not stored directly in the variable: a separate block of memory is allocated for it. A <code>String</code> variable stores the address (reference) to an object that stores the text.</p>
+<p><strong>Picture 2.</strong> How an integer array is arranged in memory:</p>
+<p><img data-max-width="1024" data-id="c48fd48e-b0f5-448d-b278-f37ba096c774" src="https://cdn.codegym.cc/images/article/c48fd48e-b0f5-448d-b278-f37ba096c774/1024.jpeg" alt="String array in memory 2"></p>
+<p>This picture is also familiar.</p>
+<p><strong>Picture 3.</strong> How a string array is arranged in memory:</p>
+<p><img data-max-width="1024" data-id="f32d42f3-45bd-426c-9693-a857d4bb71ed" src="https://cdn.codegym.cc/images/article/f32d42f3-45bd-426c-9693-a857d4bb71ed/1024.jpeg" alt="How a String array is arranged in memory"></p>
+<p>On the left we see an array variable whose type is <code>String[]</code> (it stores the address of an array object).</p>
+<p>In the middle, we have <code>String</code> array object itself.</p>
+<p>And on the right are string objects that store some text.</p>
+<p>The cells of the <code>String</code> array do not store the strings themselves (the text of the String objects). Instead, they store their addresses (references to them). In the same way that <code>String</code> variables store the addresses of string objects (where the text is stored).</p>
+<p>Take this into consideration when you <strong>compare array cells:</strong></p>
+<table>
+    <tbody>
+    <tr>
+        <td>
+<pre class="language-java"><code>String[] <span class="text-red">array</span> = new String[10];
+<span class="text-red">
+array</span>[1] = "Hello";
+<span class="text-red">array</span>[2] = <span class="text-red">array</span>[1];
+<span class="text-red">array</span>[3] = new String("Hello");
+// Compare
+<span class="text-red">array</span>[1] == <span class="text-red">array</span>[2];
+<span class="text-red">array</span>[1] == <span class="text-red">array</span>[3];
+<span class="text-red">array</span>[1].equals(<span class="text-red">array</span>[3]);
+<span class="text-red">array</span>[1].equalsIgnoreCase(<span class="text-red">array</span>[3]);</code></pre>
+        </td>
+        <td>
+            Create an array of 10 strings<br><br>
+            Put values into the array<br><br><br><br>
+            <code><span class="text-green">true</span></code> <span>(the references are equal)</span><br>
+            <code><span class="text-red">false</span></code> <span>(the references are not equal)</span><br>
+            <code><span class="text-green">true</span></code> (the strings are equal)<br>
+            <code><span class="text-green">true</span></code> (the strings are still equal)
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0508"></div>
+<hr>
+<h2>3. Fast array initialization in Java</h2>
+<p>Arrays are super useful, so Java's creators tried to make working with them as convenient as possible.</p>
+<p>The first thing they did was to simplify array initialization, the process by which you supply the initial values of an array.</p>
+<p>After all, in addition to data read from somewhere, a program also quite often needs its own internal data in order to work. For example, suppose we need to store the lengths of each month in an array. This is what the code might look like:</p>
+<pre class="language-java"><code>int[] <span class="text-red">months</span> = new int[12];
+<span class="text-red">months</span>[0] = 31; // January
+<span class="text-red">months</span>[1] = 28; // February
+<span class="text-red">months</span>[2] = 31; // March
+<span class="text-red">months</span>[3] = 30; // April
+<span class="text-red">months</span>[4] = 31; // May
+<span class="text-red">months</span>[5] = 30; // June
+<span class="text-red">months</span>[6] = 31; // July
+<span class="text-red">months</span>[7] = 31; // August
+<span class="text-red">months</span>[8] = 30; // September
+<span class="text-red">months</span>[9] = 31; // October
+<span class="text-red">months</span>[10] = 30; // November
+<span class="text-red">months</span>[11] = 31; // December</code></pre>
+<p>But thanks to Java's creators, there is a way to write this more concisely:</p>
+<pre class="language-java"><code>// Lengths of months of the year
+<span class="text-orange">int</span>[] <span class="text-red">months</span> = new <span class="text-orange">int</span>[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };</code></pre>
+<p>You can simply list all the values of the array, separated by commas!</p>
+<p>Convenient, right? But that's not all.</p>
+<p>As it happens, the compiler can determine the type of the container (array object) based on the type of the values of the array. And to determine the length of the array, it's trivial to count the number of elements written in the curly braces.</p>
+<p>That means this code can be written even shorter:</p>
+<pre class="language-java"><code>// Lengths of months of the year
+int[] <span class="text-red">months</span> = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };</code></pre>
+<p>A thing of beauty, isn't it? 🙂</p>
+<p>This is called "fast array initialization". By the way, this works for types other than <code>int</code>...</p>
+<pre class="language-java"><code>// Names of months of the year
+String[] <span class="text-red">months</span> = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November ", "December"};</code></pre>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task05.task0525"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="2fcb6833-3c86-4a0e-ba10-6360c4632dc7" data-max-width="1024" src="https://cdn.javarush.ru/images/article/2fcb6833-3c86-4a0e-ba10-6360c4632dc7/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="a45639d0-ebe4-4fa2-925e-63ddaec89651" data-max-width="512" src="https://cdn.javarush.ru/images/article/a45639d0-ebe4-4fa2-925e-63ddaec89651/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="b7b535a3-aac6-4a3a-94c2-9e78976e1eca" data-max-width="512" src="https://cdn.javarush.ru/images/article/b7b535a3-aac6-4a3a-94c2-9e78976e1eca/original.png" alt="">
+        </div>
+    </div>
+</div>

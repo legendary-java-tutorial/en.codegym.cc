@@ -1,0 +1,63 @@
+Behavioral patterns
+<p>----------------------------------------</p>
+iterator. command. observer. visitor. mediator.
+<p>----------------------------------------</p>
+Iterator</span> is a behavioral design pattern. Represents an object that allows sequential access to the elements of an aggregate object without using descriptions of each of the aggregated objects.</p>
+<img data-max-width="800" data-id="87f809f8-e650-4b92-9d29-2624a2b1a64a" src="https://cdn.codegym.cc/images/article/87f809f8-e650-4b92-9d29-2624a2b1a64a/800.jpeg" alt="">
+<p>For example, elements such as a tree, a linked list, a hash table, and an array can be traversed (and modified) using an Iterator object.</p>
+<p>Iterating through the elements is done by the iterator object, not by the collection itself. This simplifies the interface and implementation of the collection, and promotes a more logical separation of concerns.</p>
+<p>A feature of a fully implemented iterator is that the code that uses the iterator may not know anything about the type of the iterated aggregate.</p>
+<p>This approach is used very often. For example, you send a SQL query to the database, and in response it returns you an iterator (in SQL terms, it is usually called a cursor). And with the help of the resulting iterator, you can take rows from the SQL response one by one.</p>
+<h2>Command</h2>
+<p><span class="text-bold">A Command</span> is a behavioral design pattern used in object-oriented programming that represents an action. The command object contains the action itself and its parameters.</p>
+<img data-max-width="800" data-id="d46ddf17-e840-4f4b-a505-092e666ec88f" src="https://cdn.codegym.cc/images/article/d46ddf17-e840-4f4b-a505-092e666ec88f/800.jpeg" alt="">
+<p>To call a method, you usually need:</p>
+<ul>
+ <li>object reference</li>
+ <li>method name (method reference)</li>
+ <li>method parameter values</li>
+ <li>reference to the context that contains the objects used</li>
+</ul>
+<p>All this data needs to be packed into one object - Command ( <span class="text-bold">command</span> ).</p>
+<p>But that's not all: after all, someone must execute the command. So this pattern includes four more entities: commands ( <span class="text-bold">command</span> ), a command receiver ( <span class="text-bold">receiver</span> ), a command caller ( <span class="text-bold">invoker</span> ) and a client ( <span class="text-bold">client</span> ).</p>
+<p>An object<mark class="green">command</mark>knows about the receiver and calls the receiver method. Receiver parameter values ​​are stored in the command. The caller (invoker) knows how to execute the command and possibly keeps track of the executed commands. The caller (invoker) knows nothing about a particular command, it only knows about the interface.</p>
+<p>Both objects (the calling object and several command objects) belong to the client object. The client decides which commands to execute and when. To execute a command, it passes the command object to the caller (invoker).</p>
+<p>Using command objects makes it easy to build shared components that you need to delegate or make method calls at any time without having to know the class methods or method parameters.</p>
+<p>Using the caller object (invoker) allows you to keep track of executed commands without the need for the client to know about this accounting model (such accounting can be useful, for example, to implement undo and redo commands).</p>
+<p>For example, you are writing a program that allows you to perform various tasks on a schedule. On the one hand, your program keeps track of tasks and manages their launch, on the other hand, it can have several executors, each of which can execute commands of its own type. For example, sending SMS, sending letters, sending messages to Telegram, etc.</p>
+<h2>Observer</h2>
+<p><span class="text-bold">Observer</span> is a behavioral design pattern. Implements a class mechanism that allows an object of this class to receive notifications about changes in the state of other objects and thus observe them.</p>
+<img data-max-width="800" data-id="4ea53747-311e-48ea-a92c-f622b44ac328" src="https://cdn.codegym.cc/images/article/4ea53747-311e-48ea-a92c-f622b44ac328/800.jpeg" alt="">
+<p>Classes that other classes subscribe to are called Subjects <span class="text-bold">,</span> and subscribing classes are called <span class="text-bold">Observers</span> .</p>
+<p>When implementing the Observer pattern, the following classes are commonly used:</p>
+<ul>
+ <li><span class="text-neon"><span class="text-bold"><em>Observable</em></span></span> - an interface that defines methods for adding, removing and notifying observers;</li>
+ <li><span class="text-neon"><span class="text-bold"><em>Observer</em></span></span> - the interface through which the observer receives the notification;</li>
+ <li><span class="text-neon"><span class="text-bold"><em>ConcreteObservable</em></span></span> is a concrete class that implements the<span class="text-neon"><span class="text-bold"><em> Observable</em></span></span> interface ;</li>
+ <li><span class="text-neon"><span class="text-bold"><em>ConcreteObserver</em></span></span> is a concrete class that implements the<span class="text-neon"><span class="text-bold"><em> Observer</em></span></span> interface .</li>
+</ul>
+<p>The Observer pattern is used when the system:</p>
+<ul>
+ <li>there is at least one object that sends messages;</li>
+ <li>there is at least one recipient of messages, and their number and composition may change while the application is running;</li>
+ <li>avoids strong coupling of interacting classes.</li>
+</ul>
+<p>This pattern is often used in situations in which the sender of messages is not interested in what the recipients do with the information provided to them.</p>
+<h2>Visitor</h2>
+<p><span class="text-bold">Visitor</span> is a behavioral design pattern that describes an operation that is performed on objects of other classes. When visitingor changes, there is no need to change the serviced classes.</p>
+<p>The template demonstrates the classic technique for recovering lost type information without resorting to double-dispatching downcast.</p>
+<img data-max-width="800" data-id="012e3e42-6151-4ecf-b322-0642841bf923" src="https://cdn.codegym.cc/images/article/012e3e42-6151-4ecf-b322-0642841bf923/800.jpeg" alt="">
+<p>You need to do some disconnected operations on a number of objects, but you need to avoid polluting their code. And there is no way or desire to query the type of each node and cast the pointer to the correct type before performing the desired operation.</p>
+<p>The template should be used if:</p>
+<ul>
+ <li>there are various objects of different classes with different interfaces, but operations must be performed on them that depend on specific classes;</li>
+ <li>on the structure, it is necessary to perform various operations complicating the structure;</li>
+ <li>new operations on the structure are often added.</li>
+</ul>
+<h2>Mediator</h2>
+<p><span class="text-bold">Mediator</span> is a behavioral design pattern that allows multiple objects to interact while maintaining loose coupling and avoiding the need for objects to explicitly refer to each other.</p>
+<img data-max-width="800" data-id="17d10313-3412-461b-82f2-c007d664adb6" src="https://cdn.codegym.cc/images/article/17d10313-3412-461b-82f2-c007d664adb6/800.jpeg" alt="">
+<p>The Mediator pattern allows you to ensure the interaction of many objects, while forming a loose coupling and eliminating the need for objects to explicitly refer to each other.</p>
+<p><span class="text-bold">The mediator</span> defines an interface for exchanging information with objects<mark class="green">Colleagues</mark>, <span class="text-bold">A particular mediator</span> coordinates the actions of objects<mark class="green">Colleagues</mark>.</p>
+<p>Each <span class="code"><span class="text-green">Colleague</span></span> class knows about its object<mark class="green">Mediator</mark>, all <span class="code"><span class="text-green">Colleagues</span></span> exchange information only with an intermediary, in his absence they would have to exchange information directly.</p>
+<p><mark class="green">Colleagues</mark>send requests <span class="text-bold">to the Reseller/span&gt; and receive requests from it. <span class="text-bold">The mediator</span> implements cooperative behavior by forwarding each request to one or more<mark class="green">Colleagues</mark>.</span></p>

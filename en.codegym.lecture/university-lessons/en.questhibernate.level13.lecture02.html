@@ -1,0 +1,230 @@
+@OneToMany
+<p>----------------------------------------</p>
+Relationship at the table level. Communication at the level of Java classes. The @OneToMany annotation. Request examples.
+<p>----------------------------------------</p>
+ok at our two tables again:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100000</td>
+    <td>25</td>
+    <td>2012-06-30</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80000</td>
+    <td>23</td>
+    <td>2013-08-12</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40000</td>
+    <td>thirty</td>
+    <td>2014-01-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200000</td>
+    <td>35</td>
+    <td>2015-05-12</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>2015-10-10</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>Cat</td>
+    <td>1000</td>
+    <td>3</td>
+    <td>2018-11-11</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><strong>employee table:</strong></p>
+<p>This table has the following columns:</p>
+<ul>
+ <li><span class="text-bold">id</span> INT</li>
+ <li><span class="text-bold">name</span> VARCHAR</li>
+ <li><span class="text-bold">occupation</span> VARCHA</li>
+ <li><span class="text-bold">salary</span> INT</li>
+ <li><span class="text-bold">age</span> INT</li>
+ <li><span class="text-bold">join_date</span> DATE</li>
+</ul>
+<p>And this is how <strong>the task table</strong> , which contains tasks for employees, looks like:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>emploee_id</th>
+    <th>name</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-07-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-08-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-09-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>(NULL)</td>
+    <td>Clean up the office</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>This table has only 4 columns:</p>
+<ul>
+ <li><strong>id</strong> is the unique number of the task (and rows in the table).</li>
+ <li><strong><span class="text-red">employee_id</span></strong> - ID of the employee from the employee table that the task is assigned to.</li>
+ <li><strong>name</strong> - the name and description of the task.</li>
+ <li><strong>deadline</strong> - the time by which the task must be completed.</li>
+</ul>
+<p>A single entry in the employee table can be referenced by many rows in the task table. Such a table-level relationship is called <strong>one-to</strong> -many.</p>
+<h2>Relationship to the Java class level</h2>
+<p>And our classes, the <span class="code"><span class="text-green">Employee</span></span> class :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"name"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"occupation"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> occupation<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"salary"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> salary<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"join_date"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> join<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And the <span class="code"><span class="text-green">EmployeeTask</span></span> class in its original form:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"task"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">EmployeeTask</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"name"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> description<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"employee_id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> employeeId<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"deadline"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> deadline<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>@OneToMany annotation</h2>
+<p>We can arrange communication between Entity classes in a different way.</p>
+<p>Remember the <span class="text-yellow"><span class="text-bold">@ElementCollection</span></span> annotation that we used to create a collection of child objects in the parent class? Something similar can be done with the <span class="text-yellow"><span class="text-bold">@OneToMany</span></span> annotation . Only this time, the <span class="code"><span class="text-green">Employee</span></span> class will be changed :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@OneToMany</span><span class="token punctuation">(</span>cascade <span class="token operator">=</span> <span class="token class-name">CascadeType</span><span class="token punctuation">.</span>ALL<span class="token punctuation">)</span>
+   <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"employee_id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">private</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">EmployeeTask</span><span class="token punctuation">&gt;</span></span> tasks <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">EmployeeTask</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Using the <span class="text-yellow"><span class="text-bold">@OneToMany</span></span> annotation , we indicated that the object<mark class="green">employee</mark>can store many <span class="code"><span class="text-green">EmployeeTask</span></span> objects . Also, using the <span class="text-yellow"><span class="text-bold">@JoinColumn</span></span> annotation , we indicated in which column of the task table the object id is stored<mark class="green">employee</mark>.</p>
+<p>However, the <span class="code"><span class="text-green">EmployeeTask</span></span> class usually does not contain a field that refers to the employee_id column. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"task"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">EmployeeTask</span> <span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"name"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> description<span class="token punctuation">;</span>
+
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"deadline"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> deadline<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The employee_id field is considered a service field and its value is controlled by Hibernate.</p>
+<h2>Request examples</h2>
+<p>If you want to add some task to some worker, then you need to write code like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">EmployeeTask</span> task1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EmployeeTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+task1<span class="token punctuation">.</span>description <span class="token operator">=</span> <span class="token string">"Do Something Important"</span><span class="token punctuation">;</span>
+session<span class="token punctuation">.</span><span class="token function">persist</span><span class="token punctuation">(</span>task1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">EmployeeTask</span> task2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EmployeeTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+task2<span class="token punctuation">.</span>description <span class="token operator">=</span> <span class="token string">"Nothing to do"</span><span class="token punctuation">;</span>
+session<span class="token punctuation">.</span><span class="token function">persist</span><span class="token punctuation">(</span>task2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+session<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Employee</span> director <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+director<span class="token punctuation">.</span>tasks<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>task1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+director<span class="token punctuation">.</span>tasks<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>task2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+session<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>director<span class="token punctuation">)</span><span class="token punctuation">;</span>
+session<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>First, we create two <span class="code"><span class="text-green">EmployeeTask</span></span> objects , save them to the database, and call the <span class="code text-orange">flush()</span> method so that the INSERT operation is performed and the objects have IDs.</p>
+<p>Then we find the director in the database, take the tasks field from him and add two tasks to him. Then we save the director to the database. After that, the value 4 will appear in the database for new tasks in the employee_id column - the id of the director in the employee table.</p>
+<p><strong>Important! </strong>The tables in the database are the same for the <span class="text-yellow"><span class="text-bold">@ManyToOne</span></span> and <span class="text-yellow"><span class="text-bold">@OneToMany</span></span> annotations . But the Java classes for these tables are different.</p>

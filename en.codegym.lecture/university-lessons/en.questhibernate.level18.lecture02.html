@@ -1,0 +1,49 @@
+ACID concept
+<p>----------------------------------------</p>
+Emergence of ACID Emergence of Transactions ACID Connectivity
+<p>----------------------------------------</p>
+abbreviation ACID</strong> first appeared in 1983 in an article by Theo Haerder and Andreas Reuter. To simplify the text and make it more convincing, I will give a translation of a fragment of this article (with slight reductions). This snippet uses an example of a bank transaction in which money is transferred from one account to another.</p>
+<p>The concept of a transaction, which in the example includes all interactions with the database between <code>$BEGIN_TRANSACTION</code>and <code>$COMMIT_TRANSACTION</code>, requires that all actions be performed indivisibly: either all actions are properly reflected in the state of the database, or nothing happens. If at any point in time before reaching <code>$COMMIT_TRANSACTION</code>the user enters a statement <code>ERROR</code>containing <code>$RESTORE_TRANSACTION</code>, then no changes are reflected in the database.</p>
+<p>To achieve this indivisibility, a transaction must have the following four properties:</p>
+<p><strong>Atomicity</strong> (Atomicity). The transaction must be of the all-or-nothing type described above, and no matter what happens, the user must know what state the transaction is in.</p>
+<p><strong>Consistency</strong> (Consistency). A transaction that reaches its normal end of transaction (EOT) and thereby commits its results maintains database consistency. In other words, every successful transaction, by definition, commits only valid results. This condition is necessary to support the fourth property - durability.</p>
+<p><strong>Isolation</strong> (Isolation). Events that occur within a transaction must be hidden from other concurrently executing transactions. If this condition were not met, then for the reasons mentioned above, the transaction would be impossible to return to its beginning. To achieve isolation, methods called synchronization are used ...</p>
+<p><strong>Durability</strong> (Durability). Once a transaction has completed and committed its results to the database, the system must ensure that those results survive any subsequent failures. Since there is no scope of control that spans sets of transactions, the database management system (DBMS) has no control beyond the boundaries of transactions.</p>
+<p>Therefore, the user must be guaranteed that if the system informs him that something has happened, then this "something" has really happened. Since, by definition, any (successfully completed - S.K.) transaction is correct, the results of inevitably appearing incorrect transactions (i.e. transactions containing erroneous data) can only be eliminated by the corresponding "counter" transaction (countertransaction).</p>
+<h2>3.2 The emergence of transactions</h2>
+<p>These four properties—Atomicity, Consistency, Isolation, and Durability (ACID)—describe the core features of the transactional paradigm that affect many aspects of database system design. Therefore, we believe that the ability of any system to support transactions is the touchstone (ACID test) of the quality of this system.</p>
+<p>A simple PL/1-SQL program that transfers funds from one account to another.</p>
+<pre class="line-numbers"><code>
+FUNDS_TRANSFER. PROCEDURE,
+ $BEGIN_TRANSACTION;
+ ON ERROR DO;                                   /* in case of error */
+          $RESTORE_TRANSACTION,                 /* undo all work */
+          GET INPUT MESSAGE;                    /* reacquire input */
+          PUT MESSAGE ('TRANSFER FAILED');      /* report failure */
+          GO TO COMMIT;
+          END;
+ GET INPUT MESSAGE;                             /* get and parse input */
+ EXTRACT ACCOUNT_EBIT, ACCOUNT_CREDIT,
+  AMOUNT FROM MESSAGE,
+ $UPDATE ACCOUNTS                               /* do debit */
+              SET BALANCE ffi BALANCE - AMOUNT
+     WHERE ACCOUNTS.NUMBER = ACCOUNT_DEBIT;
+ $UPDATE ACCOUNTS                               /* do credit */
+              SET BALANCE = BALANCE + AMOUNT
+     WHERE ACCOUNTS.NUMBER = ACCOUNT_CREDIT;
+ $INSERT INTO HISTORY                           /* keep audit trail */
+    &lt;DATE, MESSAGE&gt;;
+ PUT MESSAGE ('TRANSFER DONE');                 /* report success */
+COMMIT:                                         /* commit updates */
+ $COMMIT_TRANSACTION;
+ END;                                           /* end of program */
+</code></pre>
+<p>I provided an example of this code to remind you that, in fact, ACID properties, on the one hand, can be considered as requirements for any DBMS that claims to support transactions, and on the other hand, as the definition of a transaction in a database <strong>system</strong> . This definition is fully consistent with worldly practice. It is hard to imagine, for example, that a customer performing a banking transaction (whether with the assistance of a live human teller or using Internet banking) does not expect the bank to satisfy all the properties of ACID. A bank that does not support ACID properties for its transactions will, at best, lose customers, and at worst, go bankrupt.</p>
+<h2>3.3 ACID Connectivity</h2>
+<p>It is very important that the ACID properties are inseparable, discarding any of them makes the remaining combination meaningless. In particular, if we discard the consistency property (in the sense in which it was used in the above quote), then we will lose the criterion for the correctness of a transaction. The database system will not be able to decide in any meaningful way whether transactions are allowed or not to be committed, and all checks for the correctness of operations performed in the current state of the database will have to be performed in application code.</p>
+<p>You need to understand that in this case we are talking about logical consistency. The client of the bank needs the bank to work according to the rules established by him and known to the clients, so that it is impossible to perform any transaction that violates these rules, so that the next transaction of the same client is executed in an environment agreed in accordance with these rules.</p>
+<p>The client of the online store needs the goods ordered and paid for by him to be delivered to him in a timely manner (in accordance with the rules established and known to the client). Otherwise, he will not trust this store. At the same time, neither the client of the bank nor the client of the Internet store cares about the internal kitchen of the enterprise, what internal actions are taken to complete its transaction. The client does not care how the physical consistency of this enterprise is maintained, how operations are performed at the physical layer.</p>
+<p>If the DBMS takes care of maintaining the logical consistency of transactions (and the database), then applications become simpler, more understandable, and more reliable. All the logic of the application area (bank, store, warehouse, etc.) regarding transactions and the valid state of the data goes into the database system. And the requirements for this system are very simple: support for ACID transactions, taking into account the consistency rules provided in the database by the application. From my point of view, the rejection of ACID transactions creates immoderate difficulties for application developers, who, whether you like it or not, will have to implement something similar themselves in order to satisfy the natural needs of their customers.</p>
+<p>And once again I note that the ACID properties, in fact, define the concept of a transaction. In my opinion, in order to have at least some possibility of talking about a transactional data management system in which the property of transaction consistency is not supported, it is absolutely necessary to define what is meant by the term transaction in this case.</p>
+<p>Unfortunately, today in many cases (in particular, this is characteristic of the NoSQL direction), people talk about supporting OLTP applications without specifying at all what kind of transactions they mean. Therefore, in this article, I will use the combination ACID transaction to refer to real transactions, and the unqualified term <strong>transaction</strong> will be used in an informal sense, different in different contexts.</p>
+<p>Let us now deal with the "theorem" of CAP and try to figure out what consistency means in Brewer's sense.</p>

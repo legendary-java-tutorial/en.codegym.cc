@@ -1,0 +1,194 @@
+No thread independence! Give synchronized!
+<p>----------------------------------------</p>
+Uncontrolled thread switching is another problem. A reasonable question arises: why not give the threads free will and allow them to control their own switching? In fact, this approach creates even more problems. You will learn about what these problems are and what to do after all from this lecture.
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! We have a panacea—a cure for all diseases. As we've already seen, uncontrolled thread switching is a problem."</p>
+<p><span class="text-user">"Why can't the threads themselves decide when to switch to the next thread? Do everything they need to do and then signal, «I'm done!»?"</span></p>
+<p>"Allowing threads themselves to control switching would be an even bigger problem. Suppose you have some poorly written code, and the thread never surrenders the CPU. Back in the day, this is how it worked. And it was quite a nightmare."</p>
+<p><span class="text-user">"Okay. So what's the solution?"</span></p>
+<p>"<span class="text-red"><strong>Blocking other threads.</strong></span> This is how it works."</p>
+<p>It became clear that <span class="text-red">threads interfere with each other when they try to use shared objects and/or resources</span>. Just as we saw in the example with console output: there's one console and all the threads output to it. It's messy.</p>
+<p>So a special object was invented: <span class="text-red">the mutex</span>. It's like a sign on a bathroom door that says <span class="text-green">«available</span>/<span class="text-red">occupied»</span>. It has two states: <span class="text-green">the object is available</span> or <span class="text-red">occupied</span>. These states are also called «locked» and «unlocked».</p>
+<p>When a thread needs an object shared with other threads, it checks the mutex associated with the object. If the mutex is unlocked, then the thread locks it (marks it as «occupied») and starts using the shared resource. After the thread has done its business, the mutex is unlocked (marked as «available»).</p>
+<p>If the thread wants to use the object and the mutex is locked, then the thread sleep while it waits. When the mutex is finally unlocked by the occupying thread, our thread will immediately lock it and start running. The analogy with a bathroom door sign is perfect.</p>
+<p><span class="text-user">"So how do I work with a mutex? Do I need to create special objects?"</span></p>
+<p>"It's a lot simpler than that. <span class="text-red">Java's creators built this mutex into the Object class. So you don't even have to create it. It's part of every object. </span>Here's how it all works:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyClass
+{
+private String name1 = "Ally";
+private String name2 = "Lena";
+
+public void swap()
+{
+<span class="text-red">synchronized (this)</span>
+{
+String s = name1;
+name1 = name2;
+name2 = s;
+}
+}
+}</code></pre>
+        </td>
+        <td>The swap method swaps the values of the name1 and name2 variables.</p>
+            <p>What might happen if it is called from two threads at the same time?</td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>Actual code execution</th>
+        <th>Code of the first thread</th>
+        <th>Code of the second thread</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">String s1 = name1;</span> //Ally
+<span class="text-green">name1 = name2;</span> //Lena
+<span class="text-green">name2 = s1;</span> //Ally
+
+<span class="text-user">String s2 = name1;</span> //Lena
+<span class="text-user">name1 = name2;</span> //Ally
+<span class="text-user">name2 = s2;</span> //Lena</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">String s1 = name1;
+name1 = name2;</span>
+//other thread is running
+<span class="text-green">name2 = s1;</span></code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>//the thread waits until the mutex is unlocked
+
+<span class="text-user">String s2 = name1;
+name1 = name2;</span>
+//other thread is running
+//other thread is running
+<span class="text-user">name2 = s2;</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <th>The bottom line</th>
+    </tr>
+    <tr>
+        <td>The values of the variables were swapped twice, returning to their original places.</td>
+    </tr>
+    </tbody>
+</table>
+<p>Pay attention to the keyword <span class="text-red"><strong>synchronized</strong></span>.</p>
+<p><span class="text-user">"Yeah, what does it mean?"</span></p>
+<p><strong>"When a thread enters a block of code marked as synchronized, the Java machine immediately locks the mutex of the object indicated in parentheses after the word synchronized. <span class="text-red">No other thread can enter this block until our thread leaves it.</span> As soon as our thread leaves the block marked synchronized, the mutex is immediately and automatically unlocked and will be available to be acquired by another thread."</strong></p>
+<p>If the mutex is occupied, then our thread will stand still and wait for it to free up.</p>
+<p><span class="text-user">"So simple and so elegant. That's a beautiful solution."</span></p>
+<p>"Yes. But what do you think will happen in this case?"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyClass
+{
+private String name1 = "Ally";
+private String name2 = "Lena";
+
+public void swap()
+{
+<span class="text-red">synchronized (this)</span>
+{
+String s = name1;
+name1 = name2;
+name2 = s;
+}
+}
+
+public void swap2()
+{
+<span class="text-red">synchronized (this)</span>
+{
+String s = name1;
+name1 = name2;
+name2 = s;
+}
+}
+}</code></pre>
+        </td>
+        <td><span class="text-red">The swap and swap2 methods share the same <strong>mutex</strong> (the <strong>this</strong> object).</span></td>
+    </tr>
+    </tbody>
+</table>
+<p>What happens if one thread calls the swap method and another thread calls the swap2 method?</p>
+<p><span class="text-user">"Since the mutex is the same, the second thread will have to wait until the first thread leaves the synchronized block. So there won't be any problems with simultaneous access."</span></p>
+<p>"Well done, Amigo! That's the correct answer!"</p>
+<p>Now I'd like to point out that <span class="text-red">synchronized</span> can be used to mark not only blocks of code, but also methods. Here's what that means:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What really happens</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyClass
+{
+private <span class="text-user">static</span> String name1 = "Ally";
+private <span class="text-user">static</span> String name2 = "Lena";
+
+public <span class="text-red">synchronized</span> void swap()
+{
+String s = name1;
+name1 = name2;
+name2 = s;
+}
+
+public <span class="text-user">static</span> <span class="text-red">synchronized</span> void swap2()
+{
+String s = name1;
+name1 = name2;
+name2 = s;
+}
+}</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class MyClass
+{
+private <span class="text-user">static</span> String name1 = "Ally";
+private <span class="text-user">static</span> String name2 = "Lena";
+
+public void swap()
+{
+<span class="text-red">synchronized</span> (this)
+{
+String s = name1;
+name1 = name2;
+name2 = s;
+}
+}
+
+public <span class="text-user">static</span> void swap2()
+{
+<span class="text-red">synchronized</span> (<span class="text-user"><strong>MyClass.class</strong></span>)
+{
+String s = name1;
+name1 = name2;
+name2 = s;
+}
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>

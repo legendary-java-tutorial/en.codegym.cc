@@ -1,0 +1,48 @@
+Apache Cassandra
+<p>----------------------------------------</p>
+Description. data model. Data types.
+<p>----------------------------------------</p>
+ssandra</strong> is a distributed database management system that belongs to the class of NoSQL systems and is designed to create highly scalable and reliable storages of huge data arrays presented in the form of a hash.</p><img data-max-width="256" data-id="3f1932c4-0cbf-42a9-a763-73770a3ad298" alt="" src="https://cdn.javarush.com/images/article/3f1932c4-0cbf-42a9-a763-73770a3ad298/256.jpeg" style="width: 256px;">
+<p>Initially, the project was developed in the bowels of Facebook and in 2009 transferred under the wing of the Apache Software Foundation, this organization continues to develop the project. Industrial solutions based on Cassandra are deployed to provide services to companies such as Cisco, IBM, Cloudkick, Reddit, Digg, Rackspace, Huawei, Netflix, Apple, Instagram, GitHub, Twitter and Spotify. By 2011, the largest server cluster serving a single database under Cassandra had more than 400 machines and contained more than 300 TB of data.</p>
+<p>Written in <strong>the Java language</strong> , it implements a distributed hash system similar to DynamoDB, which provides almost linear scalability with increasing data volume. It uses a data storage model based on a family of columns, which differs from systems like MemcacheDB, which store data only in a key-value pair, by the ability to store hashes with several levels of nesting.</p>
+<p>Belongs to the category of fault-tolerant DBMS: the data placed in the database is automatically replicated to several nodes of a distributed network or even evenly distributed in several data centers. When a node fails, its functions are picked up on the fly by other nodes, adding new nodes to the cluster and updating the Cassandra version is done on the fly, without additional manual intervention and reconfiguration of other nodes.</p>
+<p>However, it is highly recommended to re-generate keys (labels) for each node, including existing ones, in order to preserve the quality of load balancing. Key generation for existing nodes can be avoided in the case of a multiple increase in the number of nodes (2 times, 3 times, and so on).</p><img data-max-width="1024" data-id="fa60ab89-22de-439d-a6bf-931a891933c6" alt="" src="https://cdn.javarush.com/images/article/fa60ab89-22de-439d-a6bf-931a891933c6/1024.jpeg" style="width: 1024px;">
+<h2>4.2 Data model</h2>
+<p>In Cassandra terminology, an application works with a keyspace, which corresponds to the concept of a database schema in the relational model. This keyspace can contain several column families, which corresponds to the concept of a relational table.</p>
+<p>In turn, column families contain columns (column), which are combined using the key (row key) in the record (row). The column consists of three parts: name (column name), timestamp (timestamp) and value (value). The columns within a record are ordered. Unlike a relational database, there are no restrictions on whether records (and in terms of the database these are rows) contain columns with the same names as in other records - no.</p>
+<p>Column families can be of several kinds, but in this article we will omit this detail. Also in the latest versions of Cassandra, it became possible to execute queries for defining and changing data (DDL, DML) using the CQL language, as well as creating secondary indices.</p><img data-max-width="1024" data-id="7c17039f-c0a3-4e11-9afb-abf68be2d8f6" alt="" src="https://cdn.javarush.com/images/article/7c17039f-c0a3-4e11-9afb-abf68be2d8f6/1024.jpeg" style="width: 1024px;">
+<p>The specific value stored in cassandra is identified by:</p>
+<ul>
+ <li><strong>keyspace</strong> is a binding to the application (domain). Allows you to host data from different applications on the same cluster;</li>
+ <li><strong>a column family</strong> is a binding to a query;</li>
+ <li><strong>key</strong> is a binding to a cluster node. The key determines which nodes the saved columns will end up on;</li>
+ <li><strong>column name</strong> is a binding to an attribute in the record. Allows you to store multiple values ​​in one entry.</li>
+</ul>
+<p>Each value is associated with a timestamp, a user-specified number that is used to resolve conflicts during recording: the larger the number, the newer column is considered, and when compared, overwrites old columns.</p>
+<h2>4.3 Data types</h2>
+<p>By data types: keyspace and column family are strings (names); timestamp is a 64-bit number; and the key, column name, and column value is an array of bytes. Cassandra also has the concept of data types. These types can be specified (optionally) by the developer when creating a column family.</p>
+<p>For column names this is called a comparator, for values ​​and keys it is called a validator. The first defines what byte values ​​are allowed for column names and how to order them. The second is what byte values ​​are valid for column and key values.</p>
+<p>If these data types are not set, then cassandra stores the values ​​and compares them as byte strings (BytesType) since, in fact, they are stored internally.</p><o>
+ The data types are: 
+ <p></p>
+ <ul>
+  <li><strong>BytesType</strong> : any byte strings (no validation)</li>
+  <li><strong>AsciiType</strong> : ASCII string</li>
+  <li><strong>UTF8Type</strong> : UTF-8 string</li>
+  <li><strong>IntegerType</strong> : number with arbitrary size</li>
+  <li><strong>Int32Type</strong> : 4-byte number</li>
+  <li><strong>LongType</strong> : 8-byte number</li>
+  <li><strong>UUIDType</strong> : UUID type 1 or 4</li>
+  <li><strong>TimeUUIDType</strong> : Type 1 UUID</li>
+  <li><strong>DateType</strong> : 8-byte timestamp value</li>
+  <li><strong>BooleanType</strong> : two values: true = 1 or false = 0</li>
+  <li><strong>FloatType</strong> : 4-byte floating point number</li>
+  <li><strong>DoubleType</strong> : 8-byte floating point number</li>
+  <li><strong>DecimalType</strong> : a number with an arbitrary size and a floating point</li>
+  <li><strong>CounterColumnType</strong> : 8 byte counter</li>
+ </ul>
+ <p>In cassandra, all data writing operations are always rewriting operations, that is, if a column with the same key and name that already exists comes to the column family, and the timestamp is greater than the one that is saved, then the value is overwritten. The recorded values ​​never change, just newer columns come in with new values.</p>
+ <p>Writing to cassandra is faster than reading. This changes the approach that is taken in the design. If we consider cassandra from the point of view of designing a data model, then it is easier to imagine a column family not as a table, but as a materialized view - a structure that represents the data of some complex query, but stores it on disk.</p>
+ <p>Instead of trying to compose data in some way using queries, it's better to try to store everything that might be needed for this query in the target family. That is, it is necessary to approach not from the side of relations between entities or relationships between objects, but from the side of queries: which fields are required to be selected; in what order the records should go; what data related to the main ones should be requested together - all this should already be stored in the column family.</p>
+ <p>The number of columns in a record is theoretically limited to 2 billion. This is a brief digression, and more details can be found in the article on design and optimization techniques. And now let's delve into the process of saving data to cassandra and reading it.</p>
+</o>

@@ -1,0 +1,25 @@
+Deploy the first application in Tomcat
+<p>----------------------------------------</p>
+View the list of web applications Deploy a test web application Change the port
+<p>----------------------------------------</p>
+<p>Now let's see what web applications are installed in Tomcat by default. There are usually several of them, and the most important one for you is the Application Manager. To open it, click on the Manager App button or follow <a href="http://localhost:8080/manager" target="_blank">the link</a> .</p>
+<p>Next, you will need to log in under the user that we saw at the settings step:</p>
+<img data-max-width="800" data-id="a6d21fca-fbb2-4f5f-8ff4-c4060f6bf4c5" src="https://cdn.codegym.cc/images/article/a6d21fca-fbb2-4f5f-8ff4-c4060f6bf4c5/800.jpeg" alt="">
+<p>If everything went well, you will see a list of installed web applications:</p><img data-max-width="800" data-id="8e3fbc2b-c68c-4ff4-bdfb-395dc41ac2ba" alt="Tomcat Manager App 1" src="https://cdn.javarush.com/images/article/8e3fbc2b-c68c-4ff4-bdfb-395dc41ac2ba/800.jpeg" style="width: 800px;">
+<p>The left column specifies the path where the application opens. In the rightmost column, you will see commands for managing the web application: Start, Stop, Reload, Undeploy.</p>
+<h2>4.2 Deploy a test web application</h2>
+<p>Let's upload our own web application to the Tomcat web server.</p>
+<p>It's good that GitHub just has a special demo application for this case. Download it <a href="https://tomcat.apache.org/tomcat-9.0-doc/appdev/sample/sample.war" target="_blank">from the link</a> .</p>
+<p>Then open the Manager App page in Tomcat <a href="http://localhost:8080/manager" target="_blank">http://localhost:8080/manager</a> and scroll down to the Deploy section.</p><img data-max-width="800" data-id="e694abda-4968-4e03-a9f8-a27e6f8cbba5" alt="Tomcat Manager App 2" src="https://cdn.javarush.com/images/article/e694abda-4968-4e03-a9f8-a27e6f8cbba5/800.jpeg" style="width: 800px;">
+<p>In it you need to specify the path to your web application (all applications have unique paths), as well as the war file of your web application. Then click the Deploy button.</p>
+<p>If everything went well, you will see the new application in the list of web applications:</p><img data-max-width="800" data-id="af0964fd-c146-46b2-8f11-67d5c09c655b" alt="Tomcat Manager App 3" src="https://cdn.javarush.com/images/article/af0964fd-c146-46b2-8f11-67d5c09c655b/800.jpeg" style="width: 800px;">
+<p>You can verify that it works by following the link: <a href="http://localhost:8080/demo" target="_blank">http://localhost:8080/demo</a></p><img data-max-width="800" data-id="49d76115-3e96-4635-814a-d3122a62d38d" alt="Tomcat Manager App 4" src="https://cdn.javarush.com/images/article/49d76115-3e96-4635-814a-d3122a62d38d/800.jpeg" style="width: 800px;">
+<h2>4.3 Port change</h2>
+<p>If you don't like that your webserver responds to url <code>localhost:8080/</code>, and you want it to open just to url <code>localhost/</code>, then you need to change Tomcat's port to default: to <code>80</code>instead of <code>8080</code>.</p>
+<p>To do this, open the <strong>server.xml</strong> file in the <strong>conf</strong> folder .</p>
+<p>Find the "Connector" tag where port is <code>8080</code>and change it to port <code>80</code>:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token operator">&lt;</span><span class="token class-name">Connector</span> port<span class="token operator">=</span><span class="token string">"80"</span> protocol<span class="token operator">=</span><span class="token string">"HTTP/1.1"</span>
+           connectionTimeout<span class="token operator">=</span><span class="token string">"20000"</span>
+           redirectPort<span class="token operator">=</span><span class="token string">"8443"</span> <span class="token operator">/</span><span class="token operator">&gt;</span></code></pre>
+<p>You can also change the HTTPS port from <code>8443</code>to just <code>443</code>.</p>
+<p></p>If you change settings while Tomcat is running, don't forget to restart it.

@@ -1,0 +1,127 @@
+Introduction to TagLib
+<p>----------------------------------------</p>
+c:if, c:forEach JSTL Functions
+<p>----------------------------------------</p>
+d the code using tags instead of Java code, so they decided to expand the scope. But programming is not limited to creating objects and reading their properties. You need to call methods of objects, work with the database and other services. What to do?</p>
+<p>You just need to represent each Java statement as a tag. Was <code>if</code>, will be <code class="text-green">&lt;if&gt;</code>, was <code>for</code>, will be, <code class="text-green">&lt;for&gt;</code>and so on. Okay, okay, just kidding, it wasn't like that. Well, it can't be that people actually decide to do that. But no, maybe!</p>
+<p>Programmers allowed to add any tags to the code. In principle, there is nothing to worry about - JSP is an extensible standard. But they went further and released the JSP Standard Tag Library - JSTL. The page with it looks like this:</p>
+<pre class="line-numbers"><code>
+
+<span class="text-user">&lt;%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %&gt;</span>
+ 
+&lt;html&gt;
+   &lt;head&gt;
+       &lt;title&gt; JSTL Example&lt;/title&gt;
+   &lt;/head&gt;
+ 
+   &lt;body&gt;
+<span class="text-red">        &lt;c:set var</span> = <span class="text-green">"salary"</span> <span class="text-red">scope = "session" value = "${2000*5}"/&gt;
+        &lt;c:if test = "${</span> <span class="text-green">salary</span><span class="text-red"> &gt; 2000}"&gt;</span>
+            &lt;p&gt;My salary is: <span class="text-red">&lt;c:out value = "${</span><span class="text-green">salary</span><span class="text-red">}"/&gt;</span>&lt;p&gt;
+<span class="text-red">        &lt;/c:if&gt;</span>
+   &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>It is quite possible that you will come across such code in your future projects, there I will give some explanations.</p>
+<h2>7.2 JSTL functions</h2>
+<p>JSTL functions fall into 5 categories:</p>
+<ul>
+ <li><strong>Main tags;</strong></li>
+ <li><strong>Formatting tags;</strong></li>
+ <li><strong>SQL tags;</strong></li>
+ <li><strong>XML tags;</strong></li>
+ <li><strong>Calling functions.</strong></li>
+</ul>
+<p>I won't list them all, but I'll list the most popular ones. Let's start with the main tags:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>1</td>
+    <td><code>&lt;c:out&gt;</code></td>
+    <td>Outputs the specified expression - equivalent to &lt;%= %&gt;</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><code>&lt;c:set&gt;</code></td>
+    <td>Writes the result of an expression to a variable</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><code>&lt;c:remove&gt;</code></td>
+    <td>Deletes a variable</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><code>&lt;c:catch&gt;</code></td>
+    <td>Catches exceptions</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><code>&lt;c:if&gt;</code></td>
+    <td>analogue of if</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td><code>&lt;c:choose&gt;</code></td>
+    <td>analog switch</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td><code>&lt;c:when&gt;</code></td>
+    <td>Used together with choose</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td><code>&lt;c:otherwise&gt;</code></td>
+    <td>Used together with choose</td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td><code>&lt;c:import&gt;</code></td>
+    <td>Allows you to include content in the code (equivalent to the import directive)</td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td><code>&lt;c:forEach&gt;</code></td>
+    <td>for each loop</td>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td><code>&lt;c:param&gt;</code></td>
+    <td>Allows you to set options for import</td>
+   </tr>
+   <tr>
+    <td>12</td>
+    <td><code>&lt;c:redirect&gt;</code></td>
+    <td>Redirect</td>
+   </tr>
+   <tr>
+    <td>13</td>
+    <td><code>&lt;c:url&gt;</code></td>
+    <td>Creates a URL with parameters</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>I'll give just one example and finish with that. In principle, it is quite possible to read such code after some skill. But I don't recommend writing.</p>
+<pre class="line-numbers"><code>
+
+<span class="text-user">&lt;%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %&gt;</span>
+ 
+&lt;html&gt;
+   &lt;head&gt;
+      &lt;title&gt; Each Tag Example&amp;&lt;/title&gt;
+   &lt;/head&gt;
+ 
+   &lt;body&gt;
+<span class="text-red">       &lt;c:forEach var = "i" begin = "1" end = "5"&gt;</span>
+            Item <span class="text-red">&lt;c:out value = "${i}"/&gt;</span>&lt;p&gt;
+<span class="text-red">       &lt;/c:forEach&gt;</span>
+   &lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+<p>Think about it, we write Java code in the form of tags, so that the JSP parser will then convert these tags into Java code. Something in this world has gone wrong.</p>
+<p>By the way, you can write your own tag libraries. I even once worked in a project where they were. Awesome experience. As soon as any changes are made to the library, the whole jsp immediately breaks.</p>
+<p>What do you want? The compiler does not track such changes. They can only be found visually when viewing the generated HTML pages. And if these are some rare scenarios that arise in non-trivial situations ... God bless backend development and static typing!</p>

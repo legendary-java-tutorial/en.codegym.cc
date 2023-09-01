@@ -1,0 +1,69 @@
+DeadLock and its causes
+<p>----------------------------------------</p>
+Hello Amigo! Today I will tell you what a deadlock is - a deadly hold. “So you already said something like that. - Yeah, it was. But today we will consider this topic in more detail. In the simplest case, two threads and two mutex objects participate in the deadlock. A deadlock occurs when: A) Each thread in the process of running ...
+<p>----------------------------------------</p>
+<a href='https://cdn.codegym.cc/images/article/95680145-bd77-4c92-befd-f1399a7aa5f4/original.jpeg' target='_blank'><img data-id="95680145-bd77-4c92-befd-f1399a7aa5f4" data-max-width="1024" alt="DeadLock and its causes - 1" src="https://cdn.codegym.cc/images/article/95680145-bd77-4c92-befd-f1399a7aa5f4/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p>"Today I'm going to tell you what deadlock is."</p>
+<p><span class="text-user">"Hey, you already told me about something like that."</span></p>
+<p>"Yep, I did. But today we'll consider the topic in greater detail."</p>
+<p>"In the simplest case, deadlock involves two threads and two mutex objects. A mutual lock occurs when:"</p>
+<p><strong>A)</strong> Each thread needs to acquire both mutexes.</p>
+<p><strong>B)</strong> The first thread has acquired the first mutex and is waiting for the second one to be released.</p>
+<p><strong>C)</strong> The second thread has acquired the second mutex and is waiting for the first one to be released.</p>
+<p>"Here are some examples:</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code> public class Student
+{
+ private ArrayList <span class="text-red">friends</span> = new ArrayList();
+
+ public synchronized ArrayList getFriends()
+ {
+  synchronized(<span class="text-red">friends</span>)
+  {
+   return new ArrayList(<span class="text-red">friends</span>);
+  }
+ }
+
+ public synchronized int getFriendsCount()
+ {
+  return <span class="text-red">friends</span>.size();
+ }
+
+ public int addFriend(Student student)
+ {
+  synchronized(<span class="text-red">friends</span>)
+  {
+   <span class="text-red">friends</span>.add(student)
+   return getFriendsCount ();
+  }
+ }
+}</code></pre>
+<p>"Suppose a thread calls the <strong>getFriends</strong> method, acquires the <strong>this</strong> object's mutex, and then acquires the <strong>friends</strong> object's mutex."</p>
+<p>"Meanwhile, a second thread calls the <strong>addFriend</strong> method, acquires the <strong>friends</strong> object's mutex, and then acquires the this object's mutex (during a call to <strong>getFriendsCount</strong>)."</p>
+<p>"At first, everything will be fine, but as Murphy's Law states: anything that can go wrong will go wrong. A situation will inevitably arise where the first thread will only have time to acquire one mutex, and the second thread will acquire the second mutex at that very moment. They will hang like that, forever waiting for the other thread to release the mutex."</p>
+<p>"I've decided to quote another simple example I found in a book:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class KnightUtil
+{
+ public static void kill(Knight knight1, Knight knight2)
+ {
+  synchronized(knight1)
+  {
+   synchronized(knight2)
+   {
+    knight2.live = 0;
+    knight1.experience += 100;
+   }
+  }
+ }
+}</code></pre>
+<p>"There's a game where two knights are fighting each other. One knight kills the other. This behavior is reflected in the <strong>kill</strong> method. Two knight objects are passed to it.</p>
+<p>"First, we protect both objects so no one else can change them."</p>
+<p>"The second knight dies (HP = 0)"</p>
+<p>"The first knight gains 100 XP."</p>
+<p>"Everything seems fine, but there may be situations where the second knight attacks the first at the same time. This method is also called for the second knight, but the knight objects are passed in a different order."</p>
+<p><span class="text-user">"You mean we don't even need multiple methods to get deadlock?"</span></p>
+<p>"Right. Sometimes it only takes one simple method to cause threads, and the whole program, to hang."</p>
+<p><span class="text-user">"Yeah, I guess this phenomenon occurs more often than I thought. Thanks, Ellie."</span></p>

@@ -1,0 +1,110 @@
+Device URL
+<p>----------------------------------------</p>
+host query &amp; params
+<p>----------------------------------------</p>
+<h2>2.1host</h2>
+<p>After Tim Berners-Lee implemented the World Wide Web, HTML, HTTP and web servers, he decided to make life harder for
+    future web programmers and came up with links, or URLs. URL stands for Universal Resource Locator.</p>
+<p>A typical link is given by a template:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="text-orange">protocol</span><span class="token operator">:</span><span
+            class="token operator">/</span><span class="token operator">/</span><span class="text-red">host</span><span
+            class="token operator">/</span><span class="text-viola">path</span><span
+            class="token operator">?</span><span class="text-user">query</span>#<span
+            class="text-green">anchor</span></code></pre>
+</div>
+<p>Some of the parts may be missing, but <code>protocol</code>should <code>host</code>always be listed.</p>
+<p><code class="text-orange">Protocol</code>specifies the name of the protocol by which the client and server will
+    communicate. Typical protocol names: HTTP, HTTPS, FTP, SSH, ...</p>
+<p><code class="text-red">Host</code>is the name of the server on the network to send the request to. Initially it was
+    an IP address, but people quickly came up with human-readable names (domain names) so as not to remember anything.
+    As if remembering a couple of numbers is so difficult)</p>
+<p>Initially, none <code class="text-user">query</code>was thought of. <code class="text-viola">Path</code>specified the
+    location of the HTML file that the server was supposed to give to the client. However, after the web was taken over
+    by amateurs, they quickly realized that HTML files could be dynamically created on the server side. Therefore, a
+    section was added to the URL <code class="text-user">query</code>, in which a bunch of useful information can be
+    passed to the server.</p>
+<p>And finally <code class="text-green">anchor</code>, this is just a special label on an HTML page that tells the
+    browser that the page should not only be displayed, but also scrolled to a certain place, that is, a label.</p>
+<h2>2.2 query &amp; params</h2>
+<p>I'll tell you a little more about <code>query</code>.</p>
+<p><strong>The part of the link under the title<code>query</code></strong> starts immediately after the question mark
+    and ends with a # (or the end of the link). The information in the query is a set of parameters in the following
+    form:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="text-red">name<span class="token operator">=</span>value</span><span
+            class="token operator">&amp;</span><span class="text-green">name2<span class="token operator">=</span>value2</span><span
+            class="token operator">&amp;</span><span class="text-user">nameN<span class="token operator">=</span>valueN</span></code></pre>
+</div>
+<p><span class="text-red">The URL cannot contain spaces</span> and a bunch of other characters, so all suspicious
+    characters are escaped. Most likely, you often encountered this when you copied a link and threw it to a friend:</p>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th width="60">width="300"</th>
+            <th>Symbol</th>
+            <th>Encoding</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>space</td>
+            <td>%20</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>!</td>
+            <td>%21</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>#</td>
+            <td>%22</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>$</td>
+            <td>%24</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>%</td>
+            <td>%25</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>&amp;</td>
+            <td>%26</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>'</td>
+            <td>%27</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>*</td>
+            <td>%2A</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>+</td>
+            <td>%2B</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>,</td>
+            <td>%2C</td>
+        </tr>
+        <tr>
+            <td>eleven</td>
+            <td>/</td>
+            <td>%2F</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>You can read more on this topic <a href="https://en.wikipedia.org/wiki/Percent-encoding" target="_blank">at the
+    link</a> .</p>

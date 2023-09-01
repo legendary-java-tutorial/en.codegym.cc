@@ -1,0 +1,72 @@
+Basic Tasks in Database Design
+<p>----------------------------------------</p>
+Ensuring that all the necessary information is stored in the database Ensuring the possibility of obtaining data for all necessary requests Reducing redundancy and duplication of data Ensuring the integrity of the database Optimizing the speed of data access
+<p>----------------------------------------</p>
+base is somewhat similar to designing the architecture of a Java project. You can put all the data in a couple of tables, or you can build a beautiful data structure from schemas and dozens of tables.</p>
+<p>Here are the tasks that a developer usually faces when designing a database:</p>
+<ol>
+ <li>Ensuring that all the necessary information is stored in the database.</li>
+ <li>Ensuring the possibility of obtaining data on all necessary requests.</li>
+ <li>Reducing redundancy and duplication of data.</li>
+ <li>Ensuring Database Integrity</li>
+ <li>Data access speed optimization</li>
+</ol>
+<p>The main thing to remember is that you cannot make an ideal database structure, because. it, like your code, will also change constantly. There are three things you should keep in mind when designing your database structure:</p>
+<ol>
+ <li>The structure must be good enough.</li>
+ <li>There must be a logic in everything that other people can understand.</li>
+ <li>Premature optimization is the root of all evil.</li>
+</ol>
+<p><strong>You don't have to</strong> make the world's best database structure. She will still change. Your task is to ensure that after 20 changes to the structure of your database, it is easy enough to figure it out.</p>
+<p>Most likely in the first years of your work, no one will trust you to design a base from scratch. You will be making changes to an existing schema. You need to try to understand on the basis of what principles it is arranged and <strong>adhere to them</strong> . With their charter, they don’t climb into someone else’s monastery.</p>
+<p><strong>Do not optimize the database</strong> until it is necessary. If the table has only a couple of hundred rows, then most likely the DBMS will keep it in memory and cache queries to it.</p>
+<p>On the other hand, you should be able to speed up the work of important requests by tens or even hundreds of times. And it would be nice if you knew how to do it. How do they say in high school in the first year? "Forget everything you were taught in school..."</p>
+<p>If you know what database normalization is, then I hasten to please you, in your work you will most likely deal with <strong>de-normalization</strong> . Nothing is more important for the project's sanctuaries than the speed of the database. And if, in order to speed up the selection of data from the database, you need to combine 200 (!) Tables into one (with monstrous redundancy), you will have to do this.</p>
+<h2>1.2 Library design</h2>
+<p>Let's dive into the subject area a bit and think about database design using something as simple as a typical book library.</p>
+<p>The main task of any library is the processing of the book fund. It is easy to distinguish three main groups of system users: <strong>reader, librarian, administrator</strong> . The activity of each is shown in a use case diagram.</p><img data-max-width="512" data-id="5c1ceca8-4c3a-47e2-81ce-cf458cfb1dad" alt="" src="https://cdn.javarush.com/images/article/5c1ceca8-4c3a-47e2-81ce-cf458cfb1dad/512.jpeg" style="width: 512px;">
+<p>Already now, some entities and relationships of the future database can be distinguished:</p><img data-max-width="800" data-id="3b8a6e54-4dcb-48a9-afe9-dd588efe8906" alt="" src="https://cdn.javarush.com/images/article/3b8a6e54-4dcb-48a9-afe9-dd588efe8906/800.jpeg" style="width: 800px;">
+<p>With this approach, it is not clear how to connect the reader with the book (the reader does not have an arity in the “issuance / reception” relationship. If the book has several copies, then it can be issued to several readers. Even if a book is understood as one copy, then when saved in the table of books of the current reader, it will be impossible to obtain information about who (and how many times) took this book earlier.</p>
+<p>The solution may be <strong>the introduction of an additional entity</strong> - a card for issuing a book. When the book is issued to the reader, a card is created, and when the book is handed over, a corresponding mark is put on it. With the help of these cards, the debts of each user are determined and statistics on the use of books are calculated. When booking literature by the reader, a card is also started; if the booked literature is not taken by the reader within a certain period, the card is destroyed. There is a limit on the number of books a reader can book.</p>
+<p>When selecting literature, the user views the literature catalog with the ability to filter the search results by author, title, year of publication.</p>
+<p>It is possible to calculate statistics for all books in the library, while the number of issued copies of the book for a given period of time. You can also set the minimum number of book instances for which the calculation is performed. Based on these statistics, unused books are written off from the library.</p>
+<p>The following main entities of the subject area can be distinguished:</p>
+<ul>
+ <li><strong>user</strong> (librarians and administrators);</li>
+ <li><strong>reader;</strong></li>
+ <li><strong>reading room;</strong></li>
+ <li><strong>book;</strong></li>
+ <li><strong>book issuance card;</strong></li>
+ <li><strong>book booking card.</strong></li>
+</ul>
+<p>The modified ER-diagram of the database is shown in the figure.</p><img data-max-width="800" data-id="911e9c95-c3bb-467c-8a86-8c6a4e487b98" alt="" src="https://cdn.javarush.com/images/article/911e9c95-c3bb-467c-8a86-8c6a4e487b98/800.jpeg" style="width: 800px;">
+<p>According to the use cases shown in Figure 1, the database should implement the following queries (not an exhaustive list):</p>
+<ul>
+ <li>display books that match the specified conditions;</li>
+ <li>display users who have cards for issuing books that have not been closed on time (the librarian is looking for debtors);</li>
+ <li>display all the books that correspond to the given user's book lending cards that were not closed in time (the user came to the library for new books - you need to see if he is a debtor and inform him about it);</li>
+ <li>delete all booking cards created more than N seconds ago;</li>
+ <li>display all books corresponding to unclosed book reservation cards of the specified user (the reader ordered books and came to the library for them - the librarian needs to get this list in order to give it out).</li>
+</ul>
+<h2>1.3 Schema formation</h2>
+<p>To form a data schema, you must first supplement the ER diagram with the details of the entities (refine it). Sometimes, at the same time, it is possible to find errors in constructing an ER diagram - in this task, it was found that the book needed to be “somehow” connected with the library hall.</p>
+<p>This can be done by placing the requisite “hall number” in the book, however, with this approach, the same book will have to be described in the database several times (if it occurs in different halls). A more correct approach is to introduce an additional entity "book placement". The figure shows an ER diagram with an added entity and props.</p><img data-max-width="1024" data-id="dce386c9-1721-4c73-b71f-fae67df02985" alt="" src="https://cdn.javarush.com/images/article/dce386c9-1721-4c73-b71f-fae67df02985/1024.jpeg" style="width: 1024px;">
+<p>The above ER diagram reflects the main tables, relationships and attributes; on its basis, you can build a database model. There is no standard for the ER diagram, but there are a number of notations (Chen, IDEFIX, Martin, etc.), but neither the standard nor the notations could be found for the domain model. However, in the course of constructing such a diagram, key fields (external and internal) are necessarily highlighted, sometimes indexes and data types.</p>
+<p>In this case, in the following diagram:</p>
+<ul>
+ <li>for links, Martin's notation ("crow's feet" is used);</li>
+ <li>tables are shown as rectangles divided into 3 sections:</li>
+ <ul>
+  <li>table name;</li>
+  <li>internal keys (marked with a marker);</li>
+  <li>the remaining fields, while the mandatory ones are marked with a marker.</li>
+ </ul>
+ <p><img data-max-width="800" data-id="be301feb-d3ec-48e3-8eb1-a5a7de7a353a" alt="" src="https://cdn.javarush.com/images/article/be301feb-d3ec-48e3-8eb1-a5a7de7a353a/800.jpeg" style="width: 800px;"></p>
+</ul>
+<p>When developing this model, there was a desire to join the administrators table with the librarians table - add the users table, however:</p>
+<ul>
+ <li>the administrator is not associated with a specific room (you would have to fill in the corresponding field with null values);</li>
+ <li>this would probably complicate the distribution of access rights - now only the database administrator (who works through a special DBMS panel and does not have an account in the system being developed) has access to the administrators table. However, when joining tables, user queries would require access to the new table.</li>
+</ul>
+<p>When constructing this diagram, a flaw in the ER diagram was found and corrected - a table was added <code>librarians_rooms</code>that unites librarians and halls. This is necessary because one librarian can work in several rooms, but several librarians can work in the same room.</p>
+<p>When designing databases, you should be able to reason at least like the example above. If you think that you succeeded, let's go further: even more theory.</p>

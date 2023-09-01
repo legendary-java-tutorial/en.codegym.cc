@@ -1,0 +1,85 @@
+Object Relational Mapping
+<p>----------------------------------------</p>
+Mapping classes to tables The advent of Hibernate The advent of JPA Maven for Hibernate
+<p>----------------------------------------</p>
+er learning JDBC, you most likely have the impression that working with a database from a Java application is still a pleasure. What if I told you that all this work could be done 10 times easier?</p>
+<p>What is the main advantage of the SQL language? This is a declarative language - it describes what we want to get, and says nothing at all about how to do it. How - this is the concern of the SQL server.</p>
+<p>The same approach can be used when working with databases.</p>
+<p>In an ideal world, we could simply write SQL queries to the database, and in response we would receive ready-made Java objects, or collections of Java objects, if we requested several pieces.</p>
+<p>What can I say, this is what several guys thought in 2000 and decided to write their own ORM framework.</p><img data-max-width="800" data-id="b796a58f-f10c-46d2-af0c-6da048ec2bca" alt="" src="https://cdn.javarush.com/images/article/b796a58f-f10c-46d2-af0c-6da048ec2bca/800.jpeg" style="width: 800px;">
+<p><strong>ORM</strong> stands for <strong>Object-Relational Mapping</strong> and is essentially a mapping of Java objects to SQL queries.</p>
+<p>The guys came up with a very simple thing - <span class="text-green">each table in the database must correspond to some class in the Java application</span> . In a Java application, we operate with objects, and these objects already know how to save themselves to the database.</p>
+<p>There were three approaches to solving this problem, and they looked something like this:</p>
+<ol>
+ <li>The object saves itself to the database and updates its fields based on information from the database.</li>
+ <li>The object is able to save itself to the database, but never initiates this case.</li>
+ <li>The object contains only data, and someone saves it to the database and loads it from the database.</li>
+</ol>
+<p>Initially, the first approach dominated, then Application servers and Enterprise Java Beans were popular. There was even a whole class of beans called Persistence EJBs that could save themselves into the database themselves.</p>
+<p>But one day everything changed...</p>
+<h2>1.2 Emergence of Hibernate</h2>
+<p>In 2001, the first version of the Hibernate framework was released. It was a very simple framework, but it allowed the use of ordinary "stupid objects" that did not know anything about how they should be stored in the database or loaded from there.</p><img data-max-width="512" data-id="2898bb0c-234c-4863-bd67-43401f7e5757" alt="" src="https://cdn.javarush.com/images/article/2898bb0c-234c-4863-bd67-43401f7e5757/512.jpeg" style="width: 512px;">
+<p>Mapping of fields of Java classes and columns in a table in the database was set using an XML file. And sometimes they were quite bulky. Okay, who am I kidding. They were hefty canvases of XML code. And the situation was saved only by the fact that 20 years ago there were no such gigantic databases as now.</p>
+<p>But in fact, the most powerful decision was to <strong>finally separate the object that needs to be saved to the database from the code that saved it there</strong> . This solution is not really obvious. Because the principle of encapsulation states that the object knows best about how it needs to be saved and loaded.</p><img data-max-width="800" data-id="62e2da06-e135-48f9-bea6-1c57f934870b" alt="" src="https://cdn.javarush.com/images/article/62e2da06-e135-48f9-bea6-1c57f934870b/800.jpeg" style="width: 800px;">
+<p>And the ORM approach really breaks that concept. The data class exposes its internal structure, but it has become much easier to operate with groups of objects of different types.</p>
+<p><span class="text-green">A major breakthrough came after the release of Java 5</span> , when two things appeared in the JDK:</p>
+<ul>
+ <li><strong>Annotations</strong></li>
+ <li><strong>proxy</strong></li>
+</ul>
+<p><mark class="green">Annotations</mark>XML was quickly supplanted, and now it was easy to specify all the necessary settings for mapping a Java class to a table in the database right in the Java class.</p>
+<p><mark class="green">Proxy</mark>not so noticeable to the Hibernate user, but their contribution was even more serious. When you request a specific object or objects from Hibernate, it simply returns you a stub (proxy), and intercepts all calls to its methods.</p>
+<p>This made it possible to implement various Lazy Loading mechanisms and raised the speed and efficiency of Hibernate to a completely sky-high level for that time. Hibernate has become not just a de facto industry standard - it has begun to be translated into other languages. So, for example, Framework NHibernate appeared for C#.</p>
+<h2>1.3 Emergence of JPA</h2>
+<p>De facto followed by de jure recognition. The JDK developers decided to create a specification on how to correctly map objects to tables in a database. This specification is called<mark class="orange">JPA</mark>- Java Persistence API.</p>
+<p>This is exactly the specification. It describes how everything should work and what annotations we need to mark different parts of the class if we want its objects to be saved to the database.</p>
+<p>It seems that the guys just took Hibernate as a basis and changed the package names from it. Because all the annotations that were in Hibernate moved to JPA almost one by one.</p><img data-max-width="512" data-id="4c4522ec-1832-4222-8570-f2ce8b948a5f" alt="" src="https://cdn.javarush.com/images/article/4c4522ec-1832-4222-8570-f2ce8b948a5f/512.jpeg" style="width: 512px;">
+<p>Today, Hibernate fully implements the entire JPA specification, as well as some additional features that make working with it even more comfortable. Therefore, in terms of standardization, we can say that Hibernate has two sets of features:</p>
+<ul>
+ <li><strong>JPA standard</strong></li>
+ <li><strong>Hibernate Native API</strong> (additional functionality)</li>
+</ul>
+<p>The official Hibernate documentation describes it like this:</p><img data-max-width="512" data-id="b41f7eb8-4a43-44d0-9f24-d8c423051a0c" alt="" src="https://cdn.javarush.com/images/article/b41f7eb8-4a43-44d0-9f24-d8c423051a0c/512.jpeg" style="width: 512px;">
+<p>But both based on my experience and after re-reading the Hibernate documentation, I can say that JPA and Hibernate API are 95% the same. They are just identical concepts.</p>
+<h2>1.4 Maven for Hibernate</h2>
+<p>Since I've praised Hibernate so much, I think it's time to move on to working with it a little harder.</p>
+<p>Firstly, there is an official site, where there is just a bunch of English-language documentation. She, of course, has a bias in reference information, and not in training. But it's still better than debugging the sources, right? :)</p>
+<p>Instruction:</p>
+<ol>
+ <li>You open <a href="https://hibernate.org/orm/" target="_blank" rel="nofollow">the link</a> .</li>
+ <li>You look at her for a long time.</li>
+ <li>Coming back to CodeGym.</li>
+ <li>You read my further lectures.</li>
+</ol>
+<p>My job is to simplify complex things and explain them in simple terms. And if you have reached this level, then I can do it.</p>
+<p>Well, to get started with Hibernate, you need to add it to your pom.xml. To date, the 6th version of Hibernate is already available, or rather 6.1.1, so we will learn how to work with the latest version.</p>
+<p>Just add these lines to your pom.xml:</p>
+<pre class="line-numbers"><code>
+&lt;dependency&gt;
+	&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+	&lt;version&gt;6.1.1.Final&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>If you are reading this lecture outside the window of 2023+, then the new version can be <a href="https://mvnrepository.com/artifact/org.hibernate/hibernate-core" target="_blank" rel="nofollow">downloaded here</a> .</p>
+<p><strong>Important! </strong>Some of the libraries that Hibernate uses have been deprecated in JDK 11 and JDK 17, so if you're having trouble getting your project up and running, add these dependencies to it:</p>
+<pre class="line-numbers"><code>
+  	&lt;dependency&gt;
+        &lt;groupId&gt;jakarta.xml.bind&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.xml.bind-api&lt;/artifactId&gt;
+      	&lt;version&gt;4.0.0&lt;/version&gt;
+  	&lt;/dependency&gt;
+ 
+  	&lt;dependency&gt;
+        &lt;groupId&gt;org.glassfish.jaxb&lt;/groupId&gt;
+        &lt;artifactId&gt;jaxb-runtime&lt;/artifactId&gt;
+      	&lt;version&gt;4.0.0&lt;/version&gt;
+  	&lt;/dependency&gt;
+ 
+  	&lt;dependency&gt;
+        &lt;groupId&gt;org.javassist&lt;/groupId&gt;
+        &lt;artifactId&gt;javassist&lt;/artifactId&gt;
+        &lt;version&gt;3.29.0-GA&lt;/version&gt;
+  	&lt;/dependency&gt;
+
+</code></pre>

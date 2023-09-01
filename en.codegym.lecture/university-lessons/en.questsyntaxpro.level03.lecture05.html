@@ -1,0 +1,125 @@
+Link Comparison
+<p>----------------------------------------</p>
+Comparisons Very often a programmer needs to compare different variables with each other. And as you have already seen, not everything is so simple. Integer numbers are very easy to compare - just use the == sign and that's it. To compare real numbers, you already have to compare their difference (or rather, its 
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="dec911e2-21fd-4479-aee4-68e3fc4455e6" data-max-width="1024" src="https://cdn.javarush.ru/images/article/dec911e2-21fd-4479-aee4-68e3fc4455e6/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="d579004a-ff95-4b83-8d78-370f79c84980" data-max-width="512" src="https://cdn.javarush.ru/images/article/d579004a-ff95-4b83-8d78-370f79c84980/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="ee6ee553-57ba-4b43-9f8c-8f07b1c43fc6" data-max-width="512" src="https://cdn.javarush.ru/images/article/ee6ee553-57ba-4b43-9f8c-8f07b1c43fc6/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Comparisons</h2>
+<p>Programmers need to compare different variables with one another all the time. But, as you have already seen, everything is not so simple.</p>
+<p><span class="term text-red">Integers</span> are very easy to compare — you just use <code>==</code> and you're done. To compare <span class="term text-viola">real numbers</span>, you have to compare their difference (or rather, the absolute value of the difference) with some very small number.</p>
+<p>Comparing <span class="term text-brown">strings</span> is even more difficult. Above all, this is because strings are objects. What's more, programmers often want the string comparison to go a little differently depending on the situation.</p>
+<hr>
+<h2>2. How strings are arranged memory</h2>
+<p>As you have already seen, strings are stored in memory differently than integers and real numbers:</p>
+<p><img data-max-width="1024" data-id="d3b1b3a3-4872-4c03-90db-493ef88f332f" src="https://cdn.codegym.cc/images/article/d3b1b3a3-4872-4c03-90db-493ef88f332f/1024.jpeg" alt="How strings are arranged memory"></p>
+<p><strong>Two blocks of memory</strong> are used to store strings: one block stores the text itself (its size depends on the size of the text) while the second block (4 bytes) stores the address of the first block.</p>
+<p>Although an experienced programmer would say something like "the <code>String</code> <code>str</code> variable stores a reference to a <code>String</code> object.</p>
+<hr>
+<h2><span>3. Assigning references to a string</span></h2>
+<p><span>The benefits of this approach become apparent when you need to assign one string variable to another string variable. Example:</span></p>
+<pre class="language-java"><code>String <span class="text-red">text</span> = <span class="text-green">"This is a very important message"</span>;
+String <span class="text-user">message</span> = <span class="text-red">text</span>;</code></pre>
+<p>And here's what memory will contain as a result:</p>
+<img data-max-width="1024" data-id="317c1d47-00c2-4443-b29e-59226ddc484a" src="https://cdn.codegym.cc/images/article/317c1d47-00c2-4443-b29e-59226ddc484a/1024.jpeg" alt="Assigning references to a string">
+<p>After this type of assignment operation, the <code>String</code> object remains where it was, and just its address (a reference to the object) is copied into the <code><span class="text-user">message</span></code> variable.</p>
+<hr>
+<h2>4. Working with references and objects</h2>
+<p>But if you decide to convert a string to uppercase (capital letters), the Java machine does everything right: you will end up with two <code>String</code> objects, and the <code><span class="text-red">text</span></code> and <code><span class="text-user">message</span></code> variables will store references, each to its own object.</p>
+<p>Example:</p>
+<pre class="language-java"><code>String <span class="text-user">text</span> = <span class="text-green">"This is a very important message"</span>;
+String message = <span class="text-user">text</span>.<span class="code text-viola">toUpperCase()</span>; </code></pre>
+<p>And here's what memory will contain as a result:</p>
+<p><img data-max-width="1024" data-id="78eadabf-ea2b-4761-a23e-0e42969f51f5" src="https://cdn.codegym.cc/images/article/78eadabf-ea2b-4761-a23e-0e42969f51f5/1024.jpeg" alt="Working with references and objects"></p>
+<p>Please note that the <code class="text-viola">toUpperCase()</code> method <span class="text-red">does not change</span> the string it is called on. Instead, it creates a new string (new object) and returns a reference to it.</p>
+<p>How about an even more interesting example. Let's say you decide to pass a string to a <code><span class="text-red">Scanner</span></code> object (so that it reads values from the string).</p>
+<p>Example:</p>
+<pre class="language-java"><code>String <span class="text-user">text</span> = <span class="text-green">"10 20 40 80"</span>;
+<span class="text-red">Scanner</span> <span class="text-orange">console</span> = new <span class="text-red">Scanner</span>(<span class="text-user">text</span>);
+int a = <span class="text-orange">console</span>.nextInt();
+int b = <span class="text-orange">console</span>.nextInt();</code></pre>
+<p>You can learn more about the how the <code><span class="text-red">Scanner</span></code> class works <a href="https://codegym.cc/groups/posts/5-scanner-class">here</a>.</p>
+<p>This is how it will all be stored in memory:</p>
+<p><img data-max-width="1024" data-id="7af29f96-c46b-44d8-9ec5-b4d028b07dde" src="https://cdn.codegym.cc/images/article/7af29f96-c46b-44d8-9ec5-b4d028b07dde/1024.jpeg" alt="Working with references and objects. Scanner class"></p>
+<p>In this case, a single <code>String</code> object remains in memory just as it was — only references to it are passed around and stored in variables.</p>
+<hr>
+<h2>5. Comparing references to <code>String</code> objects</h2>
+<p>And finally, we've reached the fun part: string comparison.</p>
+<p>There are two operators you can use to compare string variables: <code>==</code> (equal) and <code>!=</code> (not equal). You can't use the "greater than", "less than", or "greater than or equal to" operators — the compiler won't allow it.</p>
+<p>But there's an interesting nuance here: what actually gets stored in string variables? That's right: addresses (references) to objects. And it is these addresses that will be compared:</p>
+<pre class="language-java"><code>String <span class="text-green">text</span> = "Hi";
+String <span class="text-user">message</span> = text;
+String <span class="text-red">s1</span> = <span class="text-green">text</span>.toUpperCase();
+String<span class="text-red"> s2</span> = <span class="text-green">text</span>.toUpperCase();<strong> </strong></code></pre>
+<p>Here's what will be in memory:</p>
+<p><img data-max-width="1024" data-id="169d5055-ccfc-41af-b512-57a80f77b078" src="https://cdn.codegym.cc/images/article/169d5055-ccfc-41af-b512-57a80f77b078/1024.jpeg" alt="Comparing references to String objects"></p>
+<p>The <code><span class="text-user">message</span></code> and <code><span class="text-green">text</span></code> variables refer to (store the address of) the same object. But the <code><span class="text-red">s1</span></code> and <code><span class="text-red">s2</span></code> variables store references to objects that are very similar but distinct.</p>
+<p>And if you compare these 4 variables in the code, then you get the following result:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Console output</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-green">text</span> = "Hi";
+String <span class="text-user">message</span> = <span class="text-green">text</span>;
+String <span class="text-red">s1</span> = text.toUpperCase();
+String <span class="text-red">s2</span> = text.toUpperCase();
+System.out.println(<span class="text-green">text</span> == <span class="text-user">message</span>);
+System.out.println(<span class="text-green">text</span> == <span class="text-red">s1</span>);
+System.out.println(<span class="text-red">s1</span> == <span class="text-red">s2</span>); </code></pre>
+        </td>
+        <td>
+                <pre>
+
+
+
+
+<code><span class="text-green">true</span>  <span class="text-muted">// The addresses are equal</span>
+<span class="text-red">false</span> <span class="text-muted">// The addresses are different</span>
+<span class="text-red">false</span> <span class="text-muted">// The addresses are different</span></code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task03.task0320"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="b3f30b2b-9cf9-4f57-8364-e952fa7f05cc" data-max-width="1024" src="https://cdn.javarush.ru/images/article/b3f30b2b-9cf9-4f57-8364-e952fa7f05cc/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="8f4e68ef-c649-48c0-ab9a-d1e50e3a1b38" data-max-width="512" src="https://cdn.javarush.ru/images/article/8f4e68ef-c649-48c0-ab9a-d1e50e3a1b38/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="13669eac-3ba0-49de-abdb-581dfa2b57dc" data-max-width="512" src="https://cdn.javarush.ru/images/article/13669eac-3ba0-49de-abdb-581dfa2b57dc/original.png" alt="">
+        </div>
+    </div>
+</div>

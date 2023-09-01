@@ -1,0 +1,97 @@
+JSON data format
+<p>----------------------------------------</p>
+JSON is one of the most popular formats for text representation of data. JSON is used, for example, to transfer data between the frontend and backend, in configuration files...
+<p>----------------------------------------</p>
+<p>JSON is one of the most popular formats for representing data as text. For example, JSON is used to transfer data between the frontend and backend, in configuration files, in games, in text editors, and in many other areas. As a programmer, you will definitely encounter JSON.</p>
+
+    <h2>Introducing the syntax</h2>
+
+    <p>Let's list the data types available in JSON:</p>
+
+    <ol>
+        <li><p>Strings are any characters enclosed in double quotes:</p>
+            <div class="terminal">"kwerty"</div>
+            <div class="terminal">"125 + 42"</div>
+            <div class="terminal">"G"</div>
+            <p>Special characters are escaped with a slash:</p>
+            <div class="terminal">"first line\nsecond line"</div>
+            <div class="terminal">"He said, \"Hello!\""</div></li>
+ 
+        <li><p>Numbers, including negative and real numbers. No quotes:</p>
+            <div class="terminal">18 -333 17.88 1.2e6</div></li>
+ 
+        <li><p>The Boolean values are <span class="code">true</span> / <span class="code">false</span> (no quotes).</p></li>
+ 
+        <li><p><span class="code">null</span> is the standard value to represent "nothing". No quotation marks are used here.</p></li>
+
+        <li><p>Array − This type can contain values of any other types. It is wrapped in square brackets. Its elements are separated by commas:</p>
+            <div class="terminal">["Code", "Gym", "CodeGym", "¯\_(ツ)_/¯"]</div>
+            <div class="terminal">[true, true, false, true, false, false, false, false, false]</div>
+            <div class="terminal">[[1, 2], [3, 999, 4, -5], [77]]</div>
+            <p>The last example is an array of arrays</p></li>
+ 
+        <li><p>Object — This complex type is the most commonly used. It contains key-value pairs, where the value can be any of the types listed above, as well as other objects. It is wrapped in curly braces, and the pairs are separated by commas:</p>
+            <pre class='language-java line-numbers'><code>
+{
+ "name": "Dale",
+ "age": 7
+}
+</code></pre></li>
+    </ol>
+ 
+    <h2>Representing a Java object as JSON</h2>
+ 
+    <p>Now let's take some Java object and see what it looks like as JSON.</p>
+ 
+    <p>First, let's define a class:</p>
+ 
+    <pre class='language-java line-numbers'><code>
+public class Human {
+	String name;
+	boolean male;
+	int age;
+	Set&lt;Human&gt; parents;
+
+	public Human(String name, boolean male, int age) {
+    	    this.name = name;
+    	    this.male = male;
+    	    this.age = age;
+	}
+}
+</code></pre>
+ 
+    <p>Now let's create our object:</p>
+
+    <pre class='language-java line-numbers'><code>
+	Human father = new Human("Peter", true, 31);
+	Human mother = new Human("Mary", false, 28);
+	mother.parents = new HashSet&lt;&gt;();
+	Human son = new Human("Paul", true, 7);
+	son.parents = Set.of(father, mother);
+</code></pre>
+ 
+    <p>And now let's try to represent the <mark class="green">son</mark> object as accurately as possible in JSON format:</p>
+ 
+    <div class="terminal">{<br />
+&nbsp;"name" : "Paul",<br />
+&nbsp;"male" : true,<br />
+&nbsp;"age" : 7,<br />
+&nbsp;"parents" : [ <br />
+&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;"name" : "Peter",<br />
+&nbsp;&nbsp;&nbsp;"male" : true,<br />
+&nbsp;&nbsp;&nbsp;"age" : 31,<br />
+&nbsp;&nbsp;&nbsp;"parents" : null<br />
+&nbsp;}, <br />
+&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;"name" : "Maria",<br />
+&nbsp;&nbsp;&nbsp;"male" : false,<br />
+&nbsp;&nbsp;&nbsp;"age" : 28,<br />
+&nbsp;&nbsp;&nbsp;"parents" : null<br />
+&nbsp;} <br />
+]<br />
+}</div>
+
+    <h2>Comments in JSON</h2>
+
+    <p>Everything here is exactly the same as in Java. There are two types of comments: // and /*...*/. I hope I don't need to remind you how they differ?</p>

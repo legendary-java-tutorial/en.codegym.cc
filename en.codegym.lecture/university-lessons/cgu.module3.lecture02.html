@@ -1,0 +1,356 @@
+Related project: frontend
+<p>----------------------------------------</p>
+Related project: frontend
+<p>----------------------------------------</p>
+kend using HTML, CSS, JS, jQuery. We will make an admin panel for managing online game accounts.</h2>
+<p></p>
+<ol>
+ <li>Fork from the repository: <a href="https://github.com/CodeGymCC/project-frontend.git" target="_blank" rel="nofollow">https://github.com/CodeGymCC/project-frontend.git</a></li>
+ <li>Download your version of the project to your computer.</li>
+ <li>Download Tomcat: <a href="https://tomcat.apache.org/download-90.cgi" target="_blank" rel="nofollow">https://tomcat.apache.org/download-90.cgi</a> .<mark class="red"> Important</mark>: Tomcat <strong>version 9</strong> needs to be installed, not 10.</li>
+ <li>Configure application launch via Idea: Alt + Shift + F9 -&gt; Edit Configurations… -&gt; Alt + insert -&gt; tom (in the search bar) -&gt; Local.</li><img data-max-width="800" data-id="266d093e-dbf4-427b-83ea-73cd094a00cc" alt="" src="https://cdn.javarush.com/images/article/266d093e-dbf4-427b-83ea-73cd094a00cc/800.jpeg" style="width: 800px;">
+ <ul>
+  <li>After that, you need to click <code>CONFIGURE</code>and indicate where the archive with Tomcat was downloaded and unpacked.</li><img data-max-width="1024" data-id="e433ead9-994c-46a7-aded-72b185d8c650" alt="" src="https://cdn.javarush.com/images/article/e433ead9-994c-46a7-aded-72b185d8c650/1024.jpeg" style="width: 1024px;">
+  <li>In the tab <code>Deployment</code>: Alt + insert -&gt; Artifact… -&gt; rpg:war exploded -&gt; OK.</li>
+  <li>In the <code>Application context</code> field: leave only <code>/ </code>(forward slash).</li><img data-max-width="800" data-id="8a412297-fa55-4dc2-9529-008a7bf5a329" alt="" src="https://cdn.javarush.com/images/article/8a412297-fa55-4dc2-9529-008a7bf5a329/800.jpeg" style="width: 800px;">
+  <li>Press <code>APPLY</code>.</li>
+  <li>Close the settings window.</li>
+ </ul>
+ <li>Launch the application. To do this: Alt + Shift + F9 -&gt; (config name, I named it 'App') -&gt; Run.</li><br>
+ <li>After deploying the application, a new tab will open in the browser selected during configuration. Great, the server is configured, then you need to work with two files:</li>
+ <ul>
+  <li><code>&lt;project_dir&gt;/src/main/webapp/html/my.html</code> - here we will have markup and scripts.</li>
+  <li><code>&lt;project_dir&gt;/src/main/webapp/css/my.css</code> – here we will have styles. Everything about styles is up to you, there are no requirements for them.</li>
+ </ul>
+ <li>In the markup ( <strong>my.html</strong> ) add a table (do not forget to give it an id) in which specify the names of the columns:</li>
+ <ul>
+  <li>#</li>
+  <li>Name</li>
+  <li>Title</li>
+  <li>Race</li>
+  <li>Profession</li>
+  <li>Level</li>
+  <li>Birthday</li>
+  <li>Banned</li>
+ </ul>
+ <li>Add a <code>&lt;script&gt;</code> tag pair - we will write functions here.</li>
+ <li>The first function should send a GET request to the URL <code>"/rest/players"</code> - to get the list. The result must be added to the table from point 7 (this is where the table id comes in handy). If you did everything correctly, after restarting the server, a table with 4 lines will be displayed on your page. In the first line - the names of the columns, in the rest - the data that came from the server.</li>
+<img data-max-width="512" data-id="1d088061-7e92-4cb4-a9ef-dae51d942fd8" src="https://cdn.codegym.cc/images/article/1d088061-7e92-4cb4-a9ef-dae51d942fd8/512.jpeg" alt="">
+ <li>Now, it is desirable to add cell borders to the table, otherwise the information is generally unreadable.</li>
+<img data-max-width="512" data-id="48950fc9-5b80-4831-a315-5b8cfb5b1e42" src="https://cdn.codegym.cc/images/article/48950fc9-5b80-4831-a315-5b8cfb5b1e42/512.jpeg" alt="">
+ <li>Now let's move on to paging. For this you need:</li>
+ <ul>
+  <li>Under the table, add a section, for example <code>&lt;div&gt;</code>, which will contain the paging buttons.</li>
+  <li>Add a function that will send a GET request to the server that returns the total number of accounts on the server. URL: <code>"/rest/players/count"</code>.</li>
+  <li>Add a drop-down list for 3-4 numerical values, representing the number of accounts to show at a time. These values must be between 3 and 20 inclusive.</li>
+  <li>In the method for displaying the list of accounts (p. 9), we will add the calculation of the number of pages that are needed for a given number of accounts per page, so that you can view all the accounts.</li> </ul>
+<img data-max-width="512" data-id="fab909d2-403b-4637-ae20-f55310476141" src="https://cdn.codegym.cc/images/article/fab909d2-403b-4637-ae20-f55310476141/512.jpeg" alt="">
+ <li>In the function of showing the list of accounts, add a parameter that will be responsible for the number of the page to be shown. Correct the URL so that it passes <strong>"pageNumber"</strong> and <strong>"pageSize"</strong> as query parameters. Now, when changing the number per page in the drop-down list, the requested number of accounts should be displayed:</li>
+<img data-max-width="512" data-id="b625b7ba-c813-4ca8-9d4d-849c94ac54d7" src="https://cdn.codegym.cc/images/article/b625b7ba-c813-4ca8-9d4d-849c94ac54d7/512.jpeg" alt="">
+ <li>Now let's highlight the current page number, otherwise it's inconvenient ...</li>
+<img data-max-width="512" data-id="bcaaed65-eed3-47c3-b382-37b3aead66fe" src="https://cdn.codegym.cc/images/article/bcaaed65-eed3-47c3-b382-37b3aead66fe/512.jpeg" alt="">
+ <li>Let's add 2 more columns to the table: Edit and Delete. For each row, let's add icons that will be responsible for editing and deleting each entry. You can use either the pictures that are in <code>&lt;project_dir&gt;/src/main/webapp/img/</code>, or use your own.</li>
+<img data-max-width="512" data-id="87d7b30d-1ab4-4c15-aec6-8e82c51d8210" src="https://cdn.codegym.cc/images/article/87d7b30d-1ab4-4c15-aec6-8e82c51d8210/512.jpeg" alt="">
+ <li>Write a function that will be responsible for deleting an account. To do this, send a DELETE request to the server at the URL <code>"/rest/players/{id}"</code>. Call this function when the basket image is clicked. After the call - do not forget to update the list of accounts on the current page.</li>
+ <ul>
+  <li>Before deleting account with <strong>id=23</strong></li>
+<img data-max-width="512" data-id="0ee7cc05-9138-4c64-a797-2986311ca594" src="https://cdn.codegym.cc/images/article/0ee7cc05-9138-4c64-a797-2986311ca594/512.jpeg" alt="">
+  <li>After deleting the account with <strong>id=23</strong>. Notice how no buttons, except for the basket, were pressed.</li>
+<img data-max-width="512" data-id="4c851ead-60f3-4555-91c1-01c3daafc13b" src="https://cdn.codegym.cc/images/article/4c851ead-60f3-4555-91c1-01c3daafc13b/512.jpeg" alt="">
+ </ul>
+ <li>Now write a function that is responsible for editing an account. When you click on it, let's hide the "Delete" button, and change the picture of the "Edit" button to "Save".</li>
+<img data-max-width="512" data-id="1feff58d-0483-4263-81a9-8660522d01a5" src="https://cdn.codegym.cc/images/article/1feff58d-0483-4263-81a9-8660522d01a5/512.jpeg" alt="">
+ <li>Now let's add functionality for editing an account. By clicking on the “Edit” button, in addition to changing the picture, you need to make the fields editable:</li>
+ <ul>
+  <li>Name</li>
+  <li>Title</li>
+  <li>Race</li>
+  <li>Profession</li>
+  <li>Banned</li>
+ </ul>
+ <p>Please note that the value in the edit fields must be those that are in the account.</p>
+<img data-max-width="512" data-id="4fdbdedb-2407-4142-a6db-f08f9d9f5db7" src="https://cdn.codegym.cc/images/article/4fdbdedb-2407-4142-a6db-f08f9d9f5db7/512.jpeg" alt="">
+ <li>Now we will send the changes by clicking on the “Save” button. To do this, you need to send a POST request to the URL <code>“/rest/players/{id}”</code>and pass the values ​​of all five fields as the request body, which can be changed in the form of JSON. Use <strong>JSON.stringify({...}); </strong>After the change, don't forget to reload the data on the current page.</li>
+<img data-max-width="512" data-id="195b5b3a-8c57-4b6f-9d7c-fa63e4b684ad" src="https://cdn.codegym.cc/images/article/195b5b3a-8c57-4b6f-9d7c-fa63e4b684ad/512.jpeg" alt="">
+<img data-max-width="512" data-id="e2c57991-31fe-459c-912e-f5c01df4a768" src="https://cdn.codegym.cc/images/article/e2c57991-31fe-459c-912e-f5c01df4a768/512.jpeg" alt="">
+ <li>So, everything should be done from CRUD at the moment, except for “C” (Create). After the paging buttons, add a horizontal line and text stating that you can create a new account here. In addition, add blocks of text and input fields for account parameters:</li>
+ <ul>
+  <li>Name - text, from 1 to 12 characters.</li>
+  <li>Title - text, from 1 to 30 characters.</li>
+  <li>Race - drop-down list, see API for valid values.</li>
+  <li>Profession - drop-down list, see API for valid values.</li>
+  <li>Level is a number from 0 to 100.</li>
+  <li>Birthday - date (from 2000-01-01 to 3000-12-31).</li>
+  <li>Banned is a boolean value.</li>
+ </ul>
+<img data-max-width="512" data-id="140a330e-db7e-4429-8075-c6b0be87073b" src="https://cdn.codegym.cc/images/article/140a330e-db7e-4429-8075-c6b0be87073b/512.jpeg" alt="">
+ <li>Now add a button, on click on which all the entered data will be sent to the server. Use a POST request to the URL <code>/rest/players</code>. After the server response, do not forget to clear the data entry fields and re-request the list of accounts on the current page.</li>
+<img data-max-width="512" data-id="e9b9d89f-13e2-4702-8b40-ad377530e65f" src="https://cdn.codegym.cc/images/article/e9b9d89f-13e2-4702-8b40-ad377530e65f/512.jpeg" alt="">
+<img data-max-width="512" data-id="422ded28-0e9d-4e7e-b08b-99df58931081" src="https://cdn.codegym.cc/images/article/422ded28-0e9d-4e7e-b08b-99df58931081/512.jpeg" alt="">
+ <li>Now you can add "beauty" through styles - everything here is up to you. I got this:</li>
+<img data-max-width="512" data-id="7f1caded-7ada-4332-8022-03fda6d27314" src="https://cdn.codegym.cc/images/article/7f1caded-7ada-4332-8022-03fda6d27314/512.jpeg" alt="">
+</ol>
+<br>
+<h2>Useful: Server API:</h2>
+<h3>
+ <center>
+  Get playerslist
+ </center></h3>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>URL</strong></td>
+    <td>/rest/players</td>
+   </tr>
+   <tr>
+    <td><strong>Method</strong></td>
+    <td>Optional: Integer pageNumber, Integer pageSize</td>
+   </tr>
+   <tr>
+    <td><strong>Data Params</strong></td>
+    <td>None</td>
+   </tr>
+   <tr>
+    <td><strong>Success Response</strong></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Code</span><span class="token operator">:</span> <span class="token number">200</span> OK
+<span class="token class-name">Code</span><span class="token operator">:</span> <span class="token number">200</span> OK
+<span class="token class-name">Content</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+ <span class="token punctuation">{</span>
+  “id”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Long</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “name”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “title”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “race”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Race</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “profession”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Profession</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “birthday”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Long</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “banned”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Boolean</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “level”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Integer</span><span class="token punctuation">]</span>
+ <span class="token punctuation">}</span><span class="token punctuation">,</span>
+ …
+<span class="token punctuation">]</span></code></pre></td>
+   </tr>
+   <tr>
+    <td><strong>Notes</strong></td>
+    <td>
+     <p><strong>pageNumber</strong> - a parameter that is responsible for the number of the displayed page when using paging. The numbering starts from zero.</p>
+     <p><strong>pageSize</strong> - a parameter that is responsible for the number of results on one page when paging</p>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">enum</span> <span class="token class-name">Race</span> <span class="token punctuation">{</span>
+    HUMAN<span class="token punctuation">,</span>
+    DWARF<span class="token punctuation">,</span>
+    ELF<span class="token punctuation">,</span>
+    GIANT<span class="token punctuation">,</span>
+    ORC<span class="token punctuation">,</span>
+    TROLL<span class="token punctuation">,</span>
+    HOBBIT
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">enum</span> <span class="token class-name">Profession</span> <span class="token punctuation">{</span>
+    WARRIOR<span class="token punctuation">,</span>
+    ROGUE<span class="token punctuation">,</span>
+    SORCERER<span class="token punctuation">,</span>
+    CLERIC<span class="token punctuation">,</span>
+    PALADIN<span class="token punctuation">,</span>
+    NAZGUL<span class="token punctuation">,</span>
+    WARLOCK<span class="token punctuation">,</span>
+    DRUID
+<span class="token punctuation">}</span></code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p></p>
+<center>
+ <h3>Get players count</h3>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>URL</strong></td>
+    <td>/rest/players/count</td>
+   </tr>
+   <tr>
+    <td><strong>Method</strong></td>
+    <td>GET</td>
+   </tr>
+   <tr>
+    <td><strong>URL Params</strong></td>
+    <td>None</td>
+   </tr>
+   <tr>
+    <td><strong>Data Params</strong></td>
+    <td>None</td>
+   </tr>
+   <tr>
+    <td><strong>Success Response</strong></td>
+    <td>
+     <p><strong>Code</strong> : 200 OK</p>
+     <p><strong>Content</strong> : Integer</p></td>
+   </tr>
+   <tr>
+    <td><strong>Notes</strong></td>
+    <td></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p></p>
+<center>
+ <h3>Delete player</h3>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>URL</strong></td>
+    <td>/rest/players/{id}</td>
+   </tr>
+   <tr>
+    <td><strong>Method</strong></td>
+    <td>DELETE</td>
+   </tr>
+   <tr>
+    <td><strong>URL Params</strong></td>
+    <td>id</td>
+   </tr>
+   <tr>
+    <td><strong>Data Params</strong></td>
+    <td>None</td>
+   </tr>
+   <tr>
+    <td><strong>Success Response</strong></td>
+    <td><strong>Code</strong> : 200 OK</td>
+   </tr>
+   <tr>
+    <td><strong>Notes</strong></td>
+    <td>
+     <p>If the player is not found, the response is an error with the 404 code.</p>
+     <p>If the id value is not valid, the response will be an error with a 400 code.</p></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p></p>
+<center>
+ <h3>Update player</h3>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>URL</strong></td>
+    <td>/rest/players/{id}</td>
+   </tr>
+   <tr>
+    <td><strong>Method</strong></td>
+    <td>POST</td>
+   </tr>
+   <tr>
+    <td><strong>URL Params</strong></td>
+    <td>id</td>
+   </tr>
+   <tr>
+    <td><strong>Data Params</strong></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token punctuation">{</span>
+  “name”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>       <span class="token operator">--</span>optional
+  “title”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>     <span class="token operator">--</span>optional
+  “race”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Race</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">--</span>optional
+  “profession”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Profession</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">--</span>optional
+  “banned”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Boolean</span><span class="token punctuation">]</span>    <span class="token operator">--</span>optional
+<span class="token punctuation">}</span></code></pre></td>
+   </tr>
+   <tr>
+    <td><strong>Success Response</strong></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Code</span><span class="token operator">:</span> <span class="token number">200</span> OK
+<span class="token class-name">Content</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  “id”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Long</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “name”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “title”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “race”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Race</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “profession”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Profession</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “birthday”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Long</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “banned”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Boolean</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “level”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Integer</span><span class="token punctuation">]</span>
+ <span class="token punctuation">}</span></code></pre></td>
+   </tr>
+   <tr>
+    <td><strong>Notes</strong></td>
+    <td>
+     <p>Only fields that are not null are updated.</p>
+     <p>If the player is not found in the database, the response is an error with the 404 code.</p>
+     <p>If the id value is not valid, the response is an error with a 400 code.</p></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p></p>
+<center>
+ <h3>Create player</h3>
+</center>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>URL</strong></td>
+    <td>/rest/players</td>
+   </tr>
+   <tr>
+    <td><strong>Method</strong></td>
+    <td>POST</td>
+   </tr>
+   <tr>
+    <td><strong>URL Params</strong></td>
+    <td>None</td>
+   </tr>
+   <tr>
+    <td><strong>Data Params</strong></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token punctuation">{</span>
+  “name”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “title”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “race”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Race</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “profession”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Profession</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “birthday”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Long</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “banned”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Boolean</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">--</span>optional<span class="token punctuation">,</span> <span class="token keyword">default</span><span class="token operator">=</span><span class="token boolean">false</span>
+  “level”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Integer</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span></code></pre></td>
+   </tr>
+   <tr>
+    <td><strong>Success Response</strong></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Code</span><span class="token operator">:</span> <span class="token number">200</span> OK
+<span class="token class-name">Content</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  “id”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Long</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “name”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “title”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “race”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Race</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “profession”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Profession</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “birthday”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Long</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “banned”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Boolean</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  “level”<span class="token operator">:</span><span class="token punctuation">[</span><span class="token class-name">Integer</span><span class="token punctuation">]</span>
+ <span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre></td>
+   </tr>
+   <tr>
+    <td><strong>Notes</strong></td>
+    <td>
+     <p>We cannot create a player if:</p>
+     <p></p>
+     <ul>
+      <li>not all parameters from Data Params are specified (except for banned);</li>
+      <li>the length of the “name” or “title” parameter value exceeds the size of the corresponding field (12 and 30 characters);</li>
+      <li>the value of the “name” parameter is an empty string;</li>
+      <li>the level is outside the specified limits (from 0 to 100);</li>
+      <li>birthday:[Long] &lt; 0;</li>
+      <li>date of registration are outside the specified limits.</li>
+      <li></li>
+     </ul>
+     <p>In the case of all of the above, the response is an error with a 400 code.</p></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<hr>
+<p><a href="https://youtu.be/8XlBSHA1eIE" target="_blank" rel="nofollow">Project analysis</a> . <strong>Watch after completion!</strong></p>

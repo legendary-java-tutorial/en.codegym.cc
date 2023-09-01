@@ -1,0 +1,27 @@
+Database creation
+<p>----------------------------------------</p>
+Schema creation. Default encoding. Finishing up the schema.
+<p>----------------------------------------</p>
+create a new database on the SQL server, then there are two ways to do this:</p>
+<ul>
+ <li>Workbench GUI</li>
+ <li>Write custom SQL query</li>
+</ul>
+<p>But since we are currently studying Workbench, we will create the database using it:</p><img data-max-width="1080" data-id="838d3bcf-4db4-48b4-821b-28ab8d17d968" alt="" src="https://cdn.javarush.com/images/article/838d3bcf-4db4-48b4-821b-28ab8d17d968/1080.jpeg" style="width: 1080px;">
+<p>You can always use the top menu or the buttons on the top bar. Let's click on the "Create a new scheme" button, you will see the following panel:</p><img data-max-width="1080" data-id="4c555626-fbef-4c45-b7d9-5812e195c126" alt="" src="https://cdn.javarush.com/images/article/4c555626-fbef-4c45-b7d9-5812e195c126/1080.jpeg" style="width: 1080px;">
+<p>Here you can set the name of the new scheme. Ready.</p>
+<h2>Default encoding</h2>
+<p><strong>Important! </strong>Never choose the default encoding. Then it turns out that this is some kind of windows 1251, which does not want to work normally with Cyrillic. You don't need it to search or filter.</p>
+<p>Moreover, the transfer of data between different SQL servers is often done in text form. The data is saved to a file as SQL queries and then simply executed on another server as a large SQL file.</p>
+<p>And a situation can easily arise when you have different default encoding on different SQL servers. We've had a hard time with this :)</p>
+<p>So let's get used to choosing it explicitly:</p>
+<ul>
+ <li>utf8</li>
+ <li>utf8_general_ci</li>
+</ul><img data-max-width="1080" data-id="0579d34c-4f34-4e71-9616-f798acd744f2" alt="" src="https://cdn.javarush.com/images/article/0579d34c-4f34-4e71-9616-f798acd744f2/1080.jpeg" style="width: 1080px;">
+<p>If you want your database to be able to store text with emoticons that have just been added to Unicode, then you need to choose utf8mb4.</p>
+<p>But for now, we will specify the encoding exactly utf8, and in the future we will work out with changing the encoding for storing texts with emoticons.</p>
+<h2>We finish creating the scheme</h2>
+<p>Click Apply and see the following window:</p><img data-max-width="800" data-id="471aca4e-c80f-4f7b-86ee-110ec339ab58" alt="" src="https://cdn.javarush.com/images/article/471aca4e-c80f-4f7b-86ee-110ec339ab58/800.jpeg" style="width: 800px;">
+<p>Yes, for each of your actions in Workbench, it will simply <strong>generate SQL queries</strong> .</p>
+<p>Just click Apply and wait for the schema creation request to complete. You should end up with something like this Workbench state:</p><img data-max-width="1024" data-id="1a895b27-c0ba-4854-8c07-378c73bb3b0d" alt="" src="https://cdn.javarush.com/images/article/1a895b27-c0ba-4854-8c07-378c73bb3b0d/1024.jpeg" style="width: 1024px;">

@@ -1,0 +1,69 @@
+Basic Mockito Annotations
+<p>----------------------------------------</p>
+@Mock annotation @Spy annotation
+<p>----------------------------------------</p>
+<h2>2.1 @Mock</h2> annotation
+<p>There's two ways to work with mock objects in Mockito. The first is <strong>to create a fully virtual object</strong> , the second is to <strong>wrap an existing object</strong> in a wrapper. Let's start with the first one.</p>
+<p>To create a fully virtual object, you need to write the code:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present "><code><span class="text-user">ClassName</span> <span class="text-green">variable name</span> = <span class="text-red">Mockito</span>.<span class="text-orange">mock</span>(<span class="text-user">ClassName</span>.class);</code></pre>
+</div>
+<p>Let's create a mock ArrayList class as an example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">MockTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenNotUseMockAnnotation_thenCorrect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="text-text">        <span class="token class-name">List</span></span><span class="token class-name"></span><span class="text-green"> mockList</span> <span class="token operator">=</span> <span class="token class-name"><span class="text-red">Mockito</span></span><span class="token punctuation">.</span><span class="token function"><span class="text-orange">mock</span></span><span class="token punctuation">(</span><span class="token class-name"><span class="text-user">ArrayList</span></span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//these methods won't do anything - they are stubs</span>
+<span class="text-green">        mockList</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"one"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-green">        mockList</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"two"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In this example, we create a fake ArrayList and store a reference to it in the mockList variable. The methods of this object do nothing.</p>
+<p>By the way, this code can be written even shorter, since there is a special annotation for this <code>@Mock</code>.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">MockTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span class="token annotation punctuation"></span>
+<span class="text-red">    <span class="token class-name">List</span> mockList<span class="token punctuation">;</span></span><span class="token punctuation"></span>
+
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenNotUseMockAnnotation_thenCorrect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">//these methods won't do anything - they are stubs</span>
+<span class="text-red">        mockList</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"one"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-red">        mockList</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"two"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In the second case, <code><span class="text-yellow">MockitoExtension</span></code>it will analyze the class code itself and create the necessary stubs. You don't need to call the method <code>Mockito.mock()</code>. One annotation and the virtual object is ready. Beauty.</p>
+<h2>2.2 @Spy annotation</h2>
+<p>The second important type of objects in Mockito are wrappers over existing objects. They allow, on the one hand, to use existing classes, and on the other hand, to intercept calls to all methods and variables of such objects: to correct their work where necessary. They are used just as often as Mock objects.</p>
+<p>To create a wrapper over an object, you need to write the code:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present "><code><span class="text-user">ClassName</span> <span class="text-green">variable name</span> = <span class="text-red">Mockito</span>.<span class="text-orange">spy</span>(<span class="text-user">an object</span>);</code></pre>
+</div>
+<p>An example with a wrapper around the ArrayList class:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">SpyTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="text-text">        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> <span class="text-green">mockList</span> <span class="token operator">=</span> <span class="token class-name"><span class="text-red">Mockito</span></span><span class="token punctuation">.</span><span class="token function"><span class="text-orange">spy</span></span><span class="token punctuation">(</span><span class="token keyword"></span><span class="text-user"><span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token punctuation"></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//these methods will work!</span>
+<span class="text-green">        mockList</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"one"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-green">        mockList</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"two"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>In its simplest form, a call to <span class="text-green">a wrapper object simply redirects calls to the original object, the reference to which it keeps inside itself</span> . Everything will work just like with the original object.</p>
+<p>You can also create a wrapper using the annotation - <code>@Spy</code>.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">SpyTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Spy</span></span><span class="token annotation punctuation"></span>
+<span class="text-red">    <span class="token class-name">List</span> mockList <span class="token operator">=</span></span><span class="token operator"></span><span class="text-user"> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><span class="token punctuation"></span>
+
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// these methods will work!</span>
+<span class="text-red">        mockList</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"one"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="text-red">        mockList</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"two"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>These two code examples are equivalent.</p>

@@ -1,0 +1,132 @@
+Cascading changes
+<p>----------------------------------------</p>
+Deep dependency management CascadeType ALL, PERSIST, MERGE REMOVE, DELETE, DETACH Orphan removal parameter fetch parameter
+<p>----------------------------------------</p>
+d some more useful and interesting things about <strong>@OneToMany</strong> annotations and the like. They all have 4 commonly used options:</p>
+<ul>
+ <li><strong>cascade</strong> = CascadeType.ALL</li>
+ <li><strong>orphanRemoval</strong> = true</li>
+ <li><strong>fetch</strong> = FetchType.LAZY</li>
+</ul>
+<p>Now we will analyze them in more detail. And we will start with the most interesting - <strong>CascadeType</strong> . This parameter determines what should happen to dependent entities if we change the main entity.</p>
+<p>The JPA specification has the following values ​​for this parameter:</p>
+<ul>
+ <li><strong>ALL</strong></li>
+ <li><strong>PERSIST</strong></li>
+ <li><strong>MERGE</strong></li>
+ <li><strong>REMOVE</strong></li>
+ <li><strong>REFRESH</strong></li>
+ <li><strong>DETACH</strong></li>
+</ul>
+<p>However, Hibernate expands this specification into three more options:</p>
+<ul>
+ <li><strong>REPLICATE</strong></li>
+ <li><strong>SAVE_UPDATE</strong></li>
+ <li><strong>LOCK</strong></li>
+</ul>
+<p>There is, of course, a strong parallel with the database and their CONSTRANIS. However, there are also differences. Hibernate tries to hide the real work with the database as much as possible, so these Hibernate Cascades are exactly about Entity objects.</p>
+<h2>6.2 CascadeType</h2>
+<p>The cascade parameter describes what should happen to dependent objects if we change their parent (master object). Most often, this parameter is used together with annotations that describe object dependencies:</p>
+<p>Example:</p>
+<pre><code>OneToOne(cascade = <span class="text-brown">CascadeType</span>.<span class="text-red">ALL</span>)
+</code></pre>
+<p>Or like this:</p>
+<pre><code>@ManyToMany(cascade = {<span class="text-brown">CascadeType</span>.<span class="text-red">PERSIST</span>, <span class="text-brown">CascadeType</span>.<span class="text-red">MERGE</span>})
+</code></pre>
+<p>It can also be written as a separate annotation:</p>
+<pre><code>@Cascade({ <span class="text-brown">org.hibernate.annotations.CascadeType</span>.<span class="text-red">ALL</span> })
+</code></pre>
+<p>Now let's talk more about what these annotations mean.</p>
+<h2>6.3 ALL, PERSIST, MERGE</h2>
+<p><code>CascadeType.ALL</code>means that <strong>all actions</strong> that we perform with the parent object must be repeated for its dependent objects.</p>
+<p><code>CascadeType.PERSIST</code>means that if we save the parent object to the database, then the same must be done with its dependent objects. Example:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>="employee"<span class="text-brown">)</span>
+class Employee {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   <span class="text-brown">@OneToOne(cascade</span> = <span class="text-red">CascadeType.PERSIST</span>, <span class="text-brown">mappedBy="task")</span>
+   private <span class="token keyword">EmployeeTask</span> <span class="text-user">task</span>;
+}
+</code></pre>
+<p>An example of working with this class:</p>
+<pre class="line-numbers"><code>
+Employee <span class="text-viola">director</span> = new Employee();
+EmployeeTask <span class="text-user">task</span> = new EmployeeTask();
+<span class="text-viola">director</span>.task = <span class="text-user">task</span>;
+ 
+<span class="text-brown">session</span>.<span class="text-red">persist</span>(<span class="text-viola">director</span>);
+<span class="text-brown">session</span>.<span class="text-red">flush</span>();
+</code></pre>
+<p>We save only an object of type Employee, its dependent object EmployeeTask will be saved to the database automatically.</p>
+<p><code>CascadeType.MERGE</code>means that if we update the parent object in the database, then the same must be done with its dependent objects.</p>
+<h2>6.4 REMOVE, DELETE, DETACH</h2>
+<p><code>CascadeType.REMOVE</code>means that if we delete a parent object in the database, then the same must be done with its dependent objects.</p>
+<p><code>CascadeType.DELETE</code>means the same. These are synonyms. Just from different specifications.</p>
+<p><code>CascadeType.DETACH</code>means that if we remove the parent object from the session, then the same must be done with its dependent objects. Example:</p>
+<pre class=" line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>="employee"<span class="text-brown">)</span>
+class Employee {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   <span class="text-brown">@OneToOne(cascade</span> = <span class="text-red">CascadeType.DETACH</span>, <span class="text-brown">mappedBy="task")</span>
+   private <span class="token keyword">EmployeeTask</span> <span class="text-user">task</span>;
+}
+</code></pre>
+<p>An example of working with this class:</p>
+<pre class="-numbers"><code>
+Employee <span class="text-viola">director</span> = new Employee();
+EmployeeTask <span class="text-user">task</span> = new EmployeeTask();
+<span class="text-viola">director</span>.task = <span class="text-user">task</span>;
+<span class="text-viola">director</span>.task = <span class="text-user">task</span>;
+<span class="text-brown">session</span>.<span class="text-red">flush</span>();
+ 
+assertThat(session.contains(<span class="text-viola">director</span>)).isTrue();
+assertThat(session.contains(<span class="text-user">task</span>)).isTrue();
+ 
+<span class="text-brown">session</span>.detach(<span class="text-viola">director</span>);
+ 
+assertThat(session.contains(<span class="text-viola">director</span>)).isFalse();
+assertThat(session.contains(<span class="text-user">task</span>)).isFalse();
+</code></pre>
+<p><code>CascadeType.REFRESH</code>and <code>CascadeType.SAVE_UPDATE</code>work in the same way as we expect - they duplicate the actions that are performed with the parent object to its dependent object.</p>
+<h2>6.5 Orphan removal option</h2>
+<p>Also sometimes you might come across the parameter <code>orphan</code>. This is short for Orphan removal. It is used to ensure that there are no child entities without parent entities.</p>
+<pre><code>OneToOne(orphan = <span class="text-brown">true</span>)
+</code></pre>
+<p>If this parameter is set to true, then the child entity will be deleted if it has disappeared<mark class="red">all links</mark>. It's not exactly the same as <code>Cascade.REMOVE</code>.</p>
+<p>You may have a situation where several parent entities refer to one child. Then it is beneficial that it is not deleted along with the deletion of the parent entity, but only if all references to it are nullified.</p>
+<p>Let's say you have a class:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>=<span class="text-green">"user"</span><span class="text-brown">)</span>
+class Employee {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   <span class="text-red">@OneToMany(cascade = CascadeType.ALL, orphan = true)
+   @JoinColumn(name = "employee_id")</span>
+   private Set&lt;<span class="token keyword">EmployeeTask</span>&gt; <span class="text-user">tasks</span> = new HashSet&lt;<span class="token keyword">EmployeeTask</span>&gt;();
+}
+</code></pre>
+<p></p>
+<pre class="line-numbers"><code>
+Employee <span class="text-viola">director</span> = session.find(Employee.class, 4);
+EmployeeTask <span class="text-user">task</span> = <span class="text-viola">director</span>.tasks.get(0);
+<span class="text-viola">director</span>.tasks.remove(<span class="text-user">task</span>)
+<span class="text-brown">session</span>.<span class="text-red">persist</span>(<span class="text-viola">director</span>);
+<span class="text-brown">session</span>.<span class="text-red">flush</span>();
+</code></pre>
+<p></p>
+<p>The EmployeeTask object will be deleted because there are no references left to it. At the same time, no one deleted the parent object.</p>
+<h2>6.6 fetch option</h2>
+<p>The fetch option allows you to control how dependent objects are loaded. It usually takes one of two values:</p>
+<ul>
+ <li><code>FetchType.LAZY</code></li>
+ <li><code>FetchType.EAGER</code></li>
+</ul>
+<p>This is a very interesting topic with various pitfalls, so I'd better talk about it in a separate lecture.</p>

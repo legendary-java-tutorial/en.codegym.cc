@@ -1,0 +1,105 @@
+Life Hacks IDEA
+<p>----------------------------------------</p>
+AutoComplete (Tab) Intellij IDEA is a very smart development environment. Some consider it not just a great IDE for Java development, but the best IDE in the world in general. Which is actually not far from the truth. For example, Intellij IDEA has such a great thing as auto-completion. Intellij IDEA razb
+<p>----------------------------------------</p>
+<h2>1. Autocomplete (Tab)</h2>
+<p>IntelliJ IDEA is a very smart development environment. Some people believe that it not just a great IDE for Java development, but <span class="text-red">the all-around best IDE in the world</span>. Which, admittedly, is not far from the truth.</p>
+<p>For example, IntelliJ IDEA has this magnificent thing called auto-completion. IntelliJ IDEA parses and analyzes all the files in your project (including all the libraries you are using). It understands what classes you have and what methods and variables those classes have. Then it uses all that information to help you write your code.</p>
+<p>You just start typing a word, and it immediately offers hints to finish it. One of the most commonly used autocomplete keys is <strong>Tab</strong>.</p>
+<p>For example, suppose you want to write "System". To do this, you need to type "Sys" and press the "Tab" key: IDEA will finish the rest for you.</p>
+<p>If you <strong>put a period</strong> after the name of a variable, then IDEA will first determine what type the variable is, and then offer you a list of methods that can be called on the variable. This is super convenient.</p>
+<p>Or suppose you want to write the class name <strong>InputStreamReader</strong>. IntelliJ IDEA can save you time: you can just type three capital letters "<span class="text-red">ISR</span>" (<strong><span class="text-red">I</span>nput<span class="text-red">S</span>tream<span class="text-red">R</span>eader</strong>) and press <strong>Tab</strong>. IDEA will convert what you wrote into InputStreamReader. It's almost magic.</p>
+<h2>4.2. Live Templates: psvm, sout, psfs, fori</h2>
+<p>There are thousands of reasons why professional programmers adore IntelliJ IDEA, but it also has something for beginners. For example:</p>
+<p><strong>main</strong> method</p>
+<p>Let's say you want to write <code><span class="text-user">public static void main(String[] args)</span></code><span class="text-user">&nbsp;</span> in less than a second.</p>
+<p>To do this, type the 4 letters <strong>psvm</strong> and press <strong>Tab</strong>. IDEA will replace "<strong>psvm</strong>" with "<span class="text-user">public static void main(String[] args)</span>". Magic.</p>
+<p>It's super easy to remember the sequence <span class="text-red"><strong>psvm</strong></span>&nbsp; — its an abbreviation of "public static void main".</p>
+<p>Console output</p>
+<p>There is also a way to quickly write <span class="text-user">System.out.println();</span></p>
+<p>To do this, you also need to write 4 letters ("<strong>sout</strong>") and press <strong>Tab</strong>. IDEA will replace "sout" with "<span class="text-user">System.out.println();</span>"</p>
+<p>This is also easy to remember: the 4 letters in <strong>sout</strong> come from <strong><span class="text-red">S</span>ystem.<span class="text-red">out</span>.println</strong></p>
+<p><strong>Declaring a string constant</strong></p>
+<p>There is a way to quickly declare a <span class="text-user">String</span> variable (at the class level).</p>
+<p>To do this, you once again need to write 4 letters ("<strong>psfs</strong>") and press <strong>Tab</strong>. IDEA will replace "psfs" with "<span class="text-user">public static final String</span>".</p>
+<p>You won't have trouble remembering this: <strong>psfs</strong> is made up of the 4 letters from <strong><span class="text-red">p</span>ublic <span class="text-red">s</span>tatic <span class="text-red">f</span>inal <span class="text-red">S</span>tring</strong></p>
+<p>There is a similar abbreviation that can be used with any data type: "psf", which stands for <span class="text-user">public static final</span></p>
+<p><strong>Loops</strong></p>
+<p>You can quickly write a loop in IDEA using the <strong>fori</strong> + <strong>Tab</strong> combination. When you do this, IDEA will replace <strong>fori</strong> with the following code:</p>
+<pre class="language-java"><code>for (int i = 0; i &lt; ; i++) {
+}</code></pre>
+<p>You just need to write in the maximum value for the i counter variable.</p>
+<p>These may not be the most popular tricks for working Java professionals, but they will definitely make your life easier as a beginner.</p>
+<h2>3. Surrounding code fragments: Ctrl+Alt+T</h2>
+<p>Sometimes programmers face situations where they want to do something with the code that has already been written. IntelliJ IDEA makes this easier by providing a special command to wrap existing code with something.</p>
+<p>For example, suppose you want to execute some code not once, but several times. It makes sense to create a loop and place the code inside the loop. You can, of course, write the loop header and put a curly brace at the beginning and another curly brace at the end. Then you could also copy the required code into the loop, and go through all the lines inside the body of the loop and shift them to the right.</p>
+<p>But there is an easier way: you can surround the existing code in a loop, and IntelliJ IDEA will do the rest by itself. You will need to do 3 things:</p>
+<ol>
+    <li>Highlight the code you want to surround with other code</li>
+    <li>Press <strong>Ctrl+Alt+T</strong></li>
+    <li>Select one of the options for adding surrounding statements:
+        <ol>
+            <li>if</li>
+            <li>if-else</li>
+            <li>while</li>
+            <li>do while</li>
+            <li>for</li>
+            <li>try catch</li>
+            <li>try finally</li>
+            <li>try catch finally</li>
+            <li>synchronized</li>
+        </ol>
+    </li>
+</ol>
+<p>Here's an example of a menu in IDEA:</p>
+<img data-max-width="1024" data-id="0c2766cb-1c4b-45c6-82c0-32eb0bba4fe1" src="https://cdn.codegym.cc/images/article/0c2766cb-1c4b-45c6-82c0-32eb0bba4fe1/1024.jpeg" alt="Surrounding code fragments">
+<h2>4. Code style: Ctrl+Alt+L</h2>
+<p>And one more piece of advice. Quite often, copying the code messes up its alignment: there are extra spaces in one place, while they are missing somewhere else, etc. The code seems to work, but it looks like a train wreck.</p>
+<p>To keep your code looking great, you just need to press 3 buttons: <strong>Ctrl+Alt+L</strong></p>
+<p>As soon as you press this combination, IntelliJ IDEA will immediately format all the code in the current file, placing spaces and tabs wherever necessary. It will no longer be code, but eye candy.</p>
+<p>Example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Before</th>
+        <th>After</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class Main {
+&nbsp; &nbsp;public static void main(String[] args) {
+System.out.println("Hello World!");
+System.out.println();
+&nbsp; &nbsp;if (2 &lt; 3)&nbsp;&nbsp; {
+System.out.println("Opps");&nbsp;&nbsp; }
+
+for (int i = 0; i &lt; 10; i++) {
+System.out.println(i);
+&nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp;}
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>public class Main
+{
+   public static void main(String[] args)
+   {
+      System.out.println("Hello World!");
+      System.out.println();
+      if (2 &lt; 3)
+      {
+         System.out.println("Opps");
+      }
+
+      for (int i = 0; i &lt; 10; i++)
+      {
+         System.out.println(i);
+      }
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>By the way, each "code style" is fully customizable in the IntelliJ IDEA settings:</p>
+<img data-max-width="1024" data-id="c5a6a4cd-a210-4880-aced-5b3b477646a0" src="https://cdn.codegym.cc/images/article/c5a6a4cd-a210-4880-aced-5b3b477646a0/1024.jpeg" alt="Code style IntelliJ IDEA">

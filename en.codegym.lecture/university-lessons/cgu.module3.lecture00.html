@@ -1,0 +1,51 @@
+Related project: Maven
+<p>----------------------------------------</p>
+Related project: Maven
+<p>----------------------------------------</p>
+ile with a JavaFX game using the graphics engine from CodeGym.</h2>
+<p><strong>For this you will need to :</strong></p>
+<ol>
+ <li>Fork from the repository <a href="https://github.com/CodeGymCC/project-maven.git" target="_blank" rel="nofollow">https://github.com/CodeGymCC/project-maven.git</a></li>
+ <li>Download your version of the project to your computer. Next, we will work with the <strong>pom.xml</strong> file, located in the root project folder.</li>
+ <li>Add dependencies:</li>
+ <ul>
+  <li><strong>org.apache.commons:commons-lang3:3.12.0</strong></li>
+  <li><strong>org.openjfx:javafx-controls:18.0.1</strong></li>
+  <li><strong>com.codegym: desktop-game-engine:1.0</strong> (this dependency will be covered in the next section)</li>
+  <li><strong>org.junit.jupiter: junit-jupiter-engine: 5.8.2</strong> (with 'test' scope)</li>
+ </ul>
+ <li>In the plugins section:</li>
+ <ul>
+  <li>leave the <strong>maven-compiler-plugin</strong> unchanged</li>
+  <li>install the <strong>com.codegym: desktop-game-engine:1.0</strong> dependency from the lib library to the local repository (google for help)</li>
+  <li>add the <strong>maven-surefire-plugin,</strong> and make a configuration so that the <strong>StrangeTest</strong> test class does not run on build. The rest of the tests should run.</li>
+  <li>add the <strong>maven-jar-plugin</strong>, which will make a jar file containing the game code and dependencies. In this plugin, you need to configure the <strong>MANIFEST.MF</strong> file to contain sections: <code>Class-Path</code>, <code>Main-Class</code>and <code>Rsrc-Main-Class</code></li>
+  <li>all our JAR dependencies should be registered in <code>Class-Path</code>.</li>
+  <li>for <code>Main-Class</code>, the <code>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</code> class must be used, which can use the classpath from JAR files, and can also start a JavaFX application</li>
+  <li>for <code>Rsrc-Main-Class</code>, the starting class of the game (com.codegym.games.racer.RacerGame) must be used</li>
+  <li>add a plugin that will collect all dependencies (with 'compile' scope) and add them to some directory during the build</li>
+ </ul>
+ <li>Add a <strong>“resources”</strong> section to say that the built JAR dependencies are a resource, so that the <strong>maven-jar-plugin</strong> puts them inside the JAR file into the new <strong>lib/ folder</strong></li>
+ <li>Upload changes to your GitHub repository, and send a link to it to your teacher.</li>
+</ol>
+<br>
+<p><strong>Useful:</strong></p>
+<ol>
+ <li>The build must be run with the <strong>mvn clean install</strong> command.</li>
+ <li>Running the game (via Maven) for the purpose of viewing can be done with the <strong>mvn javafx:run command.</strong></li>
+ <li>The <strong>phase</strong> for some of the plugins needs to be overridden.</li>
+ <li>The project uses JDK version 18.0.1. This JDK version, or higher, must be installed on your computer.</li>
+ <li>When building through Maven, there will be errors at first. Read them carefully and you will simplify your life.</li>
+ <li>Do not change anything in the <strong>org.eclipse.jdt.internal.jarinjarloader</strong> package. It has a custom loader class (honestly copied from StackOverflow), in which the launch of the main method is changed to launch the JavaFX application. Use for educational purposes only.</li>
+ <li>If you complete all the points, as a result of the assembly you will receive <strong>a fat-JAR file</strong>. You can start and check that everything is done correctly with the command: 
+  <pre class=" language-java" tabindex="0"><code class=" language-java"><span class="token operator">&lt;</span>way to java <span class="token number">18</span><span class="token operator">&gt;</span> <span class="token operator">-</span>jar <span class="token operator">&lt;</span>the name of the resultant jar file<span class="token operator">&gt;</span>
+
+<span class="token comment">//Example</span>
+<span class="token string">"C:\Users\leo12\.jdks\openjdk-18.0.1.1\bin\java.exe"</span> <span class="token operator">-</span>jar <span class="token string">"E:\temp\project-maven-1.0.jar"</span></code></pre></li>
+ <li>As a result you will see:<img data-max-width="512" data-id="c0b2cb6c-8d36-4ef0-84be-e2d4e6295ab4" data-src="https://cdn.javarush.com/images/article/c0b2cb6c-8d36-4ef0-84be-e2d4e6295ab4/512.jpeg" alt=""></li>
+ <li>The build depends on your operating system. That is, if a JAR file is built on Windows, it can be run on any Windows computer with Java 18+, and therefore will not run on Mac and Linux. </li>
+</ol>
+<p></p>
+<hr>
+<p><a href="https://youtu.be/X55nWDLV_5k" target="_blank">Project analysis</a>. <strong>Watch after completion!</strong></p>
+<p></p>

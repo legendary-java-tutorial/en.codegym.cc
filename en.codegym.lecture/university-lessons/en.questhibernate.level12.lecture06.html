@@ -1,0 +1,141 @@
+Using different data type converters
+<p>----------------------------------------</p>
+Creating Your Own Type Converter Creating Your Own Data Type Registering Your Own Type
+<p>----------------------------------------</p>
+<p>Sometimes situations arise when you want to store a fairly complex data type in one column of a table. If Hibernate knows how to convert it to a string (and back), then everything is fine. If not, then you will have to write your own data converter.</p>
+<p>Let's say someone decides to store a user's year of birth in the database as <code>ГГ.ММ.ДД</code>, for example: <code>98.12.15</code>. You also need to convert it to a regular date: <code>15/12/1998</code>. Then you have to write your own converter.</p>
+<p>To do this, you need to implement an interface <code>AttributeConverter&lt;EntityType, DbType&gt;</code>.</p>
+<pre class="line-numbers"><code>
+@Converter(autoApply = true)
+public class <span class="text-viola">DateConverter</span> implements <span class="text-brown">AttributeConverter</span>&lt;<span class="text-user">java.time.LocalDate, String</span>&gt; {
+ 
+    public <span class="text-green">String</span> <span class="text-red">convertToDatabaseColumn</span>(<span class="text-user">java.time.LocalDate date</span>) {
+    	return <span class="text-user">date</span>.format("YY.MM.DD");
+    }
+ 
+    public <span class="text-user">java.time.LocalDate</span> <span class="text-red">convertToEntityAttribute</span>(<span class="text-green">String</span> dbData) {
+    	String[] data = dbData.split(".");
+    	return LocalDate.of(data[2], data[1], "19"+data[0]);
+    }
+}
+</code></pre>
+<p>And, of course, this converter can be added to any field (provided the types match):</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>=<span class="text-green">"user"</span><span class="text-brown">)</span>
+class User {
+   @Id
+   @Column(name="id")
+   public Integer id;
+ 
+   <span class="text-brown">@Column(name="join_date")</span>
+   <span class="text-red">@Convert(converter = DateConverter.class)</span>
+   public java.time.LocalDate date;
+}
+</code></pre>
+<p>Converters very often have to be used if you didn't design the database. The data there can be in "strange formats". Dates can be stored as strings, Booleans as CHARs with Y and N values, and the like.</p>
+<h2>7.2 Creating our own data type</h2>
+<p>Remember the table with the list of types that are known to Hibernate? I'm talking about types that are specified along with the annotation <code>@Type</code>. You can write your own data type, which can be used in the same way as other built-in types in Hibernate.</p>
+<p>For example, we want to have the LocalTime type, which will be stored in the database not as TIME, but as VARCHAR. And, for example, we have access to such a database, and we are not allowed to change the data types in its columns. Then we can write our own Hibernate type. Let's call it LocalTimeString.</p>
+<p>First we need a small class that will describe our new type:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name"><span class="text-yellow">LocalTimeStringType</span></span> <span class="token keyword">extends</span> <span class="token class-name"></span><span class="text-brown"><span class="token class-name">AbstractSingleColumnStandardBasicType</span><span class="token operator">&lt;</span></span><span class="token operator"></span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name"><span class="text-user">LocalTime</span></span><span class="token punctuation">&gt;</span></span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name"><span class="text-yellow">LocalTimeStringType</span></span>  INSTANCE <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="text-yellow">LocalTimeStringType</span></span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name"><span class="text-yellow">LocalTimeStringType</span></span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">super</span><span class="token punctuation">(</span><span class="token class-name"><span class="text-green">VarcharTypeDescriptor</span></span><span class="token punctuation">.</span>INSTANCE<span class="token punctuation">,</span> <span class="token class-name"><span class="text-viola">LocalTimeStringJavaDescriptor</span></span><span class="token punctuation">.</span>INSTANCE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">return</span> <span class="token string">"<span class="text-green">LocalTimeString</span>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>It is something of type Enum which consists of one value. The set of such single enams is all the types known to Hibernate.</p>
+<p>We also need a class - an analogue of the converter, which will contain two methods - <code>wrap()</code>and <code>unwrap()</code>for converting values ​​of the LocalTime type to String.</p>
+<p>This is how it will look without implementing the methods:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name"><span class="text-viola">LocalTimeStringJavaDescriptor</span></span> <span class="token keyword">extends</span> <span class="token class-name"><span class="text-brown">AbstractTypeDescriptor</span></span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name"><span class="text-user">LocalTime</span></span><span class="token punctuation">&gt;</span></span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name"><span class="text-viola">LocalTimeStringJavaDescriptor</span></span> INSTANCE <span class="token operator">=</span>  <span class="token keyword">new</span>  <span class="token class-name"><span class="text-viola">LocalTimeStringJavaDescriptor</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name"><span class="text-viola">LocalTimeStringJavaDescriptor</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    	<span class="token keyword">super</span><span class="token punctuation">(</span><span class="token class-name"><span class="text-user">LocalTime</span></span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">ImmutableMutabilityPlan</span><span class="token punctuation">.</span>INSTANCE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">X</span><span class="token punctuation">&gt;</span></span> <span class="token class-name">X</span> <span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token class-name"><span class="text-user">LocalTime</span></span> value<span class="token punctuation">,</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">X</span><span class="token punctuation">&gt;</span></span> type<span class="token punctuation">,</span> <span class="token class-name">WrapperOptions</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">X</span><span class="token punctuation">&gt;</span></span> <span class="token class-name"><span class="text-user">LocalTime</span></span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token class-name">X</span> value<span class="token punctuation">,</span> <span class="token class-name">WrapperOptions</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span></code></pre>
+<p>Now let's write the implementation of the methods:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">X</span><span class="token punctuation">&gt;</span></span> <span class="token class-name">X</span> <span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token class-name">LocalTime</span> value<span class="token punctuation">,</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">X</span><span class="token punctuation">&gt;</span></span> type<span class="token punctuation">,</span> <span class="token class-name">WrapperOptions</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    	<span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">isAssignableFrom</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    	<span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">X</span><span class="token punctuation">)</span> <span class="token class-name">LocalTimeType</span><span class="token punctuation">.</span>FORMATTER<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">throw</span> <span class="token function">unknownUnwrap</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And the second method:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">X</span><span class="token punctuation">&gt;</span></span> <span class="token class-name">LocalTime</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token class-name">X</span> value<span class="token punctuation">,</span> <span class="token class-name">WrapperOptions</span> options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    	<span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">isInstance</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    	<span class="token keyword">return</span> <span class="token class-name">LocalTime</span><span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">LocalTimeType</span><span class="token punctuation">.</span>FORMATTER<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">CharSequence</span><span class="token punctuation">)</span> value<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">throw</span> <span class="token function">unknownWrap</span><span class="token punctuation">(</span>value<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Ready. You can use this class to store time as a string:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>=<span class="text-green">"user"</span><span class="text-brown">)</span>
+class User
+{
+   @Id
+   @Column(name="id")
+   public Integer id;
+ 
+   <span class="text-brown">@Column(name="join_time")</span>
+   <span class="text-red">@Type(type = "com.codegym.hibernate.customtypes.LocalTimeStringType")</span>  
+   public java.time.LocalTime time;
+}
+</code></pre>
+<h2>7.3 Registering your type</h2>
+<p>You can also register your data type during Hibernate configuration. This is a bit non-trivial.</p>
+<pre class="line-numbers"><code>
+ServiceRegistry serviceRegistry = StandardServiceRegistryBuilder()
+    .applySettings(getProperties()).build();
+                                                                                                                                                              	                                        	 
+    MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+    Metadata metadata = metadataSources
+  	.addAnnotatedClass(User.class)
+  	<span class="text-brown">.getMetadataBuilder()</span>
+  	<span class="text-red">.applyBasicType(LocalTimeStringType.INSTANCE)</span>
+  	<span class="text-brown">.build()</span>;
+                                                                                                                                                              	                                        	 
+    SessionFactory factory =  metadata.buildSessionFactory();
+</code></pre>
+<p>You will first need to get MetadataSources, get MetadataBuilder from it, and use it to add your class. It is possible through <code>hibernate.cfg.xml</code>, but also a little cumbersome.</p>
+<p>But after registration, you can write like this:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>=<span class="text-green">"user"</span><span class="text-brown">)</span>
+class User
+{
+   @Id
+   @Column(name="id")
+   public Integer id;
+ 
+   <span class="text-brown">@Column(name="join_time")</span>
+   <span class="text-red">@Type(type = "LocalTimeString")</span>  
+   public java.time.LocalTime time;
+}
+</code></pre>

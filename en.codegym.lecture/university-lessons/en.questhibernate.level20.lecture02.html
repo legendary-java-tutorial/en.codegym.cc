@@ -1,0 +1,106 @@
+Big Data: MapReduce
+<p>----------------------------------------</p>
+The history of the emergence of the term BigData. Principles of working with big data. MapReduce. Examples of tasks effectively solved using MapReduce.
+<p>----------------------------------------</p>
+igData</h2>
+<p>The term Big Data appeared relatively recently. Google Trends <a href="https://www.google.com/trends/explore" target="_blank" rel="nofollow">shows</a> the beginning of an active growth in the use of the phrase since 2011: <img data-max-width="512" data-id="ef092ce5-6fc8-454f-abb3-dc34b5e97468" alt="" src="https://cdn.javarush.com/images/article/ef092ce5-6fc8-454f-abb3-dc34b5e97468/512.jpeg" style="width: 512px;"></p>
+<p>At the same time, only the lazy one does not use the term now. Especially often, the term is used inappropriately by marketers. So what is Big Data really? Since I decided to systematically state and highlight the issue, it is necessary to define the concept.</p>
+<p>In my practice, I met with different definitions:</p>
+<ul>
+ <li>Big Data is when there is more than 100GB of data (500GB, 1TB, whatever you like).</li>
+ <li>Big Data is data that cannot be processed in Excel.</li>
+ <li>Big Data is data that cannot be processed on a single computer.</li>
+</ul>
+<p>And even these:</p>
+<ul>
+ <li>Big Data is generally any data.</li>
+ <li>Big Data does not exist, it was invented by marketers.</li>
+</ul>
+<p>I will stick to the definition from wikipedia:</p>
+<p><strong>Big data</strong> is a series of approaches, tools and methods for processing structured and unstructured data of huge volumes and significant diversity in order to obtain human-perceptible results that are effective in conditions of continuous growth, distribution over numerous nodes of a computer network, formed in the late 2000s years, alternative to traditional database management systems and business intelligence class solutions.</p>
+<p>Thus, by <strong>Big Data</strong> I will understand not some specific amount of data and not even the data itself, but methods of processing them, which allow distributed processing of information. These methods can be applied to large datasets (such as the content of all pages on the Internet) as well as small datasets (such as the content of this lecture).</p>
+<p>Here are some examples of what might be a data source that requires big data techniques:</p>
+<ul>
+ <li>Logs of user behavior on the Internet</li>
+ <li>GPS signals from cars for a transport company</li>
+ <li>Data taken from sensors in the Large Hadron Collider</li>
+ <li>Digitized books in the Russian State Library</li>
+ <li>Information about transactions of all bank customers</li>
+ <li>Information about all purchases in a large retail chain, etc.</li>
+</ul>
+<p>The number of data sources is growing rapidly, which means that data processing technologies are becoming more and more in demand.</p>
+<h2>3.2 Big data principles</h2>
+<p>Based on the definition of Big Data, we can formulate the basic principles of working with such data:</p>
+<p><strong>1. Horizontal scalability. </strong>Since there can be an arbitrarily large amount of data, any system that involves processing large data must be extensible. The volume of data increased by 2 times - the amount of iron in the cluster was increased by 2 times and everything continued to work.</p>
+<p><strong>2. Fault tolerance. </strong>The principle of horizontal scalability implies that there can be many machines in a cluster. For example, Yahoo's Hadoop cluster has over 42,000 machines (you can see cluster sizes across organizations at this link). This means that some of these machines will be guaranteed to fail. Big data practices need to be aware of these disruptions and survive them without any significant consequences.</p>
+<p><strong>3. Data locality. </strong>In large distributed systems, data is distributed across a large number of machines. If the data is physically located on one server and processed on another, the costs of data transfer may exceed the costs of the processing itself. Therefore, one of the most important principles for designing BigData solutions is the principle of data locality - if possible, we process data on the same machine on which we store it.</p>
+<p>All modern big data tools follow these three principles in one way or another. In order to follow them, it is necessary to come up with some methods, methods and paradigms for developing data development tools. One of the most classic methods I will analyze in today's lecture.</p>
+<h2>3.3 MapReduce</h2>
+<p><strong>MapReduce</strong> is a distributed data processing model proposed by Google for processing large amounts of data on computer clusters. MapReduce is well illustrated by the following picture:</p><img data-max-width="512" data-id="982b3d98-934f-439d-8f04-5f0994ed46c9" alt="" src="https://cdn.javarush.com/images/article/982b3d98-934f-439d-8f04-5f0994ed46c9/512.jpeg" style="width: 512px;">
+<p>MapReduce assumes that the data is organized into some records. Data processing occurs in 3 stages:</p>
+<p><strong>1. Map stage</strong> . At this stage, the data is preprocessed using the map() function, which is defined by the user. The work of this stage is to preprocess and filter the data. The operation is very similar to the map operation in functional programming languages ​​- a custom function is applied to each input record.</p>
+<p><strong>The map() function applied to a single input record produces many key-value pairs. </strong>Set - that is, it can return only one record, it may return nothing, or it may return several key-value pairs. What will be in the key and in the value is up to the user, but the key is a very important thing, since data with one key in the future will fall into one instance of the reduce function.</p>
+<p><strong>2. Stage Shuffle. </strong>It goes unnoticed by the user. In this stage, the output of the map function is "binned" - each bin corresponds to one output key of the map stage. In the future, these baskets will serve as an input for reduce.</p>
+<p><strong>3. Stage Reduce. </strong>Each "basket" with values ​​generated at the shuffle stage gets to the input of the reduce() function.</p>
+<p><strong>The reduce function is given by the user and calculates the final result for a single "basket"</strong> . The set of all values ​​returned by the reduce() function is the final result of the MapReduce task.</p>
+<p>Some additional facts about MapReduce:</p>
+<ol>
+ <li>All runs of the <strong>map</strong> function work independently and can run in parallel, including on different cluster machines.</li>
+ <li>All runs of the <strong>reduce</strong> function work independently and can run in parallel, including on different cluster machines.</li>
+ <li>Shuffle internally represents a parallel sort, so it can also work on different cluster machines. <strong>Points 1-3 allow you to implement the principle of horizontal scalability</strong> .</li>
+ <li>The map function is usually used on the same machine where the data is stored - this reduces the transmission of data over the network (the principle of data locality).</li>
+ <li>MapReduce is always a full data scan, there are no indexes. This means that MapReduce is poorly applicable when a response is required very quickly.</li>
+</ol>
+<h2>3.4 Examples of tasks effectively solved with MapReduce</h2>
+<h4>Word Count</h4>
+<p>Let's start with the classic task - Word Count. The task is formulated as follows: there is a large corpus of documents. The task is to calculate the total number of times that it occurs in the corpus for each word that occurs at least once in the corpus.</p>
+<h4>Solution:</h4>
+<p>Since we have a large corpus of documents, let one document be one input record for the MapRreduce task. In MapReduce, we can only define user-defined functions, which we will do (we will use python-like pseudocode):</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>
+     <pre><code>def map(doc): 
+for word in doc: 
+yield word, 1 </code></pre></td>
+    <td>
+     <pre><code>def reduce(word, values): 
+yield word, sum(values) </code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><strong>The map</strong> function turns the input document into a set of pairs (word, 1), <strong>shuffle</strong> transparently for us turns it into pairs (word, [1,1,1,1,1,1]), <strong>reduce</strong> sums these ones, returning the final answer for the word .</p>
+<h4>Processing advertising system logs</h4>
+<p>The second example is taken from the real practice of the Data-Centric Alliance.</p>
+<p><strong>Task:</strong> there is a csv-log of the advertising system of the form:</p>
+<pre><code>&lt;user_id&gt;,&lt;country&gt;,&lt;city&gt;,&lt;campaign_id&gt;,&lt;creative_id&gt;,&lt;payment&gt;&lt;/p&gt; 
+ 
+11111,RU,Moscow,2,4,0.3 
+22222,RU,Voronezh,2,3,0.2 
+13413,UA,Kyiv,4,11,0.7 
+… </code></pre>
+<p>It is necessary to calculate the average cost of displaying advertising in the cities of Russia.</p>
+<h4>Solution:</h4>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td>
+     <pre><code>def map(record): 
+user_id, country, city, campaign_id, creative_id, payment = record.split(",") 
+payment=float(payment) 
+if country == "RU": 
+yield city, payment </code></pre></td>
+   </tr>
+   <tr>
+    <td>
+     <pre><code>def reduce(city, payments): 
+yield city, sum(payments)/len(payments) 
+</code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><strong>The map</strong> function checks if we need this entry - and if we do, it leaves only the necessary information (city and payment amount). <strong>The reduce</strong> function calculates the final answer for a city given a list of all payments in that city.</p>

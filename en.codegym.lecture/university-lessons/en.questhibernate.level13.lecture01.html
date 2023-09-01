@@ -1,0 +1,262 @@
+@ManyToOne
+<p>----------------------------------------</p>
+Table Level Relationship Java Class Level Relationship @ManyToOne Annotation Query Examples
+<p>----------------------------------------</p>
+have seen how Hibernate stores collections in auxiliary tables. Now let's figure out how to organize relationships between full-fledged tables that store real Entity classes.</p>
+<p>There are four types of relationships between Entity classes in Hibernate:</p>
+<ul>
+ <li><span class="text-green">one</span> -to- <span class="text-green">one</span></li>
+ <li><span class="text-green">one</span> -to- <span class="text-brown">many</span></li>
+ <li><span class="text-brown">many</span> -to- <span class="text-green">one</span></li>
+ <li><span class="text-brown">many</span> -to- <span class="text-brown">many</span></li>
+</ul>
+<p>And we will start the analysis with the simplest option - <span class="text-brown">many</span> -to- <span class="text-green">one</span> .</p>
+<p>You have already come across such a relationship between tables in SQL. Here's what it usually looks like:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100000</td>
+    <td>25</td>
+    <td>2012-06-30</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80000</td>
+    <td>23</td>
+    <td>2013-08-12</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40000</td>
+    <td>thirty</td>
+    <td>2014-01-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200000</td>
+    <td>35</td>
+    <td>2015-05-12</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>2015-10-10</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>Cat</td>
+    <td>1000</td>
+    <td>3</td>
+    <td>2018-11-11</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><strong>employee table:</strong></p>
+<p>This table has the following columns:</p>
+<ul>
+ <li><strong>id</strong> INT</li>
+ <li><strong>name</strong> VARCHAR</li>
+ <li><strong>occupation</strong> VARCHAR</li>
+ <li><strong>salary</strong> INT</li>
+ <li><strong>age</strong> INT</li>
+ <li><strong>join_date</strong> DATE</li>
+</ul>
+<p>And this is how <strong>the task table</strong> , which contains tasks for employees, looks like:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>employee_id</th>
+    <th>name</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-07-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-08-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-09-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>(NULL)</td>
+    <td>Clean up the office</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>This table has only 4 columns:</p>
+<ul>
+ <li><strong>id</strong> – unique task number (and rows in the table);</li>
+ <li><span class="text-red"> <strong>employee_id</strong></span> – employee ID from the employee table to which the task is assigned;</li>
+ <li><strong>name</strong> – name and description of the task;</li>
+ <li><strong>deadline</strong> - the time by which the task must be completed.</li>
+</ul>
+<p>We see that many rows in the task table can refer to a single entry in the employee table. Such a table-level relationship is called <strong>many-to</strong> -one.</p>
+<h2>2.2 Relationship to the Java class level</h2>
+<p>In addition to communication at the table level, you can also organize communication at the level of Entity classes in Hibernate. This is done with an annotation <code>@ManyToOne</code>.</p>
+<p>But first, let's just create two classes: <strong>Employee</strong> and <strong>EmployeeTask</strong> :</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>=<span class="text-green">"employee"</span><span class="text-brown">)</span>
+class Employee {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   <span class="text-brown">@Column(name="name")</span>
+   public String name;
+ 
+   <span class="text-brown">@Column(name="occupation")</span>
+   public String occupation;
+ 
+   <span class="text-brown">@Column(name="salary")</span>
+   public Integer salary;
+ 
+   <span class="text-brown">@Column(name="join_date")</span>
+   public Date join;
+}
+</code></pre>
+<p>And a second class to store employee jobs:</p>
+<p></p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>=<span class="text-green">"task"</span><span class="text-brown">)</span>
+class EmployeeTask {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   <span class="text-brown">@Column(name="name")</span>
+   public String description;
+ 
+  <span class="text-red">@Column(name="employee_id")</span>
+   public Integer <span class="text-user">employeeId</span>;
+ 
+   <span class="text-brown">@Column(name="deadline")</span>
+   public Date deadline;
+}
+</code></pre>
+<p>All is well with these classes, but there is no relationship between them that would reflect the fact that the employeeId field of the EmployeeTask class refers to the id field of the Employee class. It's time to fix it</p>
+<h2>2.3 @ManyToOne annotation.</h2>
+<p>First, in Java we are accustomed to operating on objects (and object references) rather than their id. So first of all, instead of the employeeId field in the EmployeeTask class, let's just point to an object of type Employee. Here's what our new class will look like:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">@Entity
+@Table(name</span>=<span class="text-green">"task"</span><span class="text-brown">)</span>
+class EmployeeTask {
+   <span class="text-brown">@Column(name="id")</span>
+   public Integer id;
+ 
+   <span class="text-brown">@Column(name="name")</span>
+   public String description;
+ 
+   <span class="text-red">@ManyToOne
+   @JoinColumn(name = "employee_id")</span>
+   public Employee <span class="text-user">employee</span>;
+ 
+   <span class="text-brown">@Column(name="deadline")</span>
+   public Date deadline;
+}
+</code></pre>
+<p>With the help of <strong>the annotation</strong> <code>@ManyToOne</code> , we have indicated that many EmployeeTask objects can refer to one object of type Employee. Also, using <strong>the annotation</strong> <code>@JoinColumn</code> , we indicated in which column of our table the id of the Employee object is stored.</p>
+<h2>2.4 Request examples</h2>
+<p>And now let's show some examples of how Hibernate can work with such related classes.</p>
+<h3>Scenario one</h3>
+<p>Let's write a query to find out all the tasks that have been assigned to a specific user. Here is how this query would look like in HQL:</p>
+<pre><code><span class="text-brown">from</span> EmployeeTask <span class="text-brown">where</span> employee.name = <span class="text-user">"Ivan Ivanovich"</span>
+</code></pre>
+<p>You can simply refer to fields of dependent classes through a dot. It is very comfortable. But let's still write this query in the form of Java code:</p>
+<pre class="line-numbers"><code>
+String hql = <span class="text-green">"from EmployeeTask where employee.name = :username"</span>;
+Query&lt;<span class="token keyword">EmployeeTask</span>&gt; <span class="text-viola">query</span> = <span class="text-user">session</span>.createQuery( hql, <span class="token keyword">EmployeeTask</span>.class);
+<span class="text-viola">query</span>.setParameter(<span class="text-green">"username"</span>, <span class="text-user">"Ivan Ivanovich"</span>);
+List&lt;<span class="token keyword">EmployeeTask</span>&gt; resultLIst = <span class="text-viola">query</span>.<span class="text-red">list</span>();
+</code></pre>
+<h3>Scenario two</h3>
+<p>Let's write a query that returns a list of employees who have overdue tasks. A task is overdue if its deadline is in the past. Here's what that query would look like in SQL:</p>
+<pre class="line-numbers"><code>
+<span class="text-brown">SELECT</span> DISTINCT <span class="text-yellow">employee</span>.*
+<span class="text-brown">FROM</span> <span class="text-yellow">task</span> <span class="text-brown">JOIN</span> <span class="text-yellow">employee</span> <span class="text-brown">ON</span> <span class="text-yellow">task</span>.<span class="text-green">employee_id</span> = <span class="text-yellow">employee</span>.<span class="text-green">id</span>
+<span class="text-brown">WHERE</span> <span class="text-yellow">task</span>.<span class="text-green">deadline</span> &lt; <span class="text-user">CURDATE()</span>;
+</code></pre>
+<p><code>DISTINCT</code>is used because there can be many tasks assigned to one user.</p>
+<p>And now let's write the same query in HQL:</p>
+<pre><code><span class="text-brown">select distinct</span> employee <span class="text-brown">from</span> EmployeeTask <span class="text-brown">where</span> deadline &lt; CURDATE();
+</code></pre>
+<p>Employee in this query is a field of the EmployeeTask class</p>
+<h3>Situation three</h3>
+<p>Assign all unassigned tasks to the director. The SQL query will look like this:</p>
+<pre><code>
+<span class="text-brown">UPDATE</span> task <span class="text-brown">SET</span> employee_id = 4 <span class="text-brown">WHERE</span> employee_id IS NULL
+</code></pre>
+<p>And now let's write the same query in HQL:</p>
+<pre><code><span class="text-brown">update</span> EmployeeTask <span class="text-brown">set</span> employee = :user <span class="text-brown">where</span> employee is null
+</code></pre>
+<p>The last query is the hardest one. We need to pass the ID of the director, but the EmployeeTask class does not contain a field where we can write an id, instead it contains an Employee field where we need to assign a reference to an object of type Employee.</p>
+<pre class="line-numbers"><code>
+Employee <span class="text-brown">director</span> = <span class="text-user">session</span>.get(Employee.class, 4);
+ 
+String hql = <span class="text-green">"update EmployeeTask set employee = :user where employee is null"</span>;
+Query&lt;<span class="token keyword">EmployeeTask</span>&gt; <span class="text-viola">query</span> = <span class="text-user">session</span>.createQuery(hql, <span class="token keyword">EmployeeTask</span>.class);
+<span class="text-viola">query</span>.setParameter(<span class="text-green">"user"</span>, <span class="text-brown">director</span>);
+<span class="text-viola">query</span>.<span class="text-red">executeUpdate</span>();
+
+</code></pre>

@@ -1,0 +1,92 @@
+Conditional Functions
+<p>----------------------------------------</p>
+List of conditional functions IF() function IFNULL() and NULLIF() functions
+<p>----------------------------------------</p>
+>The SQL language has a list of functions that are somewhat similar to the operator <code>if-else</code>in <code>switch</code>Java.</p>
+<p>There are 4 such functions in total:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th>Functions</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>CASE</td>
+    <td>analog switch</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>IF()</td>
+    <td>An analogue of the ternary operator or if-else</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>IFNULL()</td>
+    <td>analogue of if-else</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>NULLIF()</td>
+    <td>analogue of if-else</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The last three in SQL are represented as functions, and <code>CASE</code>is a full-fledged operator, so we will consider it separately at the very end.</p>
+<h2>1.2 IF() function</h2>
+<p>A function <code>IF()</code>in SQL is somewhat similar to a ternary operator in Java. In SQL language, it takes 3 parameters and looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">IF</span> <span class="token punctuation">(</span><span class="text-orange">condition</span><span class="token punctuation">,</span> <span class="text-user">true</span><span class="token punctuation">,</span> <span class="text-green">false</span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>Three expressions must be passed to the function <code>IF</code>:</p>
+<ul>
+ <li>a condition that is tested for truth;</li>
+ <li>an expression that is returned when the condition is true;</li>
+ <li>an expression that is returned when the condition is false.</li>
+</ul>
+<p>Below I will give some examples to make it easier to understand how it works:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th>Request</th>
+    <th>Result</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>SELECT IF( <span class="text-red">1&gt;2</span> , 2, 3)</td>
+    <td>3</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>SELECT IF( <span class="text-red">1&lt;2</span> , 'yes', 'no')</td>
+    <td>'yes'</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>SELECT IF( <span class="text-red">STRCMP('test','test1'</span> ), 'no', 'yes')</td>
+    <td>'no'</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>1.3 Function IFNULL() and NULLIF()</p>
+<p>There are also two modifications of the function <code>IF()</code>.</p>
+<p>The first modification is the function <code>IFNULL()</code>. It only takes two values:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">IFNULL</span> <span class="token punctuation">(</span><span class="text-orange">expression <span class="token number">1</span></span><span class="token number"></span><span class="token punctuation">,</span> <span class="text-green">expression <span class="token number">2</span></span><span class="token number"></span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>If <span class="text-orange">expression1</span> is not equal to <code>NULL</code>, then the function will return <span class="text-orange">expression1</span> . If <span class="text-orange">expression1</span> <code>IS NULL,</code> then the function will return <span class="text-green">expression2</span> . The essence is the substitution of the default value when the field is equal to <code>NULL</code>.</p>
+<p>The second modification of the function <code>IF</code>is the function <code>NULLIF()</code>, it also takes two values:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">NULLIF</span> <span class="token punctuation">(</span><span class="text-orange">expression <span class="token number">1</span></span><span class="token number"></span><span class="token punctuation">,</span> <span class="text-green">expression <span class="token number">2</span></span><span class="token number"></span><span class="token punctuation">)</span></code></pre>
+</div>
+<p>It works in the opposite direction:</p>
+<ul>
+ <li>if <span class="text-orange">expression1</span> is equal to <span class="text-green">expression2</span> , then the function returns <code>NULL</code>;</li>
+ <li>if expressions are not equal, then <span class="text-orange">expression1</span> is returned .</li>
+</ul>

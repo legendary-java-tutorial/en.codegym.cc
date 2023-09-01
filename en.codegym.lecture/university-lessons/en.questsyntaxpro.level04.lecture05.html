@@ -1,0 +1,116 @@
+do-while loop
+<p>----------------------------------------</p>
+Reverse Loop Java has another variation of the while loop, the do-while loop. It is very similar to while and also consists of only two parts: a “condition” and a “loop body”. The body of the loop is executed over and over again as long as the condition is true. The general form of the do-while loop is: do command; while (condition); And
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="e8c84632-29e7-4351-bf70-5c7dbf3d2878" data-max-width="1024" src="https://cdn.javarush.ru/images/article/e8c84632-29e7-4351-bf70-5c7dbf3d2878/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="4a3fd506-6d25-484a-a7a6-09d9ab2124b4" data-max-width="1024" src="https://cdn.javarush.ru/images/article/4a3fd506-6d25-484a-a7a6-09d9ab2124b4/original.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="9bd8bc63-dff7-4732-9477-a9c18ea328eb" data-max-width="512" src="https://cdn.javarush.ru/images/article/9bd8bc63-dff7-4732-9477-a9c18ea328eb/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="e38646fa-b215-4c6b-b9bc-5929ddaf3dc9" data-max-width="512" src="https://cdn.javarush.ru/images/article/e38646fa-b215-4c6b-b9bc-5929ddaf3dc9/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="1e5a11d6-0242-4942-8ddf-b4a21b31340c" data-max-width="512" src="https://cdn.javarush.ru/images/article/1e5a11d6-0242-4942-8ddf-b4a21b31340c/original.png" alt="">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="d85740e2-51fe-428f-848a-41a85a72cba3" data-max-width="512" src="https://cdn.javarush.ru/images/article/d85740e2-51fe-428f-848a-41a85a72cba3/original.png" alt="">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Reverse loop</h2>
+<p>Java has another kind of <code>while</code> loop — the <code>do-while</code> loop. It's very similar to the ordinary <code>while</code> loop and also consists of only two parts: a "condition" and a "loop body". The loop body is executed over and over again as long as the condition is <code>true</code>. In general, a <code class="text-yellow">do-while</code> loop looks like this:</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="code text-yellow">do</span>
+   <span class="code text-viola">statement</span>;
+<span class="code text-yellow">while</span> (<span class="code text-red">condition</span>);</code></pre>
+</div>
+<p class="text-center">or</p>
+<div class="lesson-example lesson-example--center">
+<pre class="lecture-code lecture-code--present language-java"><code><span class="code text-yellow">do</span>
+{
+&nbsp;  <span class="code code--demo text-user">block of statements</span>
+}
+<span class="code text-yellow">while</span> (<span class="code text-red">condition</span>);</code></pre>
+</div>
+<p>For a <code>while</code> loop, the sequence of execution is: <span class="term text-red">condition</span>, <span class="term text-user">loop body</span>, <span class="term text-red">condition</span>, <span class="term text-user">loop body</span>, <span class="term text-red">condition</span>, <span class="term text-user">loop body</span>, ...</p>
+<p>But for a <code>do-while</code> loop, it is slightly different: <span class="term text-user">loop body</span>, <span class="term text-red">condition</span>, <span class="term text-user">loop body</span>, <span class="term text-red">condition</span>, <span class="term text-user">loop body</span>, ...</p>
+<p>In fact, the only difference between a <code>while</code> loop and <code>do-while</code> loop is the fact that the <span class="term text-user">loop body</span> is executed at least once for a <code>do-while</code> loop.</p>
+<hr>
+<h2>2. Benefits of using a <code>do-while</code> loop</h2>
+<p>Basically, the only difference between a <code>do-while</code> loop and a <code>while</code> loop is that the <span class="term text-user">body</span> of a <code>do-while</code> loop is executed at least once.</p>
+<p>Generally, a <code>do-while</code> loop is used when it makes no sense to check the loop condition if the loop body has not been executed. For example, if certain calculations are performed in the <span class="term text-user">loop body</span> and then used in the <span class="term text-red">condition</span>.</p>
+<p>Example:</p>
+<p>The program reads lines from the keyboard until the word <code><span class="token string">exit</span></code> is entered</p>
+<table>
+    <tbody>
+    <tr>
+        <th>while</th>
+        <th>do while</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>String <span class="text-red">s</span>;
+<span class="code text-yellow">while</span> (true)
+{
+&nbsp;  <span class="text-red">s</span> = <span class="text-viola">console</span>.nextLine();
+&nbsp; &nbsp;if (<span class="text-red">s</span>.equals("exit"))
+&nbsp; &nbsp;&nbsp; &nbsp;break;
+}</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>String <span class="text-red">s</span>;
+<span class="code text-yellow">do</span>
+{
+<span class="text-red">   s</span> = <span class="text-viola">console</span>.nextLine();
+}
+<span class="code text-yellow">while</span> (!<span class="text-red">s</span>.equals("exit"));</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The <code>break</code> and <code>continue</code> statements in a <code>do-while</code> loop work in the same way as in a <code>while</code> loop.</p>
+<hr>
+<h2>3. Comparing <code>do-while</code> loops: Java vs Pascal</h2>
+<p>Once again, Pascal has an analogue of the <code>do-while</code> loop, but it is called a <code>repeat-until</code> loop. Also, it is slightly different from the <code class="text-yellow">do-while</code> loop. In a <code class="text-yellow">repeat-until</code> loop, the condition indicates when to exit the loop rather than when to continue it.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Pascal</th>
+        <th>Java</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-pascal"><code>&nbsp;
+<span class="code text-yellow">Repeat</span>
+   <span class="text-viola">ReadLn</span>(<span class="text-red">s</span>);
+<span class="code text-yellow">Until</span> <span class="text-red">s</span> = 'exit';
+&nbsp;</code></pre>
+        </td>
+        <td>
+<pre class="language-java"><code>String <span class="text-red">s</span>;
+<span class="code text-yellow">do</span> {
+&nbsp;  <span class="text-red">s</span> = <span class="text-viola">console</span>.nextLine();
+<span>}
+</span><span class="code text-yellow">while</span> ( !<span class="text-red">s</span>.equals("exit") );</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Compared to Java, the way Pascal represents this is downright beautiful. We have to start with examples from Pascal, otherwise you'll laugh.</p>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task04.task0414"></div>

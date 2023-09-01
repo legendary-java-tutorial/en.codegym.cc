@@ -1,0 +1,53 @@
+Other types of requests
+<p>----------------------------------------</p>
+NamedQueries
+<p>----------------------------------------</p>
+s you not to store queries directly in the code. Instead, he suggests giving queries names and storing them separately as annotations. Well, then take the desired request directly by its name. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@org.hibernate.annotations.NamedQueries</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation"><span class="text-brown">@org.hibernate.annotations.NamedQuery</span></span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string"><span class="text-user">"Employee_FindById"</span></span><span class="token punctuation">,</span>
+  	query <span class="token operator">=</span> <span class="token string">"from Employee where id = :id"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token annotation punctuation"><span class="text-brown">@org.hibernate.annotations.NamedQuery</span></span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string"><span class="text-user">"Employee_FindAllEmployes"</span></span><span class="token punctuation">,</span>
+  	query <span class="token operator">=</span> <span class="token string">"from Employee"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token annotation punctuation"><span class="text-brown">@org.hibernate.annotations.NamedQuery</span></span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string"><span class="text-user">"Employee_UpdateEmployeeName"</span></span><span class="token punctuation">,</span>
+  	query <span class="token operator">=</span> <span class="token string">"Update Employee set name = :newName where id = :id"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>Annotations can be added before any Entity class: query names are not tied to any Entity.</p>
+<p>You can also add various parameters to the query (query):</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@org.hibernate.annotations.NamedQuery</span></span><span class="token punctuation">(</span>
+  name <span class="token operator">=</span> <span class="token string">"<span class="text-user">Employee_ FindAllEmployes</span>"</span><span class="token punctuation">,</span>
+  query <span class="token operator">=</span> <span class="token string">"from Employee"</span><span class="token punctuation">,</span>
+  timeout <span class="token operator">=</span> <span class="token number"><span class="text-neon">1</span></span><span class="token punctuation">,</span>
+  fetchSize <span class="token operator">=</span> <span class="token number"><span class="text-neon">10</span></span><span class="token punctuation">,</span>
+  cacheable <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  cacheMode <span class="token operator">=</span> <span class="token string">"GET"</span>
+<span class="token punctuation">)</span></code></pre>
+<p>Using such requests is very simple - for this you need to use a method <code>createNamedQuery</code>instead of a method <code>createQuery</code>:</p>
+<pre class="line-numbers"><code>
+Query&lt;<span class="token keyword">Employee</span>&gt; <span class="text-viola">query</span> = session.createNamedQuery("<span class="text-user">Employee_FindAllEmployes</span>", <span class="token keyword">Employee</span>.class);
+List&lt;<span class="token keyword">Employee</span>&gt; resultLIst = <span class="text-viola">query</span>.list();
+
+</code></pre>
+<h2>6.2 NativeQuery</h2>
+<p>And another simple but very useful thing is <strong>NativeQuery</strong> .</p>
+<p>If you don't want to use HQL, but want to use Hibernate for entity mapping, then you can write queries in good old SQL. Nobody limits you.</p>
+<p>To do this, you just need to call the method <code>createNativeQuery()</code>, instead of <code>createQuery()</code>.</p>
+<pre class="line-numbers"><code>
+NativeQuery&lt;<span class="token keyword">Employee</span>&gt; <span class="text-viola">query</span> = session.<span class="text-red">createNativeQuery</span>(<span class="text-green">"select * from employee"</span>, <span class="token keyword">Employee</span>.class);
+List&lt;<span class="token keyword">Employee</span>&gt; resultLIst = <span class="text-viola">query</span>.list();
+</code></pre>
+<p>You just write <code>createNativeQuery</code>and everything will work as before. This method returns an object of type <strong>NativeQuery</strong> , which supports all the methods that the <strong>Query</strong> class supports . Nothing will change for you.</p>
+<p>Additionally, <strong>Native SQL Query</strong> can also be stored as <strong>Named Queries</strong> .</p>
+<pre class="line-numbers"><code>
+@org.hibernate.annotations.<span class="text-brown">NamedNativeQueries</span>(
+    @org.hibernate.annotations.<span class="text-brown">NamedNativeQuery</span>(name = <span class="text-user">"Employee_GetAll"</span>,
+  	query = <span class="text-green">"select * from employee"</span>,
+  	resultClass = <span class="token keyword">Employee</span>.class)
+)
+</code></pre>
+<p>And of course, here is the code for working with them:</p>
+<pre class="line-numbers"><code>
+NativeQuery&lt;<span class="token keyword">Employee</span>&gt; <span class="text-viola">query</span> = session.<span class="text-red">createNamedQuery</span>(<span class="text-user">"Employee_GetAll"</span>, Employee.class);
+List&lt;<span class="token keyword">Employee</span>&gt; resultLIst = <span class="text-viola">query</span>.list();
+
+</code></pre>

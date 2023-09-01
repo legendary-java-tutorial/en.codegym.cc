@@ -1,0 +1,59 @@
+Why Interfaces Exist - Supporting Declared Behaviors
+<p>----------------------------------------</p>
+An interface is a mechanism for something to interact with something. Here the person tells the dog to “sit”, that is, he gives the command in accordance with the “voice interface for controlling the dog”. If the dog executes the command, then it supports this interface. In programming, it's the same. You can combine methods, actions on an object and its data, into an interface. For what? Learn from the lecture.
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! Today I'd like to tell you the reasons why interfaces exist. You often hear that a certain class, object, or entity supports a particular interface. What does it mean <strong>to support an interface</strong>?"</p>
+
+<a href='https://cdn.codegym.cc/images/article/324f690e-1685-4337-9490-8dcc6c8ce9f6/original.jpeg' target='_blank'><img data-id="324f690e-1685-4337-9490-8dcc6c8ce9f6" data-max-width="850" alt="Interfaces exist to support specific behavior - 1" src="https://cdn.codegym.cc/images/article/324f690e-1685-4337-9490-8dcc6c8ce9f6/original.jpeg"></a>
+
+<p>In a broader sense, any interface is a mechanism for something to interact with something else. For example, a TV remote is a remote interface. A dog understands and executes commands, which means that the dog supports a voice (control) interface. To sum it all up, we can say that an interface is a standardized way for two things to interact, where both parties know the standard. When a person tells a dog to "sit", his or her command is part of a «dog voice-control interface», and if the dog obeys the command, then we say that the dog supports the interface.</p>
+<p>So it is in programming. Methods are actions performed on an object, on its data. And if a class implements certain methods, then it «supports the execution» of certain commands. What do we gain by combining methods into an interface?</p>
+<p><strong>1)</strong> Each <strong>interface</strong>, just like <strong>a class</strong>, has a unique name. Both parties can be 100% sure that the other party supports the exact interface they know and not some similar interface.</p>
+<p><strong>2)</strong> Each interface imposes certain restrictions on a class that is going to support it. The class (its developer) decides what it will do when the methods inherited from an interface are called, but the result should be within the bounds of reasonable expectations. If we order a dog to "sit" and then it rolls around in place for 5 minutes and then sits, then it supports the interface. But if it instead seizes you by the leg, then we can hardly say it supports the interface. Executing the command didn't produce the expected result.</p>
+<p>Let's say you and your friends are writing a computer game. And you've been assigned to program the behavior of one character. One of your colleagues has already written code to display all the characters on the screen. A second colleague, who responsible for saving the game to disk, has written code to save all game objects to a file. Each of them wrote a lot of code and made an interface for interacting with that code. For example, it might look like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>interface <span class="text-red"><strong>Saveable</strong></span>
+{
+ void saveToMap(Map&lt;String, Object&gt; map);
+ void loadFromMap(Map&lt;String, Object&gt; map);
+}</code></pre>
+        </td>
+        <td>&#8212; Interface for storing / loading an object from a map.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>interface <span class="text-red"><strong>Drawable</strong></span>
+{
+ void draw(Screen screen);
+}</code></pre>
+        </td>
+        <td>&#8212; Interface for drawing an object inside the passed Screen object.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class PacMan <span class="text-red"><strong>implements Saveable, Drawable</strong></span>
+{
+…
+}</code></pre>
+        </td>
+        <td>&#8212; Your class, which supports two interfaces.</td>
+    </tr>
+    </tbody>
+</table>
+<p>In other words, to support any interface (group of interfaces), your class must:</p>
+<p><strong>1)</strong> Inherit them</p>
+<p><strong>2)</strong> Implement the methods declared in them</p>
+<p><strong>3)</strong> The methods must do what they were intended to do.</p>
+<p>Then the rest of the program's code, which knows nothing about your class and its objects, can work with your class.</p>
+<p><span class="text-user">"Why can't the code know anything about my class?"</span></p>
+<p>"Let's say you took the code from a program that someone wrote a year ago. Or suppose your friends bought/licensed the game engine from someone else. You have working code for the game. Thousands of objects that interact with each other. And they can easily <strong>interact correctly with your objects</strong> if you make that interaction happen through interfaces that your classes have correctly implemented."</p>
+<p><span class="text-user">"Far out! I didn't know that was possible."</span></p>
+<p>"All big projects work like this. People stopped writing from scratch a long time ago."</p>
+<p>People also don't reinvent math and the alphabet every time. Instead, they study everything that was invented before them.</p>

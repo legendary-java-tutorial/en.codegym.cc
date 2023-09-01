@@ -1,0 +1,85 @@
+Data backup
+<p>----------------------------------------</p>
+The need for a database backup Create a database backup Create a table schema backup Create a data backup Deploy a backup
+<p>----------------------------------------</p>
+p>You have learned how to create database schemas, tables, view them. Also fill these tables with data and change them. Now you need to learn the most important thing - to make backups.</p>
+<p>The database is very easy to break. The fact is that the database is usually in a state of constant change: something is constantly saved and added to it.</p>
+<p>Imagine that you have a tab open in your browser and you do not want the information in it to be lost. Agree that if you just decide never to close it, then this will not be the best option. After all, the browser can freeze, it can be closed by accident, you can lose the light or burn your computer. Windows can install another update, but you never know what.</p>
+<p>So, your database is the same tab. And it's only a matter of time when something goes wrong during the next write to the disk. Therefore, you definitely need to learn how to make backups.</p>
+<p>Making backups is like brushing your teeth, normal companies make a backup of the contents of each database every night. And since hard drives can also fail and there are fires in data centers, backups are usually stored in 2-3 copies in data centers in different parts of the world.</p>
+<p>There are several approaches to creating a backup.</p>
+<p><strong>Backup files. </strong>Since all <span class="text-green">database data is stored on disk as a set of files</span> , the easiest way is to simply copy these files somewhere. Or first archive it into one archive, and then copy it somewhere.</p>
+<p>This is the fastest way to make a backup, but it requires that the files do not change while they are being copied/archived. The database must be frozen while the copy is being created, otherwise the copy will be crooked. After all, there may be a situation that some of the new data is recorded in the database, and some is not yet.</p>
+<p><strong>Backup in the form of SQL queries</strong> . As you already know, adding and changing data in the SQL server database is always represented as SQL queries. So you can ask the SQL server to save the contents of a particular table or tables to a file as SQL queries.</p>
+<p>This method is slower than the previous one, but it can be used to transfer data between SQL servers from different manufacturers.</p>
+<p>Also, not all data always needs to be saved. Often you have a bunch of service or obsolete information in your tables and you can tell the SQL server not to save it.</p>
+<p>Also, for tables that store some events with reference to time, you can simply select such events for the last day and store only them.</p>
+<p><strong>Various utilities</strong> . Companies are willing to pay a lot of money to get a guarantee that their data will remain intact and safe. Therefore, various IT companies began to offer solutions for all occasions. For example, there are programs that can make backup databases in the form of files and at the same time do not require that these files do not change.</p>
+<p>For example, you can install special drivers in the operating system and keep track of when, what and where has changed.</p>
+<h2>8.2 Backing up the database</h2>
+<p>Workbench is excellent at exporting and importing data from the databases it works with. To do this, you just need to press the menu item: <code>Server-&gt; Data Export</code>. And you will see something like this:</p><img data-max-width="800" data-id="077c35fe-8e3b-4123-bd1b-05da4e18f8be" alt="" src="https://cdn.javarush.com/images/article/077c35fe-8e3b-4123-bd1b-05da4e18f8be/800.jpeg" style="width: 800px;">
+<p>Now let's add some explanation:</p><img data-max-width="800" data-id="f07330e8-96f1-4693-a8e5-099ccb2b63ef" alt="" src="https://cdn.javarush.com/images/article/f07330e8-96f1-4693-a8e5-099ccb2b63ef/800.jpeg" style="width: 800px;">
+<p>The order is this:</p>
+<ol>
+ <li>First, select the schema, or schemas, that will be exported.</li>
+ <li>Then on the right we specify the tables for backup.</li>
+ <li>Next, we must choose what exactly we will export:</li>
+ <ul>
+  <li>data only;</li>
+  <li>structure only (tables will be, but empty);</li>
+  <li>data and structure.</li>
+ </ul>
+ <li>Choose how to save the data:</li>
+ <ul>
+  <li>one file for each table;</li>
+  <li>one file for all tables.</li>
+ </ul>
+ <li>You can also add the schema creation code to the top of the file. This is useful when transferring data between different DBMS.</li>
+</ol>
+<h2>8.3 Backing up the table schema</h2>
+<p>Let's back up the schemas only, without the actual data.</p>
+<p>I selected Dump Structure Only and clicked Start Export.</p><img data-max-width="512" data-id="bfb02fee-e4b1-46d2-8292-b1d796969d0c" alt="" src="https://cdn.javarush.com/images/article/bfb02fee-e4b1-46d2-8292-b1d796969d0c/512.jpeg" style="width: 512px;">
+<p>And this is what I found in the file that Workbench made.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token operator"></span><span class="token comment"><span class="token operator">--</span>
+<span class="token operator">--</span> <span class="token class-name">Table</span> structure <span class="token keyword">for</span> table `user`
+<span class="token operator">--</span></span><span class="token operator"></span>
+
+DROP TABLE IF EXISTS `user`<span class="token punctuation">;</span>
+<span class="token comment">/*!40101 SET @saved_cs_client 	= @@character_set_client */</span><span class="token punctuation">;</span>
+<span class="token comment">/*!50503 SET character_set_client = utf8mb4 */</span><span class="token punctuation">;</span>
+CREATE TABLE `user` <span class="token punctuation">(</span>
+  `id` <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token class-name">NOT</span> NULL<span class="token punctuation">,</span>
+  `name` <span class="token function">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token class-name">DEFAULT</span> NULL<span class="token punctuation">,</span>
+  `level` <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token class-name">DEFAULT</span> NULL<span class="token punctuation">,</span>
+  `created_date` date <span class="token class-name">NOT</span> NULL<span class="token punctuation">,</span>
+  <span class="token class-name">PRIMARY</span> KEY <span class="token punctuation">(</span>`id`<span class="token punctuation">)</span>
+<span class="token punctuation">)</span> ENGINE<span class="token operator">=</span><span class="token class-name">InnoDB</span> <span class="token class-name">DEFAULT</span> CHARSET<span class="token operator">=</span>utf8<span class="token punctuation">;</span>
+<span class="token comment">/*!40101 SET character_set_client = @saved_cs_client */</span><span class="token punctuation">;</span>
+<span class="token comment">/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */</span><span class="token punctuation">;</span></code></pre>
+<p>That's right, this is the schema of our tables, if I may say so about a single table.</p>
+<h2>8.4 Backing up data</h2>
+<p>Now let's backup only the data, but without the schema structure.</p>
+<p>Let's select Dump Data Only and see what they give us:</p><img data-max-width="512" data-id="23ac2770-c70f-4e18-b60b-2b9438d7bb83" alt="" src="https://cdn.javarush.com/images/article/23ac2770-c70f-4e18-b60b-2b9438d7bb83/512.jpeg" style="width: 512px;">
+<p>And this is what I found in the file that Workbench made.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token operator"></span><span class="token comment"><span class="token operator">--</span>
+<span class="token operator">--</span> <span class="token class-name">Dumping</span> data <span class="token keyword">for</span> table `user`
+<span class="token operator">--</span></span><span class="token operator"></span>
+
+LOCK TABLES `user` WRITE<span class="token punctuation">;</span>
+<span class="token comment">/*!40000 ALTER TABLE `user` DISABLE KEYS */</span><span class="token punctuation">;</span>
+INSERT INTO `user` VALUES
+ 	<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token string">'Ivanov Ivan'</span><span class="token punctuation">,</span><span class="token number">40</span><span class="token punctuation">,</span><span class="token string">'2022-05-11'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+ 	<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token string">'Petrov Nikola'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token string">'2021-05-01'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+ 	<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token string">'Sidroov Vitaly'</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">'2022-05-12'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*!40000 ALTER TABLE `user` ENABLE KEYS */</span><span class="token punctuation">;</span>
+<span class="token class-name">UNLOCK</span> TABLES<span class="token punctuation">;</span>
+<span class="token comment">/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */</span><span class="token punctuation">;</span></code></pre>
+<p>Yes, very much like the truth. We also see a special code here that locks the user table. This is done so that you can simply execute this SQL script: it contains all the instructions that will allow any SQL server to correctly restore the data.</p>
+<h2>8.5 Deploying a backup</h2>
+<p>And finally, the last thing is restoring the database from a backup. This Action is very simple but useful.</p>
+<p>Let's say I want all my students to have a specific database so that you can learn how to write queries on it. Then I'll just give you a link to the file that you deploy locally and that's it.</p>
+<p>And even if you accidentally delete some data, tables, or even the entire schema, it can always be restored from a backup.</p>
+<p>In order to import data, you need to click on the item in the menu <code>Server-&gt; Data Import</code>. Then you will see this picture:</p><img data-max-width="800" data-id="690e1ce0-5b31-4807-8172-06c5ba1d4459" alt="" src="https://cdn.javarush.com/images/article/690e1ce0-5b31-4807-8172-06c5ba1d4459/800.jpeg" style="width: 800px;">
+<p>As in the case of export, you are first prompted to select a data source: a group of files or all data in one file.</p>
+<p>Then you need to select the scheme into which the specified data will be uploaded. You can select an existing scheme or create a new one.</p>
+<p><strong>Important! </strong>If your backup contains not only data, but also a description of the table structure, then the tables will be recreated (if there are already any in the target schema).</p>

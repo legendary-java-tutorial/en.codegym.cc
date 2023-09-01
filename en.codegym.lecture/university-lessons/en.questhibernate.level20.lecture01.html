@@ -1,0 +1,135 @@
+Sharding: reverse side
+<p>----------------------------------------</p>
+How to shard and slow down N times? About the semi-auto. Absolute perfect automation? What are F()? The price to be paid. Complex/long pain: resharding.
+<p>----------------------------------------</p>
+2>
+<p>You can shard and slow down exactly N times like this:</p>
+<ul>
+ <li>Send docs00...docs15 requests <strong>sequentially</strong> , not in parallel.</li>
+ <li>In simple queries, make a selection <strong>not by key</strong> , WHERE something=234.</li>
+</ul>
+<p>In this case, the serialized part (serial) takes not 1% and not 5%, but about 20% in modern databases. You can also get 50% of the serialized part if you access the database using a wildly efficient binary protocol or link it as a dynamic library into a Python script.</p>
+<p>The rest of the processing time of a simple request will be occupied by non-parallelizable operations of parsing the request, preparing the plan, etc. That is, not reading the record slows down.</p>
+<p>If we divide the data into 16 tables and run sequentially, as is customary in the PHP programming language, for example, (it is not very good at launching asynchronous processes), then we will get a 16-fold slowdown. And, perhaps, even more, because network round-trips will also be added.</p>
+<p>Suddenly, the choice of programming language is important when sharding.</p>
+<p>Remember about the choice of programming language, because if you send queries to the database (or search server) sequentially, then where does the acceleration come from? Rather, there will be a slowdown.</p>
+<h2>2.2 About semi-automatic</h2>
+<p>In places, the sophistication of information technology inspires chthonic horror. For example, MySQL out of the box did not have the implementation of sharding to certain versions for sure, however, the sizes of the databases used in battle grow to indecent values.</p>
+<p>Suffering humanity in the face of individual DBAs has been tormented for years and writes several bad sharding solutions based on nothing. After that, one more or less decent sharding solution is written called ProxySQL (MariaDB/Spider, PG/pg_shard/Citus, ...). This is a well-known example of this very blotch.</p>
+<p>ProxySQL as a whole is, of course, a full-fledged enterprise-class solution for open source, for routing and more. But one of the tasks to be solved is sharding for a database, which itself cannot shard in a human way. You see, there is no “shards = 16” switch, you either have to rewrite each request in the application, and there are a lot of them in places, or put some intermediate layer between the application and the database that looks: “Hmm ... SELECT * FROM documents? Yes, it must be broken into 16 small SELECT * FROM server1.document1, SELECT * FROM server2.document2 - to this server with such a login / password, to this one with another. If one did not answer, then ... ", etc. Exactly this can be done by intermediate blotches. They are slightly less than for all databases. For PostgreSQL, as far as I understand,</p>
+<p>Configuring each specific patch is a separate giant topic that will not fit in one report, so we will only discuss the basic concepts. Let's better talk a little about the theory of buzz.</p>
+<h2>2.3 Absolute perfect automation?</h2>
+<p>The whole theory of getting high in the case of sharding in this letter <strong>F()</strong> , the basic principle is always the same roughly: shard_id = F(object).</p>
+<p>Sharding - what is it all about? We have 2 billion records (or 64). We want to break them into several pieces. An unexpected question arises - how? By what principle should I scatter my 2 billion records (or 64) on 16 servers available to me?</p>
+<p>The latent mathematician in us should suggest that in the end there is always some magic function that, for each document (object, line, etc.), will determine in which piece to put it.</p>
+<p>Going deeper into the math, this function always depends not only on the object itself (the row itself), but also on external settings such as the total number of shards. A function that for each object must tell where to put it, cannot return a value more than there are servers in the system. And the functions are slightly different:</p>
+<pre><code>shard_func = F1(object); 
+shard_id = F2(shard_func, ...); 
+shard_id = F2(F1(object), current_num_shards, ...). 
+</code></pre>
+<p>But further we will not dig into these wilds of individual functions, we will just talk about what magic functions F () are.</p>
+<h2>2.4 What are F()?</h2>
+<p>They can come up with many different and many different implementation mechanisms. Sample summary:</p>
+<ul>
+ <li>F = rand() % nums_shards</li>
+ <li>F = somehash(object.id) % num_shards</li>
+ <li>F = object.date % num_shards</li>
+ <li>F = object.user_id % num_shards</li>
+ <li>...</li>
+ <li>F = shard_table [ somehash() |… object.date |… ]</li>
+</ul>
+<p>An interesting fact - you can naturally scatter all the data randomly - we throw the next record on an arbitrary server, on an arbitrary core, in an arbitrary table. There won't be much happiness in this, but it will work.</p>
+<p>There are slightly more intelligent methods to shard by a reproducible or even consistent hash function, or shard by some attribute. Let's go through each method.</p>
+<h4>F = rand()</h4>
+<p>Scattering around is not a very correct method. One problem: we scattered our 2 billion records on a thousand servers randomly, and we don’t know where the record is. We need to pull out user_1, but we don’t know where he is. We go to a thousand servers and sort through everything - somehow this is inefficient.</p>
+<h4>F = somehash()</h4>
+<p>Let's scatter users in an adult way: calculate the reproducible hash function from user_id, take the remainder of the division by the number of servers, and immediately contact the desired server.</p>
+<p>Why are we doing this? And then, that we have a highload and nothing else fits into one server. If it fit, life would be so simple.</p>
+<p>Great, the situation has already improved, in order to get one record, we go to one known server in advance. But if we have a range of keys, then in this entire range we need to go through all the values ​​of the keys and, in the limit, go either to as many shards as we have keys in the range, or even to each server. The situation has improved, of course, but not for all requests. Some queries have been affected.</p>
+<h4>Natural sharding (F = object.date % num_shards)</h4>
+<p>Sometimes, that is, often, 95% of the traffic and 95% of the load are requests that have some kind of natural sharding. For example, 95% of conditionally social-analytic queries affect data only for the last 1 day, 3 days, 7 days, and the remaining 5% refer to the last few years. But 95% of requests are thus naturally sharded by date, the interest of system users is focused on the last few days.</p>
+<p>In this case, you can divide the data by date, for example, by one day, and follow the response to the request for a report for some day or an object from this day to this shard and go.</p>
+<p>Life is improving - we now not only know the location of a particular object, but we also know about the range. If we are asked not for a range of dates, but for a range of other columns, then, of course, we will have to go through all the shards. But according to the rules of the game, we have only 5% of such requests.</p>
+<p>It seems that we have come up with an ideal solution to everything, but there are two problems:</p>
+<ul>
+ <li>This solution is tailored for a specific case, when 95% of requests involve only the last week.</li>
+ <li>Since 95% of requests touch the last week, they will all fall on one shard that serves this last week. This shard will melt, while all the others will be idle during this time. At the same time, you cannot throw them away; archival data must also be stored.</li>
+</ul>
+<p>Not to say that this is a bad sharding scheme - we cut off hot data, nevertheless, something needs to be done with the hottest shard.</p>
+<p>The problem is solved by antics, jumps and poultices, that is, an increase in the number of replicas for the burning current day, then a gradual decrease in the number of replicas when this day becomes the past and goes into the archive. There is no ideal solution called “you just need to spread the data over the cluster with a magic hash function in a wrong way”.</p>
+<h2>2.5 Price to be paid</h2>
+<p>Formally, we know now we know "everything". True, we do not know one giant headache and two smaller headaches.</p>
+<h4>1. Simple pain: badly smeared</h4>
+<p>This is an example from a textbook, which almost never occurs in battle, but suddenly.</p>
+<ul>
+ <li>As an example with a date, only without a date!</li>
+ <li><strong>Unintentional</strong> uneven (perceivable) distribution.</li>
+</ul>
+<p>They chose the sharding mechanism, and/or the data changed, and, of course, the PM did not convey the requirements (we don’t have errors in the code, the PM always doesn’t report the requirements), and the distribution became monstrously uneven. That is, they missed the criterion.</p>
+<p>To catch, you need to look at the size of the shards. We will definitely see the problem at the moment when one of our shards either overheats or becomes 100 times larger than the others. You can fix it simply by replacing the key or the sharding function.</p>
+<p>This is a simple problem, to be honest, I don’t think that at least one person out of a hundred will run into this in life, but suddenly it will help at least someone.</p>
+<h4>2. "Invincible" pain: aggregation, join</h4>
+<p></p> How to make selections that join a billion records from one table for a billion records from another table? 
+<p></p>
+<ul>
+ <li>How to "quickly" calculate... WHERE randcol BETWEEN aaa AND bbb?</li>
+ <li>How to "smartly" do... users_32shards JOIN posts_1024 shards?</li>
+</ul>
+<p>Short answer: no way, suffer!</p>
+<p>If you distributed a billion records to a thousand servers in the first table so that they work faster, and did the same in the second table, then naturally a thousand to a thousand servers should talk to each other in pairs. A million connections will not work well. If we make requests to the database (search, storage, document store or distributed file system) that do not fit well with sharding, these requests will slow down wildly.</p>
+<p>An important point is <strong>that some requests will always be unsuccessfully smeared and will slow down</strong> . It is important to try to minimize their percentage. As a consequence, there is no need to make gigantic joins with a billion by a billion records. If it is possible to replicate a small table, relative to which you are joining in a giant shared table, to all nodes, you should do it. If the joins are actually local in some way, for example, it is possible to place the user and his posts side by side, shard them in the same way, and do all the joins within the same machine - you need to do just that.</p>
+<p>This is a separate course of lectures for three days, so let's move on to the last hellish pain and different algorithms for dealing with it.</p>
+<h2>2.6. Complex/Long Pain: Resharding</h2>
+<p>Get ready: if you sharded your data for the first time in your life, then on average you will shard it five more times.</p>
+<p>No matter how many clusters you configure, you still need to reshard.</p>
+<p>If you are very smart and lucky, then overshard at least once. But once you are sure, because at the moment when you think that 10 units are enough for the user, someone right at that moment writes a request for 30, and plans to have a request for 100 units of unknown resources. Shards are never enough. With the first sharding scheme, in any case, you will miss - you will always have to either increase the number of servers to add, or do something else - in general, somehow repackage the data.</p>
+<p>It’s good if we have nice powers of two: there were 16 server shards, now it’s 32. It’s more fun if it was 17, it’s 23 - two vasimally prime numbers. How do databases do it, maybe they have some kind of magic inside?</p>
+<p>The correct answer is: no, there is no magic inside, they have hell inside.</p>
+<p>Next, we will consider what can be done “by hand”, perhaps we will understand “as an automatic machine”.</p>
+<h4>On the forehead #1. Relocate Everything</h4>
+<p>For all objects, we consider NewF(object), shift to a new shard.</p>
+<p>The chance of NewF()=OldF() matching is low.</p>
+<p>Let's cover almost everything.</p>
+<p>Oh.</p>
+<p>I hope there is no such hell as to transfer all 2 billion records from old shards to new ones. The naive approach is understandable: there were 17 machines, 6 machines were added to the cluster, 2 billion records were sorted out, they were shifted from 17 machines to 23 machines. Once every 10 years, you can probably even do it. But overall it's a bad move.</p>
+<h4>On the forehead #2. Relocate half</h4>
+<p>The next naive improvement - let's abandon such a stupid scheme - will prohibit 17 cars from resharding into 23, and we will always reshard 16 cars into 32 cars! Then, according to theory, we will have to shift exactly half of the data, and in practice we can also do this.</p>
+<p>For all objects, we consider NewF(object), shift to a new shard.</p>
+<p>It was strictly 2^N, now it is strictly 2^(N+1) shards.</p>
+<p>The probability of matching NewF()=OldF() is 0.5.</p>
+<p>Let's transfer about 50% of the data.</p>
+<p>Optimal, but only works for powers of two.</p>
+<p>In principle, everything is fine, except for the binding to the power of two in terms of the number of cars. This naive approach, oddly enough, can work.</p>
+<p>Please note that the additional splitting of the cluster by powers of two in this case is also optimal. In any case, adding 16 machines to a cluster of 16, we are obliged to shift half of the data - exactly half and shift.</p>
+<p>Okay, but has mankind really not invented anything else - the question arises from an inquisitive mind.</p>
+<h4>More fun #3. Consistent hashing</h4>
+<p>Of course, a picture with a circle about consistent hashing is required here.</p>
+<p>If you google “consistent hashing”, then a circle will definitely come out, all the results are populated with circles.</p>
+<p>Idea: let's draw shard identifiers (hashes) on a circle, and mark the hashed server identifiers on top. When you need to add a server, we put a new point on the circle, and what turned out to be close to it (and only what turned out to be close to it), we relocate.</p>
+<p>When adding a shard: we look through not everything, but only 2 "neighbors", we shift on average 1/n.</p>
+<p>When deleting a shard: we look only at the shard being deleted, we shift only it. Kind of optimal.</p>
+<p>Very effective in terms of minimizing traffic when adding a shard, and absolutely disgusting in terms of normal data balancing. Because when we hash all these objects that we distribute to a large number of machines, we do it relatively unevenly: the points around the circle are unevenly spaced, and the load of each particular node can be very different from the rest.</p>
+<p>This problem is solved by the last line of the virtual node. Each node, each server on the circle is indicated by more than one dot. By adding a server, a shard, etc., we are adding a few points. Each time we remove something, we accordingly remove a few points and shift a small part of the data.</p>
+<p>I am talking about this space with circles, because, for example, such a scheme is inside Cassandra. That is, when she started chasing records between nodes, know that the circle is looking at you and probably does not approve.</p>
+<p>However, compared to the first methods, life has improved - when adding / removing a shard, we already look through not all records, but only a part, and shift only a part.</p>
+<p>Attention, the question is: can it be improved further? And also improve the uniformity of loading shards? They say it's possible!</p>
+<h4>More fun #4. Rendezvous/HRW</h4>
+<p>The next simple idea (the material is educational, so nothing complicated): shard_id = arg max hash(object_id, shard_id).</p>
+<p>Why it's called Rendezvous hashing I don't know, but I do know why it's called Highest Random Weight. It is very easy to visualize it like this:</p>
+<p>We have, for example, 16 shards. For each object (string) that needs to be put somewhere, we calculate 16 hashes depending on the object from the shard number. Whoever has the highest hash value wins.</p>
+<p>This is the so-called HRW-hashing, aka Rendezvous hashing. Dumb as a stick, the scheme for calculating the number of a shard, firstly, is easier on the eye than circles and gives a uniform load, on the other hand.</p>
+<p>The only negative is that adding a new shard has worsened for us. There is a risk that when adding a new shard, we still have some hashes that will change and it may be necessary to review everything. The shard removal technology has not changed much.</p>
+<p>Another problem is that it is computationally heavy with a large number of shards.</p>
+<h4>More fun #5. More techniques</h4>
+<p>Interestingly, research does not stand still and Google publishes some new space technology every year:</p>
+<ul>
+ <li>Jump Hash - Google '2014.</li>
+ <li>Multi Probe—Google '2015.</li>
+ <li>Maglev-Google '2016.</li>
+</ul>
+<p>If you are interested in the subject, you can read many dissertations. I present this data in order to make it clear that the problem has not been solved, there is no super-solution that can be implemented in all databases. Until now, people defend dissertations.</p>
+<h3>conclusions</h3>
+<p>There is an important basic technique called sharding named after Gallius Julius Caesar: “Divide and rule, rule and divide!”. If the data does not fit into one server, it is necessary to split it into 20 servers.</p>
+<p>Having learned all this, one should get the impression that it would be better not to shard. If you decide that it would be better not to shard, this is the right feeling. If you can add memory to the server for $100 and not shard anything, then you should do it. When sharding, a complex distributed system will appear with transferring data back and forth, stacking data in no one knows where. If it can be avoided, it must be avoided.</p>
+<p>It’s better not to do it by hand, it’s better that the “base” (search, DFS, ...) can shard itself. In any case, sooner or later, highload will come and somehow the data will have to be split. It is not a fact that even if the base can do it itself, you will not run into any problems. Remember about algorithmic fundamentalism - you need to understand how everything works inside.</p>
+<p>When setting up sharding for the first time, choose F() carefully, think about requests, network, etc. But get ready, you will probably have to choose 2 times and at least once you will have to redo everything.</p>

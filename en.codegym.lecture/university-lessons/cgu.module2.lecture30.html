@@ -1,0 +1,245 @@
+YAML data format
+<p>----------------------------------------</p>
+Another text data format is YAML (Yet Another Markup Language, later YAML Ain't Markup Language). Used to serialize objects for transmission over the network (same as xml and json are used). Due to its readability, it is also used to write configuration files, for example...
+<p>----------------------------------------</p>
+<h2>What is YAML used for?</h2>
+
+    <p>Another text data format is YAML (<em>Yet Another Markup Language</em>; later, <em>YAML Ain't Markup Language</em>). It is used to serialize objects for transmission over the network (just as XML and JSON are used this way). Because it is human readable, it is also used to write configuration files, for example, for Docker, Kubernetes, Ansible, etc. When YAML needs to be saved to a file (for example, a configuration file), we use one of two extensions: .yaml or .yml.</p>
+
+    <h2>Language syntax</h2>
+
+    <p>In XML, angle brackets (<span class="code">&lt;&gt;</span>) are used to designate tags. In JSON, we use curly brackets (<span class="code">{}</span>). YAML uses new lines and indentation.</p>
+
+    <p>The data is stored as key-value pairs, where the key is a string, and the value can be various data types (string, number, true/false, array, etc.). Keys are written without quotation marks. </p>
+
+    <p>Let's take a look at how information is stored in YAML:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Type</th>
+                <th>Java</th>
+                <th>YAML</th>
+            </tr>
+            <tr>
+                <td>Integer</td>
+                <td><pre class='language-java line-numbers'><code>
+int number = 5</code></pre></td>
+                <td><div class="terminal">number: 5</div></td>
+            </tr>
+            <tr>
+                <td>Fractional number</td>
+                <td><pre class='language-java line-numbers'><code>
+double number = 4.3</code></pre></td>
+                <td><div class="terminal">number: 4.3</div></td>
+            </tr>
+            <tr>
+                <td>Boolean variable</td>
+                <td><pre class='language-java line-numbers'><code>
+boolean valid = false</code></pre></td>
+                <td><div class="terminal">valid: false<br />
+valid: no<br />
+valid: off</div>
+                    <p>* Valid boolean values: true/false, yes/no, on/off.</p></div>
+            </tr>
+            <tr>
+                <td>String</td>
+                <td><pre class='language-java line-numbers'><code>
+String city = "New York"</code></pre></td>
+                <td><div class="terminal">city: New York<br />
+city: 'New York'<br />
+city: "New York"</div>
+                    <p>* All three options are equivalent.</p></td>
+            </tr>
+            <tr>
+                <td>String with special characters</td>
+                <td><pre class='language-java line-numbers'><code>
+String line = "aaa\nbbb"</code></pre></td>
+                <td><div class="terminal">line: "aaa\nbbb"</div></td>
+            </tr>
+            <tr>
+                <td>Comment in code</td>
+                <td><pre class='language-java line-numbers'><code>
+// comment</code></pre></td>
+                <td><div class="terminal"># comment</div></td>
+            </tr>
+            <tr>
+                <td>Object</td>
+                <td><pre class='language-java line-numbers'><code>
+public class Person {
+  String name = "Dennis";
+  int age = 32;
+}</code></pre>
+                    <p>* The object's class is given so you can see the structure of the object.</p></td>
+                <td><div class="terminal">person:<br />
+&nbsp;&nbsp;name: "Dennis"<br />
+&nbsp;&nbsp;age: 32</div>
+                    <p>* Pay attention to the indentation before the attributes. It must be the same for all attributes.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>List of simple values</td>
+                <td><pre class='language-java line-numbers'><code>
+var ages = 
+    List.of(1, 3, 5, 9, 78, -5);</code></pre></td>
+                <td><div class="terminal">ages: [1, 3,5,9,78, -5]<br />
+ages:<br />
+&nbsp;&nbsp;- 1<br />
+&nbsp;&nbsp;- 3<br />
+&nbsp;&nbsp;- 5<br />
+&nbsp;&nbsp;- 9<br />
+&nbsp;&nbsp;- 78<br />
+&nbsp;&nbsp;- -5</div>
+                    <p>* Both options are equivalent.<br />
+** Each element of the list is marked with a hyphen.</p>
+                </td>
+            </tr>
+            <tr>
+                <td>List of objects</td>
+                <td><pre class='language-java line-numbers'><code>
+class Person {
+    String name;
+    int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+…
+List&lt;Person&gt; people = List.of(
+        new Person("Ian", 21),     
+        new Person("Marina", 25),     
+        new Person("Owen", 73)      );</code></pre></td>
+                <td><div class="terminal">people:<br />
+&nbsp;&nbsp;- name: "Ian"<br />
+&nbsp;&nbsp;&nbsp;&nbsp;age: 21<br />
+&nbsp;&nbsp;- name: "Marina"<br />
+&nbsp;&nbsp;&nbsp;&nbsp;age: 25<br />
+&nbsp;&nbsp;- name: "Owen"<br />
+&nbsp;&nbsp;&nbsp;&nbsp;age: 73</div></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>As in Java, an element of a list can be a list, that is, objects can be nested inside one another. The hyphen that indicates the next element of the list can be horizontally offset relative to the parent key, or located directly below it. The main thing is that all elements have the same format. This will help avoid confusion and an ambiguous nesting hierarchy.</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="terminal">ages:<br />
+&nbsp;&nbsp;- 1<br />
+&nbsp;&nbsp;- 3<br />
+&nbsp;&nbsp;- 5<br />
+&nbsp;&nbsp;- 9<br />
+&nbsp;&nbsp;- 78<br />
+&nbsp;&nbsp;- -5</div>
+                </td>
+                <td>
+                    <div class="terminal">ages:<br />
+- 1<br />
+- 3<br />
+- 5<br />
+- 9<br />
+- 78<br />
+- -5</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>There are two more nuances when working with text values:</p>
+
+    <ol>
+        <li>
+            <p><span class="text-bold">Multiline text.</span> We can save text like this:</p>
+            <div class="terminal">multilineText: "line 1\nline 2\n....line n"</div>
+            <p>But it would be very unpleasant to try to read that. So there is the <span class="code">|</span> (pipe) symbol, which you can use to write the text differently:
+            <div class="terminal">multilineText: |<br />
+&nbsp;line 1<br />
+&nbsp;line 2<br />
+&nbsp;....<br />
+&nbsp;line n</div>
+            <p>You'll agree that the second option is more convenient, right?</p>
+        </li>
+        <li>
+            <p><span class="text-bold">Long lines.</span> If you want to keep the text on one line but also want it to fit in the IDE's visible workspace, you can use the <span class="code">&gt;</span> (greater than) symbol.</p>
+            <div class="terminal">singlelineText: &gt;<br />
+&nbsp;begin<br />
+&nbsp;...<br />
+&nbsp;continue same line<br />
+&nbsp;...<br />
+&nbsp;end</div>
+            <p>All the text will be treated as one line.</p>
+        </li>
+    </ol>
+
+    <p>If you need to write several YAML data structures into one file, then you need to separate them with <span class="code">---</span> (three hyphens). In practice, there is rarely a need for this, but it's best to be aware of this possibility.</p>
+
+    <h2>Example of a YAML document</h2>
+
+    <p>Let's create some Java data structure (a class) and a corresponding object, and try to represent the object as YAML.</p>
+
+    <pre class='language-java line-numbers'><code>
+class Family {
+   private Date weddingDate;
+   private Person wife;
+   private Person husband;
+   private List&lt;Person&gt; children;
+
+   // Getters and setters are omitted
+}
+
+class Person {
+   private final String name;
+   private final boolean isWoman;
+   private int age;
+
+   public Person(String name, int age, boolean isWoman) {
+       this.name = name;
+       this.age = age;
+       this.isWoman = isWoman;
+   }
+
+// Getters and setters are omitted
+
+}
+
+public static void main(String[] args) {
+   Person wife = new Person("Ann", 37, true);
+   Person husband = new Person("Alex", 40, false);
+   var children = List.of(
+           new Person("Iris", 12, true),
+           new Person("Olivia", 5, true)
+   );
+   Date weddingDate = new Date(/* some long */);
+
+   Family family = new Family();
+   family.setWeddingDate(weddingDate);
+   family.setWife(wife);
+   family.setHusband(husband);
+   family.setChildren(children);
+}
+</code></pre>
+
+    <p>Valid representation in YAML:</p>
+
+    <div class="terminal">---<br />
+weddingDate: 2000-12-03<br />
+wife:<br />
+&nbsp;name: Ann<br />
+&nbsp;age: 37<br />
+&nbsp;isWoman: yes<br />
+husband:<br />
+&nbsp;name: Alex<br />
+&nbsp;age: 40<br />
+&nbsp;isWoman: no<br />
+children:<br />
+&nbsp;- name: Iris<br />
+&nbsp;&nbsp;&nbsp;age: 12<br />
+&nbsp;&nbsp;&nbsp;isWoman: true<br />
+&nbsp;- name: Olivia<br />
+&nbsp;&nbsp;&nbsp;age: 5<br />
+&nbsp;&nbsp;&nbsp;isWoman: true<br />
+---</div>

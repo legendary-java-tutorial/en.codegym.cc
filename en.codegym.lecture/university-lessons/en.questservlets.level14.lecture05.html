@@ -1,0 +1,28 @@
+Modular software architecture
+<p>----------------------------------------</p>
+Decomposition Benefits of Modular Architecture
+<p>----------------------------------------</p>
+iety of criteria, the main task in the development of large systems is <span class="text-green">the task of reducing the complexity of the system</span> . To reduce complexity, nothing but division into parts has yet been invented.</p>
+<p>Sometimes, for simplicity, this is called the principle of "divide and conquer", but, from the point of view of the software architect, we are talking about <strong>hierarchical decomposition</strong> .</p>
+<p><span class="text-user">A complex system must be built from a small number of simpler subsystems, each of which, in turn, is built from smaller parts,</span> and so on until the smallest parts are simple enough to be directly understood and created.</p>
+<img data-max-width="800" data-id="a6cf7067-de5b-4346-8cd8-e539863fca11" src="https://cdn.codegym.cc/images/article/a6cf7067-de5b-4346-8cd8-e539863fca11/800.jpeg" alt="">
+<p>The great news is that this solution is not only the only one known, but also universal. In addition to reducing complexity, it simultaneously provides <strong>system flexibility</strong> , good scalability <strong>,</strong> and increased resiliency by duplicating critical parts.</p>
+<p>Accordingly, when it comes to building the architecture of the program, creating its structure, this means decomposing the program into subsystems, services, layers, subroutines and functional modules and organizing their interaction with each other and the outside world.</p>
+<p>And the most valuable thing here is this: the more independent the subsystems, the safer it is to focus on the development of each of them separately at a particular point in time and not worry about all the other parts.</p>
+<h2>6.2 Benefits of modular architecture</h2>
+<p>Using the principle of hierarchical decomposition allows you to get rid of chaos in thousands of classes of your code. Remember that your code is broken into packages (package) and subpackages? This is one of the expressions for hierarchical decomposition.</p>
+<p>Your program turns from a bunch of classes into a set of libraries and modules that interact with each other according to well-defined and simple rules. This, in turn, allows you to control its complexity, and also gives you the opportunity to get all the benefits that are usually associated with the concept of a good architecture.</p>
+<p>Here are the most basic ones:</p>
+<ul>
+ <li><strong>Scalability</strong> - the ability to expand the system and increase its performance by adding new modules.</li>
+ <li><strong>Maintainability</strong> - changing one module does not require changing other modules.</li>
+ <li><strong>Swapability of modules</strong> (Swappability) - the module can be easily replaced with another one.</li>
+ <li><strong></strong>Unit Testing – A unit can be detached from all others and tested/repaired <strong>.</strong></li>
+ <li><strong>Reusability</strong> - the module can be reused in other programs and other environments.</li>
+ <li><strong>Maintenance</strong> - a program that is divided into modules is easier to understand and maintain.</li>
+</ul>
+<p>It can be said that <span class="text-green">breaking a complex problem into simple fragments is the goal of all design techniques</span> . And the term “architecture” in most cases simply refers to the result of such a division plus <span class="text-red">“some design decisions that, once adopted, are difficult to change”</span> (Martin Fowler “Architecture of Enterprise Software Applications”).</p>
+<p>Therefore, most definitions in one form or another boil down to the following:</p>
+<p>" <span class="text-green">Architecture identifies the main components of the system and how they interact. It is also the choice of such decisions that are interpreted as fundamental</span> and <span class="text-red">not subject to change in the future</span> ."</p>
+<p>" <span class="text-green">Architecture is the organization of a system, embodied in its components, their relationship with each other and with the environment. A system is a set of components combined to perform a specific function</span> ."</p>
+<p>Thus, <strong>a good architecture is, first of all, a modular / block architecture</strong> . To get a good architecture, you need to know how to properly decompose the system. This means that it is necessary to understand which decomposition is considered “correct” and how it is best to carry it out.</p>

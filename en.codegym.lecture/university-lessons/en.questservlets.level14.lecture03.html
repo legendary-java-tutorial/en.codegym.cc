@@ -1,0 +1,66 @@
+Criteria for good software architecture
+<p>----------------------------------------</p>
+Efficiency. Flexibility. Scalability. Expandability. Testability. Code maintainability.
+<p>----------------------------------------</p>
+s can easily tell a good architecture from a bad one, but if asked to describe it in a few words, they are unlikely to be able to do so. There is no single criterion for good architecture and no single definition.</p>
+<p>However, if you think about it, you can write a number of criteria that a good architecture should satisfy. <span class="text-bold">A good architecture</span> is, first of all, a logical architecture that makes the process of developing and maintaining a program simpler and more efficient.</p>
+<p>When a program has a good architecture, it is always easy enough to understand how it works and where to write code. A well-architected program is easier to change, test, debug, and develop. Smart people have formulated the following criteria for good architecture:</p>
+<ul>
+ <li>Efficiency;</li>
+ <li>Flexibility;</li>
+ <li>Expandability;</li>
+ <li>Scalability;</li>
+ <li>testability;</li>
+ <li>Code maintainability.</li>
+</ul>
+<p><span class="text-bold">System efficiency. </span>The program, of course, must solve the assigned tasks and perform its functions well, and in various conditions. It seems that any program does what it should do (if it is written), but often this is not at all the case.</p>
+<p>You will constantly come across programs that don't do what they claim to do.</p>
+<ul>
+ <li>Libre Office is a full replacement for Microsoft Office (not really);</li>
+ <li>The Edge browser supports all web standards (not really);</li>
+ <li>The bank cares about the security of the personal data of its users (actually not).</li>
+</ul>
+<p>And we have not yet touched on performance, reliability, timely bug fixes or the publication of information about known vulnerabilities.</p>
+<p>It is clear that no one is perfect, but the program must solve its primary tasks. Therefore, without efficiency, nowhere.</p>
+<h2>Flexibility</h2>
+<p>The only thing more important than efficiency in my opinion is flexibility. Any application has to change over time, as requirements change, new ones are added. The faster and more convenient it is to make changes to the existing functionality, the fewer problems and errors it causes, the more <span class="text-bold">flexible</span> the system architecture.</p>
+<p>Very often, novice programmers / architects think that they need an ideal architecture for current tasks. No. <span class="text-green">You need an ideal architecture for the tasks that will be announced to you in a year. </span>You, already now not knowing the future tasks, should know what they will be.</p>
+<p>It makes no sense to try to predict them, because there will always be something unexpected. But you must take into account that such tasks will appear. Therefore, in the development process, try to evaluate what is being obtained in terms of how it will need to be changed.</p>
+<p>Ask yourself: "What happens if the current architectural decision turns out to be wrong?", "How much code will be changed?". Changing one fragment of the system should not affect its other fragments.</p>
+<p>Whenever possible, architectural decisions should not be set in stone, and the consequences of architectural errors should be reasonably limited. "Good architecture allows you to DELAY key decisions" (Bob Martin) and minimizes the "cost" of mistakes.</p>
+<p>One of these approaches is splitting the application into microservices: it is easy to break the already existing logic into separate parts. But the biggest problem is making future changes to a dozen services at once to implement one small feature.</p>
+<h3>Scalability</h3>
+<p>Scalability is the ability to reduce development time by adding new people to the project. The architecture should allow the development process to be parallelized so that many people can work on the program at the same time.</p>
+<p>It seems that this rule is carried out by itself, but in practice everything is exactly the opposite. There is even a super-popular book, <span class="text-bold">The Mythical Man-Month</span> , which explains why when new people are added to a project, development time increases.</p>
+<h2>Expandability</h2>
+<p><span class="text-bold">Extensibility</span> is the ability to add new features and entities to a system without breaking its core structure. At the initial stage, it makes sense to put only the basic and most necessary functionality into the system.</p>
+<p>This is the so-called <span class="text-bold">YAGNI principle - you ain't gonna need it</span> , “you won't need it”. At the same time, the architecture should allow you to easily increase additional functionality as needed. And so that the introduction of the most probable changes required the least effort.</p>
+<p>The requirement that the architecture of the system be flexible and extensible (that is, be capable of change and evolution) is so important that it is even formulated as a separate principle - the “Open/ <span class="text-bold">Closed Principle</span> ”. <span class="text-bold">The Open-Closed Principle</span> is the second of the five SOLID principles: <span class="text-green">software entities (classes, modules, functions) should be open for extension, but closed for modification</span> .</p>
+<p>In other words: <span class="text-bold">it should be possible to change and extend the behavior of the system <span class="text-red">without rewriting</span> existing parts of the system</span> .</p>
+<p>This means that the application should be designed in such a way that changing its behavior and adding new functionality would be achieved by writing new code (extensions), without having to change existing code.</p>
+<p>In this case, the emergence of new requirements will not entail a modification of the existing logic, but can be implemented primarily by expanding it. This principle is the basis of "plug-in architecture" (Plugin Architecture). The techniques by which this can be achieved will be discussed later.</p>
+<p>Remember servlets and filters? Why were filters needed, and even with separate interfaces, if, in fact, all the same logic could be implemented using servlets?</p>
+<p>It was the invention of the concept of filters (service servlets) that made it possible to move various service functions to a separate layer. And in the future, when changing the behavior of filters, it was not necessary to change the servlets.</p>
+<p>Before the invention of filters, all the service logic that was responsible for redirecting requests was located in the servlets themselves. And often one small change in logic would lead to the need to go through all the servlets and make various changes to all.</p>
+<h2>Testability</h2>
+<p>If you are a Java Backend Developer, then your server applications often expose a set of methods as a REST API. And to check that all your methods work as intended, they need to be covered with tests.</p>
+<p>In general, API test coverage is a good style. It allows you to make sure that your API really does what it was intended to do. And also, more importantly, <span class="text-green">you can make changes to the server logic and easily check that you didn't accidentally break anything</span> .</p>
+<p>As soon as you start writing tests, you will realize that most code cannot be tested at all: private methods, strong coupling, static classes and variables.</p>
+<p>“Why do we need tests if the code works?”, the beginner will ask.</p>
+<p>“Why do we need working code if it cannot be tested?”, the professional will ask.</p>
+<p>Code that is easy to test will contain fewer bugs and be more reliable. But tests don't just improve code quality. Almost all developers eventually come to the conclusion that the requirement of “good testability” is also a guiding force that automatically leads to good design.</p>
+<p>Here is a quote from the book Ideal Architecture: “Use the principle of “testability” of a class as a “litmus test” of good class design. Even if you do not write a single line of test code, answering this question in 90% of cases will help to understand how everything good" or "bad" with his design."</p>
+<p>There is a whole methodology for developing programs based on tests, which is called Test-Driven Development (TDD). This is of course the other extreme: write code before you write code.</p>
+<h2>Code maintainability</h2>
+<p>As a rule, a lot of people work on the program - some leave, new ones come. The average working time of a programmer in an IT company is one and a half years. So if you came to a project that is 5 years old, then only 20% of your colleagues worked on it from the very beginning.</p>
+<p>Maintaining and developing a program that others have written is very difficult. Even if the program is already written, it is often necessary to continue to maintain it: fix errors and make minor corrections. And often this has to be done by people who did not take part in writing it.</p>
+<p>Therefore, a good architecture should make it relatively <span class="text-green">easy and quick for new people to understand the system</span> . The project must be:</p>
+<ul>
+ <li>Well structured.</li>
+ <li>Do not contain duplication.</li>
+ <li>Have well-formatted code.</li>
+ <li>It is desirable to include documentation.</li>
+ <li>It is necessary to apply standard and familiar solutions for programmers.</li>
+</ul>
+<p>You can easily rate the project you are working on <span class="text-bold">on a 5-point system</span> . <span class="text-bold">Just count two points</span> for each of these requirements . And if you get 5 or more, then you are lucky.</p>
+<p>Programmers even have <span class="text-bold">a principle of least surprise</span> : the more exotic the system, the more difficult it is for others to understand. Usually, it is used in relation to the user interface, but it is applicable to writing code as well.</p>

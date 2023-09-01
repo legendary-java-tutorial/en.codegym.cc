@@ -1,0 +1,349 @@
+Creating your own exceptions
+<p>----------------------------------------</p>
+I think you've experienced the situation where you run code and end up with something like a NullPointerException, ClassCastException, or worse...
+<p>----------------------------------------</p>
+<p>I think you've probably experienced a situation where you run code and end up with something like a <span class="text-red"><span class="text-bold">NullPointerException</span></span>, <span class="text-red"><span class="text-bold">ClassCastException</span></span>, or worse... This is followed by a long process of debugging, analyzing, googling, and so on. Exceptions are wonderful as is: they indicate the nature of the problem and where it occurred. If you want to refresh your memory and learn just a little more, take a look at this article: <a href="https://codegym.cc/groups/posts/28-exceptions-checked-unchecked-and-custom" target="_blank">Exceptions: checked, unchecked, and custom</a>.</p>
+
+    <p>That said, there may be situations when you need to create your own exception. For example, suppose your code needs to request information from a remote service that is unavailable for some reason. Or suppose someone fills out an application for a bank card and provides a phone number that, whether by accident or not, is already associated with another user in the system. </p>
+
+    <p>Of course, the correct behavior here still depends on the customer's requirements and the architecture of the system, but let's assume that you've been tasked with checking whether the phone number is already in use and throwing an exception if it is.</p>
+
+    <p>Let's create an exception:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class PhoneNumberAlreadyExistsException extends Exception {
+
+   public PhoneNumberAlreadyExistsException(String message) {
+       super(message);
+   }
+}
+    </code></pre>
+
+    <p>Next we'll use it when we perform our check:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class PhoneNumberRegisterService {
+   List&lt;String&gt; registeredPhoneNumbers = Arrays.asList("+1-111-111-11-11", "+1-111-111-11-12", "+1-111-111-11-13", "+1-111-111-11-14");
+
+   public void validatePhone(String phoneNumber) throws PhoneNumberAlreadyExistsException {
+       if (registeredPhoneNumbers.contains(phoneNumber)) {
+           throw new PhoneNumberAlreadyExistsException("The specified phone number is already in use by another customer!");
+       }
+   }
+}
+    </code></pre>
+
+    <p>To simplify our example, we'll use several hardcoded phone numbers to represent a database. And finally, let's try to use our exception:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class CreditCardIssue {
+   public static void main(String[] args) {
+       PhoneNumberRegisterService service = new PhoneNumberRegisterService();
+       try {
+           service.validatePhone("+1-111-111-11-14");
+       } catch (PhoneNumberAlreadyExistsException e) {
+           // Here we can write to logs or display the call stack
+		e.printStackTrace();
+       }
+   }
+}
+    </code></pre>
+
+    <p>And now it's time to press <span class="text-bold">Shift+F10</span> (if you're using IDEA), i.e. run the project. This is what you'll see in the console:</p>
+
+    <div class="terminal">exception.CreditCardIssue<br />
+exception.PhoneNumberAlreadyExistsException: The specified phone number is already in use by another customer!<br />
+	at exception.PhoneNumberRegisterService.validatePhone(PhoneNumberRegisterService.java:11)</div>
+
+    <p>Look at you! You created your own exception and even tested it a bit. Congratulations on this achievement! I recommend experimenting with the code a bit to better understand how it works.</p>
+
+    <p>Add another check — for example, check whether the phone number includes letters. As you probably know, letters are often used in the United States to make phone numbers easier to remember, e.g. 1-800-MY-APPLE. Your check could ensure that the phone number contains only numbers.</p>
+
+    <p>Okay, so we've created a checked exception. </div></div> All would be fine and good, but...</p>
+
+    <p>The programming community is divided into two camps — those who are in favor of checked exceptions and those who oppose them. Both sides make strong arguments. Both include top-notch developers: Bruce Eckel criticizes checked exceptions, while James Gosling defends them. It looks like this matter will never be settled permanently. That said, let's look at the main disadvantages of using checked exceptions.</p>
+
+    <p>The <span class="text-bold">main disadvantage of checked exceptions</span> is that they must be handled. And here we have two options: either handle it in place using a <span class="text-viola">try-catch</span>, or, if we use the same exception in many places, use <span class="text-viola">throws</span> to throw the exceptions up, and process them in top-level classes.</p>
+
+    <p>Also, we may end up with "boilerplate" code, i.e. code that takes up a lot of space, but doesn't do much heavy lifting. </p>
+
+    <p>Problems emerge in fairly large applications with a lot of exceptions being handled: the <span class="text-viola">throws</span> list on a top-level method can easily grow to include a dozen exceptions.</p>
+
+    <div class="terminal">public OurCoolClass() throws FirstException, SecondException, ThirdException, ApplicationNameException...</div>
+
+    <p>Developers don't usually like this and instead opt for a trick: they make all their checked exceptions inherit a common ancestor — <span class="text-red"><span class="text-bold">ApplicationNameException</span></span>. Now they must also catch that (<span class="code">checked</span>!) exception in a handler:</p>
+
+    <pre class='language-java line-numbers'><code>
+catch (FirstException e) {
+    // TODO
+}
+catch (SecondException e) {
+    // TODO
+}
+catch (ThirdException e) {
+    // TODO
+}
+catch (ApplicationNameException e) {
+    // TODO
+}
+    </code></pre>
+
+    <p>Here we face another problem — what should we do in the last <span class="text-viola">catch</span> block? Above, we already processed all the expected situations, so at this point <span class="text-red"><span class="text-bold">ApplicationNameException</span></span> means nothing more to us than "<span class="text-red"><span class="text-bold">Exception</span></span>: some incomprehensible error occurred". This is how we handle it:</p>
+
+    <pre class='language-java line-numbers'><code>
+catch (ApplicationNameException e) {
+    LOGGER.error("Unknown error", e.getMessage());
+}
+    </code></pre>
+
+    <p>And in the end, we don't know what happened.</p>
+
+    <p>But couldn't we throw every exception all at once, like this?</p>
+
+    <pre class='language-java line-numbers'><code>
+public void ourCoolMethod() throws Exception {
+// Do some work
+}
+    </code></pre>
+
+    <p>Yes, we could. But what does "throws Exception" tell us? That something is broken. You'll have to investigate everything from top to bottom and get cozy with the debugger for a long time to understand the reason.</p>
+
+    <p>You may also encounter a construct that is sometimes called "exception swallowing":</p>
+
+    <pre class='language-java line-numbers'><code>
+try {
+// Some code
+} catch(Exception e) {
+   throw new ApplicationNameException("Error");
+}
+    </code></pre>
+
+    <p>There's not much to add here by way of explanation — the code makes everything clear, or rather, it makes everything unclear.</p>
+
+    <p>Of course, you may say that you won't see this in real code. Well, let's peer into the bowels (the code) of the <span class="code"><span class="text-green">URL</span></span> class from the <span class="text-bold">java.net</span> package. Follow me if you want to know!</p>
+
+    <p>Here is one of the constructs in the <span class="code"><span class="text-green">URL</span></span> class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public URL(String spec) throws MalformedURLException {
+   this(null, spec);
+}
+    </code></pre>
+
+    <p>As you can see, we have an interesting checked exception — <span class="text-red"><span class="text-bold">MalformedURLException</span></span>. Here's when it may be thrown (and I quote):<br />
+<em>"if no protocol is specified, or an unknown protocol is found, or spec is null, or the parsed URL fails to comply with the specific syntax of the associated protocol."</em></p>
+
+    <p>That is:</p>
+
+    <ol>
+        <li>If no protocol is specified.</li>
+        <li>An unknown protocol is found.</li>
+        <li>The spec is <span class="text-bold">null</span>.</li>
+        <li>The URL does not comply with the specific syntax of the associated protocol.</li>
+    </ol>
+
+    <p>Let's create a method that creates a <span class="code"><span class="text-green">URL</span></span> object:</p>
+
+
+    <pre class='language-java line-numbers'><code>
+public URL createURL() {
+   URL url = new URL("https://codegym.cc");
+   return url;
+}
+    </code></pre>
+
+    <p>As soon as you write these lines in the IDE (I'm coding in IDEA, but this works even in Eclipse and NetBeans), you will see this:</p>
+
+    <img data-id="262c405b-2091-49fa-a8b7-4b65d5b2d7cf" src="https://cdn.codegym.cc/images/article/262c405b-2091-49fa-a8b7-4b65d5b2d7cf/original.png" alt="">
+
+    <p>This means that we need to either throw an exception, or wrap the code in a <span class="text-viola">try-catch</span> block. For now, I suggest choosing the second option to visualize what is happening:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static URL createURL() {
+   URL url = null;
+   try {
+       url = new URL("https://codegym.cc");
+   } catch(MalformedURLException e) {
+  e.printStackTrace();
+   }
+   return url;
+}
+    </code></pre>
+
+    <p>As you can see, the code is already rather verbose. And we alluded to that above. This is one of the most obvious reasons to use unchecked exceptions.</p>
+
+    <p>We can create an unchecked exception by extending <span class="text-red"><span class="text-bold">RuntimeException</span></span> in Java.</p>
+
+    <p>Unchecked exceptions are inherited from the <span class="code"><span class="text-green">Error</span></span> class or the <span class="code"><span class="text-green">RuntimeException</span></span> class. Many programmers feel that these exceptions canned be handled in our programs because they represent errors that we cannot expect to recover from while the program is running. </p>
+
+    <p>When an unchecked exception occurs, it is usually caused by using code incorrectly, passing in an argument that is null or otherwise invalid. </p>
+
+    <p>Well, let's write the code:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class OurCoolUncheckedException extends RuntimeException {
+   public OurCoolUncheckedException(String message) {
+       super(message);
+   }
+
+   public OurCoolUncheckedException(Throwable cause) {
+       super(cause);
+   }
+  
+   public OurCoolUncheckedException(String message, Throwable throwable) {
+       super(message, throwable);
+   }
+}
+    </code></pre>
+
+    <p>Note that we made multiple constructors for different purposes. This lets us give our exception more capabilities. For example, we can make it so that an exception gives us an error code. To begin with, let's make an <span class="code"><span class="text-green">enum</span></span> to represent our error codes:</p>
+
+    <pre class='language-java line-numbers'><code>
+public enum ErrorCodes {
+   FIRST_ERROR(1),
+   SECOND_ERROR(2),
+   THIRD_ERROR(3);
+
+   private int code;
+
+   ErrorCodes(int code) {
+       this.code = code;
+   }
+
+   public int getCode() {
+       return code;
+   }
+}
+    </code></pre>
+
+    <p>Now let's add another constructor to our exception class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public OurCoolUncheckedException(String message, Throwable cause, ErrorCodes errorCode) {
+   super(message, cause);
+   this.errorCode = errorCode.getCode();
+}
+    </code></pre>
+
+    <p>And let's not forget to add a field (we almost forgot):</p>
+
+    <pre class='language-java line-numbers'><code>
+private Integer errorCode;
+    </code></pre>
+
+    <p>And of course, a method to get this code:</p>
+
+    <pre class='language-java line-numbers'><code>
+public Integer getErrorCode() {
+   return errorCode;
+}
+    </code></pre>
+
+    <p>Let's look at the whole class so that we can check it and compare:</p>
+
+    <pre class='language-java line-numbers'><code>public class OurCoolUncheckedException extends RuntimeException {
+   private Integer errorCode;
+
+   public OurCoolUncheckedException(String message) {
+       super(message);
+   }
+
+   public OurCoolUncheckedException(Throwable cause) {
+       super(cause);
+   }
+
+   public OurCoolUncheckedException(String message, Throwable throwable) {
+
+       super(message, throwable);
+   }
+
+   public OurCoolUncheckedException(String message, Throwable cause, ErrorCodes errorCode) {
+       super(message, cause);
+       this.errorCode = errorCode.getCode();
+   }
+   public Integer getErrorCode() {
+       return errorCode;
+   }
+}
+    </code></pre>
+
+    <p>Ta-da! Our exception is done! As you can see, there is nothing particularly complicated here. Let's check it out in action:</p>
+
+    <pre class='language-java line-numbers'><code>
+   public static void main(String[] args) {
+       getException();
+   }
+   public static void getException() {
+       throw new OurCoolUncheckedException("Our cool exception!");
+   }
+    </code></pre>
+
+    <p>When we run our small application, we'll see something like the following in the console:</p>
+
+    <img data-max-width="800" data-id="52f2623e-4e17-450e-b742-1d2cd4ad3491" src="https://cdn.codegym.cc/images/article/52f2623e-4e17-450e-b742-1d2cd4ad3491/original.png" alt="">
+
+    <p>Now let's take advantage of the extra functionality we've added. We'll add a little to the previous code:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) throws Exception {
+
+   OurCoolUncheckedException exception = getException(3);
+   System.out.println("getException().getErrorCode() = " + exception.getErrorCode());
+   throw exception;
+
+}
+
+public static OurCoolUncheckedException getException(int errorCode) {
+   return switch (errorCode) {
+   case 1:
+       return new OurCoolUncheckedException("Our cool exception! An error occurred: " + ErrorCodes.FIRST_ERROR.getCode(), new Throwable(), ErrorCodes.FIRST_ERROR);
+   case 2:
+       return new OurCoolUncheckedException("Our cool exception! An error occurred: " + ErrorCodes.SECOND_ERROR.getCode(), new Throwable(), ErrorCodes.SECOND_ERROR);
+   default: // Since this is the default action, here we catch the third and any other codes that we have not yet added. You can learn more by reading <a href="https://codegym.cc/groups/posts/java-switch" target="_blank">Java switch statement</a>
+       return new OurCoolUncheckedException("Our cool exception! An error occurred: " + ErrorCodes.THIRD_ERROR.getCode(), new Throwable(), ErrorCodes.THIRD_ERROR);
+}
+
+}
+    </code></pre>
+
+    <p>You can work with exceptions in the same way that you work with objects. Of course, I'm sure you already know that everything in Java is an object.</p>
+
+    <p>And look at what we did. First, we changed the method, which now does not throw, but instead simply creates an exception, depending on the input parameter. Next, using a <span class="text-viola">switch-case</span> statement, we generate an exception with the desired error code and message. And in the main method, we get the created exception, get the error code, and threw it.</p>
+
+    <p>Let's run this and see what we get on the console:</p>
+
+    <img data-max-width="800" data-id="37a2279c-19a4-4335-9bda-b6145c79e45c" src="https://cdn.codegym.cc/images/article/37a2279c-19a4-4335-9bda-b6145c79e45c/original.png" alt="">
+
+    <p>Look — we printed the error code that we got from the exception and then threw the exception itself. What's more, we can even track exactly where the exception was thrown. As needed, you can add all relevant information to the message, create additional error codes, and add new features to your exceptions.</p>
+
+    <p>Well, what do you think of that? I hope everything worked out for you!</p>
+
+    <p>In general, exceptions is a rather extensive topic and not clear cut. There will be many more disputes over it. For example, only Java has checked exceptions. Among the most popular languages, I haven't seen one that uses them. </p>
+
+    <p>Bruce Eckel wrote very well about exceptions in chapter 12 of his book "Thinking in Java" — I recommend that you read it! Also take a look at the first volume of Horstmann's "Core Java" — It also has a lot of interesting stuff in chapter 7.</p>
+
+    <h2>A small summary</h2>
+
+    <ol>
+        <li><p>Write everything to a log! Log messages in thrown exceptions. This will usually help a lot in debugging and will allow you to understand what happened. Don't leave a <span class="text-viola">catch</span> block empty, otherwise it will just "swallow" the exception and you won't have any information to help you hunt down problems.</li></p>
+
+        <li><p>When it comes to exceptions, it's bad practice to catch them all at once (as a colleague of mine said, "it's not Pokemon, it's Java"), so avoid <span class="text-viola">catch (Exception e)</span> or worse, <span class="text-viola">catch (Throwable t)</span>.</li></p>
+
+        <li><p>Throw exceptions as early as possible. This is good Java programming practice. When you study frameworks like Spring, you will see that they follow the "fail fast" principle. That is, they "fail" as early as possible in order to make it possible to quickly find the error. Of course, this brings certain inconveniences. But this approach helps create more robust code.</li></p>
+
+        <li><p>When calling other parts of the code, it's best to catch certain exceptions. If the called code throws multiple exceptions, it's poor programming practice to only catch the parent class of those exceptions. For example, say you call code that throws <span class="text-red"><span class="text-bold">FileNotFoundException</span></span> and <span class="text-red"><span class="text-bold">IOException</span></span>. In your code that calls this module, it's better to write two catch blocks to catch each of the exceptions, instead of a single <span class="text-viola">catch</span> to catch <span class="text-red"><span class="text-bold">Exception</span></span>.</li></p>
+
+        <li><p>Catch exceptions only when you can handle them effectively for users and for debugging.</p></li>
+
+        <li><p>Don't hesitate to write your own exceptions. Of course, Java has a lot of ready-made ones, something for every occasion, but sometimes you still need to invent your own "wheel". But you should clearly understand why you are doing this and be sure that the standard set of exceptions doesn't already have what you need.</li></p>
+
+        <li><p>When you create your own exception classes, be careful about the naming! You probably already know that it is extremely important to correctly name classes, variables, methods and packages. Exceptions are no exception! :) Always end with the word <span class="text-red"><span class="text-bold">Exception</span></span>, and the name of the exception should clearly convey the type of error it represents. For example, <span class="text-red"><span class="text-bold">FileNotFoundException</span></span>.</li></p>
+
+        <li><p>Document your exceptions. We recommend writing an @throws Javadoc tag for exceptions. This will be especially useful when your code provides interfaces of any kind. And you'll also find it easier to understand your own code later. What do you think, how can you determine what <span class="text-red"><span class="text-bold">MalformedURLException</span></span> is about? From Javadoc! Yes, the thought of writing documentation isn't very appealing, but believe me, you will thank yourself when you return to your own code six months later.</li></p>
+
+        <li><p>Release resources and don't neglect the <span class="text-viola">try-with-resources</span> construct.</li></p>
+
+        <li><p>Here's the overall summary: use exceptions wisely. Throwing an exception is a fairly "expensive" operation in terms of resources. In many cases, it may be easier to avoid throwing exceptions and instead return, say, a boolean variable that whether the operation succeeded, using a simple and "less expensive" <span class="text-viola">if-else</span>. </p>
+
+        <p>It may also be tempting to tie application logic to exceptions, which you clearly should not do. As we said at the beginning of the article, exceptions are for exceptional situations, not expected ones, and there are various tools for preventing them. In particular, there is <span class="code"><span class="text-green">Optional</span></span> to prevent a <span class="text-red"><span class="text-bold">NullPointerException</span></span>, or <span class="code"><span class="text-green">Scanner.hasNext</span></span> and the like to prevent an <span class="text-red"><span class="text-bold">IOException</span></span>, which the <span class="code text-orange">read()</span> method may throw.</p></li>
+    </ol>

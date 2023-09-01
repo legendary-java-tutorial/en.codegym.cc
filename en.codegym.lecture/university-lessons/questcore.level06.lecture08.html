@@ -1,0 +1,114 @@
+Stop the Raging Stream: The Unofficial Version
+<p>----------------------------------------</p>
+Let's say the user told the program to download a file from the Internet. The main thread created a separate child thread for this job, and passed it an object whose run method contains all the necessary actions to download the file. And then the user - time - and changed his mind to download this file! How to cancel the job and stop the thread?
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! Here's an interesting question that you've either already had or you will soon. <strong><span class="text-red">How do you stop a running thread?</span></strong>"</p>
+<p>Let's say the user tells the program to «download a file from the Internet». The main thread creates a separate child thread for this job, and passes it an object whose run method contains all the necessary actions to download the file.</p>
+<p>But suddenly the user changes his mind. He doesn't want to download the file. <span class="text-red">How do we cancel a job and stop the thread?</span></p>
+<p><span class="text-user">"Yes, tell me how?"</span></p>
+<p>"<strong><span class="text-red">We can't. </span></strong>That's the most common and most correct answer. <span class="text-red">You cannot stop a thread. Only it can stop itself.</span>"</p>
+<p>But you can send a signal to a thread, in some way telling it that the work no longer needs to be performed and that it should terminate. Just as the main thread terminates by returning from the main method, a child thread terminates by returning from the run method.</p>
+<p><span class="text-user">"What's the best way to do that?"</span></p>
+<p>"You can add some variable, such as a <strong>boolean</strong>. If it is <strong>true</strong>, the thread runs. If it is <strong>false</strong> , the thread should terminate. Like this, for example:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Clock <span class="text-user"><strong>implements Runnable</strong></span>
+{
+public void run()
+{
+<span class="text-user">while (true)</span>
+{
+Thread.sleep(1000);
+System.out.println("Tick");
+
+<span class="text-red">if (<strong>!ClockManager.isClockRun</strong>)
+return;</span>
+}
+}
+}</code></pre>
+        </td>
+        <td><p>The Clock class writes «Tick» to the console once a second forever</p>
+            <p><span class="text-red">If ClockManager.isClockRun is false, the run method ends.</span></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class ClockManager
+{
+public static boolean isClockRun = true;
+public static void main(String[] args)
+{
+<span class="text-user">Clock clock = new Clock();
+Thread clockThread = new Thread(clock);
+clockThread.<strong>start</strong>();</span>
+
+<span class="text-green">Thread.sleep(10000);</span>
+<span class="text-red">isClockRun = false;</span>
+}
+
+}</code></pre>
+        </td>
+        <td><span class="text-user">The main thread starts a child thread (clock) that should run forever</span></p>
+            <p><span class="text-green">Wait 10 seconds and</span> <span class="text-red">give the clock a signal to end.</span></p>
+            <p>The main thread completes its work.</p>
+            <p>The clock thread ends its work.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"What if we have several threads, then what?"</span></p>
+<p>"It's best to have such a variable for each thread. It's most convenient to add it directly to the class. You could add a <strong>boolean</strong> <strong>isRun</strong> variable there. However, it is better to add a boolean <strong>isCancel</strong> variable that becomes <strong>true</strong> if the task is canceled."</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>class Clock implements Runnable
+{
+<span class="text-red">private boolean isCancel = false;</span>
+
+public void <span class="text-red"><strong>cancel</strong></span>()
+{
+<span class="text-red">this.isCancel = true;</span>
+}
+
+public void run()
+{
+while (<span class="text-red">!isCancel</span>)
+{
+Thread.sleep(1000);
+System.out.println("Tick");
+}
+}
+}</code></pre>
+        </td>
+        <td>The Clock class writes the word «Tick» to the console once a second as long as <span class="text-red">isCancel</span> is false.</p>
+            <p>When <span class="text-red">isCancel</span> becomes true, the run method terminates.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>public static void main(String[] args)
+{
+<span class="text-user">Clock clock = new Clock();
+Thread clockThread = new Thread(clock);
+clockThread.start();</span>
+
+<span class="text-green">Thread.sleep(10000);</span>
+<span class="text-red">clock.cancel();</span>
+}</code></pre>
+        </td>
+        <td><span class="text-user">The main thread starts a child thread (clock) that should run forever</span></p>
+            <p><span class="text-green">Wait 10 seconds and</span> <span class="text-red">cancel the task by calling the cancel method.</span></p>
+            <p>The main thread completes its work.</p>
+            <p>The clock thread ends its work.</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"I'll keep this in mind. Thanks, Ellie."</span></p>

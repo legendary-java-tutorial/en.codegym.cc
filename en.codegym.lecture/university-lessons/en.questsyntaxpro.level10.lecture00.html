@@ -1,0 +1,174 @@
+Java program structure
+<p>----------------------------------------</p>
+Objects and Classes Today you will learn a little about how a typical Java program works. And the big news: every Java program is made up of classes and objects. What are classes you already know, and what are objects? I'll start with an analogy. Imagine that you want to make a small ship.
+<p>----------------------------------------</p>
+<h2>1. Objects and classes</h2>
+<p>Today you'll learn a little about how a typical Java program works. Here's the big news:&nbsp;every Java program consists of classes and objects.</p>
+<p>You already know what classes are, but what are objects?</p>
+<p>I'll start with an analogy. Imagine you want to make a small ship. First you need to create a blueprint and then give it to the factory, where a ship will be built according to the blueprint. Or perhaps dozen. Or as many ships as you like. Dozens of identical ships are built according to a single blueprint. That's the important thing here.</p>
+<p>It's the same in Java programming.</p>
+<p><strong>Blueprints</strong></p>
+<p>A programmer is like a designer. A designer creates blueprints, and a Java programmer writes classes.&nbsp;Parts are created based on the blueprints, and objects are created based on classes.</p>
+<p>First, we write classes (make blueprints), and then, as the program runs, the Java machine creates objects based on these classes. In the same way that ships are created from blueprints.</p>
+<p>There is only one blueprint, but there can be many ships. The ships are distinct — they have different names and carry different cargoes. But they are very similar: they all share the same design and can perform similar tasks.</p>
+<p>Or here's another analogy...</p>
+<p><strong>Anthill</strong></p>
+<p>An anthill is a good example of how objects interact. There are three classes of ants in a simple anthill: the queen, soldiers, and workers.</p>
+<p>The number of ants of each class is different. There is a single queen for the entire anthill, but there are dozens of soldiers, and hundreds of worker ants. Three classes and hundreds of objects. Ants interact with each other — with ants of their same class and with ants of other classes — according to rigid rules.</p>
+<p>This is the perfect example. Everything is exactly like this in a typical program. There is a primary object that creates objects of all the other classes. The objects begin to interact with each other and with the program's "outside world". The objects' behavior is internally hardcoded.</p>
+<p>These two analogies are two sides of the same coin. The truth is in the middle. The first example (about a blueprint and ships) shows the relationship between a class and objects of that class. This is a strong analogy. The second example (about an anthill) shows the relationship between the written classes and the objects that exist as the program runs.</p>
+<p>You must first write classes for every object that will exist in the program, and then also describe how they interact. Yes, that's right, but it's easier than it sounds.</p>
+<p>In Java, all entities are objects at runtime, and writing a program is about describing the different ways that objects interact. Objects simply call each other's methods and pass the required data to them.</p>
+<p><strong>Documentation</strong></p>
+<p>And how do you know what data to pass to methods? The people who came before you thought of everything.</p>
+<p>Each class typically has a description that says what it was created for. Also, each public method usually has a description that indicates what it does and what data needs to be passed to it.</p>
+<p>To use a class, you need to have a general idea of what it does. And you need to know exactly what each method does. But you&nbsp;do not at all need to know how it does it. It's like a magic wand.</p>
+<p>Let's take a look at the code for copying a file:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Copying the c:\\data.txt file to the c:\\result.txt file</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>package com.javarush.lesson2;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class FileCopy
+{
+   public static void main(String[] args) throws IOException
+   {
+      FileInputStream fileInputStream = new FileInputStream("c:\\data.txt");
+      FileOutputStream fileOutputStream = new FileOutputStream("c:\\result.txt");
+
+      while (fileInputStream.available() &gt; 0)
+      {
+         int data = fileInputStream.read();
+         fileOutputStream.write(data);
+      }
+
+      fileInputStream.close();
+      fileOutputStream.close();
+   }
+}</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>If you read this code line by line, you can guess what it does in general terms. Although that takes experience and practice. After a while this code will seem familiar and understandable to you.</p>
+<hr>
+<h2>2. Designing a program</h2>
+<p>Program design is an entire art. It is simultaneously simple and difficult. Simple, because there are no strict laws: anything that is not prohibited is allowed. Well, and that is also what makes it difficult: there are a lot of ways to do something and it is not easy to find the best one.</p>
+<p>Designing a program is like writing a book. On the one hand, you just write letters, words, and sentences. On the other hand, the plot, characters, internal contradictions, conflicts, style of storytelling, intrigue, etc. are important.</p>
+<p>The main thing is to understand who you are writing the code for. And you write code <strong>for other programmers</strong>.</p>
+<p>Product development inevitably means making changes: something gets added here, something else removed there, something gets redesigned. That's how large, enormous and gigantic projects are born from small iterations.</p>
+<p>What matters most for code is that <strong>it must be understandable to other programmers.</strong> <span class="text-green">Incorrect code that is understandable can be corrected. <span class="text-orange">Correct but incomprehensible code cannot be improved.</span></span>&nbsp;All you can do is discard it.</p>
+<p>So how do you write good, clean code?</p>
+<p>Doing this requires three things:</p>
+<ul>
+    <li>Writing good and understandable code inside methods — this is the easiest requirement</li>
+    <li>Deciding which entities should be included in the program</li>
+    <li>Splitting the program into logical parts correctly</li>
+</ul>
+<p>What is behind these concepts?</p>
+<p><strong>Writing good code inside methods</strong></p>
+<p>If you have even basic English skills, you may have noticed how easy it can be to read code as English sentences sometimes:</p>
+<ul>
+    <li><code>class Cat extends Pet</code> —&nbsp;This means the Cat class extends the Pet class</li>
+    <li><code>while(stream.ready())</code> — as long as the stream is ready...</li>
+    <li><code>if (a&lt;b) return a; else return b</code> — if <code>а</code> is less than <code>b</code>, then return <code>а</code>, otherwise return <code>b</code>.</li>
+</ul>
+<p>This is deliberate. Java is one of several languages that make it easy to write self-documenting code, i.e. code that is understandable without comments. In good Java code, many methods read just like English sentences.</p>
+<p>When writing code, your task is to make it as simple and concise as possible. Just think about whether your code is easy to read and you'll start moving in the right direction.</p>
+<p>In Java, it is customary to write code that is easy to read. Preferably, all the code for a method will fit on a single screen (i.e. 20-30 lines). This is the norm for the entire Java community. <strong>If code can be improved, it should be improved.</strong></p>
+<p>The best way to learn how to write good code is through practice. Write a lot of code, study others' code, and ask more experienced colleagues to review your code.</p>
+<p>And remember that the moment you tell yourself "leave well enough alone", your growth stops.</p>
+<p><strong>Deciding which entities should be included in the program</strong></p>
+<p>You need to write code that other programmers can understand. If 9 out of 10 programmers would include classes A, B and C in a program's design, then you should also make classes A, B, and C in your program. You must write code that others can understand.</p>
+<p>Great, working, fast, but non-standard code is bad code.</p>
+<p>You need to study other people's projects: this is the best, fastest and easiest way to soak up all the wisdom that has accumulated in the IT industry for decades.</p>
+<p>And by the way, you already have access to an excellent, popular, and well-documented project — the <strong>Java SDK</strong>. Start with it.</p>
+<p>Analyze the classes and how they are organized. Think about why some methods are static and others are not. Why do the methods have the specific parameters they have but not others. Why these methods exactly, and why are the classes named what they are named, and why are they contained in their specific packages.</p>
+<p>Once you begin to understand the answers to all of these questions, you will be able to write code that others can understand.</p>
+<p>That said, I want to warn you against analyzing the <strong>code in the methods</strong> of the Java SDK. Many of the methods were rewritten to maximize speed, and their readability is questionable.</p>
+<p><strong>Splitting the program into logical parts correctly</strong></p>
+<p>Nearly every program is divided into parts or modules. Each part is responsible for its own aspect of the program.</p>
+<p>A computer has a motherboard, a monitor, and keyboard — these are all separate, loosely-coupled parts. What's more, they interact in standardized ways: USB, HDMI, etc. If you spill coffee on your keyboard, you can simply wash it off in the sink, let it dry, and then continue using it.</p>
+<p>But a laptop is an example of a monolithic architecture: it seems we can discern separate logical parts, but they are much more integrated. On a MacBookPro, you have to disassemble half of the laptop to clean the keyboard. And spilling your coffee on a laptop is a reason to order a new laptop. Not a new cup of coffee.</p>
+<hr>
+<h2>3. Creating your own classes</h2>
+<p>But since you're just learning to program, you should start small by learning to create your own classes.</p>
+<p>Of course, you've already created classes, but you need to learn to understand what classes should be included in a program, how they should be named, and what methods they should have. And how they should interact with each other.</p>
+<p><strong>List of entities</strong></p>
+<p>If you don't know where to start, start from the beginning.</p>
+<p>When you first begin to design a program, you can simply grab a piece of paper and write down a list of the entities (objects) that should be in the program. And then write code according to the principle that each entity is a separate class.</p>
+<p><strong>Example</strong></p>
+<p>Let's say you want to write a chess game. You will need the following entities: a chessboard and 6 types of chess pieces. The pieces move in different ways and have different values. It makes sense that they are separate classes. Indeed, when you first get started, the more classes, the better.</p>
+<p>It is very rare to meet a novice programmer who writes ten classes instead of two. Instead of writing ten classes, beginners love to write two classes or perhaps just one. So please write more classes, my fellow programmers. And your code will become clearer to everyone except perhaps you 😛</p>
+<p><strong>Chess</strong></p>
+<p>Suppose say we decide to write classes for chess: what would these classes look like?</p>
+<p>Is the chessboard just an 8 by 8 array? It's better to create a separate class that internally stores a reference to an array. Then you can add lots of useful methods to the "chessboard" class, for example, to check whether a specific cell is empty or occupied</p>
+<p>In general, as you get started, always be guided by this principle: A program has various entities, and an entity has a type. This type is the class.</p>
+<hr>
+<h2>4. Static variables and methods</h2>
+<p>Also don't forget to use static variables and methods. If you have one chess piece interacting with another on the chessboard, then your code needs a method that takes references to the first and second pieces as well as the chessboard.</p>
+<p>Static variables, which can be accessed from anywhere in the program, are typically used to avoid constantly passing around references to objects that "always exist".</p>
+<p>For example, like this:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="language-java"><code>public class <span class="text-neon">ChessBoard</span>
+{
+   public static <span class="text-neon">ChessBoard</span> <span class="text-red">board</span> = new <span class="text-neon">ChessBoard</span>();
+   public <span class="text-viola">ChessItem</span>[][] <span class="text-user">cells</span> = new <span class="text-viola">ChessItem</span>[8][8];
+   ...
+}
+
+public class Game
+{
+   public static void main(String[] args)
+   {
+      var <span class="text-green">board</span> = <span class="text-neon">ChessBoard</span>.<span class="text-red">board</span>;
+      <span class="text-green">board</span>.<span class="text-user">cells</span>[<span class="text-user">0</span>][<span class="text-user">3</span>] = new <span class="text-viola">King</span>(Color.WHITE);
+      <span class="text-green">board</span>.<span class="text-user">cells</span>[<span class="text-user">0</span>][<span class="text-user">4</span>] = new <span class="text-viola">Queen</span>(Color.WHITE);
+      ...
+   }
+}</code></pre>
+        </td>
+        <td><br><br>A reference to a single <code>ChessBoard</code> object.<br>
+            An 8x8 two-dimensional array, not a static variable.<br><br><br><br><br><br><br><br><br>
+            Add the pieces to the board.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>Or instead of a static variable, you can create a method that returns a singleton object. For example, like this:</p>
+<pre class="language-java"><code>public class <span class="text-neon">ChessBoard</span>
+{
+   private static <span class="text-neon">ChessBoard</span> <span class="text-red">board</span> = new <span class="text-viola">ChessBoard</span>();
+   public static <span class="text-neon">ChessBoard</span> getBoard()
+   {
+      return <span class="text-red">board</span>;
+   }
+
+   public <span class="text-viola">ChessItem</span>[][] <span class="text-user">cells</span> = new <span class="text-viola">ChessItem</span>[8][8];
+   ...
+}
+
+public class <span class="text-viola">Game</span>
+{
+   public static void main(String[] args)
+   {
+      var <span class="text-green">board</span> = <span class="text-neon">ChessBoard</span>.<span class="text-red">getBoard</span>();
+      <span class="text-green">board</span>.<span class="text-user">cells</span>[<span class="text-user">0</span>][<span class="text-user">3</span>] = new <span class="text-viola">King</span>(Color.WHITE);
+      <span class="text-green">board</span>.<span class="text-user">cells</span>[<span class="text-user">0</span>][<span class="text-user">4</span>] = new <span class="text-viola">Queen</span>(Color.WHITE);
+      ...
+   }
+}</code></pre>

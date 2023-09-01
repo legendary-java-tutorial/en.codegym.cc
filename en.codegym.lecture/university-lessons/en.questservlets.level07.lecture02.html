@@ -1,0 +1,87 @@
+Operators in JavaScript
+<p>----------------------------------------</p>
+if else statement for, while, for in loops Exceptions
+<p>----------------------------------------</p>
+<h2>3.1 if else statement</h2>
+<p>Most common operator in JavaScript, just like in Java, is <code>if-else</code>. It works exactly the same. Example:
+</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token keyword">var</span> x <span class="token operator">=</span> <span
+        class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword"><span class="text-red">if</span></span> <span class="token punctuation">(</span>x <span
+            class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span
+            class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span
+            class="token punctuation">(</span><span class="token string">"one"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token keyword"><span class="text-red">else</span></span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span
+            class="token punctuation">(</span><span class="token string">"unknown"</span><span
+            class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
+<p><code>if-else</code>may be nested, and the block <code>else</code>may be missing. Everything is the same as in Java.
+</p>
+<h2>3.2 Loops for, while, for in</h2>
+<p>The for loop in JavaScript works the same way as in Java. And no wonder, they both copied its behavior from the C ++
+    language. Generally no differences. JavaScript also has the <code>break</code>and operators <code>continue</code>.
+    No surprises. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token keyword">var</span> s <span class="token operator">=</span> <span
+        class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span
+            class="token keyword">var</span> i<span class="token operator">=</span><span
+            class="token number">0</span><span class="token punctuation">;</span> i<span
+            class="token operator">&lt;</span><span class="token number">10</span><span
+            class="token punctuation">;</span> i<span class="token operator">++</span><span
+            class="token punctuation">)</span>
+   s <span class="token operator">+=</span> i<span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span
+            class="token punctuation">(</span>s<span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<p>There are also cycles <code>while</code>and <code>do.while</code>. They work exactly the same as in Java and C++.</p>
+<p>From the interesting: there is an analogue of the cycle <code>for each</code>, called <code>for in</code>. Here's
+    what it looks like:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="token keyword">var</span> <span class="text-user">obj</span> <span
+        class="token operator">=</span> <span class="token punctuation">{</span>a<span
+        class="token operator">:</span> <span class="token number">1</span><span
+        class="token punctuation">,</span> b<span class="token operator">:</span> <span
+        class="token number">2</span><span class="token punctuation">,</span> c<span
+        class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">}</span><span
+        class="token punctuation">;</span>
+<span class="text-red">   <span class="token keyword">for</span></span><span class="token keyword"></span> <span
+            class="token punctuation">(</span><span class="token keyword">var</span> <span class="text-green">key</span> <span
+            class="text-red">in</span> <span class="text-user">obj</span><span class="token punctuation">)</span>
+     console<span class="token punctuation">.</span><span class="token function">log</span><span
+            class="token punctuation">(</span> <span class="text-user">obj</span><span
+            class="token punctuation">[</span><span class="text-green">key</span><span
+            class="token punctuation">]</span> <span class="token punctuation">)</span><span
+            class="token punctuation">;</span></code></pre>
+<p>Unlike the Java language, here the variable <code class="text-green">key</code>sequentially takes the values ​​of the
+    keys of the object <code class="text-user">obj</code>. To get a value by key, you need to
+    write<code>obj[key];</code></p>
+<h2>3.3 Exceptions</h2>
+<p>JavaScript supports working with exceptions, but since there is no normal typing, all exceptions have exactly one
+    type - <code>Error</code>.</p>
+<p>To work with exceptions, there is an operator <code>try-catch-finally</code>that works similar to the operator from
+    Java.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code
+        class=" language-java"><span class="text-red">   <span class="token keyword">try</span> </span><span
+        class="token punctuation">{</span>
+<span class="text-red">     <span class="token keyword">throw</span></span><span class="token keyword"></span> <span
+            class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span
+            class="token string">"JavaScript support exceptions"</span><span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="text-red">   <span class="token keyword">catch</span></span><span class="token keyword"></span><span
+            class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span
+            class="token punctuation">(</span>e<span class="token punctuation">)</span><span
+            class="token punctuation">;</span>
+   <span class="token punctuation">}</span></code></pre>

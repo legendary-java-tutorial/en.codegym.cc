@@ -1,0 +1,186 @@
+Numeric functions
+<p>----------------------------------------</p>
+List of numeric functions. Arithmetic operations. bit operations. rounding functions.
+<p>----------------------------------------</p>
+aid above, it is not enough for a DBMS to simply store data of a certain type, it also needs to support an extensive set of super-fast operations on data of these types.</p>
+<p>And, as you know, all DBMSs support a variety of numeric types and operations on them. Today you will get acquainted with the most popular of them.</p>
+<p>All numeric functions in MySQL can be conditionally divided into 5 groups:</p>
+<ul>
+ <li>Arithmetically operations</li>
+ <li>Bit operations</li>
+ <li>Rounding functions</li>
+ <li>Algebraic functions</li>
+ <li>Trigonometric functions</li>
+</ul>
+<p>By the way, you are familiar with many of them thanks to the Java language, so I think they will not come as a surprise to you. But let's start in order.</p>
+<p>The full list of features can be found <a href="https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html" target="_blank" rel="nofollow">here</a> .</p>
+<h2>Arithmetic operations</h2>
+<p>There is, in principle, nothing unexpected, all the same standard operations as elsewhere:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th></th>
+    <th>Example</th>
+    <th></th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>+, -, *, /</td>
+    <td>2+2*2</td>
+    <td>Addition, subtraction, multiplication, division (not perfect!)</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>%</td>
+    <td>13% 5</td>
+    <td>Remainder of the division</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>MOD</td>
+    <td>13MOD5</td>
+    <td>Remainder of the division</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>DIV</td>
+    <td>13 DIV 5</td>
+    <td>Division by integer</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>From the interesting: when dividing two integers, you get a real number. To divide by integer, you need to use the DIV operator.</p>
+<p>If you want to get the remainder of a division by an integer, then you need to use either the MOD or % operator, as in the Java language. I will not give examples, as for me everything is obvious here.</p>
+<h2>Bit operations</h2>
+<p>You can also perform bitwise operations on numbers in SQL, much like in Java. Although there are nuances. The list of available bit operations is presented in the table below:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th></th>
+    <th>Example</th>
+    <th>Note</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>&amp;</td>
+    <td>0b1111 &amp; 0b1000</td>
+    <td>Bitwise AND</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>|</td>
+    <td>0b1111 | 0b0001</td>
+    <td>Bitwise OR</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>^</td>
+    <td>0b1111^0b1111</td>
+    <td>Bit XOR</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>~</td>
+    <td>~0b1111</td>
+    <td>bitwise inversion</td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>&gt;&gt;</td>
+    <td>128 &gt;&gt; ​​5</td>
+    <td>Bit shift right</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>&lt;&lt;</td>
+    <td>2 &lt;&lt; 5</td>
+    <td>Bit shift left</td>
+    <td></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>BIT_COUNT()</td>
+    <td>BIT_COUNT(255)</td>
+    <td>Returns the number of bits that are 1</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Prior to MySQL version 8.0, such operations could only be performed on the BIGINT data type, which was 64 bits long and was similar to Java's long type. However, in MySQL 8.0 (which we are considering), the concept has changed. Now these operations can be performed on special binary types:</p>
+<ul>
+ <li>BINARY</li>
+ <li>VARBINARY</li>
+ <li>And also over BLOB types (which are an array of bytes)</li>
+</ul>
+<p>All other types are simply converted to the BIGINT type and the operations are performed as before (only on the first 64 bits).</p>
+<h2>Rounding functions</h2>
+<p>For rounding in MySQL functions painfully familiar to you are used. A list of them is given in the table below:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>#</th>
+    <th></th>
+    <th>Example</th>
+    <th>Note</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>CEIL(), CEILING()</td>
+    <td>CEIL (5.1) = 6</td>
+    <td>Rounds a real number up</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>FLOOR()</td>
+    <td>FLOOR(5.9) = 5</td>
+    <td>Rounds a real number down</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>ROUND()</td>
+    <td>ROUND(4.1) = 4</td>
+    <td>Rounds a real number to the nearest integer</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>TRUNCATE()</td>
+    <td>TRUNCATE(4.123, 2) = 4.12</td>
+    <td>Truncates a number to N decimal places</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>RAND()</td>
+    <td>0.61914388706828</td>
+    <td>Returns a random real number between 0 and 1</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>RAND(N)</td>
+    <td>0.93845168309142</td>
+    <td>Returns a random real number between 0 and 1. N is used as the seed value</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>You have been familiar with all the rounding functions since the first quest in Java. Only the TRUNCATE() and RANDOM(N) functions can be of interest here.</p>
+<p><strong>The TRUNCATE</strong> (number, quantity) function takes as its first parameter a real number, and as its second parameter the number of decimal places to be left. The number is trimmed to the desired number of decimal places.</p>
+<p>As for the RAND(N) function, things are a bit more complicated. As you probably know, a computer cannot generate random numbers. Instead, it generates a so-called pseudo-random number sequence. That is, looking at one number, it is not clear whether it is random or not, but the sequence of numbers may already be similar to random. Developers take advantage of this by generating a sequence of numbers that is very similar to random.</p>
+<p>In this case, <span class="text-green">each new number of the sequence is generated according to a tricky rule based on the previous number of this sequence</span> . Therefore, if you pass a certain starting number (also called a seed) to the random number generation algorithm, then <span class="text-user">each time you will receive the same sequence of random numbers</span> .</p>

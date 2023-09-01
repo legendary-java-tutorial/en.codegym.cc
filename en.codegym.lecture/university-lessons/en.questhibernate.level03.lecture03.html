@@ -1,0 +1,306 @@
+OUTER JOIN statement
+<p>----------------------------------------</p>
+Reasons for OUTER JOIN. JOIN types. Interview question.
+<p>----------------------------------------</p>
+, do you remember when we merged our spreadsheets and our office cleaning tasks disappeared because there was no cleaner yet?</p>
+<p>If you run a query like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-orange">task</span></code></pre>
+</div>
+<p>Then we get this result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>emploee_id</th>
+    <th>name</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-07-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-08-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>5</td>
+    <td>Will buy coffee</td>
+    <td>2022-09-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>(NULL)</td>
+    <td>Clean up the office</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The “Clear Office” task disappears if we try to join the task table with the employee table by employee_id.</p>
+<p>To solve this problem, various modifiers have been added to the JOIN operator that allow such orphaned rows to be stored without a pair in another table.</p>
+<p>Let me remind you of the classic form of the JOIN operator:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><center><strong><span class="text-orange">table <span class="token number">1</span></span><span class="token number"></span> <span class="text-red">JOIN</span> <span class="text-orange">table <span class="token number">2</span></span><span class="token number"></span> <span class="text-red">ON</span>
+<span class="text-user">condition</span></strong></center></code></pre>
+</div>
+<p>We can tell SQL Server to make sure that all data from the left table (table1) is present in the joined table. <span class="text-red">Even if there is no pair for them in the right table. </span>To do this, you just need to write:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-orange">table <span class="token number">1</span></span><span class="token number"></span> <span class="text-red">LEFT JOIN</span> <span class="text-orange">table <span class="token number">2</span></span><span class="token number"></span> <span class="text-red">ON <span class="text-user">condition</span></span></code></pre>
+</div>
+<p>If you want the joined table to <span class="text-green">have all the rows from the right table</span> , then you need to write:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-orange">table <span class="token number">1</span></span><span class="token number"></span> <span class="text-red">RIGHT JOIN</span> <span class="text-orange">table <span class="token number">2</span></span><span class="token number"></span> <span class="text-red">ON</span>
+ <span class="text-user">condition</span></code></pre>
+</div>
+<p>Let's write a query that will combine all tasks and employees so that tasks without an executor are not lost. To do this, write a query:</p>
+<pre><code><strong><span class="text-red">SELECT</span> * <span class="text-red">FROM</span> <span class="text-orange">employee e</span> <span class="text-red">RIGHT JOIN</span> <span class="text-orange">task t</span> <span class="text-red">ON</span> <span class="text-orange">e</span>.<span class="text-green">id</span> = <span class="text-orange">t</span>.<span class="text-green">emploee_id</span></strong>
+</code></pre>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+    <th>id</th>
+    <th>emploee_id</th>
+    <th>name</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100000</td>
+    <td>25</td>
+    <td>2012-06-30</td>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80000</td>
+    <td>23</td>
+    <td>2013-08-12</td>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200000</td>
+    <td>35</td>
+    <td>2015-05-12</td>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>2015-10-10</td>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>2015-10-10</td>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>2015-10-10</td>
+    <td>5</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>cat</td>
+    <td>1000</td>
+    <td>3</td>
+    <td>2018-11-11</td>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+   </tr>
+   <tr>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>6</td>
+    <td>(NULL)</td>
+    <td>Clean up the office</td>
+   </tr>
+   <tr>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Another row has been added to our table, and interestingly, there are a lot of NULL values ​​in it. All data that was taken from the employee table is displayed as NULL, since there was no executor from the employee table for the “Clean office” task.</p>
+<h2>JOIN types</h2>
+<p>There are 4 types of JOINs in total. They are presented in the table below:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th>Brief entry</th>
+    <th>long entry</th>
+    <th>Explanation</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>JOIN</td>
+    <td>INNER JOIN</td>
+    <td>Only records that are in tables A and B</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>LEFT JOIN</td>
+    <td>LEFT OUTER JOIN</td>
+    <td>All rows without a pair from table A must be</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>RIGHT JOIN</td>
+    <td>RIGHT OUTER JOIN</td>
+    <td>All rows without a pair from table B must be</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>OUTER JOIN</td>
+    <td>FULL OUTER JOIN</td>
+    <td>All rows of base pairs from tables A and B must be</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>For simplicity, if we represent tables as sets, then JOIN can be displayed as a picture:</p><img data-max-width="512" data-id="66aba568-a02a-45e0-9939-6beebbb190ed" alt="" src="https://cdn.javarush.com/images/article/66aba568-a02a-45e0-9939-6beebbb190ed/512.jpeg" style="width: 512px;">
+<p>Set intersection means that for one table there is a corresponding record from another table to which it refers.</p>
+<h2>Question from the interview</h2>
+<p>Sometimes novice programmers are bombarded with a very simple question at an interview. Given our tables, it can be formulated as follows:</p> “Write a query that will display <strong>a list of all employees for whom there are no tasks</strong> .” First, let's try to rephrase this question a bit: "Write a query that will display <strong>a list of all employees from the employee table for which there are no tasks in the task table</strong> ." We need to get this set: <img data-max-width="512" data-id="d3cc4f4a-b340-4b3a-9ae0-3e38eca36bb2" alt="" src="https://cdn.javarush.com/images/article/d3cc4f4a-b340-4b3a-9ae0-3e38eca36bb2/512.jpeg" style="width: 512px;">
+<p>There are many ways to solve this problem, but I'll start with the simplest: First, you can join our tables with a LEFT JOIN, and then use WHERE to exclude all rows for which the missing data was padded with NULLs.</p>
+<pre><code><strong><span class="text-red">SELECT</span> * <span class="text-red">FROM</span> <span class="text-orange">employee e</span> <span class="text-red">LEFT JOIN</span> <span class="text-orange">task t</span> <span class="text-red">ON</span> <span class="text-orange">e</span>.<span class="text-green">id</span> = <span class="text-orange">t</span>.<span class="text-green">emploee_id</span>  
+<span class="text-red">WHERE</span> <span class="text-orange">t</span>.<span class="text-green">id</span> <span class="text-red">IS NULL</span> </strong>
+</code></pre>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+    <th>id</th>
+    <th>emploee_id</th>
+    <th>name</th>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40000</td>
+    <td>thirty</td>
+    <td>2014-01-01</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The only disadvantage of this solution is that here the rows in the table contain NULL, and by condition we need to display a list of employees.</p>
+<p>To do this, you either need to list the required columns of the employee table in SELECT, or if you need to display all of them, you can write the following construction:</p>
+<pre><code><strong><span class="text-red">SELECT</span> <span class="text-orange">e</span>.* <span class="text-red">FROM</span> <span class="text-orange">employee e</span>, <span class="text-orange">task t</span> </strong>
+</code></pre>
+<p>The complete request will look like this:</p>
+<pre><code><strong><span class="text-red">SELECT</span> <span class="text-orange">e</span>.*  
+<span class="text-red">FROM</span> <span class="text-orange">employee e</span> <span class="text-red">RIGHT JOIN</span> <span class="text-orange">task t</span> <span class="text-red">ON</span> <span class="text-orange">e</span>.<span class="text-green">id</span> = <span class="text-orange">t</span>.<span class="text-green">emploee_id</span>  
+<span class="text-red">WHERE</span> <span class="text-orange">t</span>.<span class="text-green">id</span> <span class="text-red">IS NULL</span> </strong>
+</code></pre>
+<p>the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>join_date</th>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40000</td>
+    <td>thirty</td>
+    <td>2014-01-01</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>The rest of the methods are left to you for homework. I don't want to deprive you of the pleasure of finding them yourself.</p>

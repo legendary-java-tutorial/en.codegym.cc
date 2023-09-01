@@ -1,0 +1,136 @@
+Criteria API
+<p>----------------------------------------</p>
+Introduction to the Criteria API. Examples of working with the Criteria API. Advanced work with Criteria API.
+<p>----------------------------------------</p>
+There are two ways to write database queries in Hibernate:</p>
+<ul>
+ <li><strong>Hibernate Query Language</strong></li>
+ <li><strong>Criteria API</strong></li>
+</ul>
+<p>You have already met the first one a long time ago, it is time to get acquainted with the Criteria API. This is a very powerful tool, at some point it was even more popular than HQL. Now it is not so popular anymore, but for some tasks it will definitely be a better solution than HQL.</p>
+<p>In any case, you can't learn Hibernate without getting familiar with the Criteria API. Let's write a small example, and then we will analyze it. For example, we will request all employees (Employee) from the database. Here's what we'll get:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">CriteriaBuilder</span> builder <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">getCriteriaBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">CriteriaQuery</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> critQuery <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Root</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> root <span class="token operator">=</span> critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> results <span class="token operator">=</span> query<span class="token punctuation">.</span><span class="token function">getResultList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Looks complicated. Let's write the same HQL query for comparison:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> hqlQuery <span class="token operator">=</span> <span class="token string">"from Employee"</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Query</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> query <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span>hqlQuery<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> results <span class="token operator">=</span> query<span class="token punctuation">.</span><span class="token function">getResultList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Note that the last two lines of both examples are almost identical: we create a Query object and use it to get a List. This hints that the rest of the lines are doing something identical.</p>
+<p>Look at lines 3 and 4 of the first example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token class-name">Root</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">&gt;</span></span> root <span class="token operator">=</span> critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Let's write them in one line:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="text-red">critQuery</span><span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="text-red">critQuery</span><span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Doesn't it remind you of anything? And if you color it a little differently:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function"><span class="text-red">select</span></span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function"><span class="text-red">from</span></span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Yes, this is such a tricky construction of the SELECT FROM query.</p>
+<h2>Examples of working with the Criteria API</h2>
+<p>For a better understanding, I will just give a few examples.</p>
+<p><strong>Request 1</strong> . Get all employees with a salary above 10 thousand:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">gt</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"salary"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Request 2</strong> . Get all employees with a salary of less than 50 thousand:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">lt</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"salary"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">50000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Request 3</strong> . Get all employees whose job title contains the word "test":</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">like</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"occupation"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"%test%"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Request 4</strong> . Get all employees with a salary of 10 to 50 thousand:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">between</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"salary"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">,</span> <span class="token number">50000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Request 5</strong> . Get all employees whose name is null:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Request 6</strong> . Get all employees whose name is not null:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">isNotNull</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>It's just such a tricky way to construct a query:</p>
+<ul>
+ <li>First you get the object<mark class="green">CriteriaBuilder</mark>.</li>
+ <li>Then use it to create an object<mark class="green">CriteriaQuery</mark>.</li>
+ <li>Then you start adding parts to it with<mark class="green">CriteriaQuery</mark>And<mark class="green">CriteriaBuilder</mark>.</li>
+</ul>
+<p>This is how you can set parameters for:</p>
+<ul>
+ <li>SELECT</li>
+ <li>FROM</li>
+ <li>WHERE</li>
+</ul>
+<p>Also using<mark class="green">CriteriaBuilder</mark>you can construct different conditions for WHERE.</p>
+<h2>Advanced work with Criteria API</h2>
+<p>Using the Criteria API, you can construct a query of any complexity. And this is great news. For example, you want a complex WHERE clause. Here's how to do it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Predicate</span> greaterThan <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">gt</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"salary"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Predicate</span> testers <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">like</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"occupation"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"test%"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">or</span><span class="token punctuation">(</span>greaterThan<span class="token punctuation">,</span> testers<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>If you want to write AND instead of OR, then you only need to change the last line:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>greaterThan<span class="token punctuation">,</span> testers<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Everything is actually very simple. Let me give you a table with a few comparisons:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>SQL</th>
+    <th>Method</th>
+    <th>Full record</th>
+   </tr>
+   <tr>
+    <td>a&lt;b</td>
+    <td>lt(a, b)</td>
+    <td>builder.lt(a, b)</td>
+   </tr>
+   <tr>
+    <td>a &gt; b</td>
+    <td>gt(a, b)</td>
+    <td>builder.gt(a, b)</td>
+   </tr>
+   <tr>
+    <td>a OR b</td>
+    <td>or(a,b)</td>
+    <td>builder.or(a, b)</td>
+   </tr>
+   <tr>
+    <td>a AND b</td>
+    <td>and(a,b)</td>
+    <td>builder.and(a,b)</td>
+   </tr>
+   <tr>
+    <td>a LIKE b</td>
+    <td>like(a,b)</td>
+    <td>builder.like(a, b)</td>
+   </tr>
+   <tr>
+    <td>a BETWEEN (c, d)</td>
+    <td>between(a, c, d)</td>
+    <td>builder.between(a, c, d)</td>
+   </tr>
+   <tr>
+    <td>a IS NULL</td>
+    <td>isNull(a)</td>
+    <td>builder.isNull(a)</td>
+   </tr>
+   <tr>
+    <td>a IS NOT NULL</td>
+    <td>isNotNull(a)</td>
+    <td>builder.isNotNull(a)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Everything is simple, isn't it?</p>
+<p>And how do we add sorting to the query? Very simple:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java">critQuery<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span> critQuery<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token class-name">Employee</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+critQuery<span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span> builder<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>greaterThan<span class="token punctuation">,</span> testers<span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+critQuery<span class="token punctuation">.</span><span class="token function">orderBy</span><span class="token punctuation">(</span> builder<span class="token punctuation">.</span><span class="token function">asc</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"salary"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> builder<span class="token punctuation">.</span><span class="token function">desc</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"joinDate"</span><span class="token punctuation">)</span> <span class="token punctuation">)</span></code></pre>
+<p>You just call on the object<mark class="green">CriteriaQuery</mark><span class="code text-orange">orderBy()</span> method and pass the required parameters to it.</p>
+<p>Here's how the same query would look in HQL. Compare:</p>
+<pre><code><strong><span class="text-red">select</span> * <span class="text-red">from</span> <span class="text-orange">Employee</span>
+<span class="text-red">where</span> (…) <span class="text-red">and</span> (…)
+<span class="text-red">order by</span> <span class="text-green">'salary'</span> <span class="text-red">asc</span>, <span class="text-green">'joinDate'</span> <span class="text-red">desc</span></strong></code></pre>
+<p>You just need to remember 3 things:</p>
+<ul>
+ <li>Key operators like SELECT, FROM, WHERE are called on an object<mark class="green">CriteriaQuery</mark>.</li>
+ <li>Auxiliary operators like AND, OR, DESC are called on the object<mark class="green">CriteriaBuilder</mark>.</li>
+ <li>Field names are taken from the object via <span class="code text-orange">get()</span><mark class="green">root</mark>.</li>
+</ul>

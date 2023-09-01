@@ -1,0 +1,30 @@
+Debug in IDEA: Variables
+<p>----------------------------------------</p>
+Watch While stopping the program with a break point or when stepping through, you can watch the values &ZeroWidthSpace;&ZeroWidthSpace;of variables that are known at the current place in the program each time. Let's write a program that fills an array of 10 elements with the numbers 100-109. Example: Intelligent system
+<p>----------------------------------------</p>
+<h2>1. Watch</h2>
+<p>When execution of your program stops at a breakpoint or when you're stepping through one instruction at a time, you can look at the values of the variables known at the current location in the program.</p>
+<p>Let's write a program that fills a <code>10</code>-element array with the numbers from <code>100</code> to <code>109</code>. Example:</p>
+<img data-max-width="1080" data-id="ebc4de5e-3771-4a7e-a57d-989e64aac076" src="https://cdn.codegym.cc/images/article/ebc4de5e-3771-4a7e-a57d-989e64aac076/1080.jpeg" alt="Debugging in IDEA variables">
+<p>IntelliJ IDEA is smart enough to display the values of important variables right above the code. In our case, we're talking about the <code class="text-brown">data</code> array variable</p>
+<p>Also, at the bottom of the screenshot, we see the <span class="term text-user">Debugger</span> tab open (not <span class="term text-green">Console </span>). It displays all variables (along with their values) that are known at this place in the program.</p>
+<p>If you press <code>F8</code> 10 times, then you will do 5 iterations through the loop (one press for the loop header and one for the loop body). Then you'll get a result like this:</p>
+<img data-max-width="1080" data-id="dd1ca36c-befa-4924-ba9c-10e0b4be2370" src="https://cdn.codegym.cc/images/article/dd1ca36c-befa-4924-ba9c-10e0b4be2370/1080.jpeg" alt="Debugging in IDEA variables 2">
+<p>We've completed <code>5</code> out of <code>10</code> iterations of the loop, and you can see that the data array already has <code>5</code> values: <code>100</code>, <code>101</code>, <code>102</code>, <code>103</code> and <code>104</code>.</p>
+<p>By the way, if you collapse the contents of the array, you can see some more useful variables:</p>
+<img width="512" src="https://cdn.codegym.cc/images/article/02c8f054-54bf-4243-bb3d-7b8f0667b4d8/512.jpeg" alt="Debugging in IDEA variables 3">
+<hr>
+<h2>2. Changing the values of variables</h2>
+<p>By the way, if you want to test how your program will behave given certain values of variables, you can simply change the value of any variable right while the program is running (in debug mode).</p>
+<p>To do this, right-click on the variable's name or press <code>F2</code>:</p>
+<img width="512" src="https://cdn.codegym.cc/images/article/bd884502-cd8b-470f-9d71-c1cbaba2068a/512.jpeg" alt="">
+<p>Then simply enter the variable's new value and press <code>Enter</code> and that's it:</p>
+<img width="512" src="https://cdn.codegym.cc/images/article/73c8e038-bf74-4436-98c6-38d027e8263e/512.jpeg" alt="">
+<p>You just learned at most <span class="term text-red">5%</span> of all IntelliJ IDEA features. Once you've mastered these, we'll talk about the rest.</p>
+<hr>
+<h2>3. Executing a snippet of code</h2>
+<p>You can also execute arbitrary code at any time while your program is running. This is done using the <code>Alt</code>+<code>F8</code> key combination or the corresponding item in the context menu:</p>
+<img width="1080" src="https://cdn.codegym.cc/images/article/7a778cb8-afaa-4798-b4b1-5658ae482295/1080.jpeg" alt="Executing a snippet of code">
+<p>A special window will open where you can write any code, and that code can use any variables known at the current location in the program's execution!</p>
+<p>You can call any methods, say, to make the program display some text on the screen without interrupting its work! Example:</p>
+<img width="800" src="https://cdn.codegym.cc/images/article/8ad1ca69-7eb5-4845-a236-78e1b00f7dd5/800.jpeg" alt="Executing a snippet of code 2">

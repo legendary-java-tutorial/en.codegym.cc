@@ -1,0 +1,71 @@
+Networking with jQuery
+<p>----------------------------------------</p>
+ajax in jQuery Useful Queries
+<p>----------------------------------------</p>
+<h2>9.1 The $ object and jQuery ajax method</h2>
+<p>jQuery also has a special global object for working with the network. As you can guess, it's called <code>$</code>.
+    Yes, that's the name. But it's simple and convenient.</p>
+<p>Let's say you want to send a request to an API in your JavaScript and process the received response. This can be done
+    like this:</p>
+<pre class="line-numbers"><code>
+$.ajax({
+  type: <span class="text-green">"POST"</span>,
+  url: <span class="text-green">"api.codegym.cc"</span>,
+  data: <span class="text-user">{name: 'Bill', location: 'Radmond'},</span>
+  success: <span class="text-red">function(msg){
+    alert( "Person found: " + msg );
+  }</span>
+});
+
+</code></pre>
+<p>That's it, that's all the code. <code>$</code>We call the method on the object <code>ajax()</code>, where we pass the
+    object that describes everything we need: both the request and the response.</p>
+<ul>
+    <li><span class="text-green">The field <code>type</code>specifies the type of HTTP request: <code>GET</code>or<code>POST</code></span>
+    </li>
+    <li><span class="text-green">The field <code>url</code>specifies <code>url</code>to which the request will be sent.</span>
+    </li>
+    <li><span class="text-user">The field <code>data</code>specifies the request data in JSON format</span></li>
+    <li><span class="text-red">The success field specifies a function to be called</span> after a successful response
+        from the server.
+    </li>
+</ul>
+<h2>9.2 Useful queries</h2>
+<p>But if you do not need to transfer any data, then the request can be written even shorter. For example, you can write
+    a simple <strong>POST request</strong> like this :</p>
+<pre class="line-numbers"><code>
+$.post(<span class="text-green">"ajax/test.html"</span>, <span class="text-red">function( data ) {
+  $( ".result" ).html( data );
+}</span>);
+</code></pre>
+<p>Do you know what the code does <code class="text-red">$( ".result" ).html( data );</code>? Let's try to guess...</p>
+<p>It finds an element with the result class in the document, and adds HTML code inside it - data <code>data</code>. So
+    in a couple of lines you can download data from the server and add it to your page. Well, isn't it a beauty? :)</p>
+<p><strong>A GET request</strong> can also be written in a couple of lines:</p>
+<pre class="line-numbers"><code>
+$.get(<span class="text-green">"ajax/test.html"</span>., <span class="text-red">function( data ) {
+  $( ".result" ).html( data );
+}</span>);
+</code></pre>
+<p><strong>Would you like to download and execute a script?</strong></p>
+<pre class="line-numbers"><code>
+$.ajax({
+  method: <span class="text-green">"GET"</span>,
+  url: <span class="text-green">"test.js"</span>,
+<span class="text-red">  dataType: "script"</span>
+});
+</code></pre>
+<p><strong>Get the latest HTML page?</strong></p>
+<pre class="line-numbers"><code>
+$.ajax({
+  url: "test.html",
+<span class="text-red">  cache: false</span>
+})
+  .done(function( html ) {
+<span class="text-user">    $( "#results" ).append( html );</span>
+  });
+</code></pre>
+<p>There is some very good jQuery documentation on the internet:</p>
+<p><a href="https://api.jquery.com/" target="_blank">jQuery API</a></p>
+<p><a href="https://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax()</a></p>
+<p>In addition, all common questions are easily googled and are on StackOverflow.</p>

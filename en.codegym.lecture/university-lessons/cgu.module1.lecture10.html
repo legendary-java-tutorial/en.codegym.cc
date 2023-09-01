@@ -1,0 +1,91 @@
+Compiling a class to bytecode from the console
+<p>----------------------------------------</p>
+The JVM cannot directly run the code you write. It can only execute programs written in bytecode. Bytecode is a low-level language that is close to machine code. Compiling to Java is a translation of a program...
+<p>----------------------------------------</p>
+<p>The JVM cannot directly run the code you write. It only knows how to execute programs written in bytecode. Bytecode is a low-level language that is close to machine code.</p>
+
+    <p>For Java, compilation is the translation of a (high level) program written in Java into the same program written in bytecode. </p>
+
+    <p>Your code is passed in a .java file to the compiler. If the compiler finds no errors in the code, then you get back a new bytecode file. This file will have the same name but a different extension: <span class="code">.class</span>. If there are errors in the code, then the compiler will tell you "the program did not compile". Then you need to read each error message and fix the errors.</p>
+
+    <img data-max-width="800" data-id="ae0c38f4-d4be-424e-8caa-95e2479c1d15" src="https://cdn.codegym.cc/images/article/ae0c38f4-d4be-424e-8caa-95e2479c1d15/800.jpeg" alt="">
+
+    <p>You use the javac command to invoke the compiler, which is part of the JDK (Java Development Kit). That means that if you install only the JRE (Java Runtime Environment), then you won't have the compiler! You will only have the JVM, which can only run bytecode. So we install the JDK and pass our <span class="code">.java</span> file to the compiler.</p>
+
+    <p>For example, let's take a simple program with some console output:</p>
+
+    <pre class='language-java line-numbers'><code>
+class MySolution {
+   public static void main(String[] args) {
+      System.out.println("Hi, command line!");
+   }
+}
+</code></pre>
+
+    <p>Let's save this code to the file <span class="text-bold">D:/temp/MySolution.java</span>.</p>
+
+    <p>Let's compile our code using the command</p>
+
+    <pre class='language-java line-numbers'><code>
+D:\temp&gt;javac MySolution.java
+</code></pre>
+
+    <p>If there are no compilation errors in the code, a <span class="code">MySolution.class</span> file will appear in the <span class="text-bold">temp</span> folder. What's more, the <span class="code">MySolution.java</span> file containing your code doesn't go anywhere. It remains right where it was. But now <span class="code">MySolution.class</span> contains bytecode and is ready to be run directly by the JVM.</p>
+
+    <p>Our example is as simple as possible, but even the largest and most complex projects use the <span class="code">javac</span> command. So it will be very useful for you to know how it works.</p>
+
+    <p>You can compile more than one class at a time. For example, suppose there is another file <span class="code">Cat.java</span> in the <span class="text-bold">temp</span> folder:<p>
+
+    <pre class='language-java line-numbers'><code>
+D:\temp&gt;javac MySolution.java Cat.java
+</code></pre>  
+
+    <p>or this:</p>
+
+    <pre class='language-java line-numbers'><code>
+D:\temp&gt;javac *.java
+</code></pre>
+
+    <p>Once compiled, the <span class="code">.class</span> files can be packaged in a <span class="code">jar</span> file, which can be conveniently moved to different computers and then run on them. Here's an example of how to create a <span class="code">jar</span> file:</p>
+
+    <pre class='language-java line-numbers'><code>
+D:\temp&gt;jar cvfe myjar.jar MySolution MySolution.class Cat.class
+</code></pre>
+
+    <p>where:</p>
+
+    <ul>
+        <li><p><span class="code">jar</span> is the command for creating <span class="code">.jar</span> files, included in the JDK</p></li>
+        <li><p><span class="code">cvfe</span> are command line options with the following meanings:</p>
+            <ul>
+                <li><p><span class="code">c</span> – create a new <span class="code">jar</span> file</p></li>
+                <li><p><span class="code">v</span> – display verbose information</p></li>
+                <li><p><span class="code">f</span> – indicates that we want the tool's output to be put into a file (<span class="code">myjar.jar</span>)</p></li>
+                <li><p><span class="code">e</span> – indicates the entry point (<span class="code">MySolution</span>), i.e. the class that contains the <span class="code text-orange">main</span> method</p></li>
+            </ul>
+        </li>
+        <li><p><span class="code">MySolution.java Cat.class</span> – space-separated names of the files that will be packed into the <span class="code">jar</span> file.</p></li>
+    </ul>
+
+    <p>Here's how we run the resulting <span class="code">jar</span> file:</p>
+
+    <pre class='language-java line-numbers'><code>
+D:\temp&gt;java -jar myjar.jar
+</code></pre>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>For more detailed information:</th>
+            </tr>
+            <tr>
+                <td>
+                    The <span class="code">javac</span> and <span class="code">jar</span> tools have built-in help. To display it, run the following on the command line:
+                            <ul>
+                                <li><span class="code">javac --help</span></li>
+                                <li><span class="code">jar --help</span></li>
+                            </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>

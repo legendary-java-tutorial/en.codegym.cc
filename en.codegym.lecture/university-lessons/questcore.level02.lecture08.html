@@ -1,0 +1,144 @@
+Interfaces are more than interfaces - they are behaviors
+<p>----------------------------------------</p>
+Imagine that you are a robot builder and you have dozens of robots under your control, each of which can have several professions. You need to urgently complete the wall. You take all the robots that have the "builder" ability and tell them to build a wall. You don't care what kind of robots they are, even sprinklers. If he can build, let him build.
+<p>----------------------------------------</p>
+<p>"Hello, Amigo! It's me—again. I want to give you another point of view on interfaces. You see, most of the time a class is a model of a particular object. By contrast, interfaces are more like an object's abilities or roles, rather than the object itself."</p>
+
+<img data-max-width="800" data-id="32745779-1857-417b-999a-1d00522cc13a" src="https://cdn.javarush.ru/images/article/32745779-1857-417b-999a-1d00522cc13a/800.jpeg" alt="">
+
+<p>For example, things such as cars, bicycles, motorcycles, and wheels are best represented as classes and objects. But their abilities, like «I can move», «I can carry people», and «I can park», are better represented as interfaces. Check out this example:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>interface</strong> Moveable
+{
+void move(String newAddress);
+}</code></pre>
+        </td>
+        <td>Corresponds to the ability to move.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>interface</strong> Driveable
+{
+void drive(Driver driver);
+}</code></pre>
+        </td>
+        <td>Corresponds to the ability to move.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>interface</strong> Transport
+{
+void addStuff(Object stuff);
+Object removeStuff();
+}</code></pre>
+        </td>
+        <td>Corresponds to the ability to carry cargo.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class Wheel <span class="text-red"><strong>implements</strong> Moveable</span>
+{
+...
+}</code></pre>
+        </td>
+        <td>A «wheel» class. Has the ability to move.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class Car <span class="text-red"><strong>implements</strong> Moveable, Drivable, Transport</span>
+{
+...
+}</code></pre>
+        </td>
+        <td>A «car» class. Has the ability to move, be driven by a person, and carry cargo.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code>class Skateboard <span class="text-red"><strong>implements</strong> Moveable, Driveable</span>
+{
+...
+}</code></pre>
+        </td>
+        <td>A «skateboard» class. Has the ability to move and be controlled by a person.</td>
+    </tr>
+    </tbody>
+</table>
+<div class="task-widget-container" showCover="true" taskKey="com.codegym.task.task12.task1235"></div>
+<p><span class="text-viola">Interfaces greatly simplify the life of the programmer.</span> Programs very often have thousands of objects, hundreds of classes, and just a couple dozen interfaces (roles). There are few roles, but they can be combined in many ways (classes).</p>
+<p>The whole point is that <span class="text-green">you don't have to write code defining interaction with every other class. All you have to do is interact with roles (interfaces).</span></p>
+Imagine that you're a robotic builder. You have dozens of subordinate robots and each of them can have multiple skills. Suppose you need to urgently finish building a wall. You just take all the robots that have the ability to "build" and tell them to build the wall. You don't really care which robots do it. Let it be a robotic watering can. If it knows how to build, let it build.</p>
+<p>Here's how it would look in code:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Java code</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>static interface WallBuilder</strong>
+{
+void buildWall();
+}</code></pre>
+        </td>
+        <td>Ability to «build a wall». Understands the command «build a wall» (has the appropriate method).</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>static class</strong> <span class="text-user">WorkerRobot</span> <span class="text-red">implements WallBuilder</span>
+{
+void buildWall()
+ {
+…
+ }
+}
+<strong>static class</strong> <span class="text-user">GuardRobot</span> <span class="text-red">implements WallBuilder</span>
+{
+void buildWall()
+ {
+…
+ }
+}
+<strong>static class</strong> <span class="text-user">WateringCan</span>
+{
+…
+}</code></pre>
+        </td>
+        <td>Robots that have this ability/skill.</p>
+            <p>A watering can can't build a wall (it doesn't implement the WallBuilder interface).</p></td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java block-inline" data-line="" data-start=""><code><strong>public static void</strong> main(String[] args)
+{
+ //add all robots to a list
+ ArrayList <span class="text-green">robots</span> = new ArrayList();
+ <span class="text-green">robots</span>.add(new <span class="text-user">WorkerRobot</span>());
+ <span class="text-green">robots</span>.add(new <span class="text-user">GuardRobot</span>());
+ <span class="text-green">robots</span>.add(new <span class="text-user">WateringCan</span>());
+
+ //build a wall if you can
+ for (Object robot: <span class="text-green">robots</span>)
+ {
+  if (<span class="text-red">robot instanceof WallBuilder</span>)
+  {
+   <span class="text-red">WallBuilder</span> builder = (<span class="text-red">WallBuilder</span>) robot;
+   builder.buildWall();
+   }
+  }
+ }
+}</code></pre>
+        </td>
+        <td>How do we give the command to build a wall?</td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="text-user">"That's amazingly interesting. I never dreamed that interfaces could be such an interesting topic."</span></p>
+<p>"And then some! Together with polymorphism, it's totally mind-blowing."</p>

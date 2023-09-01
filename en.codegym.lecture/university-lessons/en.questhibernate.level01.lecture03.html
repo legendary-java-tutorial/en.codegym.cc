@@ -1,0 +1,507 @@
+Data Display Control
+<p>----------------------------------------</p>
+LIMIT OFFSET SELECT DISTINCT ORDER BY ORDER BY across multiple columns
+<p>----------------------------------------</p>
+query to return too much data, you can limit the maximum number in advance. After all, tables can contain thousands or even millions of rows.</p>
+<p>SQL makes it very easy to limit the number of rows in the result of a query using the <code>LIMIT</code>. This keyword is used at the very end of the SQL query and looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">LIMIT</span> <span class="text-user">quantity</span></code></pre>
+</div>
+<p>Let's write a query against the product table, which contains a list of our store's products. But since we have a very successful store and we sell a lot of products, we want to get only the first 10 lines of the answer. Here's what that request would look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">product</span>
+<span class="text-red">LIMIT</span> <span class="token number">10</span></code></pre>
+</div>
+<p>And we get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>brand</th>
+    <th>price</th>
+    <th>count</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Table</td>
+    <td>IKEA</td>
+    <td>20.00</td>
+    <td>15</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Chair</td>
+    <td>IKEA</td>
+    <td>5.00</td>
+    <td>45</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Sofa</td>
+    <td>IKEA</td>
+    <td>80.00</td>
+    <td>10</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Bed</td>
+    <td>IKEA</td>
+    <td>75.00</td>
+    <td>10</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Closet</td>
+    <td>Bosch</td>
+    <td>125.00</td>
+    <td>15</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Shelf</td>
+    <td>Shelf</td>
+    <td>25.00</td>
+    <td>114</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>TV</td>
+    <td>LG</td>
+    <td>350.00</td>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>Lamp</td>
+    <td>LG</td>
+    <td>15.00</td>
+    <td>100</td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td>Dresser</td>
+    <td>IKEA</td>
+    <td>99.00</td>
+    <td>10</td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td>Plate</td>
+    <td>Bosch</td>
+    <td>199.00</td>
+    <td>10</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Now we will request only the first 5 rows. Here's what that request would look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">product</span>
+<span class="text-red">LIMIT</span> <span class="token number">5</span></code></pre>
+</div>
+<p>We get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>brand</th>
+    <th>price</th>
+    <th>count</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Table</td>
+    <td>IKEA</td>
+    <td>20.00</td>
+    <td>15</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Chair</td>
+    <td>IKEA</td>
+    <td>5.00</td>
+    <td>45</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Sofa</td>
+    <td>IKEA</td>
+    <td>80.00</td>
+    <td>10</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Bed</td>
+    <td>IKEA</td>
+    <td>75.00</td>
+    <td>10</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Closet</td>
+    <td>Bosch</td>
+    <td>125.00</td>
+    <td>15</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>4.2 OFFSET</h2>
+<p>Last time we learned how to limit the number of lines in the server response. And now, instead of thousands of rows from the product table, we can get the first 10 rows and display them to the user. It is perfectly. But how do we display the second 10 rows? And the third?</p>
+<p>If we write <code>LIMIT 20</code>, or <code>LIMIT 30</code>, won't the server return 20 and 30 rows respectively?</p>
+<p>It is for this case that SQL has a special keyword <code>OFFSET</code>with which you can ask the server to skip N lines in its response. This keyword is used at the very end of the SQL query (after <code>LIMIT</code>) and looks like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">OFFSET</span> <span class="text-user">quantity</span></code></pre>
+</div>
+<p>Let's write a query on <strong>the product table</strong> and try to get records 11 to 15. In other words, we are asking the server to return 5 rows to us, but skip the first 10 rows of the response first. Here's what that request would look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">product</span>
+<span class="text-red">LIMIT</span> <span class="token number">5</span>
+<span class="text-red">OFFSET</span> <span class="token number">10</span></code></pre>
+</div>
+<p>We get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>brand</th>
+    <th>price</th>
+    <th>count</th>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td>Armchair</td>
+    <td>Bosch</td>
+    <td>44.00</td>
+    <td>8</td>
+   </tr>
+   <tr>
+    <td>12</td>
+    <td>flowerpot</td>
+    <td>Smartflower</td>
+    <td>99.00</td>
+    <td>9</td>
+   </tr>
+   <tr>
+    <td>13</td>
+    <td>Stand</td>
+    <td>IKEA</td>
+    <td>100.00</td>
+    <td>10</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><span class="text-green">The server returned only 3 rows, which means there were 13 rows in total in our table. The server skipped the first 10 and returned the next 5.</span></p>
+<h2>4.3 SELECT DISTINCT</h2>
+<p>Another useful keyword is <code>DISTINCT</code>. It is used when there are duplicate records in the table and we want to remove the duplicates.</p>
+<p>Where do duplicates come from in our table? There may not be duplicates in the table, but as a result of the query, it is easy. Let's write a query that will return the brands of all the products we sell. Here's what that request would look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="text-green">brand</span> <span class="text-red">FROM</span> <span class="text-yellow">product</span></code></pre>
+</div>
+<p>We get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th width="200">brand</th>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+   </tr>
+   <tr>
+    <td>Bosch</td>
+   </tr>
+   <tr>
+    <td>Bosch</td>
+   </tr>
+   <tr>
+    <td>LG</td>
+   </tr>
+   <tr>
+    <td>LG</td>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+   </tr>
+   <tr>
+    <td>Bosch</td>
+   </tr>
+   <tr>
+    <td>Bosch</td>
+   </tr>
+   <tr>
+    <td>Smartflower</td>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>It is easy to see that there are duplicate rows in this table. It is to ensure that there are no duplicates and you need to use the keyword <code>DISTINCT</code>. Here is what the corrected request will look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT DISTINCT</span> <span class="text-green">brand</span>
+<span class="text-red">FROM</span> <span class="text-yellow">product</span></code></pre>
+</div>
+<p>We get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th width="200">brand</th>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+   </tr>
+   <tr>
+    <td>Bosch</td>
+   </tr>
+   <tr>
+    <td>LG</td>
+   </tr>
+   <tr>
+    <td>Smartflower</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>So much better. Is not it? ;)</p>
+<h2>4.4 ORDER BY</h2>
+<p>And finally we got to <strong>sorting</strong> . To sort the results of a query, you need to use the keyword <code>ORDER BY</code>. Technically, these are two words, but the essence is not important. Two words, one operator.</p>
+<p>It must be written after the keyword <code>WHERE</code>, but before <code>LIMIT</code>and <code>OFFSET</code>. If you write <code>ORDER BY</code>after <code>LIMIT</code>, then the SQL server will simply return an error to you.</p>
+<p>In general, this operator looks like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">ORDER BY</span> <span class="text-user">column</span> <span class="text-green">order</span></code></pre>
+</div>
+<p>Where column is the name of the column in the table / sort result. And the order is the sort order.</p>
+<p>The sort order can be of three types:</p>
+<ul>
+ <li><code>ASC</code>(from Ascending) - ascending;</li>
+ <li><code>DESC</code>(from Descending) - descending;</li>
+ <li>Not specified - will be used<code>ASC</code></li>
+</ul>
+<p>Let's write a query that will return a list of products sorted by price in ascending order. Here's what that request would look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">product</span>
+<span class="text-orange">ORDER BY</span> <span class="text-green">price</span> <span class="text-orange">ASC</span>
+<span class="text-red">LIMIT</span> <span class="token number">10</span></code></pre>
+</div>
+<p>We get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>brand</th>
+    <th>price</th>
+    <th>count</th>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Chair</td>
+    <td>IKEA</td>
+    <td>5.00</td>
+    <td>45</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>Lamp</td>
+    <td>LG</td>
+    <td>15.00</td>
+    <td>100</td>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Table</td>
+    <td>IKEA</td>
+    <td>20.00</td>
+    <td>15</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Shelf</td>
+    <td>Bosch</td>
+    <td>25.00</td>
+    <td>114</td>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td>Armchair</td>
+    <td>Bosch</td>
+    <td>44.00</td>
+    <td>8</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Bed</td>
+    <td>IKEA</td>
+    <td>75.00</td>
+    <td>10</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Sofa</td>
+    <td>IKEA</td>
+    <td>80.00</td>
+    <td>10</td>
+   </tr>
+   <tr>
+    <td>12</td>
+    <td>flowerpot</td>
+    <td>Smartflower</td>
+    <td>99.00</td>
+    <td>9</td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td>Dresser</td>
+    <td>IKEA</td>
+    <td>99.00</td>
+    <td>10</td>
+   </tr>
+   <tr>
+    <td>13</td>
+    <td>Stand</td>
+    <td>IKEA</td>
+    <td>100.00</td>
+    <td>10</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>We will get the same result if we do not specify the sort order - we will skip the word <code>ASC</code>.</p>
+<h2>4.5 ORDER BY across multiple columns</h2>
+<p>The operator <code>ORDER BY</code>allows you to sort the result by several columns. This can be very useful when the first column has a lot of duplicate elements. The general form of this operator is as follows:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">ORDER BY</span> <span class="text-user">column <span class="token number">1</span></span><span class="token number"></span> <span class="text-green">order <span class="token number">1</span></span><span class="token number"></span><span class="token punctuation">,</span> <span class="text-user">column <span class="token number">2</span></span><span class="token number"></span> <span class="text-green">order <span class="token number">2</span></span><span class="token number"></span><span class="token punctuation">,</span> <span class="text-user">column <span class="token number">3</span></span><span class="token number"></span> <span class="text-green">order <span class="token number">3</span></span><span class="token number"></span></code></pre>
+</div>
+<p>In other words, if after sorting by the first column you have several identical values ​​nearby, then they are sorted by the second column, and so on.</p>
+<p>Let's write a query that will sort our products by brand, and for products with the same brand - in descending order of their number. Here's what that request would look like:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-yellow">product</span>
+<span class="text-orange">ORDER BY</span> <span class="text-user">brand</span> <span class="text-orange">ASC</span><span class="token punctuation">,</span> <span class="text-user">count</span>
+<span class="text-orange">DESC</span></code></pre>
+</div>
+<p>We get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>brand</th>
+    <th>price</th>
+    <th>count</th>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Shelf</td>
+    <td><span class="text-user">Bosch</span></td>
+    <td>25.00</td>
+    <td><span class="text-user">114</span></td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Closet</td>
+    <td><span class="text-user">Bosch</span></td>
+    <td>125.00</td>
+    <td><span class="text-user">15</span></td>
+   </tr>
+   <tr>
+    <td>10</td>
+    <td>Plate</td>
+    <td><span class="text-user">Bosch</span></td>
+    <td>199.00</td>
+    <td><span class="text-user">10</span></td>
+   </tr>
+   <tr>
+    <td>eleven</td>
+    <td>Armchair</td>
+    <td><span class="text-user">Bosch</span></td>
+    <td>44.00</td>
+    <td><span class="text-user">8</span></td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Chair</td>
+    <td><span class="text-green">IKEA</span></td>
+    <td>5.00</td>
+    <td><span class="text-green">45</span></td>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Table</td>
+    <td><span class="text-green">IKEA</span></td>
+    <td>20.00</td>
+    <td><span class="text-green">15</span></td>
+   </tr>
+   <tr>
+    <td>9</td>
+    <td>Dresser</td>
+    <td><span class="text-green">IKEA</span></td>
+    <td>99.00</td>
+    <td><span class="text-green">10</span></td>
+   </tr>
+   <tr>
+    <td>13</td>
+    <td>Stand</td>
+    <td><span class="text-green">IKEA</span></td>
+    <td>100.00</td>
+    <td><span class="text-green">10</span></td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Bed</td>
+    <td><span class="text-green">IKEA</span></td>
+    <td>75.00</td>
+    <td><span class="text-green">10</span></td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Sofa</td>
+    <td><span class="text-green">IKEA</span></td>
+    <td>80.00</td>
+    <td><span class="text-green">10</span></td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>Lamp</td>
+    <td><span class="text-red">LG</span></td>
+    <td>15.00</td>
+    <td><span class="text-red">100</span></td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>TV</td>
+    <td><span class="text-red">LG</span></td>
+    <td>350.00</td>
+    <td><span class="text-red">4</span></td>
+   </tr>
+   <tr>
+    <td>12</td>
+    <td>flowerpot</td>
+    <td>Smartflower</td>
+    <td>99.00</td>
+    <td>9</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Look closely at the table - its rows are sorted by brand name (alphabetical order), and rows with the same brand name are sorted by product number in descending order (last column).</p>

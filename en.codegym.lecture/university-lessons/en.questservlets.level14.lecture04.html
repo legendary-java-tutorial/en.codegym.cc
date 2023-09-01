@@ -1,0 +1,44 @@
+Criteria for bad software architecture
+<p>----------------------------------------</p>
+Criteria for bad design. Definition of "bad design". Causes of "bad design". Relevance.
+<p>----------------------------------------</p>
+s quite simply: often, to be smart, you just need not to do stupid things. This also applies to software development: in most cases, in order to do something well, you just need to not do it badly.</p>
+<p>Most programmers have had experience with parts of the system that were badly designed. But even more sadly, most of you will have the sad experience of realizing that you were the authors of such a system. We wanted the best, but it turned out as always.</p>
+<p>Most developers don't aspire to bad architecture, and for many systems there comes a point where they start to say that its architecture is terrible. Why is this happening? Was architecture design bad from the start, or has it become bad over time?</p>
+<p>The root of this problem is the lack of a definition of “bad” design.</p>
+<p>It seems to me that it is the understanding of the quality of design and the reasons for its “decay” that are the most important qualities for any programmer. As in most other cases, the main thing is to identify the problem, and it will be a matter of technology to solve it.</p>
+<img data-max-width="512" data-id="9ec01986-2dee-48c3-833f-872fd178adb8" src="https://cdn.codegym.cc/images/article/9ec01986-2dee-48c3-833f-872fd178adb8/512.jpeg" alt="">
+<h2>Definition of “bad design”</h2>
+<p>If you decide to brag about your code in front of a fellow programmer, you will most likely get ridicule in response: “Who does this?”, 'Why is it like that?' and “I would do things differently.” This happens very often.</p>
+<p>All people are different, but you still write the code for your fellow programmers, so in the process of developing each feature, you always need a review phase when other people look at your code.</p>
+<p>But even if a lot of things can be done in different ways, there is a set of criteria that all developers would agree on. Any piece of code that satisfies its requirements but still exhibits one (or more) characteristics is bad design.</p>
+<p>Bad Design:</p>
+<ul>
+ <li>Difficult to change because any change affects too many other parts of the system. ( <span class="text-bold">Rigidity</span> , Rigidity).</li>
+ <li>When changes are made, other parts of the system break unexpectedly. ( <span class="text-bold">Fragility</span> , Fragility).</li>
+ <li>The code is hard to reuse in another application because it's too hard to get it out of the current application. ( <span class="text-bold">Immovability</span> , Immobility).</li>
+</ul>
+<p>And the funny thing is that it is almost <span class="text-red">impossible to find a piece of the system</span> that does not contain any of these characteristics (that is, is flexible, reliable and reusable), meets the requirement, and at the same time its design is bad.</p>
+<p>Thus, we can use these three characteristics to unambiguously determine whether a design is “bad” or “good”.</p>
+<h2>Causes of "Bad Design"</h2>
+<p>What makes a design rigid, brittle, and immovable? <span class="text-bold">Rigid interdependence of modules.</span></p>
+<p><span class="text-bold">A design is rigid</span> if it cannot be easily changed. This rigidity is due to the fact that a single change to a piece of code in a woven system results in cascading changes in dependent modules. This always happens when one person is working on the code.</p>
+<p>This immediately complicates the entire commercial development process: when the number of cascading changes cannot be predicted by the designer or developer, it is impossible to estimate the impact of such a change. Therefore, they try to postpone such changes indefinitely.</p>
+<p>And this in turn makes the cost of change unpredictable. Faced with such uncertainty, managers are reluctant to make changes, so the design officially becomes rigid.</p>
+<p>At some point, your project passes the “event horizon” and is doomed to fall into the “black hole” of rigid architecture.</p>
+<p><span class="text-bold">Fragility</span> is the tendency of a system to break down in multiple places after a single change. Usually new problems occur in places that are conceptually unrelated to the place of change. Such fragility seriously undermines confidence in the design and maintenance of the system.</p>
+<p>This was usually the case when there were no private methods. It is enough to make all methods public, and you will be doomed to the appearance of a fragile architecture. Encapsulation helps to deal with this at the micro level. But at the macro level, you need a modular architecture.</p>
+<p>When a project has a fragile architecture, the developers cannot guarantee the quality of the product.</p>
+<p>Simple changes in one part of the application lead to bugs in other unrelated parts. Correcting these errors leads to even more problems, and the escort process turns into a famous dog chasing its own tail.</p>
+<p><span class="text-bold">The design is immobile</span> when the necessary parts of the system are strongly tied to other unwanted details. Too much of their own code, their own unique approaches and solutions.</p>
+<p>Do you remember the JUL logger, whose developers came up with their own logging levels for no good reason? This is just the case.</p>
+<p>To give a designer an idea of ​​how easy it is to reuse an existing design, it's enough to think about how easy it will be to use in a new application.</p>
+<p>If the design is tightly coupled, then this designer will be horrified by the amount of work required to separate the required parts of the system from the unnecessary details. In most cases, such a design is not reusable, since the cost of separating it outweighs developing it from scratch.</p>
+<h2>Relevance</h2>
+<p><span class="text-bold">Everything changes, but everything stays the same. </span>(Chinese proverb)</p>
+<p>Very good questions have been raised above. What are the dangers of fragile and rigid systems? Yes, because the process of managing such a project becomes unpredictable and uncontrollable. And the price is exorbitant.</p>
+<p>How can a manager give or not give the go-ahead to add some feature if he does not know how much time it will actually take? How to prioritize tasks if you can not adequately estimate the time and complexity of their implementation?</p>
+<p><span class="text-green">And how can developers pay off the same technical debt when we will rake in paying it, and we cannot understand how much we will rake until we rake?</span></p>
+<p>Problems with code reuse or testing are also very relevant. Unit tests serve not only to test some assumptions about the unit under test, but also to determine the degree of its cohesion and can serve as an indicator of reuse.</p>
+<p>Here is a quote from Bob Martin for this case: <span class="text-neon">“In order to reuse your code, you need to make the effort of reusing it less than the cost of developing from scratch</span> . ” Otherwise, no one will even bother with this matter.</p>
+<p>The use of design principles and patterns serve one purpose - to make design good. If their use does not give you any benefit (or vice versa, violates the principles of “good design”), then something in your conservatory is not right and, perhaps, the tool has begun to be used for other purposes.</p>

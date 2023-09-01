@@ -1,0 +1,535 @@
+Reflection API
+<p>----------------------------------------</p>
+Reflection in Java is a mechanism that allows a developer to make changes and obtain information about classes, interfaces, fields, and methods at runtime without knowing their names...
+<p>----------------------------------------</p>
+<h2>What is the Reflection API for?</h2>
+
+    <p>Java's reflection mechanism allows a developer to make changes and obtain information about classes, interfaces, fields, and methods at runtime without knowing their names. </p>
+
+    <p>The Reflection API also lets you create new objects, call methods, and get or set field values. </p>
+
+    <p>Let's make a list of everything you can do using reflection:</p>
+
+    <ul>
+        <li>Identify/determine the class of an object</li>
+        <li>Get information about class modifiers, fields, methods, constants, constructors, and superclasses</li>
+        <li>Find out which methods belong to implemented interface(s)</li>
+        <li>Create an instance of a class whose class name is not known until the program is executed</li>
+        <li>Get and set the value of an instance field by name</li>
+        <li>Call an instance method by name</li>
+    </ul>
+
+    <p>Almost all modern Java technologies use reflection. It underlies most of today's Java / Java EE frameworks and libraries, for example:</p>
+
+    <ul>
+        <li><span class="text-bold">Spring</span> frameworks for building web applications</li>
+        <li>the <span class="text-bold">JUnit</span> testing framework</li>
+    </ul>
+
+    <p>If you've never encountered these mechanisms before, you're probably asking why is all this necessary. The answer is quite simple but also very vague: reflection dramatically increases flexibility and the ability to customize our application and code. </p>
+
+<p>But there are always pros and cons. So let's mention a few cons:</p>
+
+    <ul>
+        <li><span class="text-bold">Violations of application security.</span> Reflection lets us access code that we shouldn't (violation of encapsulation).</li>
+        <li><span class="text-bold">Security restrictions.</span> Reflection requires runtime permissions that are not available to systems running a security manager.</li>
+        <li><span class="text-bold">Low performance.</span> Reflection in Java determines types dynamically by scanning the <span class="text-green">classpath</span> to find the class to load. This reduces the program's performance.</li>
+        <li><span class="text-bold">Difficult to maintain.</span> Code that uses reflection is difficult to read and debug. It is less flexible and harder to maintain.</li>
+    </ul>
+
+    <h2>Working with classes using the Reflection API</h2>
+
+    <p>All reflection operations begin with a <span class="code"><span class="text-green">java.lang.Class</span></span> object. For each type of object, an immutable instance of <span class="code"><span class="text-green">java.lang.Class</span></span> is created. It provides methods for getting object properties, creating new objects, and calling methods. </p>
+
+    <p>Let's look at the list of basic methods for working with <span class="code"><span class="text-green">java.lang.Class</span></span>:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Method</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">String getName();</span></td>
+                <td>Returns the name of the class</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">int getModifiers();</span></td>
+                <td>Returns access modifiers</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">Package getPackage();</span></td>
+                <td>Returns information about a package</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">Class getSuperclass();</span></td>
+                <td>Returns information about a parent class</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">Class[] getInterfaces();</span></td>
+                <td>Returns an array of interfaces</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">Constructor[] getConstructors();</span></td>
+                <td>Returns information about class constructors</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">Fields[] getFields();</span></td>
+                <td>Returns the fields of a class</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">Field getField(String fieldName);</span></td>
+                <td>Returns a specific field of a class by name</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">Method[] getMethods();</span></td>
+                <td>Returns an array of methods</td>
+            </tr>
+            <tr>
+        </tbody>
+    </table>
+
+    <p>These are the most important methods for getting data about classes, interfaces, fields, and methods. There are also methods that let you get or set field values, and access <span class="code">private</span> fields. We'll look at them a little later.</p>
+
+    <p>Right now we'll talk about getting the <span class="code"><span class="text-green">java.lang.Class</span> itself. We have three ways to do this.</p>
+
+    <h4>1. Using Class.forName</h4>
+
+    <p>In a running application, you must use the <span class="code text-orange">forName(String className)</span> method to get a class. </p>
+
+    <p>This code demonstrates how we can create classes using reflection. Let's create a <span class="code"><span class="text-green">Person</span></span> class that we can work with:</p>
+
+    <pre class='language-java line-numbers'><code>
+package com.company;
+
+public class Person {
+    private int age;
+    private String name;
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}</code></pre>
+
+    <p>And the second part of our example is the code that uses reflection:
+
+    <pre class='language-java line-numbers'><code>
+public class TestReflection {
+    public static void main(String[] args) {
+        try {
+            Class&lt;?&gt; aClass = Class.forName("com.company.Person");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+
+    <p>This approach is possible if the full name of the class is known. Then you can get the corresponding class using the static <span class="code text-orange">Class.forName()</span> method. This method cannot be used for primitive types. </p>
+
+    <h4>2. Using .class</h4>
+
+    <p>If a type is available but there is no instance of it, then you can get the class by adding <span class="code">.class</span> to the type name. This is the easiest way to get the class of a primitive type.</p>
+
+    <pre class='language-java line-numbers'><code>
+Class aClass = Person.class;
+</code></pre>
+
+    <h4>3. Using .getClass()</h4>
+
+    <p>If an object is available, then the easiest way to get a class is to call <span class="code text-orange">object.getClass()</span>. </p>
+
+    <pre class='language-java line-numbers'><code>
+Person person = new Person();
+Class aClass = person.getClass();
+</code></pre>
+
+    <p>What's the difference between the last two approaches?</p>
+
+    <p>Use <span class="code">A.class</span> if you know which class object you are interested in at coding time. If no instance is available, then you should use <span class="code">.class</span>.</p>
+
+    <h2>Getting the methods of a class</h2>
+
+    <p>Let's look at the methods that return the methods of our class: <span class="code text-orange">getDeclaredMethods()</span> and <span class="code text-orange">getMethods()</span>. </p>
+
+    <p><span class="code text-orange">getDeclaredMethods()</span> returns an array that contains <span class="text-orange">Method</span> objects for all declared methods of the class or interface represented by the Class object, including public, private, default, and protected methods, but not inherited methods. </p>
+
+    <p><span class="code text-orange">getMethods()</span> returns an array containing <span class="text-orange">Method</span> objects for all public methods of the class or interface represented by the Class object — those declared by the class or interface, as well as those inherited from superclasses and superinterfaces.</p>
+
+    <p>Let's take a look at how each of them works. </p>
+
+    <p>Let's start with <span class="code text-orange">getDeclaredMethods()</span>. To again help us understand the difference between the two methods, below we will work with the abstract <span class="code"><span class="text-green">Numbers</span></span> class. Let's write a static method that will convert our <span class="text-neon">Method</span> array to <span class="text-neon">List&lt;String&gt;</span>:</p>
+
+    <pre class='language-java line-numbers'><code>
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class TestReflection {
+    public static void main(String[] args) {
+        final Method[] declaredMethods = Number.class.getDeclaredMethods();
+        List&lt;String&gt; actualMethodNames = getMethodNames(declaredMethods);
+        actualMethodNames.forEach(System.out::println);
+    }
+
+    private static List&lt;String&gt; getMethodNames(Method[] methods) {
+        return Arrays.stream(methods)
+                .map(Method::getName)
+                .collect(Collectors.toList());
+    }
+}
+</code></pre>
+
+    <p>Here's the result of running this code:</p>
+
+    <div class="terminal">byteValue<br />
+shortValue<br />
+intValue<br />
+longValue<br />
+float floatValue;<br />
+doubleValue</div>
+
+    <p>These are the methods declared inside the <span class="code"><span class="text-green">Number</span></span> class. What does <span class="code text-orange">getMethods()</span> return? Let's change two lines in the example:</p>
+
+    <pre class='language-java line-numbers'><code>
+final Method[] methods = Number.class.getMethods();
+List&lt;String&gt; actualMethodNames = getMethodNames(methods);
+</code></pre>
+
+    <p>Doing this, we will see the following set of methods:</p>
+
+    <div class="terminal">byteValue<br />
+shortValue<br />
+intValue<br />
+longValue<br />
+float floatValue;<br />
+doubleValue<br />
+wait<br />
+wait<br />
+wait<br />
+equals<br />
+toString<br />
+hashCode<br />
+getClass<br />
+notify<br />
+notifyAll</div>
+
+    <p>Because all classes inherit <span class="code"><span class="text-green">Object</span></span>, our method also returns the public methods of the <span class="code"><span class="text-green">Object</span> class.</p>
+
+    <h2>Getting the fields of a class</h2>
+
+    <p>The <span class="code text-orange">getFields</span> and <span class="code text-orange">getDeclaredFields</span> methods are used to get the fields of a class. As an example, let's look at the <span class="code"><span class="text-green">LocalDateTime</span></span> class. We'll rewrite our code:</p>
+
+    <pre class='language-java line-numbers'><code>
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class TestReflection {
+    public static void main(String[] args) {
+        final Field[] declaredFields = LocalDateTime.class.getDeclaredFields();
+        List&lt;String&gt; actualFieldNames = getFieldNames(declaredFields);
+        actualFieldNames.forEach(System.out::println);
+    }
+
+    private static List&lt;String&gt; getFieldNames(Field[] fields) {
+        return Arrays.stream(fields)
+                .map(Field::getName)
+                .collect(Collectors.toList());
+    }
+}
+</code></pre>
+
+    <p>As a result of executing this code, we get the set of fields contained in the LocalDateTime class. </p>
+
+    <div class="terminal">MIN<br />
+MAX<br />
+serialVersionUID<br />
+date<br />
+time</div>
+
+    <p>By analogy with our previous examination of methods, let's see what happens if we change the code a little:</p>
+
+    <pre class='language-java line-numbers'><code>
+final Field[] fields = LocalDateTime.class.getFields();
+List&lt;String&gt; actualFieldNames = getFieldNames(fields);
+</code></pre>
+
+    <p>Output:</p>
+
+    <div class="terminal">MIN<br />
+MAX</div>
+
+    <p>Now let's figure out the difference between these methods.</p>
+
+    <p>The <span class="code text-orange">getDeclaredFields</span> method returns an array of <span class="text-neon">Field</span> objects for all fields declared by the class or interface represented by this <mark class="green">Class</mark> object.</p>
+
+    <p>The <span class="code text-orange">getFields</span> method returns an array of <span class="text-neon">Field</span> objects for all <span class="code">public</span> fields of the class or interface represented by the <mark class="green">Class</mark> object.</p>
+
+    <p>Now let's look inside <span class="code"><span class="text-green">LocalDateTime</span>.</p>
+
+<img data-max-width="800" data-id="220253a8-a0cd-4251-b1a9-0360fc3ccdb8" src="https://cdn.codegym.cc/images/article/220253a8-a0cd-4251-b1a9-0360fc3ccdb8/800.jpeg" alt="">
+
+    <p>The class's <mark>MIN</mark> and <mark>MAX</mark> fields are public, which means they will be visible through the <span class="code text-orange">getFields</span> method. By contrast, the <mark>date</mark>, <mark>time</mark>, <mark>serialVersionUID</mark> methods have the <span class="code">private</span> modifier, which means they will not be visible through the <span class="code text-orange">getFields</span> method, but we can get them using <span class="code text-orange">getDeclaredFields</span>. This is how we can access Field objects for <span class="code">private</span> fields.</p>
+
+    <h2>Descriptions of other methods</h2>
+
+    <p>Now its time to talk about some methods of the <span class="code"><span class="text-green">Class</span> class, namely:</p>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Method</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getModifiers</span></td>
+                <td>Getting the modifiers for our class</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getPackage</span></td>
+                <td>Getting the package that contains our class</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getSuperclass</span></td>
+                <td>Getting the parent class</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getInterfaces</span></td>
+                <td>Getting an array of interfaces implemented by a class</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getName</span></td>
+                <td>Getting the fully qualified class name</td>
+            </tr>
+            <tr>
+                <td><span class="code text-orange">getSimpleName</span></td>
+                <td>Getting the name of a class</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>getModifiers()</h4>
+
+    <p>Modifiers can be accessed using a <mark class="green">Class</mark> object. </p>
+
+    <p>Modifiers are keywords like <span class="text-user"><span class="text-bold">public</span></span>, <span class="text-user"><span class="text-bold">static</span></span>, <span class="text-user"><span class="text-bold">interface</span></span>, etc. We get modifiers using the <span class="code text-orange">getModifiers()</span> method:</p>
+
+    <pre class='language-java line-numbers'><code>
+Class&lt;Person&gt; personClass = Person.class;
+int classModifiers = personClass.getModifiers();
+</code></pre>
+
+    <p>This code sets the value of an <mark class="user">int</mark> variable that is a bit field. Each access modifier can be turned on or off by setting or clearing the corresponding bit. We can check modifiers using the methods in the <span class="code"><span class="text-green">java.lang.reflect.Modifier</span></span> class:</p>
+
+    <pre class='language-java line-numbers'><code>
+import com.company.Person;
+import java.lang.reflect.Modifier;
+
+public class TestReflection {
+    public static void main(String[] args) {
+        Class&lt;Person&gt; personClass = Person.class;
+        int classModifiers = personClass.getModifiers();
+
+        boolean isPublic = Modifier.isPublic(classModifiers);
+        boolean isStatic = Modifier.isStatic(classModifiers);
+        boolean isFinal = Modifier.isFinal(classModifiers);
+        boolean isAbstract = Modifier.isAbstract(classModifiers);
+        boolean isInterface = Modifier.isInterface(classModifiers);
+
+        System.out.printf("Class modifiers: %d%n", classModifiers);
+        System.out.printf("Is public: %b%n", isPublic);
+        System.out.printf("Is static: %b%n", isStatic);
+        System.out.printf("Is final: %b%n", isFinal);
+        System.out.printf("Is abstract: %b%n", isAbstract);
+        System.out.printf("Is interface: %b%n", isInterface);
+    }
+}
+</code></pre>
+ 
+    <p>Recall what the declaration of our <span class="code"><span class="text-green">Person</span></span> looks like:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Person {
+   …
+}
+</code></pre>
+
+    <p>We get the following output:</p>
+
+    <div class="terminal">Class modifiers: 1<br />
+Is public: true<br />
+Is static: false<br />
+Is final: false<br />
+Is abstract: false<br />
+Is interface: false</div>
+
+    <p>If we make our class abstract, then we have:</p>
+
+    <pre class='language-java line-numbers'><code>
+public abstract class Person { … }
+</code></pre>
+
+    <p>and this output:</p>
+
+    <div class="terminal">Class modifiers: 1025<br />
+Is public: true<br />
+Is static: false<br />
+Is final: false<br />
+Is abstract: true<br />
+Is interface: false</div>
+
+    <p>We changed the access modifier, which means we also changed the data returned through the static methods of the <span class="code"><span class="text-green">Modifier</span> class.</p>
+
+    <h4>getPackage()</h4>
+
+    <p>Knowing only a class, we can get information about its package:</p>
+
+    <pre class='language-java line-numbers'><code>
+Class&lt;Person&gt; personClass = Person.class;
+final Package aPackage = personClass.getPackage();
+System.out.println(aPackage.getName());
+</code></pre>
+
+    <h4>getSuperclass()</h4>
+
+    <p>If we have a Class object, then we can access its parent class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+    Class&lt;Person&gt; personClass = Person.class;
+    final Class&lt;? super Person&gt; superclass = personClass.getSuperclass();
+    System.out.println(superclass);
+}
+</code></pre>
+
+    <p>We get the well-known <span class="code"><span class="text-green">Object</span> class:</p>
+
+    <pre class='language-java line-numbers'><code>
+class java.lang.Object
+</code></pre>
+
+    <p>But if our class has another parent class, then we will see it instead:</p>
+
+    <pre class='language-java line-numbers'><code>
+package com.company;
+
+class Human {
+    // Some info
+}
+
+public class Person extends Human {
+    private int age;
+    private String name;
+
+    // Some info
+}
+</code></pre>
+
+    <p>Here we get our parent class:</p>
+
+    <pre class='language-java line-numbers'><code>
+class com.company.Human
+</code></pre>
+
+    <h4>getInterfaces()</h4>
+
+    <p>Here's how we can get the list of interfaces implemented by the class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public static void main(String[] args) {
+    Class&lt;Person&gt; personClass = Person.class;
+    final Class&lt;?&gt;[] interfaces = personClass.getInterfaces();
+    System.out.println(Arrays.toString(interfaces));
+}
+</code></pre>
+
+    <p>And let's not forget to change our <span class="code"><span class="text-green">Person</span> class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class Person implements Serializable { … }
+</code></pre>
+
+    <p>Output:</p>
+
+    <div class="terminal">[interface java.io.Serializable]</div>
+
+    <p>A class can implement many interfaces. That's why we get an array of <mark class="green">Class</mark> objects. In the Java Reflection API, interfaces are also represented by <mark class="green">Class</mark> objects.</p>
+
+    <p><span class="text-bold">Please note:</span> The method returns only the interfaces implemented by the specified class, not its parent class. To get a complete list of interfaces implemented by the class, you need to refer to both the current class and all its ancestors up the inheritance chain.</p>
+
+    <h4>getName() &amp; getSimpleName() &amp; getCanonicalName() </h4>
+
+    <p>Let's write an example involving a primitive, a nested class, an anonymous class, and the <span class="code"><span class="text-green">String</span> class:</p>
+
+    <pre class='language-java line-numbers'><code>
+public class TestReflection {
+    public static void main(String[] args) {
+        printNamesForClass(int.class, "int class (primitive)");
+        printNamesForClass(String.class, "String.class (ordinary class)");
+        printNamesForClass(java.util.HashMap.SimpleEntry.class,
+                "java.util.HashMap.SimpleEntry.class (nested class)");
+        printNamesForClass(new java.io.Serializable() {
+                }.getClass(),
+                "new java.io.Serializable(){}.getClass() (anonymous inner class)");
+    }
+
+    private static void printNamesForClass(final Class&lt;?&gt; clazz, final String label) {
+        System.out.printf("%s:%n", label);
+        System.out.printf("\tgetName()):\t%s%n", clazz.getName());
+        System.out.printf("\tgetCanonicalName()):\t%s%n", clazz.getCanonicalName());
+        System.out.printf("\tgetSimpleName()):\t%s%n", clazz.getSimpleName());
+        System.out.printf("\tgetTypeName():\t%s%n%n", clazz.getTypeName());
+    }
+}
+</code></pre>
+
+    <p>Result of our program:</p>
+
+    <div class="terminal">int class (primitive):<br />
+	getName()): int<br />
+	getCanonicalName()): int<br />
+	getSimpleName()): int<br />
+	getTypeName(): int<br />
+ <br />
+String.class (ordinary class):<br />
+	getName()): java.lang.String<br />
+	getCanonicalName()): java.lang.String<br />
+	getSimpleName()): String<br />
+	getTypeName(): java.lang.String<br />
+ <br />
+java.util.HashMap.SimpleEntry.class (nested class):<br />
+	getName()): java.util.AbstractMap$SimpleEntry<br />
+	getCanonicalName()): java.util.AbstractMap.SimpleEntry<br />
+	getSimpleName()): SimpleEntry<br />
+	getTypeName(): java.util.AbstractMap$SimpleEntry<br />
+ <br />
+new java.io.Serializable(){}.getClass() (anonymous inner class):<br />
+	getName()): TestReflection$1<br />
+	getCanonicalName()): null<br />
+	getSimpleName()):	<br />
+	getTypeName(): TestReflection$1</div>
+
+    <p>Now let's analyze our program's output:</p>
+
+    <ul>
+        <li><p><span class="code text-orange">getName()</span> returns the name of the entity.</p></li>
+        <li><p><span class="code text-orange">getCanonicalName()</span> returns the canonical name of the base class, as defined by the Java Language Specification. Returns null if the base class does not have a canonical name (that is, if it is a local or anonymous class or an array whose element type does not have a canonical name).</p></li>
+        <li><p><span class="code text-orange">getSimpleName()</span> returns the simple name of the base class as specified in the source code. Returns an empty string if the base class is anonymous. </p></li>
+        <li><p><span class="code text-orange">getTypeName()</span> returns an informative string for the name of this type.</p></li>
+    </ul>

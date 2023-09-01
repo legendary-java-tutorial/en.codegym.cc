@@ -1,0 +1,96 @@
+Creating tables
+<p>----------------------------------------</p>
+Meaningful creation of tables. Keys in the table. Data type settings.
+<p>----------------------------------------</p>
+the previous lectures, we already got a little acquainted with queries for creating tables, now it's time to delve deeper into this.</p>
+<p>Creating a table is very similar to declaring a class in Java and has this pattern:</p>
+<pre><code><strong><span class="text-red">CREATE TABLE</span> <span class="text-orange">table_name</span> (
+	<span class="text-green">column1</span> <span class="text-user">datatype</span>,
+	<span class="text-green">column2</span> <span class="text-user">datatype</span>,
+	<span class="text-green">column3</span> <span class="text-user">datatype</span>,
+   ....
+);</strong>
+</code></pre>
+<p>For example, let's write a query that creates a table with users:</p>
+<pre><code><strong><span class="text-red">CREATE TABLE</span> <span class="text-orange">user</span> (
+	<span class="text-green">id</span> <span class="text-user">INT</span>,
+	<span class="text-green">name</span> <span class="text-user">VARCHAR(100)</span>,
+	<span class="text-green">level</span> <span class="text-user">INT</span>,
+	<span class="text-green">created_date</span> <span class="text-user">DATE</span>,
+);</strong>
+</code></pre>
+<p>It looks very simple, because a lot of nuances are not indicated here.</p>
+<p>First, the table may have additional settings.</p>
+<p>And secondly, each column can have additional settings.</p>
+<p>And we will start with the settings for creating columns.</p>
+<h2>Keys in the table</h2>
+<p>In addition to the name and data type, a table column can also have the following settings:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <td><strong>PRIMARY KEY</strong></td>
+    <td>The column is the key of the table</td>
+   </tr>
+   <tr>
+    <td><strong>UNIQUE KEY</strong></td>
+    <td>All column values ​​must be unique.</td>
+   </tr>
+   <tr>
+    <td><strong>DEFAULT value</strong></td>
+    <td>Default value</td>
+   </tr>
+   <tr>
+    <td><strong>NOT NULL</strong></td>
+    <td>The prohibition to accept the value NULL</td>
+   </tr>
+   <tr>
+    <td><strong>AUTO_INCREMENT</strong></td>
+    <td>SQL Server will automatically increment the value when a new record is added to the table</td>
+   </tr>
+   <tr>
+    <td><strong>GENERATED</strong></td>
+    <td>Calculated field</td>
+   </tr>
+   <tr>
+    <td><strong>STORAGE</strong></td>
+    <td>Where to store data: on disk or in memory</td>
+   </tr>
+   <tr>
+    <td><strong>COMMENT</strong></td>
+    <td>Column comment, e.g. title in local language</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Below we will look at some of them.</p>
+<p>First, it's <strong>PRIMARY KEY</strong> .</p>
+<p>Most often, this is a separate column with the name id and the type INT. This is the so-called "master key" of the table, and all of its rows have unique values ​​for this key. It is primarily used so that other tables can refer to the records of our table and point to its specific record.</p>
+<p>Second is <strong>UNIQUE KEY</strong> .</p>
+<p>In some ways, it is similar to PRIMARY KEY, although its semantic load is completely different. If a column has the UNIQUE attribute, then all values ​​in that column must be unique. A good example of the difference between UNIQUE KEY and PRIMARY KEY is the list of people in the passport office.</p>
+<p>The tax number is a PRIMARY KEY, it is used to make it easy to refer to the right person from other tables.</p>
+<p>The passport number is a UNIQUE KEY. No two people can have the same passport number. However, the passport number can be changed. For example, when changing the surname. And the tax number will stay with you forever. This is the main task of PRIMARY KEY. An example of a query specifying the PRIMARY KEY:</p>
+<pre><code><strong><span class="text-red">CREATE TABLE</span> <span class="text-orange">user</span> (
+	<span class="text-green">id</span> <span class="text-user">INT</span> <span class="text-red">PRIMARY KEY</span>,
+	<span class="text-green">name</span> <span class="text-user">VARCHAR(100)</span>,
+	<span class="text-green">level</span> <span class="text-user">INT</span>,
+	<span class="text-green">created_date</span> <span class="text-user">DATE</span>,
+);</strong>
+</code></pre>
+<h2>Data type settings</h2>
+<p>There are less important but useful attributes.</p>
+<p><strong>DEFAUL value</strong></p>
+<p>When inserting data (adding a new row) into a table, you can leave out the values ​​of some columns if they have a default value. In this case, the SQL server will simply set the value of the column itself.</p>
+<p>Starting with version 8 of MySQL, you can specify an expression as a value.</p>
+<p><strong>NOT NULL</strong></p>
+<p>If you specify the NOT NULL attribute for a column when creating a table, then SQL Server will ensure that it is impossible to store a NULL value in this column. By default, any column can have a NULL value, even an INT column. Which is a bit non-obvious for a Java programmer.</p>
+<p><strong>AUTO_INCREMENT</strong></p>
+<p>It is usually used for column id's. When you add a new row to a table, you really want the SQL server to assign an id for this entry. Who better than the server knows how many rows he has in the table. Especially if requests from different clients go to the same SQL server.</p>
+<p>This is exactly what the AUTO_INCREMENT attribute does. When adding a new row, we simply do not pass anything as an id, and SQL server will specify the correct ID for this record: it will simply take the ID of the last existing record and increase it by 1. This attribute can only be used with integer and real number types. And, of course, let's make an example of creating such a table:</p>
+<pre><code><strong><span class="text-red">CREATE TABLE</span> <span class="text-orange">user</span> (
+	<span class="text-green">id</span> <span class="text-user">INT</span> <span class="text-viola">PRIMARY KEY</span> <span class="text-red">AUTO_INCREMENT</span>,
+	<span class="text-green">name</span> <span class="text-user">VARCHAR(100)</span> <span class="text-red">NOT NULL</span>,
+	<span class="text-green">level</span> <span class="text-user">INT</span> <span class="text-red">DEFAULT 1</span>,
+	<span class="text-green">created_date</span> <span class="text-user">DATE</span> <span class="text-red">NOT NULL</span>,
+);</strong>
+</code></pre>

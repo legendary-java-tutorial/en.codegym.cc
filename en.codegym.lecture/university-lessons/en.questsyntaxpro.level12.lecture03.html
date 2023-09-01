@@ -1,0 +1,64 @@
+Working with ArrayList
+<p>----------------------------------------</p>
+How ArrayList Works ArrayList is the most common class in Java for storing elements. So how does this ArayList work and why does everyone like it so much? The ArrayList device is simple and ingenious at its core. Inside each ArrayList object there are two fields: An array with a list of elements
+<p>----------------------------------------</p>
+<h2>1. How <code>ArrayList</code> is structured</h2>
+<p><code>ArrayList</code> is the Java class used most commonly for storing elements. So how does <code>ArrayList</code> work and why does everyone like it so much?</p>
+<p>The structure of <code>ArrayList</code> is simple and ingenious. Each <code>ArrayList</code> object contains two fields:</p>
+<ul>
+    <li>An array of elements</li>
+    <li>A <code>size</code> variable, which stores the number of elements in the list</li>
+</ul>
+<p>Internally, an <code>ArrayList</code> object contains a most ordinary array! But that's not all. There is also a <strong>size</strong> variable, which stores the length of the list. This is how it works:</p>
+<p>Initially, the length of the array inside the list is 10. And the <code>size</code> variable is 0.</p>
+<p>If you add an element to the list, it will be stored in the 0th cell of the array, and <code>size</code> will increase to 1.</p>
+<p>If you add one more element, it will be stored in the 1st cell, and <code>size</code> will again increase by 1 and become equal to two.</p>
+<p>If you add another element when there is no more space in the array, then the following happens in the <code>add()</code> method:</p>
+<ol>
+    <li><strong>A new array is created</strong> that is one and a half times the length of the previous one</li>
+    <li>All <strong>the elements of the old array are copied</strong> into the new array.</li>
+    <li>In the <code>ArrayList</code> object, <strong>a reference to the new array replaces the reference to the old one</strong>.</li>
+    <li><strong>The passed element is saved</strong> in the 10th cell of the new array.</li>
+    <li>The <strong>size</strong><strong> variable increases by 1</strong> and will now equal 11</li>
+</ol>
+<p>Something similar happens when adding (inserting) an element in the middle of the list. The existing elements are shifted by 1 to the right, and the passed element is written to the newly freed cell of the array.</p>
+<p>Now we'll consider the most basic scenarios involving lists:</p>
+<hr>
+<h2>2. Adding an element to an <code>ArrayList</code></h2>
+<p>Let's take a look at what happens inside the list when elements are added to it. Immediately after an ArrayList object is created, we have something like this in memory:</p>
+<p><img data-max-width="1024" data-id="aa855e4c-c2bc-4c3f-91e0-1452bc922c12" src="https://cdn.codegym.cc/images/article/aa855e4c-c2bc-4c3f-91e0-1452bc922c12/1024.jpeg" alt="Adding an element to an ArrayList"></p>
+<p>We have an <code>ArrayList</code> object that contains two fields (two variables): a container (the <code>data</code> array) and the number of stored elements (<code>size</code>). The <code>data</code> variable stores a reference to a container (array) that can store 10 elements.</p>
+<p>If we decide to add the number 5 to the array, we get the following picture:</p>
+<p><img data-max-width="1024" data-id="9649f989-e1eb-48e6-ae7e-8106b56d4316" src="https://cdn.codegym.cc/images/article/9649f989-e1eb-48e6-ae7e-8106b56d4316/1024.jpeg" alt="Adding an element to an ArrayList 2"></p>
+<p>The array now stores the element 5, and <code>size == 1</code>.</p>
+<p>If someone calls the <code>size()</code> method on our <code>ArrayList</code> object now, the return value will be the number of elements stored in the list: 1. <span class="text-green">The number of elements in the list is not the same as the storage capacity of the array.</span></p>
+<p>Neither the current storage capacity nor the array itself will ever be accessible (visible) outside the <code>ArrayList</code> object. This is and always will be the <code>ArrayList</code>'s internal data.</p>
+<p>Let's add 7 more numbers to the list: 10, 20, 30, 40, 50, 60, 70.</p>
+<p>Now memory will look like this:</p>
+<p><img data-max-width="1024" data-id="873b469e-5bbc-4965-a6a2-26bbffb925a6" src="https://cdn.codegym.cc/images/article/873b469e-5bbc-4965-a6a2-26bbffb925a6/1024.jpeg" alt="Adding an element to an ArrayList"></p>
+<p>If you call the <code>size()</code> method now, it will return the number 8, which is the new number of elements in the list. This value has nothing to do with the size of the internal array.</p>
+<div class="lesson-note lesson-note--important">
+    <div class="lesson-note__container">
+        <div class="lesson-note__head">Important:</div>
+        <div class="lesson-note__content">
+            <p>There is one oversimplification in this picture.</p>
+            <p>The <code>ArrayList</code> class can't store primitive types, so it uses the <code>Integer</code> type rather than <code>int</code>. The container does not directly store the values {5, 10, 20, 30, 40, 50, 60, 70}, but rather references to <code>Integer</code> objects. All the empty cells in the container store <code>null</code>.</p>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.pro.task12.task1212"></div>
+<hr>
+<h2>3. Increasing the length of a list</h2>
+<p>Let's take a look at what happens inside a list when there are no more empty cells in its internal array.</p>
+<p>Suppose we have a list of 10 elements:</p>
+<p><img data-max-width="1024" data-id="62aa6a4f-b787-4b77-a30a-496d0bdfe4ee" src="https://cdn.codegym.cc/images/article/62aa6a4f-b787-4b77-a30a-496d0bdfe4ee/1024.jpeg" alt="Increasing the length of a list"></p>
+<p>We decide to add the number <strong>100</strong> to it. This is what happens in the <code>add()</code> method:</p>
+<p>Step 1 — Create a new array:</p>
+<p><img data-max-width="1024" data-id="a8c0c438-33c1-43e9-af89-7110d522d923" src="https://cdn.codegym.cc/images/article/a8c0c438-33c1-43e9-af89-7110d522d923/1024.jpeg" alt="Increasing the length of a list 2"></p>
+<p>Step 2 — Copy all elements from the old array to the new one:</p>
+<p><img data-max-width="1024" data-id="997512eb-5acc-4d60-8235-dae379254fd5" src="https://cdn.codegym.cc/images/article/997512eb-5acc-4d60-8235-dae379254fd5/1024.jpeg" alt="Increasing the length of a list 2"></p>
+<p>Step 3 — Replace the old array (change the reference to the <code>ArrayList</code> object's internal array):</p>
+<p><img data-max-width="1024" data-id="cc7dbf1d-28e4-4412-8ecd-49d3992639e5" src="https://cdn.codegym.cc/images/article/cc7dbf1d-28e4-4412-8ecd-49d3992639e5/1024.jpeg" alt="Increasing the length of a list 3 "></p>
+<p>Step 4 — Add the new number, which is what we worked so hard to accomplish:</p>
+<p><img data-max-width="1024" data-id="a2a13a4c-7774-44f7-bd5d-f2887ba61adb" src="https://cdn.codegym.cc/images/article/a2a13a4c-7774-44f7-bd5d-f2887ba61adb/1024.jpeg" alt="Increasing the length of a list 4"></p>

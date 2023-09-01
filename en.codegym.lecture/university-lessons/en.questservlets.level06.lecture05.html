@@ -1,0 +1,175 @@
+class attribute
+<p>----------------------------------------</p>
+class attribute and style tag Selector, types of selectors
+<p>----------------------------------------</p>
+<h2>6.1 The class attribute and the style tag</h2>
+<p>But that's not all. After hundreds of "styles" were invented, the question arose: how to use them? And then they came
+    up with the idea of ​​grouping them into “classes”. These are, of course, not the same classes as in Java. Just
+    special style groups.</p>
+<p>And if before using “classes” you had a picture:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present language"><code>
+       &lt;img src="logo.png" <span class="text-red">style</span>="<span class="text-green">width=100px;</span><span
+         class="text-user">height=100px;</span><span class="text-viola">opacity=0.5"</span>&gt;
+    </code></pre>
+</div>
+<p>Now it could be written as:</p>
+<pre class="line-numbers"><code>
+
+&lt;img src="logo.png" <span class="text-red">class</span>="<span class="text-orange">picture</span>"&gt;
+ 
+&lt;style&gt;
+    img.<span class="text-orange">picture</span> {
+<span class="text-green">        width=100px;</span>
+<span class="text-user">        height=100px;</span>
+<span class="text-viola">        opacity=0.5</span>
+    }
+&lt;/style&gt;
+</code></pre>
+<p>We created a special one <code class="text-orange">«стиль» picture</code>and transferred the style values ​​from the
+    <code class="text-red">style</code>. And then we tied the &lt;img&gt; and the "style" picture with the tag <code
+            class="text-red">class</code>.</p>
+<h2>6.2 Selector, types of selectors</h2>
+<p>These styles, rendered separately, became known as <code>классами</code>or <code>selectors</code>. They have several
+    important features.</p>
+<p>One <code>html-element</code>can have multiple selectors. Their names are indicated with a space. Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present language"><code>
+       &lt;img src="logo.png" <span class="text-red">class</span>="<span class="text-green">picture </span><span
+         class="text-user">main</span>"&gt;
+    </code></pre>
+</div>
+<p>One reason we've touched on selectors here is because they can be applied automatically. And this useful property
+    will be used very often in the future. Including Java developers.</p>
+<p>Here is a short list of them:</p>
+<pre><code></code></pre>
+<div class="table-container">
+    <table>
+        <tbody>
+        <tr>
+            <th width="40">#</th>
+            <th width="160">Selector</th>
+            <th>Example</th>
+            <th width="250">Description</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td><strong>*</strong></td>
+            <td>
+     <pre><code>* {
+  margin: 0;
+  padding: 0;
+}
+</code></pre>
+            </td>
+            <td>Applies to all elements of an HTML document.</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><strong>#id</strong></td>
+            <td>
+     <pre><code>#img123 {
+   width:100px;
+   height 100px;
+}</code></pre>
+            </td>
+            <td>The # is followed by the id of the element to which the given style is to be applied.</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><strong>tag</strong></td>
+            <td>
+     <pre><code>table {
+   color: black;
+}</code></pre>
+            </td>
+            <td>Applies to all tables in the document.</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><strong>tag.selector</strong></td>
+            <td>
+     <pre><code>table.important {
+   color: red;
+}</code></pre>
+            </td>
+            <td>Applies to all document tables that have the class attribute specified.</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td><strong>.selector</strong></td>
+            <td>
+     <pre><code>.picture {
+  opacity: 0.5
+}</code></pre>
+            </td>
+            <td>Applies to all elements that have the class attribute specified. Any tag.</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td><strong>parent child</strong></td>
+            <td>
+     <pre><code>main article {
+  color: blue;
+}</code></pre>
+            </td>
+            <td>Applies to all elements where the parent tag contains the main class and the child tag contains the
+                article class.
+            </td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td><strong>tag: link</strong></td>
+            <td>
+     <pre><code>a:link {
+color: blue;
+}</code></pre>
+            </td>
+            <td>The :link pseudo-class is used to style links that the user hasn't clicked on yet.</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td><strong>tag:visited</strong></td>
+            <td>
+     <pre><code>a:visited {
+color: red;
+}</code></pre>
+            </td>
+            <td>The :link pseudo-class is used to style links that the user has already clicked on.</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td><strong>tag:checked</strong></td>
+            <td>
+     <pre><code>input[type=radio]:checked {
+ border: 1px solid black;
+}</code></pre>
+            </td>
+            <td>This pseudo-class will select only checked UI elements: radio buttons or checkboxes.</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td><strong>tag: hover</strong></td>
+            <td>
+     <pre><code>div:hover {
+  background: red;
+}</code></pre>
+            </td>
+            <td>This pseudo-class allows you to change the style of an element when hovering over it with the mouse.
+            </td>
+        </tr>
+        <tr>
+            <td>eleven</td>
+            <td><strong>tag:first child</strong></td>
+            <td>
+     <pre><code>ul li:first-child {
+ border-top: none;
+}</code></pre>
+            </td>
+            <td>This pseudo-class will only allow the first child element to be selected.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p>You don't have to memorize it all. But it would be good if you studied this table a couple of times and all this was
+    deposited in your head. Without the web in modern life, nowhere, and on the web - nowhere without selectors.</p>

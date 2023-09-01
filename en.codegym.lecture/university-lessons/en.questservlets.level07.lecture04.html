@@ -1,0 +1,66 @@
+Working with the Document Object Model (DOM)
+<p>----------------------------------------</p>
+document.getElementById( document.createElement() window.navigate() method Current URL
+<p>----------------------------------------</p>
+<h2>5.1 document.getElementById()</h2>
+<p>As you know, JavaScript was created to add some animation to HTML pages. So far, we haven't said much about it. How
+    to add this same animation? How, for example, to change the color of an element?</p>
+<p>To change the color of an element, you first need to find this element. To do this, there is a function <code>document.getElementById();</code>You
+    write in your HTML <code>id</code>at the desired element, and then access it from JavaScript. Example:</p>
+<pre class="line-numbers"><code>
+&lt;head&gt;
+<span class="text-yellow">    &lt;script&gt;</span>
+        function <span class="text-green">changeImage</span>()
+        {
+           var <span class="text-viola">image</span> = document.getElementById("image123");
+            <span class="text-viola">image</span>.src = <span class="text-green"><span
+        class="text-red">"new-image.png"</span></span>;
+        }
+<span class="text-yellow">    &lt;/script&gt;</span>
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;img <span class="text-red">id="image123"</span> scr="big-image.png" <span
+        class="text-user">onclick</span>="<span class="text-green">changeImage()</span>"&gt;
+&lt;/body&gt;
+</code></pre>
+<p>After the user clicks on the image, the function is called <code>changeImge()</code>. Inside it, we get the element
+    <code>image</code>by its <code>ID</code>, and then change the value of its src attribute to a new one. Which will
+    cause the element <code>img</code>to load a new image.</p>
+<h2>5.2 document.createElement()</h2>
+<p>In addition to getting an element, we can also create new elements and delete existing ones.</p>
+<p>Creating elements is very easy. To do this, you need to do two things: a) <strong>create an element</strong> , b)
+    <strong>add it</strong> to the right place in the document. It usually looks like this:</p>
+<pre class="line-numbers"><code>
+&lt;head&gt;
+<span class="text-yellow">    &lt;script&gt;</span>
+        window.<span class="text-red">onload</span> = function ()   {
+            var <span class="text-user">image</span> = document.<span class="text-red">createElement</span>(<span
+        class="text-green">"IMG"</span>);
+            var <span class="text-user">image</span>.src = <span class="text-green">"big-image.png";</span>
+            document.body.<span class="text-red">addAfter</span>(<span class="text-user">image</span>);
+        }
+<span class="text-yellow">    &lt;/script&gt;</span>
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+</code></pre>
+<h2>5.3 window.navigate() method</h2>
+<p>Another very useful method is the <code>window.navigate()</code>. With it, you can force the browser to load a new
+    page instead of the current one. Just pass it <code>URL</code>to this method and call it. Example:</p>
+<pre class="line-numbers"><code>
+  &lt;body&gt; 
+    &lt;img scr="big-image.png" <span class="text-red">onclick</span>="<span class="text-green">window.navigate('https://google.com');</span>"&gt; 
+  &lt;/body&gt; 
+
+</code></pre>
+<p>In the example above, after the user clicks on the image, the page google.com will be loaded into the current
+    tab.</p>
+<h2>5.4 Current URL</h2>
+<p>And one more useful thing. Sometimes a script needs to know the current page URL. For example, the same script can be
+    added to different pages. How to do it?</p>
+<p>There is a special property for this.<code>document.location.href</code></p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span></span><code
+        class=" language-java"><span class="token keyword">var</span> currentURL <span class="token operator">=</span> document<span
+        class="token punctuation">.</span>location<span class="token punctuation">.</span>href<span
+        class="token punctuation">;</span></code></pre>

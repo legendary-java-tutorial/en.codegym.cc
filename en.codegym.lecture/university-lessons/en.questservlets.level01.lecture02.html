@@ -1,0 +1,43 @@
+Archetypes in Maven
+<p>----------------------------------------</p>
+There is another way to create a Maven project in IDEA - based on the archetype...
+<p>----------------------------------------</p>
+<h2>Getting to know Archetypes</h2>
+
+<p>is another way to create a Maven project in IDEA - based on an archetype:</p><img data-max-width="1024" data-id="ba39b165-cff9-4d4e-ae7c-f5d9edbd8cb0" alt="Maven project in IDEA" src="https://cdn.javarush.com/images/article/ba39b165-cff9-4d4e-ae7c-f5d9edbd8cb0/1024.jpeg" style="width: 1024px;">
+<p>Here it is proposed to create a project based on one of the existing <span class="text-bold">archetypes</span> . What are these archetypes and why do we need them?</p>
+<p>Maven has standardized project templates - such templates are called archetypes. Remember the starting structure of the project - <span class="text-bold">the src</span> , <span class="text-bold">java</span> , <span class="text-bold">test</span> folders, and so on? So this folder structure is set using the archetype.</p>
+<p>There are sample templates on the official <a href="https://maven.apache.org/archetypes/index.html" target="_blank">Maven website</a> . With their help, you can generate different start-up projects - a simple application, a plugin, a website.</p>
+<p>The list of available archetypes can be obtained by running the following command in the console: <span class="text-yellow">mvn archetype:generate</span></p>
+<h2>Popular archetypes</h2>
+<p>The most popular archetypes are:</p>
+<ul>
+ <li><span class="text-bold">maven-archetype-quickstart</span> ;</li>
+ <li><span class="text-bold">maven-archetype-</span> site</li>
+ <li><span class="text-bold">maven-archetype-webapp</span> ;</li>
+ <li><span class="text-bold">maven-archetype-j2ee-simple</span> ;</li>
+ <li><span class="text-bold">jpa-maven-archetype</span> ;</li>
+ <li><span class="text-bold">spring-mvc-quickstart</span> .</li>
+</ul>
+<p>If you want to create an empty Java project, then use the <span class="text-bold">maven-archetype-quickstart</span> archetype . It was the result of his work that you saw when creating a project in IDEA in the last lecture.</p>
+<p>If you want to create a web application that will run inside a web server, display HTML pages and all that, then you can safely take the <span class="text-bold">maven-archetype-webapp</span> archetype as a basis .</p>
+<p><span class="text-bold">You can use the maven-archetype-site</span> archetype to create a site . Or even the maven-archetype-site-simple archetype if a very simple site is expected. Try different options and see which one you like best.</p>
+<p>To work with Hibernate or JPA, you can use the <span class="text-bold">jpa-maven-archetype</span> archetype .</p>
+<p>And finally, there is also a special archetype for working with Spring - <span class="text-bold">spring-mvc-quickstart</span> . It will be very useful for beginners. More similar information on the latter can be found here, <a href="https://github.com/kolorobot/spring-mvc-quickstart-archetype" target="_blank">at the link</a> .</p>
+<p>Why are archetypes good? They wean to write projects from scratch. Nobody writes projects just in Java anymore. Modern projects are written on a technology stack: a list of 5-10 frameworks and a couple of dozen libraries is the modern “language in which I write”.</p>
+<h2>Web application on Maven</h2>
+<p>Separately, I would like to dwell on the <span class="text-bold">maven-archetype-webapp</span> archetype .</p>
+<p>This is a classic web application written in Java. And although it is a little outdated after the popularity of Spring, you, as a beginner, will find it very useful. What do you need to know about this archetype?</p>
+<p>It allows you to build a simple <span class="text-bold">web application</span> - the build result will be <span class="text-bold">a .war file</span> . Deploy can be configured so that your web application is immediately added to Tomcat. Finally, you can experiment with primitive servlets and JSPs.</p>
+<p>If you create a project based on this archetype, you will get the following folder structure:</p><img data-max-width="512" data-id="0cffc06b-44e6-4dfc-b4ad-1ced138a8211" alt="Maven project in IDEA 2" src="https://cdn.javarush.com/images/article/0cffc06b-44e6-4dfc-b4ad-1ced138a8211/512.jpeg" style="width: 512px;">
+<p>Here are a few interesting things:</p>
+<ul>
+ <li>webapp folder;</li>
+ <li>WEB-INF folder;</li>
+ <li>web.xml file;</li>
+ <li>index.jsp</li>
+</ul>
+<p>Firstly, there is a <span class="text-bold">webapp</span> folder (from Web Application), in which all the resources of your web application will be stored.</p>
+<p>Secondly, the <span class="text-bold">web.xml</span> file is <span class="text-green">the web application deployment descriptor</span> . It describes how your web application should interact with the web server and its clients.</p>
+<p>Thirdly, there is an <span class="text-bold">index.jsp</span> file , which is a fairly simple form of a servlet. It's working and you can experiment with your first JSP servlet by changing it.</p>
+<p>We will talk about all this in more detail in the topic dedicated to servlets and web applications.</p>

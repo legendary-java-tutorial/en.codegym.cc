@@ -1,0 +1,153 @@
+Grouping data
+<p>----------------------------------------</p>
+GROUP BY operator Complex queries with GROUP BY Column names in the result
+<p>----------------------------------------</p>
+nguage is very powerful. In addition to simple data fetching, it allows you to group data at query time. For example, we want to know how many kinds of products of each brand we have, how can we do that?</p>
+<p>There is a special operator for this <code>GROUP BY</code>, here is how it is written.</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">GROUP BY</span> <span class="text-green">column</span></code></pre>
+</div>
+<p>Let's write a query that asks SQL to display the number of product types for each brand. Such a request would look something like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span> <span class="text-green">brand</span><span class="token punctuation">,</span> <span class="token function"><span class="text-user">COUNT</span></span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">product</span>
+<span class="text-red">GROUP BY</span> <span class="text-green">brand</span></code></pre>
+</div>
+<p>You will get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>brand</th>
+    <th>count(*)</th>
+   </tr>
+   <tr>
+    <td>(NULL)</td>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>Bosch</td>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+    <td>6</td>
+   </tr>
+   <tr>
+    <td>LG</td>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>Smartflower</td>
+    <td>1</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's carefully analyze what kind of request we wrote, and what kind of result we got. As a result, we see two columns. The first with a list of brands, which is logical. We wanted to get something like a set of pairs <strong>"brand --&gt; quantity"</strong> .</p>
+<p>Please note that among the brand names there is a word <code>NULL</code>. Indeed, we have products in the brand in which it is written <code>NULL</code>, and we see them here. A little unexpected, but helpful. We can see how many unbranded products there are.</p>
+<p>Now let's take a closer look at the request. We wanted to know the number of products of each brand, so we wrote <code>GROUP BY brand</code>, and in <code>SELECT</code>we wrote <strong>brand</strong> and the expression<code>COUNT(*)</code></p>
+<p><code>COUNT(*)</code>is a so-called aggregate function that is performed on a group of rows. In our case, she simply counts their number. There are a lot of such functions, and we will look at them a little later.</p>
+<h2>3.2 Complex queries with GROUP BY</h2>
+<p>Now let's write a query where we first discard products whose price is less than 10, and then group them. Such a request would look something like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span> <span class="text-green">brand</span><span class="token punctuation">,</span> <span class="token function"><span class="text-user">COUNT</span></span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">product</span>
+<span class="text-brown">WHERE</span> <span class="text-green">price</span> <span class="token operator">&gt;</span> <span class="token number">10</span>
+<span class="text-red">GROUP BY</span> <span class="text-green">brand</span></code></pre>
+</div>
+<p>You will get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>brand</th>
+    <th>count(*)</th>
+   </tr>
+   <tr>
+    <td>Bosch</td>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+    <td>5</td>
+   </tr>
+   <tr>
+    <td>LG</td>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>Smartflower</td>
+    <td>1</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>All NULL products disappeared from our results table, as they were very cheap, and the number of IKEA products decreased by 1. From 6 to 5.</p>
+<p>This suggests that you first apply <code>WHERE</code>the desired lines to filter, and only then apply the grouping to the result.</p>
+<h2>3.3 Column names of the result</h2>
+<p>By the way, you can give names to the resulting columns. See how the server suggested the name <code>count(*)</code>? Let's replace it with total. Such a request would look something like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span> <span class="text-green">brand</span><span class="token punctuation">,</span> <span class="token function"><span class="text-user">COUNT</span></span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="text-red">AS</span> <span class="text-viola">total</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">product</span>
+<span class="text-brown">WHERE</span> <span class="text-green">price</span> <span class="token operator">&gt;</span> <span class="token number">10</span>
+<span class="text-red">GROUP BY</span> <span class="text-green">brand</span></code></pre>
+</div>
+<p>You will get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>brand</th>
+    <th>total</th>
+   </tr>
+   <tr>
+    <td>Bosch</td>
+    <td>4</td>
+   </tr>
+   <tr>
+    <td>IKEA</td>
+    <td>5</td>
+   </tr>
+   <tr>
+    <td>LG</td>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>Smartflower</td>
+    <td>1</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>You can also rename existing columns. Let's take one of the previously used queries and add new names to the columns.</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">SELECT</span>
+<span class="text-green">id</span> <span class="token class-name"></span><span class="text-red"><span class="token class-name">AS</span> </span> <span class="text-viola">product_id</span><span class="token punctuation">,</span>
+<span class="text-green">name</span> <span class="token class-name"><span class="text-red">AS</span></span> <span class="text-viola">product_name</span><span class="token punctuation">,</span>
+<span class="text-green">price</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">product</span>
+<span class="text-brown">WHERE</span> <span class="text-green">price</span> <span class="token operator">&lt;</span> <span class="token number">20</span> AND <span class="text-green">brand</span> <span class="text-brown">IS NOT NULL</span></code></pre>
+</div>
+<p>You will get the following query result:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>product_id</th>
+    <th>product_name</th>
+    <th>price</th>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Chair</td>
+    <td>5.00</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>Lamp</td>
+    <td>15.00</td>
+   </tr>
+  </tbody>
+ </table>
+</div>

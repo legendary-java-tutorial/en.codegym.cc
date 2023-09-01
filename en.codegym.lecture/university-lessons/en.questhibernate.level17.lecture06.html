@@ -1,0 +1,157 @@
+Caching in MySQL
+<p>----------------------------------------</p>
+DB-side caching Current caching status Caching efficiency Where cache is not used
+<p>----------------------------------------</p>
+uses highly scalable algorithms when working with tables, so MySQL can run even with small amounts of memory. Naturally, for better performance, you need more RAM.</p>
+<p>To view the current settings, connect to the database</p>
+<pre><code>
+#mysq -u root -p
+
+mysql&gt; show variables like 'query_cache%';
++------------------------------+-----------+
+| Variable_name                | Value     |
++------------------------------+-----------+
+| query_cache_limit            | 1048576   |
+| query_cache_min_res_unit     | 4096      |
+| query_cache_size             | 134217728 |
+| query_cache_type             | ON        |
+| query_cache_wlock_invalidate | OFF       |
++------------------------------+-----------+
+5 rows in set (0.00 sec)
+</code></pre>
+<p>First, make sure caching is enabled. Variable:</p>
+<ul>
+ <li><code>query_cache_type</code>must be ON (1) or DEMAND (2)</li>
+ <li><code>query_cache_limit</code>- determines the maximum size of the result that will get into the cache</li>
+ <li><code>query_cache_size</code>be different from zero. When using DEMAND, only requests that contain the directive will be cached<code>SQL_CACHE;</code></li>
+ <li><code>query_cache_min_res_unit</code>the minimum size of the allocated block of memory for storing the results of the cached query. MySQL does not store the cache in one large chunk of memory, instead it allocates blocks with a minimum size <code>query_cache_min_res_unit</code>(=4KB by default) on demand. The last such block is truncated to the data size, and the remaining memory is freed.</li>
+</ul>
+<p>The effect of caching is that when the server receives a request, it looks to see if the hash of the request is in the cache. If the hash matches - the server immediately returns the result - without parsing the request, optimizing, etc. overhead - accompanied by a caching mechanism - browsing the cache, writing the query result to the cache, etc.</p>
+<p>And if you have a lot of small requests in the cache, then this can lead to memory fragmentation due to a large number of free blocks. And this, in turn, causes cached entries to be deleted due to lack of memory. In this case, it makes sense to decrease the value of <code>query_cache_min_res_unit</code>. If most of your queries produce large results, then increasing this setting can improve performance.</p>
+<p>Let's try to evaluate the effect. We look at how the cache hit counters change (Qcahe_hits), the number of requests declared invalid due to lack of memory (Qcache_lowmem_prunes), the total number of requests of the SELECT type (and only they are cached):</p>
+<pre><code>
+#mysq -u root -p
+mysql&gt; show status like 'Qcache%';
++-------------------------+-----------+
+| Variable_name           | Value     |
++-------------------------+-----------+
+| Qcache_free_blocks      | 715       |
+| Qcache_free_memory      | 130369640 |
+| Qcache_hits             | 24209     |
+| Qcache_inserts          | 16215     |
+| Qcache_lowmem_prunes    | 0         |
+| Qcache_not_cached       | 444       |
+| Qcache_queries_in_cache | 1740      |
+| Qcache_total_blocks     | 4225      |
++-------------------------+-----------+
+8 rows in set (0.00 sec)
+</code></pre>
+<h2>7.2 Current cache status</h2>
+<p>To monitor <strong>the query cache</strong> is used <code>SHOW STATUS</code>:</p>
+<pre><code>
+mysql&gt; SHOW STATUS LIKE 'Qcache_%';
++-------------------------+----------+
+| Variable_name           | Value    |
++-------------------------+----------+
+| Qcache_free_blocks      | 10       |
+| Qcache_free_memory      | 16755496 |
+| Qcache_hits             | 49812    |
+| Qcache_inserts          | 103999   |
+| Qcache_lowmem_prunes    | 0        |
+| Qcache_not_cached       | 180      |
+| Qcache_queries_in_cache | 6        |
+| Qcache_total_blocks     | 28       |
++-------------------------+----------+
+8 rows in set (0.00 sec)
+</code></pre>
+<ul>
+ <li><code>Qcache_free_blocks</code>shows how many free blocks there are in the cache (will decrease as cached requests increase);</li>
+ <li><code>Qcache_total_blocks</code>— the number of occupied blocks;</li>
+ <li><code>Qcache_free_memory</code>- shows the free "available" memory for caching;</li>
+ <li><code>Qcache_hits</code>- the number of requests, the results of which were taken from the cache, without actually accessing the database;</li>
+ <li><code>Qcache_inserts</code>- the number of requests that were added to the cache;</li>
+ <li><code>Qcache_lowmem_prunes</code>- the number of requests that were removed from the cache due to lack of memory;</li>
+ <li><code>Qcache_not_cached</code>- the number of requests that were not written to the cache due to the use of time management functions, etc.;</li>
+ <li><code>Qcache_queries_in_cache</code>- the number of requests that are in the cache.</li>
+</ul>
+<p>You can view the total number of SELECT queries:</p>
+<pre><code>
+mysql&gt; show status like 'Com_select';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| Com_select    | 16719 |
++---------------+-------+
+1 row in set (0.00 sec)
+</code></pre>
+<h2>7.3 Caching efficiency</h2><span class="text-viola">
+ <p>“It is recommended to evaluate the effectiveness of the cache by dividing the value of the variable <code>Qcache_hits на Qcache_hits + Com_select</code>, since when processing a request, the Qcache_hits counter increases (if the request is processed from the cache) or Com_select (if the request is not cached). This method is suggested in "Mysql Performance Optimization" O'reilly</p>
+ <p>There is another way online</p>
+ <pre><code>qcache_hit_ratio = qcache_hits / (qcache_hits + qcache_inserts + qcache_not_cached)
+</code></pre>
+ <p>If this value is &gt; 0.8, then 80% of your requests are cached, which is a very good indicator.</p>
+ <p>If <code>%</code>the cache hit is low, then you need to increase the value <code> query_cache_size</code>.</p></span>
+<p>The current value can be viewed like this:</p>
+<pre><code>SHOW VARIABLES LIKE 'query_cache_size';
+</code></pre>
+<p>Again, the question arises: how to choose an adequate value<code>query_cache_size?</code></p>
+<p>This will help <code>Qcache_lowmem_prunes</code>. This variable stores the number of requests that have been removed from the cache due to the need to cache new requests. It is necessary to strive for such a cache size at which <code>Qcache_lowmem_prunes</code>it will increase only slightly. To do this, it is recommended to compare the difference in values <code>Qcache_lowmem_prunes</code>​​per hour and the number of requests received by mysql in the same hour.</p><span class="text-viola">
+ <p>“In practice, one of 2 formulas can be used to calculate query_cache_size:</p>
+ <pre><code>query_cache_size = (number of requests for 10 minutes)*(average response volume на request) * 1,2
+</code></pre>
+ <p>or</p>
+ <pre><code>query_cache_size = (number of requests for 10 minutes)*(average response volume на request) * 1,2
+</code>query_cache_size = (traffic volume in 10 minutes) * 1.2 "</pre></span>
+<p>This will cache requests for 10 minutes + give an additional 20% memory for cache fragmentation and additional caching reserve</p>
+<p>You can calculate the number and average volume of a response to a request using the <strong>Bytes_sent</strong> variables , respectively</p>
+<p>And so <code>query_cache_size</code>we increased the values, after which you should pay attention to the values <code>Qcache_total_blocks</code>​​, <code>Qcache_free_blocks</code>and <code>Qcache_queries_in_cache</code>. MySQL stores cache in blocks. For 1 request, 2 blocks are needed: one for the request text itself, the second for the result.</p>
+<p>If we consider the table from the value<code>Qcache%</code></p>
+<p>Total number of cache blocks<code>Qcache_total_blocks – 28</code></p>
+<p>Request 6 is cached now, which means 6 * 2 = 12 blocks are busy</p>
+<p>Free blocks <code>Qcache_free_blocks – 10</code>. The more idle <code>Qcache_free_blocks</code>, the greater the degree of "fragmentation" of the cache.</p>
+<p>If most queries have a small amount of resulting data, then it is worth reducing the minimum cache block size <code>query_cache_min_res_unit</code>, which is 4 KB by default.</p>
+<p>If most requests return a lot of data, then it is worth increasing the size of the cache block.</p>
+<p>The main thing is to achieve a minimum value <code>Qcache_free_blocks</code>.</p>
+<p>If the counter <code>Qcache_not_cached</code>is large, you can try to increase the variable <code>query_cache_limit</code>- it will allow you to increase the limit and cache the results of queries that "do not fit".</p>
+<p>The following configuration variables are responsible for using the query cache:</p>
+<ul>
+ <li><code>query_cache_size</code>— the size of the query cache. <code>query_cache_size = 0</code>disables cache usage;</li>
+ <li><code>query_cache_limit</code>- the size of the maximum sample stored in the cache;</li>
+ <li><code>query_cache_wlock_invalidate</code>- determines whether the data will be taken from the cache if the table to which they belong is locked for reading.</li>=
+</ul>
+<p>To enable mysql query caching, just add the following lines to <strong>my.cnf</strong> (Section [mysqld]):</p>
+<pre><code>
+query_cache_size = 268435456
+query_cache_type =1 
+query_cache_limit =1 048576
+</code></pre>
+<p>And restart the service.</p>
+<h2>7.4 Where the cache is not used</h2>
+<p><strong>Not cached:</strong></p>
+<ul>
+ <li>Requests from<code>SQL_NO_CACHE</code></li>
+ <li>Prepared queries<code>(Prepared statements);</code></li>
+ <li>Queries that are subqueries of the outer query;</li>
+ <li>Queries inside stored procedures and functions;</li>
+ <li>Queries that use functions: 
+  <p><code>BENCHMARK ()</code>, <code>CONNECTION_ID ()</code>, <code>CONVERT_TZ ()</code>, <code>CURDATE ()</code>, <code>CURRENT_DATE ()</code>, <code>CURRENT_TIME ()</code>, <code>CURRENT_TIMESTAMP ()</code>, <code>CURTIME ()</code>, <code>DATABASE ()</code>, <code>ENCRYPT ()</code>with one argument, <code>FOUND_ROWS ()</code>, <code>GET_LOCK ()</code>, <code> LAST_INSERT_ID ()</code>, <code>LOAD_FILE ()</code>, <code>MASTER_POS_WAIT ()</code>, <code>NOW ()</code>, <code>RAND ()</code>, <code>RELEASE_LOCK ()</code>, <code>SLEEP ()</code>, <code>SYSDATE ()</code>, <code>UNIX_TIMESTAMP ()</code>without arguments, <code>USER ()</code>,<code>UUID ();</code></p></li>
+ <li>Queries using stored functions, user variables or referencing tables in <strong>mysql</strong> system databases or <strong>INFORMATION_SCHEMA;</strong></li>
+ <li>• Requests in the following forms:</li>
+ <ul>
+  <li><code>SELECT ... IN SHARE MODE</code></li>
+  <li><code>SELECT ... FOR UPDATE</code></li>
+  <li><code>SELECT ... INTO OUTFILE ...</code></li>
+  <li><code>SELECT ... INTO DUMPFILE ...</code></li>
+  <li><code>SELECT * FROM ... WHERE autoincrement_col IS NULL</code></li>
+ </ul>
+ <li>Queries with temporary tables or not using tables at all;</li>
+ <li>Requests generating warnings (warnings);</li>
+</ul>
+<p><strong>You can defragment the cache with the command:</strong></p>
+<pre><code>mysql&gt;flush query cache;
+</code></pre>
+<p>Clear - command:</p>
+<pre><code>mysql&gt;flush query cache;
+</code></pre>
+<p>The most important</p>
+<p><mark class="red">Never work in production with default settings</mark>. This will result in most of the server's resources not being used. Proper MySQL tuning can improve database performance by several times. This will not only speed up the application, but also cope with a heavy load.</p>

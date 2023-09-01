@@ -1,0 +1,236 @@
+Order of initialization when using constructors and static blocks
+<p>----------------------------------------</p>
+Order of initialization when using constructors and static blocks
+<p>----------------------------------------</p>
+<p>Let's look at the order in which code is executed in initialization blocks (static and non-static), constructors, and initialization of static and non-static fields. We'll investigate what happens in practice, by executing code.</p>
+
+<p>To start, we have a class with a full set of every possible element:</p>
+
+<pre class='language-java line-numbers'><code>
+public class MyClass {
+    static {
+        System.out.println("Static Block #1.");
+    }
+
+    public static String staticField = setStaticField();
+
+    public MyClass() {
+        System.out.println("Constructor.");
+    }
+
+    static {
+        System.out.println("Static Block #2.");
+    }
+
+    {
+        System.out.println("Initialization Block #1.");
+    }
+
+    public String nonStaticField = setNonStaticField();
+
+    {
+        System.out.println("Initialization Block #2.");
+    }
+
+    private String setNonStaticField() {
+        System.out.println("Non-static field.");
+        return "nonStaticField";
+    }
+
+    private static String setStaticField() {
+        System.out.println("Static field.");
+        return "staticField";
+    }
+
+    public static void print() {
+        System.out.println("print() method.");
+    }
+}
+</code></pre>
+
+<p>Now, alongside this class, we'll create another one with a <span class="code text-orange">main</span> method and then run it:</p>
+
+<pre class='language-java line-numbers'><code>
+public class Solution {
+    public static void main(String args[]) {
+        System.out.println("hello");
+    }
+}
+</code></pre>
+<p>The output includes nothing from the <code>MyClass</cpde> class. There were no calls to <code>MyClass</code> methods, so the class was not even loaded. Let's now try to call the static <code>print()</code> method of the <code>MyClass</code> class. Twice.</p>
+<pre class='language-java line-numbers'><code>
+public class Solution {
+    public static void main(String args[]) {
+        MyClass.print();
+        MyClass.print();
+    }
+}
+</code></pre>
+
+<p>Output:</p>
+
+<div class="terminal">Static Block #1.<br />
+Static field.<br />
+Static Block #2.<br />
+print() method.<br />
+print() method.</div>
+
+<p>Only the static initialization blocks were executed and the static field was initialized. And this happened only once. That's because the class was already loaded when we made the second call to the <span class="code text-orange">print()</span> method. Remember: static fields are initialized and initialization blocks are executed once upon the first interaction with the class.</p>
+
+<p><span class="text-orange"><span class="text-bold">Note that static blocks are executed and fields are initialized in the order they are declared.</span></span></p>
+
+<p>Next, instead of calling a static method, let's try creating two objects of our class:</p>
+
+<pre class='language-java line-numbers'><code>
+public class Solution {
+    public static void main(String args[]) {
+        new MyClass();
+        System.out.println();
+        new MyClass();
+    }
+}
+</code></pre>
+
+<p>Output:</p>
+
+<div class="terminal">Static Block #1.<br />
+Static field.<br />
+Static Block #2.<br />
+Initialization Block #1.<br />
+Non-static field.<br />
+Initialization Block #2.<br />
+Constructor.<br />
+<br />
+Initialization Block #1.<br />
+Non-static field.<br />
+Initialization Block #2.<br />
+Constructor.</div>
+
+<p>First, static blocks are executed and static fields are initialized once. After that, each time an object is created, the non-static blocks, fields, and a constructor are processed. The fields and initialization blocks are processed in the order of their declaration, but the constructor is processed at the end — no matter where it is declared.</p>
+
+<p>Let's complicate the example — we'll take two classes, where one of them inherits the other:</p>
+
+<pre class='language-java line-numbers'><code>
+public class ParentClass {
+    static {
+        System.out.println("Static Block #1 of the parent class.");
+    }
+
+    public static String parentStatic = setParentStatic();
+
+    static {
+        System.out.println("Static Block #2 of the parent class.");
+    }
+
+    {
+        System.out.println("Initialization Block #1 of the parent class.");
+    }
+
+    public String parentNonStatic = setParentNonStatic();
+
+    {
+        System.out.println("Initialization Block #2 of the parent class.");
+    }
+
+    public ParentClass() {
+        System.out.println("Constructor of the parent class.");
+    }
+
+    private String setParentNonStatic() {
+        System.out.println("Non-static field of the parent class.");
+        return "parentNonStatic";
+    }
+
+    private static String setParentStatic() {
+        System.out.println("Static field of the parent class.");
+        return "parentStatic";
+    }
+
+    public String setChildNonStatic1() {
+        System.out.println("Non-static field of the child class #1.");
+        return "childNonStatic2" + parentNonStatic;
+    }
+}
+ 
+public class ChildClass extends ParentClass {
+    static {
+        System.out.println("Static Block #1 of the child class.");
+    }
+
+    public static String childStatic = setChildStatic();
+
+    static {
+        System.out.println("Static Block #2 of the child class.");
+    }
+
+    public String childNonStatic1 = setChildNonStatic1();
+
+    {
+        System.out.println("Initialization Block #1 of the child class.");
+    }
+
+    public String childNonStatic2 = setChildNonStatic2();
+
+    {
+        System.out.println("Initialization Block #2 of the child class.");
+    }
+
+    public ChildClass() {
+        System.out.println("Constructor of the child class.");
+    }
+
+    private String setChildNonStatic2() {
+        System.out.println("Non-static field of the child class #2.");
+        return "childNonStatic";
+    }
+
+    private static String setChildStatic() {
+        System.out.println("Static field of the child class.");
+        return "childStatic";
+    }
+}
+</code></pre>
+
+<p>Let's create two objects of the child class:</p>
+
+<pre class='language-java line-numbers'><code>
+public class Solution {
+    public static void main(String[] args) {
+        new ChildClass();
+        System.out.println();
+        new ChildClass();
+    }
+}
+</code></pre>
+
+<p>Output:</p>
+
+<div class="terminal">Static Block #1 of the parent class.<br />
+Static field of the parent class.<br />
+Static Block #2 of the parent class.<br />
+Static Block #1 of the child class.<br />
+Static field of the child class.<br />
+Static Block #2 of the child class.<br />
+Initialization Block #1 of the parent class.<br />
+Non-static field of the parent class.<br />
+Initialization Block #2 of the parent class.<br />
+Constructor of the parent class.<br />
+Non-static field of the child class #1.<br />
+Initialization Block #1 of the child class.<br />
+Non-static field of the child class #2.<br />
+Initialization Block #2 of the child class.<br />
+Constructor of the child class.<br />
+<br />
+Initialization Block #1 of the parent class.<br />
+Non-static field of the parent class.<br />
+Initialization Block #2 of the parent class.<br />
+Constructor of the parent class.<br />
+Non-static field of the child class #1.<br />
+Initialization Block #1 of the child class.<br />
+Non-static field of the child class #2.<br />
+Initialization Block #2 of the child class.<br />
+Constructor of the child class.</div>
+
+<p>From the new output, we see that the static blocks and variables of the parent class are processed before the static blocks and variables of the child class. It's the same with non-static blocks and variables and constructors: first the parent class, then the child class. To understand why this is necessary, take a look at the example of the <span class="code text-viola">childNonStatic1</span> field of the child class. A method of the parent class is used to initialize it, and that method in turn uses a variable of the parent class. That means that when the <span class="code text-viola">childNonStatic1</span> field is initialized, the parent class and its methods must already be loaded, and the variables of the parent class must be initialized.</p>
+
+<p>In practice, you may not encounter classes that include all of these elements all at once, but it will be useful for you to remember what gets initialized before what. Oh, and this is also often asked about in job interviews.</p>

@@ -1,0 +1,214 @@
+CASE statement
+<p>----------------------------------------</p>
+CASE statement The second version of the CASE statement Solve the problem using the CASE statement
+<p>----------------------------------------</p>
+ways to write a statement in SQL <code>CASE</code>. The first entry makes it look like switch from the Java language, while the second format is more like plural <code>if-else</code>.</p>
+<p>Let's start with the first option - an analog of switch. The general format is:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">CASE</span> <span class="text-viola">case_value</span>
+	<span class="text-red">WHEN</span> <span class="text-user">value1</span> <span class="text-red">THEN</span> <span class="text-green">result1</span>
+	<span class="token punctuation">[</span><span class="text-red">WHEN</span> <span class="text-user">value2</span> <span class="text-red">THEN</span> <span class="text-green">result2</span><span class="token punctuation">]</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">[</span><span class="text-red">ELSE</span> <span class="text-green">resultN</span><span class="token punctuation">]</span>
+<span class="text-red">END</span></code></pre>
+</div>
+<p>Really very similar to <code>switch</code>, only the words are slightly different:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>SQL</th>
+    <th>Java</th>
+   </tr>
+   <tr>
+    <td>case x</td>
+    <td>switch (x) {</td>
+   </tr>
+   <tr>
+    <td>when value</td>
+    <td>case value:</td>
+   </tr>
+   <tr>
+    <td>then result</td>
+    <td>return result;</td>
+   </tr>
+   <tr>
+    <td>else result</td>
+    <td>default: return result;</td>
+   </tr>
+   <tr>
+    <td>end</td>
+    <td>}</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>Let's translate an example from Java into SQL:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Java</th>
+    <th>SQL</th>
+   </tr>
+   <tr>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">switch</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">case</span> <span class="token number">1</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token string">"one"</span><span class="token punctuation">;</span>
+   <span class="token keyword">case</span> <span class="token number">2</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token string">"two"</span><span class="token punctuation">;</span>
+   <span class="token keyword">case</span> <span class="token number">3</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token string">"three"</span><span class="token punctuation">;</span>
+   <span class="token keyword">default</span><span class="token operator">:</span> <span class="token keyword">return</span> <span class="token string">"unknown"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">CASE a
+   WHEN <span class="token number">1</span> THEN <span class="token string">'one'</span>
+   WHEN <span class="token number">2</span> THEN <span class="token string">'two'</span>
+   WHEN <span class="token number">3</span> THEN <span class="token string">'three'</span>
+   ELSE <span class="token string">'unknown'</span>
+END</code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>2.2 Second version of the CASE statement</h2>
+<p>There is also a second version of the operator <code>CASE</code>, which, as mentioned above, is more like plural <code>if-else</code>. The general format is:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">CASE</span>
+	<span class="text-red">WHEN</span> <span class="text-user">condition <span class="token number">1</span></span><span class="token number"></span> <span class="text-red">THEN</span> <span class="text-green">result1</span>
+	<span class="token punctuation">[</span><span class="text-red">WHEN</span> <span class="text-user">condition <span class="token number">2</span></span><span class="token number"></span> <span class="text-red">THEN</span> <span class="text-green">result2</span><span class="token punctuation">]</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">[</span><span class="text-red">ELSE</span> <span class="text-green">resultN</span><span class="token punctuation">]</span>
+<span class="text-red">END</span></code></pre>
+</div>
+<p>Here, the conditions are simply checked sequentially, if any of them is true, then the specified result will be returned. If none of the conditions are true, then the value specified in <code>ELSE</code>.</p>
+<p>Let's translate an example from Java into SQL:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>Java</th>
+    <th>SQL</th>
+   </tr>
+   <tr>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java"><span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> <span class="token string">"three"</span><span class="token punctuation">;</span></code></pre></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java">CASE
+   <span class="token class-name">WHEN</span> a<span class="token operator">=</span><span class="token number">3</span> THEN <span class="token string">'three'</span>
+END</code></pre></td>
+   </tr>
+   <tr>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> <span class="token string">"three"</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span>
+	<span class="token keyword">return</span> <span class="token string">"zero"</span><span class="token punctuation">;</span></code></pre></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java">CASE
+   <span class="token class-name">WHEN</span> a<span class="token operator">=</span><span class="token number">3</span> THEN <span class="token string">'three'</span>
+   ELSE <span class="token string">'zero'</span>
+END</code></pre></td>
+   </tr>
+   <tr>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> <span class="token string">"three"</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> <span class="token string">"two"</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> <span class="token string">"three"</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span>
+	<span class="token keyword">return</span> <span class="token string">"zero"</span><span class="token punctuation">;</span></code></pre></td>
+    <td>
+     <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">CASE
+   <span class="token class-name">WHEN</span> a<span class="token operator">=</span><span class="token number">1</span> THEN <span class="token string">'one'</span>
+   <span class="token class-name">WHEN</span> a<span class="token operator">=</span><span class="token number">2</span> THEN <span class="token string">'two'</span>
+   <span class="token class-name">WHEN</span> a<span class="token operator">=</span><span class="token number">3</span> THEN <span class="token string">'three'</span>
+   ELSE <span class="token string">'zero'</span>
+END</code></pre></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>2.3 Solve the problem using the CASE statement</h2>
+<p>Let's write down some interesting query. Remember, we had a task - to add the word <strong>"EXPIRED!" </strong>to the name of past tasks in the <strong>task</strong> table . It can be easily done with the <code>CASE</code>.</p>
+<p>For the <strong>deadline</strong> field , it will look like the second version of the statement <code>CASE</code>:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present"><code>
+<span class="text-red">CASE</span>
+	<span class="text-red">WHEN</span> <span class="text-green">deadline</span> &lt; <span class="text-user">CURDATE</span>() <span class="text-red">THEN</span> <span class="text-user">CONCAT</span>('EXPIRED!', <span class="text-green">name</span>)
+	<span class="text-red">ELSE</span> <span class="text-green">name</span>
+<span class="text-red">END</span>
+        </code></pre>
+</div>
+<p>An example of a complete query using the operator <code>CASE</code>:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present"><code>
+<span class="text-brown">SELECT</span>
+    <span class="text-green">id</span>,
+    <span class="text-green">emploee_id</span>,
+    <span class="text-red">CASE WHEN</span> <span class="text-green">deadline</span> &lt; <span class="text-user">CURDATE</span>() <span class="text-red">THEN</span> <span class="text-user">CONCAT</span>('EXPIRED!', <span class="text-green">name</span>) <span class="text-red">ELSE</span> <span class="text-green">name</span> <span class="text-red">END</span> <span class="text-brown">AS</span> <span class="text-viola">name</span>,
+    <span class="text-green">deadline</span>         	
+<span class="text-brown">FROM</span> <span class="text-yellow">task</span>
+        </code></pre>
+</div>
+<p>The result of this query will be:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>emploee_id</th>
+    <th>name</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>EXPIRED! Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-07-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-08-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-09-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>(NULL)</td>
+    <td>Clean up the office</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>

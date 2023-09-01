@@ -1,0 +1,70 @@
+Executing queries
+<p>----------------------------------------</p>
+Introduction to Statements. executeUpdate(). execute().
+<p>----------------------------------------</p>
+L queries can be conditionally divided into two groups:</p>
+<ul>
+ <li><strong>Retrieving data</strong> − These include the <span class="text-viola">SELECT</span> statement .</li>
+ <li><strong>Modifying data</strong> − These include <span class="text-viola">INSERT</span> , <span class="text-viola">UPDATE</span> , and <span class="text-viola">DELETE</span> statements .</li>
+</ul>
+<p><span class="text-neon"><span class="text-bold"><em>For the first group, the Statement</em></span></span> interface method already familiar to us is used - <span class="code text-orange">executeQuery()</span> . In principle, this method is quite enough to get started. It covers a very large percentage of queries that you will need to use in a real job.</p>
+<p>We'll get into more options later, but for now, I advise you to remember - if you just want to get data from a table, then the <span class="code text-orange">executeQuery ()</span> method in the vast majority of cases will be the right choice.</p>
+<p>For the second group of requests, you need to use another method of the Statement interface - <span class="code text-orange">executeUpdate()</span> . Unlike the <span class="code text-orange">executeQuery()</span> method , which returns a ResultSet, this method returns an integer that tells you <span class="text-green">how many rows in the table were changed when your query was executed</span> .</p>
+<p>For example, you can delete all rows with <span class="text-viola">the DELETE FROM employee statement (so be very careful). </span>In this case, the <span class="code text-orange">executeUpdate()</span> method will return the number of deleted rows. In some situations, knowing the number of changed rows can be useful for building algorithms for working with data.</p>
+<p>In principle, we can finish this question - we have already seen the main thing. For data fetching - <span class="code text-orange">executeQuery()</span> . To change the data - <span class="code text-orange">executeUpdate()</span> .</p>
+<p>Get <span class="text-neon">the number of users in the <strong>user</strong></span> table using the <span class="code text-orange">executeQuery()</span> method :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java">
+	<span class="token class-name">ResultSet</span> results <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeQuery</span><span class="token punctuation">(</span><span class="token string">"SELECT Count(*) FROM user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	results<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> count <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getInt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>executeUpdate()</h2>
+<p><span class="code text-orange">The executeUpdate()</span> method is used when your query changes something in a table. It could be anything:</p>
+<ul>
+ <li><span class="text-viola">UPDATE</span> statement<span class="text-viola"></span></li>
+ <li><span class="text-viola">INSERT</span> statement<span class="text-viola"></span></li>
+ <li><span class="text-viola">DELETE</span> statement<span class="text-viola"></span></li>
+ <li><span class="text-viola">CALL PROCEDURE</span> statement<span class="text-viola"></span></li>
+</ul>
+<p>This method returns the number of changed (or deleted) rows.</p>
+<p>Let's write a request that will increase the salary of all our employees by 1000 rubles.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java">
+   <span class="token keyword">int</span> rowsCount <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">executeUpdate</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>After I ran this code, it returned the number 6 on my table. My table had 6 rows. So all the lines have been changed.</p>
+<h2>execute()</h2>
+<p>Sometimes situations may arise in your life when you don’t know exactly what request you have to execute - a selection or a data change. In this case, the creators of JDBC added another generic method to it - <span class="code text-orange">execute()</span> .</p>
+<p>This method can be used in place of <span class="code text-orange">the executeQuery()</span> and <span class="code text-orange">executeUpdate()</span> methods. Do you remember how these methods differed? Right. Result type. Therefore, the creators of JDBC came up with such a solution.</p>
+<p><span class="code text-orange">The execute()</span> method returns boolean. If this value is <span class="text-green"><em>true</em></span> , then a data fetch request was in progress, and you need to call the <span class="code text-orange">getResultSet()</span> method to get the data. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+    <span class="token keyword">boolean</span> hasResults <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token string">"SELECT Count(*) FROM user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span> hasResults <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        	<span class="token class-name">ResultSet</span> results <span class="token operator">=</span>  statement<span class="token punctuation">.</span><span class="token function">getResultSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	results<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token keyword">int</span> count <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getInt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 	<span class="token punctuation">}</span></code></pre>
+<p>If this value is <span class="text-red"><em>false</em></span> , then a data change request was in progress, and you need to call the <span class="code text-orange">getUpdateCount()</span> method to get the number of rows changed. Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+    <span class="token keyword">boolean</span> hasResults <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token string">"UPDATE  employee SET salary = salary+1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token operator">!</span>hasResults <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      	<span class="token keyword">int</span> count <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">getUpdateCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 	<span class="token punctuation">}</span></code></pre>
+<p>Let's write a method that displays the result of a query:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">executeAndPrintSQLQuery</span><span class="token punctuation">(</span><span class="token class-name">String</span> sqlQuery<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ 
+        <span class="token keyword">boolean</span> hasResults <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>sqlQuery<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span> hasResults <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ 	          <span class="token class-name">ResultSet</span> results <span class="token operator">=</span>  statement<span class="token punctuation">.</span><span class="token function">getResultSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>“Your request lines below<span class="token operator">:</span> ”<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+           	<span class="token keyword">while</span> <span class="token punctuation">(</span>results<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ 	                 <span class="token class-name">Integer</span> id <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getInt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     	             <span class="token class-name">String</span> name <span class="token operator">=</span> results<span class="token punctuation">.</span><span class="token function">getString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                      <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>results<span class="token punctuation">.</span><span class="token function">getRow</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">". "</span> <span class="token operator">+</span> id <span class="token operator">+</span> <span class="token string">"\t"</span><span class="token operator">+</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	        <span class="token punctuation">}</span>
+       <span class="token punctuation">}</span>
+ 	  <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> count <span class="token operator">=</span> statement<span class="token punctuation">.</span><span class="token function">getUpdateCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>“Number of name strings<span class="token operator">:</span> ” <span class="token operator">+</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This is how <span class="code text-orange">the execute()</span> method is usually used in practice.</p>

@@ -1,0 +1,126 @@
+All methods of the Object class, the toString() method
+<p>----------------------------------------</p>
+Hello Amigo! - Hello! — Today we will study the Object class. You have already come across it, and you know that Object is the base class for all classes. It has practically no data, but there are several methods. Why does he need methods? Does anyone create its objects? - Look at the situation from this angle - ...
+<p>----------------------------------------</p>
+<a href='https://cdn.codegym.cc/images/article/d6d8a4c8-da1b-4eec-9ed9-f28473fc5e92/original.jpeg' target='_blank'><img data-id="d6d8a4c8-da1b-4eec-9ed9-f28473fc5e92" data-max-width="850" alt="All of the Object classs methods, plus more on the toString() method - 1" src="https://cdn.codegym.cc/images/article/d6d8a4c8-da1b-4eec-9ed9-f28473fc5e92/original.jpeg"></a>
+
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hi!"</span></p>
+<p>"Today we're going to study the Object class.<br />
+    You've already encountered it, and you know that Object is the base class for all classes. It has practically no data, but it does have several methods."</p>
+<p><span class="text-user">"Why does it need methods? Does anyone really create instances of the Object class?"</span></p>
+<p>"Look at it this way: the methods in the Object class are common across all classes. In other words, Java's creators identified several methods that, in their opinion, every class should have and added they them to the Object class."</p>
+<p>"And when combined with polymorphism (the ability to override the Object class's methods in derived classes), this becomes a very powerful tool."</p>
+<p>"Let's see what these methods are:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java  " data-line="" data-start=""><code>public String toString()</code></pre>
+        </td>
+        <td>Returns a string representation of the object.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java " data-line="" data-start=""><code>public native int hashCode()
+public boolean equals(Object obj)</code></pre>
+        </td>
+        <td>A pair of methods used to compare objects.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java  " data-line="" data-start=""><code>public final native Class getClass()</code></pre>
+        </td>
+        <td>Returns a special object that describes the current class.</td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java " data-line="" data-start=""><code>public final native void notify()
+public final native void notifyAll()
+public final native void wait(long timeout)
+public final void wait(long timeout, intnanos)
+public final void wait()</code></pre>
+        </td>
+        <td>Methods for controlling access to an object from different threads. For thread synchronization.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java  " data-line="" data-start=""><code>protected void finalize()</code></pre>
+        </td>
+        <td>This method lets you release native non-Java resources: close files, streams, etc.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="line-numbers language-java  " data-line="" data-start=""><code>protected native Object clone()</code></pre>
+        </td>
+        <td>This method lets you clone an object: creates a duplicate of the object.</td>
+    </tr>
+    </tbody>
+</table>
+<p>"These methods can be divided into 6 groups. You're already familiar with some of them, and we'll get acquainted with the rest in subsequent lessons."</p>
+<p><span class="text-user">"For some reason, I'm not seeing anything useful here."</span></p>
+<p>"Amigo! If these methods weren't important, they wouldn't have added them to every single object! So, I'd advise you to look more closely at what these are and why they are needed. If they seem unimportant to you, then you either didn't understand something or didn't understand something correctly."</p>
+<p><span class="text-user">"OK. I'll listen carefully."</span></p>
+<p><strong>"Let's start with the toString() method.</strong></p>
+<p>"This method lets you get a text description of any object. Its implementation in the Object class is very simple:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">return getClass().getName() + "@" + Integer.toHexString(hashCode());</span></code></pre>
+<p>"getClass() and hashCode() are also methods of Object class.<br />
+    Calling this method typically produce a result like this:"</p>
+<pre class="line-numbers language-java" data-line="" data-start=""><code><span class="text-green">java.lang.Object@12F456</span></code></pre>
+<p><span class="text-user">"And what good is such a description?"</span></p>
+<p>"This description lets you know the class of the object that the method was called on. You can also distinguish between objects; different objects will have different digits after the @ symbol."</p>
+<p>"But this method's real value lies elsewhere. This method can be overwritten in any class to return a more detailed or suitable object description."</p>
+<p>"But there's more. Because you can get a text representation of each object, Java made it possible for you to implement support for 'adding' Strings to objects.<br />
+    Check it out:"</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th>What really happens</th>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java  " data-line="" data-start=""><code>int age = 18;
+System.out.println("Age is " + age);
+
+</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java  " data-line="" data-start=""><code>String s = String.valueOf(18);
+String result = "Age is " + s;
+System.out.println(result);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java  " data-line="" data-start=""><code>Student st = new Student("Vincent");
+System.out.println("Student is " + st);
+
+</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java  " data-line="" data-start=""><code>Student st = new Student("Vincent");
+String result = "Student is " + st.toString();
+System.out.println(result);</code></pre>
+        </td>
+    </tr>
+    <tr>
+        <td>
+<pre class="line-numbers language-java  " data-line="" data-start=""><code>Car car = new Porsche();
+System.out.println("My car is " + car);
+
+</code></pre>
+        </td>
+        <td>
+<pre class="line-numbers language-java  " data-line="" data-start=""><code>Car car = new Porsche();
+String result = "My car is " + car.toString();
+System.out.println(result);</code></pre>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>"Yeah, I use this regularly. Especially when I'm writing a program or looking for bugs. It's a useful operation."</p>

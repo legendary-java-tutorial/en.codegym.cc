@@ -1,0 +1,161 @@
+Useful Data Mapping Scenarios
+<p>----------------------------------------</p>
+Mapim enum. Mapim Boolean. Calculated fields. @Embedded. 
+<p>----------------------------------------</p>
+d out how to map primitive data types: we use the <span class="text-yellow"><span class="text-bold">@Column</span></span> annotation and the <span class="text-yellow"><span class="text-bold">@Type</span></span> annotation . But not all cases can be covered by these annotations. And the most common case is <strong>enum</strong> .</p>
+<p>Java enum objects can be stored in the database in two ways:</p>
+<ul>
+ <li>as a number</li>
+ <li>as a string</li>
+</ul>
+<p>Let's write a small example where the user will have a favorite color, which is set using enum.</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+<span class="token keyword">enum</span> <span class="token class-name">Color</span> <span class="token punctuation">{</span>
+   RED<span class="token punctuation">,</span>
+   ORANGE<span class="token punctuation">,</span>
+   YELLOW<span class="token punctuation">,</span>
+   GREEN<span class="token punctuation">,</span>
+   BLUE<span class="token punctuation">,</span>
+   VIOLET
+<span class="token punctuation">}</span></code></pre>
+<p>And add a color field to the <span class="code"><span class="text-green">User</span></span> class :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+ 
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"favorite_color"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Color</span> favoriteColor<span class="token punctuation">;</span>
+ 
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_date"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>If we want Hibernate to save the Color type to the base <strong>as numbers</strong> , then we need the field<mark>favoriteColor</mark>add annotation:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Enumerated</span><span class="token punctuation">(</span><span class="token class-name">EnumType</span><span class="token punctuation">.</span>ORDINAL<span class="token punctuation">)</span></code></pre>
+<p>If we want the values ​​to be stored <strong>as strings</strong> , then we need to add an annotation:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Enumerated</span><span class="token punctuation">(</span><span class="token class-name">EnumType</span><span class="token punctuation">.</span>STRING<span class="token punctuation">)</span></code></pre>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+ 
+   <span class="token annotation punctuation">@Enumerated</span><span class="token punctuation">(</span><span class="token class-name">EnumType</span><span class="token punctuation">.</span>ORDINAL<span class="token punctuation">)</span> <span class="token comment">//value will be saved to the base as a number</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"favorite_color"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Color</span> favoriteColor<span class="token punctuation">;</span>
+ 
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_date"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Mapim Boolean</h2>
+<p>The second useful scenario is boolean type mapping. It just so happened historically that SQL does not have its own data type for Boolean and anything is used there instead.</p>
+<p>The three most common options are:</p>
+<ul>
+ <li>1 or 0</li>
+ <li>'F' or 'T'</li>
+ <li>'Y' or 'N'</li>
+</ul>
+<p>In general, if you are going to design your base, then it is better to write the BIT type right away. Well, the full mapping for it will look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java">
+	<span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"is_correct"</span><span class="token punctuation">,</span> columnDefinition <span class="token operator">=</span> <span class="token string">"BIT"</span><span class="token punctuation">)</span>
+	<span class="token annotation punctuation">@Type</span><span class="token punctuation">(</span>type <span class="token operator">=</span> <span class="token string">"org.hibernate.type.NumericBooleanType"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> isCorrect<span class="token punctuation">;</span></code></pre>
+<p>Well, if you are not designing the database, then see the table above and think about how to correctly map the types you need.</p>
+<h2>Calculated fields</h2>
+<p>Sometimes the number of fields in an Entity class and the number of columns in a table do not match. There may be several reasons for this.</p>
+<p>The most common is when there is some field in our Entity class that we <span class="text-red">do not want to save</span> to the database. Everything is clear with this - just add the <span class="text-yellow"><span class="text-bold">@Transient</span></span> annotation to such a field and Hibernate will ignore it when working with the database.</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Entity</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Square"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Square</span> <span class="token punctuation">{</span>
+           	<span class="token annotation punctuation">@Id</span>
+           	<span class="token keyword">public</span> <span class="token class-name">Long</span> id<span class="token punctuation">;</span>
+ 
+           	<span class="token keyword">public</span> <span class="token class-name">Integer</span> width<span class="token punctuation">;</span>
+ 
+           	<span class="token keyword">public</span> <span class="token class-name">Integer</span> height<span class="token punctuation">;</span>
+ 
+           	<span class="token annotation punctuation">@Transient</span>
+           	<span class="token keyword">public</span> <span class="token class-name">Integer</span> total<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This is a good option, but when reading an object from the database, the total field will be null. And we would like it to contain the product of width*height. This can also be done in Hibernate. <span class="text-yellow"><span class="text-bold">There is a special @Formula</span></span> annotation for this .</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Entity</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"Square"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Square</span> <span class="token punctuation">{</span>
+           	<span class="token annotation punctuation">@Id</span>
+           	<span class="token keyword">public</span> <span class="token class-name">Long</span> id<span class="token punctuation">;</span>
+ 
+           	<span class="token keyword">public</span> <span class="token class-name">Integer</span> width<span class="token punctuation">;</span>
+ 
+           	<span class="token keyword">public</span> <span class="token class-name">Integer</span> height<span class="token punctuation">;</span>
+ 
+           	<span class="token annotation punctuation">@Formula</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">" width * height "</span><span class="token punctuation">)</span>
+          	<span class="token keyword">public</span> <span class="token class-name">Integer</span> total<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Such a field will not be saved to the database, and when the object is read from the database, the value calculated by the formula will be written to it.</p>
+<p>The SQL query will look something like this:</p>
+<pre><code> <span class="text-red">SELECT</span> <span class="text-green">id</span>, <span class="text-green">width</span>, <span class="text-green">height</span>, (<span class="text-green">width</span>* <span class="text-green">height</span>) <span class="text-red">AS</span> <span class="text-viola">total</span> <span class="text-red">FROM</span> <span class="text-orange">Square</span>;</code></pre>
+<h2>@Embedded</h2>
+<p>Another useful annotation is <span class="text-yellow"><span class="text-bold">@Embedded</span></span> . It allows you to consider the fields of the child object as fields of the Entity class itself.</p>
+<p>Let's say you have a <span class="code"><span class="text-green">User</span></span> class and you decide to add an address to it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+ 
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_address_country"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> country<span class="token punctuation">;</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_address_city"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> city<span class="token punctuation">;</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_address_street"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> street<span class="token punctuation">;</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_address_home"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> home<span class="token punctuation">;</span>
+ 
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_date"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Everything seems to be fine, but from the point of view of Java, it would be logical to put the address in a separate class. The address is still a separate entity. But how to do this if all this information is stored in the database in the user table?</p>
+<p><span class="text-yellow"><span class="text-bold">The @Embedded</span></span> annotation will help us . First, we will create the <span class="code"><span class="text-green">UserAddress</span></span> class and put all the information on the user's address into it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Embeddable</span>
+<span class="token keyword">class</span> <span class="token class-name">UserAddress</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_address_country"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> country<span class="token punctuation">;</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_address_city"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> city<span class="token punctuation">;</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_address_street"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> street<span class="token punctuation">;</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_address_home"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">String</span> home<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And then we use a field of this class in our <span class="code"><span class="text-green">User</span></span> class :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span>
+<span class="token punctuation">{</span>
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+ 
+   <span class="token annotation punctuation">@Embedded</span>
+   <span class="token keyword">public</span> <span class="token class-name">UserAddress</span> address<span class="token punctuation">;</span>
+ 
+   <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"created_date"</span><span class="token punctuation">)</span>
+   <span class="token keyword">public</span> <span class="token class-name">Date</span> createdDate<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><span class="text-yellow"><span class="text-bold">Thanks to the @Embedded</span></span> annotation, at the time of saving the object, Hibernate will understand that the fields of the <span class="code"><span class="text-green">UserAddress class need to be treated as fields of the </span></span><span class="code"><span class="text-green">User</span></span> class itself .</p>
+<p><strong>Important! </strong>If you decide to add two <span class="code"><span class="text-green">UserAddress fields to your </span></span><span class="code"><span class="text-green">User</span></span> class , then using <span class="text-yellow"><span class="text-bold">@Embedded</span></span> will no longer work: you will have duplicate fields and you will need to separate them somehow. This is done by overriding annotations: using the <span class="text-yellow"><span class="text-bold">@AttributeOverrides</span></span> annotation .<span class="code"><span class="text-green"></span></span><span class="text-yellow"><span class="text-bold"></span></span><span class="text-yellow"><span class="text-bold"></span></span></p>
+<p>I want you to know this, but we won't go into detail here. I think this is enough for you to break your head. For the curious, I can leave a link to <a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#naming" target="_blank" rel="nofollow">the official documentation</a> .</p>

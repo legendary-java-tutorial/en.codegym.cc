@@ -1,0 +1,119 @@
+The invention of the internet
+<p>----------------------------------------</p>
+The history of HTML HTML is not a programming language The advent of the HTTP protocol The first browsers
+<p>----------------------------------------</p>
+<h2>1.1 History of HTML</h2>
+<p>Nowadays almost all people use the Internet. Read articles, use a browser, follow links. And only a few of them are
+    wondering <strong>when and by whom was the Internet invented?</strong></p>
+<p>It still depends on what you call the Internet. Most often, the layman means one thing, and the technician means
+    another. The computer network connecting the world's largest data centers was created back in the 70s. But the
+    Internet accessible to an ordinary person (browser, links, all sorts of pages) <strong>was invented by one person in
+        the early 90s</strong> . And it was like this...</p>
+<p>In the early 1990s, Briton <strong>Tim Berners-Lee</strong> invented the Internet. Although, nevertheless, what he
+    invented is more correctly called the Web:, <code>World Wide Web</code>he is <code>www</code>, he is also the World
+    Wide Web. Yes, one man invented the World Wide Web.</p>
+<p>From 1986-1991 he worked at the CERN Research Center (in Geneva, Switzerland) on a new scientific documentation
+    standard. You see, it is customary for scientists to publish scientific papers in the form of articles, and at the
+    end of the articles to indicate the list of used literature. In other words, scientific knowledge is a list of
+    articles with links to each other.</p>
+<p>By the way, <span
+        class="text-green">modern Wikipedia very much resembles how its creator saw the World Wide Web</span> :
+    scientific articles with links to each other, a list of sources and literature used. And if Tim was lucky, then the
+    web would still be like this. But on the way to a brighter future, the world took a wrong turn somewhere :)</p>
+<p>The web is based on three technologies:</p>
+<ul>
+    <li><code>HTML-page</code>, which contains text, pictures, and links to other<code>HTML-pages.</code></li>
+    <li>• A browser that displays <code>HTML-page</code>in the most human-friendly way.</li>
+    <li>• Protocol <code>http</code>- a standard for web servers to communicate with browsers and each other.</li>
+</ul>
+<p>Tim Berners-Lee didn't so much invent these things as he standardized them. <code>HTML</code>- was created on the
+    basis of the standard <code>SGML</code>. Tags were also borrowed from there. But the world's first web browser
+    called <code>WorldWideWeb</code>Tim wrote himself, and back in 1990.</p>
+<h2>1.2 HTML is not a programming language</h2>
+<p><code>HTML</code>it is not a programming language and never has been. Never say that. Even if you will write a
+    resume, never indicate <code>HTML</code>in the programming languages ​​section, only in the Tools (technology)
+    section. It would be a gross mistake to write in your resume that you know a programming language <code>HTML</code>.
+    Why?</p>
+<p>And the thing is that <code>HTML</code>it is a markup language for documents. If we simplify it very much, then
+    <code>HTML-document</code>it is a text (document) with pictures, tables, links, etc. inserted into it.</p>
+<p>Let's say you want to write an article that will:</p>
+<ul>
+    <li>Title of the article (title).</li>
+    <li>The article itself, consisting of one paragraph.</li>
+    <li>Picture.</li>
+    <li>A few important statements you want to put in bold.</li>
+    <li>In the middle of the article, provide a link to some useful information.</li>
+</ul>
+<p>Here is how this document will look in the browser:</p>
+<hr>
+<h3>domestic cat</h3>
+<p>From the point of view of scientific taxonomy, the domestic cat is <a href="https://en.wikipedia.org/wiki/Mammal"
+                                                                         target="_blank">a mammal of the</a> cat family
+    of the carnivora order. Often, a domestic cat is considered as a subspecies of the forest cat, however, from the
+    point of view of modern biological taxonomy (2017), the domestic cat <strong>is a separate biological
+        species</strong> .</p><img data-max-width="800" data-id="f1c46123-2629-47c7-9aff-878dc13cce61" alt=""
+                                   src="https://cdn.javarush.com/images/article/f1c46123-2629-47c7-9aff-878dc13cce61/800.jpeg"
+                                   style="width: 800px;">
+<hr>
+<p>Pretty good, right? And the standard <code>HTML</code>allows you to make this document readable for both humans and
+    computers. Here's what it looks like in <code>HTML-standard</code>:</p>
+<p><span class="text-red">&lt;h1&gt;</span> Domestic cat <span class="text-red">&lt;/h1&gt;</span></p>
+<p>From the point of view of scientific taxonomy, the domestic cat is <span class="text-red">&lt;a href=”/”&gt;</span> a
+    mammal <span class="text-red">&lt;/a&gt;</span> of the cat family of the carnivora order. Often, a domestic cat is
+    considered as a subspecies of the forest cat, however, from the point of view of modern biological taxonomy (2017),
+    the domestic cat <span class="text-red">&lt;b&gt;</span> is a separate biological species <span class="text-red">&lt;/b&gt;</span>
+    .</p>
+<p><span class="text-red">&lt;img src=”cat.jpg”&gt;</span></p>
+<p><strong>Special tags</strong> were added to the text of the article (highlighted <span class="text-red">in red</span>
+    ), which are understood by both a person and a computer (browser). The browser can display the article beautifully
+    for the reader, and the author of the article can easily edit it.</p>
+<h2>1.3 The emergence of the HTTP protocol</h2>
+<p>The abbreviation <code>HTML</code>stands for <code>Hyper Text Markup Language</code>Hypertext Document Markup
+    Language. Hypertext is a document consisting of pages that link to each other. What is it <code>http</code>?</p>
+<p><code>HTTP</code>stands for <code>Hyper Text Transfer Protocol</code>Hypertext Transfer Protocol (standard). <code>http</code>or
+    <code>https</code>you can see in the address bar of the browser if you try to copy the link to the open page.</p>
+<p>A typical page link looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="text-red">http</span><span class="token operator">:</span><span class="token operator">/</span><span
+            class="token operator">/</span><span class="text-green">google<span
+            class="token punctuation">.</span>com</span><span class="token operator">/</span><span class="text-user">logo<span
+            class="token punctuation">.</span>jpg</span></code></pre>
+</div>
+<p>At the very beginning of the link is the name of the protocol, followed by a colon and two forward slashes. <strong>Tim
+    Bernes-Lee once said in one of his interviews that if he knew that the protocol <code>http</code>would be so
+    popular, he would have come up with something shorter. </strong>(after all, almost all links in the world begin with
+    the word <code>http://</code>or <code>https://</code>)</p>
+<p>Let's get back to browsers. When a browser requests <code>html-page</code>, it sends a text file (request) to the
+    server and receives another text file (response) in return. This mode of operation is called client-server.</p>
+<p>First, there are lines with key information, then with service information. The first line of the text query is given
+    by the template:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
+            class="text-orange">Method</span><span class="text-user">URI  </span>HTTP<span
+            class="token operator">/</span><span class="text-orange">Version</span></code></pre>
+</div>
+<p>CodeGym user's personal page is given by the link</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span></span><code
+        class=" language-java">https<span class="token operator">:</span><span class="token operator">/</span><span
+        class="token operator">/</span><span class="text-green">codegym<span class="token punctuation">.</span>cc<span
+        class="token operator">/</span></span><span class="token operator"></span><span
+        class="text-user">me</span></code></pre>
+<p><code>http-request</code>browser for it looks like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span></span><code
+        class=" language-java">GET <span class="token operator"></span><span class="text-user"><span
+        class="token operator">/</span>me  </span><span class="text-viola">HTTP<span
+        class="token operator">/</span><span class="token number">1.0</span> </span>
+<span class="token class-name">Host</span><span class="token operator">:</span> <span class="text-green">codegym<span
+            class="token punctuation">.</span>cc</span></code></pre>
+<p>As a response, the server will most likely send</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
+                                                            class="line-numbers-rows"><span></span><span></span></span><code
+        class=" language-java"><span class="text-viola">HTTP<span class="token operator">/</span><span
+        class="token number">1.0</span> </span><span class="token number">200</span> OK
+<span class="token generics"><span class="token punctuation">&lt;</span>html<span class="token punctuation">&gt;</span></span>page text...</code></pre>
+<p>The first line in the response text is <span class="text-green">the http protocol version and the response status (200, OK)</span>
+    . <span class="text-user">Then comes an empty line</span> and then just in text form comes the one
+    <code>html-page</code>that the browser requested. Everything is very simple :)</p>

@@ -1,0 +1,85 @@
+Socket
+<p>----------------------------------------</p>
+Hello Amigo! - Hello, Risha! — The topic of today's lecture is Sockets. Socket translated from English - Rosette You already know that each computer on the network has its own unique IP address. - Yeah. - And now imagine that you have several computers and each computer runs about a dozen programs that work with ...
+<p>----------------------------------------</p>
+<p>"Hi, Amigo!"</p>
+<p><span class="text-user">"Hello, Rishi!"</span></p>
+<p>"The topic of today's lesson is sockets."</p>
+<p>"You already know that every computer on the network has its own unique IP address."</p>
+<p><span class="text-user">"Yep."</span></p>
+<p>"Now imagine you have several computers, each running a dozen programs that access the Internet: Skype, ICQ, etc."</p>
+<p>"And these programs want to communicate with each other."</p>
+<p>"We need to stop them from interfering with one another. We need to make it so Skype connect with Skype, Slack connects with Slack, etc."</p>
+<p>"Remember how this problem was solved with URLs and web servers?"</p>
+<p><span class="text-user">"Yeah, we added ports."</span></p>
+<p>"Exactly."</p>
+<p>"It's just like making a bunch of small rooms in a house and saying that the house is an apartment building. <strong><span class="text-green">Each port is like a separate apartment.</span></strong>"</p>
+<p>"If an IP address is a unique identifier for a computer, then an <span class="text-corporate">IP address combined with a port is a unique identifier for a certain 'apartment' in the computer, where a program can reside.</span>"</p>
+<p><span class="text-corporate">"This unique location is called a <strong>socket</strong>."</span></p>
+<p>"A socket has its own unique number that <strong><span class="text-corporate">consists of an IP address and a port number.</span></strong>"</p>
+<p><span class="text-user">"Ah. In other words, a socket is an identifier for some virtual computer location where a program can reside? And another program sends messages to this location, which lets the two programs communicate?"</span></p>
+<p>"I don't know how you understood that, but that is exactly right."</p>
+<p><span class="text-user">"My robo-sense told me."</span></p>
+<p>"Great. Then let me give you some details."</p>
+<p>"Sockets are actually the most basic and primitive way for programs to communicate."</p>
+<p>"Java has two classes for working with sockets. They are <strong>Socket</strong> and <strong>ServerSocket</strong>."</p>
+<p>"<strong>ServerSocket</strong> is a special class whose objects represent the server, i.e. they let me service requests that arrive on a particular socket."</p>
+<p>"The <strong>Socket</strong> class is actually a client socket. We use it to send messages to another socket and receive the responses."</p>
+<p>"Here's how to send a message to a socket:"</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Create a socket
+<span class="text-red">Socket <strong>clientSocket</strong></span> = new <span class="text-red">Socket</span>("<span class="text-green">localhost</span>", 4444);
+
+// Get an OutputStream
+<span class="text-green">OutputStream outputStream</span> = <span class="text-red">clientSocket</span>.<strong>getOutputStream</strong>();
+PrintWriter <span class="text-user">out</span> = new PrintWriter(<span class="text-user">outputStream</span>, <strong>true</strong>);
+<span class="text-user">out</span>.<strong>println</strong>("Kiss my shiny metal ass!");
+<span class="text-user">out</span>.<strong>flush</strong>();
+
+// Read the response
+<span class="text-green">InputStream inputStream</span> = <span class="text-red">clientSocket</span>.getInputStream();
+BufferedReader <span class="text-green">in</span> = new BufferedReader(new InputStreamReader(<span class="text-green">inputStream</span>));
+String <span class="text-viola">answer</span> = <span class="text-green">in</span>.readLine();</code></pre>
+<p><span class="text-user">"It's all very similar to downloading a file from the Internet."</span></p>
+<p>"That, my boy, is because sockets are used there too."</p>
+<p><span class="text-red">"Sockets lie at the heart of everything associated with a network — well, almost everything."</span></p>
+<p>"You can read additional information <a href="http://www.tutorialspoint.com/java/java_networking.htm" target="_blank">here</a>"</p>
+<p><span class="text-user">"Thanks for the lesson, Rishi."</span></p>
+<p>"I'm not done yet. That's wishful thinking."</p>
+<p>"Now we'll explore how a server socket works."</p>
+<p>"It's a bit more complicated."</p>
+<div class="code-heading">Example</div>
+<pre class="line-numbers language-java" data-line="" data-start=""><code>// Create a server socket object
+<span class="text-red">ServerSocket serverSocket</span> = new <span class="text-red">ServerSocket</span>(4444); // Port
+
+// Process incoming connections in a loop
+while (true)
+{
+ // The accept method waits for someone to connect
+ <span class="text-red">Socket socket</span> = <span class="text-red">serverSocket</span>.accept();
+
+ // Read the response
+<span class="text-green"> InputStream inputStream</span> = <span class="text-red">socket</span>.getInputStream();
+ BufferedReader <span class="text-green">in</span> = new BufferedReader(new InputStreamReader(inputStream));
+ String <span class="text-viola">message</span> = <span class="text-green">in</span>.readLine();
+
+ // Create a response - we'll just reverse the string
+ String <span class="text-corporate">reverseMessage</span> = new StringBuilder(<span class="text-viola">message</span>).reverse().toString();
+
+ // Send the response
+<span class="text-user"> OutputStream outputStream</span> = <span class="text-red">socket</span>.getOutputStream();
+ PrintWriter <span class="text-user">out</span> = new PrintWriter(<span class="text-user">outputStream</span>, true);
+<span class="text-user"> out</span>.println(<span class="text-corporate">reverseMessage</span>);
+ <span class="text-user">out</span>.flush();
+}</code></pre>
+<p>"I want to draw your attention to a couple of points."</p>
+<p><span class="text-viola">"Point 1: To create a (client) socket, you need to specify an IP address (or domain name) and port. To create a server socket, you only need to specify a port. The server socket only exists on the computer where it was created."</span></p>
+<p><span class="text-green">"Point 2: The ServerSocket class has an accept() method that waits for an incoming connection. In other words, the method will run forever until some client socket tries to connect. Then the accept() method accepts the connection, creates a socket object to allow communication, and then returns this object."</span></p>
+<p>"From a Java programmer's point of view, a socket is two streams: an InputStream from which you read messages/data, and an OutputStream to which you write messages/data."</p>
+<p>"When you create a server socket, you're actually making a port that client sockets on other computers can connect to. But to do this, they must correctly specify the port number of our socket and the IP address of our computer. Well, or its domain name."</p>
+<p>"Here's an interesting example for you. You can try digging into it and running it:"</p>
+<p><a href="https://www.logicbig.com/tutorials/core-java-tutorial/http-server/http-server-basic.html" target="_blank">https://www.logicbig.com/tutorials/core-java-tutorial/http-server/http-server-basic.html</a></p>
+<p>"The whole point there is to use a server socket to write a super primitive web server that you can access simply from a browser."</p>
+<p><span class="text-user">"Wow! A web server? Cool! I'll study it very carefully."</span></p>
+<p><span class="text-user">"Thank you, Rishi."</span></p>
+<p>"That's all, Amigo. Go relax!"</p>

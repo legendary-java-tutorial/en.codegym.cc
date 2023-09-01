@@ -1,0 +1,101 @@
+Advanced grouping
+<p>----------------------------------------</p>
+HAVING Statement HAVING Usage Example Statement Execution Order
+<p>----------------------------------------</p>
+ther useful operator in SQL that is used with <code>GROUP BY</code>, it's called <code>HAVING</code>.</p>
+<p>In its meaning, it is completely analogous to the operator <code>WHERE</code>. It only <code>WHERE</code>allows you to set a row filter before grouping, and with the help <code>HAVING</code>you can set a filter that is applied to records after grouping.</p>
+<p>The general view of the query when using grouping and filtering grouping results is as follows:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-brown">SELECT</span> <span class="text-green">columns</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">table</span>
+<span class="text-brown">WHERE</span> <span class="text-user">condition</span>
+<span class="text-brown">GROUP BY</span> <span class="text-green">columns</span>
+<span class="text-red">HAVING</span> <span class="text-user">condition</span></code></pre>
+</div>
+<p><code>HAVING</code>can only be used if the request contains <code>GROUP BY</code>.</p>
+<p>Let's write a query where we display the number of hired employees by year.</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span>
+<span class="token function"><span class="text-user">YEAR</span></span><span class="token punctuation">(</span><span class="text-green">join_date</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-red">AS</span></span> <span class="text-viola">hire_year</span><span class="token punctuation">,</span>
+<span class="token function"><span class="text-user">COUNT</span></span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="text-red">AS</span> <span class="text-viola">total</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">employee</span>
+<span class="text-brown">GROUP BY</span> <span class="text-viola">hire_year</span></code></pre>
+</div>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>hire_year</th>
+    <th>total</th>
+   </tr>
+   <tr>
+    <td>2012</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2013</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2014</td>
+    <td>1</td>
+   </tr>
+   <tr>
+    <td>2015</td>
+    <td>2</td>
+   </tr>
+   <tr>
+    <td>2018</td>
+    <td>1</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>And now we exclude from it the years when one or fewer employees were hired. Example:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"><span class="text-brown">SELECT</span></span>
+<span class="token function"><span class="text-user">YEAR</span></span><span class="token punctuation">(</span><span class="text-green">join_date</span><span class="token punctuation">)</span> <span class="token class-name"><span class="text-red">AS</span></span> <span class="text-viola">hire_year</span><span class="token punctuation">,</span>
+<span class="token function"><span class="text-user">COUNT</span></span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="text-red">AS</span> <span class="text-viola">total</span>
+<span class="text-brown">FROM</span> <span class="text-yellow">employee</span>
+<span class="text-brown">GROUP BY</span> <span class="text-viola">hire_year</span>
+<span class="text-red">HAVING</span> <span class="text-viola">total</span> <span class="token operator">&gt;</span> <span class="token number">1</span></code></pre>
+</div>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>hire_year</th>
+    <th>total</th>
+   </tr>
+   <tr>
+    <td>2015</td>
+    <td>2</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<h2>5.3 Order of execution of statements</h2>
+<p>To write correct and efficient SQL queries, you need to understand how they are executed by the SQL server.</p>
+<p>The procedure for performing actions is strictly regulated and does not depend on your desire. You cannot rearrange the operators and get a different order.</p>
+<p>The SQL query is executed in several stages in this order.</p>
+<ol>
+ <li>Stage 1 - fetching rows</li>
+ <ul>
+  <li>First, all rows from the specified table are selected.</li>
+  <li>Then calculated fields are added to them.</li>
+  <li>And then of all the rows, only those that satisfy the condition remain<code>WHERE</code></li>
+ </ul>
+ <li>Stage 2 - grouping</li>
+ <ul>
+  <li>Grouping is then applied to the results.</li>
+  <li>During grouping, fields such as <code>COUNT(*)</code>.</li>
+  <li>Finally, a filter is applied to the grouping result <code>HAVING</code>.</li>
+ </ul>
+ <li>Stage 3 - sorting</li>
+ <ul>
+  <li>The rows obtained in the previous steps are sorted using <code>ORDER BY</code>.</li>
+ </ul>
+</ol>
+<p>Finally, the result can be trimmed with <code>LIMIT</code>and <code>OFFSET</code>.</p>

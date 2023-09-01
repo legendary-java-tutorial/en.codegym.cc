@@ -1,0 +1,114 @@
+Discriminator
+<p>----------------------------------------</p>
+Description. @DiscriminatorValue. @DiscriminatorFormula.
+<p>----------------------------------------</p>
+n, you saw that Hibernate uses a special DTYPE VARCHAR column to store the name of an Entity class. Such a column is called <strong>a discriminator</strong> . It is used to unambiguously determine which class to create for a given row in the database.</p>
+<p>You can manipulate this column with the <span class="text-yellow"><span class="text-bold">@DiscriminatorColumn</span></span> annotation . Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token annotation punctuation">@DiscriminatorColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"column_name"</span><span class="token punctuation">,</span>   discriminatorType <span class="token operator">=</span> <span class="token class-name">DiscriminatorType</span><span class="token punctuation">.</span>INTEGER<span class="token punctuation">)</span></code></pre>
+<p>According to the JPA specification, a discriminator can have the following types:</p>
+<ul>
+ <li>STRING</li>
+ <li>CHAR</li>
+ <li>INTEGER</li>
+</ul>
+<p>However, Hibernate allows you to expand this list a bit. It supports these Java types: String, char, int, byte, short, boolean.</p>
+<p>If we use the INTEGER type, then how to encode the name of the Entity class in it? For this, another annotation is used - <span class="text-yellow"><span class="text-bold">@DiscriminatorValue</span></span> .</p>
+<p>Look at an example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Inheritance</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> <span class="token class-name">InheritanceType</span><span class="token punctuation">.</span>SINGLE_TABLE<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@DiscriminatorColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_type"</span><span class="token punctuation">,</span>   discriminatorType <span class="token operator">=</span> <span class="token class-name">DiscriminatorType</span><span class="token punctuation">.</span>INTEGER<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+  <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+  <span class="token class-name">LocalDate</span> birthday<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@DiscriminatorValue</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token keyword">extends</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+ 	<span class="token class-name">String</span> occupation<span class="token punctuation">;</span>
+ 	<span class="token keyword">int</span> salary<span class="token punctuation">;</span>
+ 	<span class="token class-name">LocalDate</span> join<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@DiscriminatorValue</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token keyword">extends</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token class-name">String</span> address<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In the example above, we told Hibernate that the discriminator will use the user_type column, which will store numbers. If it stores the value 1, then it means that the row type is Employee, if 2 is stored, then the row type is Client. Simple and beautiful.</p>
+<h2>@DiscriminatorValue</h2>
+<p>But that's not all. You can tell Hibernate how to interpret the type of a string when its discriminator is NULL.</p>
+<p>It's actually very simple. You specify the null value for the <span class="text-yellow"><span class="text-bold">@DiscriminatorValue</span></span> annotation . For example, like this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token annotation punctuation"></span><span class="text-red"><span class="token annotation punctuation">@DiscriminatorValue</span><span class="token punctuation">(</span><span class="token string">"null"</span><span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p>Class example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Inheritance</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> <span class="token class-name">InheritanceType</span><span class="token punctuation">.</span>SINGLE_TABLE<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@DiscriminatorColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_type"</span><span class="token punctuation">,</span>   discriminatorType <span class="token operator">=</span> <span class="token class-name">DiscriminatorType</span><span class="token punctuation">.</span>INTEGER<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@DiscriminatorValue</span><span class="token punctuation">(</span><span class="token string">"null"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+  <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+  <span class="token class-name">LocalDate</span> birthday<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We've told Hibernate that any table row that has NULL in the user_type column should be interpreted as an object of type User.</p>
+<p>But that's not all. There is another interesting value for the @DiscriminatorValue annotation.</p>
+<p>Here is this:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token annotation punctuation"></span><span class="text-red"><span class="token annotation punctuation">@DiscriminatorValue</span><span class="token punctuation">(</span><span class="token string">"not null"</span><span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>
+</div>
+<p>Class example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Inheritance</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> <span class="token class-name">InheritanceType</span><span class="token punctuation">.</span>SINGLE_TABLE<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@DiscriminatorColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_type"</span><span class="token punctuation">,</span>   discriminatorType <span class="token operator">=</span> <span class="token class-name">DiscriminatorType</span><span class="token punctuation">.</span>INTEGER<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@DiscriminatorValue</span><span class="token punctuation">(</span><span class="token string">"not null"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+  <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+  <span class="token class-name">LocalDate</span> birthday<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>With this annotation, we told Hibernate that any table row with a non-NULL value in the user_type column should be interpreted as an object of type User. But this is only for the case if a class is not found that has the required number explicitly specified.</p>
+<p>This is how it will work for different values ​​of the discriminators:</p>
+<ul>
+ <li>0 - create an object of type User</li>
+ <li>1 - create an object of type <strong>Employee</strong></li>
+ <li>2 - create an object of type <strong>Client</strong></li>
+ <li>3 - create an object of type User</li>
+ <li>4 - create an object of type User</li>
+</ul>
+<h2>@DiscriminatorFormula</h2>
+<p>But that's not all. For our discriminator, we can specify an integer formula by which it will calculate the values ​​for the <span class="text-yellow"><span class="text-bold">@DiscriminatorValue</span></span> annotation .</p>
+<p>There is a special annotation for this, it is called <span class="text-yellow"><span class="text-bold">@DiscriminatorFormula</span></span> .</p>
+<p>Example:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Inheritance</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> <span class="token class-name">InheritanceType</span><span class="token punctuation">.</span>SINGLE_TABLE<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@DiscriminatorColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"user_type"</span><span class="token punctuation">,</span>   discriminatorType <span class="token operator">=</span> <span class="token class-name">DiscriminatorType</span><span class="token punctuation">.</span>INTEGER<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@DiscriminatorFormula</span><span class="token punctuation">(</span><span class="token string">"case when ‘join’ is not null then 1 else 2 end"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+  <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+  <span class="token class-name">LocalDate</span> birthday<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@DiscriminatorValue</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token keyword">extends</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+ 	<span class="token class-name">String</span> occupation<span class="token punctuation">;</span>
+ 	<span class="token keyword">int</span> salary<span class="token punctuation">;</span>
+ 	<span class="token class-name">LocalDate</span> join<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@DiscriminatorValue</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token keyword">extends</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token class-name">String</span> address<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The values ​​returned by <span class="text-yellow"><span class="text-bold">@DiscriminatorFormula</span></span> will be compared by Hibernate with the values ​​specified in the <span class="text-yellow"><span class="text-bold">@DiscriminatorValue</span></span> annotations . With it, you can write quite complex scenarios:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@DiscriminatorFormula</span><span class="token punctuation">(</span>
+           	<span class="token string">"case when address is not null "</span> <span class="token operator">+</span>
+           	<span class="token string">"then 'Client' "</span> <span class="token operator">+</span>
+           	<span class="token string">"else ("</span> <span class="token operator">+</span>
+           	<span class="token string">"   case when occupation is not null "</span> <span class="token operator">+</span>
+           	<span class="token string">"   then 'Employee' "</span> <span class="token operator">+</span>
+           	<span class="token string">"   else 'Unknown' "</span> <span class="token operator">+</span>
+           	<span class="token string">"   end) "</span> <span class="token operator">+</span>
+           	<span class="token string">"end "</span>
+<span class="token punctuation">)</span></code></pre>

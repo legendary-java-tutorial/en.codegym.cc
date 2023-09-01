@@ -1,0 +1,80 @@
+Antipatterns
+<p>----------------------------------------</p>
+Introduction to anti-patterns. Magic numbers and lines. God class. premature optimization. The invention of the bicycle. Invention of the square-wheeled bicycle.
+<p>----------------------------------------</p>
+i-patterns are the exact opposite of patterns. Recall that design patterns are examples of good programming practices, that is, patterns for solving certain problems. But anti-patterns are their complete opposite, that is, patterns of mistakes that are made when solving various problems.</p>
+<p>Part of good programming practice is precisely the avoidance of anti-patterns. Do not think that this is such an incomprehensible theoretical garbage - these are specific problems that almost every developer has encountered. Who is aware, he is armed!</p>
+<p>Let's look at a few anti-patterns that are common among beginners:</p>
+<ul>
+ <li>Magic numbers and strings</li>
+ <li>god class</li>
+ <li>Premature optimization</li>
+ <li>the invention of the bicycle</li>
+ <li>Invention of the unicycle</li>
+</ul>
+<h2>Magic numbers and strings</h2>
+<p><span class="text-bold">A magic number</span> is a constant used in code for something (most often data identification), the number itself of which does not make any sense without a corresponding comment. Numbers carry absolutely no semantics.</p>
+<p>When numbers start to appear in the code of your project, the meaning of which is not obvious, this is very bad. A programmer who is not the author of such code will have difficulty explaining how it works. Over time, even the author of the code with magic numbers will not be able to explain it.</p>
+<p>Numbers make code difficult to understand and refactor. The main reasons for this error are the haste in development and the lack of programming practice. This anti-pattern should be nipped in the bud by stipulating the use of numeric constants before starting development.</p>
+<p>To solve this problem, you need to create a variable whose name explains the purpose of the numeric constant, and assign it the desired value.</p>
+<h2>god class</h2>
+<p><span class="text-bold">The divine object</span> is an anti-pattern that is quite common among OOP developers. Such an object takes on too many functions and / or stores almost all the data. As a result, we have a non-portable code, which, moreover, is difficult to understand.</p>
+<p>In addition, such code is quite difficult to maintain, given that the entire system depends almost exclusively on it. Reasons for this error: developer incompetence, one developer taking on a large portion of the work (especially when the amount of work exceeds that developer's experience level).</p>
+<p>It is necessary to deal with this approach by breaking tasks into subtasks that different developers can deal with.</p>
+<h2>Premature optimization</h2>
+<p><span class="text-bold">Premature optimization</span> is optimization that is performed before the programmer has all the information needed to make informed decisions about where and how to do it.</p>
+<p>In practice, it is difficult to predict where a bottleneck will occur. <span class="text-green">Attempts to optimize before obtaining empirical results will lead to code complexity and the appearance of errors, but will not bring any benefits.</span></p>
+<p>How to avoid? First, write clean, readable, working code using well-known and proven algorithms and tools. If necessary, use profiling tools to find bottlenecks. Rely on measurements, not guesses and assumptions.</p>
+<h4>Examples and features</h4>
+<p>Caching before profiling. Using complex and unproven heuristics instead of mathematically correct algorithms. A selection of new, untested frameworks that may misbehave under load.</p>
+<h4>What is the difficulty</h4>
+<p>It is not easy to determine when optimization is premature. It is important to leave room for growth in advance. You need to choose solutions and platforms that allow you to easily optimize and grow. Also sometimes premature optimization is used as an excuse for bad code. For example, they take an O(n2) algorithm only because the algorithm would be O(n) more difficult.</p>
+<h2>the invention of the bicycle</h2>
+<p>The meaning of this anti-pattern is that the programmer develops his own solution to a problem for which solutions already exist, and often much more successful ones.</p>
+<p>The developer considers himself smarter, so he tries to come up with his own solution for each task, despite the experience of his predecessors. Most often, this only leads to a loss of time and a decrease in the efficiency of the programmer. After all, the solution is likely to be suboptimal, if found at all.</p>
+<p>Of course, you cannot completely discard the possibility of an independent solution, since this will lead to copy-paste programming in a direct way. The developer must navigate the tasks that may appear before him in order to competently solve them, using ready-made solutions or inventing his own.</p>
+<p>Very often, the reason for this anti-pattern is a simple lack of time. And time is money.</p>
+<h2>Invention of the square wheel bicycle</h2>
+<p>This anti-pattern is very closely related to simply reinventing the wheel - creating your own bad solution when a better solution exists.</p>
+<p>This anti-pattern takes twice the time: first, time is spent on inventing and implementing your own solution, and then on refactoring or replacing it.</p>
+<p><span class="text-bold">The programmer must be aware of the existence of various solutions</span> for certain ranges of tasks, be guided by their advantages and disadvantages.</p>
+<p>All the problems that you will face as a programmer can be divided into two parts:</p>
+<ul>
+ <li>smart people solved this problem 30 years ago</li>
+ <li>smart people solved this problem 50 years ago</li>
+</ul>
+<p>Most programming problems have been <span class="text-bold">successfully solved before you were even born</span> . No need to invent anything - just study the experience of other people (this is what books are written for).</p>
+<p>In 2022, we can celebrate the following birthdays:</p>
+<ul>
+ <li>Programming languages 
+  <ul>
+   <li>C language turns 50 (1972)</li>
+   <li>The Java language turned 27 (1995)</li>
+   <li>Python turns 31 (1991)</li>
+  </ul></li>
+ <li>Connection 
+  <ul>
+   <li>The Internet turned 39 (1983)</li>
+   <li>The mobile phone turned 49 (1973)</li>
+   <li>The first SMS was sent 30 years ago (1992)</li>
+  </ul></li>
+ <li>Patterns 
+  <ul>
+   <li>The MVC pattern turned 44 (1978)</li>
+   <li>SQL was invented 48 years ago (1974)</li>
+   <li>Java Beans were invented 26 years ago (1996)</li>
+  </ul></li>
+ <li>Libraries 
+  <ul>
+   <li>Hibernate was invented 21 years ago (2001)</li>
+   <li>Spring was invented 20 years ago (2002)</li>
+   <li>Tomcat released 23 years ago (1999)</li>
+  </ul></li>
+ <li>OS 
+  <ul>
+   <li>Unix was released 51 years ago (1971)</li>
+   <li>Windows saw the light of day 37 years ago (1985)</li>
+   <li>Mac OS released 21 years ago (2001)</li>
+  </ul></li>
+</ul>
+<p>And all these things were not just invented, they were developed as solutions to problems that were very common and relevant at that time.</p>

@@ -1,0 +1,65 @@
+Generative patterns
+<p>----------------------------------------</p>
+Singleton Factory [Method] Abstract Factory Prototype
+<p>----------------------------------------</p>
+strong> is a generic design pattern that guarantees that a single-threaded application will have a single instance of some class, and provides a global access point to this instance.</p>
+<img data-max-width="800" data-id="e1787a38-0ea4-4f60-b524-5d49b9035c5f" src="https://cdn.codegym.cc/images/article/e1787a38-0ea4-4f60-b524-5d49b9035c5f/800.jpeg" alt="">
+<p>Very often, novice programmers like to assemble utility methods into some static class - a class that contains only static methods. This approach has a number of disadvantages - for example, you cannot pass a reference to an object of such a class, such methods are difficult to test, and the like.</p>
+<p>As an alternative, a singleton class solution was proposed: a class that can have only one object. When attempting to create this object, it is only created if it does not already exist, otherwise a reference to an already existing instance is returned.</p>
+<p>It is essential that it is possible to use an instance of the class, since in many cases wider functionality becomes available. For example, this class can implement some interfaces and its object can be passed to other methods as an implementation of the interface. What can not be done with a set of static methods.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+ <li>Methods are bound to an object, not a static class - you can pass an object by reference.</li>
+ <li>Object methods are much easier to test and mock.</li>
+ <li>An object is only created when needed: lazy object initialization.</li>
+ <li>Accelerating the initial launch of the program if there are many singles that are not needed for launch.</li>
+ <li>Alone can be further turned into a template-strategy or several such objects.</li>
+</ul>
+<p><strong>Minuses:</strong></p>
+<ul>
+ <li>It becomes more difficult to control inter-thread races and delays.</li>
+ <li>It is difficult to write a multi-threaded “loner” “from the head”: access to a long-standing singleton, ideally, should not open a mutex. Better proven solutions.</li>
+ <li>A conflict between two threads over an unfinished single thread will result in a delay.</li>
+ <li>If the object is being created for a long time, the delay can interfere with the user or disrupt real time. In this case, it is better to transfer its creation to the stage of program initialization.</li>
+ <li>Special features are required for unit testing - for example, to put the library in “non-lonely” mode and completely isolate tests from each other.</li>
+ <li>A special tactic for testing the finished program is required, because even the concept of “the simplest launchability” disappears, because the launchability depends on the configuration.</li>
+</ul>
+<h2>3.2 Factory [Method]</h2>
+<p><strong>A factory method</strong> is a generic design pattern that provides subclasses (classes-inheritors) with an interface for creating instances of a certain class. At creation time, descendants can determine which class to create.</p>
+<p>In other words, this template delegates the creation of objects to the descendants of the parent class. This allows you to use not concrete classes in the program code, but to manipulate abstract objects at a higher level.</p>
+<img data-max-width="800" data-id="4aaa2335-e052-426e-a474-c5b718453439" src="https://cdn.codegym.cc/images/article/4aaa2335-e052-426e-a474-c5b718453439/800.jpeg" alt="">
+<p>This pattern defines an interface for creating an object, but leaves it up to subclasses to decide which class to base the object on. A factory method allows a class to delegate the creation of subclasses. Used when:</p>
+<ul>
+ <li>the class does not know in advance which objects of which subclasses it needs to create.</li>
+ <li>a class is designed so that the objects it creates are specified by subclasses.</li>
+ <li>the class delegates its responsibilities to one of several helper subclasses, and it is planned to determine which class takes over these responsibilities.</li>
+</ul>
+<h2>3.3 Abstract Factory</h2>
+<p><strong>An abstract factory</strong> is a generic design pattern that provides an interface for creating families of related or interdependent objects without specifying their concrete classes.</p>
+<p>The pattern is implemented by creating an abstract class Factory, which is an interface for creating system components (for example, for a window interface, it can create windows and buttons). Then classes are written that implement this interface.</p>
+<img data-max-width="800" data-id="956e8170-2348-4fc4-849d-ebd5526841c4" src="https://cdn.codegym.cc/images/article/956e8170-2348-4fc4-849d-ebd5526841c4/800.jpeg" alt="">
+<p>It is used in cases where the program must be independent of the process and types of new objects created. When it is necessary to create families or groups of related objects, excluding the possibility of simultaneous use of objects from different sets of these in the same context.</p>
+<p>Strengths:</p>
+<ul>
+ <li>isolates specific classes;</li>
+ <li>simplifies the replacement of product families;</li>
+ <li>guarantees product compatibility.</li>
+</ul>
+<p>Let's say your program works with the file system. Then to work in Linux you need LinuxFile, LinuxDirectory, LinuxFileSystem objects. And to work in Windwos, you need the WindowsFile, WindowsDirectory, WindowsFileSystem classes.</p>
+<p>The Path class, which is created via Path.of(), is just such a case. Path is not really a class, but an interface, and it has WindowsPath and LinuxPath implementations. And what kind of object will be created is hidden from your code and will be decided at runtime.</p>
+<h2>3.4 Prototype</h2>
+<p><strong>Prototype</strong> is a generative design pattern.</p>
+<p>This pattern defines the kinds of objects that are created using a prototype instance and creates new objects by copying this prototype. It allows you to get away from the implementation and follow the principle of “programming through interfaces”.</p>
+<p>An interface/abstract class at the top of the hierarchy is specified as the returning type, and descendant classes can substitute an heir that implements this type there. Simply put, this is the pattern of creating an object by cloning another object instead of creating it through a constructor.</p>
+<img data-max-width="800" data-id="3c9f9fce-f53d-41ca-bf4c-d59a0cfb0ff2" src="https://cdn.codegym.cc/images/article/3c9f9fce-f53d-41ca-bf4c-d59a0cfb0ff2/800.jpeg" alt="">
+<p>The pattern is used to:</p>
+<ul>
+ <li>avoiding the additional effort of creating an object in a standard way (meaning using a constructor, since in this case the constructors of the entire object's ancestor hierarchy will also be called), when this is prohibitively expensive for the application.</li>
+ <li>avoid inheriting the object creator in the client application, as the abstract factory pattern does.</li>
+</ul>
+<p>Use this design pattern when your program doesn't care how it creates, composes, and presents products:</p>
+<ul>
+ <li>instantiated classes are determined at run time, for example, using dynamic loading;</li>
+ <li>you want to avoid building class or factory hierarchies that parallel the product class hierarchy;</li>
+ <li>class instances can be in one of several different states. It may be more convenient to set the appropriate number of prototypes and clone them, rather than manually instantiating the class in the appropriate state each time.</li>
+</ul>

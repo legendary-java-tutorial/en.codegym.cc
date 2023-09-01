@@ -1,0 +1,349 @@
+Selecting data from multiple tables
+<p>----------------------------------------</p>
+dependent table. Query on multiple tables. We remove meaningless lines.
+<p>----------------------------------------</p>
+ate our queries a bit. <strong>Let's add a new task</strong> table to our database with tasks for our employees. And let's see what entries it contains:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="text-red">FROM</span> <span class="text-orange">task</span></code></pre>
+</div>
+<p>The result of such a request:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>emploee_id</th>
+    <th>name</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-07-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-08-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>5</td>
+    <td>Will buy coffee</td>
+    <td>2022-09-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>(NULL)</td>
+    <td>Clean up the office</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>This table has only 4 columns:</p>
+<ul>
+ <li><strong>id</strong> — unique task number (and rows in the table);</li>
+ <li><strong>employee_id</strong> — ID of the employee from the employee table to whom the task is assigned;</li>
+ <li><strong>name</strong> — name and description of the task;</li>
+ <li><strong>deadline</strong> - the time by which the task must be completed.</li>
+</ul>
+<p>Pay attention to a few nuances. Task N6 doesn't have an employee_id, we don't have a cleaner. The task is there, but the performer is not. It happens.</p>
+<p>Also, tasks 6-9 do not have a set deadline. This happens when a task must be done regularly and continuously. For example, the office needs to be cleaned every day, but you also need to enjoy life every day :)</p>
+<p>If one table uses IDs from another table, then such a table is called <strong>dependent</strong> .</p>
+<h2>Query against multiple tables</h2>
+<p>Here we see in the task table that there are two tasks “Enjoying life”. How do we know who these lucky ones are?</p>
+<p>To do this, in SQL, you can execute a query on two tables at once. In general, in SQL, you can query any number of tables at the same time. The general format for such a request is:</p>
+<pre><code><span class="text-bold"><span class="text-red">SELECT</span> <span class="text-green">columns</span>
+<span class="text-red">FROM</span> <span class="text-orange">Table 1</span>, <span class="text-orange">table 2</span>, <span class="text-orange">tableN</span></span>
+</code></pre>
+<p>Important! If you write a query to several tables at the same time, then as a result you will get the so-called <strong>Cartesian product</strong> of table rows. Each row from the first table will be glued to each row from the second table, and so on.</p>
+<p>That is, if you have 5 rows in the first table and 10 rows in the second, then you will have 50 rows in total. In Java, this query would look something like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> <span class="text-green">row1</span> <span class="token operator">:</span> <span class="text-orange">table1</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> <span class="text-green">row2</span> <span class="token operator">:</span> <span class="text-orange">table2</span><span class="token punctuation">)</span>
+   <span class="token punctuation">{</span>
+  	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="text-green">row1</span> <span class="token operator">+</span> <span class="text-green">row2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Let's write our query to two tables at once and see what happens:</p>
+<div class="lesson-example lesson-example--center">
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="text-red">SELECT</span> <span class="token operator">*</span> <span class="token class-name"><span class="text-red">FROM</span></span> <span class="text-orange">employee</span><span class="token punctuation">,</span> <span class="text-orange">task</span></code></pre>
+</div>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>id</th>
+    <th>emploee</th>
+    <th>_id</th>
+    <th>name</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100000</td>
+    <td>25</td>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80000</td>
+    <td>23</td>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40000</td>
+    <td>thirty</td>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200000</td>
+    <td>35</td>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>cat</td>
+    <td>1000</td>
+    <td>3</td>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100000</td>
+    <td>25</td>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80000</td>
+    <td>23</td>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>Ivanov Sergey</td>
+    <td>Tester</td>
+    <td>40000</td>
+    <td>thirty</td>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200000</td>
+    <td>35</td>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p>We have 48 result lines in total, but here I have given only 11. Otherwise, there simply won’t be enough space.</p>
+<p>Pay attention to three things:</p>
+<ul>
+ <li>Columns with the same name: <strong>id</strong> . This is the id from the <strong>employee</strong> table and the id from <strong>the task</strong> table .</li>
+ <li>The rows of each table are repeated. In the left column, ID 6 is followed by ID = 1 again.</li>
+ <li>We have nonsense rows where, for example, id (from the employee table) is 6 and in the same row employee_id is 1.</li>
+</ul>
+<h2>Removing meaningless lines</h2>
+<p>There are too many rows in our resulting table, which is the Cartesian product of all the rows of the two tables <strong>employee</strong> and <strong>task .</strong></p>
+<p>Logically, if the row employee_id is 3, then it should only stick to the row from the employee table where id is 3. Let's try to fix this misunderstanding with WHERE.</p>
+<p>Let's write a query like this:</p>
+<pre><code><span class="text-bold"><span class="text-red">SELECT</span> * <span class="text-red">FROM</span> <span class="text-orange">employee</span>, <span class="text-orange">task</span> 
+<span class="text-red">WHERE</span> <span class="text-orange">emploee</span>.<span class="text-green">id</span> = <span class="text-orange">task</span>.<span class="text-green">emploee_id</span> </span>
+</code></pre>
+<p>And the result of this query:</p>
+<div class="table-container">
+ <table>
+  <tbody>
+   <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>occupation</th>
+    <th>salary</th>
+    <th>age</th>
+    <th>id</th>
+    <th>emploee_id</th>
+    <th>name</th>
+    <th>deadline</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>Ivanov Ivan</td>
+    <td>Programmer</td>
+    <td>100000</td>
+    <td>25</td>
+    <td>1</td>
+    <td>1</td>
+    <td>Fix a bug on the frontend</td>
+    <td>2022-06-01</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>Petrov Petr</td>
+    <td>Programmer</td>
+    <td>80000</td>
+    <td>23</td>
+    <td>2</td>
+    <td>2</td>
+    <td>Fix a bug on the backend</td>
+    <td>2022-06-15</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>Rabinovich Moisha</td>
+    <td>Director</td>
+    <td>200000</td>
+    <td>35</td>
+    <td>7</td>
+    <td>4</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>3</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-07-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>4</td>
+    <td>5</td>
+    <td>Buy coffee</td>
+    <td>2022-08-01</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>Kirienko Anastasia</td>
+    <td>Office Manager</td>
+    <td>40000</td>
+    <td>25</td>
+    <td>5</td>
+    <td>5</td>
+    <td>Will buy coffee</td>
+    <td>2022-09-01</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>Vaska</td>
+    <td>cat</td>
+    <td>1000</td>
+    <td>3</td>
+    <td>8</td>
+    <td>6</td>
+    <td>Enjoy life</td>
+    <td>(NULL)</td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+<p><strong>The good news</strong> is that the meaningless lines have disappeared: the id from the first column is always equal to employee_id.</p>
+<p><strong>The bad news</strong> is that tasks that are not assigned to anyone, such as cleaning the office, are gone. Their employee_id was NULL, so they were discarded after the WHERE was done.</p>

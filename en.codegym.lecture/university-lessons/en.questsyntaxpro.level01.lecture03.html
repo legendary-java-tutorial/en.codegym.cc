@@ -1,0 +1,170 @@
+Variables
+<p>----------------------------------------</p>
+Variables and Boxes Variables are special things for storing data. Any data. All data in Java is stored using variables. Most of all, the variable in meaning resembles a box. The most common box. Here, let's say that you wrote the number 13 on a piece of paper and put this fox
+<p>----------------------------------------</p>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="6c0356c0-0e1b-428e-9476-6845efde5bda" data-max-width="1024" alt="" src="https://cdn.javarush.ru/images/article/6c0356c0-0e1b-428e-9476-6845efde5bda/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="0249c058-9d1c-4143-b859-d6c5468d7666" data-max-width="1024" alt="" src="https://cdn.javarush.ru/images/article/0249c058-9d1c-4143-b859-d6c5468d7666/original.png">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="ab08d814-f6d1-4cdf-bc75-970ac4a105a6" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/ab08d814-f6d1-4cdf-bc75-970ac4a105a6/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="ee550f10-0e7d-4278-832d-e32a6446c7e4" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/ee550f10-0e7d-4278-832d-e32a6446c7e4/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="9c4f4f6b-9c1b-432e-b7f8-834d94cd3667" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/9c4f4f6b-9c1b-432e-b7f8-834d94cd3667/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="a7dd775b-902d-4dd3-84d7-3f1efd1bb324" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/a7dd775b-902d-4dd3-84d7-3f1efd1bb324/original.png">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h2>1. Variables and boxes</h2>
+<p><span class="term text-green">Variables</span> are special things for <span class="text-user">storing data</span>. Any data. All data in Java is stored using variables. One of the best ways to conceive of a variable is as a box: a completely ordinary <span class="term text-green">box</span>.</p>
+<p>For example, let's say that you write the number 13 on a piece of paper and put it in a box. Now we can say that "the <span class="text-green">box</span> <span class="text-user">stores the value 13</span>".</p>
+<p><img data-id="e9c14bc2-cdb3-41b0-b13c-3c4b981a8345" src="https://cdn.codegym.cc/images/article/e9c14bc2-cdb3-41b0-b13c-3c4b981a8345/original.png" alt=""></p>
+<p>Every variable in Java has three important properties: <span class="term text-viola">type</span>, <span class="term text-green">name</span>, and <span class="term text-user">value</span>.</p>
+<p>The <span class="term text-green">name</span> is used to distinguish one variable from another. It's like a <span class="term text-green">label on a box</span>.</p>
+<p>The <span class="term text-viola">type</span> of a variable determines the type of <span class="term text-user">values/data</span> that can be stored in it. We store a cake in a cake box, shoes in a shoe box, etc.</p>
+<p>The <span class="term text-user">value</span> is some object or the data stored in the variable.</p>
+<p>Every object in the Java language has its own <span class="term text-viola">type</span>. For example, we can have the following data types: <span class="term text-viola">integer</span>, <span class="term text-viola">fractional number</span>, <span class="term text-viola">text</span>, <span class="term text-viola">Cat</span>, <span class="term text-viola">House</span>, etc.</p>
+<p>Each <span class="term text-green">variable</span> (box) also has its own <span class="term text-viola">type</span>. A variable can only store values that correspond to its type. Different boxes are used to store different things: a box of chocolates, a carton for a dozen eggs, etc. It's just like in real life.</p>
+<hr>
+<h2>2. Creating a variable</h2>
+<p>In the Java language, we create a variable using a command that takes this form:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java text-center"><code><span class="code text-viola">type</span> <span class="code text-green">name</span>;</code></pre>
+    <div class="lesson-example-caption">Declaring a variable</div>
+</div>
+<p>where <span class="term text-viola">type</span> is the type of the variable (which corresponds to the type of the values that the variable can store), and <span class="term text-green">name</span> is the name of the variable.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Creating a variable: first the type, then the name.</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="code text-viola">int</span> <span class="code text-green">a</span>;</code></pre>
+        </td>
+        <td>Create a variable named <code class="text-green">a</code> whose type is <code class="text-viola">int</code>.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="code text-viola">String</span> <span class="code text-green">s</span>;</code></pre>
+        </td>
+        <td>Create a variable named <code class="text-green">s</code> whose type is <code class="text-viola">String</code>.</td>
+    </tr>
+    <tr>
+        <td>
+            <pre><code><span class="code text-viola">double</span> <span class="code text-green">c</span>;</code></pre>
+        </td>
+        <td>Create a variable named <code class="text-green">c</code> whose type is <code class="text-viola">double</code>.</td>
+    </tr>
+    </tbody>
+</table>
+<p>The two types most commonly used are <span class="term text-red">integers</span> (denoted by <code class="text-red">int</code>) and <span class="term text-green">text</span> (denoted by <code class="text-green">String</code>). The <code class="text-neon">double</code> type is also popular. It represents <span class="text-neon">fractional</span> (real) numbers.</p>
+<hr>
+<h2>3. Assignment</h2>
+<p>As mentioned above, a variable has a name, type, and value. We already considered the name and type, but what about the value? How do I put a value into a variable?</p>
+<p>To assign a value to a variable, we have the <span class="term text-red">assignment operator</span>. It <span class="text-viola">copies</span> a value from one variable to another. It does not move the value. It <span class="text-viola">copies</span>. Like a file on disk. Assignment looks like this:</p>
+<div class="lesson-example lesson-example--center">
+    <pre class="lecture-code lecture-code--present language-java"><code><span class="code text-green">name</span> <span class="code text-red">=</span> <span class="code text-user">value</span>;</code></pre>
+    <div class="lesson-example-caption">Assignment operator</div>
+</div>
+<p>where <span class="code text-green">name</span> is the name of the variable and <span class="code text-user">value</span> is the value that will be put into the variable. The value can be a literal value, the name of another variable, or even some expression that includes variables.</p>
+<p>Examples:</p>
+<table>
+    <tbody>
+    <tr>
+        <th>Code</th>
+        <th width="50%">Description</th>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code>int <span class="code">i</span>;
+int <span class="code">a</span>, <span class="code">b</span>;
+int <span class="code">x</span>;</code></pre>
+        </td>
+        <td>
+            The <code>i</code> variable is created<br>
+            The <code>a</code> and <code>b</code> variables are created<br>
+            A <code>x</code> variable is created
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <pre class="language-java"><code><span class="code text-yellow">i</span> <span class="text-red">=</span> 3;</code></pre>
+        </td>
+        <td>
+            The <code class="text-yellow">i</code> variable is set to the value <code>3</code>.
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code><span class="code text-green">a</span> <span class="text-red">=</span> 1;
+<span class="code text-user">b</span> <span class="text-red">=</span> <span class="code text-green">a</span> + 1;</code></pre>
+        </td>
+        <td>
+            The <code class="text-green">a</code> variable is set to the value <code>1</code>.
+            <br>The <code class="text-user">b</code> variable is set to the value <code>2</code>.
+        </td>
+    </tr>
+    <tr>
+        <td>
+                <pre class="language-java"><code><span class="code text-viola">x</span> <span class="text-red">=</span> 3;
+<span class="code text-viola">x</span> <span class="text-red">=</span> <span class="code text-viola">x</span> + 1;</code></pre>
+        </td>
+        <td>
+            The <code class="text-viola">x</code> variable is set to the value <code>3</code>.
+            <br>On the next line, the value of <code class="text-viola">x</code> is increased by <code>1</code>. <code class="text-viola">x</code> is now <code>4</code>.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>The assignment operator is the <code><span class="text-red">=</span></code> symbol. This is not a comparison. It is nothing more or less than the command to copy the value to the right of the <span class="term"><span class="text-red">equals</span></span> sign into the <span class="term text-viola">variable</span>, which is on the left. For a <span class="term"><span class="text-user">comparison</span></span> operation, Java uses double equals: <code><span class="text-user">==</span></code>.</p>
+<hr>
+<h2>4. Cats and boxes</h2>
+<img data-id="526449b6-a52c-46a3-b611-ddc2c3142dbe" src="https://cdn.codegym.cc/images/article/526449b6-a52c-46a3-b611-ddc2c3142dbe/original.png" alt="">
+<p>How to catch a cat:</p>
+<ol>
+    <li>Take an empty box.</li>
+    <li>Wait.</li>
+</ol>
+<p>That's a joke 🙂</p>
+<p>Of course, you may be able to fit a dozen cats into a box, but only one <span class="term text-green">value</span> can be put into a <span class="term text-user">variable</span>. This is related to next task.</p>
+
+<hr>
+<div class="task-widget-container" showCover="true" taskKey="en.codegym.task.task01.task0102"></div>
+<hr>
+
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--desktop">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="411c0055-a04f-49d5-8d98-f9d7c5446cbd" data-max-width="1024" alt="" src="https://cdn.javarush.ru/images/article/411c0055-a04f-49d5-8d98-f9d7c5446cbd/original.png">
+        </div>
+    </div>
+</div>
+<div class="lesson-carousel lesson-carousel--comics lesson-carousel--mobile">
+    <div class="lesson-carousel__list">
+        <div class="lesson-carousel__item">
+            <img data-id="fe6428a3-4c3b-4e0d-afa7-2bd087b611c2" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/fe6428a3-4c3b-4e0d-afa7-2bd087b611c2/original.png">
+        </div>
+        <div class="lesson-carousel__item">
+            <img data-id="1413a70b-1cae-4965-b5a8-d26ef9fedd81" data-max-width="512" alt="" src="https://cdn.javarush.ru/images/article/1413a70b-1cae-4965-b5a8-d26ef9fedd81/original.png">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+Working with Entity Hierarchies
+<p>----------------------------------------</p>
+Conservation problems. Solution types. @MappedSuperClass.
+<p>----------------------------------------</p>
+have a new and super interesting scheme - using the Hibernate features to save the class hierarchy to the database.</p>
+<p><span class="text-green">A class hierarchy is a set of classes related to each other by an inheritance relationship.</span></p>
+<p>Imagine that you have three classes that you want to store in the database:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+  <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+  <span class="token class-name">LocalDate</span> birthday<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token keyword">extends</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+ 	<span class="token class-name">String</span> occupation<span class="token punctuation">;</span>
+ 	<span class="token keyword">int</span> salary<span class="token punctuation">;</span>
+ 	<span class="token class-name">LocalDate</span> join<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token keyword">extends</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token class-name">String</span> address<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Classes are inherited from each other. And the most interesting thing is that you want to use Hibernate in order to store objects of these classes in the database.</p>
+<h2>Solution types</h2>
+<p>Hibernate has 4 possible ways that it can associate a class hierarchy with tables in a database:</p>
+<ul>
+ <li><strong>MappedSuperclass</strong></li>
+ <li><strong>single table</strong></li>
+ <li><strong>Joined Table</strong></li>
+ <li><strong>Table per class</strong></li>
+</ul>
+<p>Each strategy assumes its own table structure in the database. Sometimes they are quite complex. But queries for HQL to them are very simple. This is exactly the case where the advantages of Hibernate are clearly manifested.</p>
+<p>I have never heard these terms translated into Russian, so I also recommend pronouncing them in English.</p>
+<p>Below we will analyze what each of them means.</p>
+<h2>@MappedSuperClass</h2>
+<p>Let's start with the simplest solution - <span class="text-green">in the database you have separate tables for each class</span> . For example, these:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">CREATE TABLE user <span class="token punctuation">{</span>
+  id INT<span class="token punctuation">,</span>
+  name VARCHAR<span class="token punctuation">,</span>
+  birthday DATE
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">CREATE TABLE employee <span class="token punctuation">{</span>
+  id INT<span class="token punctuation">,</span>
+  name VARCHAR<span class="token punctuation">,</span>
+  birthday DATE<span class="token punctuation">,</span>
+  occupation VARCHAR<span class="token punctuation">,</span>
+  salary INT<span class="token punctuation">,</span>
+  join DATE
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java">CREATE TABLE client <span class="token punctuation">{</span>
+  id INT<span class="token punctuation">,</span>
+  name VARCHAR<span class="token punctuation">,</span>
+  birthday DATE<span class="token punctuation">,</span>
+  address VARCHAR
+<span class="token punctuation">}</span></code></pre>
+<p><span class="text-red">Only you know</span> that the classes for these tables are connected in a hierarchy . If you want Hibernate to know about this too, you need to add the <span class="text-yellow"><span class="text-bold">@MappedSuperclass</span> annotation to the parent class . Without it, Hibernate will simply ignore the fields and annotations of the parent class.</span></p>
+<p>Classes with this annotation will look like this:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@MappedSuperclass</span>
+<span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+  <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+  <span class="token class-name">LocalDate</span> birthday<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token keyword">extends</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+ 	<span class="token class-name">String</span> occupation<span class="token punctuation">;</span>
+ 	<span class="token keyword">int</span> salary<span class="token punctuation">;</span>
+ 	<span class="token class-name">LocalDate</span> join<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Entity</span>
+<span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token keyword">extends</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+   <span class="token class-name">String</span> address<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This is the most primitive way of linking the class hierarchy and the database. This approach actually only allows you to avoid duplicate fields in classes.</p>
+<p>Database queries in HQL will return only the entity whose type is specified explicitly. You cannot write a database query in HQL and get a list of all users: User, Employee, Client.</p>
