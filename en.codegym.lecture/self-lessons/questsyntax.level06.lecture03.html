@@ -1,3 +1,7 @@
+Finalizing with finalize
+<p>----------------------------------------</p>
+Today our agenda includes a brief introduction to the most independent method: finalize(). It only obeys the Java machine in the sense that only the Java machine can call it. And it does so right before the object is destroyed. In fact, this method is the opposite of a constructor. It can free up the resources used by an object.
+<p>----------------------------------------</p>
 <p>"Hi again. Today we'll briefly learn about the <strong>finalize</strong>() method. The Java Virtual Machine calls the <strong>finalize</strong>() method before destroying an object. The method is used to deallocate system resources or perform other cleanup tasks. In fact, this method is the exact opposite of a constructor in Java. You will recall that constructors are used to create objects."</p>
 <p>"The Object class has a <strong>finalize</strong>() method, which means that every other class does too (<span class="text-green">since all Java classes derive from the Object class</span>). You can simply implement your own <strong>finalize</strong>() method in your class."</p>
 <p>"Here's an example:"</p>

@@ -1,3 +1,7 @@
+Introducing exceptions
+<p>----------------------------------------</p>
+Previously, when an error occurred in a method, the program would terminate. Now the Java machine creates a special object (an exception), which stores information about the error. The program exits the current method, then exits the method that called that method, and so on until it reaches the main method. For the program to continue working, the exception must be "caught".
+<p>----------------------------------------</p>
 <p>"Hi, Amigo. We're going to have a very interesting lesson today. I'm going to tell you about exceptions. <span class="text-green"><a href='https://codegym.cc/groups/posts/exceptions-in-java' target='_blank'>Exceptions</a> are a special mechanism that lets us handle errors in the program.</span> Here are some examples of errors that might occur in a program:</p>
 <p>1. The program may try to write a file when the hard drive is completely full.</p>
 <p>2. The program may try to call a method on a variable storing a null reference.</p>
