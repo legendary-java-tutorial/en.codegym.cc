@@ -1,3 +1,7 @@
+BufferedReader/InputSreamReader
+<p>----------------------------------------</p>
+Programming is practice. That's why sometimes we start using something, but only later do we understand what's what. This is what happened with the BufferedReader and InputSreamReader classes, which CodeGym students use even during the first quest. It's time to understand how they're organized.
+<p>----------------------------------------</p>
 <p>"Hello, Amigo! You've been using the <span class="text-red"><strong>BufferedReader</strong></span> and <span class="text-red"><strong>InputStreamReader</strong></span> classes for a long time. Now let's explore what they actually do."</p>
 <p>The <span class="text-red"><strong>InputStreamReader</strong></span> class is a classic adapter from the <strong>InputStream</strong> interface to the <strong>Reader</strong> interface. There's nothing to add here either.</p>
 <p>But in short, this is what happens. When you request (read) the next character from an <strong>InputStreamReader</strong> object, it reads a few bytes from <strong>InputStream</strong> passed to the constructor, and returns them as one char.</p>
