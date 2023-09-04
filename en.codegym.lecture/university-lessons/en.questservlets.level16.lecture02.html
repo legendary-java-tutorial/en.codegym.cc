@@ -2,7 +2,8 @@ Generative patterns
 <p>----------------------------------------</p>
 Singleton Factory [Method] Abstract Factory Prototype
 <p>----------------------------------------</p>
-strong> is a generic design pattern that guarantees that a single-threaded application will have a single instance of some class, and provides a global access point to this instance.</p>
+<h2>3.1 Singleton</h2>
+<p><strong>Singleton</strong> is a generic design pattern that guarantees that a single-threaded application will have a single instance of some class, and provides a global access point to this instance.</p>
 <img data-max-width="800" data-id="e1787a38-0ea4-4f60-b524-5d49b9035c5f" src="https://cdn.codegym.cc/images/article/e1787a38-0ea4-4f60-b524-5d49b9035c5f/800.jpeg" alt="">
 <p>Very often, novice programmers like to assemble utility methods into some static class - a class that contains only static methods. This approach has a number of disadvantages - for example, you cannot pass a reference to an object of such a class, such methods are difficult to test, and the like.</p>
 <p>As an alternative, a singleton class solution was proposed: a class that can have only one object. When attempting to create this object, it is only created if it does not already exist, otherwise a reference to an already existing instance is returned.</p>

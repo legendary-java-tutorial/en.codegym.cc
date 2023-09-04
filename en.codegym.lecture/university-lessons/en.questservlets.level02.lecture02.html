@@ -3,15 +3,12 @@ Building a war project
 Differences between war and jar files. War file creation plugin with maven-war-plugin. Building a web application based on SpringBoot.
 <p>----------------------------------------</p>
 <h2>Differences between war and jar files</h2>
-<p><span class="text-bold">In fact </span><span class="text-bold"><span class="text-red">,</span></span> a jar library
-    is just a zip archive, which directly follows from its name: <span class="text-bold"><span
-            class="text-red">Java</span> Archive<span class="text-red"></span></span> . Most often it contains just four
-    things:</p>
+<p><span class="text-bold">In fact </span><span class="text-bold"><span class="text-red">,</span></span> a jar library is just a zip archive, which directly follows from its name: <span class="text-bold"><span class="text-red">Java</span> Archive<span class="text-red"></span></span> . Most often it contains just four things:</p>
 <ul>
-    <li>compiled classes;</li>
-    <li>resources: properties files and the like;</li>
-    <li>manifest MANIFEST.MF;</li>
-    <li>other jar libraries (rare).</li>
+ <li>compiled classes;</li>
+ <li>resources: properties files and the like;</li>
+ <li>manifest MANIFEST.MF;</li>
+ <li>other jar libraries (rare).</li>
 </ul>
 <p>The typical structure of such an archive looks like this:</p>
 <pre><code>  META-INF/
@@ -21,25 +18,21 @@ Differences between war and jar files. War file creation plugin with maven-war-p
 	      MyApplication.class
   application.properties
 </code></pre>
-<p>Now let's look at a typical war file. By the way, war is not from the word war, but from <span
-        class="text-bold"><span class="text-red">W</span> eb <span class="text-red">Ar</span> chive</span> . The
-    structure of a war file is usually more complex. Most often it consists of two parts:</p>
+<p>Now let's look at a typical war file. By the way, war is not from the word war, but from <span class="text-bold"><span class="text-red">W</span> eb <span class="text-red">Ar</span> chive</span> . The structure of a war file is usually more complex. Most often it consists of two parts:</p>
 <ul>
-    <li><span class="text-bold">Java part</span>
-        <ul>
-            <li>compiled classes</li>
-            <li>resources for java classes: properties files and the like</li>
-            <li>other jar libraries (often)</li>
-            <li>manifest MANIFEST.MF</li>
-        </ul>
-    </li>
-    <li><span class="text-bold">web part</span>
-        <ul>
-            <li>web-xml - web service deployment descriptor</li>
-            <li>jsp servlets</li>
-            <li>static web resources: HTML, CSS, JS files</li>
-        </ul>
-    </li>
+ <li><span class="text-bold">Java part</span>
+  <ul>
+   <li>compiled classes</li>
+   <li>resources for java classes: properties files and the like</li>
+   <li>other jar libraries (often)</li>
+   <li>manifest MANIFEST.MF</li>
+  </ul></li>
+ <li><span class="text-bold">web part</span>
+  <ul>
+   <li>web-xml - web service deployment descriptor</li>
+   <li>jsp servlets</li>
+   <li>static web resources: HTML, CSS, JS files</li>
+  </ul></li>
 </ul>
 <p>An example of a typical war file:</p>
 <pre><code>META-INF/
@@ -55,11 +48,9 @@ WEB-INF/
     lib/
     	// *.jar files as libs
 </code></pre>
-<p><span class="text-bold">Important! </span>jar file can be run by just a java machine, but to run a war file, it must
-    be uploaded to a web server. It does not start on its own.</p>
+<p><span class="text-bold">Important! </span>jar file can be run by just a java machine, but to run a war file, it must be uploaded to a web server. It does not start on its own.</p>
 <h2>war file plugin with maven-war-plugin</h2>
-<p>Let's imagine that we have a simple web project. Let the project be given such a file structure, how do we assemble
-    it?</p>
+<p>Let's imagine that we have a simple web project. Let the project be given such a file structure, how do we assemble it?</p>
 <pre><code>|-- pom.xml
  `-- src
  	`-- main
@@ -78,8 +69,7 @@ WEB-INF/
          	`-- jsp
              	`-- websource.jsp
 </code></pre>
-<p>First, we need to tell Maven to build all this as a <span class="text-bold">war file , there is a </span><span
-        class="text-bold">&lt;package&gt;</span> tag for this , for example:</p>
+<p>First, we need to tell Maven to build all this as a <span class="text-bold">war file , there is a </span><span class="text-bold">&lt;package&gt;</span> tag for this , for example:</p>
 <pre><code><span class="text-viola">	&lt;project&gt;
   	...
       &lt;groupId&gt;com.example.projects&lt;/groupId&gt;
@@ -105,27 +95,19 @@ WEB-INF/
     &lt;/plugins&gt;
   &lt;/build&gt;</span>
 </code></pre>
-<p>Here we simply define a plugin that can be configured in the future. Also, using the <span class="text-neon">webappDirectory</span>
-    tag , we redefine the directory into which the project will be deployed. Now I'll tell you more about what I'm
-    talking about.</p>
+<p>Here we simply define a plugin that can be configured in the future. Also, using the <span class="text-neon">webappDirectory</span> tag , we redefine the directory into which the project will be deployed. Now I'll tell you more about what I'm talking about.</p>
 <p>The plugin can be set to two build modes (two types of goal):</p>
 <ul>
-    <li><span class="text-bold">war:war</span></li>
-    <li><span class="text-bold">war:exploded</span></li>
+ <li><span class="text-bold">war:war</span></li>
+ <li><span class="text-bold">war:exploded</span></li>
 </ul>
-<p>In the first case, the resulting war file is simply placed in the <span class="text-bold">target</span> folder and
-    named <span class="text-bold">&lt;artifactId&gt;-&lt;version&gt;.war</span> .</p>
-<p>But you can “ask” the plugin so that the contents of the war file are placed in the final folder in the state in
-    which it will be unpacked by the web server inside. For this, goal <span class="text-bold">war:exploded</span> is
-    used .</p>
+<p>In the first case, the resulting war file is simply placed in the <span class="text-bold">target</span> folder and named <span class="text-bold">&lt;artifactId&gt;-&lt;version&gt;.war</span> .</p>
+<p>But you can “ask” the plugin so that the contents of the war file are placed in the final folder in the state in which it will be unpacked by the web server inside. For this, goal <span class="text-bold">war:exploded</span> is used .</p>
 <p>The second approach is often used if you are running or debugging a project directly from Intellij IDEA.</p>
-<p><span class="text-neon">By the way, the webappDirectory</span> tag in the example above allows you to redefine the
-    directory where your war file will be unpacked when building in war:exploded mode.</p>
-<p>You can learn about other plugin settings from its <a
-        href="https://maven.apache.org/plugins/maven-war-plugin/usage.html" target="_blank">official page</a> .</p>
+<p><span class="text-neon">By the way, the webappDirectory</span> tag in the example above allows you to redefine the directory where your war file will be unpacked when building in war:exploded mode.</p>
+<p>You can learn about other plugin settings from its <a href="https://maven.apache.org/plugins/maven-war-plugin/usage.html" target="_blank">official page</a> .</p>
 <h2>Building a web application based on SpringBoot</h2>
-<p>Well, I would like to disassemble some real assembly example. Let's not be trifles and consider this using an example
-    application based on SpringBoot.</p>
+<p>Well, I would like to disassemble some real assembly example. Let's not be trifles and consider this using an example application based on SpringBoot.</p>
 <p><span class="text-bold">Step one. </span>Create an empty Maven web project with IDEA.</p>
 <p><span class="text-bold">Step two. </span>Add Spring dependencies to its pom.xml.</p>
 <pre><code>&lt;dependency&gt;
@@ -142,35 +124,20 @@ WEB-INF/
     &lt;scope&gt;provided&lt;/scope&gt;
 &lt;/dependency&gt;
 </code></pre>
-<p><span class="text-bold">Step three. </span>Create a class <span class="code"><span class="text-green">com.codegym.spring.MainController</span></span>
-    . It needs to be placed in the <span class="text-bold">src/main/java</span> folder :</p>
-<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
-                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
-        class=" language-java"><span class="token annotation punctuation">@Controller</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MainController</span> <span
-            class="token punctuation">{</span>
+<p><span class="text-bold">Step three. </span>Create a class <span class="code"><span class="text-green">com.codegym.spring.MainController</span></span> . It needs to be placed in the <span class="text-bold">src/main/java</span> folder :</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MainController</span> <span class="token punctuation">{</span>
 
-	<span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span
-            class="token string">"/"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">viewIndexPage</span><span
-            class="token punctuation">(</span><span class="token class-name">Model</span> model<span
-            class="token punctuation">)</span> <span class="token punctuation">{</span>
-        model<span class="token punctuation">.</span><span class="token function">addAttribute</span><span
-            class="token punctuation">(</span><span class="token string">"header"</span><span class="token punctuation">,</span> <span
-            class="token string">"Maven Generate War"</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
-    	<span class="token keyword">return</span> <span class="token string">"index"</span><span
-            class="token punctuation">;</span>
+	<span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">viewIndexPage</span><span class="token punctuation">(</span><span class="token class-name">Model</span> model<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        model<span class="token punctuation">.</span><span class="token function">addAttribute</span><span class="token punctuation">(</span><span class="token string">"header"</span><span class="token punctuation">,</span> <span class="token string">"Maven Generate War"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token keyword">return</span> <span class="token string">"index"</span><span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
-<p>There are 3 things described here. First, <span class="text-green">the @Controller annotation</span> tells the
-    SpringBoot framework that this class will be used to serve incoming web requests.</p>
-<p>Second, <span class="text-green">the @GetMapping annotation</span> , indicates that our method will be called to
-    service a GET request on the root URI - /</p>
-<p>Third, the method returns the string <span class="text-red">"index"</span> . <span class="text-red">This tells the SpringBoot framework to return the contents of the index.html</span>
-    file as a response .</p>
-<p><span class="text-bold">Step four. </span>You need to add an index.html file to the project with the following
-    content:</p>
+<p>There are 3 things described here. First, <span class="text-green">the @Controller annotation</span> tells the SpringBoot framework that this class will be used to serve incoming web requests.</p>
+<p>Second, <span class="text-green">the @GetMapping annotation</span> , indicates that our method will be called to service a GET request on the root URI - /</p>
+<p>Third, the method returns the string <span class="text-red">"index"</span> . <span class="text-red">This tells the SpringBoot framework to return the contents of the index.html</span> file as a response .</p>
+<p><span class="text-bold">Step four. </span>You need to add an index.html file to the project with the following content:</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en" xmlns:th="http://www.thymeleaf.org"&gt;
 &lt;html lang="en"&gt;
@@ -194,21 +161,13 @@ WEB-INF/
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-<p>It's not just html. Before its content is given to the client, it will be modified on the server by the <a
-        href="https://www.thymeleaf.org/doc/tutorials/3.0/thymeleafspring.html" target="_blank">Thymeleaf</a> framework
-    . Special tags are embedded in this file, which allow the Thymeleaf library to process and modify the content of the
-    page.</p>
-<p>The tags in red are the tags that will be processed by the Thymeleaf library, the green ones are the styles of the
-    Bootstrap CSS library.</p>
+<p>It's not just html. Before its content is given to the client, it will be modified on the server by the <a href="https://www.thymeleaf.org/doc/tutorials/3.0/thymeleafspring.html" target="_blank">Thymeleaf</a> framework . Special tags are embedded in this file, which allow the Thymeleaf library to process and modify the content of the page.</p>
+<p>The tags in red are the tags that will be processed by the Thymeleaf library, the green ones are the styles of the Bootstrap CSS library.</p>
 <p><span class="text-bold">Step five. </span>Set the plugin in pom.xml:</p>
 <pre><code>&lt;plugin&gt;
     &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
     &lt;version&gt;3.3.1&lt;/version&gt;
 &lt;/plugin&gt;
 </code></pre>
-<p>I overestimated my strength a bit. It takes a lot of time to fully parse a simple example. But you can download the
-    full code of the project from GitHub and try to understand it yourself. By the way, 80% of your working time you
-    will do just that :)</p>
-<p>You can download the full code <a
-        href="https://github.com/eugenp/tutorials/tree/master/maven-modules/maven-generate-war" target="_blank">from the
-    link in GitHub</a> .</p>
+<p>I overestimated my strength a bit. It takes a lot of time to fully parse a simple example. But you can download the full code of the project from GitHub and try to understand it yourself. By the way, 80% of your working time you will do just that :)</p>
+<p>You can download the full code <a href="https://github.com/eugenp/tutorials/tree/master/maven-modules/maven-generate-war" target="_blank">from the link in GitHub</a> .</p>

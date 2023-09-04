@@ -3,78 +3,38 @@ Why logs are needed in Java
 Introduction to logs Failed logs Introduction to the log4j logger
 <p>----------------------------------------</p>
 <h2>1.1 Introduction to logs</h2>
-<p><strong>The log</strong> is a list of events that have occurred. Almost like a nautical journal or diary. Well,
-    accordingly, <strong>a logger</strong> is an object with which you can log. In programming, it is customary to log
-    almost everything. And in Java, everything is like that and even a little more.</p><img data-max-width="800"
-                                                                                            data-id="df09efd4-dece-47be-a17c-a89c3b63974e"
-                                                                                            alt="logger java"
-                                                                                            src="https://cdn.javarush.com/images/article/df09efd4-dece-47be-a17c-a89c3b63974e/800.jpeg"
-                                                                                            style="width: 800px;">
-<p>The fact is that Java programs are very often large server applications without a UI, console, and so on. They
-    process requests from thousands of users at the same time and often various errors occur. Especially when different
-    threads begin to interfere with each other.</p>
-<p>And, in fact, the only way to find rarely reproduced errors and failures in such a situation is to <strong>write to
-    the log / file everything</strong> that happens in each thread.</p>
-<p>Most often, information is written to the log about the parameters of the method with which it was called, all the
-    intercepted errors, and a lot of intermediate information. The more complete the log, the easier it is to restore
-    the sequence of events and trace the causes of a failure or error.</p>
-<p>But the larger the log, the more difficult it is to work with it. Sometimes the logs reach several gigabytes per day.
-    This is fine.</p>
+<p><strong>The log</strong> is a list of events that have occurred. Almost like a nautical journal or diary. Well, accordingly, <strong>a logger</strong> is an object with which you can log. In programming, it is customary to log almost everything. And in Java, everything is like that and even a little more.</p><img data-max-width="800" data-id="df09efd4-dece-47be-a17c-a89c3b63974e" alt="logger java" src="https://cdn.javarush.com/images/article/df09efd4-dece-47be-a17c-a89c3b63974e/800.jpeg" style="width: 800px;">
+<p>The fact is that Java programs are very often large server applications without a UI, console, and so on. They process requests from thousands of users at the same time and often various errors occur. Especially when different threads begin to interfere with each other.</p>
+<p>And, in fact, the only way to find rarely reproduced errors and failures in such a situation is to <strong>write to the log / file everything</strong> that happens in each thread.</p>
+<p>Most often, information is written to the log about the parameters of the method with which it was called, all the intercepted errors, and a lot of intermediate information. The more complete the log, the easier it is to restore the sequence of events and trace the causes of a failure or error.</p>
+<p>But the larger the log, the more difficult it is to work with it. Sometimes the logs reach several gigabytes per day. This is fine.</p>
 <h2>1.2 Failed logs</h2>
-<p>As the first logs, the developers used simply <strong>output to the console</strong> . It is convenient to do this
-    during application debugging - when all important information and variable values ​​are written to the console. But
-    such a log is completely inapplicable during the normal operation of the application.</p>
-<p>Firstly, <span class="text-green">the application may want to output something to the console itself, and the user does not want to see the service information intended for the programmer at all.</span>
-</p>
+<p>As the first logs, the developers used simply <strong>output to the console</strong> . It is convenient to do this during application debugging - when all important information and variable values ​​are written to the console. But such a log is completely inapplicable during the normal operation of the application.</p>
+<p>Firstly, <span class="text-green">the application may want to output something to the console itself, and the user does not want to see the service information intended for the programmer at all.</span></p>
 <p>Secondly, <span class="text-red">the size of the console buffer is limited, you can't write much there.</span></p>
-<p>And finally, <span class="text-user">thirdly, information about program errors that is collected over a long period of time should be sent to the program developers. And it is most convenient to write all this information at once to a file.</span>
-</p>
-<p>The developers quickly solved the first problem - they came up with another output stream - <code>System.err</code>.
-    You can write messages to it and they will be sent to a separate thread, and not to the standard console.</p>
+<p>And finally, <span class="text-user">thirdly, information about program errors that is collected over a long period of time should be sent to the program developers. And it is most convenient to write all this information at once to a file.</span></p>
+<p>The developers quickly solved the first problem - they came up with another output stream - <code>System.err</code>. You can write messages to it and they will be sent to a separate thread, and not to the standard console.</p>
 <p>And even the problem with writing to a file was solved:</p>
-<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
-                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
-        class=" language-java"><span class="token comment">// Define the file to which we will write the log</span>
-<span class="token class-name">System</span><span class="token punctuation">.</span><span
-            class="token function">setErr</span><span class="token punctuation">(</span><span
-            class="token keyword">new</span> <span class="token class-name">PrintStream</span><span
-            class="token punctuation">(</span><span class="token keyword">new</span> <span
-            class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"log.txt"</span><span
-            class="token punctuation">)</span><span class="token punctuation">)</span><span
-            class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token comment">// Define the file to which we will write the log</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">setErr</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"log.txt"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment">// Display messages</span>
-<span class="token class-name">System</span><span class="token punctuation">.</span>err<span
-            class="token punctuation">.</span><span class="token function">println</span><span
-            class="token punctuation">(</span><span class="token string">"Message 1"</span><span
-            class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token class-name">System</span><span class="token punctuation">.</span>err<span
-            class="token punctuation">.</span><span class="token function">println</span><span
-            class="token punctuation">(</span><span class="token string">"Message 2"</span><span
-            class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Message 1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Message 2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment">// Display an error message</span>
 <span class="token keyword">try</span> <span class="token punctuation">{</span>
-    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span
-            class="token punctuation">(</span><span class="token string">"Error message"</span><span
-            class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span
-            class="token punctuation">(</span><span class="token class-name">Exception</span> e<span
-            class="token punctuation">)</span> <span class="token punctuation">{</span>
-    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span
-            class="token punctuation">(</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
+    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"Error message"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
-<p>But even in this form, it did not solve the whole problem, so it was decided to create a special library that would
-    write log messages to a file. She did it in a smart way and allowed the flexibility to configure filters for logged
-    events and data.</p>
+<p>But even in this form, it did not solve the whole problem, so it was decided to create a special library that would write log messages to a file. She did it in a smart way and allowed the flexibility to configure filters for logged events and data.</p>
 <p>The whole logging process, in fact, consists of three parts:</p>
 <ul>
-    <li>The first part is information <strong>gathering</strong> .</li>
-    <li>The second part is <strong>the filtering</strong> of the collected information.</li>
-    <li>The third part is <strong>the recording</strong> of the selected information.</li>
+ <li>The first part is information <strong>gathering</strong> .</li>
+ <li>The second part is <strong>the filtering</strong> of the collected information.</li>
+ <li>The third part is <strong>the recording</strong> of the selected information.</li>
 </ul>
 <h2>1.3 Introduction to the log4j logger</h2>
-<p>The first popular logger in the Java community was the <code>log4j</code>. Including it in the project is very
-    simple, for this you need to add just a couple of lines to your pom.xml</p>
+<p>The first popular logger in the Java community was the <code>log4j</code>. Including it in the project is very simple, for this you need to add just a couple of lines to your pom.xml</p>
 <pre class="line-numbers"><code>
 &lt;dependency&gt;
     &lt;groupId&gt;log4j&lt;/groupId&gt;
@@ -83,58 +43,23 @@ Introduction to logs Failed logs Introduction to the log4j logger
 &lt;/dependency&gt;
 </code></pre>
 <p>The interaction of your program with such a logger would look something like this:</p>
-<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
-                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
-        class=" language-java"><span class="token keyword">class</span> <span
-        class="token class-name">Manager</span> <span class="token punctuation">{</span>
-<span class="text-green">   <span class="token keyword">private</span> <span class="token keyword">static</span> <span
-        class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span
-        class="token operator">=</span> <span class="token class-name">LoggerFactory</span><span
-        class="token punctuation">.</span><span class="token function">getLogger</span><span
-        class="token punctuation">(</span><span class="token class-name">Manager</span><span
-        class="token punctuation">.</span><span class="token keyword">class</span><span
-        class="token punctuation">)</span><span class="token punctuation">;</span></span><span
-            class="token punctuation"></span>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token keyword">class</span> <span class="token class-name">Manager</span> <span class="token punctuation">{</span>
+<span class="text-green">   <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">LoggerFactory</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token class-name">Manager</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><span class="token punctuation"></span>
 
-   <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">processTask</span><span
-            class="token punctuation">(</span><span class="token class-name">Task</span> task<span
-            class="token punctuation">)</span> <span class="token punctuation">{</span>
- <span class="text-user">       logger<span class="token punctuation">.</span><span
-         class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"processTask id = "</span> <span
-         class="token operator">+</span> task<span class="token punctuation">.</span><span
-         class="token function">getId</span><span class="token punctuation">(</span><span
-         class="token punctuation">)</span><span class="token punctuation">)</span><span
-         class="token punctuation">;</span></span><span class="token punctuation"></span>
+   <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">processTask</span><span class="token punctuation">(</span><span class="token class-name">Task</span> task<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ <span class="text-user">       logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"processTask id = "</span> <span class="token operator">+</span> task<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><span class="token punctuation"></span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            task<span class="token punctuation">.</span><span class="token function">start</span><span
-            class="token punctuation">(</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
-            task<span class="token punctuation">.</span><span class="token function">progress</span><span
-            class="token punctuation">(</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
-            task<span class="token punctuation">.</span><span class="token function">complete</span><span
-            class="token punctuation">(</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token boolean">true</span><span
-            class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span
-            class="token punctuation">(</span><span class="token class-name">Exception</span> e<span
-            class="token punctuation">)</span> <span class="token punctuation">{</span>
- <span class="text-red">           logger<span class="token punctuation">.</span><span
-         class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Unknown error"</span><span
-         class="token punctuation">,</span> e<span class="token punctuation">)</span><span
-         class="token punctuation">;</span></span><span class="token punctuation"></span>
-            <span class="token keyword">return</span> <span class="token boolean">false</span><span
-            class="token punctuation">;</span>
+            task<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            task<span class="token punctuation">.</span><span class="token function">progress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            task<span class="token punctuation">.</span><span class="token function">complete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ <span class="text-red">           logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Unknown error"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span></span><span class="token punctuation"></span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
 <p>Three things happen here:</p>
-<p><span class="text-green">The creation of the object is highlighted in green</span> <code>Logger</code> . Its object
-    is stored in a static variable for convenient further work with it. And also <code>getLogger()</code>information
-    about the class in which the information is collected is passed to the method.</p>
-<p><span
-        class="text-user">The line highlighted in blue is where we log information of value only during debugging</span>
-    . For this, a special method is used -<code>debug()</code></p>
-<p>And finally, <span class="text-red">the line where we save the exception that has arisen to the log is highlighted in red</span>
-    . Exceptions are potential errors, so the <code>error()</code>.</p>
+<p><span class="text-green">The creation of the object is highlighted in green</span> <code>Logger</code> . Its object is stored in a static variable for convenient further work with it. And also <code>getLogger()</code>information about the class in which the information is collected is passed to the method.</p>
+<p><span class="text-user">The line highlighted in blue is where we log information of value only during debugging</span> . For this, a special method is used -<code>debug()</code></p>
+<p>And finally, <span class="text-red">the line where we save the exception that has arisen to the log is highlighted in red</span> . Exceptions are potential errors, so the <code>error()</code>.</p>

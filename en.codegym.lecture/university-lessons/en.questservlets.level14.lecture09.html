@@ -2,7 +2,7 @@ Alternative ways of linking software modules
 <p>----------------------------------------</p>
 Replacing direct dependencies with messaging. Law of Demeter (law of Demeter). Composition instead of inheritance.
 <p>----------------------------------------</p>
-ng</h2>
+<h2>Replacing direct dependencies with messaging</h2>
 <p>Sometimes a module just needs to notify others that some events/changes have occurred in it, and it doesn't matter what happens to this information later.</p>
 <p>In this case, the modules do not need to “know about each other” at all, that is, contain direct links and interact directly, but it is enough just to exchange messages (messages) or events (events).</p>
 <p>Sometimes it seems that module communication via messaging is much weaker than direct dependency. Indeed, because the methods are not called, there is no information about the classes. But this is nothing more than an illusion.</p>
@@ -30,6 +30,6 @@ ng</h2>
 <p>An analogy from life: if you want the dog to run, it is stupid to command its paws, it is better to give the command to the dog, and she will deal with her paws herself.</p>
 <h2>Composition instead of inheritance</h2>
 <p>This is a very large and interesting topic and it deserves at least a separate lecture. A lot of copies were broken on this topic on the Internet until a consensus was reached - we use inheritance to a minimum, composition - to the maximum.</p>
-<p>The point is that inheritance actually provides the strongest connection between classes, so it should be avoided. This topic is well covered in article " <a href="https://stackoverflow.com/a/53354/7118307" target="_blank">Prefer Composition Over Inheritance</a> ".</p>
+<p>The point is that inheritance actually provides the strongest connection between classes, so it should be avoided. This topic is well covered in Herb Sutter's article " <a href="https://stackoverflow.com/a/53354/7118307" target="_blank">Prefer Composition Over Inheritance</a> ".</p>
 <p>When you start learning design patterns, you will come across a whole bunch of patterns that govern the creation of an object or its internal structure. By the way, I can advise in this context to pay attention to the <span class="text-bold">Delegate / Delegate</span> pattern and the <span class="text-bold">Component</span> pattern, which came from games .</p>
 <p>We'll talk more about patterns a little later.</p>

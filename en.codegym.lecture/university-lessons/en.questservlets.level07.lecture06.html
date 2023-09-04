@@ -2,56 +2,32 @@ JSON
 <p>----------------------------------------</p>
 Prior to the mass adoption of JavaScript, an XML-based data storage and transfer format was popular....
 <p>----------------------------------------</p>
-<p>Before the mass adoption of JavaScript, an XML-based data storage and transport format was popular.</p>
+<p>Prior to the mass adoption of JavaScript, an XML-based data storage and transfer format was popular.</p>
 <p>Information about a person in this format could look like this:</p>
 <pre><code>&lt;person firstName="Bill" lastName="Gates"&gt;
    &lt;birthday day="12" month="10" year="1965"&gt;
    &lt;address city="Radmond" state="Washington" street="Gates 1" zipCode="93122"&gt;
    &lt;phone home="+123456789" work="+123456799"&gt;
 &lt;/person&gt;</code></pre>
-<p>Such code consisted almost entirely of tags and was very convenient for parsing programs. However, it was difficult
-    for people to read such code. Therefore, over time, it began to be replaced by the JSON format, created on the basis
-    of JavaScript objects.</p>
+<p>Such code consisted almost entirely of tags and was very convenient for parsing programs. However, it was difficult for people to read such code. Therefore, over time, it began to be replaced by the JSON format, created on the basis of JavaScript objects.</p>
 <p>JSON stands for JavaScript Object Notation.</p>
 <p>The same object written as JSON would look like this:</p>
-<pre class=" line-numbers language-javascript" tabindex="0"><span aria-hidden="true"
-                                                                  class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
-        class=" language-javascript"><span class="token punctuation">{</span>
-  <span class="token string">"firstName"</span><span class="token operator">:</span> <span
-            class="token string">"Bill"</span><span class="token punctuation">,</span>
-  <span class="token string">"lastName"</span><span class="token operator">:</span> <span
-            class="token string">"Gates"</span><span class="token punctuation">,</span>
-  <span class="token string">"birthday"</span><span class="token operator">:</span> <span
-            class="token punctuation">{</span>
-   	<span class="token string">"day"</span><span class="token operator">:</span> <span
-            class="token string">"12"</span><span class="token punctuation">,</span>
-   	<span class="token string">"month"</span><span class="token operator">:</span> <span
-            class="token string">"10"</span><span class="token punctuation">,</span>
-   	<span class="token string">"year"</span><span class="token operator">:</span> <span
-            class="token string">"1965"</span> <span class="token punctuation">}</span><span
-            class="token punctuation">,</span>
-  <span class="token string">"address"</span><span class="token operator">:</span> <span
-            class="token punctuation">{</span>
-   	<span class="token string">"city"</span><span class="token operator">:</span> <span
-            class="token string">"Radmond"</span><span class="token punctuation">,</span>
-   	<span class="token string">"state"</span><span class="token operator">:</span> <span class="token string">"Washington"</span><span
-            class="token punctuation">,</span>
-   	<span class="token string">"street"</span><span class="token operator">:</span> <span
-            class="token string">"Gates 1"</span><span class="token punctuation">,</span>
-   	<span class="token string">"zipCode"</span><span class="token operator">:</span> <span
-            class="token string">"93122"</span><span class="token punctuation">}</span><span
-            class="token punctuation">,</span>
-  <span class="token string">"phone"</span><span class="token operator">:</span> <span
-            class="token punctuation">{</span>
-    <span class="token string">"home"</span><span class="token operator">:</span> <span class="token string">"+123456789"</span><span
-            class="token punctuation">,</span>
-    <span class="token string">"work"</span><span class="token operator">:</span> <span class="token string">"+123456799"</span><span
-            class="token punctuation">}</span>
+<pre class=" line-numbers language-javascript" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-javascript"><span class="token punctuation">{</span>
+  <span class="token string">"firstName"</span><span class="token operator">:</span> <span class="token string">"Bill"</span><span class="token punctuation">,</span>
+  <span class="token string">"lastName"</span><span class="token operator">:</span> <span class="token string">"Gates"</span><span class="token punctuation">,</span>
+  <span class="token string">"birthday"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+   	<span class="token string">"day"</span><span class="token operator">:</span> <span class="token string">"12"</span><span class="token punctuation">,</span>
+   	<span class="token string">"month"</span><span class="token operator">:</span> <span class="token string">"10"</span><span class="token punctuation">,</span>
+   	<span class="token string">"year"</span><span class="token operator">:</span> <span class="token string">"1965"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"address"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+   	<span class="token string">"city"</span><span class="token operator">:</span> <span class="token string">"Radmond"</span><span class="token punctuation">,</span>
+   	<span class="token string">"state"</span><span class="token operator">:</span> <span class="token string">"Washington"</span><span class="token punctuation">,</span>
+   	<span class="token string">"street"</span><span class="token operator">:</span> <span class="token string">"Gates 1"</span><span class="token punctuation">,</span>
+   	<span class="token string">"zipCode"</span><span class="token operator">:</span> <span class="token string">"93122"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"phone"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"home"</span><span class="token operator">:</span> <span class="token string">"+123456789"</span><span class="token punctuation">,</span>
+    <span class="token string">"work"</span><span class="token operator">:</span> <span class="token string">"+123456799"</span><span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
-<p>Such a record is more difficult for a computer, but easier for a person. With the rise of the Internet and JavaScipt
-    in particular, this format has supplanted all others. In addition, fast JSON data parser libraries were written.</p>
-<p>Java has libraries that can convert Java objects to and from JSON. So as a Java programmer, you have nothing to worry
-    about.</p>
-<p>In addition, with JDK 7, Java introduced a built-in data type - JsonObject. You can read more about it <a
-        href="https://docs.oracle.com/javaee/7/api/javax/json/JsonObject.html" target="_blank">in the documentation</a>
-    .</p>
+<p>Such a record is more difficult for a computer, but easier for a person. With the rise of the Internet and JavaScipt in particular, this format has supplanted all others. In addition, fast JSON data parser libraries were written.</p>
+<p>Java has libraries that can convert Java objects to and from JSON. So as a Java programmer, you have nothing to worry about.</p>
+<p>In addition, with JDK 7, Java introduced a built-in data type - JsonObject. You can read more about it <a href="https://docs.oracle.com/javaee/7/api/javax/json/JsonObject.html" target="_blank">in the documentation</a> .</p>

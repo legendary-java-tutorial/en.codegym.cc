@@ -1,8 +1,9 @@
 Web server filters
 <p>----------------------------------------</p>
-Introduction to Filters Filter, FilterChain, FilterConfig Classes RequestDispatcher Class Redirect vs. Forward Comparison
+Introduction to Filters, Filter, FilterChain, FilterConfig Classes RequestDispatcher Class Redirect vs. Forward Comparison
 <p>----------------------------------------</p>
-s not all. You really don't think servlets are that simple, do you?</p>
+<h2>Introduction to filters</h2>
+<p>But that's not all. You really don't think servlets are that simple, do you?</p>
 <p>In addition to the servlets that we have already analyzed, there are also so-called “utility servlets” - <strong>filters</strong> . They are very similar to servlets, but their main job is to help servlets process requests.</p>
 <p>A filter is like a secretary, and a servlet is like a director. Before the document reaches the director's desk, it will pass through the hands of the secretary. And after the director signs it, it will again go to the secretary, already as outgoing correspondence, for example.</p>
 <p>Such a secretary can reject some of the requests to the director (for example, spam). Or give standard answers to questions known to him (“the director is not in place”). And so on. Moreover, there can be several such secretaries: one can filter spam for all directors at once, the other can transfer requests between different directors, and the like.</p>

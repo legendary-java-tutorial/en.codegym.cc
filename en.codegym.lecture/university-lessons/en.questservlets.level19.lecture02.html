@@ -2,7 +2,8 @@ Concurrent Collections
 <p>----------------------------------------</p>
 CopyOnWriteArrayList ConcurrentMap Interface ConcurrentHashMap Implementations
 <p>----------------------------------------</p>
-"text-viola">The add</span> , <span class="text-viola">set</span> , <span class="text-viola">remove</span> operations on a given collection result in a new copy of the internal array being created. This ensures that we don't catch <span class="text-red"><span class="text-bold">ConcurrentModificationException</span></span> .</p>
+<h2>CopyOnWriteArrayList</h2>
+<p><span class="text-viola">The add</span> , <span class="text-viola">set</span> , <span class="text-viola">remove</span> operations on a given collection result in a new copy of the internal array being created. This ensures that we don't catch <span class="text-red"><span class="text-bold">ConcurrentModificationException</span></span> .</p>
 <p>Just remember that when copying an array, only references to objects are copied, including access to the fields of non-thread-safe elements. Such collections are best used in cases with a minimum number of write operations.</p><img data-max-width="512" data-id="dd30e3f5-509c-479f-acb2-47f72f63b032" alt="" src="https://cdn.javarush.com/images/article/dd30e3f5-509c-479f-acb2-47f72f63b032/512.jpeg" style="width: 512px;">
 <p><span class="code"><span class="text-green">CopyOnWriteArrayList&lt;E&gt;</span></span> is a thread-safe analogue<span class="code"><span class="text-green"> of ArrayList</span></span> , implemented on the basis of CopyOnWrite algorithms. Additional methods and constructor are described below:</p>
 <div class="table-container">

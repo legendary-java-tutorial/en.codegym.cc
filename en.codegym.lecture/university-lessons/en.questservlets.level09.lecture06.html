@@ -2,86 +2,52 @@ HTTP Headers Part 2
 <p>----------------------------------------</p>
 Keep-Alive Header Cache-Control Cookie Session Header
 <p>----------------------------------------</p>
-<h2>7.1 Keep-Alive Header</h2>
-<p>More useful headers. <strong>The Keep-Alive</strong> header tells the server to keep the connection open: the server
-    will not close the connection immediately after sending the response. This will cause the next request from the same
-    client to the server to be completed faster.</p>
+<h2>7.1 Keep-Alive header</h2>
+<p>And a few more useful titles. <strong>The Keep-Alive</strong> header tells the server to keep the connection open: the server will not close the connection immediately after sending the response. This will cause the next request from the same client to the server to be completed faster.</p>
 <p>An example of such a header:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
-            class="token class-name">Connection</span><span class="token operator">:</span> <span
-            class="token class-name">Keep</span><span class="token operator">-</span><span class="token class-name">Alive</span></code></pre>
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name">Connection</span><span class="token operator">:</span> <span class="token class-name">Keep</span><span class="token operator">-</span><span class="token class-name">Alive</span></code></pre>
 </div>
-<p>But if all clients require a permanent connection, then problems will begin at the server. The server will either be
-    unavailable or start closing connections on its own.</p>
+<p>But if all clients require a permanent connection, then problems will begin at the server. The server will either be unavailable or start closing connections on its own.</p>
 <h2>7.2 Cache-Control header</h2>
-<p><strong>The Cache-Control</strong> header can be used to control content caching. Properly configured caching speeds
-    up work with content, crookedly configured caching creates problems out of the blue.</p>
+<p><strong>The Cache-Control</strong> header can be used to control content caching. Properly configured caching speeds up work with content, crookedly configured caching creates problems out of the blue.</p>
 <p>To <strong>disable caching,</strong> you need to write the following header:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
-            class="token class-name">Cache</span><span class="token operator">-</span><span class="token class-name">Control</span><span
-            class="token operator">:</span> no<span class="token operator">-</span>cache<span class="token punctuation">,</span> no<span
-            class="token operator">-</span>store<span class="token punctuation">,</span> must<span
-            class="token operator">-</span>revalidate</code></pre>
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name">Cache</span><span class="token operator">-</span><span class="token class-name">Control</span><span class="token operator">:</span> no<span class="token operator">-</span>cache<span class="token punctuation">,</span> no<span class="token operator">-</span>store<span class="token punctuation">,</span> must<span class="token operator">-</span>revalidate</code></pre>
 </div>
-<p>Nothing should be stored in the cache - neither from client requests, nor from server responses. The request is
-    always sent to the server, the response is always downloaded completely.</p>
+<p>Nothing should be stored in the cache - neither from client requests, nor from server responses. The request is always sent to the server, the response is always downloaded completely.</p>
 <p>You can also enable <strong>the most primitive and reliable type of caching</strong> :</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
-            class="token class-name">Cache</span><span class="token operator">-</span><span class="token class-name">Control</span><span
-            class="token operator">:</span> no<span class="token operator">-</span>cache</code></pre>
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name">Cache</span><span class="token operator">-</span><span class="token class-name">Control</span><span class="token operator">:</span> no<span class="token operator">-</span>cache</code></pre>
 </div>
 <p>Before giving out a copy, the cache queries the origin server to see if the resource is up to date.</p>
 <p>You can specify <strong>the resource cache time in seconds</strong> . The heading will look like this:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
-            class="token class-name">Cache</span><span class="token operator">-</span><span class="token class-name">Control</span><span
-            class="token operator">:</span> max<span class="token operator">-</span>age<span
-            class="token operator">=</span><span class="token number">31536000</span></code></pre>
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name">Cache</span><span class="token operator">-</span><span class="token class-name">Control</span><span class="token operator">:</span> max<span class="token operator">-</span>age<span class="token operator">=</span><span class="token number">31536000</span></code></pre>
 </div>
 <p>This header specifies the maximum cache time for content.</p>
-<p>You can read more about caching <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" target="_blank">here.</a>
-</p>
+<p>You can read more about caching <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" target="_blank">here.</a></p>
 <h2>7.3 Cookies</h2>
-<p><span class="text-green">The server can store data on the client side</span> . Such data is called <strong>a
-    cookie</strong> . However, the client can also store the cookie. They are very helpful to both parties.</p>
-<p>For example, you go to the site, and you are already authorized on it. That is, when you logged into it last time,
-    the server ordered the browser to store information about the successful login of a certain user.</p>
+<p><span class="text-green">The server can store data on the client side</span> . Such data is called <strong>a cookie</strong> . However, the client can also store the cookie. They are very helpful to both parties.</p>
+<p>For example, you go to the site, and you are already authorized on it. That is, when you logged into it last time, the server ordered the browser to store information about the successful login of a certain user.</p>
 <p>Here's what the Cookie looks like in a request:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
-            class="token class-name"></span><span class="text-red"><span class="token class-name">Cookie</span><span
-            class="token operator">:</span></span><span class="token operator"></span> <span
-            class="text-green">name<span class="token operator">=</span>value<span class="token punctuation">;</span>name2<span
-            class="token operator">=</span>value2<span class="token punctuation">;</span>nameN<span
-            class="token operator">=</span>valueN00</span></code></pre>
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"></span><span class="text-red"><span class="token class-name">Cookie</span><span class="token operator">:</span></span><span class="token operator"></span> <span class="text-green">name<span class="token operator">=</span>value<span class="token punctuation">;</span>name2<span class="token operator">=</span>value2<span class="token punctuation">;</span>nameN<span class="token operator">=</span>valueN00</span></code></pre>
 </div>
-<p>Cookies are usually stored by the browser and <span class="text-viola">they are tied to a specific domain</span> .
-    When you visit the same domain again, cookies are automatically added to the http request and http response. The
-    server/domain cannot receive cookies that are stored in the browser by another server/domain.</p>
+<p>Cookies are usually stored by the browser and <span class="text-viola">they are tied to a specific domain</span> . When you visit the same domain again, cookies are automatically added to the http request and http response. The server/domain cannot receive cookies that are stored in the browser by another server/domain.</p>
 <p>Each cookie has 4 main parameters:</p>
 <ul>
-    <li><strong>Name;</strong></li>
-    <li><strong>meaning;</strong></li>
-    <li><strong>validity period (how long to store them);</strong></li>
-    <li><strong>the domain to which the cookie is bound.</strong></li>
+ <li><strong>Name;</strong></li>
+ <li><strong>meaning;</strong></li>
+ <li><strong>validity period (how long to store them);</strong></li>
+ <li><strong>the domain to which the cookie is bound.</strong></li>
 </ul>
-<p>Cookies are stored and transmitted in text form, so both name and value are strings. If the cookie expiration time is
-    not specified, then they are destroyed after the browser is closed.</p>
+<p>Cookies are stored and transmitted in text form, so both name and value are strings. If the cookie expiration time is not specified, then they are destroyed after the browser is closed.</p>
 <h2>7.4 session</h2>
-<p>After the user has logged in to the site, they say that a session has been established between the site and the
-    server.</p>
-<p>The server creates a special object in itself - <code>HttpSession,</code>where it stores all the necessary
-    information to work with an authorized client. And the unique number of this object is stored in the browser in the
-    form of a Cookie.</p>
+<p>After the user has logged in to the site, they say that a session has been established between the site and the server.</p>
+<p>The server creates a special object in itself - <code>HttpSession,</code>where it stores all the necessary information to work with an authorized client. And the unique number of this object is stored in the browser in the form of a Cookie.</p>
 <p>Java web servers usually use a name <code>JSESSIONID</code>to store the session ID. It looks something like this:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span
-            class="token class-name"></span><span class="text-red"><span class="token class-name">Cookie</span><span
-            class="token operator">:</span> JSESSIONID</span> <span class="token operator"></span><span
-            class="text-green"><span class="token operator">=</span>ABAD1D</span></code></pre>
+ <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token class-name"></span><span class="text-red"><span class="token class-name">Cookie</span><span class="token operator">:</span> JSESSIONID</span> <span class="token operator"></span><span class="text-green"><span class="token operator">=</span>ABAD1D</span></code></pre>
 </div>
-<p>On the server side, you can set the lifetime of the session, as well as whether it will be automatically closed when
-    the browser is closed.</p>
+<p>On the server side, you can set the lifetime of the session, as well as whether it will be automatically closed when the browser is closed.</p>

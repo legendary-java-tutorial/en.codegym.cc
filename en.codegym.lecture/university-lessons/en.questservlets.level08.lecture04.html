@@ -1,183 +1,96 @@
 NAT
 <p>----------------------------------------</p>
-Introduction to NAT NAT Terminology Packet Path Advantages and Disadvantages of NAT
+Introduction to NAT. NAT Terminology. Packet. Path. Advantages and Disadvantages of NAT
 <p>----------------------------------------</p>
 <h2>5.1 Introduction to NAT</h2>
-<p>Another very interesting topic is NAT. NAT stands for <strong>Network Address Translation</strong> and is usually
-    present in every router as a service. So what is it and why is it needed?</p>
-<p><strong>NAT</strong> is a point by which local networks can be connected to global networks, such as the Internet,
-    for example.</p>
-<p>As you already know, on local networks, all computers (and other devices connected to the network) have their own
-    local IP addresses. And in order to exchange data with a server on the Internet, it is necessary that our computer
-    can send a request to the server and the server can send us a response. And where should he send a response if our
-    IP address is unknown outside of our local network?</p>
-<p>Imagine that you are writing a paper letter to Donald Trump. Trump is a public figure, he is the only one - this is
-    our public server. And you indicate Masha as the return address in the letter. Mash a lot. Which Masha should be
-    sent the answer?</p>
-<p>So you send a letter to your acquaintance in Washington, also a public figure, with strict instructions to send it to
-    Trump. Your friend receives a letter, sends it to Trump, and gives his address in Washington as the return
-    address.</p>
+<p>Another very interesting topic is NAT. NAT stands for <strong>Network Address Translation</strong> and is usually present in every router as a service. So what is it and why is it needed?</p>
+<p><strong>NAT</strong> is a point by which local networks can be connected to global networks, such as the Internet, for example.</p>
+<p>As you already know, on local networks, all computers (and other devices connected to the network) have their own local IP addresses. And in order to exchange data with a server on the Internet, it is necessary that our computer can send a request to the server and the server can send us a response. And where should he send a response if our IP address is unknown outside of our local network?</p>
+<p>Imagine that you are writing a paper letter to Donald Trump. Trump is a public figure, he is the only one - this is our public server. And you indicate Masha as the return address in the letter. Mash a lot. Which Masha should be sent the answer?</p>
+<p>So you send a letter to your acquaintance in Washington, also a public figure, with strict instructions to send it to Trump. Your friend receives a letter, sends it to Trump, and gives his address in Washington as the return address.</p>
 <p>Then, after receiving a response from Trump, the acquaintance forwards it to you. Same with IP packets...</p>
-<p>To allow a device with a private IPv4 address to access devices and resources outside the local network, the private
-    address must first be changed to a public public address.</p>
-<p>Just NAT translates private addresses into public ones. This allows a device with a local IP address to access
-    resources outside of its private network. NAT, combined with local IP addresses, has proven to be a useful method of
-    maintaining public IPv4 addresses.</p>
-<p>There are 8 billion people in the world, and there are already many more network devices: phones, laptops, smart
-    watches, servers, any smart devices. And there are only 4 billion IP addresses. It used to seem like a lot, but with
-    the rapid growth of the Internet, it became clear to everyone that this was not enough.</p>
-<p>Here NAT comes to the rescue: one public IPv4 address can be used by hundreds, even thousands of devices, each of
-    which has a local IPv4 address. NAT has the added benefit of adding a degree of privacy and security to a network
-    because it hides internal IPv4 addresses from external networks.</p>
+<p>To allow a device with a private IPv4 address to access devices and resources outside the local network, the private address must first be changed to a public public address.</p>
+<p>Just NAT translates private addresses into public ones. This allows a device with a local IP address to access resources outside of its private network. NAT, combined with local IP addresses, has proven to be a useful method of maintaining public IPv4 addresses.</p>
+<p>There are 8 billion people in the world, and there are already many more network devices: phones, laptops, smart watches, servers, any smart devices. And there are only 4 billion IP addresses. It used to seem like a lot, but with the rapid growth of the Internet, it became clear to everyone that this was not enough.</p>
+<p>Here NAT comes to the rescue: one public IPv4 address can be used by hundreds, even thousands of devices, each of which has a local IPv4 address. NAT has the added benefit of adding a degree of privacy and security to a network because it hides internal IPv4 addresses from external networks.</p>
 <h2>5.2 Subnets in NAT</h2>
-<p>LANs are usually designed with private IP addresses. These are addresses from private subnets <code>10.0.0.0/8</code>,
-    <code>172.16.0.0/12</code>and <code>192.168.0.0/16</code>. These IP addresses are used internally by an organization
-    or site to allow devices to communicate locally, they are not routable on the internet.</p>
-<p>NAT-enabled routers can be configured with one or more valid public IPv4 addresses. These public addresses are called
-    a NAT pool.</p>
-<p>When a device on the internal network sends traffic from the network to the outside, the NAT-enabled router
-    translates the internal IP address of the device to the public IP address from the NAT pool. To external devices,
-    all traffic in and out of the network appears to have a public IP address.</p>
-<p>A NAT router usually operates at the edge of a Stub network. A stub network is a term from network theory: a stub
-    network that has one connection to a neighboring network, one entry and exit from the network.</p>
-<img data-max-width="1024" data-id="1b60aecc-d8b8-4917-b78b-c90ca02be8b8"
-     src="https://cdn.codegym.cc/images/article/1b60aecc-d8b8-4917-b78b-c90ca02be8b8/1024.jpeg" alt="">
-<p>When a device inside the Stub network wants to communicate with a device outside its network, the packet is forwarded
-    to the router and it performs a NAT process, translating the device's internal private address to a public,
-    external, routable address.</p>
+<p>LANs are usually designed with private IP addresses. These are addresses from private subnets <code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>and <code>192.168.0.0/16</code>. These IP addresses are used internally by an organization or site to allow devices to communicate locally, they are not routable on the internet.</p>
+<p>NAT-enabled routers can be configured with one or more valid public IPv4 addresses. These public addresses are called a NAT pool.</p>
+<p>When a device on the internal network sends traffic from the network to the outside, the NAT-enabled router translates the internal IP address of the device to the public IP address from the NAT pool. To external devices, all traffic in and out of the network appears to have a public IP address.</p>
+<p>A NAT router usually operates at the edge of a Stub network. A stub network is a term from network theory: a stub network that has one connection to a neighboring network, one entry and exit from the network.</p>
+<img data-max-width="1024" data-id="1b60aecc-d8b8-4917-b78b-c90ca02be8b8" src="https://cdn.codegym.cc/images/article/1b60aecc-d8b8-4917-b78b-c90ca02be8b8/1024.jpeg" alt="">
+<p>When a device inside the Stub network wants to communicate with a device outside its network, the packet is forwarded to the router and it performs a NAT process, translating the device's internal private address to a public, external, routable address.</p>
 <h2>5.3 NAT terminology</h2>
-<p>If you delve into the theory of networks, then NAT is an internal network, which is a set of subnets to be
-    translated. The external network refers to all other networks.</p>
-<p>When using NAT, IP addresses have different designations based on whether they are on a private network or on a
-    public network (on the Internet) and whether the traffic is incoming or outgoing.</p>
+<p>If you delve into the theory of networks, then NAT is an internal network, which is a set of subnets to be translated. The external network refers to all other networks.</p>
+<p>When using NAT, IP addresses have different designations based on whether they are on a private network or on a public network (on the Internet) and whether the traffic is incoming or outgoing.</p>
 <p>NAT includes four types of addresses:</p>
 <ul>
-    <li><strong>Internal local address</strong> (Inside local address);</li>
-    <li><strong>Internal global address</strong> (Inside global address);</li>
-    <li><strong>Outside local address</strong> ;</li>
-    <li><strong>External global address</strong> (Outside global address);</li>
+ <li><strong>Internal local address</strong> (Inside local address);</li>
+ <li><strong>Internal global address</strong> (Inside global address);</li>
+ <li><strong>Outside local address</strong> ;</li>
+ <li><strong>External global address</strong> (Outside global address);</li>
 </ul>
-<p>When determining which type of address is being used, it is important to remember that NAT terminology is always
-    applied from the point of view of the device with the translated address:</p>
+<p>When determining which type of address is being used, it is important to remember that NAT terminology is always applied from the point of view of the device with the translated address:</p>
 <ul>
-    <li><strong>Internal address</strong> (Inside address) - address of the device that is translated by NAT;</li>
-    <li><strong>Outside address</strong> – destination device address;</li>
-    <li><strong>A Local address</strong> is any address that appears internally on the network;</li>
-    <li><strong>A Global address</strong> is any address that appears on the outside of the network.</li>
+ <li><strong>Internal address</strong> (Inside address) - address of the device that is translated by NAT;</li>
+ <li><strong>Outside address</strong> – destination device address;</li>
+ <li><strong>A Local address</strong> is any address that appears internally on the network;</li>
+ <li><strong>A Global address</strong> is any address that appears on the outside of the network.</li>
 </ul>
 <p>Let's look at this with a diagram example.</p>
-<img data-max-width="1024" data-id="bf6573ce-977f-430d-93cc-c9435edef15a"
-     src="https://cdn.codegym.cc/images/article/bf6573ce-977f-430d-93cc-c9435edef15a/1024.jpeg" alt="">
-<p>The computer in the picture on the left has an internal local ( <strong>Inside local</strong> ) address <code>192.168.1.5</code>,
-    and from its point of view, the web server has an external ( <strong>outside</strong> ) address
-    <code>208.141.17.4</code>. When data packets are sent from the computer to the global address of the web server, the
-    internal local ( <strong>Inside local</strong> ) address of the PC is translated to <code>208.141.16.5</code>(
-    <strong>inside global</strong> ). The external device address is usually not translated because it is a public IPv4
-    address.</p>
-<p>It is worth noting that a computer has, as it were, two addresses: local and global addresses, while a web server has
-    the same public IP address. From his point of view, the traffic that originates from the computer comes from the
-    internal global address <code>208.141.16.5</code>. A NAT router is the separation point between internal and
-    external networks, and between local and global addresses.</p>
-<p>The terms <strong>inside</strong> and <strong>outside</strong> are combined with the terms <strong>local</strong> and
-    <strong>global</strong> to refer to specific addresses. In the figure, the router is configured to provide NAT and
-    has a pool of public addresses to assign to internal hosts.</p>
+<img data-max-width="1024" data-id="bf6573ce-977f-430d-93cc-c9435edef15a" src="https://cdn.codegym.cc/images/article/bf6573ce-977f-430d-93cc-c9435edef15a/1024.jpeg" alt="">
+<p>The computer in the picture on the left has an internal local ( <strong>Inside local</strong> ) address <code>192.168.1.5</code>, and from its point of view, the web server has an external ( <strong>outside</strong> ) address <code>208.141.17.4</code>. When data packets are sent from the computer to the global address of the web server, the internal local ( <strong>Inside local</strong> ) address of the PC is translated to <code>208.141.16.5</code>( <strong>inside global</strong> ). The external device address is usually not translated because it is a public IPv4 address.</p>
+<p>It is worth noting that a computer has, as it were, two addresses: local and global addresses, while a web server has the same public IP address. From his point of view, the traffic that originates from the computer comes from the internal global address <code>208.141.16.5</code>. A NAT router is the separation point between internal and external networks, and between local and global addresses.</p>
+<p>The terms <strong>inside</strong> and <strong>outside</strong> are combined with the terms <strong>local</strong> and <strong>global</strong> to refer to specific addresses. In the figure, the router is configured to provide NAT and has a pool of public addresses to assign to internal hosts.</p>
 <h2>5.4 Packet path</h2>
-<p>If you are already tired, then go to the next lecture. If you're still interested, then welcome further down the
-    wormhole.</p>
-<p>The figure below shows how traffic is sent from an internal computer to an external web server through a NAT-enabled
-    router, sent out, and relayed back.</p>
-<img data-max-width="1024" data-id="e2a99e12-4da6-45b3-826d-a348cebbb0cd"
-     src="https://cdn.codegym.cc/images/article/e2a99e12-4da6-45b3-826d-a348cebbb0cd/1024.jpeg" alt="">
+<p>If you are already tired, then go to the next lecture. If you're still interested, then welcome further down the wormhole.</p>
+<p>The figure below shows how traffic is sent from an internal computer to an external web server through a NAT-enabled router, sent out, and relayed back.</p>
+<img data-max-width="1024" data-id="e2a99e12-4da6-45b3-826d-a348cebbb0cd" src="https://cdn.codegym.cc/images/article/e2a99e12-4da6-45b3-826d-a348cebbb0cd/1024.jpeg" alt="">
 <div class="table-container">
-    <table>
-        <tbody align="center">
-        <tr>
-            <th colspan="4">router NAT table</th>
-        </tr>
-        <tr>
-            <td colspan="2">PC</td>
-            <td colspan="2">web server</td>
-        </tr>
-        <tr>
-            <td>Inside Global</td>
-            <td>Inside Local</td>
-            <td>outside local</td>
-            <td>Outside Global</td>
-        </tr>
-        <tr>
-            <td>208.141.17.4</td>
-            <td>192.168.1.5</td>
-            <td>208.141.16.5</td>
-            <td>208.141.16.5</td>
-        </tr>
-        </tbody>
-    </table>
+ <table>
+  <tbody align="center">
+   <tr>
+    <th colspan="4">router NAT table</th>
+   </tr>
+   <tr>
+    <td colspan="2">PC</td>
+    <td colspan="2">web server</td>
+   </tr>
+   <tr>
+    <td>Inside Global</td>
+    <td>Inside Local</td>
+    <td>outside local</td>
+    <td>Outside Global</td>
+   </tr>
+   <tr>
+    <td>208.141.17.4</td>
+    <td>192.168.1.5</td>
+    <td>208.141.16.5</td>
+    <td>208.141.16.5</td>
+   </tr>
+  </tbody>
+ </table>
 </div>
-<p><strong>Inside</strong> local address - The source address as seen from the internal network. In the figure, the
-    address <code>192.168.1.5</code>is assigned to the computer - this is its internal local address.</p>
-<p>Inside global address - The source address as seen from the outside network. In the figure, when traffic from the
-    computer is sent to the web server at <code>208.141.17.4</code>, the router translates the internal local address
-    (local address) to the inside global address (Inside global address). In this case, the router changes the <strong>IPv4</strong>
-    source address from <code>192.168.1.5</code>to <code>208.141.16.5</code>.</p>
-<p>Outside global address - the address of the destination as seen from the outside network. This is a globally routable
-    IP address assigned to a host on the Internet. In the diagram, the web server is available at
-    <code>208.141.17.4</code>. Most often, external local and external global addresses are the same.</p>
-<p>Outside local address - The recipient's address as seen from the internal network. In this example, the computer
-    sends traffic to the web server at<code>208.141.17.4</code></p>
-<p>Now let's look at the entire package path. The computer with the address <code>192.168.1.5</code>is trying to
-    communicate with the web server <code>208.141.17.4</code>. When a packet arrives at a NAT-enabled router, it reads
-    the packet's destination IP address to determine if the packet matches the criteria specified for translation. In
-    this example, the source address matches the criteria and is translated from <code>192.168.1.5</code>(Inside local
-    address) to <code>208.141.16.5</code>(Inside global address).</p>
-<p>The router adds this local-to-global address mapping to the NAT table and sends the packet with the translated source
-    address to the destination. The web server responds with a packet addressed to the PC's internal global address (
-    <code>208.141.16.5</code>).</p>
-<p>The router receives a packet with a destination address <code>208.141.16.5</code>and checks the NAT table for an
-    entry for that mapping. It uses this information and translates back the inside global address (
-    <code>208.141.16.5</code>) to the inside local address ( <code>192.168.1.5</code>), the packet is redirected towards
-    the PC.</p>
+<p><strong>Inside</strong> local address - The source address as seen from the internal network. In the figure, the address <code>192.168.1.5</code>is assigned to the computer - this is its internal local address.</p>
+<p>Inside global address - The source address as seen from the outside network. In the figure, when traffic from the computer is sent to the web server at <code>208.141.17.4</code>, the router translates the internal local address (local address) to the inside global address (Inside global address). In this case, the router changes the <strong>IPv4</strong> source address from <code>192.168.1.5</code>to <code>208.141.16.5</code>.</p>
+<p>Outside global address - the address of the destination as seen from the outside network. This is a globally routable IP address assigned to a host on the Internet. In the diagram, the web server is available at <code>208.141.17.4</code>. Most often, external local and external global addresses are the same.</p>
+<p>Outside local address - The recipient's address as seen from the internal network. In this example, the computer sends traffic to the web server at<code>208.141.17.4</code></p>
+<p>Now let's look at the entire package path. The computer with the address <code>192.168.1.5</code>is trying to communicate with the web server <code>208.141.17.4</code>. When a packet arrives at a NAT-enabled router, it reads the packet's destination IP address to determine if the packet matches the criteria specified for translation. In this example, the source address matches the criteria and is translated from <code>192.168.1.5</code>(Inside local address) to <code>208.141.16.5</code>(Inside global address).</p>
+<p>The router adds this local-to-global address mapping to the NAT table and sends the packet with the translated source address to the destination. The web server responds with a packet addressed to the PC's internal global address ( <code>208.141.16.5</code>).</p>
+<p>The router receives a packet with a destination address <code>208.141.16.5</code>and checks the NAT table for an entry for that mapping. It uses this information and translates back the inside global address ( <code>208.141.16.5</code>) to the inside local address ( <code>192.168.1.5</code>), the packet is redirected towards the PC.</p>
 <h2>5.5 Advantages and disadvantages of NAT</h2>
-<p>The NAT service is a very powerful solution that is used everywhere. NAT provides <strong>many benefits</strong>
-    including:</p>
+<p>The NAT service is a very powerful solution that is used everywhere. NAT provides <strong>many benefits</strong> including:</p>
 <ul>
-    <li>NAT maintains a registered addressing scheme, providing flexible LAN operation. With NAT, internal hosts can
-        share one public IP address for all external communications. This type of configuration requires very few
-        external addresses to support many internal hosts.
-    </li>
-    <li>NAT increases the flexibility of Internet connections. Multiple pools, backup pools, and load balancing pools
-        can be implemented to provide reliable public network connections.
-    </li>
-    <li>NAT provides consistency for the network's internal addressing schemes. On a network that does not use private
-        IP addresses and NAT, changing the general IP address scheme requires redirecting all hosts on the existing
-        network. The cost of host forwarding can be significant. NAT allows the existing IPv4 private addressing scheme
-        to remain while allowing the new public addressing scheme to be easily changed. This means that an organization
-        can change providers and does not need to change any of its internal customers.
-    </li>
-    <li>NAT <strong>provides network security</strong> . Because private networks do not advertise their addresses or
-        internal topology, they remain reasonably reliable when used in conjunction with NAT to gain controlled external
-        access. However, you need to understand that NAT does not replace firewalls.
-    </li>
+ <li>NAT maintains a registered addressing scheme, providing flexible LAN operation. With NAT, internal hosts can share one public IP address for all external communications. This type of configuration requires very few external addresses to support many internal hosts.</li>
+ <li>NAT increases the flexibility of Internet connections. Multiple pools, backup pools, and load balancing pools can be implemented to provide reliable public network connections.</li>
+ <li>NAT provides consistency for the network's internal addressing schemes. On a network that does not use private IP addresses and NAT, changing the general IP address scheme requires redirecting all hosts on the existing network. The cost of host forwarding can be significant. NAT allows the existing IPv4 private addressing scheme to remain while allowing the new public addressing scheme to be easily changed. This means that an organization can change providers and does not need to change any of its internal customers.</li>
+ <li>NAT <strong>provides network security</strong> . Because private networks do not advertise their addresses or internal topology, they remain reasonably reliable when used in conjunction with NAT to gain controlled external access. However, you need to understand that NAT does not replace firewalls.</li>
 </ul>
-<p>But NAT has some <strong>disadvantages</strong> . The fact that hosts on the internet appear to be talking directly
-    to a NAT-enabled device rather than to an actual host inside the private network creates a number of problems:</p>
+<p>But NAT has some <strong>disadvantages</strong> . The fact that hosts on the internet appear to be talking directly to a NAT-enabled device rather than to an actual host inside the private network creates a number of problems:</p>
 <ul>
-    <li>One of the disadvantages of using NAT has to do with network performance, especially for real-time protocols
-        such as VoIP. NAT increases switching delays because the translation of each IP address in the packet headers
-        takes time.
-    </li>
-    <li>Another disadvantage of using NAT is that end-to-end addressing is lost. Many Internet protocols and
-        applications rely on end-to-end addressing from source to destination. Some applications do not work with NAT.
-        Applications that use physical addresses rather than a qualified domain name fail to reach destinations that are
-        translated through a NAT router. This can sometimes be avoided by implementing static NAT mappings.
-    </li>
-    <li>End-to-end IPv4 tracing is also lost. It is more difficult to trace packets that undergo multiple packet address
-        changes over multiple NAT hops, making troubleshooting difficult.
-    </li>
-    <li>The use of NAT also makes tunneling protocols such as IPsec difficult because NAT changes values ​​in headers
-        that interfere with integrity checks performed by IPsec and other tunneling protocols.
-    </li>
-    <li>Services that require TCP connections to be initiated from the external network, or stateless protocols such as
-        those using UDP, may be broken. If the NAT router is not configured to support these protocols, incoming packets
-        cannot reach their destination.
-    </li>
+ <li>One of the disadvantages of using NAT has to do with network performance, especially for real-time protocols such as VoIP. NAT increases switching delays because the translation of each IP address in the packet headers takes time.</li>
+ <li>Another disadvantage of using NAT is that end-to-end addressing is lost. Many Internet protocols and applications rely on end-to-end addressing from source to destination. Some applications do not work with NAT. Applications that use physical addresses rather than a qualified domain name fail to reach destinations that are translated through a NAT router. This can sometimes be avoided by implementing static NAT mappings.</li>
+ <li>End-to-end IPv4 tracing is also lost. It is more difficult to trace packets that undergo multiple packet address changes over multiple NAT hops, making troubleshooting difficult.</li>
+ <li>The use of NAT also makes tunneling protocols such as IPsec difficult because NAT changes values ​​in headers that interfere with integrity checks performed by IPsec and other tunneling protocols.</li>
+ <li>Services that require TCP connections to be initiated from the external network, or stateless protocols such as those using UDP, may be broken. If the NAT router is not configured to support these protocols, incoming packets cannot reach their destination.</li>
 </ul>

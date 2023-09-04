@@ -3,28 +3,25 @@ New HttpClient
 Introduction to HttpClient Declarative Approach
 <p>----------------------------------------</p>
 <h2>1.1 Introduction to HttpClient</h2>
-<p>Beginning with JDK 11, the developers of the Java platform added a powerful new tool to the JDK for making http
-    requests, the <code>java.net.http</code>. It contains four key classes:</p>
+<p>Beginning with JDK 11, the developers of the Java platform added a powerful new tool to the JDK for making http requests, the <code>java.net.http</code>. It contains four key classes:</p>
 <ul>
-    <li><strong>HttpClient</strong></li>
-    <li><strong>HttpRequest</strong></li>
-    <li><strong>HttpResponse</strong></li>
-    <li><strong>web socket</strong></li>
+ <li><strong>HttpClient</strong></li>
+ <li><strong>HttpRequest</strong></li>
+ <li><strong>HttpResponse</strong></li>
+ <li><strong>web socket</strong></li>
 </ul>
-<p>These are very powerful classes that allow you to perform all possible types of requests using the <code>HTTP</code>,
-    <code>HTTP/2</code>and <code>WebSocket</code>.</p>
+<p>These are very powerful classes that allow you to perform all possible types of requests using the <code>HTTP</code>, <code>HTTP/2</code>and <code>WebSocket</code>.</p>
 <p>In addition, you can use these classes to make both synchronous and asynchronous http requests.</p>
 <p>Making an http request consists of the following parts:</p>
 <ol>
-    <li>Create an object<code>HttpClient</code></li>
-    <li>Create an object<code>HttpRequеst</code></li>
-    <li>Sending a request using the <code>send()</code>or method<code>sendAsync()</code></li>
-    <li>Response processing<code>HttpResponse</code></li>
+ <li>Create an object<code>HttpClient</code></li>
+ <li>Create an object<code>HttpRequеst</code></li>
+ <li>Sending a request using the <code>send()</code>or method<code>sendAsync()</code></li>
+ <li>Response processing<code>HttpResponse</code></li>
 </ol>
 <p>An example of such a request:</p>
 <pre class="line-numbers"><code>
- <span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span
-        class="text-red">HttpClient</span>.newBuilder()
+ <span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span class="text-red">HttpClient</span>.newBuilder()
         .version(Version.HTTP_1_1)
         .followRedirects(Redirect.NORMAL)
         .connectTimeout(Duration.ofSeconds(20))
@@ -32,17 +29,14 @@ Introduction to HttpClient Declarative Approach
         .authenticator(Authenticator.getDefault())
         .build();
  
-HttpResponse&lt;String&gt; <span class="text-user">response</span> = <span class="text-green">client</span>.<span
-        class="text-red">send</span>(<span class="text-orange">request</span>, BodyHandlers.ofString());
+HttpResponse&lt;String&gt; <span class="text-user">response</span> = <span class="text-green">client</span>.<span class="text-red">send</span>(<span class="text-orange">request</span>, BodyHandlers.ofString());
 System.out.println(<span class="text-user">response</span>.statusCode());
 System.out.println(<span class="text-user">response</span>.body()); 
 </code></pre>
 <h2>1.2 Declarative approach</h2>
-<p>In the example above, you see an example of the so-called declarative approach to writing code. Let's take a look at
-    the first part of the example:</p>
+<p>In the example above, you see an example of the so-called declarative approach to writing code. Let's take a look at the first part of the example:</p>
 <pre class="line-numbers"><code>
- <span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span
-        class="text-red">HttpClient</span>.newBuilder()
+ <span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span class="text-red">HttpClient</span>.newBuilder()
 .version(Version.HTTP_1_1)
 .followRedirects(Redirect.NORMAL)
 .connectTimeout(Duration.ofSeconds(20))
@@ -52,108 +46,89 @@ System.out.println(<span class="text-user">response</span>.body());
 </code></pre>
 <p>What this code would look like written in classic style:</p>
 <pre class="line-numbers"><code>
-<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span
-        class="text-red">HttpClient</span>.new();
+<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span class="text-red">HttpClient</span>.new();
 <span class="text-green">client</span>.setVersion(Version.HTTP_1_1);
 <span class="text-green">client</span>.setFollowRedirects(Redirect.NORMAL);
 <span class="text-green">client</span>.setConnectTimeout(Duration.ofSeconds(20));
 <span class="text-green">client</span>.setProxy(ProxySelector.of(new InetSocketAddress(<span class="text-green">"proxy.example.com"</span>, 80)));
 <span class="text-green">client</span>.setAuthenticator(Authenticator.getDefault());
 </code></pre>
-<p>When using the declarative approach in the code, two things change. <strong>Firstly</strong> , all class methods
-    <code class="text-red">HttpClient</code> <span class="text-red">return their own object</span> , which allows you to
-    organize code in the form of chains.</p>
+<p>When using the declarative approach in the code, two things change. <strong>Firstly</strong> , all class methods <code class="text-red">HttpClient</code> <span class="text-red">return their own object</span> , which allows you to organize code in the form of chains.</p>
 <div class="table-container">
-    <table>
-        <tbody>
-        <tr>
-            <th>Classic code:</th>
-        </tr>
-        <tr>
-            <td>
+ <table>
+  <tbody>
+   <tr>
+    <th>Classic code:</th>
+   </tr>
+   <tr>
+    <td>
      <pre class="line-numbers"><code>
-<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span
-             class="text-red">HttpClient</span>.new();
+<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span class="text-red">HttpClient</span>.new();
 <span class="text-green">client</span>.setVersion(Version.HTTP_1_1);
 <span class="text-green">client</span>.setFollowRedirects(Redirect.NORMAL);
 <span class="text-green">client</span>.setConnectTimeout(Duration.ofSeconds(20));
 <span class="text-green">client</span>.setAuthenticator(Authenticator.getDefault());
-</code></pre>
-            </td>
-        </tr>
-        <tr>
-            <th>As a chain:</th>
-        </tr>
-        <tr>
-            <td>
+</code></pre></td>
+   </tr>
+   <tr>
+    <th>As a chain:</th>
+   </tr>
+   <tr>
+    <td>
      <pre class="line-numbers"><code>
-<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span
-             class="text-red">HttpClient</span>.new() .setVersion(Version.HTTP_1_1) .setFollowRedirects(Redirect.NORMAL). setConnectTimeout(Duration.ofSeconds(20)) .setAuthenticator(Authenticator.getDefault());
-</code></pre>
-            </td>
-        </tr>
-        <tr>
-            <th>We transfer each method to a separate line (this is one long statement)</th>
-        </tr>
-        <tr>
-            <td>
+<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span class="text-red">HttpClient</span>.new() .setVersion(Version.HTTP_1_1) .setFollowRedirects(Redirect.NORMAL). setConnectTimeout(Duration.ofSeconds(20)) .setAuthenticator(Authenticator.getDefault());
+</code></pre></td>
+   </tr>
+   <tr>
+    <th>We transfer each method to a separate line (this is one long statement)</th>
+   </tr>
+   <tr>
+    <td>
      <pre class="line-numbers"><code>
-<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span
-             class="text-red">HttpClient</span>.new()
+<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span class="text-red">HttpClient</span>.new()
 .setVersion(Version.HTTP_1_1)
 .setFollowRedirects(Redirect.NORMAL)
 .setConnectTimeout(Duration.ofSeconds(20))
 .setAuthenticator(Authenticator.getDefault());
-</code></pre>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+</code></pre></td>
+   </tr>
+  </tbody>
+ </table>
 </div>
-<p><strong>Secondly</strong> , the prefix is ​​removed from the methods <code>set</code>, which allows you to write code
-    even more compactly:</p>
+<p><strong>Secondly</strong> , the prefix is ​​removed from the methods <code>set</code>, which allows you to write code even more compactly:</p>
 <div class="table-container">
-    <table>
-        <tbody>
-        <tr>
-            <th>Was</th>
-        </tr>
-        <tr>
-            <td>
+ <table>
+  <tbody>
+   <tr>
+    <th>Was</th>
+   </tr>
+   <tr>
+    <td>
      <pre class="line-numbers"><code>
-<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span
-             class="text-red">HttpClient</span>.new()
+<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span class="text-red">HttpClient</span>.new()
 .setVersion(Version.HTTP_1_1)
 .setFollowRedirects(Redirect.NORMAL)
 .setConnectTimeout(Duration.ofSeconds(20))
 .setAuthenticator(Authenticator.getDefault());
 
-</code></pre>
-            </td>
-        </tr>
-        <tr>
-            <th>It became</th>
-        </tr>
-        <tr>
-            <td>
+</code></pre></td>
+   </tr>
+   <tr>
+    <th>It became</th>
+   </tr>
+   <tr>
+    <td>
      <pre class="line-numbers"><code>
-<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span
-             class="text-red">HttpClient</span>.new()
+<span class="text-red">HttpClient</span> <span class="text-green">client</span> = <span class="text-red">HttpClient</span>.new()
 .version(Version.HTTP_1_1)
 .followRedirects(Redirect.NORMAL)
 .connectTimeout(Duration.ofSeconds(20))
 .authenticator(Authenticator.getDefault());
-    </code></pre>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    </code></pre></td>
+   </tr>
+  </tbody>
+ </table>
 </div>
 <p>Such code is easier to read, although harder to write.</p>
-<p>And one more important point. In this example, the Builder pattern was used. There are scenarios where creating an
-    object is a complex process. Therefore, they prefer to formalize it: it starts with a conditional method call <code>begin()</code>and
-    ends with a conditional method call <code>end()</code>.</p>
-<p>In the example that we analyzed, the method <code>HttpClient.newBuilder()</code>returns an object <code>HttpClient.Builder</code>(this
-    is an internal utility class of the class <code>HttpClient</code>). All methods of the type <code>version()</code>are
-    called just on this service object. Well, the call of the method <code>build()</code>marks the end of the
-    construction of the object and returns the object <code>HttpClient</code>.</p>
+<p>And one more important point. In this example, the Builder pattern was used. There are scenarios where creating an object is a complex process. Therefore, they prefer to formalize it: it starts with a conditional method call <code>begin()</code>and ends with a conditional method call <code>end()</code>.</p>
+<p>In the example that we analyzed, the method <code>HttpClient.newBuilder()</code>returns an object <code>HttpClient.Builder</code>(this is an internal utility class of the class <code>HttpClient</code>). All methods of the type <code>version()</code>are called just on this service object. Well, the call of the method <code>build()</code>marks the end of the construction of the object and returns the object <code>HttpClient</code>.</p>

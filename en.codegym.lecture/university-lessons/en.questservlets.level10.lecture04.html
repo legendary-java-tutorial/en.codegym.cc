@@ -2,41 +2,26 @@ Asynchronous requests in HttpClient
 <p>----------------------------------------</p>
 sendAsync() method Executor() method, ExecutorService
 <p>----------------------------------------</p>
-<h2>5.1 The sendAsync() method</h2>
-<p>We can also send asynchronous requests using HttpClient. Usually this is done in three cases.</p>
-<p>The first case is that <strong>the request will take a very long time</strong> , for example, sending / receiving a
-    file. This operation is then started and executed asynchronously.</p>
-<p>The second case is that you <strong>need to send requests very often</strong> and you don't want to wait for a
-    response from the previous request before sending the next one.</p>
-<p>And finally, the third case - <strong>the result of your request is not important</strong> to you . For example, you
-    take a screenshot of your screen once a minute and send it to the server. That is, the logic of your application
-    assumes that there are many requests and not all reach them. Then it is convenient to work according to the
-    principle - send and forget.</p>
-<p>In order to send an asynchronous request, you need to call a method <code>sendAsync()</code>on an object of the
-    HttpClient class. This method exits immediately and returns a <code>CompletableFuture&lt;HttpResponse&gt;</code>.
-    With it, you can track when the request is actually executed, as well as execute certain code after the request is
-    completed. Example:</p>
+<h2>5.1 sendAsync() method</h2>
+<p>You can also send asynchronous requests using HttpClient. Usually this is done in three cases.</p>
+<p>The first case is that <strong>the request will take a very long time</strong> , for example, sending / receiving a file. This operation is then started and executed asynchronously.</p>
+<p>The second case is that you <strong>need to send requests very often</strong> and you don't want to wait for a response from the previous request before sending the next one.</p>
+<p>And finally, the third case - <strong>the result of your request is not important</strong> to you . For example, you take a screenshot of your screen once a minute and send it to the server. That is, the logic of your application assumes that there are many requests and not all reach them. Then it is convenient to work according to the principle - send and forget.</p>
+<p>In order to send an asynchronous request, you need to call a method <code>sendAsync()</code>on an object of the HttpClient class. This method exits immediately and returns a <code>CompletableFuture&lt;HttpResponse&gt;</code>. With it, you can track when the request is actually executed, as well as execute certain code after the request is completed. Example:</p>
 <pre class="line-numbers"><code>
 HttpClient <span class="text-viola">client</span> = HttpClient.newBuilder().build();
  
-<span class="text-red">CompletableFuture</span><span class="text-user">&lt;</span><span
-        class="text-user">HttpResponse<span class="text-user">&lt;</span></span><span
-        class="text-green">String</span><span class="text-user">&gt;&gt;</span> response = <span class="text-viola">client</span>.<span
-        class="text-red">sendAsync(</span>
+<span class="text-red">CompletableFuture</span><span class="text-user">&lt;</span><span class="text-user">HttpResponse<span class="text-user">&lt;</span></span><span class="text-green">String</span><span class="text-user">&gt;&gt;</span> response = <span class="text-viola">client</span>.<span class="text-red">sendAsync(</span>
         request,
         <span class="text-user">HttpResponse</span>.BodyHandlers.<span class="text-green">ofString</span>()
 <span class="text-red">)</span>;
 </code></pre>
-<p>The method <code>sendAsync()</code>returns an object <code>CompletableFuture</code>that contains an HttpResponse
-    inside, which contains the string that the server will return.</p>
+<p>The method <code>sendAsync()</code>returns an object <code>CompletableFuture</code>that contains an HttpResponse inside, which contains the string that the server will return.</p>
 <h2>5.2 The executor() method, ExecutorService</h2>
-<p>Also, HttpClient allows you to pass to it <code>ExecutorService</code>(a pool of threads) that will be used to
-    perform asynchronous requests. Actually, in server-side Java applications, this is always done.</p>
-<p>After all, if for each incoming request to your API, you will launch several asynchronous requests somewhere else,
-    you will not have enough threads. Example:</p>
+<p>Also, HttpClient allows you to pass to it <code>ExecutorService</code>(a pool of threads) that will be used to perform asynchronous requests. Actually, in server-side Java applications, this is always done.</p>
+<p>After all, if for each incoming request to your API, you will launch several asynchronous requests somewhere else, you will not have enough threads. Example:</p>
 <pre class="line-numbers"><code>
-<span class="text-red">ExecutorService executorService = Executors</span>.<span
-        class="text-orange">newFixedThreadPool</span><span class="text-red">(2);</span>
+<span class="text-red">ExecutorService executorService = Executors</span>.<span class="text-orange">newFixedThreadPool</span><span class="text-red">(2);</span>
  
 CompletableFuture&lt;HttpResponse&lt;String&gt;&gt; response1 = HttpClient.newBuilder()
   .<span class="text-orange">executor</span>(<span class="text-red">executorService</span>)
@@ -49,5 +34,4 @@ CompletableFuture&lt;HttpResponse&lt;String&gt;&gt; response2 = HttpClient.newBu
   .sendAsync(request, HttpResponse.BodyHandlers.ofString());
 
 </code></pre>
-<p>If the thread pool is not set, then the default is .<code>java.util.concurrent.<span
-        class="text-red">Executors</span>.<span class="text-orange">newCachedThreadPool</span>()</code></p>
+<p>If the thread pool is not set, then the default is .<code>java.util.concurrent.<span class="text-red">Executors</span>.<span class="text-orange">newCachedThreadPool</span>()</code></p>

@@ -5,125 +5,86 @@ List of logging levels An example of configuring a log Common mistakes in loggin
 <h2>4.1 List of logging levels</h2>
 <p>You wrote your program, uploaded it to the server, and then you immediately start to have questions:</p>
 <ul>
-    <li>How to make sure that <code>debug()</code>the method does not work while working in <code>production</code>?
-    </li>
-    <li>There is too much information in the logs, would you like to leave only error messages?</li>
-    <li>How to see a detailed log for one part of the application?</li>
+ <li>How to make sure that <code>debug()</code>the method does not work while working in <code>production</code>?</li>
+ <li>There is too much information in the logs, would you like to leave only error messages?</li>
+ <li>How to see a detailed log for one part of the application?</li>
 </ul>
-<p>Of course, the creators of the logs faced the same thing decades ago. I will not tell you how this problem was solved
-    in the C language, but in the Java language it was solved very beautifully.</p>
-<p><strong>The log filters the data before writing the information to the</strong> . You can very quickly reduce /
-    increase the detail of the log by setting the logging level. These levels are described in the table below:</p>
+<p>Of course, the creators of the logs faced the same thing decades ago. I will not tell you how this problem was solved in the C language, but in the Java language it was solved very beautifully.</p>
+<p><strong>The log filters the data before writing the information to the</strong> . You can very quickly reduce / increase the detail of the log by setting the logging level. These levels are described in the table below:</p>
 <div class="table-container">
-    <table>
-        <tbody>
-        <tr>
-            <th></th>
-            <th width="200">Level</th>
-            <th>Note</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td><strong>ALL</strong></td>
-            <td>Log all messages</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td><strong>TRACE</strong></td>
-            <td>Small message when debugging</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td><strong>DEBUG</strong></td>
-            <td><strong>Messages important for debugging</strong></td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td><strong>INFO</strong></td>
-            <td><strong>Simple messages</strong></td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td><strong>WARN</strong></td>
-            <td><strong>Write only fatal, error and warning</strong></td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td><strong>ERROR</strong></td>
-            <td><strong>Write only errors and fatal errors</strong></td>
-        </tr>
-        <tr>
-            <td>7</td>
-            <td><strong>FATAL</strong></td>
-            <td><strong>Write only fatal errors</strong></td>
-        </tr>
-        <tr>
-            <td>8</td>
-            <td><strong>OFF</strong></td>
-            <td>Do not write messages to the log</td>
-        </tr>
-        </tbody>
-    </table>
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th width="200">Level</th>
+    <th>Note</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td><strong>ALL</strong></td>
+    <td>Log all messages</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td><strong>TRACE</strong></td>
+    <td>Small message when debugging</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td><strong>DEBUG</strong></td>
+    <td><strong>Messages important for debugging</strong></td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td><strong>INFO</strong></td>
+    <td><strong>Simple messages</strong></td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td><strong>WARN</strong></td>
+    <td><strong>Write only fatal, error and warning</strong></td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td><strong>ERROR</strong></td>
+    <td><strong>Write only errors and fatal errors</strong></td>
+   </tr>
+   <tr>
+    <td>7</td>
+    <td><strong>FATAL</strong></td>
+    <td><strong>Write only fatal errors</strong></td>
+   </tr>
+   <tr>
+    <td>8</td>
+    <td><strong>OFF</strong></td>
+    <td>Do not write messages to the log</td>
+   </tr>
+  </tbody>
+ </table>
 </div>
-<p>These levels are used when filtering messages. If you set the logging level to <code>WARN</code>, then all messages
-    less important than <code>WARN</code>will be discarded: <code>TRACE</code>, <code>DEBUG</code>, <code>INFO</code>.
-    If you set the filtering level to <code>FATAL</code>, then even <code>ERROR’ы</code>.</p>
-<p>There are two more severity levels that are used in filtering - this <code>OFF</code>(discard all messages) and
-    <code>ALL</code>- write all messages (discard nothing).</p>
+<p>These levels are used when filtering messages. If you set the logging level to <code>WARN</code>, then all messages less important than <code>WARN</code>will be discarded: <code>TRACE</code>, <code>DEBUG</code>, <code>INFO</code>. If you set the filtering level to <code>FATAL</code>, then even <code>ERROR’ы</code>.</p>
+<p>There are two more severity levels that are used in filtering - this <code>OFF</code>(discard all messages) and <code>ALL</code>- write all messages (discard nothing).</p>
 <h2>4.2 Log setup example</h2>
-<p>Let's look at a simple log setup example. To do this, we need the log4j.properties file, which can be placed in the
-    resources folder. Let's add the following content to it:</p>
-<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
-                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
-        class=" language-java"># <span class="token class-name">Root</span> logger option
-log4j<span class="token punctuation">.</span>rootLogger<span class="token operator">=</span><span class="text-yellow">WARN</span><span
-            class="token punctuation">,</span> <span class="text-red">stdout</span>
+<p>Let's look at a simple log setup example. To do this, we need the log4j.properties file, which can be placed in the resources folder. Let's add the following content to it:</p>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"># <span class="token class-name">Root</span> logger option
+log4j<span class="token punctuation">.</span>rootLogger<span class="token operator">=</span><span class="text-yellow">WARN</span><span class="token punctuation">,</span> <span class="text-red">stdout</span>
 
-# <span class="token class-name">Direct</span> log messages <span class="token keyword">to</span> <span
-            class="token namespace">stdout</span>
-log4j<span class="token punctuation">.</span>appender<span class="token punctuation">.</span><span class="text-red">stdout</span><span
-            class="token operator">=</span><span class="token class-name"><span class="token namespace">org<span
-            class="token punctuation">.</span>apache<span class="token punctuation">.</span>log4j<span
-            class="token punctuation">.</span></span><span class="text-green">ConsoleAppender</span></span>
-<span class="token class-name"><span class="token namespace">log4j<span class="token punctuation">.</span>appender<span
-        class="token punctuation">.</span><span class="text-red">stdout</span><span
-        class="token punctuation">.</span></span>Target</span><span class="token operator">=</span><span
-            class="token class-name"></span><span class="text-green"><span class="token class-name">System</span><span
-            class="token punctuation">.</span>out</span>
-log4j<span class="token punctuation">.</span>appender<span class="token punctuation">.</span><span class="text-red">stdout</span><span
-            class="token punctuation">.</span>layout<span class="token operator">=</span><span class="token class-name"><span
-            class="token namespace"></span><span class="text-user"><span class="token namespace">org<span
-            class="token punctuation">.</span>apache<span class="token punctuation">.</span>log4j<span
-            class="token punctuation">.</span></span>PatternLayout</span></span>
-<span class="token class-name"><span class="token namespace">log4j<span class="token punctuation">.</span>appender<span
-        class="token punctuation">.</span><span class="text-red">stdout</span><span class="token punctuation">.</span>layout<span
-        class="token punctuation">.</span></span>ConversionPattern</span><span class="token operator">=</span><span
-            class="token operator"></span><span class="text-user"><span class="token operator">%</span>d<span
-            class="token punctuation">{</span>yyyy<span class="token operator">-</span>MM<span
-            class="token operator">-</span>dd HH<span class="token operator">:</span>mm<span
-            class="token operator">:</span>ss<span class="token punctuation">}</span></span><span
-            class="token punctuation"></span></code></pre>
-<p>Here in the very first line we set the logging level - <code><span class="text-yellow">WARN</span></code>. And this
-    means that messages that are written to the logger with status <code>DEBUG</code>will <code>INFO</code>be ignored.
-</p>
+# <span class="token class-name">Direct</span> log messages <span class="token keyword">to</span> <span class="token namespace">stdout</span>
+log4j<span class="token punctuation">.</span>appender<span class="token punctuation">.</span><span class="text-red">stdout</span><span class="token operator">=</span><span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>log4j<span class="token punctuation">.</span></span><span class="text-green">ConsoleAppender</span></span>
+<span class="token class-name"><span class="token namespace">log4j<span class="token punctuation">.</span>appender<span class="token punctuation">.</span><span class="text-red">stdout</span><span class="token punctuation">.</span></span>Target</span><span class="token operator">=</span><span class="token class-name"></span><span class="text-green"><span class="token class-name">System</span><span class="token punctuation">.</span>out</span>
+log4j<span class="token punctuation">.</span>appender<span class="token punctuation">.</span><span class="text-red">stdout</span><span class="token punctuation">.</span>layout<span class="token operator">=</span><span class="token class-name"><span class="token namespace"></span><span class="text-user"><span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>log4j<span class="token punctuation">.</span></span>PatternLayout</span></span>
+<span class="token class-name"><span class="token namespace">log4j<span class="token punctuation">.</span>appender<span class="token punctuation">.</span><span class="text-red">stdout</span><span class="token punctuation">.</span>layout<span class="token punctuation">.</span></span>ConversionPattern</span><span class="token operator">=</span><span class="token operator"></span><span class="text-user"><span class="token operator">%</span>d<span class="token punctuation">{</span>yyyy<span class="token operator">-</span>MM<span class="token operator">-</span>dd HH<span class="token operator">:</span>mm<span class="token operator">:</span>ss<span class="token punctuation">}</span></span><span class="token punctuation"></span></code></pre>
+<p>Here in the very first line we set the logging level - <code><span class="text-yellow">WARN</span></code>. And this means that messages that are written to the logger with status <code>DEBUG</code>will <code>INFO</code>be ignored.</p>
 <ul>
-    <li>Specify what type of appender we will use -<code>ConsoleAppender</code></li>
-    <li>Specify where we will write the log -<code>System.out</code></li>
-    <li>We set the class that will control the recording format -<code>PatternLayout</code></li>
-    <li>Set the recording format for all messages - date and time</li>
+ <li>Specify what type of appender we will use -<code>ConsoleAppender</code></li>
+ <li>Specify where we will write the log -<code>System.out</code></li>
+ <li>We set the class that will control the recording format -<code>PatternLayout</code></li>
+ <li>Set the recording format for all messages - date and time</li>
 </ul>
 <h2>4.3 Popular logging mistakes</h2>
-<p>And one more important point - popular errors in logging. There are not so many options to do something, but several
-    common mistakes can be identified:</p>
+<p>And one more important point - popular errors in logging. There are not so many options to do something, but several common mistakes can be identified:</p>
 <ol>
-    <li><strong>Too much logging</strong> . You should not log every step, which theoretically can be important. There
-        is a rule: <strong>logs can load the performance by no more than 10%</strong> . Otherwise there will be
-        performance issues.
-    </li>
-    <li><strong>Logging all data into one file</strong> . This will cause it to be very difficult to read/write to at
-        some point, not to mention that there are file size limits on certain systems.
-    </li>
-    <li><strong>Using the wrong logging levels</strong> . Each level of logging has clear boundaries, and they should be
-        respected. If the boundary is vague, you can agree on which level to use.
-    </li>
+ <li><strong>Too much logging</strong> . You should not log every step, which theoretically can be important. There is a rule: <strong>logs can load the performance by no more than 10%</strong> . Otherwise there will be performance issues.</li>
+ <li><strong>Logging all data into one file</strong> . This will cause it to be very difficult to read/write to at some point, not to mention that there are file size limits on certain systems.</li>
+ <li><strong>Using the wrong logging levels</strong> . Each level of logging has clear boundaries, and they should be respected. If the boundary is vague, you can agree on which level to use.</li>
 </ol>

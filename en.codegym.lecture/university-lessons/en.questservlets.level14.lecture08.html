@@ -1,8 +1,9 @@
 Dependency Inversion
 <p>----------------------------------------</p>
-Dependency Inversion Dependency Inversion in Practice
+Dependency Inversion. Dependency Inversion in Practice
 <p>----------------------------------------</p>
-, we once said that in a server application you can’t just create streams through <code>new Thread().start()</code>? Only the container should create threads. We will now develop this idea even further.</p>
+<h2>9.1 Dependency Inversion</h2>
+<p>Remember, we once said that in a server application you can’t just create streams through <code>new Thread().start()</code>? Only the container should create threads. We will now develop this idea even further.</p>
 <p><span class="text-green">All objects should also be created only by the container</span> . Of course, we are not talking about all objects, but rather about the so-called business objects. They are also often referred to as bins. The legs of this approach grow from the fifth principle of SOLID, which requires getting rid of classes and moving to interfaces:</p>
 <ul>
  <li>Top-level modules should not depend on lower-level modules. Both those, and others should depend on abstractions.</li>
@@ -61,4 +62,4 @@ Dependency Inversion Dependency Inversion in Practice
 <p>In fact, everything here is like in life: in a well-organized company, programmers program, and the desks, computers and everything they need for work are bought and provided by the office manager. Or, if you use the metaphor of the program as a constructor, the module should not think about wires, someone else is involved in assembling the constructor, and not the parts themselves.</p>
 <p>It would not be an exaggeration to say that the use of interfaces to describe dependencies between modules (Dependency Inversion) + the correct creation and injection of these dependencies (primarily Dependency Injection) are <strong>key techniques for decoupling</strong> .</p>
 <p>They serve as the foundation on which the loose coupling of the code, its flexibility, resistance to changes, reuse, and without which all other techniques make little sense. This is the foundation of loose coupling and good architecture.</p>
-<p>The principle of Inversion of Control (together with Dependency Injection and Service Locator) is discussed in detail by Martin Fowler: <a href="https://martinfowler.com/articles/injection.html" target="_blank">"Inversion of Control Containers and the Dependency Injection pattern"</a> and <a href="https://martinfowler.com/bliki/InversionOfControl.html" target="_blank">"Inversion of Control"</a> .</p>
+<p>The principle of Inversion of Control (together with Dependency Injection and Service Locator) is discussed in detail by Martin Fowler. There are translations of both of his articles: <a href="https://martinfowler.com/articles/injection.html" target="_blank">"Inversion of Control Containers and the Dependency Injection pattern"</a> and <a href="https://martinfowler.com/bliki/InversionOfControl.html" target="_blank">"Inversion of Control"</a> .</p>

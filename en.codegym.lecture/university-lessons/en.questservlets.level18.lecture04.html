@@ -2,6 +2,7 @@ Generational garbage collection
 <p>----------------------------------------</p>
 Working with generations of objects. Younger generation. Older generation. Permanent generation and meta-space.
 <p>----------------------------------------</p>
+<h2>Working with Generations of Objects</h2>
 <p>Java garbage collectors implement a generational garbage collection strategy that can classify objects by age.</p>
 <p>Such a need (to mark and compact all objects) in the JVM can be called inefficient. Since as a large number of objects are allocated, their list grows, which leads to an increase in garbage collection time. Empirical analysis of applications has shown that most objects in Java are short-lived.</p>
 <p>The heap memory area in the JVM is divided into three sections:</p><img data-max-width="1024" data-id="8aab6bd2-292b-4ecd-9ecc-9ee2a44d3c82" alt="Working with Generations of Objects" src="https://cdn.javarush.com/images/article/8aab6bd2-292b-4ecd-9ecc-9ee2a44d3c82/1024.jpeg" style="width: 1024px;">

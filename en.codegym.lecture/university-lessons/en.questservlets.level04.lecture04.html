@@ -3,157 +3,91 @@ Revealing Specific Behavior in Objects
 The verify() method The verify() method with checking the number of calls Order of method calls Checking exceptions in Mockito
 <p>----------------------------------------</p>
 <h2>5.1 The verify() method</h2>
-<p>Besides creating virtual objects, another interesting task often arises - to make sure that the class under test
-    calls the right methods of the right objects. Moreover, he called the required number of times, with the correct
-    parameters, and the like.</p>
-<p>For this, Mockito also has some magic - a family of methods <code>Mockito.verify(…)</code>. <span class="text-red">The general rule that specifies method call checking</span>
-    is:</p>
+<p>In addition to creating virtual objects, another interesting task often arises - to make sure that the class under test calls the right methods of the right objects. Moreover, he called the required number of times, with the correct parameters, and the like.</p>
+<p>For this, Mockito also has some magic - a family of methods <code>Mockito.verify(…)</code>. <span class="text-red">The general rule that specifies method call checking</span> is:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.verify(<span
-            class="text-green">an object</span>).<span class="text-yellow">method name</span>(<span class="text-violet">parameter</span>);</code></pre>
+ <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.verify(<span class="text-green">an object</span>).<span class="text-yellow">method name</span>(<span class="text-violet">parameter</span>);</code></pre>
 </div>
 <p>Example:</p>
-<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
-                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
-        class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span
-        class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span
-        class="token punctuation">.</span><span class="token keyword">class</span><span
-        class="token punctuation">)</span>
-<span class="token keyword">class</span> <span class="token class-name">VerifyTest</span> <span
-            class="token punctuation">{</span>
-<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span
-            class="token annotation punctuation"></span>
-<span class="text-red">    <span class="token class-name">List</span><span class="token generics"><span
-        class="token punctuation">&lt;</span><span class="token class-name">String</span><span
-        class="token punctuation">&gt;</span></span> mockList<span class="token punctuation">;</span></span><span
-            class="token punctuation"></span>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">VerifyTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span class="token annotation punctuation"></span>
+<span class="text-red">    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> mockList<span class="token punctuation">;</span></span><span class="token punctuation"></span>
 
-<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span
-            class="token annotation punctuation"></span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span
-            class="token punctuation">(</span><span class="token punctuation">)</span> <span
-            class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment">//method call</span>
-        <span class="token class-name">String</span> name <span class="token operator">=</span> <span class="text-red">mockList</span><span
-            class="token punctuation">.</span><span class="token function"><span
-            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
-            class="token number">10</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
+        <span class="token class-name">String</span> name <span class="token operator">=</span> <span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">get</span></span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token comment">// check if the method was called</span>
-        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span
-            class="token function">verify</span><span class="token punctuation">(</span><span
-            class="text-red">mockList</span><span class="token punctuation">)</span><span
-            class="token punctuation">.</span><span class="token function"><span
-            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
-            class="token number">10</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
+        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">verify</span><span class="token punctuation">(</span><span class="text-red">mockList</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">get</span></span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
-<p>During the method call, <code>verify()</code>we set the rule that <code>mockitoList</code>the method with the
-    parameter 10 should be called on the object <code>get()</code>.</p>
+<p>During the method call, <code>verify()</code>we set the rule that <code>mockitoList</code>the method with the parameter 10 should be called on the object <code>get()</code>.</p>
 <h2>5.2 The verify() method with checking the number of calls</h2>
-<p>Sometimes there are more complex verification scenarios. For example, you need to check not just the fact that the
-    method was called, but, for example, that it was called 3 times. Or it was called from you in a cycle and therefore
-    should have been called N times.</p>
-<p>We will not ask if this can be done, we will immediately ask: how to write down such a rule? And again, Mockito
-    doesn't let us down. The rule can be specified as:</p>
+<p>Sometimes there are more complex verification scenarios. For example, you need to check not just the fact that the method was called, but, for example, that it was called 3 times. Or it was called from you in a cycle and therefore should have been called N times.</p>
+<p>We will not ask if this can be done, we will immediately ask: how to write down such a rule? And again, Mockito doesn't let us down. The rule can be specified as:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.verify(<span
-            class="text-green">an object</span>,<span class="text-user">quantity</span>).<span class="text-yellow">method name</span>(<span
-            class="text-violet">parameter</span>);</code></pre>
+ <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.verify(<span class="text-green">an object</span>,<span class="text-user">quantity</span>).<span class="text-yellow">method name</span>(<span class="text-violet">parameter</span>);</code></pre>
 </div>
-<p><strong>Important! </strong>Quantity is not a type <code>int</code>, but a special object that can define various
-    patterns. Do you remember the different versions of the method <code>any()</code>? It's the same here - there are
-    special methods with which you can set various scenarios:</p>
+<p><strong>Important! </strong>Quantity is not a type <code>int</code>, but a special object that can define various patterns. Do you remember the different versions of the method <code>any()</code>? It's the same here - there are special methods with which you can set various scenarios:</p>
 <div class="table-container">
-    <table>
-        <tbody>
-        <tr>
-            <th></th>
-            <th width="200">Method</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>never()</td>
-            <td>The method should never be called</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>times(n)</td>
-            <td>n times</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>atLeast(n)</td>
-            <td>n or more times</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>atLeastOnce()</td>
-            <td>1 or more times</td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>atMost(n)</td>
-            <td>n or less times</td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td>only()</td>
-            <td>There should be only one call and only to this method</td>
-        </tr>
-        </tbody>
-    </table>
+ <table>
+  <tbody>
+   <tr>
+    <th></th>
+    <th width="200">Method</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>1</td>
+    <td>never()</td>
+    <td>The method should never be called</td>
+   </tr>
+   <tr>
+    <td>2</td>
+    <td>times(n)</td>
+    <td>n times</td>
+   </tr>
+   <tr>
+    <td>3</td>
+    <td>atLeast(n)</td>
+    <td>n or more times</td>
+   </tr>
+   <tr>
+    <td>4</td>
+    <td>atLeastOnce()</td>
+    <td>1 or more times</td>
+   </tr>
+   <tr>
+    <td>5</td>
+    <td>atMost(n)</td>
+    <td>n or less times</td>
+   </tr>
+   <tr>
+    <td>6</td>
+    <td>only()</td>
+    <td>There should be only one call and only to this method</td>
+   </tr>
+  </tbody>
+ </table>
 </div>
 <p>Example:</p>
-<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
-                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code
-        class=" language-java"><span class="token class-name">String</span> name1 <span class="token operator">=</span> <span
-        class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span
-        class="text-yellow">get</span></span><span class="token punctuation">(</span><span class="token number">1</span><span
-        class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//method call</span>
-<span class="token class-name">String</span> name2 <span class="token operator">=</span> <span
-            class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span
-            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
-            class="token number">2</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>  <span class="token comment">//method call</span>
-<span class="token class-name">String</span> name3 <span class="token operator">=</span> <span
-            class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span
-            class="text-yellow">get</span></span><span class="token punctuation">(</span><span
-            class="token number">3</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>  <span class="token comment">//method call</span>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">String</span> name1 <span class="token operator">=</span> <span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">get</span></span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//method call</span>
+<span class="token class-name">String</span> name2 <span class="token operator">=</span> <span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">get</span></span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//method call</span>
+<span class="token class-name">String</span> name3 <span class="token operator">=</span> <span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">get</span></span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//method call</span>
 
 <span class="token comment">//check that the get() method was called 3 times</span>
-<span class="token class-name"><span class="text-red">Mockito</span></span><span class="token punctuation">.</span><span
-            class="token function">verify</span><span class="token punctuation">(</span><span
-            class="text-red">mockList</span><span class="token punctuation">,</span> <span
-            class="token function"></span><span class="text-user"><span class="token function">times</span><span
-            class="token punctuation">(</span><span class="token number">3</span><span
-            class="token punctuation">)</span></span><span class="token punctuation"></span><span
-            class="token punctuation">)</span><span class="token punctuation">.</span><span
-            class="token function">get</span><span class="token punctuation">(</span><span
-            class="token function"></span><span class="text-violet"><span class="token function">anyInt</span><span
-            class="token punctuation">(</span><span class="token punctuation">)</span></span><span
-            class="token punctuation"></span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span></code></pre>
-<p>You can also require that, apart from the specified method invocations, <strong>no other references to the object be
-    made</strong> . There is a rule for this:</p>
+<span class="token class-name"><span class="text-red">Mockito</span></span><span class="token punctuation">.</span><span class="token function">verify</span><span class="token punctuation">(</span><span class="text-red">mockList</span><span class="token punctuation">,</span> <span class="token function"></span><span class="text-user"><span class="token function">times</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span></span><span class="token punctuation"></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token function"></span><span class="text-violet"><span class="token function">anyInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token punctuation"></span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>You can also require that, apart from the specified method invocations, <strong>no other references to the object be made</strong> . There is a rule for this:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.verifyNoMoreInteractions(<span
-            class="text-green">an object</span>);</code></pre>
+ <pre class="lecture-code lecture-code--present"><code><span class="text-red">Mockito</span>.verifyNoMoreInteractions(<span class="text-green">an object</span>);</code></pre>
 </div>
 <h2>5.3 Method call order</h2>
-<p>The previous rules did not regulate the order of calling methods in any way. The rule just has to be fulfilled and
-    that's it. But there are situations when the order of method calls is important, and Mockito has a solution for this
-    too.</p>
-<p>A strict order of method calls can be specified using a special object <code>InOrder</code>. First you need to create
-    it:</p>
+<p>The previous rules did not regulate the order of calling methods in any way. The rule just has to be fulfilled and that's it. But there are situations when the order of method calls is important, and Mockito has a solution for this too.</p>
+<p>A strict order of method calls can be specified using a special object <code>InOrder</code>. First you need to create it:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present"><code>InOrder <span class="text-user">inOrder</span> = <span
-            class="text-red">Mockito</span>.<span class="text-orange">inOrder</span>(<span
-            class="text-green">an object</span>);</code></pre>
+ <pre class="lecture-code lecture-code--present"><code>InOrder <span class="text-user">inOrder</span> = <span class="text-red">Mockito</span>.<span class="text-orange">inOrder</span>(<span class="text-green">an object</span>);</code></pre>
 </div>
 <p>And then add rules to it by calling methods <code>verify()</code>.</p>
 <p>Example:</p>
@@ -169,54 +103,23 @@ The verify() method The verify() method with checking the number of calls Order 
     <span class="text-user">inOrder</span>.verify(mockedList).clear();
 </code></pre>
 <h2>5.4 Checking exceptions in Mockito</h2>
-<p>The fact that exceptions have been thrown is checked a little differently. To do this, use the method <code>assertThrows()</code>.
-    The general format for such a check is:</p>
+<p>The fact that exceptions have been thrown is checked a little differently. To do this, use the method <code>assertThrows()</code>. The general format for such a check is:</p>
 <div class="lesson-example lesson-example--center">
-    <pre class="lecture-code lecture-code--present"><code><span class="text-red">Assertions</span>.assertThrows(<span
-            class="text-user">exception.class</span>, () -&gt; <span class="text-green">an object</span>.<span
-            class="text-yellow">methodname()</span>);</code></pre>
+ <pre class="lecture-code lecture-code--present"><code><span class="text-red">Assertions</span>.assertThrows(<span class="text-user">exception.class</span>, () -&gt; <span class="text-green">an object</span>.<span class="text-yellow">methodname()</span>);</code></pre>
 </div>
 <p>Nothing complicated.</p>
 <p>Example:</p>
-<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true"
-                                                            class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code
-        class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span
-        class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span
-        class="token punctuation">.</span><span class="token keyword">class</span><span
-        class="token punctuation">)</span>
-<span class="token keyword">class</span> <span class="token class-name">ThenThrowTest</span> <span
-            class="token punctuation">{</span>
-<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span
-            class="token annotation punctuation"></span>
-<span class="text-red">    <span class="token class-name">List</span> mockList<span
-        class="token punctuation">;</span></span><span class="token punctuation"></span>
+<pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation">@ExtendWith</span><span class="token punctuation">(</span><span class="token class-name">MockitoExtension</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">ThenThrowTest</span> <span class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Mock</span></span><span class="token annotation punctuation"></span>
+<span class="text-red">    <span class="token class-name">List</span> mockList<span class="token punctuation">;</span></span><span class="token punctuation"></span>
 
-<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span
-            class="token annotation punctuation"></span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span
-            class="token punctuation">(</span><span class="token punctuation">)</span> <span
-            class="token punctuation">{</span>
+<span class="text-green">    <span class="token annotation punctuation">@Test</span></span><span class="token annotation punctuation"></span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">whenMockAnnotation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment">//set the behavior of the method (needed for demonstration purposes only)</span>
-        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span
-            class="token function">when</span><span class="token punctuation">(</span><span
-            class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span
-            class="text-yellow">size</span></span><span class="token punctuation">(</span><span
-            class="token punctuation">)</span><span class="token punctuation">)</span><span
-            class="token punctuation">.</span><span class="token function">thenThrow</span><span
-            class="token punctuation">(</span><span class="token class-name"></span><span class="text-user"><span
-            class="token class-name">IllegalStateException</span><span class="token punctuation">.</span><span
-            class="token keyword">class</span></span><span class="token keyword"></span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
+        <span class="token class-name">Mockito</span><span class="token punctuation">.</span><span class="token function">when</span><span class="token punctuation">(</span><span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">size</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">thenThrow</span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-user"><span class="token class-name">IllegalStateException</span><span class="token punctuation">.</span><span class="token keyword">class</span></span><span class="token keyword"></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token comment">//check if an IllegalStateException will be thrown when calling the size method</span>
-        <span class="token function">assertThrows</span><span class="token punctuation">(</span><span
-            class="token class-name"></span><span class="text-user"><span
-            class="token class-name">IllegalStateException</span><span class="token punctuation">.</span><span
-            class="token keyword">class</span></span><span class="token keyword"></span><span class="token punctuation">,</span> <span
-            class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span
-            class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span
-            class="text-yellow">size</span></span><span class="token punctuation">(</span><span
-            class="token punctuation">)</span><span class="token punctuation">)</span><span
-            class="token punctuation">;</span>
+        <span class="token function">assertThrows</span><span class="token punctuation">(</span><span class="token class-name"></span><span class="text-user"><span class="token class-name">IllegalStateException</span><span class="token punctuation">.</span><span class="token keyword">class</span></span><span class="token keyword"></span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-&gt;</span> <span class="text-red">mockList</span><span class="token punctuation">.</span><span class="token function"><span class="text-yellow">size</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>

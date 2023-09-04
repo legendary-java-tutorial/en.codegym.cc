@@ -2,7 +2,7 @@ Concurrent Queues
 <p>----------------------------------------</p>
 Non-Blocking Queues Blocking Queues BlockingQueue&lt;E&gt; Implementations
 <p>----------------------------------------</p>
-h="512" data-id="128e424c-63bb-47db-9d23-7ce3ae97fa4a" alt="" src="https://cdn.javarush.com/images/article/128e424c-63bb-47db-9d23-7ce3ae97fa4a/512.jpeg" style="width: 512px;">
+<h2>Non-Blocking Queues</h2><img data-max-width="512" data-id="128e424c-63bb-47db-9d23-7ce3ae97fa4a" alt="" src="https://cdn.javarush.com/images/article/128e424c-63bb-47db-9d23-7ce3ae97fa4a/512.jpeg" style="width: 512px;">
 <p>Thread-safe and most importantly non-blocking <span class="text-neon"><span class="text-bold"><em>Queue</em></span></span> implementations on linked nodes.</p>
 <p><span class="code"><span class="text-green">ConcurrentLinkedQueue&lt;E&gt;</span></span> - it uses a wait-free algorithm adapted to work with the garbage collector. This algorithm is quite efficient and very fast, as it is built on CAS. <span class="code text-orange">The size()</span> methodcan run for a long time, so it's best not to pull it all the time.</p>
 <p><span class="code"><span class="text-green">ConcurrentLinkedDeque&lt;E&gt;</span></span> - Deque stands for Double ended queue. This means that data can be added and pulled from both sides. Accordingly, the class supports both modes of operation: FIFO (First In First Out) and LIFO (Last In First Out).</p>

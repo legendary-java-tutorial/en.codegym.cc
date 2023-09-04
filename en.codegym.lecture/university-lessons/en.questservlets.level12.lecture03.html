@@ -2,7 +2,8 @@ Working with Servlet Sessions
 <p>----------------------------------------</p>
 Introduction to HttpSession Learn more about HttpSession
 <p>----------------------------------------</p>
-f several requests come from the same client, then they say that a session has been established between the client and the server. To control this process, the container has a special HttpSession object.</p>
+<h2>4.1 Introduction to HttpSession</h2>
+<p>If several requests come from the same client, then they say that a session has been established between the client and the server. To control this process, the container has a special HttpSession object.</p>
 <p>When a client makes a request to a servlet, the servlet container checks to see if the session ID parameter is present in the request. If there is no such parameter (for example, the client is contacting the server for the first time), then the servlet container creates a new HttpSession object and also assigns it a unique ID.</p>
 <p>The session object is stored on the server, and the ID is sent in the response to the client, and by default is stored on the client in a cookie. Then, when a new request comes in from the same client, the servlet container retrieves the ID from it, and by that ID finds the correct HttpSession object on the server.</p>
 <p>You can get the session object from a request (an HttpServletRequest object), on which you need to call the getSession() method. It returns an HttpSession object.</p>

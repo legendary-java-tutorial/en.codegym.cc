@@ -2,7 +2,7 @@ Garbage collection in Java
 <p>----------------------------------------</p>
 Revisiting Java garbage collection Object reachability Java garbage collection steps
 <p>----------------------------------------</p>
-/h2>
+<h2>Recall what garbage collection is in Java</h2>
 <p>Garbage collection is the process of reclaiming full runtime memory by destroying unused objects.</p>
 <p>Sometimes the programmer may forget to destroy useless objects, and the memory allocated to them is not freed. More and more system memory is consumed, and eventually no more is allocated. Such applications suffer from “memory leaks”.</p>
 <p>After a certain point, there is no longer enough memory to create new objects and the program terminates abnormally due to <span class="text-red"><span class="text-bold">OutOfMemoryError</span></span> .</p><img data-max-width="800" data-id="3000851c-d7b0-48c1-a1b0-42fc199942d5" alt="" src="https://cdn.javarush.com/images/article/3000851c-d7b0-48c1-a1b0-42fc199942d5/800.jpeg" style="width: 800px;">

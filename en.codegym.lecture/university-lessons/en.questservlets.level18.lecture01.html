@@ -2,7 +2,8 @@ Memory in the JVM, part 2
 <p>----------------------------------------</p>
 Hardware memory architecture. Combination of Java-model of memory and hardware architecture of memory. Visibility of shared objects. Race condition.
 <p>----------------------------------------</p>
-rn memory hardware architecture differs from Java's internal memory model. Therefore, you need to understand the hardware architecture in order to know how the Java model works with it. This section describes the general memory hardware architecture, and the next section describes how Java works with it.</p>
+<h2>Memory hardware architecture</h2>
+<p>Modern memory hardware architecture differs from Java's internal memory model. Therefore, you need to understand the hardware architecture in order to know how the Java model works with it. This section describes the general memory hardware architecture, and the next section describes how Java works with it.</p>
 <p>Here is a simplified diagram of the hardware architecture of a modern computer:</p><img data-max-width="512" data-id="0a28b119-0299-42d8-aab3-fba135d16288" alt="Memory hardware architecture" src="https://cdn.javarush.com/images/article/0a28b119-0299-42d8-aab3-fba135d16288/512.jpeg" style="width: 512px;">
 <p>In the modern world, a computer has 2 or more processors and this is already the norm. Some of these processors may also have multiple cores. On such computers, it is possible to run multiple threads at the same time. Each processor core is capable of executing one thread at any given time. This means that any Java application is a priori multi-threaded, and within your program, one thread per processor core can be running at a time.</p>
 <p>The processor core contains a set of registers that reside in its memory (inside the core). It performs operations on register data much faster than on data that resides in the computer's main memory (RAM). This is because the processor can access these registers much faster.</p>
