@@ -378,7 +378,7 @@ logMessageFormat=com.p6spy.engine.spy.appender.MultiLineFormat
  <li>4079 / 500 = 9 requests (list of cities).</li>
  <li>Each city gets a country, if it has not been subtracted earlier. Since there are 239 countries in the database, this will give us 239 queries.</li>
 </ul>
-<p><code>Total 249 requestов</code>. And we also said that together with the country we would immediately receive a set of languages, otherwise there would be darkness in general. But it's still a lot, so let's tweak the behavior a bit. Let's start with reflections: what to do, where to run? But seriously - why are there so many requests. If you look at the request log, we see that each country is requested separately, so the first simple solution: let's request all the countries together, because we know in advance that we will need all of them in this transaction.</p>
+<p><code>Total 249 requests</code>. And we also said that together with the country we would immediately receive a set of languages, otherwise there would be darkness in general. But it's still a lot, so let's tweak the behavior a bit. Let's start with reflections: what to do, where to run? But seriously - why are there so many requests. If you look at the request log, we see that each country is requested separately, so the first simple solution: let's request all the countries together, because we know in advance that we will need all of them in this transaction.</p>
 <p>In the fetchData() method, immediately after the start of the transaction, add the following line:</p>
 <pre><code>List&lt;Country&gt; countries = main.countryDAO.getAll(); 
 </code></pre>

@@ -35,9 +35,9 @@ Parallel Access Strategies. Storing data in a cache. CacheMode.
 <h2>Storing data in a cache</h2>
 <p>Another important detail about the second level cache that you should remember is that Hibernate does not store the objects of your classes themselves. It stores information as arrays of strings, numbers, etc.</p>
 <p>And the object identifier acts as a pointer to this information. Conceptually, this is something like a Map, in which the id of the object is the key, and the data arrays are the value. You can imagine it like this:</p>
-<pre><code>1 -&gt; { "Ivanов", 1, null , {1,2,5} }
-2 -&gt; { "Peterов", 2, null , {1,2,5} }
-3 -&gt; { "Сидоров", 3, null , {1,2,5} }</code></pre>
+<pre><code>1 -&gt; { "Ivanov", 1, null , {1,2,5} }
+2 -&gt; { "Petrov", 2, null , {1,2,5} }
+3 -&gt; { "Sidorov", 3, null , {1,2,5} }</code></pre>
 <p>Which is very reasonable considering how much extra memory each object takes up.</p>
 <p>In addition to the above, you should remember that the dependencies of your Entity class are also not cached by default. For example, if we consider the class above, <span class="code"><span class="text-green">Employee</span></span> , then when fetching, the tasks collection will be <span class="text-green">retrieved from the database</span> , and <span class="text-red">not from the second-level cache</span> .</p>
 <p>If you want to cache dependencies as well, then the class should look like this:</p>

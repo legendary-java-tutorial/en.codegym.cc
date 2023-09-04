@@ -120,15 +120,15 @@ hadoop fs -put lenta_articles
 <p>The result of the work after successful execution is added to HDFS in the folder that we specified in the output field. You can view its contents using the "hadoop fs -ls lenta_wordcount" command.</p>
 <p>The result itself can be obtained as follows:</p>
 <pre><code>hadoop fs -text lenta_wordcount/* | sort -n -k2,2 | tail -n5  
-с	
+from
 41  
-что	
+this
 43  
-на	
+on
 82  
-и	
+and
 111  
-в	
+into
 194 
 </code></pre>
 <p>The "hadoop fs -text" command displays the contents of the folder in text form. I sorted the result by the number of occurrences of the words. As expected, the most common words in the language are prepositions.</p>
@@ -251,15 +251,15 @@ hadoop fs -put lenta_articles
 </code></pre>
 <p>We wait for execution and check the result:</p>
 <pre><code>hadoop fs -text lenta_wordcount/* | sort -n -k2,2 | tail -n5  
-с	
-41  
-что	
-43  
-на	
-82  
-и	
-111  
-в	
-194 
+from
+41
+this
+43
+on
+82
+and
+111
+into
+194
 </code></pre>
 <p>As you might guess, the result of running our native application is the same as the result of the streaming application that we launched in the previous way.</p>

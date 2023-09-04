@@ -160,7 +160,7 @@ public class <span class="text-orange">RedirectServlet</span> extends <span clas
 
 public class <span class="text-orange">CalculatorServlet</span> extends <span class="text-red">HttpServlet</span> {
     protected void <span class="text-red">doGet</span>(<span class="text-green">HttpServletRequest request</span>, <span class="text-user">HttpServletResponse response</span>) throws Exception {
-         // Getting the parameter “a” и “b” from request
+         // Getting the parameter “a” and “b” from request
         String a = <span class="text-green">request</span>.getParameter(<span class="text-green">"a"</span>);
         String b = <span class="text-green">request</span>.getParameter(<span class="text-green">"b"</span>);
  
@@ -168,7 +168,7 @@ public class <span class="text-orange">CalculatorServlet</span> extends <span cl
             // Convert strings to numbers and calculate sum
             int <span class="text-viola">sum</span> = Integer.parseInt(<span class="text-viola">a</span>) + Integer.parseInt(<span class="text-viola">b</span>);
  
-            // Печатаем HTML в качестве ответа для браузера
+            // Print HTML as a response for browser
             <span class="text-user">response</span>.setContentType(<span class="text-green">"text/html;charset=UTF-8"</span>);
             PrintWriter <span class="text-yellow">out</span> = <span class="text-user">response</span>.getWriter();
  

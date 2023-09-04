@@ -7,7 +7,7 @@ interface Servlet Class HttpServlet Method service(HttpServletRequest, HttpServl
 <p>A servlet is exactly what turns a Java program into a web service and allows it to process requests from clients. And it was like this...</p>
 <p>In the 90s, immediately after the advent of the World Wide Web, web clients (browsers) and web servers appeared. <strong>Web servers</strong> usually simply distributed the file they had stored over the Internet: html pages, scripts, pictures, etc.</p>
 <p>At some point, everyone came to the conclusion that it would be necessary to make both sides smarter. JavaScript was added to the HTML pages, and plugins were added to the servers - <span class="text-green">special scripts that were called in response to certain requests</span> and made the server's behavior more flexible and smarter.</p>
-<p>So <strong>a servlet</strong> is such a <strong>Java plugin</strong> that was built into <code>Java веб-server</code>and allowed it to execute Java code when requested for certain pages. And already this Java code, represented by a class inherited from the Servlet class, did what its developers intended.</p>
+<p>So <strong>a servlet</strong> is such a <strong>Java plugin</strong> that was built into <code>Java web-server</code>and allowed it to execute Java code when requested for certain pages. And already this Java code, represented by a class inherited from the Servlet class, did what its developers intended.</p>
 <p>And as you already know, the most popular Java web server is <a href="https://tomcat.apache.org/" target="_blank">Tomcat</a> . Named, by the way, in honor of the cat Tom from the cartoon “Tom and Jerry”.</p>
 <p>How does Tomcat interact with servlets? In fact, this process is standardized and is called <span class="text-viola">the servlet life cycle</span> . In it, a servlet is a loadable object, and a web server is a servlet <strong>container</strong> .</p>
 <p><strong>If the servlet has not yet been loaded</strong> , then:</p>
@@ -94,20 +94,20 @@ public class <span class="text-orange">FirstHttpServlet</span> extends <span cla
         // Getting the parameter “secret” from request
         String secret = <span class="text-green">request</span>.getParameter("secret");
  
-        // Кладем параметр “secret” в Http-сессию
+        // Put parameter “secret” into Http-session
         HttpSession <span class="text-viola">session</span> = <span class="text-green">request</span>.getSession(true);
         <span class="text-viola">session</span>.setAttribute("secret", secret);
  
-        // Печатаем HTML в качестве ответа для браузера
+        // Print HTML as response for browser
         <span class="text-user">response</span>.setContentType("text/html;charset=UTF-8");
         PrintWriter <span class="text-yellow">out</span> = <span class="text-user">response</span>.getWriter();
         try {
             <span class="text-yellow">out</span>.println("&lt;html&gt;");
             <span class="text-yellow">out</span>.println("&lt;head&gt;");
-            <span class="text-yellow">out</span>.println("&lt;title&gt;Заголовок&lt;/title&gt;");
+            <span class="text-yellow">out</span>.println("&lt;title&gt;Header&lt;/title&gt;");
             <span class="text-yellow">out</span>.println("&lt;/head&gt;");
             <span class="text-yellow">out</span>.println("&lt;body&gt;");
-            <span class="text-yellow">out</span>.println("&lt;h1&gt;Пример сервлета "+ secret +"&lt;/h1&gt;");
+            <span class="text-yellow">out</span>.println("&lt;h1&gt;Servlet example "+ secret +"&lt;/h1&gt;");
             <span class="text-yellow">out</span>.println("&lt;/body&gt;");
             <span class="text-yellow">out</span>.println("&lt;/html&gt;");
         } finally {
@@ -119,7 +119,7 @@ public class <span class="text-orange">FirstHttpServlet</span> extends <span cla
 </code></pre>
 <h2>1.3 service(HttpServletRequest, HttpServletResponse) method</h2>
 <p>If you look at the processing of a client request from the point of view of a servlet, then things are something like this.</p>
-<p>For each client request, the container (web server) creates <code>HttpServletRequest</code>and objects <code>HttpServletResponse</code>, and then calls a method <code>service(HttpServletRequest request, HttpServletResponse response)</code>on the corresponding servlet. These objects are passed to it so that the method can take the necessary data from <code>request’а</code>and put the result of the work into <code>response</code>.</p>
+<p>For each client request, the container (web server) creates <code>HttpServletRequest</code>and objects <code>HttpServletResponse</code>, and then calls a method <code>service(HttpServletRequest request, HttpServletResponse response)</code>on the corresponding servlet. These objects are passed to it so that the method can take the necessary data from <code>request</code> and put the result of the work into <code>response</code>.</p>
 <p>The method <code>service()</code>has a default implementation. If it is not redefined, then it will be executed. That's what he does.</p>
 <p>The method <code>service()</code>determines the HTTP method type from request (GET, POST, ...) and calls the method corresponding to the request.</p>
 <div class="table-container">

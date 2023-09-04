@@ -86,7 +86,7 @@ mysql&gt; show status like 'Com_select';
 1 row in set (0.00 sec)
 </code></pre>
 <h2>7.3 Caching efficiency</h2><span class="text-viola">
- <p>“It is recommended to evaluate the effectiveness of the cache by dividing the value of the variable <code>Qcache_hits на Qcache_hits + Com_select</code>, since when processing a request, the Qcache_hits counter increases (if the request is processed from the cache) or Com_select (if the request is not cached). This method is suggested in "Mysql Performance Optimization" O'reilly</p>
+ <p>“It is recommended to evaluate the effectiveness of the cache by dividing the value of the variable <code>Qcache_hits on Qcache_hits + Com_select</code>, since when processing a request, the Qcache_hits counter increases (if the request is processed from the cache) or Com_select (if the request is not cached). This method is suggested in "Mysql Performance Optimization" O'reilly</p>
  <p>There is another way online</p>
  <pre><code>qcache_hit_ratio = qcache_hits / (qcache_hits + qcache_inserts + qcache_not_cached)
 </code></pre>
@@ -98,10 +98,10 @@ mysql&gt; show status like 'Com_select';
 <p>Again, the question arises: how to choose an adequate value<code>query_cache_size?</code></p>
 <p>This will help <code>Qcache_lowmem_prunes</code>. This variable stores the number of requests that have been removed from the cache due to the need to cache new requests. It is necessary to strive for such a cache size at which <code>Qcache_lowmem_prunes</code>it will increase only slightly. To do this, it is recommended to compare the difference in values <code>Qcache_lowmem_prunes</code>​​per hour and the number of requests received by mysql in the same hour.</p><span class="text-viola">
  <p>“In practice, one of 2 formulas can be used to calculate query_cache_size:</p>
- <pre><code>query_cache_size = (number of requests for 10 minutes)*(average response volume на request) * 1,2
+ <pre><code>query_cache_size = (number of requests for 10 minutes)*(average response volume on request) * 1,2
 </code></pre>
  <p>or</p>
- <pre><code>query_cache_size = (number of requests for 10 minutes)*(average response volume на request) * 1,2
+ <pre><code>query_cache_size = (number of requests for 10 minutes)*(average response volume on request) * 1,2
 </code>query_cache_size = (traffic volume in 10 minutes) * 1.2 "</pre></span>
 <p>This will cache requests for 10 minutes + give an additional 20% memory for cache fragmentation and additional caching reserve</p>
 <p>You can calculate the number and average volume of a response to a request using the <strong>Bytes_sent</strong> variables , respectively</p>

