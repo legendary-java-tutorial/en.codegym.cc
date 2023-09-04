@@ -1,6 +1,6 @@
-Cast. Expansion and contraction
+Type casting. Widening and narrowing conversions
 <p>----------------------------------------</p>
-Once, during the passage of the first quest, you were faced with the expansion and contraction of primitive types. You now have a much better understanding of reference types. So - it's time to see how the expansion and narrowing of types works in their case.
+During the first quest, you once encountered widening and narrowing primitive type conversions. Now reference types are quite familiar to you. So it's time to see widening and narrowing type conversions work for them.
 <p>----------------------------------------</p>
 <p>"Hi, Amigo! The topic of today's lesson is widening and narrowing type conversions. You learned about widening and narrowing primitive types a long time ago. On Level 10. Today we're going to talk about how it works for reference types, i.e. instances of classes."</p>
 <p>In fact, it's all quite simple. Imagine a class's inheritance chain: the class, its parent, the parent of the parent, etc., all the way back to the Object class. Because <strong><span class="text-red">a class contains all member methods of the class it inherits</span></strong>, an instance of <span class="text-red">the class can be saved in a variable <strong>whose type is that of any of its parents.</strong></span></p>

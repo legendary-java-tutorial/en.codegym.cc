@@ -1,6 +1,6 @@
-yield - skipping a move
+yield (surrendering the right of way)
 <p>----------------------------------------</p>
-You already know that the processor is constantly switching between threads. A quantum is allocated for each thread - a piece of processor time. Time expires - the processor switches to another thread and executes its commands. Well, if you need to terminate the quantum of the current thread ahead of schedule, the static method of the Thread class called yield comes to the rescue!
+You already know that the processor constantly switches between threads. Each thread is given a quantum — a piece of processor time. When the time is up, the processor switches to another thread and executes its commands. And if you need to end the current thread's quantum prematurely, the Thread class's static method yield comes to your aid!
 <p>----------------------------------------</p>
 <p>"Hello, Amigo! Today we will have a short but interesting lesson. I'm going to tell you about <span class="text-red">yield</span>, a static method of the Thread class."</p>
 <p>Ellie has already told you that the processor constantly switches between threads. Each thread is allocated a small piece of processor time, called <strong>a quantum</strong>. When this time expires, the processor switches to another thread and starts executing its commands. Calling <code><span class="text-user">Thread.yield()</span></code> lets you end the current thread's quantum early. In other words, it tells the processor to switch to the next thread.</p>
