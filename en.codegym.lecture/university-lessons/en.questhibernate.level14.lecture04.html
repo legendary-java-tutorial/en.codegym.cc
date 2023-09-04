@@ -2,7 +2,8 @@ Data caching in Hibernate
 <p>----------------------------------------</p>
 Never write your caching solution. Caching in the database. Types of caching in Hibernate. Second level caching.
 <p>----------------------------------------</p>
->Another way to speed up the work with the database is to cache objects that we have already requested earlier.</p>
+<h2>Never write your caching solution</h2>
+<p>Another way to speed up the work with the database is to cache objects that we have already requested earlier.</p>
 <p><strong>Important! </strong>Never write your own caching solution. This task has so many pitfalls that you never dreamed of.</p>
 <p>Issue 1 - <strong>cache flush</strong> . Sometimes events occur when an object needs to be removed from the cache or updated in the cache. The only way to do this competently is to pass all requests to the database through the cache engine. Otherwise, each time you will have to explicitly tell the cache which objects in it should be deleted or updated.</p>
 <p>Problem 2 - <strong>lack of memory</strong> . Caching seems like a great idea until you find that objects in memory take up a lot of space. You need additional tens of gigabytes of memory for the server application cache to work effectively.</p>

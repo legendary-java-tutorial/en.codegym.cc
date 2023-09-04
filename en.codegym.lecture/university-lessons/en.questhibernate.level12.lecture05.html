@@ -2,7 +2,8 @@ Object Mapping
 <p>----------------------------------------</p>
 We store files on the server We store pictures directly in the XML and JSON database
 <p>----------------------------------------</p>
-etimes binary objects need to be saved to the database. For example, files. If the file is large, then it is most reasonable to store it in a separate folder on the disk, and store its paths in the database. Example:</p>
+<h2>6.1 Store files on the server</h2>
+<p>Sometimes binary objects need to be saved to the database. For example, files. If the file is large, then it is most reasonable to store it in a separate folder on the disk, and store its paths in the database. Example:</p>
 <pre><code>c:\db-files\users\12355\avatar.jpg
 </code></pre>
 <p>And in the database we store just a relative path to the file:</p>

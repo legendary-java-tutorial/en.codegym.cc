@@ -2,7 +2,8 @@ Customizing the Query Cache
 <p>----------------------------------------</p>
 Why you need a query cache. Clearing the cache. Manual clearing of the cache.
 <p>----------------------------------------</p>
-rewrite our example with getting employees in HQL:</p>
+<h2>Why you need a query cache</h2>
+<p>Let's rewrite our example with getting employees in HQL:</p>
 <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">Employee</span> director1 <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"from Employee where id = 4"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">uniqueResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token class-name">Employee</span> director2 <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">createQuery</span><span class="token punctuation">(</span><span class="token string">"from Employee where id = 4"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">uniqueResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 

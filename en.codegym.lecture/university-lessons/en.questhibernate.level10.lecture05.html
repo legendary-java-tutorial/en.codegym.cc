@@ -2,7 +2,8 @@ Other types of requests
 <p>----------------------------------------</p>
 NamedQueries
 <p>----------------------------------------</p>
-s you not to store queries directly in the code. Instead, he suggests giving queries names and storing them separately as annotations. Well, then take the desired request directly by its name. Example:</p>
+<h2>6.1 Named Queries</h2>
+<p>Hibernate allows you not to store queries directly in the code. Instead, he suggests giving queries names and storing them separately as annotations. Well, then take the desired request directly by its name. Example:</p>
 <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token annotation punctuation"><span class="text-brown">@org.hibernate.annotations.NamedQueries</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
     <span class="token annotation punctuation"><span class="text-brown">@org.hibernate.annotations.NamedQuery</span></span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string"><span class="text-user">"Employee_FindById"</span></span><span class="token punctuation">,</span>
   	query <span class="token operator">=</span> <span class="token string">"from Employee where id = :id"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>

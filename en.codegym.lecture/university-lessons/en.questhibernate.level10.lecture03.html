@@ -2,7 +2,8 @@ Requests with parameters
 <p>----------------------------------------</p>
 Parameters to queries Method setParameterList() Protection against SQL Injection
 <p>----------------------------------------</p>
-ate allows you to pass parameters to queries. Thus, all work with queries and the database is greatly simplified.</p>
+<h2>4.1 Parameters for queries</h2>
+<p>Hibernate allows you to pass parameters to queries. Thus, all work with queries and the database is greatly simplified.</p>
 <p>It is very rare to find immutable queries. At first, it seems that you just need to return a list of goods from the database. And then it turns out that you need an up-to-date list of products for a specific user on a specific date. Sorted by the required field, and not yet the whole list, but a specific page: for example, products from 21 to 30.</p>
 <p>And this is exactly what parameterized queries solve. You write a query in HQL, and then you replace the values ​​that can be changed with “special names” - parameters. And then separately when executing the request, you can pass the values ​​of these parameters.</p>
 <p>Let's write an HQL query that will return all tasks for a user with a specific name:</p>

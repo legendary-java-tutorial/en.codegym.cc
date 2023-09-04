@@ -2,7 +2,8 @@ Testing Hibernate code
 <p>----------------------------------------</p>
 Base in memory and testing. test data.
 <p>----------------------------------------</p>
-w the most interesting. When testing Hibernate code, very often you want to work not with a real base, but with some kind of stub that implements minimal functionality.</p>
+<h2>Base in memory and testing</h2>
+<p>And now the most interesting. When testing Hibernate code, very often you want to work not with a real base, but with some kind of stub that implements minimal functionality.</p>
 <p>Can you imagine a stub that implements most of the SQL Server standard? Me not. However, in-memory databases are excellent as such. It works roughly like this:</p>
 <ul>
  <li>In the @BeforeAll method, we initialize the in-memory database connection.</li>

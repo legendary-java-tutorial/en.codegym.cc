@@ -2,7 +2,8 @@ CONSTRAINT: database integrity
 <p>----------------------------------------</p>
 Database integrity control. Adding FOREIGN KEY. FOREIGN KEY and changing data.
 <p>----------------------------------------</p>
-r important thing to know about databases is CONSTRAINS. With the help of constraints, you can control data changes in your tables and maintain their integrity and consistency.</p>
+<h2>Database integrity control</h2>
+<p>Another important thing to know about databases is CONSTRAINS. With the help of constraints, you can control data changes in your tables and maintain their integrity and consistency.</p>
 <p>What is <strong>data consistency</strong> when we talk about a database?</p>
 <p>Let's take our online store with <strong>employee, product and task tables</strong> . We already know that there can be tasks in the task table that are not assigned to anyone: <strong>the employee_id</strong> of such rows is NULL.</p>
 <p>But what happens if there is an entry in the task table with an employee_id equal to, say, 115? After all, we do not have such an employee. We don't have an employee with id = 115 in the employee table. At the same time, a link to an employee with this id is in the task table. This is an example of <strong>data inconsistency</strong> .</p>

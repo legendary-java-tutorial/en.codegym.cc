@@ -2,7 +2,8 @@ Choosing a Hierarchy Preservation Strategy
 <p>----------------------------------------</p>
 Description. EXPLICIT.
 <p>----------------------------------------</p>
-ategies and techniques has its own advantages and disadvantages. General recommendations for choosing a specific strategy will look like this:</p>
+<h2>Description</h2>
+<p>Each of the above strategies and techniques has its own advantages and disadvantages. General recommendations for choosing a specific strategy will look like this:</p>
 <h4>TABLE_PER_CLASS strategy based on UNION</h4>
 <p>This strategy is best chosen if polymorphic queries and associations are not required. If you rarely do (or don't do at all) "select user from User user". If you don't have any Entity classes that refer to User, this is the best option (since you can still add optimized polymorphic queries and associations).</p>
 <h4>SINGLE_TABLE strategy</h4>

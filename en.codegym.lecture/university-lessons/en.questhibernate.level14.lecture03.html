@@ -2,7 +2,8 @@ JOIN FETCH
 <p>----------------------------------------</p>
 Description of the problem. JOIN FETCH restrictions.
 <p>----------------------------------------</p>
-class="text-yellow"><span class="text-bold">As we said above, the LazyCollectionOption.EXTRA</span></span> annotation has a problem - it performs a separate request to the database for each object. We need to somehow explain to Hibernate that we want it to immediately load all the child objects for our parent objects.</p>
+<h2>Description of the problem</h2>
+<p><span class="text-yellow"><span class="text-bold">As we said above, the LazyCollectionOption.EXTRA</span></span> annotation has a problem - it performs a separate request to the database for each object. We need to somehow explain to Hibernate that we want it to immediately load all the child objects for our parent objects.</p>
 <p>The developers of Hibernate have come up with a solution to this problem, the <span class="text-viola"><strong>join fetch</strong></span> operator in HQL.</p>
 <p>HQL query example:</p>
 <pre><code><strong><span class="text-red">select distinct</span> task <span class="text-red">from</span> Task t <span class="text-red">left join fetch</span> t.employee <span class="text-red">order by</span> t.deadline</strong></code></pre>

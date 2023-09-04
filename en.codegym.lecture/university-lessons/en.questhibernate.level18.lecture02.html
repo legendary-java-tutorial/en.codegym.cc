@@ -2,7 +2,8 @@ ACID concept
 <p>----------------------------------------</p>
 Emergence of ACID Emergence of Transactions ACID Connectivity
 <p>----------------------------------------</p>
-abbreviation ACID</strong> first appeared in 1983 in an article by Theo Haerder and Andreas Reuter. To simplify the text and make it more convincing, I will give a translation of a fragment of this article (with slight reductions). This snippet uses an example of a bank transaction in which money is transferred from one account to another.</p>
+<h2>3.1 Emergence of ACID</h2>
+<p><strong>The abbreviation ACID</strong> first appeared in 1983 in an article by Theo Haerder and Andreas Reuter. To simplify the text and make it more convincing, I will give a translation of a fragment of this article (with slight reductions). This snippet uses an example of a bank transaction in which money is transferred from one account to another.</p>
 <p>The concept of a transaction, which in the example includes all interactions with the database between <code>$BEGIN_TRANSACTION</code>and <code>$COMMIT_TRANSACTION</code>, requires that all actions be performed indivisibly: either all actions are properly reflected in the state of the database, or nothing happens. If at any point in time before reaching <code>$COMMIT_TRANSACTION</code>the user enters a statement <code>ERROR</code>containing <code>$RESTORE_TRANSACTION</code>, then no changes are reflected in the database.</p>
 <p>To achieve this indivisibility, a transaction must have the following four properties:</p>
 <p><strong>Atomicity</strong> (Atomicity). The transaction must be of the all-or-nothing type described above, and no matter what happens, the user must know what state the transaction is in.</p>

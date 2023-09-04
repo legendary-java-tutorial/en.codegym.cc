@@ -2,7 +2,8 @@ Working with the thread pool
 <p>----------------------------------------</p>
 Connection pool DataSource interface and ConnectionPoolDataSource JNDI interface Examples of Connection Pools
 <p>----------------------------------------</p>
-learn how to work with the database even more professionally. And now we'll talk about the thread pool, or <strong>connection pool</strong> in English.</p>
+<h2>7.1 Connection pool</h2>
+<p>Today we will learn how to work with the database even more professionally. And now we'll talk about the thread pool, or <strong>connection pool</strong> in English.</p>
 <p>Connecting to the database takes some time. Especially if the database is remote. If we make a connection to the database for each request, then the response of our application will be incredibly slow in speed. Not to mention the resources it will consume.</p>
 <p>As a solution to such problems, it was proposed to store connections to the base in some set, which is called the thread pool.</p>
 <p>When we request a new connection, the connection pool creates it, and when closed, it does not close it, but saves it in the connection pool. And if we request a connection from the connection pool again, it will give us one of the old ones instead of creating a new one.</p>

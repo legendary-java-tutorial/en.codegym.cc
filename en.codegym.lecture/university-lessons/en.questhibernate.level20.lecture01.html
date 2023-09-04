@@ -2,7 +2,7 @@ Sharding: reverse side
 <p>----------------------------------------</p>
 How to shard and slow down N times? About the semi-auto. Absolute perfect automation? What are F()? The price to be paid. Complex/long pain: resharding.
 <p>----------------------------------------</p>
-2>
+<h2>2.1 How to shard and slow down N times?</h2>
 <p>You can shard and slow down exactly N times like this:</p>
 <ul>
  <li>Send docs00...docs15 requests <strong>sequentially</strong> , not in parallel.</li>
@@ -69,7 +69,7 @@ shard_id = F2(F1(object), current_num_shards, ...).
 <p>To catch, you need to look at the size of the shards. We will definitely see the problem at the moment when one of our shards either overheats or becomes 100 times larger than the others. You can fix it simply by replacing the key or the sharding function.</p>
 <p>This is a simple problem, to be honest, I don’t think that at least one person out of a hundred will run into this in life, but suddenly it will help at least someone.</p>
 <h4>2. "Invincible" pain: aggregation, join</h4>
-<p></p> How to make selections that join a billion records from one table for a billion records from another table? 
+<p></p> How to make selections that join a billion records from one table for a billion records from another table?
 <p></p>
 <ul>
  <li>How to "quickly" calculate... WHERE randcol BETWEEN aaa AND bbb?</li>

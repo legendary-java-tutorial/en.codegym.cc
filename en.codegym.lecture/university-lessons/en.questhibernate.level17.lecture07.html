@@ -2,6 +2,7 @@ Denormalization of tables in the database
 <p>----------------------------------------</p>
 Why is denormalization necessary? Denormalization example When is denormalization needed? Pros and cons of denormalization How to correctly implement denormalization
 <p>----------------------------------------</p>
+<h2>8.1 Why is denormalization necessary?</h2>
 <p>The most computationally expensive operation between large tables is the join. Accordingly, if in one query it is necessary to "ventilate" several tables consisting of many millions of rows, then the DBMS will spend a lot of time on such processing.</p>
 <p>The user at this time can move away to drink coffee. The interactivity of processing practically disappears and approaches that of batch processing. Even worse, in batch mode, the user receives all the data requested the day before in the morning and calmly works with them, preparing new requests for the evening.</p>
 <p>To avoid the situation of heavy joins, tables are denormalized. But not anyhow. There are some rules that allow you to consider transactionally denormalized tables as "normalized" according to the rules for constructing tables for data warehouses.</p>

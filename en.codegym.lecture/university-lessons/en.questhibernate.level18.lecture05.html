@@ -2,7 +2,7 @@ BASE vs ACID
 <p>----------------------------------------</p>
 Battle of Abbreviations: BASE vs. ACID. BASE as an antagonist. So the BASE databases don't meet the ACID criteria at all? how different databases index data, and how this affects durability, and more. How in-memory DBs work.
 <p>----------------------------------------</p>
-</h2>
+<h2>6.1 Battle of Abbreviations: BASE vs. ACID</h2>
 <div class="table-container">
  <table>
   <tbody>
@@ -41,7 +41,7 @@ Battle of Abbreviations: BASE vs. ACID. BASE as an antagonist. So the BASE datab
 <ul>
  <li>
   <p>The DB provides no guarantee of atomicity. While some NoSQL databases offer a separate API for atomic operations (eg DynamoDB);</p></li>
- <li>The DB provides no isolation guarantee. This may mean, for example, that the database will not write the data in the order in which they were written. 
+ <li>The DB provides no isolation guarantee. This may mean, for example, that the database will not write the data in the order in which they were written.
   <p></p></li>
 </ul>
 <p>As for the durability guarantee, many databases compromise on this point for the sake of performance. Writing to disk is too long an operation, and there are several ways to solve this problem. I do not want to go into database theory much, but so that you roughly understand which way to look, I will describe in general terms how different databases solve the problem with durability.</p>

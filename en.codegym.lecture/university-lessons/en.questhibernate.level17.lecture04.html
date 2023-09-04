@@ -2,7 +2,8 @@ Keys in the database
 <p>----------------------------------------</p>
 Primary key Foreign key Custom Key
 <p>----------------------------------------</p>
-full of dogmatic precepts about how keys should be chosen and used in relational databases. Sometimes disputes even turn into holivars: should <strong>natural or artificial keys be used? Auto-increment integers or UUIDs?</strong></p>
+<h2>5.1 Introduction</h2>
+<p>The Internet is full of dogmatic precepts about how keys should be chosen and used in relational databases. Sometimes disputes even turn into holivars: should <strong>natural or artificial keys be used? Auto-increment integers or UUIDs?</strong></p>
 <p>After reading sixty-four articles, flipping through sections of five books, and asking tons of questions on IRC and StackOverflow, I (Joe "begriffs" Nelson, the author of the original article) seem to have put the pieces of the puzzle together and can now reconcile adversaries. Many key disputes actually arise from a misunderstanding of someone else's point of view.</p>
 <p>Let's take the problem apart and put it back together at the end. First, let's ask the question - what is a "key"?</p>
 <p>Let's forget about primary keys for a moment, we are interested in a more general idea. A key is a column (column) or columns that <span class="text-red">do not have duplicate values ​​in rows</span> . Also, the columns must be irreducibly unique, i.e. no subset of the columns has this uniqueness.</p>

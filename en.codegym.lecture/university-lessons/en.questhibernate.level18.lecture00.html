@@ -2,7 +2,8 @@ Problems of concurrent transactions
 <p>----------------------------------------</p>
 Introduction. Lost update. Dirty reading. Non-repetitive reading. Reading phantoms.
 <p>----------------------------------------</p>
-begins - the theory of how transactions work. How to keep the system working when you change the same data in different threads? Or do you want to execute one transaction in another? We will begin to look for answers to these questions by studying the isolation of transactions ...</p>
+<h2>1.1 Introduction</h2>
+<p>And now the fun begins - the theory of how transactions work. How to keep the system working when you change the same data in different threads? Or do you want to execute one transaction in another? We will begin to look for answers to these questions by studying the isolation of transactions ...</p>
 <p><strong>The transaction isolation level</strong> is a conditional value that determines the extent to which, as a result of the execution of logically parallel transactions in the DBMS, inconsistent data is allowed. The scale of transaction isolation levels contains a number of values, ranked from lowest to highest; a higher isolation level corresponds to better data consistency, but its use may reduce the number of physically parallel transactions.</p>
 <p>Conversely, a lower isolation level allows for more parallel transactions, but reduces data accuracy. Thus, choosing the level of transaction isolation used, the developer of the information system, to a certain extent, provides a choice between the speed of work and ensuring the guaranteed consistency of the data received from the system.</p>
 <h3>Problems of concurrent access using transactions</h3>

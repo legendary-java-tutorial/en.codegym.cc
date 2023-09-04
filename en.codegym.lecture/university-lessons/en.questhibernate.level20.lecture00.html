@@ -2,7 +2,8 @@ Sharding
 <p>----------------------------------------</p>
 What is sharding? We share the indivisible. A simple example of "how to do it by hand". Amdahl law.
 <p>----------------------------------------</p>
-istently google, it turns out that there is a rather blurred border between the so-called partitioning and the so-called sharding. Everyone calls whatever they want, whatever they want. Some people distinguish between horizontal partitioning and sharding. Others say that sharding is a certain kind of horizontal partitioning.</p>
+<h2>1.1 What is sharding?</h2>
+<p>If you persistently google, it turns out that there is a rather blurred border between the so-called partitioning and the so-called sharding. Everyone calls whatever they want, whatever they want. Some people distinguish between horizontal partitioning and sharding. Others say that sharding is a certain kind of horizontal partitioning.</p>
 <p>I did not find a single terminological standard that would be approved by the founding fathers and certified by ISO. Personal inner conviction is something like this: Partitioning on average is “cutting the base into pieces” in an arbitrarily taken way.</p>
 <ul>
  <li><strong>Vertical partitioning</strong> - by column. For example, there is a giant table with a couple of billion records in 60 columns. Instead of keeping one such giant table, we keep 60 at least giant tables of 2 billion records each - and this is not a column base, but vertical partitioning (as an example of terminology).</li>

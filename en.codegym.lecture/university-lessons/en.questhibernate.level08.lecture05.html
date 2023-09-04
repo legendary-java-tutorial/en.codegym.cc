@@ -2,7 +2,8 @@ Working with RowSet
 <p>----------------------------------------</p>
 Introduction to RowSet Creating a RowSet Object RowSet Examples
 <p>----------------------------------------</p>
-already know, the JDBC standard is almost 20 years old and a little outdated. New types and new classes are slowly being added to it, but this can not be done beautifully everywhere. And one of those places is <strong>ResultSet</strong> .</p>
+<h2>6.1 Introduction to RowSet</h2>
+<p>As you already know, the JDBC standard is almost 20 years old and a little outdated. New types and new classes are slowly being added to it, but this can not be done beautifully everywhere. And one of those places is <strong>ResultSet</strong> .</p>
 <p>The database can be made more efficient, but the <strong>ResultSet</strong> interface is a poor fit. In addition, we do not explicitly create its objects anywhere, they are returned to us by the <code>executeQuery()</code>.</p>
 <p>The creators of JDBC did not think long and made a mechanism that is completely parallel to everything that was before. And it became known as <strong>RowSet</strong> .</p>
 <p>Here are its main benefits:</p>

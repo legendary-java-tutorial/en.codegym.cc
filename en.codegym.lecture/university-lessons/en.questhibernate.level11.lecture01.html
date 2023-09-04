@@ -2,7 +2,8 @@ How to save an object in Hibernate
 <p>----------------------------------------</p>
 Possible options for the status of the object. The nuances of the persist() methods. The nuances of the save() method.
 <p>----------------------------------------</p>
-you may have noticed, when an object is attached to Hibernate, its state is called <strong>Persistent</strong> or <strong>Managed</strong> . How right? Persist or Managed?</p>
+<h2>Possible object status options</h2>
+<p>As you may have noticed, when an object is attached to Hibernate, its state is called <strong>Persistent</strong> or <strong>Managed</strong> . How right? Persist or Managed?</p>
 <p>It is possible and so, and so. According to the JPA specification, an object has a Persist state, and according to the Hibernate specification, its state is called Managed.</p>
 <p>In Hibernate, work with the database is carried out through an object of type <strong>org.hibernate.Session</strong> . According to JPA, the class should be called javax.persistence.EntityManager. This isn't really a big problem, since both types are interfaces.</p>
 <p><span class="text-neon"><span class="text-bold"><em>The org.hibernate.Session</em></span></span> interface is declared like this:</p>

@@ -2,7 +2,7 @@ Working with Entity Objects
 <p>----------------------------------------</p>
 Transactions and Database Integrity Retrieving Objects Saving (Adding) Objects Deleting Objects
 <p>----------------------------------------</p>
-2>
+<h2>4.1 Transactions and database integrity</h2>
 <p>The normal mode of operation of a database is when it receives thousands of requests every minute from hundreds of different clients. In this case, situations often arise when the same data is accessed from different queries.</p>
 <p>Less often, but, again, from time to time there are situations when one request reads a certain line, and another request changes it at the same time. Imagine what happens if someone reads a line that is only half changed? Nothing good.</p>
 <p>This problem is solved in several ways. First, you can just lock the line that changes. Both for reading and for writing. This method works, but the speed of the base suffers greatly.</p>

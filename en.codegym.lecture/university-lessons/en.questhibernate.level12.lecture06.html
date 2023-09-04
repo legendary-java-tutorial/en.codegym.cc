@@ -2,6 +2,7 @@ Using different data type converters
 <p>----------------------------------------</p>
 Creating Your Own Type Converter Creating Your Own Data Type Registering Your Own Type
 <p>----------------------------------------</p>
+<h2>7.1 Creating your own type converter</h2>
 <p>Sometimes situations arise when you want to store a fairly complex data type in one column of a table. If Hibernate knows how to convert it to a string (and back), then everything is fine. If not, then you will have to write your own data converter.</p>
 <p>Let's say someone decides to store a user's year of birth in the database as <code>ГГ.ММ.ДД</code>, for example: <code>98.12.15</code>. You also need to convert it to a regular date: <code>15/12/1998</code>. Then you have to write your own converter.</p>
 <p>To do this, you need to implement an interface <code>AttributeConverter&lt;EntityType, DbType&gt;</code>.</p>

@@ -2,7 +2,8 @@ Discriminator
 <p>----------------------------------------</p>
 Description. @DiscriminatorValue. @DiscriminatorFormula.
 <p>----------------------------------------</p>
-n, you saw that Hibernate uses a special DTYPE VARCHAR column to store the name of an Entity class. Such a column is called <strong>a discriminator</strong> . It is used to unambiguously determine which class to create for a given row in the database.</p>
+<h2>Description</h2>
+<p>In the previous lesson, you saw that Hibernate uses a special DTYPE VARCHAR column to store the name of an Entity class. Such a column is called <strong>a discriminator</strong> . It is used to unambiguously determine which class to create for a given row in the database.</p>
 <p>You can manipulate this column with the <span class="text-yellow"><span class="text-bold">@DiscriminatorColumn</span></span> annotation . Example:</p>
 <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span></span><code class=" language-java"><span class="token annotation punctuation">@DiscriminatorColumn</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"column_name"</span><span class="token punctuation">,</span>   discriminatorType <span class="token operator">=</span> <span class="token class-name">DiscriminatorType</span><span class="token punctuation">.</span>INTEGER<span class="token punctuation">)</span></code></pre>
 <p>According to the JPA specification, a discriminator can have the following types:</p>

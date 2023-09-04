@@ -2,7 +2,8 @@ How to implement ACID in an application: practice
 <p>----------------------------------------</p>
 transaction ID. Retries ("retries"). Advanced toolkit for lovers of transactions. How do I know when I need ACID guarantees? When do I not need ACID?
 <p>----------------------------------------</p>
-ted as XID or TxID (if there is a difference, tell me). Timestamps can be used as TxID, which can play into the hands if we want to restore all actions to some point in time. The problem can arise if the timestamp is not granular enough - then transactions can get the same ID.</p>
+<h2>8.1 Transaction IDs</h2>
+<p>It is designated as XID or TxID (if there is a difference, tell me). Timestamps can be used as TxID, which can play into the hands if we want to restore all actions to some point in time. The problem can arise if the timestamp is not granular enough - then transactions can get the same ID.</p>
 <p>Therefore, the most reliable option is to generate unique UUID prod IDs. In Python this is very easy:</p>
 <pre><code>&gt;&gt;&gt; import uuid 
 &gt;&gt;&gt; str(uuid.uuid4()) 

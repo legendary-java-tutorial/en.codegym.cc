@@ -2,7 +2,8 @@ BigData: Techniques and Strategies for Developing MapReduce Applications
 <p>----------------------------------------</p>
 Map only job. combine. Chains of MapReduce tasks. distributed cache. Reduce Join. mapjoin.
 <p>----------------------------------------</p>
-cribe various techniques that allow you to effectively use MapReduce to solve practical problems, as well as show some of the features of Hadoop that can simplify development or significantly speed up the execution of a MapReduce task on a cluster.</p>
+<h2>5.1 Map only job</h2>
+<p>It's time to describe various techniques that allow you to effectively use MapReduce to solve practical problems, as well as show some of the features of Hadoop that can simplify development or significantly speed up the execution of a MapReduce task on a cluster.</p>
 <p>As we remember, MapReduce consists of Map, Shuffle and Reduce stages. As a rule, the Shuffle stage turns out to be the most difficult in practical tasks, since data is sorted at this stage. In fact, there are a number of tasks in which the Map stage alone can be dispensed with. Here are examples of such tasks:</p>
 <ul>
  <li>Data filtering (for example, "Find all records from the IP address 123.123.123.123" in the web server logs);</li>

@@ -2,7 +2,7 @@ Date functions, practical examples
 <p>----------------------------------------</p>
 Looking for events in the last 30 days. How to find the difference between two dates.
 <p>----------------------------------------</p>
->
+<h2>Looking for events in the last 30 days</h2>
 <p>Another common task is searching for rows that belong to a specific date range. In principle, this is not difficult if the start and end dates of the range are fixed: SQL can compare dates just as well as numbers.</p>
 <p>Comparison operators can be applied to dates: <span class="text-viola">&lt;</span> , <span class="text-viola">&gt;</span> , <span class="text-viola">&lt;=</span> , etc. In addition, there is a special BETWEEN operator that can also work with dates. For example, let's write a query that will select all tasks from the task table that need to be done in the summer of 2022. The request will look like this:</p>
 <pre><code><strong><span class="text-red">SELECT</span> * <span class="text-red">FROM</span> <span class="text-orange">task</span>  

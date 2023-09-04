@@ -2,7 +2,8 @@ Apache Cassandra
 <p>----------------------------------------</p>
 Description. data model. Data types.
 <p>----------------------------------------</p>
-ssandra</strong> is a distributed database management system that belongs to the class of NoSQL systems and is designed to create highly scalable and reliable storages of huge data arrays presented in the form of a hash.</p><img data-max-width="256" data-id="3f1932c4-0cbf-42a9-a763-73770a3ad298" alt="" src="https://cdn.javarush.com/images/article/3f1932c4-0cbf-42a9-a763-73770a3ad298/256.jpeg" style="width: 256px;">
+<h2>4.1 Description</h2>
+<p><strong>Apache Cassandra</strong> is a distributed database management system that belongs to the class of NoSQL systems and is designed to create highly scalable and reliable storages of huge data arrays presented in the form of a hash.</p><img data-max-width="256" data-id="3f1932c4-0cbf-42a9-a763-73770a3ad298" alt="" src="https://cdn.javarush.com/images/article/3f1932c4-0cbf-42a9-a763-73770a3ad298/256.jpeg" style="width: 256px;">
 <p>Initially, the project was developed in the bowels of Facebook and in 2009 transferred under the wing of the Apache Software Foundation, this organization continues to develop the project. Industrial solutions based on Cassandra are deployed to provide services to companies such as Cisco, IBM, Cloudkick, Reddit, Digg, Rackspace, Huawei, Netflix, Apple, Instagram, GitHub, Twitter and Spotify. By 2011, the largest server cluster serving a single database under Cassandra had more than 400 machines and contained more than 300 TB of data.</p>
 <p>Written in <strong>the Java language</strong> , it implements a distributed hash system similar to DynamoDB, which provides almost linear scalability with increasing data volume. It uses a data storage model based on a family of columns, which differs from systems like MemcacheDB, which store data only in a key-value pair, by the ability to store hashes with several levels of nesting.</p>
 <p>Belongs to the category of fault-tolerant DBMS: the data placed in the database is automatically replicated to several nodes of a distributed network or even evenly distributed in several data centers. When a node fails, its functions are picked up on the fly by other nodes, adding new nodes to the cluster and updating the Cassandra version is done on the fly, without additional manual intervention and reconfiguration of other nodes.</p>
@@ -23,7 +24,7 @@ ssandra</strong> is a distributed database management system that belongs to the
 <p>By data types: keyspace and column family are strings (names); timestamp is a 64-bit number; and the key, column name, and column value is an array of bytes. Cassandra also has the concept of data types. These types can be specified (optionally) by the developer when creating a column family.</p>
 <p>For column names this is called a comparator, for values ​​and keys it is called a validator. The first defines what byte values ​​are allowed for column names and how to order them. The second is what byte values ​​are valid for column and key values.</p>
 <p>If these data types are not set, then cassandra stores the values ​​and compares them as byte strings (BytesType) since, in fact, they are stored internally.</p><o>
- The data types are: 
+ The data types are:
  <p></p>
  <ul>
   <li><strong>BytesType</strong> : any byte strings (no validation)</li>

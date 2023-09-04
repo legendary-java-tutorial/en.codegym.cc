@@ -2,7 +2,8 @@ Configuring the Second Level Cache
 <p>----------------------------------------</p>
 Parallel Access Strategies. Storing data in a cache. CacheMode.
 <p>----------------------------------------</p>
-enable second-level caching in Hibernate, you need to explain to Hibernate which Entity objects we want to cache and how.</p>
+<h2>Concurrency Strategies</h2>
+<p>After you enable second-level caching in Hibernate, you need to explain to Hibernate which Entity objects we want to cache and how.</p>
 <p>To do this, Hibernate has a special annotation for Entity classes - <span class="text-yellow"><span class="text-bold">@Cache</span></span> . Example:</p>
 <div class="lesson-example lesson-example--center">
  <pre class="lecture-code lecture-code--present  language-java" tabindex="0"><code class=" language-java"><span class="token annotation punctuation"></span><span class="text-red"><span class="token annotation punctuation">@Cache</span><span class="token punctuation">(</span>usage <span class="token operator">=</span> <span class="token class-name">CacheConcurrencyStrategy</span><span class="token punctuation">.</span>READ_WRITE<span class="token punctuation">)</span></span><span class="token punctuation"></span></code></pre>

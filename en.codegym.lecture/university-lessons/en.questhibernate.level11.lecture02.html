@@ -2,7 +2,8 @@ How to change an object in Hibernate
 <p>----------------------------------------</p>
 The nuances of the merge() method. The nuances of the update() method. saveOrUpdate() method.
 <p>----------------------------------------</p>
->If you want to use Hibernate to change an object that has already been stored in the database, then there are also several methods for this.</p>
+<h2>The nuances of the merge() method</h2>
+<p>If you want to use Hibernate to change an object that has already been stored in the database, then there are also several methods for this.</p>
 <p>The first is the <span class="code text-orange">merge()</span> method , <span class="text-green">which updates the information in the database based on the passed object</span> . This will invoke the SQL UPDATE query. Example:</p>
 <pre class=" line-numbers language-java" tabindex="0"><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span><code class=" language-java"><span class="token class-name">User</span> user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 user<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">"Kolyan"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>

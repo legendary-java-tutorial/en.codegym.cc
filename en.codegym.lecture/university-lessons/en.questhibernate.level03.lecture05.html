@@ -2,7 +2,8 @@ Subqueries with tables
 <p>----------------------------------------</p>
 The subquery returns a table. Using the WITH statement.
 <p>----------------------------------------</p>
-lly, the third option is when the subquery returns the whole table. This is the most common option.</p>
+<h2>Subquery returns a table</h2>
+<p>And finally, the third option is when the subquery returns the whole table. This is the most common option.</p>
 <p>Very often there are situations when we want to tweak a certain table a little. And only then join (using the JOIN ON operator) the corrected table with another.</p>
 <p>Let's start with the simplest case, where we joined two tables with a JOIN:</p>
 <pre><code><strong><span class="text-red">SELECT</span> * <span class="text-red">FROM</span> <span class="text-orange">employee e</span> <span class="text-red">JOIN</span> <span class="text-orange">task t</span> <span class="text-red">ON</span> <span class="text-orange">e</span>.<span class="text-green">id</span> = <span class="text-orange">t</span>.<span class="text-green">emploee_id</span></strong>

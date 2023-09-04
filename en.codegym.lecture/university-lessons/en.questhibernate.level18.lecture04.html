@@ -2,7 +2,8 @@ Transactions and more
 <p>----------------------------------------</p>
 The Concurrency Problem Transactions Came to Save Us "I" and Other Letters in ACID
 <p>----------------------------------------</p>
-'s start with a little distant theory.</p>
+<h2>5.1 The issue of simultaneity</h2>
+<p>Let's start with a little distant theory.</p>
 <p>Any information system (or simply, an application) that programmers create consists of several typical blocks, each of which provides a part of the necessary functionality. For example, the cache is used to remember the result of a resource-intensive operation to ensure faster reading of data by the client, stream processing tools allow you to send messages to other components for asynchronous processing, and batch processing tools are used to "rake" the accumulated volumes of data with some periodicity. .</p>
 <p>And in almost every application, databases (DBs) are involved in one way or another, which usually perform two functions: store data when received from you and later provide them to you upon request. Rarely does anyone think of creating their own database, because there are already many ready-made solutions. But how do you choose the right one for your application?</p>
 <p>So, let's imagine that you have written an application with a mobile interface that allows you to load a previously saved list of tasks around the house - that is, read from the database, and supplement it with new tasks, as well as prioritize each specific task - from 1 ( highest) to 3 (lowest). Let's say your mobile application is used by only one person at a time. But now you dared to tell your mother about your creation, and now she has become the second regular user. What happens if you decide at the same time, right in the same millisecond, to set some task - "wash the windows" - to a different degree of priority?</p>

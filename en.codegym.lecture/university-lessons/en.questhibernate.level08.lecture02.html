@@ -2,7 +2,8 @@ Calling SQL Server Functions
 <p>----------------------------------------</p>
 CallableStatement. Batching requests.
 <p>----------------------------------------</p>
-r interface for even more complex scenarios. It inherits from <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> and is called <span class="text-neon"><span class="text-bold"><em>CallableStatement</em></span></span> .</p>
+<h2>CallableStatement</h2>
+<p>JDBC has another interface for even more complex scenarios. It inherits from <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> and is called <span class="text-neon"><span class="text-bold"><em>CallableStatement</em></span></span> .</p>
 <p>It is used to call (Call) stored procedures in the database. The peculiarity of such a call is that, in addition to the <span class="code"><span class="text-green">ResultSet</span></span> result , parameters can also be passed to such a stored procedure.</p>
 <p>What's new, you ask? <span class="text-neon"><span class="text-bold"><em>PreparedStatement</em></span></span> also has a <span class="code"><span class="text-green">ResultSet</span></span> result and you can also pass parameters to it. Yes, that's right, but the peculiarity of stored procedures is that through parameters they can not only receive, but also return data.</p>
 <p><strong>The stored procedure is called with IN</strong> , <strong>OUT</strong> , and <strong>INOUT</strong> parameters . It returns one or more <span class="code"><span class="text-green">ResultSet</span></span> objects . <span class="code text-orange">The Connection.prepareCall()</span> method is used to create a <span class="text-neon"><span class="text-bold"><em>CallableStatement</em></span></span> object .<span class="code text-orange"></span></p>

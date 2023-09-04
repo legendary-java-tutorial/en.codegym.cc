@@ -2,7 +2,8 @@ NativeQuery
 <p>----------------------------------------</p>
 Introduction to Entity mapping DTO mapping
 <p>----------------------------------------</p>
-hing I would like to talk about is <strong>NativeQuery</strong> . As you already know, using NativeQuery, you can write queries in native SQL. However, what's even more interesting is that you don't have to use class mapping when getting the query result.</p>
+<h2>3.1 Introduction</h2>
+<p>Another useful thing I would like to talk about is <strong>NativeQuery</strong> . As you already know, using NativeQuery, you can write queries in native SQL. However, what's even more interesting is that you don't have to use class mapping when getting the query result.</p>
 <p>I'd rather show you an example:</p>
 <pre><code>List&lt;Object[]&gt; <span class="text-user">persons</span> = <span class="text-brown">session.createNativeQuery</span>(<span class="text-green">"SELECT * FROM Person"</span>).list();
 </code></pre>
@@ -89,4 +90,4 @@ for (<span class="text-user">Phone</span>. phone : <span class="text-yellow">res
 <p>This can be very useful if you are reading data from an external database to which your application is connected only in read-only mode. That is, you were given access to tables that have 50+ columns, they store data in a denormalized form to speed up the selection.</p>
 <p>Or let's say that someone decided to store the class hierarchy in one table, and in five years this table has grown so much that the devil will break his leg. You need to select a couple of columns from this table (Id and username) and give them to the client.</p>
 <p>I think you understand, but if you want to dive deeper into this topic, you can read more at the link:</p>
-<p><a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#sql" target="_blank" rel="nofollow">Native SQL Queries</a></p><a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#sql" target="_blank" rel="nofollow"> </a>
+<p><a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#sql" target="_blank">Native SQL Queries</a></p><a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#sql" target="_blank"> </a>

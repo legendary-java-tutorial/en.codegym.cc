@@ -2,7 +2,8 @@ Criteria API Part 2
 <p>----------------------------------------</p>
 Grouping and aggregation functions. CriteriaUpdate. CriteriaDelete. Benefit from the Criteria API.
 <p>----------------------------------------</p>
-p>You have already figured out how to make simple requests to the Criteria API. Let's see how to make more complex queries.</p>
+<h2>Grouping and aggregation functions</h2>
+<p>You have already figured out how to make simple requests to the Criteria API. Let's see how to make more complex queries.</p>
 <p>For example, we want to write a query to determine the number of employees in a company. Here is how it will look like in HQL:</p>
 <pre><code><strong><span class="text-red">select count</span>(*) <span class="text-red">from</span> <span class="text-orange">Employee</span></strong></code></pre>
 <p>And like this on the Criteria API:</p>
@@ -117,4 +118,4 @@ where <span class="token punctuation">(</span>occupation <span class="token oper
    	and <span class="token punctuation">(</span>tasks<span class="token punctuation">.</span>deadline <span class="token operator">&lt;</span> <span class="token function">curdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 <p><strong>If you write or is null</strong> somewhere in such a query , then this will not cancel the join between tables.</p>
 <p>So in practice, when you do any complex filter on the fields of several tables, the Criteria API can just help you out. So it goes.</p>
-<p>More details can be found in <a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#criteria-typedquery" target="_blank" rel="nofollow">the official documentation</a> .</p>
+<p>More details can be found in <a href="https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#criteria-typedquery" target="_blank">the official documentation</a> .</p>
